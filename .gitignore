@@ -2,3 +2,11 @@ app/config/config.local.neon
 /nbproject/private/
 /vendor
 /nbproject
+
+composer.lock
+
+*.lock
+
+composer.lock
+
+*.lock
