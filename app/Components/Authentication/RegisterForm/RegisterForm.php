@@ -1,13 +1,23 @@
 <?php
 
-namespace App\Presenters;
+namespace App\Components\Authetication\RegisterForm;
 
 use \Nette\Application\UI\Form;
 use App\Model\UserManager;
-use App\Components\Authetication\SignInForm\SignInForm;
 
 
-class HomepagePresenter extends BasePresenter
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ * Description of SignInForm
+ *
+ * @author Radaq
+ */
+class RegisterForm extends Nette\Object
 {
     /**
      *
@@ -19,14 +29,8 @@ class HomepagePresenter extends BasePresenter
     {
         $this->userManager = $userManager;
     }
-    
-    protected function createComponentSignInForm()
-    {
-        $form = new SignInForm($this->userManager);
-        return $form;
-    }
-    
-    protected function createComponentRegisterForm()
+
+    protected function create()
     {
         $form = new Form;
         $form->addText('username', 'Uživatelské jméno:')
@@ -42,7 +46,7 @@ class HomepagePresenter extends BasePresenter
         return $form;
     }
     
-    public function registerFormSucceeded(Form $form, $values) 
+    public function processForm($form, $values)
     {
         try {
             $this->userManager->add($values->username, $values->password);
@@ -50,13 +54,5 @@ class HomepagePresenter extends BasePresenter
         } catch (\Exception $ex) {
             $this->flashMessage($ex->getMessage(), 'error');
         }
-        
     }
-    
-    public function actionLogout()
-    {
-        $this->user->logout(true);
-        $this->redirect('Homepage:default');
-    }
-    
 }
