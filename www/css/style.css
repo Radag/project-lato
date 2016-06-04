@@ -92,7 +92,20 @@ body {
 	color: #2979FF;
 }
 
+.btn,
+.btn-flat {
+    padding: 0;
+}
 
+.btn input[type="submit"],
+.btn-flat  input[type="submit"] {
+    padding: 0 2rem;
+    height: 36px;
+}
+
+.btn-publish {
+    margin-left: 16px !important;
+}
 
 
 
