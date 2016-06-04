@@ -32,7 +32,7 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
 		list($username, $password) = $credentials;
                 
                 
-		$row = $this->database->table('user')->where('NAME', $username)->fetch();
+		$row = $this->database->table('user')->where('USERNAME', $username)->fetch();
 
 		if (!$row) {
 			throw new Nette\Security\AuthenticationException('The username is incorrect.', self::IDENTITY_NOT_FOUND);
@@ -63,7 +63,7 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
 	{
 		try {
 			$this->database->table('user')->insert(array(
-				'NAME' => $username,
+				'USERNAME' => $username,
 				'PASSWORD' => Passwords::hash($password),
 			));
 		} catch (Nette\Database\UniqueConstraintViolationException $e) {

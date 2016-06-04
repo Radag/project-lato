@@ -19,7 +19,7 @@
                 <img src="/images/user1.png" alt="Some chick">
             </div>
             <h2>
-                {$message->getUser()->getName()}
+                {$message->user->name} {$message->user->surname}
                 <span>Publikováno {$message->getCreated()|date:"j. n. Y v H:i"}</span>
             </h2>
         </div>

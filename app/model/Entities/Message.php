@@ -13,10 +13,10 @@ namespace App\Model\Entities;
  */
 class Message {
     
-    private $id = null;
-    private $text = null;
-    private $user = null;
-    private $created = null;
+    public $id = null;
+    public $text = null;
+    public $user = null;
+    public $created = null;
     
     function getId() {
         return $this->id;

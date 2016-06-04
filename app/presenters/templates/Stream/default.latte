@@ -95,6 +95,30 @@
         </div>
     </div>
 </div>
+        
+<script>
+    var idSession = null;
+
+    (function(){
+        if(idSession === null) {
+            var link = {link checkNews!};
+        } else {
+            var link = {link checkNews!} + '&idSession=' + idSession;;
+        }
+         
+        $.getJSON(link, function(data) {
+            idSession = data.idSession;
+            if(data.news > 0) {
+                $.nette.ajax({
+                    url: {link redrawNews!},
+                    method: 'GET'
+                });
+            }
+        });
+        setTimeout(arguments.callee, 5000);
+    })();
+    
+</script>
 
 
 

@@ -41,4 +41,29 @@ class StreamPresenter extends BasePresenter
         return new Stream($this->userManager, $this->messageManager);
     }
     
+    public function handleRedrawNews()
+    {
+        $this['stream']->redrawControl('messages');
+    }
+    
+    public function handleCheckNews($idSession = null) 
+    {
+        $lastCheck = $this->session->getSection('lastChecks');
+        $oldTimeStamp = null;
+        if($idSession !== null) { 
+            $oldTimeStamp = $lastCheck->lastTimes[$idSession];
+            $lastCheck->lastTimes[$idSession] = (new \DateTime())->getTimestamp();
+            $this->payload->idSession = $idSession;
+        } else {
+            $idSession = rand(10000, 90000);
+            $this->payload->idSession = $idSession;
+            $lastCheck->lastTimes[$idSession] = (new \DateTime())->getTimestamp();
+        }
+        $oldTime = new \DateTime();
+        $oldTime->setTimestamp($oldTimeStamp);
+        $this->payload->news = $this->messageManager->newMessages($oldTime);
+        //check news from this time
+        $this->sendPayload();
+    }
+    
 }

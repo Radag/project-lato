@@ -39,19 +39,26 @@ class MessageManager extends Nette\Object{
     public function getMessages()
     {
         $return = array();
-        $messages = $this->database->query("SELECT T1.TEXT, T1.ID_MESSAGE, T2.NAME, T1.CREATED FROM message T1 LEFT JOIN user T2 ON T1.ID_USER=T2.ID_USER ORDER BY CREATED DESC")->fetchAll();
+        $messages = $this->database->query("SELECT T1.TEXT, T1.ID_MESSAGE, T2.NAME, T2.SURNAME, T1.CREATED FROM message T1 LEFT JOIN user T2 ON T1.ID_USER=T2.ID_USER ORDER BY CREATED DESC LIMIT 10")->fetchAll();
         foreach($messages as $message) {
             $mess = new Message();
             $user = new Entities\User();
-            $user->setName($message->NAME);
-            $mess->setText($message->TEXT);
-            $mess->setId($message->ID_MESSAGE);
-            $mess->setCreated($message->CREATED);
-            $mess->setUser($user);
+            $user->surname = $message->SURNAME;
+            $user->name = $message->NAME;
+            $mess->text = $message->TEXT;
+            $mess->id = $message->ID_MESSAGE;
+            $mess->created = $message->CREATED;
+            $mess->user = $user;
             $return[] = $mess;
         }
         
         return $return;
+    }
+    
+    public function newMessages($date)
+    {
+        $count = $this->database->query("SELECT COUNT(*) FROM message WHERE CREATED>=?", $date)->fetch();
+        return current($count);
     }
       
     

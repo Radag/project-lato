@@ -13,9 +13,11 @@ namespace App\Model\Entities;
  */
 class User {
 
-    private $id = null;
-    private $name = null;
-    private $email = null;
+    public $id = null;
+    public $name = null;
+    public $surname = null;
+    public $username = null;
+    public $email = null;
     
     
     function getId() {
