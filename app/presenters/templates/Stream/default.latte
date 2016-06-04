@@ -1,0 +1,101 @@
+{block content}
+
+{control topPanel}
+<section class="main">
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <header class="section-header">
+                    <h3 class="left">Všechny položky</h3>
+                    <ul class="right options">
+                        <li>
+                            <a class="btn-flat btn-icon dropdown-button" data-activates="filter-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                                <i class="material-icons">filter_list</i>
+                            </a>
+                            <ul id='filter-window' class="dropdown-content">
+                                <li><a href="#!">Všechny položky</a></li>
+                                <li><a href="#!">Studijní materiály</a></li>
+                                <li><a href="#!">Povinnosti</a></li>
+
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a class="btn-flat btn-icon dropdown-button" data-activates="stream-options-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                                <i class="material-icons">more_vert</i>
+                            </a>
+                            <ul id='stream-options-window' class='dropdown-content'>
+                                <li><a href="#!">Spravovat widgety</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </header>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="row">
+        {control stream}
+        <div class="col s12 l4">
+            <div class="card bottom-spacer">
+                <div class="card-header">
+                    <h2>Povinnosti</h2>
+                </div>
+                <div class="card-content clearfix">
+                    <p class="secondary-par">V tuto cvhíli nemáte v předmětu zvěřejněny žádné povinnosti</p>  
+                </div>
+            </div>
+
+            <div class="card bottom-spacer">
+                <div class="card-header">
+                    <h2>Nastavení</h2>
+                </div>
+                <div class="card-content clearfix">
+                    <p class="secondary-par left">Zobrazit smazané položky</p>
+                    <div class="switch right">
+                        <label>
+                            <input type="checkbox">
+                            <span class="lever"></span>
+                        </label>
+                    </div>  
+                </div>
+            </div>
+
+            <div class="card bottom-spacer">
+                <div class="card-header">
+                    <h2>Studenti</h2>
+                </div>
+                <div class="card-content clearfix">
+                    <p class="secondary-par left">Zobrazit smazané položky</p>
+                    <div class="switch right">
+                        <label>
+                            <input type="checkbox">
+                            <span class="lever"></span>
+                        </label>
+                    </div>  
+                </div>
+            </div>
+
+            <div class="card bottom-spacer">
+                <div class="card-header">
+                    <h2>Informace o předmětu</h2>
+                </div>
+                <div class="card-content clearfix">
+                    <p class="secondary-par left">Zobrazit smazané položky</p>
+                    <div class="switch right">
+                        <label>
+                            <input type="checkbox">
+                            <span class="lever"></span>
+                        </label>
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

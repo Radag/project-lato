@@ -71,7 +71,7 @@ class SignInForm extends Control
         } catch (\Exception $ex) {
             $this->flashMessage($ex->getMessage(), 'error');
         }
-        $this->presenter->redirect('Wall:default');
+        $this->presenter->redirect('Stream:default');
         
     }
 }

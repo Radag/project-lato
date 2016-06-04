@@ -1,0 +1,24 @@
+{form form}
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="user-img left">
+            <img src="/images/user1.png" alt="Some chick">
+        </div>
+        <h4>Some chick</h4>
+    </div>
+    {input text class => 'materialize-textarea'}
+</div>
+<div class="modal-footer clearfix">
+    {input send class => 'modal-action modal-close waves-effect waves-green btn disabled'}
+    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Zrušit</a>
+</div>
+<script>
+    $(".materialize-textarea").on('keydown', function(event) {
+        if($(this).val() != "") {
+            $(".modal-action").removeClass('disabled');
+        }
+    });
+</script>
+{/form}
+
+

@@ -9,7 +9,9 @@
 	<link type="text/css" rel="stylesheet" href="/css/materialize.min.css"  media="screen,projection"/>
 	<link type="text/css" rel="stylesheet" href="/css/style.css"  media="screen,projection"/>
 
-	<!--Let browser know website is optimized for mobile-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        
+        <!--Let browser know website is optimized for mobile-->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 	<title>{ifset title}{include title|striptags} | {/ifset}Nette Web</title>
@@ -22,21 +24,23 @@
 
 	{block scripts}
 	<script src="https://nette.github.io/resources/js/netteForms.min.js"></script>
-	{/block}
-
-	<!--Import jQuery before materialize.js-->
-	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-	<script type="text/javascript" src="/js/materialize.min.js"></script>
-	<script>    
+        <script src="/js/nette.ajax.js"></script>
+	
+        <script type="text/javascript" src="/js/materialize.min.js"></script>
+	<script>  
+            $(function () {
+    $.nette.init();
+});
 		$('.button-collapse').sideNav({
-      menuWidth: 300, // Default is 240
-  }
-  );
+              menuWidth: 300, // Default is 240
+          }
+          );
 
-		$(document).ready(function(){
-      // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-      $('.modal-trigger').leanModal();
-  });    
-</script>
+                        $(document).ready(function(){
+              // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+              $('.modal-trigger').leanModal();
+          });    
+        </script>
+        {/block}
 </body>
 </html>

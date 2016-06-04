@@ -1,2 +1,3 @@
 services:
 	authorizator: App\Model\UserManager  
+	messageManager: App\Model\MessageManager 

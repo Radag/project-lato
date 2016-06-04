@@ -1,0 +1,54 @@
+<div class="col s12 l8">
+    <a href="#modal1" class="card create-post clearfix modal-trigger">
+        <div class="user-img left">
+            <img src="/images/user2.png" alt="Some chick">
+        </div>
+        <div class="create-post-label left">
+            Chcete ostatním něco sdělit?
+        </div>
+    </a>
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal modal-fixed-footer">
+        {control messageForm}
+    </div>
+    {snippet messages}
+    {foreach $messages as $message}  
+    <div class="card clearfix">
+        <div class="card-header clearfix">
+            <div class="user-img left">
+                <img src="/images/user1.png" alt="Some chick">
+            </div>
+            <h2>
+                {$message->getUser()->getName()}
+                <span>Publikováno {$message->getCreated()|date:"j. n. Y v H:i"}</span>
+            </h2>
+        </div>
+        <div class="card-content clearfix">
+            <p>{$message->getText()}</p>
+            {*<div class="media-container">
+                <div class="img-full-size" style="background-image: url('/images/media-picture-large.png');"></div>
+                <div class="img-half-size" style="background-image: url('/images/media-picture-large.png');"></div>
+                <div class="img-half-size" style="background-image: url('/images/media-picture-large.png');"></div>
+            </div>*}
+        </div>
+        {*<div class="card-comments">
+            <div class="comments-header">
+                <a href="#!" class="show-comments item waves-effect waves-dark"><i class="material-icons">comment</i></a>
+                <div class="comments-count">2</div>
+                <div class="flex-spacer"></div>
+                <a href="#!" class="user-img item"><img src="/images/user1.png" alt="some chick"></a>
+                <a href="#!" class="user-img item"><img src="/images/user2.png" alt="some chick"></a>
+
+            </div>
+            <div class="comments-content"></div>
+            <div class="comments-footer clearfix">
+                <div class="user-img left">
+                    <img src="/images/user1.png" alt="Some chick">
+                </div>
+                <textarea id="textarea1" class="materialize-textarea" placeholder="Napište komentář ..."></textarea>
+            </div>
+        </div>*}
+    </div>
+    {/foreach}
+    {/snippet}
+</div>
