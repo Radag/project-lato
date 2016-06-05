@@ -1,0 +1,26 @@
+{snippet comments}
+<div class="card-comments">
+    <div class="comments-header">
+        <a href="#!" class="show-comments item waves-effect waves-dark"><i class="material-icons">comment</i></a>
+        <div class="comments-count">{count($comments)}</div>
+        <div class="flex-spacer"></div>
+        <a href="#!" class="user-img item"><img src="/images/user1.png" alt="some chick"></a>
+        <a href="#!" class="user-img item"><img src="/images/user2.png" alt="some chick"></a>
+
+    </div>
+    <div class="comments-content">
+       {foreach $comments as $comm}
+           <div>{$comm->text}</div>
+       {/foreach}
+    </div>
+    <div class="comments-footer clearfix">
+        {form form}
+        <div class="user-img left">
+            <img src="/images/user1.png" alt="Some chick">
+        </div>
+        {input text class => 'materialize-textarea'}
+        {/form}
+    </div>
+</div>
+{/snippet}
+

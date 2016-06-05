@@ -10,6 +10,7 @@ namespace App\Model;
 
 use Nette;
 use App\Model\Entities\Message;
+use App\Model\Entities\Comment;
 
 /**
  * Description of MessageManager
@@ -36,6 +37,15 @@ class MessageManager extends Nette\Object{
             ));
     }
     
+    public function createComment(Comment $comment)
+    {
+        $this->database->table('comment')->insert(array(
+                'TEXT' => $comment->text,
+                'ID_USER' => $comment->user->id,
+                'ID_MESSAGE' => $comment->idMessage
+            ));
+    }
+    
     public function getMessages()
     {
         $return = array();
@@ -50,6 +60,26 @@ class MessageManager extends Nette\Object{
             $mess->created = $message->CREATED;
             $mess->user = $user;
             $return[] = $mess;
+        }
+        
+        return $return;
+    }
+    
+    
+    public function getComments($idMessage)
+    {
+        $return = array();
+        $messages = $this->database->query("SELECT * FROM comment WHERE ID_MESSAGE=?", $idMessage)->fetchAll();
+        foreach($messages as $comment) {
+            $comm = new Comment();
+//            $user = new Entities\User();
+//            $user->surname = $message->SURNAME;
+//            $user->name = $message->NAME;
+            $comm->text = $comment->TEXT;
+            $comm->id = $comment->ID_COMMENT;
+            $comm->created = $comment->CREATED;
+            //$mess->user = $user;
+            $return[] = $comm;
         }
         
         return $return;

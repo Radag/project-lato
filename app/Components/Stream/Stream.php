@@ -12,6 +12,7 @@ use \Nette\Application\UI\Control;
 use App\Model\UserManager;
 use App\Model\MessageManager;
 use App\Components\Stream\MessageForm\MessageForm;
+use App\Components\Stream\CommentForm\CommentForm;
 
 
 
@@ -30,6 +31,8 @@ class Stream extends Control
     private $userManager;
     private $messageManager;
     
+    private $commentForm = null;
+    
     public function __construct(UserManager $userManager, MessageManager $messageManager)
     {
         $this->userManager = $userManager;
@@ -44,7 +47,13 @@ class Stream extends Control
     public function render()
     {
         $template = $this->template;
-        $template->messages = $this->messageManager->getMessages();
+        $messages = $this->messageManager->getMessages();
+//        foreach($messages as $message) {
+//            $message->commentForm = $this['commentForm'];
+//            $message->commentForm->setMessage($message->id);
+//        }
+        
+        $template->messages = $messages;
         $template->setFile(__DIR__ . '/Stream.latte');
         $template->render();
     }
@@ -55,5 +64,14 @@ class Stream extends Control
     {
         $form = new MessageForm($this->messageManager, $this);
         return $form;
+    }
+    
+    public function createComponentCommentForm()
+    {
+        return new \Nette\Application\UI\Multiplier(function ($idMessage) {
+            $commentForm = new CommentForm($this->messageManager);
+            $commentForm->setMessage($idMessage);
+            return $commentForm;
+        });
     }
 }
