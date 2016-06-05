@@ -41,7 +41,7 @@ body {
 .center-card .card-content input[type="text"],
 .center-card .card-content input[type="password"] {
 	border-bottom: 1px solid rgba(0, 0, 0, .12);
-	margin-bottom: 8px;
+	margin-bottom: 0;
 	font-size: 16px;
 }
 
@@ -50,7 +50,7 @@ body {
 }
 
 .center-card .card-content .form-controls {
-	margin-top: 24px !important;
+	margin-top: 32px !important;
 	margin-bottom: 0;
 }
 
@@ -85,17 +85,36 @@ body {
 
 .forgotten-pass {
 	text-align: center;
-	margin-top:64px;
+	margin-top:48px;
 }
 
 .forgotten-pass a {
 	color: #2979FF;
 }
 
+.btn,
+.btn-flat {
+    padding: 0;
+}
 
+.btn input[type="submit"],
+.btn-flat  input[type="submit"] {
+    padding: 0 2rem;
+    height: 36px;
+}
 
+.btn-publish {
+    margin-left: 16px !important;
+}
 
+.modal-content {
+    display:flex;
+    flex-direction: column;
+}
 
+.modal-content textarea {
+    flex-grow: 1;
+}
 
 
 /* ---------------- OLD OLD OLD ----------------- */
