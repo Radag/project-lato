@@ -181,6 +181,7 @@ nav ul a.active {
 .dropdown-content li > a, .dropdown-content li > span {
     font-size: 14px;
     color: rgba(0, 0, 0, .54);
+    padding: 14px 24px;
 }
 
 .dropdown-content li:hover, .dropdown-content li.active, .dropdown-content li.selected {
@@ -687,16 +688,20 @@ p.secondary-par {
 #group-cards .card-header {
     position:relative;
     color:#fff;
+    padding:0;
     padding-bottom:48px;
 }
 
-#group-cards h3.group-name  {
+#group-cards a.group-name  {
+    display:block;
     font-size:16px;
-    line-height:40px;
-    margin:8px 0;
+    line-height:24px;
+    margin: 0;
+    padding:24px;
+    color: rgba(255, 255, 255, 1);
 }
 
-#group-cards h3.group-name span {
+#group-cards a.group-name span {
     font-size:35px;
     line-height:40px;
     margin:8px 0;
@@ -705,6 +710,8 @@ p.secondary-par {
 }
 
 #group-cards .group-users {
+    display: block;
+    color: rgba(255, 255, 255, 1);
     position:absolute;
     bottom:0;
     left:0;
@@ -714,11 +721,19 @@ p.secondary-par {
     line-height:48px;
     width:100%;
     padding:0 24px;
+    -webkit-transition: background-color 300ms ease-in-out;
+    -moz-transition: background-color 300ms ease-in-out;
+    -o-transition: background-color 300ms ease-in-out;
+    transition: background-color 300ms ease-in-out;
+}
+
+#group-cards .group-users:hover {
+    background-color:rgba(0, 0, 0, .12);
 }
 
 #group-cards .group-founder {
     padding:24px;
-    height:96px;
+    height:112px;
 }
 
 #group-cards .group-founder .user-img {   
@@ -726,15 +741,20 @@ p.secondary-par {
     float:left;
 }
 
+#group-cards .group-founder .user-info {
+    float:left;
+}
+
 #group-cards .group-founder .user-name {
+    display: block;
     font-size:16px;
     line-height:28px;
     font-weight:500;  
     color:rgba(0, 0, 0, .87);
 }
 
-#group-cards .group-founder .user-name span {
-    display:block;
+#group-cards .group-founder .user-role {
+    display: block;
     font-weight:400;
     font-size:13px;
     color:rgba(0, 0, 0, .38);
