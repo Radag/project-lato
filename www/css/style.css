@@ -165,12 +165,34 @@ body {
   }
 }
 
-nav ul a {
-    position:relative;
+.navbar-nav  > li {
+    margin: 0 6px;
 }
 
-nav ul a.active {
+.navbar-nav > li > a {
+    position:relative;
+    width: 42px;
+    padding: 0;
+    border-radius: 50%;
+    text-align: center;
+    margin: 14px 0;
+}
+
+.navbar-nav > li > a i {
+    line-height: 42px !important;
+    height: 42px !important;
+}
+
+.navbar-nav > li a:hover {
+    background-color: transparent;
+}
+
+.navbar-nav > li a.active {
   background-color: rgba(0, 0, 0, 0.1);
+}
+
+ul.dropdown-content.main-nav-dropdown {
+    top: 60px !important;
 }
 
 .dropdown-content {
@@ -460,17 +482,35 @@ p.secondary-par {
 
 /* ----- SIDEBAR NAVIGATION ----- */
 
-#slide-out {
-    padding-top:30px;   
+
+.side-nav .side-nav-header {
+    position: relative;
+    display: block;
+    height: 160px;
+    width: 100%;
+    background-image: url("../images/media-picture-large.png");
+    background-size: cover;
+    margin-bottom: 16px;
+}
+
+.side-nav .side-nav-header .title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 50px;
+    line-height: 50px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, .54);
+    color: #fff;
+    padding:0 24px;
+    font-size: 14px;
 }
 
 #slide-out li {
     padding:0;
-    height:48px !important;
 }
 
-#slide-out a {
-    padding:0 24px;
+#slide-out li a {
     font-size:13px;
     font-weight:500;
     
@@ -481,9 +521,76 @@ p.secondary-par {
 #slide-out i {
     display:block !important;
     float:left;
-    margin-right: 24px;
     line-height:48px;
     color:rgba(0, 0, 0, .37);
+    text-align: center;
+    width: 30px;
+    height:48px;
+    margin-right: 32px;
+}
+
+#slide-out .group-shortcut-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    float: left;
+    background-color: rgba(0, 0, 0, .37);
+    text-align: center;
+    margin: 9px 0px;
+    margin-right: 32px;
+    line-height: 30px;
+    color: #fff;
+}
+
+#slide-out i.show-more {
+    float: right;
+    font-size: 17px;
+    margin: 0;
+    color: rgba(0, 0, 0, .54);
+}
+
+
+.side-nav a,
+.side-nav .collapsible-header {
+    padding: 0 24px;
+}
+
+.side-nav .collapsible-body {
+    padding: 8px 0;
+}
+
+.side-nav .collapsible-body li a {
+    padding: 0 24px;
+    font-weight: 400 !important;
+    color: rgba(0, 0, 0, .54);
+    -webkit-transition: color 300ms ease-in-out;
+    -moz-transition: color 300ms ease-in-out;
+    -o-transition: color 300ms ease-in-out;
+    transition: color 300ms ease-in-out;
+}
+
+.side-nav .collapsible-body li a:hover {
+    background-color: transparent;
+    color: rgba(0, 0, 0, .87);
+}
+
+.side-nav .collapsible-body li a.active {
+    color: #0090f7;
+    font-weight: 500 !important;
+}
+
+.side-nav .divider {
+    margin: 16px 0;
+}
+
+.side-nav h4 {
+    font-size: 13px;
+    color: rgba(0, 0, 0, .47);
+    line-height: 48px;
+    margin: 0;
+    margin-top: 24px;
+    padding:0 24px;
+    font-weight: 500;
 }
 
 /* ---------- */
@@ -677,13 +784,6 @@ p.secondary-par {
 #group-cards .card {
     text-align:left;
 }
-
-/*
-#group-cards a.card:hover {
-    box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
-
-} 
-*/
 
 #group-cards .card-header {
     position:relative;
