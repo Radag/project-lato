@@ -65,13 +65,13 @@ class SignInForm extends Control
     {
 
         try {
-            $this->user->setAuthenticator($this->userManager);
-            $this->user->login($values->username, $values->password);
+            $this->getPresenter()->user->setAuthenticator($this->userManager);
+            $this->getPresenter()->user->login($values->username, $values->password);
             $this->flashMessage('přihlášen', 'succes');
         } catch (\Exception $ex) {
             $this->flashMessage($ex->getMessage(), 'error');
         }
-        $this->presenter->redirect('Stream:default');
+        $this->presenter->redirect('Stream:groups');
         
     }
 }

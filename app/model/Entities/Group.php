@@ -13,34 +13,11 @@ namespace App\Model\Entities;
  */
 class Group {
 
-    private $id = null;
-    private $name = null;
-    private $email = null;
+    public $id = null;
+    public $name = null;
+    public $email = null;
+    public $teacher = null;
+    public $shortcut = null;
+    public $colorScheme = null;
     
-    
-    function getId() {
-        return $this->id;
-    }
-
-    function getName() {
-        return $this->name;
-    }
-
-    function getEmail() {
-        return $this->email;
-    }
-
-    function setId($id) {
-        $this->id = $id;
-    }
-
-    function setName($name) {
-        $this->name = $name;
-    }
-
-    function setEmail($email) {
-        $this->email = $email;
-    }
-
-
 }

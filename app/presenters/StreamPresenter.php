@@ -6,6 +6,7 @@ use App\Model\UserManager;
 use App\Components\Authetication\TopPanel\TopPanel;
 use App\Components\Stream\Stream\Stream;
 use App\Model\MessageManager;
+use App\Model\GroupManager;
 
 class StreamPresenter extends BasePresenter
 {
@@ -22,13 +23,15 @@ class StreamPresenter extends BasePresenter
      *
      * @var UserManager $userManager
      */
-     private $userManager;
+    private $userManager;
     private $messageManager;
+    private $groupManager;
     
-    public function __construct(UserManager $userManager, MessageManager $messageManager)
+    public function __construct(UserManager $userManager, MessageManager $messageManager, GroupManager $groupManager)
     {
         $this->userManager = $userManager;
         $this->messageManager = $messageManager;
+        $this->groupManager = $groupManager;
     }
     
     protected function createComponentTopPanel()
@@ -66,4 +69,13 @@ class StreamPresenter extends BasePresenter
         $this->sendPayload();
     }
     
+    public function actionGroups()
+    {
+        $this->template->groups = $this->groupManager->getGroups();
+    }
+    
+    public function actionDefault($idGroup)
+    {
+
+    }
 }
