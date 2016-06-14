@@ -26,22 +26,24 @@ class StreamPresenter extends BasePresenter
     private $userManager;
     private $messageManager;
     private $groupManager;
+    private $activeGroup = null;
     
     public function __construct(UserManager $userManager, MessageManager $messageManager, GroupManager $groupManager)
     {
         $this->userManager = $userManager;
         $this->messageManager = $messageManager;
         $this->groupManager = $groupManager;
+        
     }
     
     protected function createComponentTopPanel()
     {
-        return new TopPanel($this->userManager);
+        return new TopPanel($this->userManager, $this->groupManager, $this->activeGroup);
     }
     
     protected function createComponentStream()
     {
-        return new Stream($this->userManager, $this->messageManager);
+        return new Stream($this->userManager, $this->messageManager, $this->activeGroup);
     }
     
     public function handleRedrawNews()
@@ -71,11 +73,13 @@ class StreamPresenter extends BasePresenter
     
     public function actionGroups()
     {
-        $this->template->groups = $this->groupManager->getGroups();
+        $this->template->groups = $this->groupManager->getGroups($this->user);
     }
     
-    public function actionDefault($idGroup)
+    public function actionDefault($id)
     {
-
+        $group = $this->groupManager->getGroup($id);
+        $this->activeGroup = $group;
+        
     }
 }

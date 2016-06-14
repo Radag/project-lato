@@ -32,12 +32,20 @@ class Stream extends Control
     private $messageManager;
     
     private $commentForm = null;
+    private $activeGroup;
     
-    public function __construct(UserManager $userManager, MessageManager $messageManager)
+    public function __construct(UserManager $userManager, MessageManager $messageManager, $activeGroup)
     {
         $this->userManager = $userManager;
         $this->messageManager = $messageManager;
+        $this->activeGroup = $activeGroup;
     }
+    
+    public function getActiveGroup()
+    {
+        return $this->activeGroup;
+    }
+ 
     
     protected function create()
     {
@@ -47,7 +55,7 @@ class Stream extends Control
     public function render()
     {
         $template = $this->template;
-        $messages = $this->messageManager->getMessages();
+        $messages = $this->messageManager->getMessages($this->activeGroup);
 //        foreach($messages as $message) {
 //            $message->commentForm = $this['commentForm'];
 //            $message->commentForm->setMessage($message->id);

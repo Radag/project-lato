@@ -64,7 +64,8 @@ class MessageForm extends Control
         $message = new \App\Model\Entities\Message;
         $message->setText($values['text']);
         $message->setUser($this->getPresenter()->getUser());
-       
+        $message->idGroup = $this->stream->getActiveGroup()->id;
+        
         $this->messageManager->createMessage($message);
         $this->stream->redrawControl('messages');
     }

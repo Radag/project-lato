@@ -17,6 +17,7 @@ class Message {
     public $text = null;
     public $user = null;
     public $created = null;
+    public $idGroup = null;
     
     function getId() {
         return $this->id;

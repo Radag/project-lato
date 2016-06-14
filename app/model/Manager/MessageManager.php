@@ -33,7 +33,8 @@ class MessageManager extends Nette\Object{
     {
         $this->database->table('message')->insert(array(
                     'TEXT' => $message->getText(),
-                    'ID_USER' => $message->getUser()->id
+                    'ID_USER' => $message->getUser()->id,
+                    'ID_GROUP' => $message->idGroup
             ));
     }
     
@@ -46,10 +47,13 @@ class MessageManager extends Nette\Object{
             ));
     }
     
-    public function getMessages()
+    public function getMessages($group)
     {
         $return = array();
-        $messages = $this->database->query("SELECT T1.TEXT, T1.ID_MESSAGE, T2.NAME, T2.SURNAME, T1.CREATED FROM message T1 LEFT JOIN user T2 ON T1.ID_USER=T2.ID_USER ORDER BY CREATED DESC LIMIT 10")->fetchAll();
+        $messages = $this->database->query("SELECT T1.TEXT, T1.ID_MESSAGE, T2.NAME, T2.SURNAME, T1.CREATED FROM message T1 
+                LEFT JOIN user T2 ON T1.ID_USER=T2.ID_USER 
+                WHERE T1.ID_GROUP=?
+                ORDER BY CREATED DESC LIMIT 10", $group->id)->fetchAll();
         foreach($messages as $message) {
             $mess = new Message();
             $user = new Entities\User();

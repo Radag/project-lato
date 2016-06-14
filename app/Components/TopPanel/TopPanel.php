@@ -10,7 +10,7 @@ namespace App\Components\Authetication\TopPanel;
 use \Nette\Application\UI\Form;
 use \Nette\Application\UI\Control;
 use App\Model\UserManager;
-
+use App\Model\GroupManager;
 
 
 /**
@@ -27,9 +27,15 @@ class TopPanel extends Control
      */
     private $userManager;
     
-    public function __construct(UserManager $userManager)
+    
+    private $groupManager;
+    private $activeGroup;
+    
+    public function __construct(UserManager $userManager, GroupManager $groupManager, $activeGroup)
     {
         $this->userManager = $userManager;
+        $this->groupManager = $groupManager;
+        $this->activeGroup = $activeGroup;
     }
     
     protected function create()
@@ -40,6 +46,21 @@ class TopPanel extends Control
     public function render()
     {
         $template = $this->template;
+        $template->activeGroup = $this->activeGroup;
+        $user = $this->getPresenter()->user;
+        $template->activeUser = $user->getIdentity()->data;
+        $groups = $this->groupManager->getUserGroups($user);
+        $subject = array();
+        $others = array();
+        foreach($groups as $group) {
+            if($group->groupType == 1) {
+                $subject[] = $group;
+            } else {
+                $others[] = $group;
+            }
+        }
+        $template->subjects = $subject;
+        $template->groups = $others;
         $template->setFile(__DIR__ . '/TopPanel.latte');
         $template->render();
     }

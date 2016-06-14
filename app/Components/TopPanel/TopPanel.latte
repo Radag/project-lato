@@ -3,7 +3,7 @@
         <div class="nav-wrapper">
             <ul id="slide-out" class="side-nav">
                 <a href="" class="side-nav-header">
-                    <div class="title">Petr Šavelka</div>
+                    <div class="title">{$activeUser['NAME']} {$activeUser['SURNAME']}</div>
                 </a>
                 <li><a href="{plink Stream:groups}" class="waves-effect waves-dark">
                     <i class="material-icons">person</i>Profil
@@ -45,21 +45,11 @@
                         </a>
                             <div class="collapsible-body">
                                 <ul>
-                                    <li><a href="#!">
-                                        <div class="group-shortcut-circle">M</div>Matematika
+                                    {foreach $subjects as $subject}
+                                    <li><a href="{plink :Stream:default 'id'=>$subject->id}">
+                                        <div class="group-shortcut-circle">{$subject->shortcut}</div>{$subject->name}
                                     </a></li>
-                                    <li><a href="#!">
-                                        <div class="group-shortcut-circle">P</div>Programování
-                                    </a></li>
-                                    <li><a href="#!">
-                                        <div class="group-shortcut-circle">Č</div>Český jazyk
-                                    </a></li>
-                                    <li><a href="#!" class="active">
-                                        <div class="group-shortcut-circle">T</div>Technické vybavení
-                                    </a></li>
-                                    <li><a href="#!">
-                                        <div class="group-shortcut-circle">A</div>Anglický jazyk
-                                    </a></li>
+                                    {/foreach}
                                 </ul>
                             </div>
                         </li>
@@ -71,12 +61,11 @@
                         </a>
                             <div class="collapsible-body">
                                 <ul>
-                                    <li><a href="#!">
-                                        <div class="group-shortcut-circle">F</div>Fotbálek
+                                    {foreach $groups as $group}
+                                    <li><a href="{plink :Stream:default 'id'=>$group->id}">
+                                        <div class="group-shortcut-circle">{$group->shortcut}</div>{$group->name}
                                     </a></li>
-                                    <li><a href="#!">
-                                        <div class="group-shortcut-circle">P</div>Projekt z programování
-                                    </a></li>
+                                    {/foreach}
                                 </ul>
                             </div>
                         </li>
@@ -88,7 +77,7 @@
             </ul>
             <a href="#" data-activates="slide-out" class="button-collapse show-on-large slide-out-toggle">
               <i class="material-icons">menu</i></a>
-              <span class="nav-title">Matematika</span>
+              <span class="nav-title">{if !empty($activeGroup)}{$activeGroup->name}{/if}</span>
 
               <ul class="right navbar-nav">
                 <li><a class="dropdown-button" href="#!" data-activates="notifications-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false"><i class="material-icons ">notifications</i><span class="nav-badge">4</span></a>

@@ -40,13 +40,21 @@
         {foreach $groups as $group}
         <div class="col l3 m6 s12">
             <div class="card">
-                <div class="card-header" style="background-color:#00b852;">
+                <div class="card-header" style="background-color:{$group->mainColor|noescape};">
                     <a href="{link :Stream:default 'id'=>$group->id}" class="group-name">
                         <span>{$group->shortcut}</span>
                         {$group->name}
                     </a>
                     <a href="#" class="group-users">
-                        12 studentů
+                        {if $group->numberOfStudents == 0}
+                            Žádní studenti
+                        {elseif $group->numberOfStudents == 1}
+                            Jeden student
+                        {elseif $group->numberOfStudents > 1 && $group->numberOfStudents < 5}
+                            {$group->numberOfStudents} studenti
+                        {else}
+                            {$group->numberOfStudents} studentů
+                        {/if}
                     </a>
                 </div>
                 <div class="group-founder">

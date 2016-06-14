@@ -26,4 +26,10 @@ class BasePresenter extends Nette\Application\UI\Presenter
     {
         $this->database = $database;
     }
+    
+    protected function startup()
+    {
+        parent::startup();
+        
+    }
 }

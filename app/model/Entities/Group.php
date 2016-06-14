@@ -18,6 +18,7 @@ class Group {
     public $email = null;
     public $teacher = null;
     public $shortcut = null;
-    public $colorScheme = null;
-    
+    public $mainColor = null;
+    public $numberOfStudents = null;
+    public $groupType = null;
 }
