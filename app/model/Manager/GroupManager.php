@@ -31,11 +31,12 @@ class GroupManager extends Nette\Object{
     public function getUserGroups($user)
     {
         $return = array();
-        $yourGroups = $this->database->query("SELECT T1.ID_GROUP, T2.NAME, T2.SHORTCUT, T2.GROUP_TYPE FROM (
+        $yourGroups = $this->database->query("SELECT T1.ID_GROUP, T3.MAIN_COLOR, T2.NAME, T2.SHORTCUT, T2.GROUP_TYPE FROM (
             SELECT DISTINCT ID_GROUP FROM user_group WHERE ID_USER=?
             UNION 
             SELECT DISTINCT ID_GROUP FROM groups WHERE ID_TEACHER=?) T1
-            LEFT JOIN groups T2 ON  T1.ID_GROUP = T2.ID_GROUP", $user->id, $user->id)->fetchAll(); 
+            LEFT JOIN groups T2 ON  T1.ID_GROUP = T2.ID_GROUP
+            LEFT JOIN group_color_scheme T3 ON T2.COLOR_SCHEME=T3.ID_SCHEME", $user->id, $user->id)->fetchAll(); 
         
         if(!empty($yourGroups)) {
             foreach($yourGroups as $s) {
@@ -44,6 +45,7 @@ class GroupManager extends Nette\Object{
                 $group->name = $s->NAME;
                 $group->shortcut = $s->SHORTCUT;
                 $group->groupType = $s->GROUP_TYPE;
+                $group->mainColor = $s->MAIN_COLOR;
                 $return[$s->ID_GROUP] = $group;
             }
         }

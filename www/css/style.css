@@ -482,6 +482,9 @@ p.secondary-par {
 
 /* ----- SIDEBAR NAVIGATION ----- */
 
+.side-nav li.empty {
+    height: 30px !important;
+}
 
 .side-nav .side-nav-header {
     position: relative;
@@ -511,11 +514,10 @@ p.secondary-par {
 }
 
 #slide-out li a {
-    font-size:13px;
-    font-weight:500;
-    
-    height:100% !important;
-    line-height:48px !important;
+    font-size: 14px;
+    font-weight: 500;    
+    height: 100% !important;
+    line-height: 48px !important;
 }
 
 #slide-out i {
@@ -540,6 +542,7 @@ p.secondary-par {
     margin-right: 32px;
     line-height: 30px;
     color: #fff;
+    font-weight: 700;
 }
 
 #slide-out i.show-more {
@@ -556,7 +559,7 @@ p.secondary-par {
 }
 
 .side-nav .collapsible-body {
-    padding: 8px 0;
+    padding: 16px 0;
 }
 
 .side-nav .collapsible-body li a {
@@ -575,7 +578,7 @@ p.secondary-par {
 }
 
 .side-nav .collapsible-body li a.active {
-    color: #0090f7;
+    color: rgba(0, 0, 0, .87);
     font-weight: 500 !important;
 }
 

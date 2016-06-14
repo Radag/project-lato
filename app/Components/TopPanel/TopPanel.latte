@@ -47,13 +47,16 @@
                                 <ul>
                                     {foreach $subjects as $subject}
                                     <li><a href="{plink :Stream:default 'id'=>$subject->id}">
-                                        <div class="group-shortcut-circle">{$subject->shortcut}</div>{$subject->name}
+                                        <div class="group-shortcut-circle" style="background-color: {$subject->mainColor|noescape}">{$subject->shortcut}</div>{$subject->name}
                                     </a></li>
                                     {/foreach}
                                 </ul>
                             </div>
                         </li>
-
+                    </ul>
+                </li>
+                <li class="no-padding">
+                    <ul class="collapsible collapsible-accordion">
                         <li>
                         <a class="collapsible-header waves-effect waves-dark">
                             <i class="material-icons">people</i>Skupiny
@@ -63,7 +66,7 @@
                                 <ul>
                                     {foreach $groups as $group}
                                     <li><a href="{plink :Stream:default 'id'=>$group->id}">
-                                        <div class="group-shortcut-circle">{$group->shortcut}</div>{$group->name}
+                                        <div class="group-shortcut-circle" style="background-color: {$group->mainColor|noescape}" >{$group->shortcut}</div>{$group->name}
                                     </a></li>
                                     {/foreach}
                                 </ul>
@@ -74,6 +77,7 @@
                 <li><a href="{plink Stream:groups}" class="waves-effect waves-dark">
                     <i class="material-icons">today</i>Rozvrh
                 </a></li>
+                <li class="empty"></li>
             </ul>
             <a href="#" data-activates="slide-out" class="button-collapse show-on-large slide-out-toggle">
               <i class="material-icons">menu</i></a>
