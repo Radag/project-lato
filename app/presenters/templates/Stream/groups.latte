@@ -70,7 +70,15 @@
                     </div>
                 </div>
                 <div class="group-activity">
-                    Žádné nové příspěvky
+                    {if $group->newMessages == 0}
+                        Žádné nové příspěvky
+                    {elseif $group->newMessages == 1}
+                        Jeden nový příspěvek
+                    {elseif $group->newMessages > 1 && $group->newMessages < 5}
+                        {$group->newMessages} příspěvky
+                    {else}
+                        {$group->newMessages} příspěvků
+                    {/if}
                 </div>
             </div>
         </div>

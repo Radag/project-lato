@@ -21,4 +21,5 @@ class Group {
     public $mainColor = null;
     public $numberOfStudents = null;
     public $groupType = null;
+    public $newMessages = null;
 }

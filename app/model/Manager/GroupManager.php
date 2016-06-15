@@ -28,6 +28,12 @@ class GroupManager extends Nette\Object{
         $this->database = $database;
     }
 
+    public function setGroupVisited($user, $idGroup)
+    {
+        $this->database->query("UPDATE user_group SET LAST_VISIT=NOW() WHERE ID_USER=? AND ID_GROUP=?", $user->id, $idGroup);
+    }
+    
+    
     public function getUserGroups($user)
     {
         $return = array();
@@ -96,12 +102,19 @@ class GroupManager extends Nette\Object{
                         T2.NAME AS TEACHER_NAME,
                         T2.SURNAME AS TEACHER_SURNAME,
                         T3.MAIN_COLOR,
-                        T4.STUDENTS
+                        T4.STUDENTS,
+                        T5.NEW_MESSAGE
                 FROM groups T1
                 LEFT JOIN user T2 ON T1.ID_TEACHER=T2.ID_USER
                 LEFT JOIN group_color_scheme T3 ON T1.COLOR_SCHEME=T3.ID_SCHEME
-                LEFT JOIN (SELECT COUNT(ID_USER) AS STUDENTS, ID_GROUP FROM user_group GROUP BY ID_GROUP) T4 ON T4.ID_GROUP=T1.ID_GROUP             
-                WHERE T1.ID_GROUP IN (" . implode(',', array_keys($userGroups)) . ")")->fetchAll();
+                LEFT JOIN (SELECT COUNT(ID_USER) AS STUDENTS, ID_GROUP FROM user_group WHERE ID_RELATION=2 GROUP BY ID_GROUP) T4 ON T4.ID_GROUP=T1.ID_GROUP 
+                LEFT JOIN (
+                    SELECT COUNT(T2.ID_MESSAGE) AS NEW_MESSAGE, T1.ID_GROUP FROM user_group T1
+                    LEFT JOIN message T2 ON (T1.ID_GROUP=T2.ID_GROUP AND T2.CREATED>T1.LAST_VISIT)
+                    WHERE T1.ID_USER=?
+                    GROUP BY T1.ID_GROUP
+                ) T5 ON T5.ID_GROUP=T1.ID_GROUP
+                WHERE T1.ID_GROUP IN (" . implode(',', array_keys($userGroups)) . ")", $user->id)->fetchAll();
             foreach($groups as $group) {
                 $groupModel = new Group();
                 $user = new Entities\User();
@@ -113,6 +126,7 @@ class GroupManager extends Nette\Object{
                 $groupModel->mainColor = $group->MAIN_COLOR;
                 $groupModel->numberOfStudents = $group->STUDENTS;
                 $groupModel->teacher = $user;
+                $groupModel->newMessages = $group->NEW_MESSAGE;
                 $return[] = $groupModel;
             }
         } 

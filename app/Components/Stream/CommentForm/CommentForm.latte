@@ -17,7 +17,8 @@
             <div class="comment-content">
                 <div class="comment-header">
                     <a href="#">{$comm->user->name} {$comm->user->surname}</a>
-                    {if $comm->sinceStart->d > 1}
+                    {dump $comm->sinceStart}
+                    {if $comm->sinceStart->d >= 1}
                         <span>{$comm->created|date:"j. n. Y v H:i"}</span>
                     {elseif $comm->sinceStart->h > 1}
                         <span>Před {$comm->sinceStart->h} hodinami</span>
