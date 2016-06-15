@@ -9,6 +9,13 @@ body {
     font-size:14px;
 }
 
+.progress {
+    margin: 0;
+    position: absolute;
+    bottom: 0px;
+    background-color: transparent;
+}
+
 /* ----- secondary color ----- */
 
 .switch label input[type=checkbox]:checked+.lever:after {
