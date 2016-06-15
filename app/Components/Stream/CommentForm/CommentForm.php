@@ -49,7 +49,8 @@ class CommentForm extends Control
         $form->getElementPrototype()->class('ajax');
         $form->addTextArea('text', 'Zpráva')
                 ->setAttribute('placeholder', 'Napište komentář ...')
-            ->setRequired('Napište zprávu');
+            ->setRequired('Napište zprávu')
+            ->addRule(\Nette\Forms\Form::FILLED, 'Zpráva musí obsahovat text');
         $form->addHidden('idMessage', $this->idMessage);
         $form->addSubmit('send', 'Publikovat');
 
@@ -73,11 +74,13 @@ class CommentForm extends Control
     public function processForm(Form $form, $values) 
     {
         $comment = new \App\Model\Entities\Comment();
-        $comment->text = $values['text'];
+        $comment->text = trim($values['text']);
         $comment->user = ($this->getPresenter()->getUser());
         $comment->idMessage = $values['idMessage'];
         
         $this->messageManager->createComment($comment);
+        
+        $this['form']['text']->setValue('');
         $this->redrawControl('comments');
     }
 }

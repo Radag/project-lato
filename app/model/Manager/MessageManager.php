@@ -73,17 +73,23 @@ class MessageManager extends Nette\Object{
     public function getComments($idMessage)
     {
         $return = array();
-        $messages = $this->database->query("SELECT * FROM comment WHERE ID_MESSAGE=?", $idMessage)->fetchAll();
+        $messages = $this->database->query("SELECT T1.ID_COMMENT, T1.TEXT, T1.CREATED, T2.NAME AS USER_NAME, T2.SURNAME AS USER_SURNAME FROM comment T1
+                    LEFT JOIN user T2 ON T1.ID_USER=T2.ID_USER
+                    WHERE ID_MESSAGE=?", $idMessage)->fetchAll();
         foreach($messages as $comment) {
             $comm = new Comment();
-//            $user = new Entities\User();
-//            $user->surname = $message->SURNAME;
-//            $user->name = $message->NAME;
+            $user = new Entities\User();
+            $user->surname = $comment->USER_SURNAME;
+            $user->name = $comment->USER_NAME;
             $comm->text = $comment->TEXT;
             $comm->id = $comment->ID_COMMENT;
             $comm->created = $comment->CREATED;
-            //$mess->user = $user;
+            $now = new \DateTime();
+            
+            $comm->sinceStart = $comment->CREATED->diff($now);
+            $comm->user = $user;
             $return[] = $comm;
+            \Tracy\Debugger::barDump($comm);
         }
         
         return $return;

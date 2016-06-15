@@ -16,7 +16,16 @@
             </div>
             <div class="comment-content">
                 <div class="comment-header">
-                    <a href="#">Petr Šavelka</a><span>Před 3 minutami</span>
+                    <a href="#">{$comm->user->name} {$comm->user->surname}</a>
+                    {if $comm->sinceStart->d > 1}
+                        <span>{$comm->created|date:"j. n. Y v H:i"}</span>
+                    {elseif $comm->sinceStart->h > 1}
+                        <span>Před {$comm->sinceStart->h} hodinami</span>
+                    {elseif $comm->sinceStart->i > 1}
+                        <span>Před {$comm->sinceStart->i} minutami</span>
+                    {else}
+                        <span>Před {$comm->sinceStart->s} sekundami</span>
+                    {/if}
                 </div>
                 <div class="comment-text">{$comm->text}</div>
             </div>
@@ -36,6 +45,7 @@
             <i class="material-icons">send</i>
         </button>
         
+
         {/form}
     </div>
 </div>
