@@ -9,6 +9,19 @@ body {
     font-size:14px;
 }
 
+.progress {
+    margin: 0;
+    position: absolute;
+    bottom: 0px;
+    background-color: transparent;
+}
+
+/* ----- secondary color ----- */
+
+.switch label input[type=checkbox]:checked+.lever:after {
+    background-color: #009688;
+}
+
 .row {
   margin: 0 -16px !important;
 }
@@ -736,7 +749,7 @@ p.secondary-par {
 
 .comments-content {
     background-color:#f9f9f9;
-    padding: 16px 0;
+    padding: 8px 0;
     display: flex;
     flex-direction: column;
 }
@@ -754,7 +767,7 @@ p.secondary-par {
     clear: both;
     width: 100%;
     line-height: 1em;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .comment-row .comment-header a {
@@ -783,34 +796,32 @@ p.secondary-par {
 }
 
 .comments-footer textarea.materialize-textarea {
-    padding:6px 0;
-    width: calc(100% - 132px);
+    padding:8px 0;
+    width: calc(100% - 144px);
     float: left;
-    min-height:24px;
+    min-height:22px;
     height:22px;
     font-size: 14px;
 }
 
-.comments-footer button[type="submit"] {
-    width: 64px;
-    margin-left: 16px;
-    padding:0;
-    line-height: 1.5em;
-    height:32px;
-    font-weight: 500;
-    color: #26a69a;
+.comments-footer button {
+    color: rgba(0, 0, 0, .47);
+    margin-left: 8px;
+    height: 36px;
+    width: 36px;
+    line-height: 36px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, .08);
 }
 
-.comments-footer button[type="submit"]:hover {
+.comments-footer button:hover {
+    background-color: rgba(0, 0, 0, .12);
     box-shadow: none;
-    background-color: transparent;
 }
 
-.comments-footer button[type="submit"].disabled {
-    background-color: transparent !important;
-    color: rgba(0, 0, 0, .2) !important;
-}   
-
+.comments-footer button i {
+    font-size: 22px;
+}
 
 
 
