@@ -19,6 +19,6 @@ class Comment {
     public $text = null;
     public $user = null;
     public $created = null;
-    
+    public $sinceStart = null;
     
 }
