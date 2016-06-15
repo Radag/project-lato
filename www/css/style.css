@@ -12,8 +12,12 @@ body {
 .progress {
     margin: 0;
     position: absolute;
-    bottom: 0px;
+    bottom: -4px;
     background-color: transparent;
+}
+
+.indeterminate {
+    background-color: #4DB6AC !important;
 }
 
 /* ----- secondary color ----- */
