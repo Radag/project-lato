@@ -11,7 +11,7 @@ php:
 application:
 	errorPresenter: Error
 	mapping:
-		*: app\*module\presenters\*Presenter
+		*: App\*Module\Presenters\*Presenter
 
 
 session:
