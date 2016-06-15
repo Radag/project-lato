@@ -736,14 +736,45 @@ p.secondary-par {
 
 .comments-content {
     background-color:#f9f9f9;
-    height:100px;
+    padding: 16px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-row {
+    padding: 16px 24px;
+}
+
+.comment-row .comment-content {
+    width: calc(100% - 52px);
+    float: left;
+}
+
+.comment-row .comment-content .comment-header {
+    clear: both;
+    width: 100%;
+    line-height: 1em;
+    margin-bottom: 8px;
+}
+
+.comment-row .comment-header a {
+    margin-right: 12px;
+    font-weight: 500;
+}
+
+.comment-row .comment-header span {
+    color: rgba(0, 0, 0, .37);
+    font-size: 12px;
+} 
+
+.comment-row .comment-content. .comment-text {
+    clear: both;
 }
 
 .comments-footer {
     border-top:1px solid rgba(0, 0, 0, .1);
     background-color:#f9f9f9;
     padding: 24px;
-    display:flex;
 }
 
 .card-comments .user-img {
@@ -753,26 +784,50 @@ p.secondary-par {
 
 .comments-footer textarea.materialize-textarea {
     padding:6px 0;
-    flex-grow:1;
+    width: calc(100% - 132px);
+    float: left;
     min-height:24px;
     height:22px;
+    font-size: 14px;
 }
+
+.comments-footer button[type="submit"] {
+    width: 64px;
+    margin-left: 16px;
+    padding:0;
+    line-height: 1.5em;
+    height:32px;
+    font-weight: 500;
+    color: #26a69a;
+}
+
+.comments-footer button[type="submit"]:hover {
+    box-shadow: none;
+    background-color: transparent;
+}
+
+.comments-footer button[type="submit"].disabled {
+    background-color: transparent !important;
+    color: rgba(0, 0, 0, .2) !important;
+}   
+
+
 
 
 ::-webkit-input-placeholder {
-   color: rgba(0, 0, 0, .38);
+   color: rgba(0, 0, 0, .47);
 }
 
 :-moz-placeholder { /* Firefox 18- */
-   color: rgba(0, 0, 0, .38);  
+   color: rgba(0, 0, 0, .47);  
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
-   color: rgba(0, 0, 0, .38);  
+   color: rgba(0, 0, 0, .47);  
 }
 
 :-ms-input-placeholder {  
-   color: rgba(0, 0, 0, .38);  
+   color: rgba(0, 0, 0, .47);  
 }
 
 

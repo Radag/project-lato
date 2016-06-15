@@ -10,7 +10,17 @@
     </div>
     <div class="comments-content">
        {foreach $comments as $comm}
-           <div>{$comm->text}</div>
+       <div class="comment-row">
+            <div class="user-img left">
+                <img src="/images/user1.png" alt="Some chick">
+            </div>
+            <div class="comment-content">
+                <div class="comment-header">
+                    <a href="#">Petr Šavelka</a><span>Před 3 minutami</span>
+                </div>
+                <div class="comment-text">{$comm->text}</div>
+            </div>
+        </div>
        {/foreach}
     </div>
     <div class="comments-footer clearfix">
@@ -19,6 +29,9 @@
             <img src="/images/user1.png" alt="Some chick">
         </div>
         {input text class => 'materialize-textarea'}
+        <button class="btn btn-flat disabled" type="submit" name="action">
+            Přidat
+          </button>
         {/form}
     </div>
 </div>
