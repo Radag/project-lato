@@ -13,10 +13,10 @@ namespace App\Model\Entities;
  */
 class Notification {
     
-    private $id = null;
-    private $name = null;
-    private $text = null;
-    private $icon = null;
+    public $id = null;
+    public $title = null;
+    public $text = null;
+    public $icon = null;
     
     
     function getId() {

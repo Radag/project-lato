@@ -11,7 +11,9 @@ use \Nette\Application\UI\Form;
 use \Nette\Application\UI\Control;
 use App\Model\UserManager;
 use App\Model\GroupManager;
+use App\Model\PrivateMessageManager;
 
+use App\Model\NotificationManager;
 
 /**
  * Description of SignInForm
@@ -29,13 +31,22 @@ class TopPanel extends Control
     
     
     private $groupManager;
+    private $privateMessageManager;
     private $activeGroup;
     
-    public function __construct(UserManager $userManager, GroupManager $groupManager, $activeGroup)
+    private $notificationManager;
+    
+    public function __construct(UserManager $userManager,
+            GroupManager $groupManager, 
+            $activeGroup, 
+            PrivateMessageManager $privateMessageManager,
+            NotificationManager $notificationManager)
     {
         $this->userManager = $userManager;
         $this->groupManager = $groupManager;
         $this->activeGroup = $activeGroup;
+        $this->privateMessageManager = $privateMessageManager;
+        $this->notificationManager = $notificationManager;
     }
     
     protected function create()
@@ -59,6 +70,8 @@ class TopPanel extends Control
                 $others[] = $group;
             }
         }
+        $template->notifications = $this->notificationManager->getMessages($user);
+        $template->privateMessages = $this->privateMessageManager->getMessages($user);
         $template->subjects = $subject;
         $template->groups = $others;
         $template->setFile(__DIR__ . '/TopPanel.latte');

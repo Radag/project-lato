@@ -87,111 +87,42 @@
               <span class="nav-title">{if !empty($activeGroup)}{$activeGroup->name}{else}Nástěnka{/if}</span>
 
               <ul class="right navbar-nav">
-                <li><a class="dropdown-button" href="#!" data-activates="notifications-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false"><i class="material-icons ">notifications</i><span class="nav-badge">4</span></a>
+                <li><a class="dropdown-button" href="#!" data-activates="notifications-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false"><i class="material-icons ">notifications</i>
+                        {if count($notifications) > 0}<span class="nav-badge">{count($notifications)}</span>{/if}</a>
                     <ul id='notifications-window' class='dropdown-content main-nav-dropdown'>
                         <li class="dropdown-header">Oznámení</li>
                         <li class="divider divider-after"></li>
+                        {foreach $notifications as $notification}
                         <li><a href="#!" class="clearfix">
                             <div class="user-img left">
                                 <img src="/images/user1.png" alt="some chick">
                             </div>
                             <h4>
-                                Some Chick
-                                <span class="truncate">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eusmot.</span>
+                                {$notification->title}
+                                <span class="truncate">{$notification->text}</span>
                             </h4>
                         </a></li>
-                        <li><a href="#!" class="clearfix">
-                            <div class="user-img left">
-                                <img src="/images/user1.png" alt="some chick">
-                            </div>
-                            <h4>
-                                Some Chick
-                                <span class="truncate">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eusmot.</span>
-                            </h4>
-                        </a></li>
-
-                        <li><a href="#!" class="clearfix">
-                            <div class="user-img left">
-                                <img src="/images/user1.png" alt="some chick">
-                            </div>
-                            <h4>
-                                Some Chick
-                                <span class="truncate">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eusmot.</span>
-                            </h4>
-                        </a></li>
-                        <li><a href="#!" class="clearfix">
-                            <div class="user-img left">
-                                <img src="/images/user2.png" alt="some chick">
-                            </div>
-                            <h4>
-                                Some ugly Guy
-                                <span class="truncate">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eusmot.</span>
-                            </h4>
-                        </a></li>
-                        <li><a href="#!" class="clearfix">
-                            <div class="user-img left">
-                                <img src="/images/user1.png" alt="some chick">
-                            </div>
-                            <h4>
-                                Some Chick
-                                <span class="truncate">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eusmot.</span>
-                            </h4>
-                        </a></li>
+                        {/foreach}
                         <li class="dropdown-footer"><a href="#!">Zobrazit vše</a></li>
                     </ul>
                 </li>
 
-                <li><a class="dropdown-button" href="#!" data-activates="message-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false"><i class="material-icons ">email</i><span class="nav-badge">+9</span></a>
+                <li><a class="dropdown-button" href="#!" data-activates="message-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false"><i class="material-icons ">email</i>
+                        {if count($privateMessages) > 0}<span class="nav-badge">{count($privateMessages)}</span>{/if}</a>
                     <ul id='message-window' class='dropdown-content main-nav-dropdown'>
                         <li class="dropdown-header">Zprávy</li>
                         <li class="divider divider-after"></li>
+                        {foreach $privateMessages as $message}
                         <li><a href="#!" class="clearfix">
                             <div class="user-img left">
                                 <img src="/images/user1.png" alt="some chick">
                             </div>
                             <h4>
-                                Some Chick
-                                <span class="truncate">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eusmot.</span>
+                                {$message->user->name} {$message->user->surname}
+                                <span class="truncate">{$message->text}</span>
                             </h4>
                         </a></li>
-                        <li><a href="#!" class="clearfix">
-                            <div class="user-img left">
-                                <img src="/images/user1.png" alt="some chick">
-                            </div>
-                            <h4>
-                                Some Chick
-                                <span class="truncate">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eusmot.</span>
-                            </h4>
-                        </a></li>
-
-
-                        <li><a href="#!" class="clearfix">
-                            <div class="user-img left">
-                                <img src="/images/user1.png" alt="some chick">
-                            </div>
-                            <h4>
-                                Some Chick
-                                <span class="truncate">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eusmot.</span>
-                            </h4>
-                        </a></li>
-                        <li><a href="#!" class="clearfix">
-                            <div class="user-img left">
-                                <img src="/images/user1.png" alt="some chick">
-                            </div>
-                            <h4>
-                                Some Chick
-                                <span class="truncate">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eusmot.</span>
-                            </h4>
-                        </a></li>
-                        <li><a href="#!" class="clearfix">
-                            <div class="user-img left">
-                                <img src="/images/user1.png" alt="some chick">
-                            </div>
-                            <h4>
-                                Some Chick
-                                <span class="truncate">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eusmot.</span>
-                            </h4>
-                        </a></li>
+                        {/foreach}
                         <li class="divider divider-before"></li>
                         <li class="dropdown-footer"><a href="#!">Zobrazit vše</a></li>
                     </ul>

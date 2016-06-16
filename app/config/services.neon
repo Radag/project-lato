@@ -2,3 +2,5 @@ services:
 	authorizator: App\Model\UserManager  
 	messageManager: App\Model\MessageManager 
 	groupManager: App\Model\GroupManager 
+	privateMessageManager: App\Model\PrivateMessageManager
+	notificationManager: App\Model\NotificationManager

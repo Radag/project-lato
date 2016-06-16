@@ -7,6 +7,9 @@ use App\Components\Authetication\TopPanel\TopPanel;
 use App\Components\Stream\Stream\Stream;
 use App\Model\MessageManager;
 use App\Model\GroupManager;
+use App\Model\PrivateMessageManager;
+use App\Model\NotificationManager;
+
 
 class StreamPresenter extends BasePresenter
 {
@@ -26,19 +29,27 @@ class StreamPresenter extends BasePresenter
     private $userManager;
     private $messageManager;
     private $groupManager;
+    private $privateMessageManager;
+    private $notificationManager;
     private $activeGroup = null;
     
-    public function __construct(UserManager $userManager, MessageManager $messageManager, GroupManager $groupManager)
+    public function __construct(UserManager $userManager, 
+            MessageManager $messageManager, 
+            GroupManager $groupManager,
+            PrivateMessageManager $privateMessageManager,
+            NotificationManager $notificationManager)
     {
         $this->userManager = $userManager;
         $this->messageManager = $messageManager;
         $this->groupManager = $groupManager;
+        $this->privateMessageManager = $privateMessageManager;
+        $this->notificationManager = $notificationManager;
         
     }
     
     protected function createComponentTopPanel()
     {
-        return new TopPanel($this->userManager, $this->groupManager, $this->activeGroup);
+        return new TopPanel($this->userManager, $this->groupManager, $this->activeGroup, $this->privateMessageManager, $this->notificationManager);
     }
     
     protected function createComponentStream()
