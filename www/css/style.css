@@ -133,6 +133,35 @@ body {
     flex-grow: 1;
 }
 
+.card .list {
+    margin-top: 8px;
+}
+
+.card .list .row  {
+    display: flex;
+    margin-bottom: 16px;
+}
+
+.card .list .row .label {
+    color: rgba(0, 0, 0, .54);
+    margin-bottom: 16px;
+}
+
+.card .list .row .text {
+    font-weight: 500;
+}
+
+/* ----- CHAT ----- */
+
+@media(max-width: 1366px) {
+    #chat-float {
+        display: none;
+    }
+}
+
+.fixed-action-btn {
+    z-index: 996;
+}
 
 /* ---------------- OLD OLD OLD ----------------- */
 
@@ -815,7 +844,7 @@ p.secondary-par {
     width: 36px;
     line-height: 36px;
     border-radius: 50%;
-    background-color: rgba(0, 0, 0, .08);
+    /*background-color: rgba(0, 0, 0, .08);*/
 }
 
 .comments-footer button:hover {
