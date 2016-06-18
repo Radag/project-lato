@@ -10,6 +10,7 @@ namespace App\Components\Stream\CommentForm;
 use \Nette\Application\UI\Form;
 use \Nette\Application\UI\Control;
 use App\Model\MessageManager;
+use App\Model\UserManager;
 
 
 
@@ -30,10 +31,13 @@ class CommentForm extends Control
      */
     private $messageManager;
     
+    private $userManager;
     
-    public function __construct(MessageManager $messageManager)
+    public function __construct(MessageManager $messageManager, UserManager $userManager)
     {
         $this->messageManager = $messageManager;
+        $this->userManager = $userManager;
+        
     }
     
 
@@ -66,6 +70,8 @@ class CommentForm extends Control
         //$template->form = $this->form;
         // a vykreslíme ji
         $template->comments = $this->messageManager->getComments($this->idMessage);
+        $template->discutionMembers = $this->messageManager->getDicscutionMembers($this->idMessage);
+        $template->activeUser = $this->userManager->get($this->getPresenter()->user->id);
         
         $template->id = $this->idMessage;
         $template->render();

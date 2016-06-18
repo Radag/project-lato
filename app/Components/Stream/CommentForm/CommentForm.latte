@@ -4,15 +4,15 @@
         <a href="#!" class="show-comments item waves-effect waves-dark"><i class="material-icons">comment</i></a>
         <div class="comments-count">{count($comments)}</div>
         <div class="flex-spacer"></div>
-        <a href="#!" class="user-img item"><img src="/images/user1.png" alt="some chick"></a>
-        <a href="#!" class="user-img item"><img src="/images/user2.png" alt="some chick"></a>
-
+        {foreach $discutionMembers as $member}
+        <a href="#!" class="user-img item"><img  src="{$member->profileImage}" alt="{$member->name}"></a>
+        {/foreach}
     </div>
     <div class="comments-content">
        {foreach $comments as $comm}
        <div class="comment-row">
             <div class="user-img left">
-                <img src="/images/user1.png" alt="Some chick">
+                <img src="{$comm->user->profileImage}" alt="{$comm->user->name}">
             </div>
             <div class="comment-content">
                 <div class="comment-header">
@@ -36,7 +36,7 @@
     <div class="comments-footer clearfix">
         {form form}
         <div class="user-img left">
-            <img src="/images/user1.png" alt="Some chick">
+            <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
         </div>
         {input text class => 'materialize-textarea'}
         <button class="btn btn-flat waves-effect waves-dark" type="file" name="action">

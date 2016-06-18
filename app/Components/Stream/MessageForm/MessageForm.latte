@@ -2,9 +2,9 @@
 <div class="modal-content">
     <div class="modal-header">
         <div class="user-img left">
-            <img src="/images/user1.png" alt="Some chick">
+            <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
         </div>
-        <h4>Some chick</h4>
+        <h4>{$activeUser->name} {$activeUser->surname}</h4>
     </div>
     {input text class => 'materialize-textarea'}
 </div>

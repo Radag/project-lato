@@ -1,7 +1,7 @@
 <div class="col s12 l8">
     <a href="#modal1" class="card create-post clearfix modal-trigger">
         <div class="user-img left">
-            <img src="/images/user2.png" alt="Some chick">
+            <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
         </div>
         <div class="create-post-label left">
             Chcete ostatním něco sdělit?
@@ -16,7 +16,7 @@
     <div class="card clearfix">
         <div class="card-header clearfix">
             <div class="user-img left">
-                <img src="/images/user1.png" alt="Some chick">
+                <img src="{$message->user->profileImage}" alt="{$message->user->name}">
             </div>
             <h2>
                 {$message->user->name} {$message->user->surname}

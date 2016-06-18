@@ -18,7 +18,7 @@ class User {
     public $surname = null;
     public $username = null;
     public $email = null;
-    
+    public $profileImage = null;    
     
     function getId() {
         return $this->id;

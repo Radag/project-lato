@@ -56,6 +56,7 @@ class Stream extends Control
     {
         $template = $this->template;
         $messages = $this->messageManager->getMessages($this->activeGroup);
+        $template->activeUser = $this->userManager->get($this->getPresenter()->user->id);
 //        foreach($messages as $message) {
 //            $message->commentForm = $this['commentForm'];
 //            $message->commentForm->setMessage($message->id);
@@ -70,14 +71,14 @@ class Stream extends Control
     
     public function createComponentMessageForm()
     {
-        $form = new MessageForm($this->messageManager, $this);
+        $form = new MessageForm($this->userManager, $this->messageManager, $this);
         return $form;
     }
     
     public function createComponentCommentForm()
     {
         return new \Nette\Application\UI\Multiplier(function ($idMessage) {
-            $commentForm = new CommentForm($this->messageManager);
+            $commentForm = new CommentForm($this->messageManager, $this->userManager);
             $commentForm->setMessage($idMessage);
             return $commentForm;
         });

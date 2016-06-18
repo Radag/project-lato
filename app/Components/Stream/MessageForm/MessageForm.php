@@ -10,7 +10,7 @@ namespace App\Components\Stream\MessageForm;
 use \Nette\Application\UI\Form;
 use \Nette\Application\UI\Control;
 use App\Model\MessageManager;
-
+use App\Model\UserManager;
 
 
 /**
@@ -26,11 +26,12 @@ class MessageForm extends Control
      * @var MessageManager $messageManager
      */
     private $messageManager;
-    
+    private $userManager;
     private $stream;
     
-    public function __construct(MessageManager $messageManager, $stream)
+    public function __construct(UserManager $userManager, MessageManager $messageManager, $stream)
     {
+        $this->userManager = $userManager;
         $this->messageManager = $messageManager;
         $this->stream = $stream;
     }
@@ -55,6 +56,8 @@ class MessageForm extends Control
         $template->setFile(__DIR__ . '/MessageForm.latte');
         // vložíme do šablony nějaké parametry
         //$template->form = $this->form;
+        //
+        $template->activeUser = $this->userManager->get($this->getPresenter()->user->id);
         // a vykreslíme ji
         $template->render();
     }

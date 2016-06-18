@@ -103,11 +103,14 @@ class GroupManager extends Nette\Object{
                         T2.SURNAME AS TEACHER_SURNAME,
                         T3.MAIN_COLOR,
                         T4.STUDENTS,
-                        T5.NEW_MESSAGE
+                        T5.NEW_MESSAGE,
+                        T6.PATH,
+                        T6.FILENAME
                 FROM groups T1
                 LEFT JOIN user T2 ON T1.ID_TEACHER=T2.ID_USER
                 LEFT JOIN group_color_scheme T3 ON T1.COLOR_SCHEME=T3.ID_SCHEME
                 LEFT JOIN (SELECT COUNT(ID_USER) AS STUDENTS, ID_GROUP FROM user_group WHERE ID_RELATION=2 GROUP BY ID_GROUP) T4 ON T4.ID_GROUP=T1.ID_GROUP 
+                LEFT JOIN file_list T6 ON T6.ID_FILE=T2.PROFILE_IMAGE
                 LEFT JOIN (
                     SELECT COUNT(T2.ID_MESSAGE) AS NEW_MESSAGE, T1.ID_GROUP FROM user_group T1
                     LEFT JOIN message T2 ON (T1.ID_GROUP=T2.ID_GROUP AND T2.CREATED>T1.LAST_VISIT)
@@ -120,6 +123,7 @@ class GroupManager extends Nette\Object{
                 $user = new Entities\User();
                 $user->surname = $group->TEACHER_SURNAME;
                 $user->name = $group->TEACHER_NAME;
+                $user->profileImage = "http://cdn.lato.cz/" . $group->PATH . "/" . $group->FILENAME;
                 $groupModel->id = $group->ID_GROUP;
                 $groupModel->name = $group->NAME;
                 $groupModel->shortcut = $group->SHORTCUT;
