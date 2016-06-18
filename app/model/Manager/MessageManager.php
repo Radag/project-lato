@@ -89,7 +89,6 @@ class MessageManager extends Nette\Object{
             $comm->sinceStart = $comment->CREATED->diff($now);
             $comm->user = $user;
             $return[] = $comm;
-            \Tracy\Debugger::barDump($comm);
         }
         
         return $return;

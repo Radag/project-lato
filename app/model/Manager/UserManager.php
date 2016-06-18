@@ -33,7 +33,6 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
                 
                 
 		$row = $this->database->table('user')->where('USERNAME', $username)->fetch();
-                \Tracy\Debugger::barDump($row);
 		if (!$row) {
 			throw new Nette\Security\AuthenticationException('The username is incorrect.', self::IDENTITY_NOT_FOUND);
 
