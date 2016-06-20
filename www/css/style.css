@@ -143,13 +143,92 @@ body {
 }
 
 .card .list .row .label {
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
     margin-bottom: 16px;
 }
 
 .card .list .row .text {
-    font-weight: 500;
+    font-weight: 400;
 }
+
+/* ----- Profil ----- */
+
+.profile-header {
+    position: relative;
+    height: 420px;
+    background-image: url("../images/media-picture-large.png") !important;
+    background-size: cover !important;
+    background-position: center !important;
+    overflow: hidden;
+}
+
+.profile-header .profile-navbar {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, .54);
+    width: 100%;
+    padding: 0 24px;
+
+}
+
+.profile-header .user-img {
+    margin: auto;
+    margin-top: 80px;
+    width: 160px;
+    height: 160px;
+    border:10px solid rgba(0, 0, 0, .12);
+    border-radius: 50%;
+}
+
+.profile-header .profile-title {
+    color: rgba(255, 255, 255, .87);
+    font-size: 22px;
+    line-height: 70px;
+    font-weight: 500;
+    flex-grow: 1;
+    text-transform: uppercase;
+}
+
+.profile-header .profile-title span {
+    font-size: 18px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, .54);
+    text-transform: none;
+}
+
+.profile-header .controls li {
+    margin-left: 16px;
+}
+
+.profile-header .controls li a {
+    padding: 0;
+}
+
+.profile-header .controls i {
+    font-size: 24px;
+    line-height: 70px;
+    color: rgba(255, 255, 255, .87);
+}
+
+.new-message {
+    display: flex !important;
+    padding: 20px 24px;
+}
+
+.new-message:hover {
+    box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+}
+
+.new-message-label {
+    color: rgba(0, 0, 0, .47);
+    font-size: 16px;
+    flex-grow: 1;
+    line-height: 40px;
+}
+
+
 
 /* ----- CHAT ----- */
 
@@ -166,6 +245,10 @@ body {
 /* ---------------- OLD OLD OLD ----------------- */
 
 
+.user-img.small {
+    height: 40px;
+    width: 40px;
+}
 
 .clearfix:before,
 .clearfix:after {
@@ -278,7 +361,7 @@ p {
 }
 
 p.secondary-par {
-    color: rgba(0, 0, 0, .38) !important;
+    color: rgba(0, 0, 0, .47) !important;
 }
 
 .user-img {
@@ -665,12 +748,17 @@ p.secondary-par {
     padding-bottom:24px;
 }
 
-.card-header h2 {
-    font-size:16px;
-    margin:0;
-    line-height:28px;
+.card-header h1,
+.card-header h2,
+.card-header h3 {
+    margin: 0;
     font-weight:500;
-    color:rgba(0, 0, 0, .87);
+    color:rgba(0, 0, 0, .87);  
+}
+
+.card-header h2 {
+    font-size:18px;
+    line-height:31px;
 }
 
 .card-header h2 span {
@@ -679,6 +767,11 @@ p.secondary-par {
     color:rgba(0, 0, 0, .38);
     font-weight:400;
     display:block;
+}
+
+.card-header h3 {
+    font-size:16px;
+    line-height:28px;
 }
 
 
