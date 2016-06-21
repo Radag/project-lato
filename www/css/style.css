@@ -179,7 +179,7 @@ body {
     width: 72px;
     height: 72px;
     border-radius: 50%;
-    margin: 8px 24px;
+    margin: 8px 20px;
     padding: 4px;
     background-color: rgba(29, 29, 29, .16);
 }
@@ -389,6 +389,7 @@ p.secondary-par {
 }
 
 .user-img {
+    display: block;
     height: 48px;
     width: 48px;
     margin-right: 16px;
