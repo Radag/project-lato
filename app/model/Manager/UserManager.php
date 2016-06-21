@@ -76,7 +76,8 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
             $user = new User;
             $messages = $this->database->query("SELECT T1.NAME, T1.SURNAME, T1.ID_USER,
                         T2.PATH,
-                        T2.FILENAME
+                        T2.FILENAME,
+                        T1.EMAIL
                 FROM user T1 
                 LEFT JOIN file_list T2 ON T2.ID_FILE=T1.PROFILE_IMAGE
                 WHERE T1.ID_USER=?", $idUser)->fetch();
@@ -84,6 +85,7 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
             $user->id = $messages->ID_USER;
             $user->surname = $messages->SURNAME;
             $user->name = $messages->NAME;
+            $user->email = $messages->EMAIL;
             $user->profileImage = "http://cdn.lato.cz/" . $messages->PATH . "/" . $messages->FILENAME;
                 
             return $user;

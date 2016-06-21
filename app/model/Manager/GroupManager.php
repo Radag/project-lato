@@ -101,6 +101,7 @@ class GroupManager extends Nette\Object{
                         T1.SHORTCUT,
                         T2.NAME AS TEACHER_NAME,
                         T2.SURNAME AS TEACHER_SURNAME,
+                        T2.ID_USER AS TEACHER_ID,
                         T3.MAIN_COLOR,
                         T4.STUDENTS,
                         T5.NEW_MESSAGE,
@@ -123,6 +124,7 @@ class GroupManager extends Nette\Object{
                 $user = new Entities\User();
                 $user->surname = $group->TEACHER_SURNAME;
                 $user->name = $group->TEACHER_NAME;
+                $user->id = $group->TEACHER_ID;
                 $user->profileImage = "http://cdn.lato.cz/" . $group->PATH . "/" . $group->FILENAME;
                 $groupModel->id = $group->ID_GROUP;
                 $groupModel->name = $group->NAME;

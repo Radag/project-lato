@@ -19,7 +19,7 @@
                 <img src="{$message->user->profileImage}" alt="{$message->user->name}">
             </div>
             <h2>
-                {$message->user->name} {$message->user->surname}
+                <a href="{plink :Stream:profile 'idUser'=>$message->user->id}">{$message->user->name} {$message->user->surname}</a>
                 <span>Publikováno {$message->getCreated()|date:"j. n. Y v H:i"}</span>
             </h2>
         </div>

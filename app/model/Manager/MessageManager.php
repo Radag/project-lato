@@ -50,7 +50,7 @@ class MessageManager extends Nette\Object{
     public function getMessages($group)
     {
         $return = array();
-        $messages = $this->database->query("SELECT T1.TEXT, T1.ID_MESSAGE, T2.NAME, T2.SURNAME, T1.CREATED,
+        $messages = $this->database->query("SELECT T1.TEXT, T1.ID_MESSAGE, T2.ID_USER, T2.NAME, T2.SURNAME, T1.CREATED,
                         T3.PATH,
                         T3.FILENAME
                 FROM message T1 
@@ -63,6 +63,7 @@ class MessageManager extends Nette\Object{
             $user = new Entities\User();
             $user->surname = $message->SURNAME;
             $user->name = $message->NAME;
+            $user->id = $message->ID_USER;
             $user->profileImage = "http://cdn.lato.cz/" . $message->PATH . "/" . $message->FILENAME;
             $mess->text = $message->TEXT;
             $mess->id = $message->ID_MESSAGE;

@@ -5,7 +5,7 @@
         <div class="comments-count">{count($comments)}</div>
         <div class="flex-spacer"></div>
         {foreach $discutionMembers as $member}
-        <a href="#!" class="user-img item"><img  src="{$member->profileImage}" alt="{$member->name}"></a>
+        <a href="{plink :Stream:profile 'idUser'=>$member->id}" class="user-img item"><img  src="{$member->profileImage}" alt="{$member->name}"></a>
         {/foreach}
     </div>
     <div class="comments-content">
@@ -16,8 +16,7 @@
             </div>
             <div class="comment-content">
                 <div class="comment-header">
-                    <a href="#">{$comm->user->name} {$comm->user->surname}</a>
-                    {dump $comm->sinceStart}
+                    <a href="{plink :Stream:profile 'idUser'=>$member->id}">{$comm->user->name} {$comm->user->surname}</a>
                     {if $comm->sinceStart->d >= 1}
                         <span>{$comm->created|date:"j. n. Y v H:i"}</span>
                     {elseif $comm->sinceStart->h > 1}

@@ -87,6 +87,15 @@ class StreamPresenter extends BasePresenter
         $this->template->groups = $this->groupManager->getGroups($this->user);
     }
     
+    public function actionProfile($idUser = null)
+    {
+        if($idUser === null) {          
+            $this->template->activeUser = $this->userManager->get($this->user->id);
+        } else {
+            $this->template->activeUser = $this->userManager->get($idUser);        
+        }
+    }
+    
     public function actionDefault($id)
     {
         $group = $this->groupManager->getGroup($id);
