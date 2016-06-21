@@ -154,41 +154,61 @@ body {
 /* ----- Profil ----- */
 
 .profile-header {
-    position: relative;
     height: 420px;
     background-image: url("../images/media-picture-large.png") !important;
     background-size: cover !important;
     background-position: center !important;
-    overflow: hidden;
+    display: flex !important;
+    align-items: flex-end;
+}
+
+.profile-header .profile-cover {
 }
 
 .profile-header .profile-navbar {
     display: flex;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, .54);
+    background-color: rgba(29, 29, 29, .54);
     width: 100%;
-    padding: 0 24px;
+    padding: 0;
+    height: 88px;
 
 }
 
 .profile-header .user-img {
-    margin: auto;
-    margin-top: 80px;
-    width: 160px;
-    height: 160px;
-    border:10px solid rgba(0, 0, 0, .12);
+    display: block;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
+    margin: 8px 24px;
+    padding: 4px;
+    background-color: rgba(29, 29, 29, .16);
 }
 
+/* .profile-header .user-img {
+    display: block;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    padding: 8px;
+    margin:0 48px;
+    background-color: rgba(29, 29, 29, .16);
+    -webkit-transition:  300ms ease-in-out;
+    -moz-transition:  300ms ease-in-out;
+    -o-transition:  300ms ease-in-out;
+    transition:  300ms ease-in-out;
+}
+
+.profile-header .user-img:hover {
+    background-color: rgba(29, 29, 29, .24);
+} */
+
+
 .profile-header .profile-title {
-    color: rgba(255, 255, 255, .87);
+    color: rgba(255, 255, 255, 1);
     font-size: 22px;
-    line-height: 70px;
+    line-height: 88px;
     font-weight: 500;
     flex-grow: 1;
-    text-transform: uppercase;
 }
 
 .profile-header .profile-title span {
@@ -198,8 +218,12 @@ body {
     text-transform: none;
 }
 
+.profile-header .controls {
+    margin: 0 24px;
+}
+
 .profile-header .controls li {
-    margin-left: 16px;
+    margin-left: 32px;
 }
 
 .profile-header .controls li a {
@@ -208,7 +232,7 @@ body {
 
 .profile-header .controls i {
     font-size: 24px;
-    line-height: 70px;
+    line-height: 88px;
     color: rgba(255, 255, 255, .87);
 }
 
@@ -632,7 +656,7 @@ p.secondary-par {
     height: 50px;
     line-height: 50px;
     width: 100%;
-    background-color: rgba(0, 0, 0, .54);
+    background-color: rgba(29, 29, 29, .54);
     color: #fff;
     padding:0 24px;
     font-size: 14px;
