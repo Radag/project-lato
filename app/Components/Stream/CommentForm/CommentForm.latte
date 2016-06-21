@@ -11,9 +11,9 @@
     <div class="comments-content">
        {foreach $comments as $comm}
        <div class="comment-row">
-            <div class="user-img left">
+            <a href="{plink :Stream:profile 'idUser'=>$member->id}" class="user-img left">
                 <img src="{$comm->user->profileImage}" alt="{$comm->user->name}">
-            </div>
+            </a>
             <div class="comment-content">
                 <div class="comment-header">
                     <a href="{plink :Stream:profile 'idUser'=>$member->id}">{$comm->user->name} {$comm->user->surname}</a>

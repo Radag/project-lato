@@ -786,6 +786,10 @@ p.secondary-par {
     line-height:31px;
 }
 
+.card-header h2 a {
+    color: inherit !important;
+}
+
 .card-header h2 span {
     font-size:13px;
     line-height:13px;
