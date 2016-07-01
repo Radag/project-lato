@@ -26,6 +26,10 @@ body {
     background-color: #009688;
 }
 
+.main.after-header {
+    margin-top: 32px;
+}
+
 .row {
   margin: 0 -16px !important;
 }
@@ -49,10 +53,6 @@ body {
 	font-size: 35px;
 	font-weight:300;
 	text-align: center;
-}
-
-.center-card .card-content {
-	margin-top: -48px;
 }
 
 .center-card .card-content input[type="text"],
@@ -90,9 +90,13 @@ body {
 }
 
 
-
 .card-header, .card-content, .card-footer {
-	padding:20px 24px;
+	padding: 24px;
+}
+
+
+.card-header {
+    padding-bottom: 0px !important;
 }
 
 .remember-me {
@@ -780,8 +784,20 @@ p.secondary-par {
     border-radius:0;
 }
 
-.card-header {
-    padding: 24px;
+.card.simple {
+    display: flex;
+    padding: 20px 24px;
+}
+
+.card.simple .label {
+    flex-grow: 1;
+    color: rgba(0, 0, 0, .54);
+    line-height: 24px;
+}
+
+.card.simple .material-icons {
+    color: rgba(0, 0, 0, .37);
+    margin-right: 16px;
 }
 
 .card.bottom-spacer {
@@ -843,7 +859,6 @@ p.secondary-par {
 
 .card .card-content {
     padding: 24px;
-    padding-top: 0;
 }
 
 .card .media-container {
@@ -1028,7 +1043,7 @@ p.secondary-par {
     position:relative;
     color:#fff;
     padding:0;
-    padding-bottom:48px;
+    padding-bottom:48px !important;
 }
 
 #group-cards a.group-name  {
