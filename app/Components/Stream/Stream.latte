@@ -35,7 +35,7 @@
             {ifset $message->attachments['files']}
             <div class="file-container" style="clear: both; padding-top: 10px;">
                 {foreach $message->attachments['files'] as $file}  
-                    <a href="http://cdn.lato.cz/{$file['path']}/{$file['filename']}" target="_blank" class="card create-post" style="margin-bottom: 5px;">{$file['filename']}</a>
+                    <a href="https://cdn.lato.cz/{$file['path']}/{$file['filename']}" target="_blank" class="card create-post" style="margin-bottom: 5px;">{$file['filename']}</a>
                 {/foreach}
             </div>
             {/ifset}

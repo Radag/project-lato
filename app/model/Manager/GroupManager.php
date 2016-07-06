@@ -126,7 +126,7 @@ class GroupManager extends Nette\Object{
                 $user->surname = $group->TEACHER_SURNAME;
                 $user->name = $group->TEACHER_NAME;
                 $user->id = $group->TEACHER_ID;
-                $user->profileImage = "http://cdn.lato.cz/" . $group->PATH . "/" . $group->FILENAME;
+                $user->profileImage = "https://cdn.lato.cz/" . $group->PATH . "/" . $group->FILENAME;
                 $groupModel->id = $group->ID_GROUP;
                 $groupModel->name = $group->NAME;
                 $groupModel->shortcut = $group->SHORTCUT;

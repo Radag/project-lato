@@ -81,7 +81,7 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
             $user->name = $messages->NAME;
             $user->email = $messages->EMAIL;
             if($messages->PROFILE_FILENAME) {
-                $user->profileImage = "http://cdn.lato.cz/" . $messages->PROFILE_PATH . "/" . $messages->PROFILE_FILENAME;
+                $user->profileImage = "https://cdn.lato.cz/" . $messages->PROFILE_PATH . "/" . $messages->PROFILE_FILENAME;
             }
                 
             return $user;

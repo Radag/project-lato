@@ -73,7 +73,7 @@ class MessageManager extends Nette\Object{
             $user->surname = $message->SURNAME;
             $user->name = $message->NAME;
             $user->id = $message->ID_USER;
-            $user->profileImage = "http://cdn.lato.cz/" . $message->PATH . "/" . $message->FILENAME;
+            $user->profileImage = "https://cdn.lato.cz/" . $message->PATH . "/" . $message->FILENAME;
             $mess->text = $message->TEXT;
             $mess->id = $message->ID_MESSAGE;
             $mess->created = $message->CREATED;
@@ -135,7 +135,7 @@ class MessageManager extends Nette\Object{
             $user->surname = $comment->USER_SURNAME;
             $user->name = $comment->USER_NAME;  
             $user->id = $comment->ID_USER;
-            $user->profileImage = "http://cdn.lato.cz/" . $comment->PATH . "/" . $comment->FILENAME;
+            $user->profileImage = "https://cdn.lato.cz/" . $comment->PATH . "/" . $comment->FILENAME;
             $comm->text = $comment->TEXT;
             $comm->id = $comment->ID_COMMENT;
             $comm->created = $comment->CREATED;
