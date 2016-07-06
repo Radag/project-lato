@@ -9,8 +9,8 @@ namespace App\Components\Stream\CommentForm;
 
 use \Nette\Application\UI\Form;
 use \Nette\Application\UI\Control;
-use App\Model\MessageManager;
-use App\Model\UserManager;
+use App\Model\Manager\MessageManager;
+use App\Model\Manager\UserManager;
 
 
 

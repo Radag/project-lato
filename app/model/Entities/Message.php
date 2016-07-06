@@ -18,6 +18,8 @@ class Message {
     public $user = null;
     public $created = null;
     public $idGroup = null;
+    public $attachments = null;
+    
     
     function getId() {
         return $this->id;

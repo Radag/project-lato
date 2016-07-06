@@ -2,14 +2,14 @@
 
 namespace App\Presenters;
 
-use App\Model\UserManager;
+use App\Model\Manager\UserManager;
 use App\Components\Authetication\TopPanel\TopPanel;
 use App\Components\Stream\Stream\Stream;
-use App\Model\MessageManager;
-use App\Model\GroupManager;
-use App\Model\PrivateMessageManager;
-use App\Model\NotificationManager;
-
+use App\Model\Manager\MessageManager;
+use App\Model\Manager\GroupManager;
+use App\Model\Manager\PrivateMessageManager;
+use App\Model\Manager\NotificationManager;
+use App\Model\Manager\FileManager;
 
 class StreamPresenter extends BasePresenter
 {
@@ -31,20 +31,22 @@ class StreamPresenter extends BasePresenter
     private $groupManager;
     private $privateMessageManager;
     private $notificationManager;
+    private $fileManager;
     private $activeGroup = null;
     
     public function __construct(UserManager $userManager, 
             MessageManager $messageManager, 
             GroupManager $groupManager,
             PrivateMessageManager $privateMessageManager,
-            NotificationManager $notificationManager)
+            NotificationManager $notificationManager,
+            FileManager $fileManager)
     {
         $this->userManager = $userManager;
         $this->messageManager = $messageManager;
         $this->groupManager = $groupManager;
         $this->privateMessageManager = $privateMessageManager;
         $this->notificationManager = $notificationManager;
-        
+        $this->fileManager = $fileManager;
     }
     
     protected function createComponentTopPanel()
@@ -54,7 +56,7 @@ class StreamPresenter extends BasePresenter
     
     protected function createComponentStream()
     {
-        return new Stream($this->userManager, $this->messageManager, $this->activeGroup);
+        return new Stream($this->userManager, $this->messageManager, $this->activeGroup, $this->fileManager);
     }
     
     public function handleRedrawNews()
@@ -87,14 +89,7 @@ class StreamPresenter extends BasePresenter
         $this->template->groups = $this->groupManager->getGroups($this->user);
     }
     
-    public function actionProfile($idUser = null)
-    {
-        if($idUser === null) {          
-            $this->template->activeUser = $this->userManager->get($this->user->id);
-        } else {
-            $this->template->activeUser = $this->userManager->get($idUser);        
-        }
-    }
+    
     
     public function actionDefault($id)
     {

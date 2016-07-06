@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-namespace App\Model;
+namespace App\Model\Manager;
 
 use Nette;
 use App\Model\Entities\Notification;

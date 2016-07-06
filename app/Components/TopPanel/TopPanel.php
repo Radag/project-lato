@@ -9,11 +9,10 @@ namespace App\Components\Authetication\TopPanel;
 
 use \Nette\Application\UI\Form;
 use \Nette\Application\UI\Control;
-use App\Model\UserManager;
-use App\Model\GroupManager;
-use App\Model\PrivateMessageManager;
-
-use App\Model\NotificationManager;
+use App\Model\Manager\UserManager;
+use App\Model\Manager\GroupManager;
+use App\Model\Manager\PrivateMessageManager;
+use App\Model\Manager\NotificationManager;
 
 /**
  * Description of SignInForm

@@ -3,7 +3,7 @@
 namespace App\Presenters;
 
 use \Nette\Application\UI\Form;
-use App\Model\UserManager;
+use App\Model\Manager\UserManager;
 use App\Components\Authetication\SignInForm\SignInForm;
 
 

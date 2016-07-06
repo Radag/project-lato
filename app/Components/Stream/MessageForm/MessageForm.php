@@ -9,8 +9,9 @@ namespace App\Components\Stream\MessageForm;
 
 use \Nette\Application\UI\Form;
 use \Nette\Application\UI\Control;
-use App\Model\MessageManager;
-use App\Model\UserManager;
+use App\Model\Manager\MessageManager;
+use App\Model\Manager\UserManager;
+use App\Model\Manager\FileManager;
 
 
 /**
@@ -28,12 +29,14 @@ class MessageForm extends Control
     private $messageManager;
     private $userManager;
     private $stream;
+    private $fileManager;
     
-    public function __construct(UserManager $userManager, MessageManager $messageManager, $stream)
+    public function __construct(UserManager $userManager, MessageManager $messageManager, $stream, FileManager $fileManager)
     {
         $this->userManager = $userManager;
         $this->messageManager = $messageManager;
         $this->stream = $stream;
+        $this->fileManager = $fileManager;
     }
     
     protected function createComponentForm()
@@ -44,6 +47,7 @@ class MessageForm extends Control
                 ->setAttribute('placeholder', 'Sem napište Vaši zprávu ...')
             ->setRequired('Napište zprávu');
 
+        $form->addHidden('attachments');
         $form->addSubmit('send', 'Publikovat');
 
         $form->onSuccess[] = [$this, 'processForm'];
@@ -69,7 +73,24 @@ class MessageForm extends Control
         $message->setUser($this->getPresenter()->getUser());
         $message->idGroup = $this->stream->getActiveGroup()->id;
         
-        $this->messageManager->createMessage($message);
+        $attachments = explode('_', $values['attachments']);
+
+    
+        $this->messageManager->createMessage($message, $attachments);
+        $form['text']->setValue("");
+        $form['attachments']->setValue("");
         $this->stream->redrawControl('messages');
+        $this->redrawControl('messageForm');
+        
+    }
+    
+    public function handleUploadAttachment()
+    {
+        $file = $this->getPresenter()->request->getFiles();
+        $path = 'users/' . $this->getPresenter()->user->getIdentity()->data['URL_ID'] . '/files';
+        
+        $uploadedFile = $this->fileManager->uploadFile($file['file'], $path);
+        $this->getPresenter()->payload->file = $uploadedFile;
+        $this->getPresenter()->sendPayload();
     }
 }

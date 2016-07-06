@@ -1,6 +1,7 @@
 services:
-	authorizator: App\Model\UserManager  
-	messageManager: App\Model\MessageManager 
-	groupManager: App\Model\GroupManager 
-	privateMessageManager: App\Model\PrivateMessageManager
-	notificationManager: App\Model\NotificationManager
+	authorizator: App\Model\Manager\UserManager  
+	messageManager: App\Model\Manager\MessageManager 
+	groupManager: App\Model\Manager\GroupManager 
+	privateMessageManager: App\Model\Manager\PrivateMessageManager
+	notificationManager: App\Model\Manager\NotificationManager
+	fileManager: App\Model\Manager\FileManager

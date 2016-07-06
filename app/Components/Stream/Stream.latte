@@ -25,11 +25,20 @@
         </div>
         <div class="card-content clearfix">
             <p>{$message->getText()}</p>
-            {*<div class="media-container">
-                <div class="img-full-size" style="background-image: url('/images/media-picture-large.png');"></div>
-                <div class="img-half-size" style="background-image: url('/images/media-picture-large.png');"></div>
-                <div class="img-half-size" style="background-image: url('/images/media-picture-large.png');"></div>
-            </div>*}
+            {ifset $message->attachments['media']}
+            <div class="media-container">
+                {foreach $message->attachments['media'] as $media}
+                <div class="{if $iterator->first}img-full-size{else}img-half-size{/if}" style="background-image: url('http://cdn.lato.cz/{$media['path']|noescape}/{$media['filename']|noescape}');"></div>
+                {/foreach}
+            </div>
+            {/ifset}
+            {ifset $message->attachments['files']}
+            <div class="file-container" style="clear: both; padding-top: 10px;">
+                {foreach $message->attachments['files'] as $file}  
+                    <a href="http://cdn.lato.cz/{$file['path']}/{$file['filename']}" target="_blank" class="card create-post" style="margin-bottom: 5px;">{$file['filename']}</a>
+                {/foreach}
+            </div>
+            {/ifset}
         </div>
         
         {control commentForm-$message->id}

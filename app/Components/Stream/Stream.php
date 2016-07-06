@@ -9,8 +9,8 @@ namespace App\Components\Stream\Stream;
 
 use \Nette\Application\UI\Form;
 use \Nette\Application\UI\Control;
-use App\Model\UserManager;
-use App\Model\MessageManager;
+use App\Model\Manager\UserManager;
+use App\Model\Manager\MessageManager;
 use App\Components\Stream\MessageForm\MessageForm;
 use App\Components\Stream\CommentForm\CommentForm;
 
@@ -30,15 +30,17 @@ class Stream extends Control
      */
     private $userManager;
     private $messageManager;
+    private $fileManager;
     
     private $commentForm = null;
     private $activeGroup;
     
-    public function __construct(UserManager $userManager, MessageManager $messageManager, $activeGroup)
+    public function __construct(UserManager $userManager, MessageManager $messageManager, $activeGroup, $fileManager)
     {
         $this->userManager = $userManager;
         $this->messageManager = $messageManager;
         $this->activeGroup = $activeGroup;
+        $this->fileManager = $fileManager;
     }
     
     public function getActiveGroup()
@@ -71,7 +73,7 @@ class Stream extends Control
     
     public function createComponentMessageForm()
     {
-        $form = new MessageForm($this->userManager, $this->messageManager, $this);
+        $form = new MessageForm($this->userManager, $this->messageManager, $this, $this->fileManager);
         return $form;
     }
     

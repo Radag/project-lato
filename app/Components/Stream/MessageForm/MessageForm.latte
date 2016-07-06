@@ -1,3 +1,4 @@
+{snippet messageForm}
 {form form}
 <div class="modal-content">
     <div class="modal-header">
@@ -6,9 +7,12 @@
         </div>
         <h4>{$activeUser->name} {$activeUser->surname}</h4>
     </div>
-    {input text class => 'materialize-textarea'}
+    <div id="messageContentDropzone">
+        {input text class => 'materialize-textarea'}
+    </div>
 </div>
 <div class="modal-footer clearfix">
+    {input attachments id => 'attachmentsIds'}
     {input send class => 'modal-action modal-close waves-effect waves-light btn btn-publish disabled'}
     {input send class => 'modal-action modal-close waves-effect waves-dark btn-flat'}
 </div>
@@ -18,7 +22,46 @@
             $(".modal-action").removeClass('disabled');
         }
     });
+    $(function() {
+        var messageContent = new Dropzone("#messageContentDropzone", { 
+            url: {link uploadAttachment!},
+            previewTemplate: '<div id="preview-template" style="display: none;"></div>'
+        });
+        messageContent.on("complete", function(file) {   
+            var file = JSON.parse(file.xhr.response);
+            var attachTemplate = $("#attachmentTemplate a").clone();
+            attachTemplate.text(file.file.fileName);
+            attachTemplate.css('display', 'block');
+            $("#messageContentDropzone").after(attachTemplate);
+            $("#attachmentsIds").val($("#attachmentsIds").val() + "_" + file.file.idFile);
+            //console.log(file);
+           // $("#messageContentDropzone .dz-message").html('<img src="' + image.image + '">');
+        });
+        
+        var count = 0;
+        $('.modal-content').on('dragenter', function(){
+            //if(count <= 0) {
+                $("#messageContentDropzone").css('border', '3px dashed grey');
+            //}
+            //count++;
+        });
+        $('#messageContentDropzone').on('ondrop', function(){
+            //if(count <= 0) {
+                $("#messageContentDropzone").css('border', '0px dashed grey');
+            //}
+            //count--;
+        });
+    });
 </script>
 {/form}
+{/snippet}
+
+{block attachmentTemplate}
+<div id="attachmentTemplate" style="display: none;">
+    <a href="#" class="card create-post" style="margin-bottom: 5px;"> 
+    </a>
+</div>
+{/block}
+
 
 

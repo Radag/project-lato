@@ -6,10 +6,11 @@
  * and open the template in the editor.
  */
 
-namespace App\Model;
+namespace App\Model\Manager;
 
 use Nette;
 use App\Model\Entities\PrivateMessage;
+use App\Model\Entities\User;
 
 /**
  * Description of MessageManager
@@ -39,7 +40,7 @@ class PrivateMessageManager extends Nette\Object{
                 ORDER BY CREATED DESC LIMIT 10", $user->id)->fetchAll();
         foreach($messages as $message) {
             $mess = new PrivateMessage();
-            $user = new Entities\User();
+            $user = new User();
             $user->surname = $message->SURNAME;
             $user->name = $message->NAME;
             $mess->text = $message->TEXT;

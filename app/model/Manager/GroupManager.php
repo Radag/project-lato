@@ -6,10 +6,11 @@
  * and open the template in the editor.
  */
 
-namespace App\Model;
+namespace App\Model\Manager;
 
 use Nette;
 use App\Model\Entities\Group;
+use App\Model\Entities\User;
 
 /**
  * Description of MessageManager
@@ -75,7 +76,7 @@ class GroupManager extends Nette\Object{
         WHERE T1.ID_GROUP=?", $idGroup)->fetch();
 
         $groupModel = new Group();
-        $user = new Entities\User();
+        $user = new User();
         $user->surname = $group->TEACHER_SURNAME;
         $user->name = $group->TEACHER_NAME;
         $groupModel->id = $group->ID_GROUP;
@@ -121,7 +122,7 @@ class GroupManager extends Nette\Object{
                 WHERE T1.ID_GROUP IN (" . implode(',', array_keys($userGroups)) . ")", $user->id)->fetchAll();
             foreach($groups as $group) {
                 $groupModel = new Group();
-                $user = new Entities\User();
+                $user = new User();
                 $user->surname = $group->TEACHER_SURNAME;
                 $user->name = $group->TEACHER_NAME;
                 $user->id = $group->TEACHER_ID;

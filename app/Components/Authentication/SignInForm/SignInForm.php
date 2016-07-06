@@ -9,7 +9,7 @@ namespace App\Components\Authetication\SignInForm;
 
 use \Nette\Application\UI\Form;
 use \Nette\Application\UI\Control;
-use App\Model\UserManager;
+use App\Model\Manager\UserManager;
 
 
 
