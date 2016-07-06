@@ -28,7 +28,7 @@
             {ifset $message->attachments['media']}
             <div class="media-container">
                 {foreach $message->attachments['media'] as $media}
-                <div class="{if $iterator->first}img-full-size{else}img-half-size{/if}" style="background-image: url('http://cdn.lato.cz/{$media['path']|noescape}/{$media['filename']|noescape}');"></div>
+                <div class="{if $iterator->first}img-full-size{else}img-half-size{/if}" style="background-image: url('https://cdn.lato.cz/{$media['path']|noescape}/{$media['filename']|noescape}');"></div>
                 {/foreach}
             </div>
             {/ifset}
