@@ -1,6 +1,6 @@
 <header class="navbar-fixed main-nav">
-    
-        
+
+
     <nav>
 
         <div class="nav-wrapper">
@@ -17,10 +17,10 @@
                 <li class="no-padding">
                     <ul class="collapsible collapsible-accordion">
                         <li>
-                        <a class="collapsible-header waves-effect waves-dark">
-                            <i class="material-icons">settings</i>Nastavení
-                            <i class="material-icons show-more">expand_more</i>
-                        </a>
+                            <a class="collapsible-header waves-effect waves-dark">
+                                <i class="material-icons">settings</i>Nastavení
+                                <i class="material-icons show-more">expand_more</i>
+                            </a>
                             <div class="collapsible-body">
                                 <ul>
                                     <li><a href="{plink Profile:account}">
@@ -42,10 +42,10 @@
                 <li class="no-padding">
                     <ul class="collapsible collapsible-accordion">
                         <li>
-                        <a class="collapsible-header waves-effect waves-dark">
-                            <i class="material-icons">import_contacts</i>Předměty
-                            <i class="material-icons show-more">expand_more</i>
-                        </a>
+                            <a class="collapsible-header waves-effect waves-dark">
+                                <i class="material-icons">import_contacts</i>Předměty
+                                <i class="material-icons show-more">expand_more</i>
+                            </a>
                             <div class="collapsible-body">
                                 <ul>
                                     {foreach $subjects as $subject}
@@ -61,10 +61,10 @@
                 <li class="no-padding">
                     <ul class="collapsible collapsible-accordion">
                         <li>
-                        <a class="collapsible-header waves-effect waves-dark">
-                            <i class="material-icons">people</i>Skupiny
-                            <i class="material-icons show-more">expand_more</i>
-                        </a>
+                            <a class="collapsible-header waves-effect waves-dark">
+                                <i class="material-icons">people</i>Skupiny
+                                <i class="material-icons show-more">expand_more</i>
+                            </a>
                             <div class="collapsible-body">
                                 <ul>
                                     {foreach $groups as $group}
@@ -72,9 +72,10 @@
                                         <div class="group-shortcut-circle" style="background-color: {$group->mainColor|noescape}" >{$group->shortcut|substr:0,1}</div>{$group->name}
                                     </a></li>
                                     {/foreach}
-                                    <li><a href="" class="waves-effect waves-dark">
+                                    <li><a href="#create-group" class="waves-effect waves-dark modal-trigger">
                                         <i class="material-icons">add</i>Vytvořit skupinu
                                     </a></li>
+
                                 </ul>
                             </div>
                         </li>
@@ -91,7 +92,7 @@
 
               <ul class="right navbar-nav">
                 <li><a class="dropdown-button" href="#!" data-activates="notifications-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false"><i class="material-icons ">notifications</i>
-                        {if count($notifications) > 0}<span class="nav-badge">{count($notifications)}</span>{/if}</a>
+                    {if count($notifications) > 0}<span class="nav-badge">{count($notifications)}</span>{/if}</a>
                     <ul id='notifications-window' class='dropdown-content main-nav-dropdown'>
                         <li class="dropdown-header">Oznámení</li>
                         <li class="divider divider-after"></li>
@@ -111,7 +112,7 @@
                 </li>
 
                 <li><a class="dropdown-button" href="#!" data-activates="message-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false"><i class="material-icons ">email</i>
-                        {if count($privateMessages) > 0}<span class="nav-badge">{count($privateMessages)}</span>{/if}</a>
+                    {if count($privateMessages) > 0}<span class="nav-badge">{count($privateMessages)}</span>{/if}</a>
                     <ul id='message-window' class='dropdown-content main-nav-dropdown'>
                         <li class="dropdown-header">Zprávy</li>
                         <li class="divider divider-after"></li>
@@ -137,8 +138,20 @@
     <!--    <div class="progress">
       <div class="indeterminate"></div>
   </div> -->
-    </nav>
+</nav>
 
-</header> 
+</header>
+<div id="create-group" class="modal">
+    <div class="modal-content">
+        <h3>Vytvořit skupinu</h3>
+        <input placeholder="Název skupiny" id="first_name" type="text" class="validate">
+  </div>
+  <div class="modal-footer clearfix">
+ <input type="submit" class="modal-action modal-close waves-effect waves-light btn btn-publish" value="Vytvořit">
+ <input type="submit" class="modal-action modal-close waves-effect waves-light btn-flat" value="Zrušit">
+
+  </div>
+</div>
+
 
 
