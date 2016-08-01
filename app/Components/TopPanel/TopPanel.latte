@@ -6,6 +6,7 @@
         <div class="nav-wrapper">
             <ul id="slide-out" class="side-nav">
                 <a href="" class="side-nav-header">
+                    <div class="user-img"><img src="/images/user1.png"></div>
                     <div class="title">{$activeUser['NAME']} {$activeUser['SURNAME']}</div>
                 </a>
                 <li><a href="{plink Profile:profile}" class="waves-effect waves-dark">
@@ -43,7 +44,7 @@
                     <ul class="collapsible collapsible-accordion">
                         <li>
                             <a class="collapsible-header waves-effect waves-dark">
-                                <i class="material-icons">import_contacts</i>Předměty
+                                <i class="material-icons">school</i>Předměty
                                 <i class="material-icons show-more">expand_more</i>
                             </a>
                             <div class="collapsible-body">
@@ -73,16 +74,21 @@
                                     </a></li>
                                     {/foreach}
                                     <li><a href="#create-group" class="waves-effect waves-dark modal-trigger">
-                                        <i class="material-icons">add</i>Vytvořit skupinu
+                                        <i class="material-icons">create</i>Vytvořit skupinu
                                     </a></li>
-
+                                    <li><a href="{plink Stream:groups}" class="waves-effect waves-dark">
+                                        <i class="material-icons">add</i>Zapsat se do skupiny
+                                    </a></li>
                                 </ul>
                             </div>
                         </li>
                     </ul>
                 </li>
                 <li><a href="{plink Stream:groups}" class="waves-effect waves-dark">
-                    <i class="material-icons">today</i>Rozvrh
+                    <i class="material-icons">receipt</i>Povinnosti
+                </a></li>
+                <li><a href="{plink Stream:groups}" class="waves-effect waves-dark">
+                    <i class="material-icons">insert_invitation</i>Rozvrh
                 </a></li>
                 <li class="empty"></li>
             </ul>
@@ -135,7 +141,7 @@
                 <li><a href="#"><i class="material-icons">search</i></a></li>
             </ul>
         </div>
-        <div class="progress"><div class="indeterminate"></div></div>
+        <div class="progress loading-data"><div class="indeterminate"></div></div>
 </nav>
 
 </header>

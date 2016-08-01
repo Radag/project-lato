@@ -10,11 +10,88 @@
     <div id="messageContentDropzone">
         {input text class => 'materialize-textarea'}
     </div>
+    <ul class="attachments">
+        <li>
+            <a href="#" class="attached-file">
+                <div class="attachment-icon unknown"><i class="material-icons">equalizer</i></div>
+                <div class="attachment-label">Název neznámého typu souboru</div>
+            </a>
+            <a href="#" class="remove-attachment">
+                <i class="material-icons">close</i>    
+            </a>
+        </li>
+        <li>
+            <a href="#" class="attached-file">
+                <div class="attachment-icon document"><i class="material-icons">insert_drive_file</i></div>
+                <div class="attachment-label">Název souboru typu word</div>
+            </a>
+            <a href="#" class="remove-attachment">
+                <i class="material-icons">close</i>    
+            </a>
+        </li>
+        <li>
+            <a href="#" class="attached-file">
+                <div class="attachment-icon spreadsheet"><i class="material-icons">equalizer</i></div>
+                <div class="attachment-label">Název souboru typu excel</div>
+            </a>
+            <a href="#" class="remove-attachment">
+                <i class="material-icons">close</i>    
+            </a>
+        </li>
+        <li>
+            <a href="#" class="attached-file">
+                <div class="attachment-icon presentation"><i class="material-icons">videocam</i></div>
+                <div class="attachment-label">Název souboru typu powerpoint</div>
+            </a>
+            <a href="#" class="remove-attachment">
+                <i class="material-icons">close</i>    
+            </a>
+        </li>  
+        <li>
+            <a href="#" class="attached-file">
+                <div class="attachment-icon presentation"><i class="material-icons">videocam</i></div>
+                <div class="attachment-label">
+                    <div class="progress upload-file-progress">
+                        <div class="determinate" style="width: 70%"></div>
+                    </div>
+                </div>
+            </a>
+            <a href="#" class="remove-attachment">
+                <i class="material-icons">close</i>    
+            </a>
+        </li>      
+    </ul>
 </div>
 <div class="modal-footer clearfix">
-    {input attachments id => 'attachmentsIds'}
-    {input send class => 'modal-action modal-close waves-effect waves-light btn btn-publish disabled'}
-    {input send class => 'modal-action modal-close waves-effect waves-dark btn-flat'}
+    <div class="attachments-nav">
+        {input attachments id => 'attachmentsIds'}
+        <ul>
+            <li>
+                <a href="#" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit soubor">
+                    <i class="material-icons">attach_file</i>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit obrázek">
+                    <i class="material-icons">insert_photo</i>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit video z YouTube">
+                    <i class="material-icons">video_library</i>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit hypertextový odkaz">
+                    <i class="material-icons">insert_link</i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="form-control">
+        {input send class => 'modal-action modal-close waves-effect waves-light btn btn-publish disabled'}
+        {input send class => 'modal-action modal-close waves-effect waves-dark btn-flat'}
+    </div>
 </div>
 <script>
     $(".materialize-textarea").on('keydown', function(event) {

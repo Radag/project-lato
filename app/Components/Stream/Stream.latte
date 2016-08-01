@@ -1,5 +1,5 @@
 <div class="col s12 l8">
-    <a href="#modal1" class="card create-post clearfix modal-trigger">
+    <a href="#create-post-modal" class="card create-post clearfix modal-trigger">
         <div class="user-img left">
             <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
         </div>
@@ -8,7 +8,7 @@
         </div>
     </a>
     <!-- Modal Structure -->
-    <div id="modal1" class="modal modal-fixed-footer">
+    <div id="create-post-modal" class="modal">
         {control messageForm}
     </div>
     {snippet messages}
