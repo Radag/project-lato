@@ -116,15 +116,8 @@ input[type="password"] {
 	color: #2979FF;
 }
 
-.btn,
 .btn-flat {
     padding: 0;
-}
-
-.btn input[type="submit"],
-.btn-flat  input[type="submit"] {
-    padding: 0 2rem;
-    height: 36px;
 }
 
 .btn-publish {
@@ -447,11 +440,12 @@ p.secondary-par strong {
 }
 
 .modal h4 {
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 500;
     color: rgba(0, 0, 0, .87);
     line-height: 56px;
     margin: 0;
+    float:left;
 }
 
 .modal .modal-footer {
@@ -543,6 +537,7 @@ p.secondary-par strong {
 }
 
 #create-post-modal .modal-content .attachments li .remove-attachment i {
+    font-size: 20px;
     line-height: 36px;
     color: rgba(0, 0, 0, .47);
     -webkit-transition: color 300ms ease-in-out;
@@ -892,7 +887,7 @@ p.secondary-par strong {
 
 .side-nav .collapsible-body li a:hover {
     background-color: transparent;
-    color: rgba(0, 0, 0, .87);
+    color: rgba(0, 0, 0, .87) !important;
 }
 
 .side-nav .collapsible-body li a.active {
@@ -1111,7 +1106,7 @@ p.secondary-par strong {
 }
 
 .comment-row .comment-header span {
-    color: rgba(0, 0, 0, .37);
+    color: rgba(0, 0, 0, .47);
     font-size: 12px;
 } 
 
