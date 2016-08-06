@@ -58,11 +58,11 @@
                     </a>
                 </div>
                 <div class="group-founder">
-                    <a href="{plink :Stream:profile 'idUser'=>$group->teacher->id}" class="user-img">
+                    <a href="{plink :Profile:default 'idUser'=>$group->teacher->id}" class="user-img">
                         <img src="{$group->teacher->profileImage}" alt="{$group->teacher->name}">
                     </a>
                     <div class="user-info">
-                        <a href="{plink :Stream:profile 'idUser'=>$group->teacher->id}" class="user-name">
+                        <a href="{plink :Profile:default 'idUser'=>$group->teacher->id}" class="user-name">
                             {$group->teacher->name} {$group->teacher->surname}
                         </a>
                         <div class="user-role">Učitel</span>

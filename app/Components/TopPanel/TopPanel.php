@@ -13,6 +13,7 @@ use App\Model\Manager\UserManager;
 use App\Model\Manager\GroupManager;
 use App\Model\Manager\PrivateMessageManager;
 use App\Model\Manager\NotificationManager;
+use App\Components\NewGroupForm\NewGroupForm;
 
 /**
  * Description of SignInForm
@@ -75,6 +76,12 @@ class TopPanel extends Control
         $template->groups = $others;
         $template->setFile(__DIR__ . '/TopPanel.latte');
         $template->render();
+    }
+    
+    public function createComponentNewGroupForm()
+    {
+        $form = new NewGroupForm($this->groupManager);
+        return $form;
     }
     
 }

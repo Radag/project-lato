@@ -9,10 +9,10 @@
                     <div class="user-img"><img src="/images/user1.png"></div>
                     <div class="title">{$activeUser['NAME']} {$activeUser['SURNAME']}</div>
                 </a>
-                <li><a href="{plink Profile:profile}" class="waves-effect waves-dark">
+                <li><a href="{plink Profile:default}" class="waves-effect waves-dark">
                     <i class="material-icons">person</i>Profil
                 </a></li>
-                <li><a href="{plink Profile:profile}" class="waves-effect waves-dark">
+                <li><a href="{plink Profile:default}" class="waves-effect waves-dark">
                     <i class="material-icons">email</i>Zprávy
                 </a></li>
                 <li class="no-padding">
@@ -145,17 +145,4 @@
 </nav>
 
 </header>
-<div id="create-group" class="modal">
-    <div class="modal-content">
-        <h3>Vytvořit skupinu</h3>
-        <input placeholder="Název skupiny" id="first_name" type="text" class="validate">
-  </div>
-  <div class="modal-footer clearfix">
- <input type="submit" class="modal-action modal-close waves-effect waves-light btn btn-publish" value="Vytvořit">
- <input type="submit" class="modal-action modal-close waves-effect waves-light btn-flat" value="Zrušit">
-
-  </div>
-</div>
-
-
-
+{control newGroupForm}

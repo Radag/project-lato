@@ -15,11 +15,11 @@
     {foreach $messages as $message}  
     <div class="card clearfix">
         <div class="card-header clearfix">
-            <a href="{plink :Stream:profile 'idUser'=>$message->user->id}" class="user-img left">
+            <a href="{plink :Profile:default 'idUser'=>$message->user->id}" class="user-img left">
                 <img src="{$message->user->profileImage}" alt="{$message->user->name}">
             </a>
             <h2>
-                <a href="{plink :Stream:profile 'idUser'=>$message->user->id}">{$message->user->name} {$message->user->surname}</a>
+                <a href="{plink :Profile:default 'idUser'=>$message->user->id}">{$message->user->name} {$message->user->surname}</a>
                 <span>Publikováno {$message->getCreated()|date:"j. n. Y v H:i"}</span>
             </h2>
         </div>

@@ -59,6 +59,25 @@ class GroupManager extends Nette\Object{
         return $return;
     }
 
+    public function createGroup(Group $group) 
+    {
+        $this->database->beginTransaction();
+        $this->database->table('groups')->insert(array(
+                'NAME' => $group->name,
+                'ID_TEACHER' => $group->teacher->id,
+                'GROUP_TYPE' => $group->groupType,
+                'SHORTCUT' => $group->shortcut,
+                'COLOR_SCHEME' => $group->mainColor
+        ));
+        $idGroup = $this->database->query("SELECT MAX(ID_GROUP) FROM groups")->fetchField();
+        
+        $urlId = $idGroup . '_' . \Nette\Utils\Strings::webalize($group->name);
+        $this->database->query("UPDATE groups SET URL_ID=? WHERE ID_GROUP=?", $urlId, $idGroup);
+        
+        $this->database->commit();
+        
+    }
+    
     public function getGroup($idGroup)
     {
         $group = $this->database->query("SELECT 

@@ -43,7 +43,7 @@ class ProfilePresenter extends BasePresenter
         $this->fileManager = $fileManager;        
     }
     
-    public function actionProfile($idUser = null)
+    public function actionDefault($idUser = null)
     {
         if($idUser === null) {          
             $this->template->activeUser = $this->userManager->get($this->user->id);

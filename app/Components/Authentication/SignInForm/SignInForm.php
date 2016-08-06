@@ -55,9 +55,6 @@ class SignInForm extends Control
     {
         $template = $this->template;
         $template->setFile(__DIR__ . '/SignInForm.latte');
-        // vložíme do šablony nějaké parametry
-        //$template->form = $this->form;
-        // a vykreslíme ji
         $template->render();
     }
     
