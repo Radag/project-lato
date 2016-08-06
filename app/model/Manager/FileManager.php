@@ -13,6 +13,9 @@ class FileManager extends Nette\Object
     
     const FILE_TYPE_IMAGE = 1;
     const FILE_TYPE_OTHER = 2;
+    const FILE_TYPE_WORD = 3;
+    const FILE_TYPE_EXCEL = 4;
+    const FILE_TYPE_POWERPOINT = 5;
     
     const USER_DIRECTORY = '/cdn/users/';
     private $user;
@@ -46,12 +49,21 @@ class FileManager extends Nette\Object
             if($file->isImage()) {
                 $newFile['ID_FILE'] = self::FILE_TYPE_IMAGE;
             } else {
-                $newFile['ID_FILE'] = self::FILE_TYPE_OTHER;
+                if($file->getContentType() == 'application/msword' || $file->getContentType() == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                    $newFile['ID_FILE'] = self::FILE_TYPE_WORD;
+                } elseif ($file->getContentType() == 'application/vnd.ms-excel' || $file->getContentType() == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+                    $newFile['ID_FILE'] = self::FILE_TYPE_EXCEL;
+                } elseif ($file->getContentType() == 'application/vnd.ms-powerpoint' || $file->getContentType() == 'application/vnd.openxmlformats-officedocument.presentationml.presentation') {
+                    $newFile['ID_FILE'] = self::FILE_TYPE_EXCEL;
+                } else {
+                    $newFile['ID_FILE'] = self::FILE_TYPE_OTHER;
+                }                
             }
             
             $newFile['PATH'] = $path;
             $newFile['FILENAME'] = $timestamp . '_' . $file->getSanitizedName();
             $return['idFile'] = $this->saveNewFile($newFile);
+            $return['type'] = $newFile['ID_FILE'];
             $return['fileName'] = $file->getName();
             return $return; 
         } else {

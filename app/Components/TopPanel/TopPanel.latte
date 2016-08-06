@@ -1,13 +1,10 @@
 <header class="navbar-fixed main-nav">
-
-
     <nav>
-
         <div class="nav-wrapper">
             <ul id="slide-out" class="side-nav">
                 <a href="" class="side-nav-header">
-                    <div class="user-img"><img src="/images/user1.png"></div>
-                    <div class="title">{$activeUser['NAME']} {$activeUser['SURNAME']}</div>
+                    <div class="user-img"><img src="{$activeUser->profileImage}"></div>
+                    <div class="title">{$activeUser->name} {$activeUser->surname}</div>
                 </a>
                 <li><a href="{plink Profile:default}" class="waves-effect waves-dark">
                     <i class="material-icons">person</i>Profil
@@ -141,7 +138,7 @@
                 <li><a href="#"><i class="material-icons">search</i></a></li>
             </ul>
         </div>
-        <div class="progress loading-data"><div class="indeterminate"></div></div>
+        <div class="progress loading-data" id="main-progress-loader"><div class="indeterminate"></div></div>
 </nav>
 
 </header>

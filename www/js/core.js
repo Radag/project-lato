@@ -1,15 +1,15 @@
 $(function() {
-    $(".progress").hide();
+    $("#main-progress-loader").hide();
     
     $.nette.ext('ajax-loader', {   
         before: function (jqXHR, settings) {
-            $(".progress").show();
+            $("#main-progress-loader").show();
         },
         success: function (data) {
-            $(".progress").hide();
+            $("#main-progress-loader").hide();
         },
         error: function(data) {
-            $(".progress").hide();
+            $("#main-progress-loader").hide();
         }
     });
 });

@@ -59,7 +59,7 @@ class TopPanel extends Control
         $template = $this->template;
         $template->activeGroup = $this->activeGroup;
         $user = $this->getPresenter()->user;
-        $template->activeUser = $user->getIdentity()->data;
+        $template->activeUser = $this->userManager->get($this->getPresenter()->user->id);
         $groups = $this->groupManager->getUserGroups($user);
         $subject = array();
         $others = array();
