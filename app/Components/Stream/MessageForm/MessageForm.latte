@@ -1,5 +1,8 @@
 {snippet messageForm}
 {form form}
+    <div id="messageContentDropzone" style="display: none; text-align: center; padding-top: 15%; font-size: 35px; border: 3px dashed grey; position: absolute; background-color: white; opacity: 0.94; width: 100%; height: 100%; top:0px; left:0px; z-index:999; ">
+        Přesuňte soubor prosím zde
+    </div>
 <div class="modal-content">
     <div class="modal-header">
         <div class="user-img left">
@@ -7,9 +10,7 @@
         </div>
         <h4>{$activeUser->name} {$activeUser->surname}</h4>
     </div>
-    <div id="messageContentDropzone">
-        {input text class => 'materialize-textarea'}
-    </div>
+    {input text class => 'materialize-textarea'}
     <ul class="attachments">        
     </ul>
 </div>
@@ -51,7 +52,6 @@
         }
     });
     $(function() {
-        var fileList;
         var messageContent = new Dropzone("#messageContentDropzone", { 
             url: {link uploadAttachment!},
             previewTemplate: '<div id="preview-template" style="display: none;"></div>'
@@ -105,20 +105,6 @@
             $("#attachmentsIds").val($("#attachmentsIds").val() + "_" + uploadedFile.file.idFile);
             //console.log(file);
            // $("#messageContentDropzone .dz-message").html('<img src="' + image.image + '">');
-        });
-        
-        var count = 0;
-        $('.modal-content').on('dragenter', function(){
-            //if(count <= 0) {
-                $("#messageContentDropzone").css('border', '3px dashed grey');
-            //}
-            //count++;
-        });
-        $('#messageContentDropzone').on('ondrop', function(){
-            //if(count <= 0) {
-                $("#messageContentDropzone").css('border', '0px dashed grey');
-            //}
-            //count--;
         });
     });
 </script>
