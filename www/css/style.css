@@ -3,7 +3,7 @@
 /* MATERIALIZE */
 
 body {
-    background-color: #f0f0f0;  
+    background-color: #efefef;  
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-size:14px;
@@ -117,10 +117,10 @@ input[type="password"] {
 }
 
 .btn-flat {
-    padding: 0;
+    padding: 0 0.5rem;
 }
 
-.btn-publish {
+.btn-confirm {
     margin-left: 16px !important;
 }
 
@@ -131,6 +131,7 @@ input[type="password"] {
 .modal-content textarea {
     padding: 0;
     padding-bottom: 8px;
+    font-size: 15px;
 }
 
 .card .list {
@@ -451,7 +452,6 @@ p.secondary-par strong {
 .modal .modal-footer {
     padding: 18px 24px;
     height: 72px;
-    display: flex;
 }
 
 #create-post-modal {
@@ -459,7 +459,10 @@ p.secondary-par strong {
 }
 
 #create-post-modal .modal-footer {
+    display: flex;
+    justify-content: flex-end;
     border-top: 1px solid rgba(0, 0, 0, .12);
+    flex-wrap: wrap;
 }
 
 .modal. .modal-content {
@@ -470,7 +473,7 @@ p.secondary-par strong {
     margin: 12px 0 0 0;
 }
 
-#create-post-modal .modal-content .attachments li {
+.attachments li {
     display: flex;
     height: 36px;
     width: 100%;
@@ -478,16 +481,15 @@ p.secondary-par strong {
     line-height: 36px;
 }
 
-#create-post-modal .modal-content .attachments li:last-child {
+.attachments li:last-child {
     margin-bottom: 0;
 }
 
-#create-post-modal .modal-content .attachments li a.attached-file {
+.attachments li a.attached-file {
     flex-grow: 1;
 }
 
-
-#create-post-modal .modal-content .attachments li .attachment-icon {
+.attachments li .attachment-icon {
     height: 36px;
     width: 36px;
     margin-right: 16px;
@@ -496,28 +498,28 @@ p.secondary-par strong {
     float: left;
 }
 
-#create-post-modal .modal-content .attachments li .attachment-icon.unknown {
+.attachments li .attachment-icon.unknown {
     background-color: rgba(0, 0, 0, .37);
 }
 
-#create-post-modal .modal-content .attachments li .attachment-icon.document {
+.attachments li .attachment-icon.document {
     background-color: #00a2ff;
 }
 
-#create-post-modal .modal-content .attachments li .attachment-icon.spreadsheet {
+.attachments li .attachment-icon.spreadsheet {
     background-color: #55bf66;
 }
 
-#create-post-modal .modal-content .attachments li .attachment-icon.presentation {
+.attachments li .attachment-icon.presentation {
     background-color: #ddaf24;
 }
 
-#create-post-modal .modal-content .attachments li .attachment-icon i {
+.attachments li .attachment-icon i {
     line-height: 36px;
     color: #fff;
 }
 
-#create-post-modal .modal-content .attachments li .attachment-label {
+.attachments li .attachment-label {
     color: rgba(0, 0, 0, .87);
     font-weight: 500;
     width: calc(100% - 52px);
@@ -922,7 +924,7 @@ p.secondary-par strong {
     position:relative;
     width: 100%;
     background: #fff;
-    box-shadow: 0 1px 2px  rgba(0, 0, 0, .2); 
+    box-shadow: 0 1px 3px  rgba(0, 0, 0, .2); 
     margin-bottom:32px;
     margin-top:0;
     border-radius:0;
@@ -1006,7 +1008,11 @@ p.secondary-par strong {
 }
 
 .card .media-container {
-    margin: 24px -22px;
+    display: block;
+}
+
+.card .media-container {
+    margin: 24px -22px 8px -22px;
     width: calc(100% + 44px);
 }
 
@@ -1014,7 +1020,7 @@ p.secondary-par strong {
     display:block;
     clear:both;
     margin: 2px;
-    height: 350px;
+    height: 420px;
     width: calc(100% - 4px);
     background-size: cover;
     background-position: center;
@@ -1288,15 +1294,25 @@ p.secondary-par strong {
     margin-right:-12px;
 }
 
-#create-group {
+.modal-small {
     width: 360px;
 }
 
-#create-group h3 {
+.modal h3 {
     margin: 0;
     font-size: 22px;
     line-height: 1.7em;
     font-weight: 500;
+    margin-bottom: 24px;
+}
+
+.modal p {
+    color: rgba(0, 0, 0, .54);
+}
+
+.group-link {
+    padding: 16px;
+    background-color: #f5f5f5;
     margin-bottom: 24px;
 }
 

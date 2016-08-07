@@ -26,7 +26,7 @@
         <div class="card-content clearfix">
             <p>{$message->getText()|escape|nl2br|noescape}</p>
             {ifset $message->attachments['media']}
-            <div class="media-container">
+            <div class="media-container clearfix">
                 {foreach $message->attachments['media'] as $media}
                 <div class="{if $iterator->first}img-full-size{else}img-half-size{/if}" style="background-image: url('https://cdn.lato.cz/{$media['path']|noescape}/{$media['filename']|noescape}');"></div>
                 {/foreach}

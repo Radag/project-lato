@@ -73,7 +73,7 @@
                                     <li><a href="#create-group" class="waves-effect waves-dark modal-trigger">
                                         <i class="material-icons">create</i>Vytvořit skupinu
                                     </a></li>
-                                    <li><a href="{plink Stream:groups}" class="waves-effect waves-dark">
+                                    <li><a href="#join-group" class="waves-effect waves-dark modal-trigger">
                                         <i class="material-icons">add</i>Zapsat se do skupiny
                                     </a></li>
                                 </ul>
@@ -139,7 +139,18 @@
             </ul>
         </div>
         <div class="progress loading-data" id="main-progress-loader"><div class="indeterminate"></div></div>
-</nav>
+    </nav>
 
 </header>
+<div id="join-group" class="modal modal-small">
+    <div class="modal-content">
+        <h3>Zapsat se do skupiny</h3>
+        <p>Zadejte kód skupiny</p>
+        <input type="text" class="validate" placeholder="Kód skupiny">                                        
+    </div>
+    <div class="modal-footer clearfix">
+        <input type="submit" class="waves-effect waves-light btn btn-confirm" value="Zapsat se">
+        <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+    </div>
+</div>
 {control newGroupForm}
