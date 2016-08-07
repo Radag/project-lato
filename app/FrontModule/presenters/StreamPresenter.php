@@ -84,7 +84,7 @@ class StreamPresenter extends BasePresenter
     public function actionDefault($id)
     {
         $group = $this->groupManager->getGroup($id);
-        $this->groupManager->setGroupVisited($this->activeUser, $id);
+        $this->groupManager->setGroupVisited($this->activeUser, $group->id);
         $this->activeGroup = $group;
         
     }

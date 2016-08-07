@@ -59,14 +59,14 @@ class MessageManager extends Nette\Object{
     public function getMessages($group)
     {
         $return = array();
-        $messages = $this->database->query("SELECT T1.TEXT, T1.ID_MESSAGE, T2.ID_USER, T2.NAME, T2.SURNAME, T1.CREATED,
+        $messages = $this->database->query("SELECT T1.TEXT, T1.ID_MESSAGE, T2.ID_USER, T2.NAME, T2.SURNAME, T1.CREATED_WHEN,
                         T3.PATH,
                         T3.FILENAME
                 FROM message T1 
                 LEFT JOIN user T2 ON T1.ID_USER=T2.ID_USER 
                 LEFT JOIN file_list T3 ON T3.ID_FILE=T2.PROFILE_IMAGE
                 WHERE T1.ID_GROUP=?
-                ORDER BY CREATED DESC LIMIT 10", $group->id)->fetchAll();
+                ORDER BY CREATED_WHEN DESC LIMIT 10", $group->id)->fetchAll();
         foreach($messages as $message) {
             $mess = new Message();
             $user = new User();
@@ -76,7 +76,7 @@ class MessageManager extends Nette\Object{
             $user->profileImage = "https://cdn.lato.cz/" . $message->PATH . "/" . $message->FILENAME;
             $mess->text = $message->TEXT;
             $mess->id = $message->ID_MESSAGE;
-            $mess->created = $message->CREATED;
+            $mess->created = $message->CREATED_WHEN;
             $mess->user = $user;
             $mess->attachments = $this->getAttachments($message->ID_MESSAGE);
             $return[] = $mess;
@@ -121,7 +121,7 @@ class MessageManager extends Nette\Object{
     public function getComments($idMessage)
     {
         $return = array();
-        $messages = $this->database->query("SELECT T1.ID_COMMENT, T1.TEXT, T1.CREATED, T2.NAME AS USER_NAME, 
+        $messages = $this->database->query("SELECT T1.ID_COMMENT, T1.TEXT, T1.CREATED_WHEN, T2.NAME AS USER_NAME, 
                     T3.PATH,
                     T2.ID_USER,
                     T3.FILENAME,
@@ -138,10 +138,10 @@ class MessageManager extends Nette\Object{
             $user->profileImage = "https://cdn.lato.cz/" . $comment->PATH . "/" . $comment->FILENAME;
             $comm->text = $comment->TEXT;
             $comm->id = $comment->ID_COMMENT;
-            $comm->created = $comment->CREATED;
+            $comm->created = $comment->CREATED_WHEN;
             $now = new \DateTime();
             
-            $comm->sinceStart = $comment->CREATED->diff($now);
+            $comm->sinceStart = $comment->CREATED_WHEN->diff($now);
             $comm->user = $user;
             $return[] = $comm;
         }
@@ -151,7 +151,7 @@ class MessageManager extends Nette\Object{
     
     public function newMessages($date)
     {
-        $count = $this->database->query("SELECT COUNT(*) FROM message WHERE CREATED>=?", $date)->fetch();
+        $count = $this->database->query("SELECT COUNT(*) FROM message WHERE CREATED_WHEN>=?", $date)->fetch();
         return current($count);
     }
     

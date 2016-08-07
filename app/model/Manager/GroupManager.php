@@ -92,7 +92,7 @@ class GroupManager extends Nette\Object{
         LEFT JOIN user T2 ON T1.ID_TEACHER=T2.ID_USER
         LEFT JOIN group_color_scheme T3 ON T1.COLOR_SCHEME=T3.ID_SCHEME
         LEFT JOIN (SELECT COUNT(ID_USER) AS STUDENTS, ID_GROUP FROM user_group GROUP BY ID_GROUP) T4 ON T4.ID_GROUP=T1.ID_GROUP             
-        WHERE T1.ID_GROUP=?", $idGroup)->fetch();
+        WHERE T1.URL_ID=?", $idGroup)->fetch();
 
         $groupModel = new Group();
         $user = new User();
@@ -121,6 +121,7 @@ class GroupManager extends Nette\Object{
         if(!empty($userGroups)) {
             $groups = $this->database->query("SELECT 
                         T1.ID_GROUP,
+                        T1.URL_ID,
                         T1.NAME,
                         T1.SHORTCUT,
                         T2.NAME AS TEACHER_NAME,
@@ -138,7 +139,7 @@ class GroupManager extends Nette\Object{
                 LEFT JOIN file_list T6 ON T6.ID_FILE=T2.PROFILE_IMAGE
                 LEFT JOIN (
                     SELECT COUNT(T2.ID_MESSAGE) AS NEW_MESSAGE, T1.ID_GROUP FROM user_group T1
-                    LEFT JOIN message T2 ON (T1.ID_GROUP=T2.ID_GROUP AND T2.CREATED>T1.LAST_VISIT)
+                    LEFT JOIN message T2 ON (T1.ID_GROUP=T2.ID_GROUP AND T2.CREATED_WHEN>T1.LAST_VISIT)
                     WHERE T1.ID_USER=?
                     GROUP BY T1.ID_GROUP
                 ) T5 ON T5.ID_GROUP=T1.ID_GROUP
@@ -157,6 +158,7 @@ class GroupManager extends Nette\Object{
                 $groupModel->numberOfStudents = $group->STUDENTS;
                 $groupModel->teacher = $user;
                 $groupModel->newMessages = $group->NEW_MESSAGE;
+                $groupModel->urlId = $group->URL_ID;
                 $return[] = $groupModel;
             }
         } 

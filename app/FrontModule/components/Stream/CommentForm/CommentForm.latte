@@ -28,7 +28,7 @@
                             <span>Před {$comm->sinceStart->s} sekundami</span>
                         {/if}
                     </div>
-                    <div class="comment-text">{$comm->text}</div>
+                    <div class="comment-text">{$comm->text|escape|nl2br|noescape}</div>
                 </div>
             </div>
            {/foreach}
