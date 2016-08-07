@@ -93,4 +93,11 @@ class MessageForm extends Control
         $this->getPresenter()->payload->file = $uploadedFile;
         $this->getPresenter()->sendPayload();
     }
+    
+    public function handleDeleteAttachment($idFile)
+    {
+        $this->fileManager->removeFile($idFile);
+        $this->getPresenter()->payload->deleted = true;
+        $this->getPresenter()->sendPayload();
+    }
 }

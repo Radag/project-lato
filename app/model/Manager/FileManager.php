@@ -32,6 +32,19 @@ class FileManager extends Nette\Object
             $this->user = $user;
     }
 
+    
+    public function removeFile($idFile)
+    {
+        $this->database->beginTransaction();
+        $file = $this->database->query('SELECT PATH, FILENAME FROM file_list WHERE ID_FILE=?', $idFile)->fetch();
+        if($file) {
+            $connId = $this->getFtpConnection();
+            ftp_delete($connId, '/cdn/' . $file['PATH'] . '/' . $file['FILENAME']); 
+            $this->deleteFile($idFile);
+        }
+        $this->database->commit();
+        return true;
+    }
 
     public function uploadFile(Nette\Http\FileUpload $file, $path)
     {
@@ -65,6 +78,7 @@ class FileManager extends Nette\Object
             $return['idFile'] = $this->saveNewFile($newFile);
             $return['type'] = $newFile['ID_FILE'];
             $return['fileName'] = $file->getName();
+            $return['fullPath'] = 'https://cdn.lato.cz/' . $path . '/' . $newFile['FILENAME'];
             return $return; 
         } else {
             return false;
@@ -97,6 +111,10 @@ class FileManager extends Nette\Object
         $this->database->commit();
         return $idFile;
     }
-
+    
+    protected function deleteFile($idFile)
+    {
+        $this->database->query('DELETE FROM file_list WHERE ID_FILE=?', $idFile);
+    }
 }
 
