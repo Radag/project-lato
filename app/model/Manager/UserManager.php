@@ -71,25 +71,31 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
 		}
 	}
         
+        /**
+         * 
+         * @param int $idUser
+         * @return User
+         */
         public function get($idUser)
         {
             $user = new User;
-            $messages = $this->database->query("SELECT * FROM vw_user_detail WHERE ID_USER=?", $idUser)->fetch();
+            $userData = $this->database->query("SELECT * FROM vw_user_detail WHERE ID_USER=?", $idUser)->fetch();
             
-            $user->id = $messages->ID_USER;
-            $user->surname = $messages->SURNAME;
-            $user->name = $messages->NAME;
-            $user->email = $messages->EMAIL;
-            if($messages->PROFILE_FILENAME) {
-                $user->profileImage = "https://cdn.lato.cz/" . $messages->PROFILE_PATH . "/" . $messages->PROFILE_FILENAME;
+            $user->id = $userData->ID_USER;
+            $user->surname = $userData->SURNAME;
+            $user->name = $userData->NAME;
+            $user->email = $userData->EMAIL;
+            $user->urlId = $userData->URL_ID;
+            if($userData->PROFILE_FILENAME) {
+                $user->profileImage = "https://cdn.lato.cz/" . $userData->PROFILE_PATH . "/" . $userData->PROFILE_FILENAME;
             }
                 
             return $user;
         }
         
-        public function assignProfileImage(Nette\Security\User $user, $idFile)
+        public function assignProfileImage(\App\Model\Entities\User $user, $idFile)
         {
-            $this->database->query("UPDATE user SET PROFILE_IMAGE=? WHERE ID_USER=?", $idFile, $user->getId());
+            $this->database->query("UPDATE user SET PROFILE_IMAGE=? WHERE ID_USER=?", $idFile, $user->id);
         }
 
 }

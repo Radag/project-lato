@@ -16,14 +16,32 @@ class RouterFactory
     public static function createRouter()
     {
         $router = new RouteList;
-        $router[] = new Route('<presenter>/<action>[/<id>]', 'Homepage:default');
+        
+        $router[] = $adminRouter = new RouteList('Admin');
+	$adminRouter[] = new Route('admin/<presenter>/<action>', 'Homepage:default');
+
+	$router[] = $frontRouter = new RouteList('Front');
+	$frontRouter[] = new Route('auth/<presenter>/<action>[/<id>]', 'Homepage:default');
+        
+        $router[] = $frontRouter = new RouteList('Public');
+	$frontRouter[] = new Route('<presenter>/<action>[/<id>]', 'Homepage:default');
+        
         return $router;
     }
     
     public static function createSecuredRouter()
     {
         $router = new RouteList;
-        $router[] = new Route('<presenter>/<action>[/<id>]', 'Homepage:default', Route::SECURED);
+        
+        $router[] = $adminRouter = new RouteList('Admin');
+	$adminRouter[] = new Route('admin/<presenter>/<action>', 'Homepage:default', Route::SECURED);
+
+	$router[] = $frontRouter = new RouteList('Front');
+	$frontRouter[] = new Route('auth/<presenter>/<action>[/<id>]', 'Homepage:default', Route::SECURED);
+        
+        $router[] = $frontRouter = new RouteList('Public');
+	$frontRouter[] = new Route('<presenter>/<action>[/<id>]', 'Homepage:default', Route::SECURED);
+        
         return $router;
     }
 

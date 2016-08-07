@@ -1,0 +1,92 @@
+<div class="col s12 l8">
+    <a href="#create-post-modal" class="card create-post clearfix modal-trigger-create-message">
+        <div class="user-img left">
+            <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
+        </div>
+        <div class="create-post-label left">
+            Chcete ostatním něco sdělit?
+        </div>
+    </a>
+    <!-- Modal Structure -->
+    <div id="create-post-modal" class="modal">
+        {control messageForm}
+    </div>
+    {snippet messages}
+    {foreach $messages as $message}  
+    <div class="card clearfix">
+        <div class="card-header clearfix">
+            <a href="{plink Profile:default 'idUser'=>$message->user->id}" class="user-img left">
+                <img src="{$message->user->profileImage}" alt="{$message->user->name}">
+            </a>
+            <h2>
+                <a href="{plink Profile:default 'idUser'=>$message->user->id}">{$message->user->name} {$message->user->surname}</a>
+                <span>Publikováno {$message->getCreated()|date:"j. n. Y v H:i"}</span>
+            </h2>
+        </div>
+        <div class="card-content clearfix">
+            <p>{$message->getText()|escape|nl2br|noescape}</p>
+            {ifset $message->attachments['media']}
+            <div class="media-container">
+                {foreach $message->attachments['media'] as $media}
+                <div class="{if $iterator->first}img-full-size{else}img-half-size{/if}" style="background-image: url('https://cdn.lato.cz/{$media['path']|noescape}/{$media['filename']|noescape}');"></div>
+                {/foreach}
+            </div>
+            {/ifset}
+            {ifset $message->attachments['files']}
+            <div class="file-container" style="clear: both; padding-top: 10px;">
+                {foreach $message->attachments['files'] as $file}  
+                    <a href="https://cdn.lato.cz/{$file['path']}/{$file['filename']}" target="_blank" class="card create-post" style="margin-bottom: 5px;">{$file['filename']}</a>
+                {/foreach}
+            </div>
+            {/ifset}
+        </div>
+        
+        {control commentForm-$message->id}
+    </div>
+    {/foreach}
+    {/snippet}
+    <script>  
+        $(document).ready(function(){
+            $('.modal-trigger-create-message').leanModal({
+                ready: function() { 
+                    var notHide = false;
+                    var onWrapper = false;
+                    $('.lean-overlay').on('dragenter', function(){
+                        onWrapper = true;
+                        $("#messageContentDropzone").css('border', '3px dashed grey');
+                        $("#messageContentDropzone").text("Přesuňte soubor prosím zde");
+                        $("#messageContentDropzone").show();
+                    });
+                    $('.lean-overlay').on('dragleave', function() {
+                        if(!notHide) {
+                            $("#messageContentDropzone").hide();  
+                        }
+                        onWrapper = false;
+                    });
+                    $(".modal-footer").on('dragenter', function(){
+                        $("#messageContentDropzone").show();
+                    });
+
+                    $('#messageContentDropzone').on('dragenter', function(){
+                        notHide = true;
+                        $("#messageContentDropzone").css('border', '3px dashed red');
+                        $("#messageContentDropzone").text("Upuštěním soubor přiložíte do zprávy");
+                    });
+                    $('#messageContentDropzone').on('dragleave', function(){
+                        notHide = false;
+                        $("#messageContentDropzone").css('border', '3px dashed grey');
+                        $("#messageContentDropzone").text("Přesuňte soubor prosím zde");
+                        if(!onWrapper) {
+                            $("#messageContentDropzone").hide(); 
+                        }
+                    });
+                    $('#messageContentDropzone').on('drop', function(){
+                        notHide = false;
+                        onWrapper = false;
+                        $("#messageContentDropzone").hide(); 
+                    });
+                }
+            });
+        });    
+    </script>
+</div>

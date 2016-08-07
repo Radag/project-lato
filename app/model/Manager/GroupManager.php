@@ -29,13 +29,13 @@ class GroupManager extends Nette\Object{
         $this->database = $database;
     }
 
-    public function setGroupVisited($user, $idGroup)
+    public function setGroupVisited(User $user, $idGroup)
     {
         $this->database->query("UPDATE user_group SET LAST_VISIT=NOW() WHERE ID_USER=? AND ID_GROUP=?", $user->id, $idGroup);
     }
     
     
-    public function getUserGroups($user)
+    public function getUserGroups(User $user)
     {
         $return = array();
         $yourGroups = $this->database->query("SELECT T1.ID_GROUP, T3.MAIN_COLOR, T2.NAME, T2.SHORTCUT, T2.GROUP_TYPE FROM (
@@ -108,8 +108,12 @@ class GroupManager extends Nette\Object{
         return $groupModel;       
     }
     
-    
-    public function getGroups($user)
+    /**
+     * 
+     * @param User $user
+     * @return Group
+     */
+    public function getGroups(User $user)
     {
         $return = array();
         $userGroups = $this->getUserGroups($user);
@@ -141,11 +145,11 @@ class GroupManager extends Nette\Object{
                 WHERE T1.ID_GROUP IN (" . implode(',', array_keys($userGroups)) . ")", $user->id)->fetchAll();
             foreach($groups as $group) {
                 $groupModel = new Group();
-                $user = new User();
-                $user->surname = $group->TEACHER_SURNAME;
-                $user->name = $group->TEACHER_NAME;
-                $user->id = $group->TEACHER_ID;
-                $user->profileImage = "https://cdn.lato.cz/" . $group->PATH . "/" . $group->FILENAME;
+                $teacher = new User();
+                $teacher->surname = $group->TEACHER_SURNAME;
+                $teacher->name = $group->TEACHER_NAME;
+                $teacher->id = $group->TEACHER_ID;
+                $teacher->profileImage = "https://cdn.lato.cz/" . $group->PATH . "/" . $group->FILENAME;
                 $groupModel->id = $group->ID_GROUP;
                 $groupModel->name = $group->NAME;
                 $groupModel->shortcut = $group->SHORTCUT;
