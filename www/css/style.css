@@ -469,9 +469,11 @@ p.secondary-par strong {
     height: calc(100% - 72px);
 }
 
-#create-post-modal .modal-content .attachments {
-    margin: 12px 0 0 0;
+.attachments {
+    padding: 12px 0 0 0;
+    margin: 0;
 }
+
 
 .attachments li {
     display: flex;
