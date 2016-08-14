@@ -14,14 +14,21 @@
     {snippet messages}
     {foreach $messages as $message}  
     <div class="card clearfix">
-        <div class="card-header clearfix">
-            <a href="{plink Profile:default 'idUser'=>$message->user->id}" class="user-img left">
+        <div class="card-header">
+            <a href="{plink Profile:default 'idUser'=>$message->user->id}" class="user-img">
                 <img src="{$message->user->profileImage}" alt="{$message->user->name}">
             </a>
             <h2>
                 <a href="{plink Profile:default 'idUser'=>$message->user->id}">{$message->user->name} {$message->user->surname}</a>
                 <span>Publikováno {$message->getCreated()|date:"j. n. Y v H:i"}</span>
             </h2>
+            <a class="btn-flat btn-icon dropdown-button card-options" data-activates="card1-options-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                <i class="material-icons">more_vert</i>
+            </a>
+            <ul id='card1-options-window' class='dropdown-content'>
+                <li><a href="#!">Nastavení skupiny</a></li>
+                <li><a href="#!">Opustit skupinu</a></li>
+            </ul>
         </div>
         <div class="card-content clearfix">
             <p>{$message->getText()|escape|nl2br|noescape}</p>
@@ -35,7 +42,7 @@
             {ifset $message->attachments['files']}
             <div class="file-container" style="clear: both; padding-top: 10px;">
                 {foreach $message->attachments['files'] as $file}  
-                    <a href="https://cdn.lato.cz/{$file['path']}/{$file['filename']}" target="_blank" class="card create-post" style="margin-bottom: 5px;">{$file['filename']}</a>
+                <a href="https://cdn.lato.cz/{$file['path']}/{$file['filename']}" target="_blank" class="card create-post" style="margin-bottom: 5px;">{$file['filename']}</a>
                 {/foreach}
             </div>
             {/ifset}
@@ -43,13 +50,13 @@
                 <li>
                     <a href="" class="attached-file">
                         <div class="attachment-icon document"><i class="material-icons">image</i></div>
-                        <div class="attachment-label">Nazev obrazku</div>   
+                        <div class="attachment-label truncate">Nazev obrazku</div>   
                     </a>
                 </li>
                 <li>
                     <a href="" class="attached-file">
                         <div class="attachment-icon document"><i class="material-icons">image</i></div>
-                        <div class="attachment-label">Nazev obrazku</div>   
+                        <div class="attachment-label truncate">Nazev obrazku</div>   
                     </a>
                 </li>
             </ul>

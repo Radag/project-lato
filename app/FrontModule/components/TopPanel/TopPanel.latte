@@ -97,7 +97,10 @@
                 <li><a class="dropdown-button" href="#!" data-activates="notifications-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false"><i class="material-icons ">notifications</i>
                     {if count($notifications) > 0}<span class="nav-badge">{count($notifications)}</span>{/if}</a>
                     <ul id='notifications-window' class='dropdown-content main-nav-dropdown'>
-                        <li class="dropdown-header">Oznámení</li>
+                        <li class="dropdown-header">
+                            <div class="title">Oznámení</div>
+                            <div class="action"><i class="material-icons">done_all</i></div>
+                        </li>
                         <li class="divider divider-after"></li>
                         {foreach $notifications as $notification}
                         <li><a href="#!" class="clearfix">
@@ -144,8 +147,7 @@
 </header>
 <div id="join-group" class="modal modal-small">
     <div class="modal-content">
-        <h3>Zapsat se do skupiny</h3>
-        <p>Zadejte kód skupiny</p>
+        <h3>Zadejte kód skupiny</h3>
         <input type="text" class="validate" placeholder="Kód skupiny">                                        
     </div>
     <div class="modal-footer clearfix">
