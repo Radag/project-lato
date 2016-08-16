@@ -41,11 +41,11 @@
         <div class="col l3 m6 s12">
             <div class="card">
                 <div class="card-header" style="background-color:{$group->mainColor|noescape};">
-                    <a href="{link Stream:default, 'id'=>$group->urlId}" class="group-name">
-                        <span>{$group->shortcut}</span>
+                    <a href="{link Stream:default, 'id'=>$group->urlId}" class="group-name truncate">
+                        <!--<span>{$group->shortcut}</span>-->
                         {$group->name}
                     </a>
-                    <a href="#" class="group-users">
+                    <!--<a href="#" class="group-users">
                         {if $group->numberOfStudents == 0}
                             Žádní studenti
                         {elseif $group->numberOfStudents == 1}
@@ -55,7 +55,7 @@
                         {else}
                             {$group->numberOfStudents} studentů
                         {/if}
-                    </a>
+                    </a>-->
                 </div>
                 <div class="group-founder">
                     <a href="{plink Profile:default 'idUser'=>$group->teacher->id}" class="user-img">

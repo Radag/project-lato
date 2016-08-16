@@ -66,48 +66,82 @@
     </div>
     {/foreach}
     {/snippet}
-    <script>  
-        $(document).ready(function(){
-            $('.modal-trigger-create-message').leanModal({
-                ready: function() { 
-                    var notHide = false;
-                    var onWrapper = false;
-                    $('.lean-overlay').on('dragenter', function(){
-                        onWrapper = true;
-                        $("#messageContentDropzone").css('border', '3px dashed grey');
-                        $("#messageContentDropzone").text("Přesuňte soubor prosím zde");
-                        $("#messageContentDropzone").show();
-                    });
-                    $('.lean-overlay').on('dragleave', function() {
-                        if(!notHide) {
-                            $("#messageContentDropzone").hide();  
-                        }
-                        onWrapper = false;
-                    });
-                    $(".modal-footer").on('dragenter', function(){
-                        $("#messageContentDropzone").show();
-                    });
 
-                    $('#messageContentDropzone').on('dragenter', function(){
-                        notHide = true;
-                        $("#messageContentDropzone").css('border', '3px dashed red');
-                        $("#messageContentDropzone").text("Upuštěním soubor přiložíte do zprávy");
-                    });
-                    $('#messageContentDropzone').on('dragleave', function(){
-                        notHide = false;
-                        $("#messageContentDropzone").css('border', '3px dashed grey');
-                        $("#messageContentDropzone").text("Přesuňte soubor prosím zde");
-                        if(!onWrapper) {
-                            $("#messageContentDropzone").hide(); 
-                        }
-                    });
-                    $('#messageContentDropzone').on('drop', function(){
-                        notHide = false;
-                        onWrapper = false;
+
+
+    <div class="card empty-card clearfix">
+        <div class="card-header">
+            <div class="user-img">
+            </div>
+        </div>
+        <div class="card-content clearfix">
+            <div class="empty-line" style="width: 80%;"></div>
+            <div class="empty-line" style="width: 90%;"></div>
+            <div class="empty-line" style="width: 30%;"></div>
+            
+            <!--<ul class="attachments">
+                <li>
+                    <a href="" class="attached-file">
+                        <div class="attachment-icon"></div>
+                        <div class="attachment-label">
+                            <div class="empty-line" style="width: 40%;"></div>
+                        </div>   
+                    </a>
+                </li>
+                <li>
+                    <a href="" class="attached-file">
+                        <div class="attachment-icon"></div>
+                        <div class="attachment-label">
+                            <div class="empty-line" style="width: 40%;"></div>
+                        </div>   
+                    </a>
+                </li>
+            </ul>-->
+        </div>
+        <div class="comments-footer clearfix"></div>
+    </div>
+<script>  
+    $(document).ready(function(){
+        $('.modal-trigger-create-message').leanModal({
+            ready: function() { 
+                var notHide = false;
+                var onWrapper = false;
+                $('.lean-overlay').on('dragenter', function(){
+                    onWrapper = true;
+                    $("#messageContentDropzone").css('border', '3px dashed grey');
+                    $("#messageContentDropzone").text("Přesuňte soubor prosím zde");
+                    $("#messageContentDropzone").show();
+                });
+                $('.lean-overlay').on('dragleave', function() {
+                    if(!notHide) {
+                        $("#messageContentDropzone").hide();  
+                    }
+                    onWrapper = false;
+                });
+                $(".modal-footer").on('dragenter', function(){
+                    $("#messageContentDropzone").show();
+                });
+
+                $('#messageContentDropzone').on('dragenter', function(){
+                    notHide = true;
+                    $("#messageContentDropzone").css('border', '3px dashed red');
+                    $("#messageContentDropzone").text("Upuštěním soubor přiložíte do zprávy");
+                });
+                $('#messageContentDropzone').on('dragleave', function(){
+                    notHide = false;
+                    $("#messageContentDropzone").css('border', '3px dashed grey');
+                    $("#messageContentDropzone").text("Přesuňte soubor prosím zde");
+                    if(!onWrapper) {
                         $("#messageContentDropzone").hide(); 
-                    });
-                }
-            });
-        });    
-    </script>
+                    }
+                });
+                $('#messageContentDropzone').on('drop', function(){
+                    notHide = false;
+                    onWrapper = false;
+                    $("#messageContentDropzone").hide(); 
+                });
+            }
+        });
+    });    
+</script>
 </div>
