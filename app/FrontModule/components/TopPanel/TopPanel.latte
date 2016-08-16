@@ -47,7 +47,7 @@
                             <div class="collapsible-body">
                                 <ul>
                                     {foreach $subjects as $subject}
-                                    <li><a href="{plink Stream:default 'id'=>$subject->id}">
+                                    <li><a href="{plink Stream:default 'id'=>$subject->urlId}">
                                         <div class="group-shortcut-circle" style="background-color: {$subject->mainColor|noescape}">{$subject->shortcut|substr:0,1}</div>{$subject->name}
                                     </a></li>
                                     {/foreach}
@@ -66,7 +66,7 @@
                             <div class="collapsible-body">
                                 <ul>
                                     {foreach $groups as $group}
-                                    <li><a href="{plink Stream:default 'id'=>$group->id}">
+                                    <li><a href="{plink Stream:default 'id'=>$group->urlId}">
                                         <div class="group-shortcut-circle" style="background-color: {$group->mainColor|noescape}" >{$group->shortcut|substr:0,1}</div>{$group->name}
                                     </a></li>
                                     {/foreach}

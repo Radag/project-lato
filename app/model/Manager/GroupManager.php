@@ -38,7 +38,7 @@ class GroupManager extends Nette\Object{
     public function getUserGroups(User $user)
     {
         $return = array();
-        $yourGroups = $this->database->query("SELECT T1.ID_GROUP, T3.MAIN_COLOR, T2.NAME, T2.SHORTCUT, T2.GROUP_TYPE FROM (
+        $yourGroups = $this->database->query("SELECT T1.ID_GROUP, T3.MAIN_COLOR, T2.NAME, T2.SHORTCUT, T2.GROUP_TYPE, T2.URL_ID FROM (
             SELECT DISTINCT ID_GROUP FROM user_group WHERE ID_USER=?
             UNION 
             SELECT DISTINCT ID_GROUP FROM groups WHERE ID_TEACHER=?) T1
@@ -53,6 +53,7 @@ class GroupManager extends Nette\Object{
                 $group->shortcut = $s->SHORTCUT;
                 $group->groupType = $s->GROUP_TYPE;
                 $group->mainColor = $s->MAIN_COLOR;
+                $group->urlId = $s->URL_ID;
                 $return[$s->ID_GROUP] = $group;
             }
         }

@@ -37,11 +37,20 @@ class NewGroupForm extends Control
     
     protected function createComponentForm()
     {
+        $colors = array(
+            1 => 'green-bg',
+            4 => 'yellow-bg',
+            2 => 'blue-bg',
+            3 => 'purple-bg',
+            5 => 'orange-bg'
+        );
         $form = new \Nette\Application\UI\Form;
         $form->addText('name', 'Název skupiny')
              ->setAttribute('placeholder', 'Název skupiny')
              ->setRequired('Prosím vyplňte název skupiny.');
-
+        $form->addRadioList('color','Barevné schéma', $colors);
+        
+        
         $form->addSubmit('send', 'Vytvořit');
 
         $form->onSuccess[] = [$this, 'processForm'];
@@ -65,7 +74,7 @@ class NewGroupForm extends Control
         $group->teacher = $teacher;
         $group->groupType = 2;
         $group->shortcut = strtoupper(substr($values['name'], 0, 3));
-        $group->mainColor = 1;        
+        $group->mainColor = $values['color'];        
         $this->groupManager->createGroup($group);
         $this->presenter->redirect('Stream:groups');
     }

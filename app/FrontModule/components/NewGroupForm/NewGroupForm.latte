@@ -4,12 +4,20 @@
         <h3>Vytvořit skupinu</h3>
         {input name class=>'validate'}
         <div class="group-color-select">
-            <i class="material-icons green-bg active"></i>
-            <i class="material-icons yellow-bg"></i>
-            <i class="material-icons blue-bg"></i>
-            <i class="material-icons purple-bg"></i>
-            <i class="material-icons orange-bg"></i>
+            {foreach $form[color]->items as $key => $label}
+                <label>
+                    <i class="material-icons {$label}"></i>
+                    <input type="radio" n:name="color:$key" style="" />
+                </label>
+            {/foreach}
         </div>
+        <script type="text/javascript">
+            $(".group-color-select input:checked").closest("label").find('i').addClass('active');
+            $(".group-color-select input").on('change', function() {
+                $(".group-color-select i").removeClass('active');
+                $(this).closest("label").find('i').addClass('active');
+            });
+        </script>
     </div>
     <div class="modal-footer clearfix">
         {input send class=>'waves-effect waves-light btn btn-confirm'}
