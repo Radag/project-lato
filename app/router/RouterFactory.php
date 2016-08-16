@@ -29,6 +29,9 @@ class RouterFactory
         return $router;
     }
     
+    /**
+     * @return Nette\Application\IRouter
+     */
     public static function createSecuredRouter()
     {
         $router = new RouteList;
