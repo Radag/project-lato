@@ -11,7 +11,7 @@
         <h4>{$activeUser->name} {$activeUser->surname}</h4>
     </div>
     {input text class => 'materialize-textarea'}
-    <ul class="attachments">        
+    <ul class="attachments attachments_uploads">        
     </ul>
 </div>
 <div class="modal-footer clearfix">
@@ -68,7 +68,7 @@
             attachTemplate.css('display', 'flex');
             attachTemplate.find(".attachment-label .file-name").text(file.name);
             file.classId = id;
-            $(".attachments").append(attachTemplate);
+            $(".attachments_uploads").append(attachTemplate);
             
             attachTemplate.find('.remove-attachment').on('click', function(event) {
                 event.preventDefault();
@@ -121,7 +121,7 @@
             
             attachTemplate.find(".attached-file").attr('href', uploadedFile.file.fullPath);
             attachTemplate.css('display', 'flex');
-            $(".attachments").append(attachTemplate);
+            $(".attachments_uploads").append(attachTemplate);
             file.remoteIdFile = uploadedFile.file.idFile;
             $("#attachmentsIds").val($("#attachmentsIds").val() + "_" + uploadedFile.file.idFile);
         });

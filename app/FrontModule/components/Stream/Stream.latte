@@ -38,28 +38,19 @@
                 <div class="{if $iterator->first}img-full-size{else}img-half-size{/if}" style="background-image: url('https://cdn.lato.cz/{$media['path']|noescape}/{$media['filename']|noescape}');"></div>
                 {/foreach}
             </div>
-            {/ifset}
+            {/ifset}            
             {ifset $message->attachments['files']}
-            <div class="file-container" style="clear: both; padding-top: 10px;">
-                {foreach $message->attachments['files'] as $file}  
-                <a href="https://cdn.lato.cz/{$file['path']}/{$file['filename']}" target="_blank" class="card create-post" style="margin-bottom: 5px;">{$file['filename']}</a>
-                {/foreach}
-            </div>
-            {/ifset}
             <ul class="attachments">
+                {foreach $message->attachments['files'] as $file}  
                 <li>
-                    <a href="" class="attached-file">
-                        <div class="attachment-icon document"><i class="material-icons">image</i></div>
-                        <div class="attachment-label truncate">Nazev obrazku</div>   
+                    <a href="https://cdn.lato.cz/{$file['path']}/{$file['filename']}" target="_blank" class="attached-file">
+                        <div class="attachment-icon document"><i class="material-icons">{if $file['type'] == 1 }image{elseif $file['type'] == 3}spreadsheet{elseif $file['type'] == 4}presentation{else}unknown{/if}</i></div>
+                        <div class="attachment-label truncate">{$file['filename']}</div>   
                     </a>
                 </li>
-                <li>
-                    <a href="" class="attached-file">
-                        <div class="attachment-icon document"><i class="material-icons">image</i></div>
-                        <div class="attachment-label truncate">Nazev obrazku</div>   
-                    </a>
-                </li>
+                {/foreach}
             </ul>
+            {/ifset}
         </div>
         
         {control commentForm-$message->id}
