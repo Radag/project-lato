@@ -94,6 +94,7 @@ class GroupManager extends Nette\Object{
                 T1.ID_GROUP,
                 T1.NAME,
                 T1.SHORTCUT,
+                T2.ID_USER AS TEACHER_ID,
                 T2.NAME AS TEACHER_NAME,
                 T2.SURNAME AS TEACHER_SURNAME,
                 T3.MAIN_COLOR,
@@ -112,6 +113,7 @@ class GroupManager extends Nette\Object{
         $user = new User();
         $user->surname = $group->TEACHER_SURNAME;
         $user->name = $group->TEACHER_NAME;
+        $user->id = $group->TEACHER_ID;
         $groupModel->id = $group->ID_GROUP;
         $groupModel->name = $group->NAME;
         $groupModel->shortcut = $group->SHORTCUT;

@@ -37,8 +37,7 @@
                     <div id="add-user-to-group" class="modal">
                         <div class="modal-content">
                             <h3>Přidat uživatele</h3>
-                            <p>Uživatelé se mohou zapsat do skupiny tímto odkazem</p>
-                            <div class="group-link">http://www.lato.cz/D998DSA9SADSA0</div>
+                            <p>NEFUNGUJE</p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="modal-action modal-close waves-effect waves-light btn btn-confirm">Potvrdit</button>
@@ -62,8 +61,7 @@
                         <p class="secondary-par">V tuto cvhíli nemáte v předmětu zvěřejněny žádné povinnosti</p>  
                     </div>
                 </div>
-
-                <div class="card bottom-spacer">
+                <div class="card bottom-spacer" n:if="$activeGroup->teacher->id === $activeUser->id">
                     <div class="card-header">
                         <h3>Sdílení pomocí kódu</h3>
                     </div>
