@@ -60,12 +60,14 @@ class ActionPresenter extends BasePresenter
         if(!empty($action) && $action->ACTION_TYPE === 1) {
             if($this->user->isLoggedIn()) {
                 $this->groupManager->addUserToGroup($action->ID_GROUP, $this->user->id, 1);
+                $this->flashMessage('Byl jste přidán do skupiny.');
                 $this->redirect(':Front:Stream:default', array('id'=>$action->URL_ID));
             } else {
                 $redirectSection = $this->getSession()->getSection('redirect');
                 $redirectSection->params = $this->getParameters();
                 $redirectSection->action = $this->getAction();
                 $redirectSection->link = $this->getRequest()->getPresenterName();
+                $this->flashMessage('Musíte se první přihlásit nebo zaregistrovat.');
                 $this->redirect('Homepage:default');
             }
         } else {

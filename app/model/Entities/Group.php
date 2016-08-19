@@ -23,4 +23,7 @@ class Group {
     public $numberOfStudents = null;
     public $groupType = null;
     public $newMessages = null;
+    
+    public $sharingOn = null;
+    public $sharingCode = null;
 }

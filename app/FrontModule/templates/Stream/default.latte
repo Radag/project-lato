@@ -67,16 +67,32 @@
                     <div class="card-header">
                         <h3>Sdílení pomocí kódu</h3>
                     </div>
+                    {snippet sharingFormWrap}
                     <div class="card-content clearfix">
-                        <p class="secondary-par left">Zapnout sdílení</p>
+                        {form sharingForm id=>"sharingForm"}
+                        <p class="secondary-par left"></p>
                         <div class="switch right">
+                            <p class="secondary-par left">Zapnout sdílení</p>
                             <label>
-                                <input type="checkbox">
+                                {input shareByCode:}
                                 <span class="lever"></span>
                             </label>
                         </div> 
-                        <p class="secondary-par left">Zápis do této skupiny mohou ostatní uživatelé provést pomocí kódu <strong>a1b2c3</strong></p>
+                        {/form}
+                        {if $activeGroup->sharingOn == 1}
+                        <p class="secondary-par left">Zápis do této skupiny mohou ostatní uživatelé provést pomocí kódu <strong>{$activeGroup->sharingCode}</strong>,
+                            nebo odkazu {link //:Public:Action:default, id => $activeGroup->sharingCode}                    
+                        </p> 
+                        {/if}
                     </div>
+                    <script>
+                        $(document).ready(function() {
+                            $("#sharingForm input[type='checkbox']").on('change', function() {
+                                $("#sharingForm").submit();
+                            });
+                        });
+                    </script>
+                    {/snippet}
                 </div>
 
                 <div class="card bottom-spacer">

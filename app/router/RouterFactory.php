@@ -24,8 +24,9 @@ class RouterFactory
 	$frontRouter[] = new Route('auth/<presenter>/<action>[/<id>]', 'Homepage:default');
         
         $router[] = $publicRouter = new RouteList('Public');
-	$publicRouter[] = new Route('<presenter>/<action>[/<id>]', 'Homepage:default');
         $publicRouter[] = new Route('a/<id>', 'Action:default');
+	$publicRouter[] = new Route('<presenter>/<action>[/<id>]', 'Homepage:default');
+        
         
         return $router;
     }
@@ -44,8 +45,9 @@ class RouterFactory
 	$frontRouter[] = new Route('auth/<presenter>/<action>[/<id>]', 'Homepage:default', Route::SECURED);
         
         $router[] = $publicRouter = new RouteList('Public');
-	$publicRouter[] = new Route('<presenter>/<action>[/<id>]', 'Homepage:default', Route::SECURED);
         $publicRouter[] = new Route('a/<id>', 'Action:default', Route::SECURED);
+	$publicRouter[] = new Route('<presenter>/<action>[/<id>]', 'Homepage:default', Route::SECURED);
+        
         
         return $router;
     }

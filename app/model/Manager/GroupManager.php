@@ -94,11 +94,15 @@ class GroupManager extends Nette\Object{
                 T2.NAME AS TEACHER_NAME,
                 T2.SURNAME AS TEACHER_SURNAME,
                 T3.MAIN_COLOR,
-                T4.STUDENTS
+                T4.STUDENTS,
+                T5.SHARE_BY_LINK,
+                T6.HASH_CODE
         FROM groups T1
         LEFT JOIN user T2 ON T1.ID_TEACHER=T2.ID_USER
         LEFT JOIN group_color_scheme T3 ON T1.COLOR_SCHEME=T3.ID_SCHEME
-        LEFT JOIN (SELECT COUNT(ID_USER) AS STUDENTS, ID_GROUP FROM user_group GROUP BY ID_GROUP) T4 ON T4.ID_GROUP=T1.ID_GROUP             
+        LEFT JOIN (SELECT COUNT(ID_USER) AS STUDENTS, ID_GROUP FROM user_group GROUP BY ID_GROUP) T4 ON T4.ID_GROUP=T1.ID_GROUP
+        LEFT JOIN group_sharing T5 ON T1.ID_GROUP=T5.ID_GROUP
+        LEFT JOIN public_actions T6 ON T5.ID_ACTION=T6.ID_ACTION
         WHERE T1.URL_ID=?", $idGroup)->fetch();
 
         $groupModel = new Group();
@@ -111,6 +115,8 @@ class GroupManager extends Nette\Object{
         $groupModel->mainColor = $group->MAIN_COLOR;
         $groupModel->numberOfStudents = $group->STUDENTS;
         $groupModel->teacher = $user;
+        $groupModel->sharingOn = $group->SHARE_BY_LINK;
+        $groupModel->sharingCode = $group->HASH_CODE;
         
         return $groupModel;       
     }
@@ -181,6 +187,30 @@ class GroupManager extends Nette\Object{
                 'ID_RELATION' => $relation,
                 'FROM_LINK' => $fromLink
         ));
+    }
+    
+    public function switchSharing(Group $group, $state) 
+    {
+        $this->database->beginTransaction();
+        $id = $this->database->query("SELECT ID FROM group_sharing WHERE ID_GROUP=?", $group->id)->fetchField();
+        if(empty($id)) {
+            $this->database->table('public_actions')->insert(array(
+                'HASH_CODE' => substr(md5(openssl_random_pseudo_bytes(20)),-8),
+                'ACTION_TYPE' => 1,
+                'ACTIVE' => 1
+            ));
+            $idAction = $this->database->query("SELECT MAX(ID_ACTION) FROM public_actions")->fetchField();
+            $this->database->table('group_sharing')->insert(array(
+                'ID_GROUP' => $group->id,
+                'ID_ACTION' => $idAction,
+                'SHARE_BY_LINK' => $state
+            ));
+        } else {
+            $this->database->query("UPDATE group_sharing SET SHARE_BY_LINK=? WHERE ID_GROUP=?", $state, $group->id);
+        }
+        
+        $this->database->commit();
+        
     }
       
     

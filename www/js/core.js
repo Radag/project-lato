@@ -12,4 +12,8 @@ $(function() {
             $("#main-progress-loader").hide();
         }
     });
+    
+    $("#flashMessagesWrapper .flash").each(function(index, value){
+        Materialize.toast($(value).text(), 4000);
+    });
 });

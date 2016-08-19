@@ -21,8 +21,9 @@
 	<title>{ifset title}{include title|striptags} | {/ifset}Lato</title>
 </head>
 <body>
-	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
-        
+	<div id="flashMessagesWrapper" style="display:none;">
+            <div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+        </div>
 	{include content}
 
 	{block scripts}

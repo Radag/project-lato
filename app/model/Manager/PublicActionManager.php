@@ -35,9 +35,9 @@ class PublicActionManager extends Nette\Object{
                 T3.NAME,
                 T3.URL_ID
         FROM public_actions T1
-        LEFT JOIN group_invitations T2 ON T1.ID_ACTION=T2.ID_ACTION
+        LEFT JOIN group_sharing T2 ON T1.ID_ACTION=T2.ID_ACTION
         LEFT JOIN groups T3 ON T3.ID_GROUP=T2.ID_GROUP
-        WHERE T1.HASH_CODE=? AND T1.ACTIVE=1", $hashCode)->fetch();
+        WHERE T1.HASH_CODE=? AND T1.ACTIVE=1 AND T2.SHARE_BY_LINK=1", $hashCode)->fetch();
         
         return $action;
     }

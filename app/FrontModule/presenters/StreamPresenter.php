@@ -23,6 +23,8 @@ class StreamPresenter extends BasePresenter
     protected $privateMessageManager;
     protected $notificationManager;
     protected $fileManager;
+    
+    /** @var \App\Model\Entities\Group */
     protected $activeGroup = null;
     
     public function __construct(UserManager $userManager, 
@@ -49,6 +51,26 @@ class StreamPresenter extends BasePresenter
     {
         return new Stream($this->userManager, $this->messageManager, $this->activeGroup, $this->fileManager, $this->activeUser);
     }
+    
+    protected function createComponentSharingForm()
+    {
+        $form = new \Nette\Application\UI\Form;
+
+        $form->addCheckbox('shareByCode','Zapnout sdílení', array(1,0))
+             ->setDefaultValue($this->activeGroup->sharingOn);
+
+        $form->onSuccess[] = function($form, $values) {
+            $this->groupManager->switchSharing($this->activeGroup, $values['shareByCode']);
+            if($values['shareByCode']) {
+                $this->flashMessage('Sdílení zapnuto');
+            } else {
+                $this->flashMessage('Sdílení vypnuto');
+            }
+            $this->redirect('this');
+        };
+        return $form;        
+    }
+    
     
     public function handleRedrawNews()
     {
@@ -86,6 +108,7 @@ class StreamPresenter extends BasePresenter
         $group = $this->groupManager->getGroup($id);
         $this->groupManager->setGroupVisited($this->activeUser, $group->id);
         $this->activeGroup = $group;
+        $this->template->activeGroup = $this->activeGroup;
         
     }
 }
