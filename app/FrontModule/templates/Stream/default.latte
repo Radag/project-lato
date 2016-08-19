@@ -19,11 +19,6 @@
                                 </ul>
                             </li>
                             <li>
-                                <a class="btn-flat btn-icon modal-trigger" href="#add-user-to-group">
-                                    <i class="material-icons">person_add</i>
-                                </a>  
-                            </li>
-                            <li>
                                 <a class="btn-flat btn-icon dropdown-button" data-activates="stream-options-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
                                     <i class="material-icons">more_vert</i>
                                 </a>
@@ -33,18 +28,7 @@
                                 </ul>
                             </li>
                         </ul>
-                    </header>
-                    <div id="add-user-to-group" class="modal">
-                        <div class="modal-content">
-                            <h3>Přidat uživatele</h3>
-                            <p>Uživatelé se mohou zapsat do skupiny tímto odkazem</p>
-                            <div class="group-link">http://www.lato.cz/D998DSA9SADSA0</div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="modal-action modal-close waves-effect waves-light btn btn-confirm">Potvrdit</button>
-                            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-                        </div>
-                    </div>  
+                    </header>  
                 </div>
             </div>
         </div>
@@ -65,24 +49,39 @@
 
                 <div class="card bottom-spacer">
                     <div class="card-header">
-                        <h3>Sdílení pomocí kódu</h3>
+                        <h3>Možnosti sdílení</h3>
                     </div>
                     {snippet sharingFormWrap}
                     <div class="card-content clearfix">
                         {form sharingForm id=>"sharingForm"}
-                        <p class="secondary-par left"></p>
-                        <div class="switch right">
-                            <p class="secondary-par left">Zapnout sdílení</p>
-                            <label>
-                                {input shareByCode:}
-                                <span class="lever"></span>
-                            </label>
-                        </div> 
+                        <div class="switch-row">
+                            <p class="secondary-par left">
+                            {if $activeGroup->sharingOn == 1}
+                            Vypnout sdílení
+                            {else}
+                            Zapnout sdílení
+                            {/if}
+                            <div class="switch right">
+                                <label>
+                                    {input shareByCode:}
+                                    <span class="lever"></span>
+                                </label>
+                            </div> 
+                        </div>
                         {/form}
                         {if $activeGroup->sharingOn == 1}
-                        <p class="secondary-par left">Zápis do této skupiny mohou ostatní uživatelé provést pomocí kódu <strong>{$activeGroup->sharingCode}</strong>,
-                            nebo odkazu {link //:Public:Action:default, id => $activeGroup->sharingCode}                    
-                        </p> 
+                        <p class="secondary-par left">Zápis do této skupiny mohou ostatní uživatelé provést pomocí kódu <strong>{$activeGroup->sharingCode}</strong></p>
+                        <p><a class="modal-trigger" href="#add-user-to-group">
+                            Zobrazit další možnosti
+                        </a></p>
+                        <div id="add-user-to-group" class="modal">
+                            <div class="modal-content">
+                                <h3>Možnosti sdílení</h3>
+                                <p>
+                                    nebo odkazu {link //:Public:Action:default, id => $activeGroup->sharingCode}                    
+                                </p> 
+                            </div>
+                        </div>  
                         {/if}
                     </div>
                     <script>
