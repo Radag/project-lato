@@ -91,7 +91,7 @@
             </ul>
             <a href="#" data-activates="slide-out" class="button-collapse show-on-large slide-out-toggle">
               <i class="material-icons">menu</i></a>
-              <span class="nav-title">{if !empty($activeGroup)}{$activeGroup->name}{else}Nástěnka{/if}</span>
+              <span class="nav-title truncate">{if !empty($activeGroup)}{$activeGroup->name}{else}Nástěnka{/if}</span>
 
               <ul class="right navbar-nav">
                 <li><a class="dropdown-button" href="#!" data-activates="notifications-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false"><i class="material-icons ">notifications</i>
@@ -151,6 +151,7 @@
         <input type="text" class="validate" placeholder="Kód skupiny">                                        
     </div>
     <div class="modal-footer clearfix">
+        <div class="flex-spacer"></div>
         <input type="submit" class="waves-effect waves-light btn btn-confirm" value="Zapsat se">
         <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
     </div>

@@ -1,5 +1,5 @@
 <div class="col s12 l8">
-    <a href="#create-post-modal" class="card create-post clearfix modal-trigger-create-message">
+    <a href="#select-post-type-modal" class="card create-post clearfix modal-trigger">
         <div class="user-img left">
             <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
         </div>
@@ -8,20 +8,44 @@
         </div>
     </a>
     <!-- Modal Structure -->
+
+    <div id="select-post-type-modal" class="modal modal-small">
+        <div class="modal-content">
+            <h3>Vyberte typ příspěveku</h3>
+            <ul id="select-post-type">
+            <li><a href="#create-post-modal" class="modal-close modal-trigger-create-message"><i class="material-icons">message</i><span class="title">Vytvořit oznámení</span></a></li>
+            <li>
+                <a href="#"><i class="material-icons">library_books</i><span class="title">Vložit studijní materiál</span></a>
+            </li>
+            <li><a href="#"><i class="material-icons">event</i><span class="title">Vytvořit povinnost</span></a></li>
+            <li><a href="#"><i class="material-icons">assignment</i><span class="title">Vytvořit úkol</span></a></li>
+            </ul>                                        
+        </div>
+        <div class="modal-footer clearfix">
+            <a href="#" class="modal-footer-help"> 
+                <i class="material-icons">help</i>
+                <div class="help-label">Nápověda</div>
+            </a>
+            <div class="flex-spacer"></div>
+            <div class="form-control">
+                <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Modal Structure -->
+
     <div id="create-post-modal" class="modal">
         {control messageForm}
     </div>
     {snippet messages}
     {foreach $messages as $message}  
     <div class="card clearfix">
-        <div class="card-header">
-            <a href="{plink Profile:default 'idUser'=>$message->user->id}" class="user-img">
-                <img src="{$message->user->profileImage}" alt="{$message->user->name}">
-            </a>
-            <h2>
-                <a href="{plink Profile:default 'idUser'=>$message->user->id}">{$message->user->name} {$message->user->surname}</a>
-                <span>Publikováno {$message->getCreated()|date:"j. n. Y v H:i"}</span>
-            </h2>
+        <div class="card-info">
+            <div class="card-date">Zveřejněno {$message->getCreated()|date:"j. n. Y v H:i"}</div>
+            <div class="flex-spacer"></div>
             <a class="btn-flat btn-icon dropdown-button card-options" data-activates="card1-options-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
                 <i class="material-icons">more_vert</i>
             </a>
@@ -29,6 +53,18 @@
                 <li><a href="#!">Nastavení skupiny</a></li>
                 <li><a href="#!">Opustit skupinu</a></li>
             </ul>
+        </div>
+        <div class="card-header">
+
+            <div class="card-title">
+                <a href="{plink Profile:default 'idUser'=>$message->user->id}" class="user-img">
+                    <img src="{$message->user->profileImage}" alt="{$message->user->name}">
+                </a>
+                <h2 class="truncate">
+                    <a href="{plink Profile:default 'idUser'=>$message->user->id}">{$message->user->name} {$message->user->surname}</a>
+                    
+                </h2>
+            </div>
         </div>
         <div class="card-content clearfix">
             <p>{$message->getText()|escape|nl2br|noescape}</p>
@@ -91,48 +127,48 @@
         </div>
         <div class="comments-footer clearfix"></div>
     </div>
-<script>  
-    $(document).ready(function(){
-        $('.modal-trigger-create-message').leanModal({
-            ready: function() { 
-                var notHide = false;
-                var onWrapper = false;
-                $('.lean-overlay').on('dragenter', function(){
-                    onWrapper = true;
-                    $("#messageContentDropzone").css('border', '3px dashed grey');
-                    $("#messageContentDropzone").text("Přesuňte soubor prosím zde");
-                    $("#messageContentDropzone").show();
-                });
-                $('.lean-overlay').on('dragleave', function() {
-                    if(!notHide) {
-                        $("#messageContentDropzone").hide();  
-                    }
-                    onWrapper = false;
-                });
-                $(".modal-footer").on('dragenter', function(){
-                    $("#messageContentDropzone").show();
-                });
+    <script>  
+        $(document).ready(function(){
+            $('.modal-trigger-create-message').leanModal({
+                ready: function() { 
+                    var notHide = false;
+                    var onWrapper = false;
+                    $('.lean-overlay').on('dragenter', function(){
+                        onWrapper = true;
+                        $("#messageContentDropzone").css('border', '3px dashed grey');
+                        $("#messageContentDropzone").text("Přesuňte soubor prosím zde");
+                        $("#messageContentDropzone").show();
+                    });
+                    $('.lean-overlay').on('dragleave', function() {
+                        if(!notHide) {
+                            $("#messageContentDropzone").hide();  
+                        }
+                        onWrapper = false;
+                    });
+                    $(".modal-footer").on('dragenter', function(){
+                        $("#messageContentDropzone").show();
+                    });
 
-                $('#messageContentDropzone').on('dragenter', function(){
-                    notHide = true;
-                    $("#messageContentDropzone").css('border', '3px dashed red');
-                    $("#messageContentDropzone").text("Upuštěním soubor přiložíte do zprávy");
-                });
-                $('#messageContentDropzone').on('dragleave', function(){
-                    notHide = false;
-                    $("#messageContentDropzone").css('border', '3px dashed grey');
-                    $("#messageContentDropzone").text("Přesuňte soubor prosím zde");
-                    if(!onWrapper) {
+                    $('#messageContentDropzone').on('dragenter', function(){
+                        notHide = true;
+                        $("#messageContentDropzone").css('border', '3px dashed red');
+                        $("#messageContentDropzone").text("Upuštěním soubor přiložíte do zprávy");
+                    });
+                    $('#messageContentDropzone').on('dragleave', function(){
+                        notHide = false;
+                        $("#messageContentDropzone").css('border', '3px dashed grey');
+                        $("#messageContentDropzone").text("Přesuňte soubor prosím zde");
+                        if(!onWrapper) {
+                            $("#messageContentDropzone").hide(); 
+                        }
+                    });
+                    $('#messageContentDropzone').on('drop', function(){
+                        notHide = false;
+                        onWrapper = false;
                         $("#messageContentDropzone").hide(); 
-                    }
-                });
-                $('#messageContentDropzone').on('drop', function(){
-                    notHide = false;
-                    onWrapper = false;
-                    $("#messageContentDropzone").hide(); 
-                });
-            }
-        });
-    });    
-</script>
+                    });
+                }
+            });
+        });    
+    </script>
 </div>

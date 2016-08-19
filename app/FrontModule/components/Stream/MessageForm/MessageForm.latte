@@ -1,18 +1,18 @@
 {snippet messageForm}
 {form form}
-    <div id="messageContentDropzone" style="display: none; text-align: center; padding-top: 15%; font-size: 18px; border: 0 !important; position: absolute; background-color: white; opacity: 0.94; width: 100%; height: 100%; top:0px; left:0px; z-index:999; ">
-        Přesuňte soubor prosím zde
-    </div>
+<div id="messageContentDropzone" style="display: none; text-align: center; padding-top: 15%; font-size: 18px; border: 0 !important; position: absolute; background-color: white; opacity: 0.94; width: 100%; height: 100%; top:0px; left:0px; z-index:999; ">
+    Přesuňte soubor prosím zde
+</div>
 <div class="modal-content">
     <div class="modal-header">
         <div class="user-img left">
             <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
         </div>
         <h4>{$activeUser->name} {$activeUser->surname}</h4>
-    </div>
-    {input text class => 'materialize-textarea'}
-    <ul class="attachments attachments_uploads">        
-    </ul>
+  </div>
+  {input text class => 'materialize-textarea'}
+  <ul class="attachments attachments_uploads">        
+  </ul>
 </div>
 <div class="modal-footer clearfix">
     <div class="attachments-nav">
@@ -41,6 +41,10 @@
     </div>
 </div>
 <script>
+    $(document).ready(function() {
+        $('select').material_select();
+    });
+
     $(".materialize-textarea").on('keydown', function(event) {
         if($(this).val() != "") {
             $(".modal-action").removeClass('disabled');
@@ -99,24 +103,24 @@
             attachTemplate.find(".attachment-label .file-name").text(uploadedFile.file.fileName);
             switch(uploadedFile.file.type) {
                 case 1:
-                    attachTemplate.find(".attachment-icon").addClass('image');
-                    attachTemplate.find(".attachment-icon .material-icons").text('image');
-                    break;
+                attachTemplate.find(".attachment-icon").addClass('image');
+                attachTemplate.find(".attachment-icon .material-icons").text('image');
+                break;
                 case 3:
-                    attachTemplate.find(".attachment-icon").addClass('document');
-                    attachTemplate.find(".attachment-icon .material-icons").text('insert_drive_file');
-                    break;
+                attachTemplate.find(".attachment-icon").addClass('document');
+                attachTemplate.find(".attachment-icon .material-icons").text('insert_drive_file');
+                break;
                 case 4:
-                    attachTemplate.find(".attachment-icon").addClass('spreadsheet');
-                    attachTemplate.find(".attachment-icon .material-icons").text('equalizer');
-                    break;
+                attachTemplate.find(".attachment-icon").addClass('spreadsheet');
+                attachTemplate.find(".attachment-icon .material-icons").text('equalizer');
+                break;
                 case 5:
-                    attachTemplate.find(".attachment-icon").addClass('presentation');
-                    attachTemplate.find(".attachment-icon .material-icons").text('videocam');
-                    break;
+                attachTemplate.find(".attachment-icon").addClass('presentation');
+                attachTemplate.find(".attachment-icon .material-icons").text('videocam');
+                break;
                 default:
-                    attachTemplate.find(".attachment-icon").addClass('unknown');
-                    attachTemplate.find(".attachment-icon .material-icons").text('help_outline');
+                attachTemplate.find(".attachment-icon").addClass('unknown');
+                attachTemplate.find(".attachment-icon .material-icons").text('help_outline');
             }
             
             attachTemplate.find(".attached-file").attr('href', uploadedFile.file.fullPath);

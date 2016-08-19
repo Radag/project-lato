@@ -36,11 +36,13 @@
     {/if}
     <div class="comments-footer clearfix">
         {form form}
-        <div class="user-img left">
+        <div class="user-img">
             <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
         </div>
-        {input text class => 'materialize-textarea'}
-        <button class="btn btn-flat waves-effect waves-dark" type="file" name="action">
+        <div class="textarea-wrapper">
+            {input text class => 'materialize-textarea'}
+        </div>
+        <button class="btn btn-flat" type="file" name="action">
             <i class="material-icons">attach_file</i>
         </button>
         <button class="btn btn-flat waves-effect waves-dark" type="submit" name="action">
