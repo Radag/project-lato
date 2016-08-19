@@ -94,9 +94,14 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
             return $user;
         }
         
-        public function assignProfileImage(\App\Model\Entities\User $user, $idFile)
+        public function assignProfileImage(\App\Model\Entities\User $user, $file)
         {
-            $this->database->query("UPDATE user SET PROFILE_IMAGE=? WHERE ID_USER=?", $idFile, $user->id);
+            $this->database->query("UPDATE user SET PROFILE_IMAGE=? WHERE ID_USER=?", $file['idFile'], $user->id);
+        }
+        
+        public function updateUser($values, $user)
+        {
+            $this->database->query("UPDATE user SET NAME=?, SURNAME=?, EMAIL=?, BIRTHDAY=? WHERE ID_USER=?", $values['name'], $values['surname'], $values['email'], $values['birthday'], $user->id);
         }
 
 }

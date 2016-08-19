@@ -50,33 +50,34 @@ class FileManager extends Nette\Object
     {
         $connId = $this->getFtpConnection();
 
-        //$this->createUserDirectories($connId);
-
         
-
-
+        $createdDirecories = ftp_nlist($connId , self::USER_DIRECTORY . $this->user->getIdentity()->data['URL_ID']);
+        if(empty($createdDirecories)) {
+            $this->createUserDirectories($connId);
+        }
+        
         $date = new \DateTime();
         $timestamp = $date->getTimestamp();
 
         if (ftp_put($connId, '/cdn/' . $path . '/' . $timestamp . '_' . $file->getSanitizedName(), $file->getTemporaryFile(), FTP_BINARY)) {
             if($file->isImage()) {
-                $newFile['ID_FILE'] = self::FILE_TYPE_IMAGE;
+                $newFile['ID_TYPE'] = self::FILE_TYPE_IMAGE;
             } else {
                 if($file->getContentType() == 'application/msword' || $file->getContentType() == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-                    $newFile['ID_FILE'] = self::FILE_TYPE_WORD;
+                    $newFile['ID_TYPE'] = self::FILE_TYPE_WORD;
                 } elseif ($file->getContentType() == 'application/vnd.ms-excel' || $file->getContentType() == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
-                    $newFile['ID_FILE'] = self::FILE_TYPE_EXCEL;
+                    $newFile['ID_TYPE'] = self::FILE_TYPE_EXCEL;
                 } elseif ($file->getContentType() == 'application/vnd.ms-powerpoint' || $file->getContentType() == 'application/vnd.openxmlformats-officedocument.presentationml.presentation') {
-                    $newFile['ID_FILE'] = self::FILE_TYPE_EXCEL;
+                    $newFile['ID_TYPE'] = self::FILE_TYPE_POWERPOINT;
                 } else {
-                    $newFile['ID_FILE'] = self::FILE_TYPE_OTHER;
+                    $newFile['ID_TYPE'] = self::FILE_TYPE_OTHER;
                 }                
             }
             
             $newFile['PATH'] = $path;
             $newFile['FILENAME'] = $timestamp . '_' . $file->getSanitizedName();
             $return['idFile'] = $this->saveNewFile($newFile);
-            $return['type'] = $newFile['ID_FILE'];
+            $return['type'] = $newFile['ID_TYPE'];
             $return['fileName'] = $file->getName();
             $return['fullPath'] = 'https://cdn.lato.cz/' . $path . '/' . $newFile['FILENAME'];
             return $return; 
@@ -103,7 +104,7 @@ class FileManager extends Nette\Object
     {
         $this->database->beginTransaction();
         $this->database->table('file_list')->insert(array(
-            'ID_TYPE' => $file['ID_FILE'],
+            'ID_TYPE' => $file['ID_TYPE'],
             'PATH' => $file['PATH'],
             'FILENAME' => $file['FILENAME']
         ));
