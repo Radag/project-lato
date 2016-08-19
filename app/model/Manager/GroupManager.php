@@ -36,7 +36,10 @@ class GroupManager extends Nette\Object{
     
     public function isUserInGroup($idUser, $idGroup) 
     {
-        $id = $this->database->query("SELECT ID FROM user_group WHERE ID_USER=? AND ID_GROUP=?", $idUser, $idGroup)->fetchField();
+        $id = $this->database->query("SELECT T1.ID_GROUP FROM (SELECT DISTINCT ID_GROUP FROM user_group WHERE ID_USER=?
+            UNION 
+            SELECT DISTINCT ID_GROUP FROM groups WHERE ID_TEACHER=?) T1 WHERE T1.ID_GROUP=?"
+                , $idUser, $idUser, $idGroup)->fetchField();
         return !empty($id);
     }
     

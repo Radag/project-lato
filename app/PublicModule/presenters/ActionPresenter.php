@@ -39,6 +39,8 @@ class ActionPresenter extends BasePresenter
             if($this->user->isLoggedIn()) {
                 if($this->groupManager->isUserInGroup($this->user->id, $action->ID_GROUP)) {
                     $this->template->isInGroup = true;
+                    $this->flashMessage('Již jste členem této skupiny.');
+                    $this->redirect(':Front:Stream:default', array('id'=>$action->URL_ID));
                 } else {
                     $this->template->isInGroup = false;
                 }
