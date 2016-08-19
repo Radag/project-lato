@@ -40,6 +40,16 @@ a {
 
 /* ----- secondary color ----- */
 
+.switch-row {
+    display: flex;
+    margin-bottom: 24px;
+}
+
+.switch-row p {
+    flex-grow: 1;
+    margin: 0 !important;
+}
+
 .switch label input[type=checkbox]:checked+.lever:after {
     background-color: #009688;
 }
@@ -63,7 +73,8 @@ a {
 }
 
 .center-card {
-	margin: 70px auto;
+    margin: auto;
+    margin-top: 5%;
 	width: 400px;
 	background-color: rgba(255, 255, 255, 1);
 }
@@ -91,6 +102,7 @@ input[type="password"] {
 	border-bottom: 1px solid rgba(0, 0, 0, .12);
     margin-bottom: 16px;
 	font-size: 16px;
+    height: 3em;
 }
 
 .center-card .card-content input[type="submit"] {
@@ -145,7 +157,7 @@ input[type="password"] {
 }
 
 .btn-flat {
-    padding: 0 0.5rem;
+    padding: 0 0.5em;
 }
 
 .btn-confirm {
@@ -556,7 +568,7 @@ p.secondary-par strong {
 }
 
 #create-post-modal textarea {
-    min-height: 6rem;
+    min-height: 6em;
 }
 
 #create-post-modal .modal-footer {
@@ -641,7 +653,7 @@ p.secondary-par strong {
 }
 
 #select-post-type a:hover {
-    color: #00ab9d;
+    color: rgba(0, 0, 0, .87);
 }
 
 #select-post-type li i {
@@ -1194,7 +1206,7 @@ p.secondary-par strong {
 }
 
 .card.bottom-spacer {
-    padding-bottom:24px;
+    padding-bottom:16px;
 }
 
 .card-header h1,
@@ -1451,16 +1463,16 @@ p.secondary-par strong {
     clear: both;
     width: 100%;
     line-height: 1em;
-    margin-bottom: 6px;
+    margin-bottom: 3px;
 }
 
 .comment-row .comment-header a {
-    margin-right: 12px;
+    margin-right: 6px;
     font-weight: 500;
 }
 
 .comment-row .comment-header span {
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .38);
     font-size: 12px;
 } 
 
