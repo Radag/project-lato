@@ -1,0 +1,27 @@
+{block content}
+<div class="main">
+    <div class="container">
+        {if !empty($action)}
+            {if $isInGroup}
+                Již jste členem této skupiny
+            {else}
+                <div class="center-card z-depth-2">
+                    <div class="card-header clearfix">
+                        Přidat se do skupiny
+                    </div>
+                    <div class="card-content">
+                        Chcete se přidat do skupiny "{$action->NAME}" ?
+                    </div>
+                    <div class="card-footer">
+                        <a href="{link addToGroup!}">Ano</a>
+                        <a href="{link Homepage:register}">Ne</a>
+                    </div>
+                </div>
+            {/if}
+        {else}
+            ERROR
+        {/if}
+    </div>
+</div>
+
+

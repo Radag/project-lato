@@ -56,7 +56,7 @@ class HomepagePresenter extends BasePresenter
     public function actionDefault()
     {
         if($this->user->isLoggedIn()) {
-            $this->redirect(':Front:Stream:groups');
+          $this->redirect(':Front:Stream:groups');  
         }
     }    
 }

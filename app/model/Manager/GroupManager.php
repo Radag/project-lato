@@ -34,6 +34,12 @@ class GroupManager extends Nette\Object{
         $this->database->query("UPDATE user_group SET LAST_VISIT=NOW() WHERE ID_USER=? AND ID_GROUP=?", $user->id, $idGroup);
     }
     
+    public function isUserInGroup($idUser, $idGroup) 
+    {
+        $id = $this->database->query("SELECT ID FROM user_group WHERE ID_USER=? AND ID_GROUP=?", $idUser, $idGroup)->fetchField();
+        return !empty($id);
+    }
+    
     
     public function getUserGroups(User $user)
     {
@@ -144,7 +150,7 @@ class GroupManager extends Nette\Object{
                     WHERE T1.ID_USER=?
                     GROUP BY T1.ID_GROUP
                 ) T5 ON T5.ID_GROUP=T1.ID_GROUP
-                WHERE T1.ID_GROUP IN (" . implode(',', array_keys($userGroups)) . ")", $user->id)->fetchAll();
+                WHERE T1.GROUP_TYPE=2 AND T1.ID_GROUP IN (" . implode(',', array_keys($userGroups)) . ")", $user->id)->fetchAll();
             foreach($groups as $group) {
                 $groupModel = new Group();
                 $teacher = new User();
@@ -167,6 +173,15 @@ class GroupManager extends Nette\Object{
     }
     
  
+    public function addUserToGroup($idGroup, $idUser, $relation, $fromLink = null)
+    {
+        $this->database->table('user_group')->insert(array(
+                'ID_USER' => $idUser,
+                'ID_GROUP' => $idGroup,
+                'ID_RELATION' => $relation,
+                'FROM_LINK' => $fromLink
+        ));
+    }
       
     
 }

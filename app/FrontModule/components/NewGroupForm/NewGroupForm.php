@@ -48,7 +48,8 @@ class NewGroupForm extends Control
         $form->addText('name', 'Název skupiny')
              ->setAttribute('placeholder', 'Název skupiny')
              ->setRequired('Prosím vyplňte název skupiny.');
-        $form->addRadioList('color','Barevné schéma', $colors);
+        $form->addRadioList('color','Barevné schéma', $colors)
+             ->setDefaultValue(1);
         
         
         $form->addSubmit('send', 'Vytvořit');

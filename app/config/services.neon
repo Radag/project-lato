@@ -5,3 +5,4 @@ services:
 	privateMessageManager: App\Model\Manager\PrivateMessageManager
 	notificationManager: App\Model\Manager\NotificationManager
 	fileManager: App\Model\Manager\FileManager
+	publicActionManager: App\Model\Manager\PublicActionManager

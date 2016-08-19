@@ -63,10 +63,20 @@ class SignInForm extends Control
         try {
             $this->getPresenter()->user->setAuthenticator($this->userManager);
             $this->getPresenter()->user->login($values->username, $values->password);
-            $this->flashMessage('přihlášen', 'succes');
+            $this->flashMessage('přihlášen', 'success');
         } catch (\Exception $ex) {
             $this->flashMessage($ex->getMessage(), 'error');
+            $this->presenter->redirect(':Public:Homepage:default');  
         }
-        $this->presenter->redirect(':Front:Stream:groups');   
+        
+        if($this->presenter->session->hasSection('redirect')) {    
+            $redirect = $this->presenter->session->getSection('redirect');
+            $link = ':' . $redirect->link . ':' . $redirect->action;
+            $params = $redirect->params;
+            $redirect->remove();
+            $this->presenter->redirect($link, $params);
+        } else {
+            $this->presenter->redirect(':Front:Stream:groups');  
+        }
     }
 }
