@@ -641,7 +641,7 @@ p.secondary-par strong {
 }
 
 #select-post-type a:hover {
-    color: rgba(0, 0, 0, .87);
+    color: #00ab9d;
 }
 
 #select-post-type li i {
@@ -736,6 +736,7 @@ p.secondary-par strong {
 .modal .modal-footer .btn,
 .modal .modal-footer .btn-flat {
     margin: 0;
+    float: none;
 }
 
 .modal .modal-footer .modal-footer-help {
@@ -1502,7 +1503,7 @@ p.secondary-par strong {
 
 .comments-footer button {
     color: rgba(0, 0, 0, .47);
-    margin-left: 4px;
+    margin-left: 6px;
     height: 36px;
     width: 36px;
     line-height: 36px;
