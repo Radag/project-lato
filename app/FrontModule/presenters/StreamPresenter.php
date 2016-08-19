@@ -110,6 +110,7 @@ class StreamPresenter extends BasePresenter
         $this->activeGroup = $group;
         $this->template->activeGroup = $this->activeGroup;
         $this->template->activeUser = $this->activeUser;
+        $this->template->groupMembers = $this->groupManager->getGroupUsers($group->id);
         
     }
 }

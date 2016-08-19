@@ -87,6 +87,7 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
             $user->name = $userData->NAME;
             $user->email = $userData->EMAIL;
             $user->urlId = $userData->URL_ID;
+            $user->username = $userData->USERNAME;
             if($userData->PROFILE_FILENAME) {
                 $user->profileImage = "https://cdn.lato.cz/" . $userData->PROFILE_PATH . "/" . $userData->PROFILE_FILENAME;
             }

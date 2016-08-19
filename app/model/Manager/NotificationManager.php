@@ -47,6 +47,15 @@ class NotificationManager extends Nette\Object{
         return $return;
     }
     
+    public function addNotification(Notification $notification)
+    {
+        $this->database->table('notification')->insert(array(
+                'TEXT' => $notification->text,
+                'TITLE' => $notification->title,
+                'ID_USER' => $notification->idUser
+        ));
+    }
+    
     
    
       

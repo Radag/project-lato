@@ -110,10 +110,21 @@
 
                 <div class="card bottom-spacer">
                     <div class="card-header">
-                        <h3>Informace o skupině</h3>
+                        <h3>Členové skupiny</h3>
                     </div>
                     <div class="card-content clearfix">
-                        <p class="secondary-par left">Tato skupina nemá vyplněný popis</p> 
+                        <p class="secondary-par left">
+                            <ul class="collection">
+                            {foreach $groupMembers as $member}
+                                <li class="collection-item avatar">
+                                  <img src="{$member->profileImage}" alt="" class="circle">
+                                  <span class="title">{$member->username}</span>
+                                  {if !empty($member->name)}<p>{$member->name} {$member->surname}</p>{/if}
+                                  <a href="{plink Profile:default 'idUser'=>$member->id}" class="secondary-content"><i class="material-icons">perm_identity</i></a>
+                                </li>
+                            {/foreach}
+                            </ul>
+                        </p> 
                     </div>
                 </div>
             </div>

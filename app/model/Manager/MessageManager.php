@@ -12,6 +12,8 @@ use Nette;
 use App\Model\Entities\Message;
 use App\Model\Entities\Comment;
 use App\Model\Entities\User;
+use App\Model\Manager\NotificationManager;
+use App\Model\Manager\GroupManager;
 
 /**
  * Description of MessageManager
@@ -24,10 +26,17 @@ class MessageManager extends Nette\Object{
     /** @var Nette\Database\Context */
     private $database;
 
-
-    public function __construct(Nette\Database\Context $database)
+    /** @var NotificationManager */
+    private $notificationManager;
+    
+    /** @var GroupManager */
+    private $groupManager;
+    
+    public function __construct(Nette\Database\Context $database, NotificationManager $notificationManager, GroupManager $groupManager)
     {
-            $this->database = $database;
+        $this->database = $database;
+        $this->notificationManager = $notificationManager;
+        $this->groupManager = $groupManager;
     }
     
     public function createMessage(Message $message, $attachments)
@@ -43,6 +52,22 @@ class MessageManager extends Nette\Object{
         foreach($attachments as $idAttach) {
             $this->addAttachment($idAttach, $idMessage);
         }
+        
+        $group = $this->groupManager->getGroup($message->idGroup);
+        
+        $notification = new \App\Model\Entities\Notification;
+        $notification->title = "Nový přispěvek";
+        $notification->text = "Ve skupině " . $group->name . " je nový příspěvěk od " . $message->getUser()->username;
+        $users = $this->groupManager->getGroupUsers($message->idGroup);
+        
+        foreach($users as $user) {
+            if($user->id != $message->getUser()->id) {
+                $notification->idUser = $user->id;
+                $this->notificationManager->addNotification($notification);          
+            }
+        }
+        
+        
         
         $this->database->commit();
     }

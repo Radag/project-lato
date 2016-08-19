@@ -11,6 +11,8 @@ namespace App\Model\Manager;
 use Nette;
 use App\Model\Entities\Group;
 use App\Model\Entities\User;
+use App\Model\Manager\NotificationManager;
+use App\Model\Manager\UserManager;
 
 /**
  * Description of MessageManager
@@ -22,11 +24,19 @@ class GroupManager extends Nette\Object{
     
     /** @var Nette\Database\Context */
     private $database;
+    
+    /** @var NotificationManager */
+    private $notificationManager;
+    
+    /** @var UserManager */
+    private $userManager;
 
 
-    public function __construct(Nette\Database\Context $database)
+    public function __construct(Nette\Database\Context $database, NotificationManager $notificationManager, UserManager $userManager)
     {
         $this->database = $database;
+        $this->notificationManager = $notificationManager;
+        $this->userManager = $userManager;
     }
 
     public function setGroupVisited(User $user, $idGroup)
@@ -192,6 +202,15 @@ class GroupManager extends Nette\Object{
                 'ID_RELATION' => $relation,
                 'FROM_LINK' => $fromLink
         ));
+        
+        $user = $this->userManager->get($idUser);
+        $group = $this->getGroup($idGroup);
+        $notification = new \App\Model\Entities\Notification;
+        $notification->idUser = $group->teacher->id;
+        $notification->title = "Nový člen";
+        $notification->text = "Do skupiny " . $group->name . " se přidal nový člen " . $user->username . ".";
+  
+        $this->notificationManager->addNotification($notification);
     }
     
     public function switchSharing(Group $group, $state) 
@@ -216,6 +235,29 @@ class GroupManager extends Nette\Object{
         
         $this->database->commit();
         
+    }
+    
+    public function getGroupUsers($idGroup)
+    {
+         $users = $this->database->query("SELECT DISTINCT T1.ID_USER, T2.NAME, T2.SURNAME, T2.USERNAME, T2.PROFILE_PATH, T2.PROFILE_FILENAME FROM 
+            (SELECT ID_TEACHER AS ID_USER FROM groups WHERE ID_GROUP=? 
+            UNION SELECT ID_USER FROM user_group WHERE ID_GROUP=?) T1
+            LEFT JOIN vw_user_detail T2 ON T1.ID_USER = T2.ID_USER", $idGroup, $idGroup)->fetchAll();
+        
+         $userArray = array();
+         foreach($users as $us) {
+             $user = new \App\Model\Entities\User;
+             $user->id = $us->ID_USER;
+             $user->surname = $us->SURNAME;
+             $user->name = $us->NAME;
+             $user->username = $us->USERNAME;
+             if($us->PROFILE_FILENAME) {
+                $user->profileImage = "https://cdn.lato.cz/" . $us->PROFILE_PATH . "/" . $us->PROFILE_FILENAME;
+             }
+             $userArray[] = $user;
+             
+         }
+         return $userArray;
     }
       
     
