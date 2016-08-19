@@ -65,6 +65,7 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
 			$this->database->table('user')->insert(array(
 				'USERNAME' => $username,
 				'PASSWORD' => Passwords::hash($password),
+                                'URL_ID' => Nette\Utils\Strings::webalize($username),
 			));
 		} catch (Nette\Database\UniqueConstraintViolationException $e) {
 			throw new DuplicateNameException;

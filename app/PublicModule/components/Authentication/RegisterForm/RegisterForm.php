@@ -50,7 +50,17 @@ class RegisterForm extends Nette\Object
     {
         try {
             $this->userManager->add($values->username, $values->password);
-            $this->flashMessage('registrován', 'succes');
+            $this->flashMessage('Byl jste zaregistrován. Vítejte !', 'succes');
+            $this->getPresenter()->user->login($values->username, $values->password);
+            if($this->presenter->session->hasSection('redirect')) {    
+                $redirect = $this->presenter->session->getSection('redirect');
+                $link = ':' . $redirect->link . ':' . $redirect->action;
+                $params = $redirect->params;
+                $redirect->remove();
+                $this->presenter->redirect($link, $params);
+            } else {
+                $this->presenter->redirect(':Front:Stream:groups');  
+            }
         } catch (\Exception $ex) {
             $this->flashMessage($ex->getMessage(), 'error');
         }

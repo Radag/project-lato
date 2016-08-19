@@ -45,10 +45,23 @@ class HomepagePresenter extends BasePresenter
     public function registerFormSucceeded(Form $form, $values) 
     {
         try {
+            $pass = $values->password;
             $this->userManager->add($values->username, $values->password);
-            $this->flashMessage('registrován', 'succes');
+            $this->flashMessage('Byl jste zaregistrován. Vítejte !', 'succes');
+            
         } catch (\Exception $ex) {
             $this->flashMessage($ex->getMessage(), 'error');
+        }
+        
+        $this->user->login($values->username, $pass);
+        if($this->session->hasSection('redirect')) {    
+            $redirect = $this->session->getSection('redirect');
+            $link = ':' . $redirect->link . ':' . $redirect->action;
+            $params = $redirect->params;
+            $redirect->remove();
+            $this->redirect($link, $params);
+        } else {
+            $this->redirect(':Front:Stream:groups');  
         }
         
     }
