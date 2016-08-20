@@ -70,9 +70,9 @@
                         {/form}
                         {if $activeGroup->sharingOn == 1}
                         <p class="secondary-par left">Zápis do této skupiny mohou ostatní uživatelé provést pomocí kódu <strong>{$activeGroup->sharingCode}</strong></p>
-                        <p><a class="modal-trigger" href="#add-user-to-group">
-                            Zobrazit další možnosti
-                        </a></p>
+                        <a class="btn-flat light-gray card-bottom modal-trigger" href="#add-user-to-group">
+                            Zobrazit více možností
+                        </a>
                         <div id="add-user-to-group" class="modal">
                             <div class="modal-content">
                                 <h3>Možnosti sdílení</h3>
@@ -113,18 +113,21 @@
                         <h3>Členové skupiny</h3>
                     </div>
                     <div class="card-content clearfix">
-                        <p class="secondary-par left">
-                            <ul class="collection">
+                        <p class="secondary-par">Uživatelé, kteří byli v poslední době aktivní.</p>
+                            <ul class="user-collection">
                             {foreach $groupMembers as $member}
-                                <li class="collection-item avatar">
-                                  <img src="{$member->profileImage}" alt="" class="circle">
-                                  <span class="title">{$member->username}</span>
-                                  {if !empty($member->name)}<p>{$member->name} {$member->surname}</p>{/if}
-                                  <a href="{plink Profile:default 'idUser'=>$member->id}" class="secondary-content"><i class="material-icons">perm_identity</i></a>
+                                <li>
+                                    <a href="{plink Profile:default 'idUser'=>$member->id}" class="user">
+                                      <img src="{$member->profileImage}" alt="" class="user-img">
+                                      <span class="title">{if !empty($member->name)}{$member->name} {$member->surname}{/if}</span>
+                                    </a>
+                                    <a href="#"><i class="material-icons">comment</i></a>
                                 </li>
                             {/foreach}
                             </ul>
-                        </p> 
+                            <a class="btn-flat light-gray card-bottom modal-trigger" href="#add-user-to-group">
+                            Zobrazit vše
+                        </a>
                     </div>
                 </div>
             </div>

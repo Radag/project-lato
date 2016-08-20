@@ -156,8 +156,21 @@ input[type="password"] {
 	color: #2979FF;
 }
 
+.btn, 
 .btn-flat {
-    padding: 0 0.5em;
+    font-weight: 500;
+}
+
+.btn-flat {
+    padding: 0;
+}
+
+.btn-flat.colored {
+    color: #2979FF;
+}
+
+.btn-flat.light-gray {
+    color: rgba(0, 0, 0, .47);
 }
 
 .btn-confirm {
@@ -510,9 +523,9 @@ p.secondary-par strong {
 
 @media only screen and (max-width: 600px) {
     .modal {
-        top: 6px !important;
-        width: calc(100% - 12px) !important;
-        max-height: calc(100% - 12px) !important;
+/*        top: 6px !important; */
+        width: calc(100% - 24px) !important;
+/*        max-height: calc(100% - 12px) !important;  */
     }
 }
 
@@ -1190,6 +1203,11 @@ p.secondary-par strong {
     }
 }
 
+.card-bottom {
+    margin-top: 16px;
+    margin-bottom: -16px;
+}
+
 .card.simple {
     display: flex;
     padding: 20px 24px;
@@ -1775,7 +1793,33 @@ p.secondary-par strong {
     height: 72px;
 }
 
+.user-collection {
+    margin: 24px 0;
+}
 
+.user-collection li {
+    margin: 16px 0;
+    display: flex;
+}
+
+.user-collection li a {
+    display: flex;
+    align-items: center;
+}
+
+.user-collection li a.user {
+    flex-grow: 1;
+}
+
+.user-collection li .title {
+    flex-grow: 1;
+    font-weight: 500;
+    color: rgba(0, 0, 0, .75);
+}
+
+.user-collection li a .material-icons {
+    color: rgba(0, 0, 0, .38);
+}
 
 
 
