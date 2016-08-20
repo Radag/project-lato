@@ -16,4 +16,5 @@ $(function() {
     $("#flashMessagesWrapper .flash").each(function(index, value){
         Materialize.toast($(value).text(), 4000);
     });
+   
 });

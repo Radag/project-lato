@@ -17,7 +17,9 @@ class Notification {
     public $title = null;
     public $text = null;
     public $icon = null;
-    public $idUser;
+    public $idUser = null;
+    public $idGroup = null;
+    public $participant = null;
     
     
     function getId() {

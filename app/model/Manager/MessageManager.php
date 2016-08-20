@@ -57,7 +57,9 @@ class MessageManager extends Nette\Object{
         
         $notification = new \App\Model\Entities\Notification;
         $notification->title = "Nový přispěvek";
-        $notification->text = "Ve skupině " . $group->name . " je nový příspěvěk od " . $message->getUser()->username;
+        $notification->participant = $message->getUser();
+        $notification->text = $message->text;
+        $notification->idGroup = $message->idGroup;
         $users = $this->groupManager->getGroupUsers($message->idGroup);
         
         foreach($users as $user) {

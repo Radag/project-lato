@@ -87,7 +87,8 @@ class TopPanel extends Control
                 $others[] = $group;
             }
         }
-        $template->notifications = $this->notificationManager->getMessages($this->activeUser);
+        $template->notifications = $this->notificationManager->getNotifications($this->activeUser);
+        $template->unreadNotifications = $this->notificationManager->getUnreadNumber($this->activeUser);
         $template->privateMessages = $this->privateMessageManager->getMessages($this->activeUser);
         $template->subjects = $subject;
         $template->groups = $others;
@@ -99,6 +100,18 @@ class TopPanel extends Control
     {
         $form = new NewGroupForm($this->groupManager);
         return $form;
+    }
+    
+    
+    public function handlePrivateMessagesRead()
+    {
+        
+    }
+    
+    public function handleNotificationRead()
+    {
+        $this->notificationManager->setNotificationRead($this->activeUser->id);
+        $this->redrawControl('notificationCount');
     }
     
 }
