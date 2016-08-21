@@ -99,4 +99,15 @@ class Stream extends Control
             return $commentForm;
         });
     }
+    
+    public function handleDeleteMessage($idMessage) 
+    {
+        
+        $message = $this->messageManager->getMessage($idMessage);
+        if($message->user->id === $this->activeUser->id) {
+            $this->messageManager->deleteMessage($idMessage);
+            $this->presenter->flashMessage('Zpráva byla smazána.');
+            $this->presenter->redirect('this');
+        }
+    }
 }

@@ -7,6 +7,7 @@ $(function() {
         },
         success: function (data) {
             $("#main-progress-loader").hide();
+            $('.dropdown-button').dropdown();
         },
         error: function(data) {
             $("#main-progress-loader").hide();

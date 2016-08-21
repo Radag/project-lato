@@ -26,4 +26,5 @@ class Group {
     
     public $sharingOn = null;
     public $sharingCode = null;
+    public $deleted = null;
 }

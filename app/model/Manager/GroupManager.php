@@ -260,5 +260,5 @@ class GroupManager extends Nette\Object{
          return $userArray;
     }
       
-    
+        
 }

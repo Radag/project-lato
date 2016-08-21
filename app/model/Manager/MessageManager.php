@@ -92,7 +92,7 @@ class MessageManager extends Nette\Object{
                 FROM message T1 
                 LEFT JOIN user T2 ON T1.ID_USER=T2.ID_USER 
                 LEFT JOIN file_list T3 ON T3.ID_FILE=T2.PROFILE_IMAGE
-                WHERE T1.ID_GROUP=?
+                WHERE T1.ID_GROUP=? AND T1.DELETED=0
                 ORDER BY CREATED_WHEN DESC LIMIT 10", $group->id)->fetchAll();
         foreach($messages as $message) {
             $mess = new Message();
@@ -110,6 +110,30 @@ class MessageManager extends Nette\Object{
         }
         
         return $return;
+    }
+    
+    public function getMessage($idMessage)
+    {
+        $message = $this->database->query("SELECT T1.TEXT, T1.ID_MESSAGE, T2.ID_USER, T2.NAME, T2.SURNAME, T1.CREATED_WHEN,
+                        T3.PATH,
+                        T3.FILENAME
+                FROM message T1 
+                LEFT JOIN user T2 ON T1.ID_USER=T2.ID_USER 
+                LEFT JOIN file_list T3 ON T3.ID_FILE=T2.PROFILE_IMAGE
+                WHERE T1.ID_MESSAGE=? AND T1.DELETED=0", $idMessage)->fetch();
+
+        $mess = new Message();
+        $user = new User();
+        $user->surname = $message->SURNAME;
+        $user->name = $message->NAME;
+        $user->id = $message->ID_USER;
+        $user->profileImage = "https://cdn.lato.cz/" . $message->PATH . "/" . $message->FILENAME;
+        $mess->text = $message->TEXT;
+        $mess->id = $message->ID_MESSAGE;
+        $mess->created = $message->CREATED_WHEN;
+        $mess->user = $user;
+        $mess->attachments = $this->getAttachments($message->ID_MESSAGE);
+        return $mess;
     }
     
     public function getAttachments($idMessage) {
@@ -180,6 +204,12 @@ class MessageManager extends Nette\Object{
     {
         $count = $this->database->query("SELECT COUNT(*) FROM message WHERE CREATED_WHEN>=?", $date)->fetch();
         return current($count);
+    }
+    
+    public function deleteMessage($idMessage)
+    {
+        $data = array('DELETED' => 1);
+        $this->database->query("UPDATE message SET ? WHERE ID_MESSAGE=?", $data, $idMessage);
     }
     
     public function addAttachment($idFile, $idMessage = null)
