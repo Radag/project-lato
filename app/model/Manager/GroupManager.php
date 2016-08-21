@@ -21,6 +21,9 @@ use App\Model\Manager\UserManager;
  */
 class GroupManager extends Nette\Object{
  
+    const RELATION_OWNER = 3;
+    const RELATION_TEACHER = 1;
+    const RELATION_STUDENT = 2;
     
     /** @var Nette\Database\Context */
     private $database;
@@ -48,7 +51,7 @@ class GroupManager extends Nette\Object{
     {
         $id = $this->database->query("SELECT T1.ID_GROUP FROM (SELECT DISTINCT ID_GROUP FROM user_group WHERE ID_USER=?
             UNION 
-            SELECT DISTINCT ID_GROUP FROM groups WHERE ID_TEACHER=?) T1 WHERE T1.ID_GROUP=?"
+            SELECT DISTINCT ID_GROUP FROM groups WHERE ID_OWNER=?) T1 WHERE T1.ID_GROUP=?"
                 , $idUser, $idUser, $idGroup)->fetchField();
         return !empty($id);
     }
@@ -60,7 +63,7 @@ class GroupManager extends Nette\Object{
         $yourGroups = $this->database->query("SELECT T1.ID_GROUP, T3.MAIN_COLOR, T2.NAME, T2.SHORTCUT, T2.GROUP_TYPE, T2.URL_ID FROM (
             SELECT DISTINCT ID_GROUP FROM user_group WHERE ID_USER=?
             UNION 
-            SELECT DISTINCT ID_GROUP FROM groups WHERE ID_TEACHER=?) T1
+            SELECT DISTINCT ID_GROUP FROM groups WHERE ID_OWNER=?) T1
             LEFT JOIN groups T2 ON  T1.ID_GROUP = T2.ID_GROUP
             LEFT JOIN group_color_scheme T3 ON T2.COLOR_SCHEME=T3.ID_SCHEME", $user->id, $user->id)->fetchAll(); 
         
@@ -84,18 +87,17 @@ class GroupManager extends Nette\Object{
         $this->database->beginTransaction();
         $this->database->table('groups')->insert(array(
                 'NAME' => $group->name,
-                'ID_TEACHER' => $group->teacher->id,
+                'ID_OWNER' => $group->owner->id,
                 'GROUP_TYPE' => $group->groupType,
                 'SHORTCUT' => $group->shortcut,
                 'COLOR_SCHEME' => $group->mainColor
         ));
         $idGroup = $this->database->query("SELECT MAX(ID_GROUP) FROM groups")->fetchField();
-        
+               
         $urlId = $idGroup . '_' . \Nette\Utils\Strings::webalize($group->name);
         $this->database->query("UPDATE groups SET URL_ID=? WHERE ID_GROUP=?", $urlId, $idGroup);
-        
-        $this->database->commit();
-        
+              
+        $this->database->commit();         
     }
     
     public function getGroup($idGroup)
@@ -104,15 +106,15 @@ class GroupManager extends Nette\Object{
                 T1.ID_GROUP,
                 T1.NAME,
                 T1.SHORTCUT,
-                T2.ID_USER AS TEACHER_ID,
-                T2.NAME AS TEACHER_NAME,
-                T2.SURNAME AS TEACHER_SURNAME,
+                T1.ID_OWNER AS OWNER_ID,
+                T2.NAME AS OWNER_NAME,
+                T2.SURNAME AS OWNER_SURNAME,
                 T3.MAIN_COLOR,
                 T4.STUDENTS,
                 T5.SHARE_BY_LINK,
                 T6.HASH_CODE
         FROM groups T1
-        LEFT JOIN user T2 ON T1.ID_TEACHER=T2.ID_USER
+        LEFT JOIN user T2 ON T1.ID_OWNER=T2.ID_USER
         LEFT JOIN group_color_scheme T3 ON T1.COLOR_SCHEME=T3.ID_SCHEME
         LEFT JOIN (SELECT COUNT(ID_USER) AS STUDENTS, ID_GROUP FROM user_group GROUP BY ID_GROUP) T4 ON T4.ID_GROUP=T1.ID_GROUP
         LEFT JOIN group_sharing T5 ON T1.ID_GROUP=T5.ID_GROUP
@@ -121,15 +123,15 @@ class GroupManager extends Nette\Object{
 
         $groupModel = new Group();
         $user = new User();
-        $user->surname = $group->TEACHER_SURNAME;
-        $user->name = $group->TEACHER_NAME;
-        $user->id = $group->TEACHER_ID;
+        $user->surname = $group->OWNER_SURNAME;
+        $user->name = $group->OWNER_NAME;
+        $user->id = $group->OWNER_ID;
         $groupModel->id = $group->ID_GROUP;
         $groupModel->name = $group->NAME;
         $groupModel->shortcut = $group->SHORTCUT;
         $groupModel->mainColor = $group->MAIN_COLOR;
         $groupModel->numberOfStudents = $group->STUDENTS;
-        $groupModel->teacher = $user;
+        $groupModel->owner = $user;
         $groupModel->sharingOn = $group->SHARE_BY_LINK;
         $groupModel->sharingCode = $group->HASH_CODE;
         
@@ -152,16 +154,16 @@ class GroupManager extends Nette\Object{
                         T1.URL_ID,
                         T1.NAME,
                         T1.SHORTCUT,
-                        T2.NAME AS TEACHER_NAME,
-                        T2.SURNAME AS TEACHER_SURNAME,
-                        T2.ID_USER AS TEACHER_ID,
+                        T2.NAME AS OWNER_NAME,
+                        T2.SURNAME AS OWNER_SURNAME,
+                        T2.ID_USER AS OWNER_ID,
                         T3.MAIN_COLOR,
                         T4.STUDENTS,
                         T5.NEW_MESSAGE,
                         T6.PATH,
                         T6.FILENAME
                 FROM groups T1
-                LEFT JOIN user T2 ON T1.ID_TEACHER=T2.ID_USER
+                LEFT JOIN user T2 ON T1.ID_OWNER=T2.ID_USER
                 LEFT JOIN group_color_scheme T3 ON T1.COLOR_SCHEME=T3.ID_SCHEME
                 LEFT JOIN (SELECT COUNT(ID_USER) AS STUDENTS, ID_GROUP FROM user_group WHERE ID_RELATION=2 GROUP BY ID_GROUP) T4 ON T4.ID_GROUP=T1.ID_GROUP 
                 LEFT JOIN file_list T6 ON T6.ID_FILE=T2.PROFILE_IMAGE
@@ -175,16 +177,16 @@ class GroupManager extends Nette\Object{
             foreach($groups as $group) {
                 $groupModel = new Group();
                 $teacher = new User();
-                $teacher->surname = $group->TEACHER_SURNAME;
-                $teacher->name = $group->TEACHER_NAME;
-                $teacher->id = $group->TEACHER_ID;
+                $teacher->surname = $group->OWNER_SURNAME;
+                $teacher->name = $group->OWNER_NAME;
+                $teacher->id = $group->OWNER_ID;
                 $teacher->profileImage = "https://cdn.lato.cz/" . $group->PATH . "/" . $group->FILENAME;
                 $groupModel->id = $group->ID_GROUP;
                 $groupModel->name = $group->NAME;
                 $groupModel->shortcut = $group->SHORTCUT;
                 $groupModel->mainColor = $group->MAIN_COLOR;
                 $groupModel->numberOfStudents = $group->STUDENTS;
-                $groupModel->teacher = $user;
+                $groupModel->owner = $user;
                 $groupModel->newMessages = $group->NEW_MESSAGE;
                 $groupModel->urlId = $group->URL_ID;
                 $return[] = $groupModel;
@@ -203,14 +205,14 @@ class GroupManager extends Nette\Object{
                 'FROM_LINK' => $fromLink
         ));
         
-        $user = $this->userManager->get($idUser);
-        $group = $this->getGroup($idGroup);
-        $notification = new \App\Model\Entities\Notification;
-        $notification->idUser = $group->teacher->id;
-        $notification->title = "Nový člen";
-        $notification->text = "Do skupiny " . $group->name . " se přidal nový člen " . $user->username . ".";
+//        $user = $this->userManager->get($idUser);
+//        $group = $this->getGroup($idGroup);
+//        $notification = new \App\Model\Entities\Notification;
+//        $notification->idUser = $group->teacher->id;
+//        $notification->title = "Nový člen";
+//        $notification->text = "Do vaší skupiny " . $group->name . " se přidal nový člen " . $user->username . ".";
   
-        $this->notificationManager->addNotification($notification);
+      //  $this->notificationManager->addNotification($notification);
     }
     
     public function switchSharing(Group $group, $state) 
@@ -240,7 +242,7 @@ class GroupManager extends Nette\Object{
     public function getGroupUsers($idGroup)
     {
          $users = $this->database->query("SELECT DISTINCT T1.ID_USER, T2.NAME, T2.SURNAME, T2.USERNAME, T2.PROFILE_PATH, T2.PROFILE_FILENAME FROM 
-            (SELECT ID_TEACHER AS ID_USER FROM groups WHERE ID_GROUP=? 
+            (SELECT ID_OWNER AS ID_USER FROM groups WHERE ID_GROUP=? 
             UNION SELECT ID_USER FROM user_group WHERE ID_GROUP=?) T1
             LEFT JOIN vw_user_detail T2 ON T1.ID_USER = T2.ID_USER", $idGroup, $idGroup)->fetchAll();
         

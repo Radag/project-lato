@@ -58,14 +58,14 @@
                     </a>-->
                 </div>
                 <div class="group-founder">
-                    <a href="{plink Profile:default 'idUser'=>$group->teacher->id}" class="user-img">
-                        <img src="{$group->teacher->profileImage}" alt="{$group->teacher->name}">
+                    <a href="{plink Profile:default 'idUser'=>$group->owner->id}" class="user-img">
+                        <img src="{$group->owner->profileImage}" alt="{$group->owner->name}">
                     </a>
                     <div class="user-info">
-                        <a href="{plink Profile:default 'idUser'=>$group->teacher->id}" class="user-name">
-                            {$group->teacher->name} {$group->teacher->surname}
+                        <a href="{plink Profile:default 'idUser'=>$group->owner->id}" class="user-name">
+                            {$group->owner->name} {$group->owner->surname}
                         </a>
-                        <div class="user-role">Učitel</span>
+                        <div class="user-role">Zakladatel</span>
                         </div>
                     </div>
                 </div>

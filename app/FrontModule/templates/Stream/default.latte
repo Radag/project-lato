@@ -46,7 +46,7 @@
                         <p class="secondary-par">V tuto cvhíli nemáte v předmětu zvěřejněny žádné povinnosti</p>  
                     </div>
                 </div>
-                <div class="card bottom-spacer" n:if="$activeGroup->teacher->id === $activeUser->id">
+                <div class="card bottom-spacer" n:if="$activeGroup->owner->id === $activeUser->id">
                     <div class="card-header">
                         <h3>Nastavení sdílení</h3>
                     </div>

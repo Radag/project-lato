@@ -13,6 +13,9 @@ namespace App\Model\Entities;
  */
 class Group {
 
+    const TYPE_SUBJECT = 1;
+    const TYPE_GROUP = 2;
+    
     public $id = null;
     public $urlId = null;
     public $name = null;
@@ -23,6 +26,7 @@ class Group {
     public $numberOfStudents = null;
     public $groupType = null;
     public $newMessages = null;
+    public $owner = null;
     
     public $sharingOn = null;
     public $sharingCode = null;

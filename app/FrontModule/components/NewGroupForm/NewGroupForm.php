@@ -67,13 +67,13 @@ class NewGroupForm extends Control
     
     public function processForm(Form $form, $values) 
     {
-        $teacher = new \App\Model\Entities\User();
-        $teacher->id = $this->getPresenter()->getUser()->id;
+        $owner = new \App\Model\Entities\User;
+        $owner->id = $this->getPresenter()->getUser()->id;
         
-        $group = new \App\Model\Entities\Group();
+        $group = new \App\Model\Entities\Group;
         $group->name = trim($values['name']);
-        $group->teacher = $teacher;
-        $group->groupType = 2;
+        $group->owner = $owner;
+        $group->groupType = \App\Model\Entities\Group::TYPE_GROUP;
         $group->shortcut = strtoupper(substr($values['name'], 0, 3));
         $group->mainColor = $values['color'];        
         $this->groupManager->createGroup($group);
