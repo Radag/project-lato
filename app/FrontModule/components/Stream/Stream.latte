@@ -13,12 +13,12 @@
         <div class="modal-content">
             <h3>Vyberte typ příspěveku</h3>
             <ul id="select-post-type">
-            <li><a href="#create-post-modal" class="modal-close modal-trigger-create-message"><i class="material-icons">message</i><span class="title">Vytvořit oznámení</span></a></li>
-            <li>
-                <a href="#"><i class="material-icons">library_books</i><span class="title">Vložit studijní materiál</span></a>
-            </li>
-            <li><a href="#"><i class="material-icons">event</i><span class="title">Vytvořit povinnost</span></a></li>
-            <li><a href="#"><i class="material-icons">assignment</i><span class="title">Vytvořit úkol</span></a></li>
+                <li><a href="#create-post-modal" class="modal-close modal-trigger-create-message"><i class="material-icons">message</i><span class="title">Vytvořit oznámení</span></a></li>
+                <li>
+                    <a href="#"><i class="material-icons">library_books</i><span class="title">Vložit studijní materiál</span></a>
+                </li>
+                <li><a href="#"><i class="material-icons">event</i><span class="title">Vytvořit povinnost</span></a></li>
+                <li><a href="#"><i class="material-icons">assignment</i><span class="title">Vytvořit úkol</span></a></li>
             </ul>                                        
         </div>
         <div class="modal-footer clearfix">
@@ -42,27 +42,25 @@
     </div>
     {snippet messages}
     {foreach $messages as $message}  
-    <div class="card clearfix" id="message-box-num_{$message->id}">
-        <div class="card-info">
-            <div class="card-date">Zveřejněno {$message->getCreated()|date:"j. n. Y v H:i"}</div>
-            <div class="flex-spacer"></div>
-            <a class="btn-flat btn-icon dropdown-button card-options" data-activates="message_dropdown_{$message->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
-                <i class="material-icons">more_vert</i>
-            </a>
-            <ul id='message_dropdown_{$message->id}' class='dropdown-content'>
-                <li><a href="{link deleteMessage! idMessage=>$message->id}">Smazat příspěvek</a></li>
-            </ul>
-        </div>
+    <div class="card clearfix" id="message-box-num_{$message->id}">   
         <div class="card-header">
-
             <div class="card-title">
-                <a href="{plink Profile:default 'idUser'=>$message->user->id}" class="user-img">
+                <a href="{plink Profile:default 'idUser'=>$message->user->id}" class="user-img large">
                     <img src="{$message->user->profileImage}" alt="{$message->user->name}">
                 </a>
                 <h2 class="truncate">
                     <a href="{plink Profile:default 'idUser'=>$message->user->id}">{$message->user->name} {$message->user->surname}</a>
-                    
+                    <span class="card-date">Zveřejněno {$message->getCreated()|date:"j. n. Y v H:i"}</span>
                 </h2>
+                <a class="btn-flat btn-icon dropdown-button card-options" data-activates="message_dropdown_{$message->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                    <i class="material-icons">more_vert</i>
+                </a>
+                <ul id='message_dropdown_{$message->id}' class='dropdown-content'>
+                    <li><a href="{link deleteMessage! idMessage=>$message->id}">Přesunout nahoru</a></li>
+                    <li><a href="{link deleteMessage! idMessage=>$message->id}">Sledovat</a></li>
+                    <li class="divider"></li>
+                    <li><a href="{link deleteMessage! idMessage=>$message->id}">Smazat</a></li>
+                </ul>
             </div>
         </div>
         <div class="card-content clearfix">
