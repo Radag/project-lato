@@ -5,10 +5,28 @@
 </div>
 <div class="modal-content">
     <div class="modal-header">
-        <div class="user-img left">
+        <div class="user-img">
             <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
         </div>
-        <h4>{$activeUser->name} {$activeUser->surname}</h4>
+        <div class="user-img">
+            <div class="post-type-icon">
+                <i class="material-icons full-size">library_books</i>
+            </div>
+        </div>
+        <div class="user-img">
+            <div class="post-type-icon">
+                <i class="material-icons full-size">event</i>
+            </div>
+        </div>
+        <div class="user-img">
+            <div class="post-type-icon">
+                <i class="material-icons full-size">assignment</i>
+            </div>
+        </div>
+        <h4>{$activeUser->name} {$activeUser->surname} / Studijní materiál / Povinnost / Úkol</h4>
+    </div>
+    <div class="input-field">
+    <input placeholder="Název (nepovinné)" id="first_name" type="text">
   </div>
   {input text class => 'materialize-textarea'}
   <ul class="attachments attachments_uploads" style="display: none;">        

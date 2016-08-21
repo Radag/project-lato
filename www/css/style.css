@@ -32,6 +32,10 @@ a {
     font-size: 22px !important;
 }
 
+.material-icons.full-size {
+    font-size: 24px !important;
+}
+
 .truncate {
     white-space: nowrap;
     overflow: hidden;
@@ -101,8 +105,8 @@ input[type="date"],
 input[type="password"] {
 	border-bottom: 1px solid rgba(0, 0, 0, .12);
     margin-bottom: 16px;
-	font-size: 16px;
     height: 3em;
+    font-size: 15px;
 }
 
 .center-card .card-content input[type="submit"] {
@@ -455,7 +459,7 @@ ul.dropdown-content.main-nav-dropdown {
 }
 
 .dropdown-content {
-    padding: 6px 0;
+    padding: 6px 0 !important;
     box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
     width: 200px !important;
 }
@@ -544,9 +548,9 @@ p.secondary-par strong {
 }
 
 .modal-header {
-    height: 48px;
     margin-bottom: 24px;
     display: flex;
+    align-items: center;
 }
 
 @media only screen and (max-width: 600px) {
@@ -555,15 +559,8 @@ p.secondary-par strong {
     }
 }
 
-.modal .user-img {
-    height: 48px;
-    width: 48px;
-}
-
 @media only screen and (max-width: 600px) {
     .modal .user-img {
-        height: 42px;
-        width: 42px;
         margin-right: 12px;
     }
 }
@@ -572,14 +569,12 @@ p.secondary-par strong {
     font-size: 17px;
     font-weight: 500;
     color: rgba(0, 0, 0, .87);
-    line-height: 48px;
     margin: 0;
     flex-grow: 1;
 }
 
 @media only screen and (max-width: 600px) {
     .modal h4 {
-        line-height: 42px;
         font-size: 16px;
     }
 }
@@ -694,6 +689,16 @@ p.secondary-par strong {
     line-height: 48px;
 }
 
+.post-type-icon {
+    background-color: #00b852;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 /* ----- CREATE POST MODAL ATTACHMENTS ----- */
 
@@ -967,15 +972,15 @@ p.secondary-par strong {
 }
 
 .dropdown-content li.dropdown-header {
-    height: 45px;
-    min-height: 45px;
-    line-height: 45px;
+    height: 36px;
+    min-height: 36px;
+    line-height: 36px;
     text-transform: uppercase; 
     font-size: 13px;
     font-weight: 500;
     cursor: auto;
     display: flex;
-    padding: 0 24px;
+    padding: 0 16px;
 }
 
 .dropdown-content .dropdown-header:hover {
@@ -989,7 +994,7 @@ p.secondary-par strong {
 
 .dropdown-content .dropdown-header .action i {
     color: rgba(0, 0, 0, .87);
-    line-height: 45px;
+    line-height: 36px;
 }
 
 .dropdown-content .dropdown-footer {
@@ -1111,6 +1116,10 @@ p.secondary-par strong {
     margin-right: 16px;
 }
 
+#slide-out .collapsible-body i {
+    margin-right: 24px;
+}
+
 #slide-out > li > a.active,
 #slide-out > li > a.active i { 
     color: #2979FF;
@@ -1124,7 +1133,7 @@ p.secondary-par strong {
     background-color: rgba(0, 0, 0, .38);
     text-align: center;
     margin: 9px 0px;
-    margin-right: 32px;
+    margin-right: 24px;
     line-height: 30px;
     color: #fff;
     font-weight: 700;
@@ -1165,7 +1174,7 @@ p.secondary-par strong {
 }
 
 .side-nav .collapsible-body li a.active {
-    color: rgba(0, 0, 0, .87);
+    color: rgba(0, 0, 0, .87) !important;
     font-weight: 500 !important;
 }
 
