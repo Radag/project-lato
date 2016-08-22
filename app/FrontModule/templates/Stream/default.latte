@@ -48,7 +48,7 @@
                 </div>
                 <div class="card bottom-spacer" n:if="$activeGroup->owner->id === $activeUser->id">
                     <div class="card-header">
-                        <h3>Nastavení sdílení</h3>
+                        <h3>Sdílení skupiny</h3>
                     </div>
                     {snippet sharingFormWrap}
                     <div class="card-content clearfix">
@@ -75,7 +75,7 @@
                         </a>
                         <div id="add-user-to-group" class="modal">
                             <div class="modal-content">
-                                <h3>Možnosti sdílení</h3>
+                                <h3>Sdílení</h3>
                                 <p>
                                     nebo odkazu {link //:Public:Action:default, id => $activeGroup->sharingCode}                    
                                 </p> 

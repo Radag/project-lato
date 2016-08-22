@@ -162,10 +162,12 @@ input[type="password"] {
 .btn, 
 .btn-flat {
     font-weight: 500;
+    padding: 0;
 }
 
-.btn-flat {
-    padding: 0;
+.btn input {
+    padding: 0 2em;
+    height: 100%;
 }
 
 .btn-flat.colored {
