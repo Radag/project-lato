@@ -6,7 +6,20 @@
             <div class="row">
                 <div class="col s12">
                     <header class="section-header">
-                        <h3 class="left">Všechny položky</h3>
+                        <a class='dropdown-button filter-nav' href='#' data-activates='stream-filter' data-beloworigin="true">
+                            <i class="material-icons">filter_list</i><!--Menu-->
+                        </a>
+                        <span class="filter-nav-divider">|</span>
+
+  <!-- Dropdown Structure -->
+  <ul id='stream-filter' class='dropdown-content filter-nav-dropdown'>
+    <li><a href="#!">Všechny položky</a></li>
+    <li><a href="#!">Studijní materiály</a></li>
+    <li><a href="#!">Oznámení</a></li>
+
+  </ul>
+                        <h3 class="">Všechny položky</h3>
+                        <div class="flex-spacer"></div>
                         <ul class="right options">
                             <li>
                                 <a class="btn-flat btn-icon dropdown-button" data-activates="filter-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
@@ -40,20 +53,42 @@
             <div class="col s12 l4">
                 <div class="card bottom-spacer">
                     <div class="card-header">
+                        <h3>Studenti</h3>
+                    </div>
+                    <div class="card-content clearfix">
+                        <p class="secondary-par">Seznam studentů, zapsaných v této skupině.</p>
+                            <ul class="user-collection">
+                            {foreach $groupMembers as $member}
+                                <li>
+                                    <a href="{plink Profile:default 'idUser'=>$member->id}" class="user">
+                                      <img src="{$member->profileImage}" alt="" class="user-img">
+                                      <span class="title">{if !empty($member->name)}{$member->name} {$member->surname}{/if}</span>
+                                    </a>
+                                    <a href="#"><i class="material-icons">more_horiz</i></a>
+                                </li>
+                            {/foreach}
+                            </ul>
+                            <a href="{link Stream:users}" class="btn-flat secondary-color card-bottom">
+                            Zobrazit vše
+                        </a>
+                    </div>
+                </div>
+                <div class="card bottom-spacer">
+                    <div class="card-header">
                         <h3>Povinnosti</h3>
                     </div>
                     <div class="card-content clearfix">
                         <p class="secondary-par">V tuto cvhíli nemáte v předmětu zvěřejněny žádné povinnosti</p>  
                     </div>
                 </div>
-                <div class="card bottom-spacer" n:if="$activeGroup->owner->id === $activeUser->id">
+                <div class="card bottom-spacer">
                     <div class="card-header">
-                        <h3>Sdílení skupiny</h3>
+                        <h3>Sdílení</h3>
                     </div>
                     {snippet sharingFormWrap}
                     <div class="card-content clearfix">
                         {form sharingForm id=>"sharingForm"}
-                        <div class="switch-row">
+                        <div class="switch-row" n:if="$activeGroup->owner->id === $activeUser->id">
                             <p class="secondary-par left">
                             {if $activeGroup->sharingOn == 1}
                             Vypnout sdílení
@@ -71,7 +106,7 @@
                         {if $activeGroup->sharingOn == 1}
                         <p class="secondary-par left">Zápis do této skupiny mohou ostatní uživatelé provést pomocí kódu <strong>{$activeGroup->sharingCode}</strong></p>
                         <a class="btn-flat light-gray card-bottom modal-trigger" href="#add-user-to-group">
-                            Zobrazit více možností
+                            Přidat uživatele
                         </a>
                         <div id="add-user-to-group" class="modal">
                             <div class="modal-content">
@@ -108,28 +143,7 @@
                     </div>
                 </div>
 
-                <div class="card bottom-spacer">
-                    <div class="card-header">
-                        <h3>Členové skupiny</h3>
-                    </div>
-                    <div class="card-content clearfix">
-                        <p class="secondary-par">Uživatelé, kteří byli v poslední době aktivní.</p>
-                            <ul class="user-collection">
-                            {foreach $groupMembers as $member}
-                                <li>
-                                    <a href="{plink Profile:default 'idUser'=>$member->id}" class="user">
-                                      <img src="{$member->profileImage}" alt="" class="user-img">
-                                      <span class="title">{if !empty($member->name)}{$member->name} {$member->surname}{/if}</span>
-                                    </a>
-                                    <a href="#"><i class="material-icons">more_horiz</i></a>
-                                </li>
-                            {/foreach}
-                            </ul>
-                            <a class="btn-flat light-gray card-bottom modal-trigger" href="#add-user-to-group">
-                            Zobrazit vše
-                        </a>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </div>
