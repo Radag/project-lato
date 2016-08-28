@@ -59,98 +59,39 @@
 
 
     <div class="container offset">
-       <div class="row">
-          <div class="col s12">
-            <form action="#">
-                <div class="card-header collapsible-card-header paper-shadow">
-                    <div class="title">
-                        <h3 class="large">
-                            Studenti
-                        </h3>
-                        <div class="flex-spacer"></div>
-                        <button href="" class="dropdown-button btn btn-empty disabled" data-activates="student-table-action" data-beloworigin="true" data-alignment="right"><span class="btn-label">Akce</span><i class="material-icons icon-push">arrow_drop_down</i></button>
-                        <ul id='student-table-action' class='dropdown-content'>
-                            <li><a href="#!">Přidat hodnocení</a></li>
-                            <li><a href="#!">Poslat hromadnou zprávu</a></li>
-                            <li><a href="#!">Odebrat ze skupiny</a></li>
-                        </ul>
+     <div class="row">
+      <div class="col s12">
+        <form action="#">
+            <div class="card-header collapsible-card-header paper-shadow">
+                <div class="title">
+                    <h3 class="large">
+                        Studenti
+                    </h3>
+                    <div class="flex-spacer"></div>
+                    <button href="" class="dropdown-button btn btn-empty disabled" data-activates="student-table-action" data-beloworigin="true" data-alignment="right"><span class="btn-label">Akce</span><i class="material-icons icon-push">arrow_drop_down</i></button>
+                    <ul id='student-table-action' class='dropdown-content'>
+                        <li><a href="#!">Přidat hodnocení</a></li>
+                        <li><a href="#!">Poslat hromadnou zprávu</a></li>
+                        <li><a href="#!">Odebrat ze skupiny</a></li>
+                    </ul>
 
-                    </div>
-                    <div class="collapsible-card-table-header">
-                        <input type="checkbox" class="filled-in" id="select-all" />
-                        <label for="select-all"></label>   
-                        <div class="title">Student</div>
-                        <div class="flex-spacer"></div>
-                        <div class="table-field">Poslední změna</div>
-                        <div class="table-field">Hodnocení</div>
-                    </div>
                 </div>
+                <div class="collapsible-card-table-header">
+                    <input type="checkbox" class="filled-in" id="select-all" />
+                    <label for="select-all"></label>   
+                    <div class="title">Student</div>
+                    <div class="flex-spacer"></div>
+                    <div class="table-field">Poslední změna</div>
+                    <div class="table-field">Hodnocení</div>
+                </div>
+            </div>
 
-                <ul class="collapsible popout" data-collapsible="accordion">
-                    <li></li>
-                    <li>
-                        <div class="collapsible-header">
-                            <input type="checkbox" class="filled-in" id="user1" />
-                            <label for="user1"></label>
-                            <div class="user-img small">
-                                <img src="/images/user1.png">
-                            </div>
-                            <div class="title">
-                                <span>Novák</span>, Martin
-                            </div>
-                            <div class="flex-spacer"></div>
-                            <div class="table-field">5. 9. 2016</div>
-                            <div class="grade table-field"><strong>3,5</strong>/5</div>
-                        </div>
-                        <div class="collapsible-body">
-                            <div class="grades-table">
-                                <div class="table-row">
-                                    <a href="" class="material-icons edit">edit</a>
-                                    <a href="" class="title truncate">
-                                        3D grafika – modelování zadané scény
-                                    </a>
-                                    <div class="flex-spacer"></div>
-                                    <div class="table-field">
-                                        5. 9. 2016
-                                    </div>
-                                    <div class="grade table-field">
-                                        <strong>3</strong>
-                                    </div>
-                                </div>
-                                <div class="table-row">
-                                    <a href="" class="material-icons edit">edit</a>
-                                    <a href="" class="title truncate">
-                                        3D grafika – textury (domácí úkol)
-                                    </a>
-                                    <div class="flex-spacer"></div>
-                                    <div class="table-field">
-                                        17. 6. 2016
-                                    </div>
-                                    <div class="grade table-field">
-                                        <strong>3</strong>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="collapsible-body-footer">
-                                <a href="" class="lowercase-btn">
-                                    <i class="material-icons">add_box</i>
-                                    <span class="label">Přidat hodnocení</span>
-                                </a> 
-                                <a href="" class="lowercase-btn">
-                                    <i class="material-icons">email</i>
-                                    <span class="label">Poslat zprávu</span>
-                                </a>
-                                <a href="" class="lowercase-btn">
-                                    <i class="material-icons">delete</i>
-                                    <span class="label">Odebrat ze skupiny</span>
-                                </a> 
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                       <div class="collapsible-header">
-                        <input type="checkbox" class="filled-in" id="user2" />
-                        <label for="user2"></label>
+            <ul class="collapsible popout" data-collapsible="accordion">
+                <li></li>
+                <li>
+                    <div class="collapsible-header">
+                        <input type="checkbox" class="filled-in" id="user1" />
+                        <label for="user1"></label>
                         <div class="user-img small">
                             <img src="/images/user1.png">
                         </div>
@@ -158,14 +99,58 @@
                             <span>Novák</span>, Martin
                         </div>
                         <div class="flex-spacer"></div>
-                        <div class="grade"><strong>3,6</strong>/5</div>
+                        <div class="table-field">5. 9. 2016</div>
+                        <div class="grade table-field"><strong>3,5</strong>/5</div>
                     </div>
-                    <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+                    <div class="collapsible-body">
+                        <div class="grades-table">
+                            <div class="table-row">
+                                <a href="" class="material-icons edit">edit</a>
+                                <a href="" class="title truncate">
+                                    3D grafika – modelování zadané scény
+                                </a>
+                                <div class="flex-spacer"></div>
+                                <div class="table-field">
+                                    5. 9. 2016
+                                </div>
+                                <div class="grade table-field">
+                                    <strong>3</strong>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <a href="" class="material-icons edit">edit</a>
+                                <a href="" class="title truncate">
+                                    3D grafika – textury (domácí úkol)
+                                </a>
+                                <div class="flex-spacer"></div>
+                                <div class="table-field">
+                                    17. 6. 2016
+                                </div>
+                                <div class="grade table-field">
+                                    <strong>3</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="collapsible-body-footer">
+                            <a href="" class="lowercase-btn">
+                                <i class="material-icons">add_box</i>
+                                <span class="label">Přidat hodnocení</span>
+                            </a> 
+                            <a href="" class="lowercase-btn">
+                                <i class="material-icons">email</i>
+                                <span class="label">Poslat zprávu</span>
+                            </a>
+                            <a href="" class="lowercase-btn">
+                                <i class="material-icons">delete</i>
+                                <span class="label">Odebrat ze skupiny</span>
+                            </a> 
+                        </div>
+                    </div>
                 </li>
                 <li>
-                   <div class="collapsible-header">
-                    <input type="checkbox" class="filled-in" id="user3" />
-                    <label for="user3"></label>
+                 <div class="collapsible-header">
+                    <input type="checkbox" class="filled-in" id="user2" />
+                    <label for="user2"></label>
                     <div class="user-img small">
                         <img src="/images/user1.png">
                     </div>
@@ -173,89 +158,12 @@
                         <span>Novák</span>, Martin
                     </div>
                     <div class="flex-spacer"></div>
-                    <div class="rating"><strong>3,6</strong>/5</div>
+                    <div class="grade"><strong>3,6</strong>/5</div>
                 </div>
                 <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
             </li>
-            <li>
-               <div class="collapsible-header">
-                <input type="checkbox" class="filled-in" id="user3" />
-                <label for="user3"></label>
-                <div class="user-img small">
-                    <img src="/images/user1.png">
-                </div>
-                <div class="title">
-                    <span>Novák</span>, Martin
-                </div>
-                <div class="flex-spacer"></div>
-                <div class="rating"><strong>3,6</strong>/5</div>
-            </div>
-            <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-        </li>
-        <li>
-           <div class="collapsible-header">
-            <input type="checkbox" class="filled-in" id="user3" />
-            <label for="user3"></label>
-            <div class="user-img small">
-                <img src="/images/user1.png">
-            </div>
-            <div class="title">
-                <span>Novák</span>, Martin
-            </div>
-            <div class="flex-spacer"></div>
-            <div class="rating"><strong>3,6</strong>/5</div>
-        </div>
-        <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-    </li>
-    <li>
-       <div class="collapsible-header">
-        <input type="checkbox" class="filled-in" id="user3" />
-        <label for="user3"></label>
-        <div class="user-img small">
-            <img src="/images/user1.png">
-        </div>
-        <div class="title">
-            <span>Novák</span>, Martin
-        </div>
-        <div class="flex-spacer"></div>
-        <div class="rating"><strong>3,6</strong>/5</div>
-    </div>
-    <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-</li>
-<li>
-   <div class="collapsible-header">
-    <input type="checkbox" class="filled-in" id="user3" />
-    <label for="user3"></label>
-    <div class="user-img small">
-        <img src="/images/user1.png">
-    </div>
-    <div class="title">
-        <span>Novák</span>, Martin
-    </div>
-    <div class="flex-spacer"></div>
-    <div class="rating"><strong>3,6</strong>/5</div>
-</div>
-<div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-</li>
-<li>
-   <div class="collapsible-header">
-    <input type="checkbox" class="filled-in" id="user3" />
-    <label for="user3"></label>
-    <div class="user-img small">
-        <img src="/images/user1.png">
-    </div>
-    <div class="title">
-        <span>Novák</span>, Martin
-    </div>
-    <div class="flex-spacer"></div>
-    <div class="rating"><strong>3,6</strong>/5</div>
-</div>
-<div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-</li>
-
-</ul>
-
-</form>
+        </ul>
+    </form>
 </div>
 
 </div>
