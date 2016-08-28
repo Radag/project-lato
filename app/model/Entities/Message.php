@@ -19,6 +19,8 @@ class Message {
     public $created = null;
     public $idGroup = null;
     public $attachments = null;
+    public $followed = null;
+    public $priority = null;
     
     
     function getId() {

@@ -54,7 +54,16 @@ class PrivateMessageManager extends Nette\Object{
     }
     
     
-   
+    public function getUnreadNumber($user)
+    {
+        return $this->database->query("SELECT COUNT(ID_PRIVATE_MESSAGE) FROM private_message WHERE ID_USER_TO=? AND IS_READ IS NULL", $user->id)->fetchField();
+    }
+    
+    public function setMessagesRead($idUser)
+    {
+        $data = array('IS_READ' => date('Y-m-d H:i:s'));
+        $this->database->query("UPDATE private_message SET ? WHERE ID_USER_TO=? AND IS_READ IS NULL", $data, $idUser);
+    }
       
     
 }

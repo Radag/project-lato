@@ -83,17 +83,20 @@ class MessageManager extends Nette\Object{
             ));
     }
     
-    public function getMessages($group)
+    public function getMessages($group, \App\Model\Entities\User $user)
     {
         $return = array();
         $messages = $this->database->query("SELECT T1.TEXT, T1.ID_MESSAGE, T2.ID_USER, T2.NAME, T2.SURNAME, T1.CREATED_WHEN,
                         T3.PATH,
-                        T3.FILENAME
+                        T3.FILENAME,
+                        T1.PRIORITY,
+                        T4.ACTIVE AS IS_FOLLOWED
                 FROM message T1 
                 LEFT JOIN user T2 ON T1.ID_USER=T2.ID_USER 
                 LEFT JOIN file_list T3 ON T3.ID_FILE=T2.PROFILE_IMAGE
+                LEFT JOIN message_following T4 ON (T1.ID_MESSAGE = T4.ID_MESSAGE AND T4.ID_USER=? AND T4.ACTIVE=1)
                 WHERE T1.ID_GROUP=? AND T1.DELETED=0
-                ORDER BY CREATED_WHEN DESC LIMIT 10", $group->id)->fetchAll();
+                ORDER BY PRIORITY DESC, CREATED_WHEN DESC LIMIT 10", $user->id, $group->id)->fetchAll();
         foreach($messages as $message) {
             $mess = new Message();
             $user = new User();
@@ -105,6 +108,8 @@ class MessageManager extends Nette\Object{
             $mess->id = $message->ID_MESSAGE;
             $mess->created = $message->CREATED_WHEN;
             $mess->user = $user;
+            $mess->followed = $message->IS_FOLLOWED;
+            $mess->priority = $message->PRIORITY;
             $mess->attachments = $this->getAttachments($message->ID_MESSAGE);
             $return[] = $mess;
         }
@@ -206,10 +211,41 @@ class MessageManager extends Nette\Object{
         return current($count);
     }
     
-    public function deleteMessage($idMessage)
+    public function deleteMessage(Message $message)
     {
         $data = array('DELETED' => 1);
-        $this->database->query("UPDATE message SET ? WHERE ID_MESSAGE=?", $data, $idMessage);
+        $this->database->query("UPDATE message SET ? WHERE ID_MESSAGE=?", $data, $message->id);
+    }
+    
+    public function topMessage(Message $message, $enable = true)
+    {
+        if($enable) {
+            $data = array('PRIORITY' => 1);
+        } else {
+            $data = array('PRIORITY' => 0);
+        }
+        $this->database->query("UPDATE message SET ? WHERE ID_MESSAGE=?", $data, $message->id);
+    }
+    
+    public function followMessage(Message $message,User $user, $enable = true)
+    {
+        if($enable) {
+            $data = array('ACTIVE' => 1);
+        } else {
+            $data = array('ACTIVE' => 0);
+        }
+        
+        $followed = $this->database->query("SELECT ID FROM message_following WHERE ID_MESSAGE=? AND ID_USER=?", $message->id, $user->id)->fetchField();
+        
+        if(!empty($followed)) {
+            $this->database->query("UPDATE message_following SET ? WHERE ID=?", $data, $followed);
+        } else {
+            $this->database->table('message_following')->insert(array(
+                'ID_MESSAGE' => $message->id,
+                'ID_USER' => $user->id
+            ));
+        }
+        
     }
     
     public function addAttachment($idFile, $idMessage = null)

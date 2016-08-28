@@ -9,6 +9,7 @@ use App\Model\Manager\PrivateMessageManager;
 use App\Model\Manager\NotificationManager;
 use App\FrontModule\Components\TopPanel\TopPanel;
 use App\Model\Manager\FileManager;
+use App\Model\Manager\ClassroomManager;
 
 class ProfilePresenter extends BasePresenter
 {
@@ -19,6 +20,7 @@ class ProfilePresenter extends BasePresenter
     protected $privateMessageManager;
     protected $notificationManager;
     protected $fileManager;
+    protected $classroomManager;
         
     
     public function __construct(UserManager $userManager, 
@@ -26,6 +28,7 @@ class ProfilePresenter extends BasePresenter
             GroupManager $groupManager,
             PrivateMessageManager $privateMessageManager,
             NotificationManager $notificationManager,
+            ClassroomManager $classroomManager,
             FileManager $fileManager)
     {
         $this->userManager = $userManager;
@@ -33,15 +36,22 @@ class ProfilePresenter extends BasePresenter
         $this->groupManager = $groupManager;
         $this->privateMessageManager = $privateMessageManager;
         $this->notificationManager = $notificationManager;
-        $this->fileManager = $fileManager;        
+        $this->fileManager = $fileManager;       
+        $this->classroomManager = $classroomManager;
     }
     
     public function actionDefault($idUser = null)
     {
+        $this->template->activeUser = $this->activeUser;
         if($idUser === null) {          
-            $this->template->activeUser = $this->activeUser;
+            $this->template->profileUser = $this->activeUser;
+            $this->template->isMe = true;
         } else {
-            $this->template->activeUser = $this->userManager->get($idUser);        
+            $profileUser = $this->userManager->get($idUser);
+            $this->template->activeUser = $profileUser; 
+            $this->template->isMe = false;
+            $myClasses = $this->classroomManager->getClasses($this->activeUser);
+            $this->template->relation = $this->classroomManager->getRelation($profileUser, $myClasses);
         }
     }
     

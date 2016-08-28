@@ -89,6 +89,7 @@ class TopPanel extends Control
         }
         $template->notifications = $this->notificationManager->getNotifications($this->activeUser);
         $template->unreadNotifications = $this->notificationManager->getUnreadNumber($this->activeUser);
+        $template->unreadPrivMessages = $this->privateMessageManager->getUnreadNumber($this->activeUser);
         $template->privateMessages = $this->privateMessageManager->getMessages($this->activeUser);
         $template->subjects = $subject;
         $template->groups = $others;
@@ -105,7 +106,8 @@ class TopPanel extends Control
     
     public function handlePrivateMessagesRead()
     {
-        
+        $this->privateMessageManager->setMessagesRead($this->activeUser->id);
+        $this->redrawControl('messagesCount');   
     }
     
     public function handleNotificationRead()

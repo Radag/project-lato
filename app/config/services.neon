@@ -6,3 +6,4 @@ services:
 	notificationManager: App\Model\Manager\NotificationManager
 	fileManager: App\Model\Manager\FileManager
 	publicActionManager: App\Model\Manager\PublicActionManager
+	classroomManager: App\Model\Manager\ClassroomManager

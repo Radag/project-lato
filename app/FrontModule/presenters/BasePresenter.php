@@ -48,7 +48,6 @@ class BasePresenter extends Nette\Application\UI\Presenter
         } else {
             $this->setActiveUser();
         }
-        \Tracy\Debugger::barDump($this->activeUser);
     }
     
     protected function setActiveUser()

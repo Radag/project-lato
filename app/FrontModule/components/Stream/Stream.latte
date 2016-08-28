@@ -56,10 +56,22 @@
                     <i class="material-icons">more_vert</i>
                 </a>
                 <ul id='message_dropdown_{$message->id}' class='dropdown-content'>
-                    <li><a href="{link deleteMessage! idMessage=>$message->id}">Přesunout nahoru</a></li>
-                    <li><a href="{link deleteMessage! idMessage=>$message->id}">Sledovat</a></li>
-                    <li class="divider"></li>
-                    <li><a href="{link deleteMessage! idMessage=>$message->id}">Smazat</a></li>
+                    {if $isOwner}
+                        {if !$message->priority}
+                        <li><a href="{link topMessage! idMessage=>$message->id}">Přesunout nahoru</a></li>
+                        {else}
+                        <li><a href="{link topMessage! idMessage=>$message->id, enable=>false}">Zrušit přesunutí</a></li>
+                        {/if}
+                    {/if}
+                    {if !$message->followed}
+                        <li><a href="{link followMessage! idMessage=>$message->id}">Sledovat</a></li>
+                    {else}
+                        <li><a href="{link followMessage! idMessage=>$message->id, enable=>false}">Zrušit sledování</a></li>
+                    {/if}
+                    {if $isOwner || ($activeUser->id === $message->user->id)}
+                        <li class="divider"></li>
+                        <li><a href="{link deleteMessage! idMessage=>$message->id}">Smazat</a></li>
+                    {/if}
                 </ul>
             </div>
         </div>

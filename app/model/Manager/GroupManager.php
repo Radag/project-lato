@@ -186,7 +186,7 @@ class GroupManager extends Nette\Object{
                 $groupModel->shortcut = $group->SHORTCUT;
                 $groupModel->mainColor = $group->MAIN_COLOR;
                 $groupModel->numberOfStudents = $group->STUDENTS;
-                $groupModel->owner = $user;
+                $groupModel->owner = $teacher;
                 $groupModel->newMessages = $group->NEW_MESSAGE;
                 $groupModel->urlId = $group->URL_ID;
                 $return[] = $groupModel;

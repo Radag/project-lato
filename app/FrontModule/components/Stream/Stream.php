@@ -76,8 +76,9 @@ class Stream extends Control
     public function render()
     {
         $template = $this->template;
-        $messages = $this->messageManager->getMessages($this->activeGroup);
-        $template->activeUser = $this->activeUser;        
+        $messages = $this->messageManager->getMessages($this->activeGroup, $this->activeUser);
+        $template->activeUser = $this->activeUser;  
+        $template->isOwner = ($this->activeUser->id === $this->activeGroup->owner->id) ? true : false;
         $template->messages = $messages;
         $template->setFile(__DIR__ . '/Stream.latte');
         $template->render();
@@ -101,13 +102,38 @@ class Stream extends Control
     }
     
     public function handleDeleteMessage($idMessage) 
-    {
-        
+    {   
         $message = $this->messageManager->getMessage($idMessage);
-        if($message->user->id === $this->activeUser->id) {
-            $this->messageManager->deleteMessage($idMessage);
+        if($message->user->id === $this->activeUser->id || $this->activeUser->id === $this->activeGroup->owner->id) {
+            $this->messageManager->deleteMessage($message);
             $this->presenter->flashMessage('Zpráva byla smazána.');
             $this->presenter->redirect('this');
         }
+    }
+    
+    public function handleTopMessage($idMessage, $enable = true) 
+    {
+        $message = $this->messageManager->getMessage($idMessage);
+        if($this->activeGroup->owner->id === $this->activeUser->id) {
+            $this->messageManager->topMessage($message, $enable);
+            if($enable) {
+                $this->presenter->flashMessage('Zpráva byla posunuta nahoru.');
+            } else {
+                $this->presenter->flashMessage('Zrušeno topování zprávy.'); 
+            }
+            $this->presenter->redirect('this');
+        }
+    }
+    
+    public function handleFollowMessage($idMessage, $enable = true) 
+    {
+        $message = $this->messageManager->getMessage($idMessage);
+        $this->messageManager->followMessage($message, $this->activeUser, $enable);
+        if($enable) {
+            $this->presenter->flashMessage('Zpráva byla zařazena do sledovaných');
+        } else {
+            $this->presenter->flashMessage('Zpráva byla vyřazena ze sledovaných');
+        }
+        $this->presenter->redirect('this');
     }
 }

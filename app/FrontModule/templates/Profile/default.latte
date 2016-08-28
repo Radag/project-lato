@@ -15,7 +15,7 @@
                             <img src="{$activeUser->profileImage}" alt="some-chich">
                         </div>
                         <div class="profile-title">
-                            {$activeUser->name} {$activeUser->surname}<span>, spolužačka (V4A)</span>
+                            {$activeUser->name} {$activeUser->surname}<span>, {if $isMe}můj profil{else}{$relation}{/if}</span>
                         </div>
                         <ul class="controls">
                             <li><a href="#" class="tooltipped waves-effect waves-light" data-position="bottom" data-delay="50" data-tooltip="Sledovat aktivitu tohoto uživatele"><i class="material-icons">person_add</i></a></li>
@@ -29,6 +29,7 @@
 
         <div class="row">
             <div class="col l6 m12 s12">
+                {if !$isMe}
                 <a href="" class="card new-message">
                     <div class="user-img small">
                         <img src="{$activeUser->profileImage}" alt="some chich">
@@ -37,6 +38,7 @@
                         Poslat soukromou zprávu
                     </div>
                 </a>
+                {/if}
                 <div class="card">
                     <div class="card-header">
                         <h2>Osobní a kontaktní informace</h2>

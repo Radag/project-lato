@@ -130,7 +130,7 @@
                 </li>
 
                 <li><a class="dropdown-button ajax" href="{link privateMessagesRead!}" data-activates="message-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false"><i class="material-icons ">email</i>
-                    {if count($privateMessages) > 0}<span class="nav-badge">{count($privateMessages)}</span>{/if}</a>
+                    {snippet messagesCount}{if $unreadPrivMessages > 0}<span class="nav-badge">{$unreadPrivMessages}</span>{/if}{/snippet}</a>
                     <ul id='message-window' class='dropdown-content main-nav-dropdown'>
                         <li class="dropdown-header">Zprávy</li>
                         <li class="divider divider-after"></li>
