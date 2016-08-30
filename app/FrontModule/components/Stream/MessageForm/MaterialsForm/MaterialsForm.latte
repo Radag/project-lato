@@ -1,0 +1,49 @@
+{includeblock '../MessageForm.latte'}
+{snippet messageForm}
+{form form}
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="user-img">
+            <div class="post-type-icon">
+                <i class="material-icons full-size">library_books</i>
+            </div>
+        </div>
+        <h4>Studijní materiál</h4>
+    </div>
+    <div class="input-field">
+    <input placeholder="Název (nepovinné)" id="first_name" type="text">
+  </div>
+  {input text class => 'materialize-textarea'}
+  <ul class="attachments attachments_uploads" style="display: none;">        
+  </ul>
+</div>
+<div class="modal-footer clearfix">
+    <div class="attachments-nav">
+        {input attachments id => 'attachmentsIds'}
+        <ul>
+            <li>
+                <a href="javascript:addNewAttachment()" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit soubor">
+                    <i class="material-icons">attach_file</i>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:addNewAttachment()" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit video z YouTube">
+                    <i class="material-icons">video_library</i>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:addNewAttachment()" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit hypertextový odkaz">
+                    <i class="material-icons">insert_link</i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="form-control">
+        <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat" >Zrušit</button>
+        {input send class => 'modal-action modal-close waves-effect waves-light btn btn-confirm disabled'}
+    </div>
+</div>
+{include uploadBlock}
+{/form}
+{/snippet}
+{include attachmentTemplate}

@@ -5,10 +5,10 @@
  * and open the template in the editor.
  */
 
-namespace App\FrontModule\Components\Stream\MessageForm;
+namespace App\FrontModule\Components\Stream\MessageForm\TaskForm;
 
 use \Nette\Application\UI\Form;
-use \Nette\Application\UI\Control;
+use App\FrontModule\Components\Stream\MessageForm\MessageForm;
 use App\Model\Manager\MessageManager;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\FileManager;
@@ -19,12 +19,9 @@ use App\Model\Manager\FileManager;
  *
  * @author Radaq
  */
-abstract class MessageForm extends Control
+class TaskForm extends MessageForm
 {
-    const TYPE_NOTICE = 1;
-    const TYPE_MATERIALS = 2;
-    const TYPE_TASK = 3;
-    const TYPE_HOMEWORK = 4;
+
     
     /**
      * @var MessageManager $messageManager
@@ -58,16 +55,6 @@ abstract class MessageForm extends Control
         $this->fileManager = $fileManager;
     }
     
-    public function setActiveUser(\App\Model\Entities\User $user)
-    {
-        $this->activeUser = $user;
-    }
-    
-    public function setStream($stream)
-    {
-        $this->stream = $stream;
-    }
-    
     protected function createComponentForm()
     {
         $form = new \Nette\Application\UI\Form;
@@ -86,12 +73,8 @@ abstract class MessageForm extends Control
     public function render()
     {
         $template = $this->template;
-        $template->setFile(__DIR__ . '/MessageForm.latte');
-        // vložíme do šablony nějaké parametry
-        //$template->form = $this->form;
-        //
+        $template->setFile(__DIR__ . '/TaskForm.latte');
         $template->activeUser = $this->activeUser;
-        // a vykreslíme ji
         $template->render();
     }
     

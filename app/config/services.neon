@@ -7,3 +7,8 @@ services:
 	fileManager: App\Model\Manager\FileManager
 	publicActionManager: App\Model\Manager\PublicActionManager
 	classroomManager: App\Model\Manager\ClassroomManager
+	streamFactory: App\FrontModule\Components\Stream\IStreamFactory
+	noticeFormFactory: App\FrontModule\Components\Stream\MessageForm\NoticeForm\INoticeFormFactory 
+	homeworkFormFactory: App\FrontModule\Components\Stream\MessageForm\HomeworkForm\IHomeworkFormFactory 
+	materialsFormFactory: App\FrontModule\Components\Stream\MessageForm\MaterialsForm\IMaterialsFormFactory
+	taskFormFactory: App\FrontModule\Components\Stream\MessageForm\TaskForm\ITaskFormFactory       

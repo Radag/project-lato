@@ -10,6 +10,7 @@ use App\Model\Manager\GroupManager;
 use App\Model\Manager\PrivateMessageManager;
 use App\Model\Manager\NotificationManager;
 use App\Model\Manager\FileManager;
+use App\FrontModule\Components\Stream\IStreamFactory;
 
 class StreamPresenter extends BasePresenter
 {    
@@ -27,12 +28,16 @@ class StreamPresenter extends BasePresenter
     /** @var \App\Model\Entities\Group */
     protected $activeGroup = null;
     
+    /** @var  IStreamFactory  */
+    protected $streamFactory;
+    
     public function __construct(UserManager $userManager, 
             MessageManager $messageManager, 
             GroupManager $groupManager,
             PrivateMessageManager $privateMessageManager,
             NotificationManager $notificationManager,
-            FileManager $fileManager)
+            FileManager $fileManager,
+            IStreamFactory $streamFactory)
     {
         $this->userManager = $userManager;
         $this->messageManager = $messageManager;
@@ -40,6 +45,7 @@ class StreamPresenter extends BasePresenter
         $this->privateMessageManager = $privateMessageManager;
         $this->notificationManager = $notificationManager;
         $this->fileManager = $fileManager;
+        $this->streamFactory = $streamFactory;
     }
     
     protected function createComponentTopPanel()
@@ -49,7 +55,10 @@ class StreamPresenter extends BasePresenter
     
     protected function createComponentStream()
     {
-        return new Stream($this->userManager, $this->messageManager, $this->activeGroup, $this->fileManager, $this->activeUser);
+        $stream = $this->streamFactory->create();
+        $stream->setGroup($this->activeGroup);
+        $stream->setUser($this->activeUser);
+        return $stream;
     }
     
     protected function createComponentSharingForm()
@@ -115,6 +124,15 @@ class StreamPresenter extends BasePresenter
     
     public function actionSettings($id)
     {
+    }
+    
+    public function actionUsers($id)
+    {
+        $group = $this->groupManager->getGroup($id);
+        $this->activeGroup = $group;
+        $this->template->activeGroup = $this->activeGroup;
+        $this->template->activeUser = $this->activeUser;
+        $this->template->groupMembers = $this->groupManager->getGroupUsers($group->id);
     }
     
     public function handleLeaveGroup($idGroup)

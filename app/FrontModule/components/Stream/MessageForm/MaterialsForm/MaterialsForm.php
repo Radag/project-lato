@@ -5,68 +5,21 @@
  * and open the template in the editor.
  */
 
-namespace App\FrontModule\Components\Stream\MessageForm;
+namespace App\FrontModule\Components\Stream\MessageForm\MaterialsForm;
 
 use \Nette\Application\UI\Form;
-use \Nette\Application\UI\Control;
 use App\Model\Manager\MessageManager;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\FileManager;
-
+use App\FrontModule\Components\Stream\MessageForm\MessageForm;
 
 /**
  * Description of SignInForm
  *
  * @author Radaq
  */
-abstract class MessageForm extends Control
+class MaterialsForm extends MessageForm
 {
-    const TYPE_NOTICE = 1;
-    const TYPE_MATERIALS = 2;
-    const TYPE_TASK = 3;
-    const TYPE_HOMEWORK = 4;
-    
-    /**
-     * @var MessageManager $messageManager
-     */
-    protected $messageManager;
-    
-    /**
-     * @var UserManager $userManager
-     */
-    protected $userManager;
-    
-    /**
-     * @var \App\FrontModule\Components\Stream\Stream $stream 
-     */
-    protected $stream;
-    
-    /**
-     * @var FileManager $fileManager
-     */
-    protected $fileManager;
-    
-     /**
-     * @var \App\Model\Entities\User $activeUser
-     */
-    protected $activeUser;
-    
-    public function __construct(UserManager $userManager, MessageManager $messageManager, FileManager $fileManager)
-    {
-        $this->userManager = $userManager;
-        $this->messageManager = $messageManager;
-        $this->fileManager = $fileManager;
-    }
-    
-    public function setActiveUser(\App\Model\Entities\User $user)
-    {
-        $this->activeUser = $user;
-    }
-    
-    public function setStream($stream)
-    {
-        $this->stream = $stream;
-    }
     
     protected function createComponentForm()
     {
@@ -86,12 +39,8 @@ abstract class MessageForm extends Control
     public function render()
     {
         $template = $this->template;
-        $template->setFile(__DIR__ . '/MessageForm.latte');
-        // vložíme do šablony nějaké parametry
-        //$template->form = $this->form;
-        //
+        $template->setFile(__DIR__ . '/MaterialsForm.latte');
         $template->activeUser = $this->activeUser;
-        // a vykreslíme ji
         $template->render();
     }
     

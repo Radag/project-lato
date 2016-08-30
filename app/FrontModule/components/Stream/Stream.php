@@ -10,9 +10,13 @@ namespace App\FrontModule\Components\Stream;
 use \Nette\Application\UI\Control;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\MessageManager;
+use App\Model\Manager\FileManager;
 use App\FrontModule\Components\Stream\MessageForm\MessageForm;
 use App\FrontModule\Components\Stream\CommentForm\CommentForm;
-
+use App\FrontModule\Components\Stream\MessageForm\NoticeForm\INoticeFormFactory;
+use App\FrontModule\Components\Stream\MessageForm\TaskForm\ITaskFormFactory;
+use App\FrontModule\Components\Stream\MessageForm\HomeworkForm\IHomeworkFormFactory;
+use App\FrontModule\Components\Stream\MessageForm\MaterialsForm\IMaterialsFormFactory;
 
 
 /**
@@ -34,7 +38,7 @@ class Stream extends Control
     protected $messageManager;
     
     /**
-     * @var \App\Model\Manager\FileManager $messageManager
+     * @var FileManager
      */
     protected $fileManager;
     
@@ -53,24 +57,53 @@ class Stream extends Control
      */
     protected $activeUser;
     
-    public function __construct(UserManager $userManager, MessageManager $messageManager, $activeGroup, $fileManager, \App\Model\Entities\User $activeUser)
+    protected $messageType = 1;
+    
+    /** @var  INoticeFormFactory @inject */
+    protected $noticeFormFactory;
+    
+    /** @var  ITaskFormFactory @inject */
+    protected $taskFormFactory;
+    
+    /** @var  IHomeworkFormFactory @inject */
+    protected $homeworkFormFactory;
+    
+    /** @var  IMaterialsFormFactory @inject */
+    protected $materialsFormFactory;
+    
+    
+    public function __construct(
+            UserManager $userManager, 
+            MessageManager $messageManager, 
+            FileManager $fileManager,
+            INoticeFormFactory $noticeFormFactory,
+            ITaskFormFactory $taskFormFactory,
+            IHomeworkFormFactory $homeworkFormFactory,
+            IMaterialsFormFactory $materialsFormFactory
+            )
     {
         $this->userManager = $userManager;
         $this->messageManager = $messageManager;
-        $this->activeGroup = $activeGroup;
         $this->fileManager = $fileManager;
-        $this->activeUser = $activeUser;
+        $this->noticeFormFactory = $noticeFormFactory;
+        $this->taskFormFactory = $taskFormFactory;
+        $this->homeworkFormFactory = $homeworkFormFactory;
+        $this->materialsFormFactory = $materialsFormFactory;
+    }
+    
+    public function setUser(\App\Model\Entities\User $user)
+    {
+        $this->activeUser = $user;
+    }
+    
+    public function setGroup(\App\Model\Entities\Group $group)
+    {
+        $this->activeGroup = $group;
     }
     
     public function getActiveGroup()
     {
         return $this->activeGroup;
-    }
- 
-    
-    protected function create()
-    {
-        
     }
     
     public function render()
@@ -85,10 +118,31 @@ class Stream extends Control
     }
     
  
+    public function handleSetMessageType($messageType)
+    {
+        $this->messageType = $messageType;
+        $this->redrawControl('messageForm');
+    }
     
     public function createComponentMessageForm()
     {
-        $form = new MessageForm($this->userManager, $this->messageManager, $this, $this->fileManager, $this->activeUser);
+        switch ($this->messageType) {
+            case MessageForm::TYPE_NOTICE :
+                $form = $this->noticeFormFactory->create();
+                break;
+            case MessageForm::TYPE_MATERIALS :
+                $form = $this->materialsFormFactory->create();
+                break;
+            case MessageForm::TYPE_TASK :
+                $form = $this->taskFormFactory->create();
+                break;
+            case MessageForm::TYPE_HOMEWORK :
+                $form = $this->homeworkFormFactory->create();
+                break;
+        }
+        $form->setActiveUser($this->activeUser);
+        $form->setStream($this);
+        
         return $form;
     }
     
