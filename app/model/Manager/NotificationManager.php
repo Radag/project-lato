@@ -81,8 +81,8 @@ class NotificationManager extends Nette\Object{
                 'TEXT' => $notification->text,
                 'TITLE' => $notification->title,
                 'ID_USER' => $notification->idUser,
-                'ID_PARTICIPANT' => $notification->participant->id,
-                'ID_GROUP' => $notification->idGroup
+                'ID_PARTICIPANT' => $notification->participant ? $notification->participant->id : null,
+                'ID_GROUP' => $notification->idGroup ? $notification->idGroup : null
         ));
     }
     

@@ -49,7 +49,7 @@ class GroupManager extends Nette\Object{
     
     public function isUserInGroup($idUser, $idGroup) 
     {
-        $id = $this->database->query("SELECT T1.ID_GROUP FROM (SELECT DISTINCT ID_GROUP FROM user_group WHERE ID_USER=?
+        $id = $this->database->query("SELECT T1.ID_GROUP FROM (SELECT DISTINCT ID_GROUP FROM user_group WHERE ID_USER=? AND ACTIVE=1
             UNION 
             SELECT DISTINCT ID_GROUP FROM groups WHERE ID_OWNER=?) T1 WHERE T1.ID_GROUP=?"
                 , $idUser, $idUser, $idGroup)->fetchField();
@@ -61,7 +61,7 @@ class GroupManager extends Nette\Object{
     {
         $return = array();
         $yourGroups = $this->database->query("SELECT T1.ID_GROUP, T3.MAIN_COLOR, T2.NAME, T2.SHORTCUT, T2.GROUP_TYPE, T2.URL_ID FROM (
-            SELECT DISTINCT ID_GROUP FROM user_group WHERE ID_USER=?
+            SELECT DISTINCT ID_GROUP FROM user_group WHERE ID_USER=? AND ACTIVE=1
             UNION 
             SELECT DISTINCT ID_GROUP FROM groups WHERE ID_OWNER=?) T1
             LEFT JOIN groups T2 ON  T1.ID_GROUP = T2.ID_GROUP
@@ -104,6 +104,7 @@ class GroupManager extends Nette\Object{
     {
         $group = $this->database->query("SELECT 
                 T1.ID_GROUP,
+                T1.URL_ID,
                 T1.NAME,
                 T1.SHORTCUT,
                 T1.ID_OWNER AS OWNER_ID,
@@ -116,7 +117,7 @@ class GroupManager extends Nette\Object{
         FROM groups T1
         LEFT JOIN user T2 ON T1.ID_OWNER=T2.ID_USER
         LEFT JOIN group_color_scheme T3 ON T1.COLOR_SCHEME=T3.ID_SCHEME
-        LEFT JOIN (SELECT COUNT(ID_USER) AS STUDENTS, ID_GROUP FROM user_group GROUP BY ID_GROUP) T4 ON T4.ID_GROUP=T1.ID_GROUP
+        LEFT JOIN (SELECT COUNT(ID_USER) AS STUDENTS, ID_GROUP FROM user_group WHERE ACTIVE=1 GROUP BY ID_GROUP) T4 ON T4.ID_GROUP=T1.ID_GROUP
         LEFT JOIN group_sharing T5 ON T1.ID_GROUP=T5.ID_GROUP
         LEFT JOIN public_actions T6 ON T5.ID_ACTION=T6.ID_ACTION
         WHERE T1.URL_ID=?", $idGroup)->fetch();
@@ -134,6 +135,7 @@ class GroupManager extends Nette\Object{
         $groupModel->owner = $user;
         $groupModel->sharingOn = $group->SHARE_BY_LINK;
         $groupModel->sharingCode = $group->HASH_CODE;
+        $groupModel->urlId = $group->URL_ID;
         
         return $groupModel;       
     }
@@ -165,12 +167,12 @@ class GroupManager extends Nette\Object{
                 FROM groups T1
                 LEFT JOIN user T2 ON T1.ID_OWNER=T2.ID_USER
                 LEFT JOIN group_color_scheme T3 ON T1.COLOR_SCHEME=T3.ID_SCHEME
-                LEFT JOIN (SELECT COUNT(ID_USER) AS STUDENTS, ID_GROUP FROM user_group WHERE ID_RELATION=2 GROUP BY ID_GROUP) T4 ON T4.ID_GROUP=T1.ID_GROUP 
+                LEFT JOIN (SELECT COUNT(ID_USER) AS STUDENTS, ID_GROUP FROM user_group WHERE ID_RELATION=2 AND ACTIVE=1 GROUP BY ID_GROUP) T4 ON T4.ID_GROUP=T1.ID_GROUP 
                 LEFT JOIN file_list T6 ON T6.ID_FILE=T2.PROFILE_IMAGE
                 LEFT JOIN (
                     SELECT COUNT(T2.ID_MESSAGE) AS NEW_MESSAGE, T1.ID_GROUP FROM user_group T1
                     LEFT JOIN message T2 ON (T1.ID_GROUP=T2.ID_GROUP AND T2.CREATED_WHEN>T1.LAST_VISIT)
-                    WHERE T1.ID_USER=?
+                    WHERE T1.ID_USER=? AND T1.ACTIVE=1
                     GROUP BY T1.ID_GROUP
                 ) T5 ON T5.ID_GROUP=T1.ID_GROUP
                 WHERE T1.GROUP_TYPE=2 AND T1.ID_GROUP IN (" . implode(',', array_keys($userGroups)) . ")", $user->id)->fetchAll();
@@ -196,6 +198,11 @@ class GroupManager extends Nette\Object{
     }
     
  
+    public function removeUserFromGroup($idGroup, $idUser)
+    {
+        $this->database->query("UPDATE user_group SET ACTIVE=0 WHERE ID_USER=? AND ID_GROUP=?", $idUser, $idGroup);
+    }
+    
     public function addUserToGroup($idGroup, $idUser, $relation, $fromLink = null)
     {
         $this->database->table('user_group')->insert(array(
@@ -243,7 +250,7 @@ class GroupManager extends Nette\Object{
     {
          $users = $this->database->query("SELECT DISTINCT T1.ID_USER, T2.NAME, T2.SURNAME, T2.USERNAME, T2.PROFILE_PATH, T2.PROFILE_FILENAME FROM 
             (SELECT ID_OWNER AS ID_USER FROM groups WHERE ID_GROUP=? 
-            UNION SELECT ID_USER FROM user_group WHERE ID_GROUP=?) T1
+            UNION SELECT ID_USER FROM user_group WHERE ID_GROUP=? AND ACTIVE=1) T1
             LEFT JOIN vw_user_detail T2 ON T1.ID_USER = T2.ID_USER", $idGroup, $idGroup)->fetchAll();
         
          $userArray = array();

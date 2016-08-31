@@ -115,6 +115,10 @@ class StreamPresenter extends BasePresenter
     public function actionDefault($id)
     {
         $group = $this->groupManager->getGroup($id);
+        
+        if(!$this->groupManager->isUserInGroup($this->activeUser->id, $group->id)){
+            $this->redirect(':Front:Stream:groups');
+        }
         $this->groupManager->setGroupVisited($this->activeUser, $group->id);
         $this->activeGroup = $group;
         $this->template->activeGroup = $this->activeGroup;
@@ -137,6 +141,21 @@ class StreamPresenter extends BasePresenter
     
     public function handleLeaveGroup($idGroup)
     {
-                
+           $this->groupManager->removeUserFromGroup($idGroup, $this->activeUser->id);
+           $this->flashMessage("Opustil jste skupinu");
+           $this->redirect(':Front:Stream:groups');
+    }
+    
+    public function handleRemoveFromGroup($idGroup, $idUser)
+    {
+           $this->groupManager->removeUserFromGroup($idGroup, $idUser);
+           $this->flashMessage("Vyhodil jste uživatele");
+           $notification = new \App\Model\Entities\Notification;
+           $notification->text = "Byl jste vyhozen ze skupiny";
+           $notification->idGroup = $idGroup;
+           $notification->title = "Nepříjemnost";
+           $notification->idUser = $idUser;
+           $this->notificationManager->addNotification($notification);
+           $this->redirect('this');
     }
 }

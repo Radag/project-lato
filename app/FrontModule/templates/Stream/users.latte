@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col s12">
                 <header class="section-header">
-                    <a class='dropdown-button back-to-stream' href='{link Stream:default 'id'=>$activeGroup->id}' data-activates='stream-filter' data-beloworigin="true">
+                    <a class='dropdown-button back-to-stream' href='{link Stream:default 'id'=>$activeGroup->urlId}' data-activates='stream-filter' data-beloworigin="true">
                         <i class="material-icons waves-effect waves-dark">arrow_back</i>Zpět na stream
                     </a>
                     <div class="flex-spacer"></div>
@@ -26,7 +26,7 @@
                             </a>
                             <ul id='stream-options-window' class='dropdown-content'>
                                 <li><a href="">Nastavení skupiny</a></li>
-                                <li><a href="">Opustit skupinu</a></li>
+                                <li><a href="{link leaveGroup!, 'idGroup'=>$activeGroup->id}">Opustit skupinu</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -69,7 +69,7 @@
                         <ul id='student-table-action' class='dropdown-content'>
                             <li><a href="#!">Přidat hodnocení</a></li>
                             <li><a href="#!">Poslat hromadnou zprávu</a></li>
-                            <li><a href="#!">Odebrat ze skupiny</a></li>
+                            <li><a href="">Odebrat ze skupiny</a></li>
                         </ul>
 
                     </div>
@@ -82,13 +82,24 @@
                         <div class="table-field">Hodnocení</div>
                     </div>
                 </div>
+                <script>
+                    $(document).ready(function() {
+                        $("#select-all").on("change", function(e){
+                           if($(this).prop('checked')) {
+                               $(".user-checkbox").prop('checked', true);
+                           } else {
+                               $(".user-checkbox").prop('checked', false);
+                           }
+                        });
+                    });
+                </script>
 
                 <ul class="collapsible popout" data-collapsible="accordion">
                     <li></li>
                     {foreach $groupMembers as $member}
                     <li>
                         <div class="collapsible-header">
-                            <input type="checkbox" class="filled-in" id="user1" />
+                            <input type="checkbox" class="filled-in user-checkbox" id="user1" />
                             <label for="user1"></label>
                             <div class="user-img small">
                                 <img src="{$member->profileImage}">
@@ -138,7 +149,7 @@
                                     <i class="material-icons">email</i>
                                     <span class="label">Poslat zprávu</span>
                                 </a>
-                                <a href="" class="lowercase-btn">
+                                <a href="{link removeFromGroup!, 'idGroup'=>$activeGroup->id,'idUser'=>$member->id}" class="lowercase-btn">
                                     <i class="material-icons">delete</i>
                                     <span class="label">Odebrat ze skupiny</span>
                                 </a> 
