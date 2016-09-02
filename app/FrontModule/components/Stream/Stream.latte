@@ -54,13 +54,13 @@
     <div class="card clearfix" id="message-box-num_{$message->id}">   
         <div class="card-header">
             <div class="card-title">
-                <a href="{plink Profile:default 'idUser'=>$message->user->id}" class="user-img large">
+                <a href="{plink Profile:default 'idUser'=>$message->user->id}" class="user-img">
                     <img src="{$message->user->profileImage}" alt="{$message->user->name}">
                 </a>
                 <h2 class="truncate">
                     <a href="{plink Profile:default 'idUser'=>$message->user->id}">{$message->user->name} {$message->user->surname}</a>
-                    <span class="card-date">Zveřejněno {$message->getCreated()|date:"j. n. Y v H:i"}</span>
                 </h2>
+                <span class="card-date">{$message->getCreated()|date:"j. n. Y v H:i"}</span>
                 <a class="btn-flat btn-icon dropdown-button card-options" data-activates="message_dropdown_{$message->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
                     <i class="material-icons">more_vert</i>
                 </a>

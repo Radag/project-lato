@@ -1,8 +1,105 @@
     {block content}
     {control topPanel}
 
-    <div class="container">
-        Studenti
+    <section class="main">
+    	<div class="container offset">
+    		<div class="row">
+    			<div class="col s12">
+    				<header class="section-header">
+    					<a class='dropdown-button back-to-stream' href='#' data-activates='stream-filter' data-beloworigin="true">
+    						<i class="material-icons waves-effect waves-dark">arrow_back</i>Zpět na stream
+    					</a>
+    					<div class="flex-spacer"></div>
+    					<ul class="right options">
+    						<li>
+    							<a class="btn-flat btn-icon dropdown-button" data-activates="stream-options-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+    								<i class="material-icons">more_vert</i>
+    							</a>
+    							<ul id='stream-options-window' class='dropdown-content'>
+    								<li><a href="">Nastavení skupiny</a></li>
+    								<li><a href="">Opustit skupinu</a></li>
+    							</ul>
+    						</li>
+    					</ul>
+    				</header>  
+    			</div>
+    		</div>
+    	</div>
+    </section>
+
+    <div class="container offset">
+    	<div class="row">
+    		<div class="col s12">
+    			<form>
+    				<div class="card settings">
+    					<div class="card-header">
+    						<h3 class="large">Nastavení</h3>
+    						<p></p>
+    					</div>
+    					<div class="card-content">
+    						<section class="card-content-section">
+    							<h4>Nastavení skupiny</h4>
+    							<div class="row">
+	    							<div class="col s12">
+	    								<div class="form-row">
+    								<i class="material-icons icon-label">label</i>
+    								<div class="input-flex">
+    									<input type="text" class="validate" placeholder="Název skupiny">
+    								</div>
+    							</div>
+    							</div>
+    							</div>
+    							<div class="row">
+	    							<div class="col s12">
+			    						<div class="form-row">
+		    								<i class="material-icons icon-label">group</i>
+		    								<div class="input-flex">
+		    									<input type="text" placeholder="Název podskupiny (nepovinné)">
+		    								</div>
+		    							</div>
+
+	    							</div>
+    							</div>
+    							
+    							
+    							<div class="form-row">
+    								<i class="material-icons icon-label">description</i>
+    								<div class="input-flex">
+    									<textarea id="group-description" class="materialize-textarea" placeholder="Popis skupiny (nepovinné)"></textarea>
+    								</div>
+    							</div>
+    							<div class="row">
+	    							<div class="col s4">
+	    								<div class="form-row">
+		    								<i class="material-icons icon-label">location_on</i>
+		    								<div class="input-flex">
+		    									<input type="text" placeholder="Místnost (nepovinné)">
+		    								</div>
+		    							</div>
+	    							</div>
+	    							<div class="col s8">
+	    								<div class="form-row">
+		    								<i class="material-icons icon-label">insert_invitation</i>
+		    								<div class="input-flex">
+		    									<input type="text" placeholder="Název podskupiny (nepovinné)">
+		    								</div>
+		    							</div>
+	    							</div>
+    							</div>
+    						</section>
+    						<section class="card-content-section">
+    							<h4>Nastavení streamu</h4>
+    							<input type="text" class="validate" placeholder="Název skupiny">
+    							<input type="text" class="validate" placeholder="Podnázev skupiny"> 
+    						</section>
+    						<section class="card-content-section">
+    							<h4>Sdílení</h4>
+    						</section>
+    					</div>	
+    				</div>
+    			</form>
+    		</div>
+    	</div>
     </div>
 
 

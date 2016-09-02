@@ -17,6 +17,19 @@ a {
     transition: color 300ms ease-in-out;
 }
 
+.datepicker {
+    width: auto !important;
+}
+
+[type="checkbox"]+label {
+    color: rgba(0, 0, 0, .54);
+}
+
+.checkbox-vertical-align {
+    display: flex;
+    align-items: center;
+}
+
 .progress.loading-data {
     margin: 0;
     position: absolute;
@@ -118,7 +131,8 @@ a {
 .collapsible-card-table-header [type="checkbox"]+label,
 .collapsible-header [type="checkbox"]+label {
     padding-left: 20px;
-    margin-right: 32px;
+    margin-left: 6px;
+    margin-right: 26px;
     height: 20px;
     line-height: 20px;
 }
@@ -161,13 +175,13 @@ a {
 }
 
 .collapsible-body .grades-table .table-row .edit {
-    width: 20px;
-    margin-right: 32px;
+    width: 32px;
+    text-align: center;
+    margin-right: 20px;
     color: rgba(0, 0, 0, .54);
 }
 
 .collapsible-body .grades-table .table-row .title {
-    flex-grow: 1;
     font-weight: 500;
     color: rgba(0, 0, 0, .87);
 }
@@ -240,7 +254,7 @@ input[type="text"],
 input[type="date"],
 input[type="password"] {
 	border-bottom: 1px solid rgba(0, 0, 0, .12);
-    margin-bottom: 16px;
+    margin-bottom: 0;
     height: 3em;
     font-size: 15px;
 }
@@ -311,6 +325,10 @@ input[type="password"] {
 .btn-flat {
     font-weight: 500;
     padding: 0;
+}
+
+.btn-flat {
+    box-shadow: none;
 }
 
 .btn i.icon-push,
@@ -682,10 +700,14 @@ ul.dropdown-content.main-nav-dropdown {
 /* KOALA CSS */
 
 p {
-    color: rgba(0, 0, 0, .87);
+    color: rgba(0, 0, 0, .54);
     line-height: 1.5em;
     margin-top: 0;
-    margin-bottom: 16px !important;
+    margin-top: 16px !important;
+}
+
+p:first-child {
+    margin-top: 0 !important;
 }
 
 p.secondary-par {
@@ -991,14 +1013,18 @@ p.secondary-par strong {
     line-height: 36px;
 }
 
-.materialize-textarea {
-    margin-bottom: 0 !important;
-    border-bottom: 0 !important;
+textarea.materialize-textarea {
+    border-bottom: 1px solid rgba(0, 0, 0, .12);
+    margin-bottom: 0;
+    padding: 12px 0 !important;
+}
+
+.no-border {
     border-color: transparent !important;
 }
 
-.materialize-textarea:focus {
-  border-bottom: 0 !important;
+.no-border:focus {
+    border-color: transparent !important;
   -webkit-box-shadow: none  !important; 
   -moz-box-shadow: none  !important;
   box-shadow: none  !important;
@@ -1007,6 +1033,11 @@ p.secondary-par strong {
 .modal .materialize-textarea {
     padding-top: 0;
 }
+
+.modal .submit-control {
+    line-height: 3em;
+}
+
 
 /* --------- */
 
@@ -1481,6 +1512,7 @@ p.secondary-par strong {
 
 .card-header .card-title {
     display: flex;
+    align-items: center;
 }
 
 
@@ -1495,12 +1527,13 @@ p.secondary-par strong {
     color: inherit !important;
 }
 
-.card-header h2 span {
+.card-header .card-date {
     font-size:13px;
     line-height:18px;
     color:rgba(0, 0, 0, .47);
     font-weight:400;
     display:block;
+    margin-right: 16px;
 }
 
 .card-header h3 {
@@ -1577,7 +1610,10 @@ p.secondary-par strong {
     .card .card-content {
         padding: 16px;
     }
+}
 
+.card .card-content-section {
+    margin-bottom: 32px;
 }
 
 .card .media-container {
@@ -1700,6 +1736,8 @@ p.secondary-par strong {
     width: 100%;
     line-height: 1em;
     margin-bottom: 3px;
+    display: flex;
+    align-items: baseline;
 }
 
 .comment-row .comment-header a {
@@ -1713,7 +1751,7 @@ p.secondary-par strong {
     font-size: 12px;
 } 
 
-.comment-row .comment-content. .comment-text {
+.comment-row .comment-content .comment-text {
     clear: both;
 }
 
@@ -1734,10 +1772,13 @@ p.secondary-par strong {
 
 .comments-footer .textarea-wrapper {
     flex-grow: 1;
+    align-items: center;
+    display: flex;
+    margin-right: 16px;
 }
 
 .comments-footer textarea.materialize-textarea {
-    padding:8px 0;
+    padding: 0 !important;
     width: 100%;
     float: left;
     min-height:22px;
@@ -2034,11 +2075,41 @@ p.secondary-par strong {
 
 .form-row {
     display: flex;
-    align-items: center;
-    height: 46px;
+    align-items: top;
+    margin-top: 20px;
 }
 
+.card.settings .card-content h4 {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+}
 
+.card.settings .form-row .icon-label {
+    width: 24px;
+    margin-right: 16px;
+    font-size: 24px !important;
+    color: rgba(0, 0, 0, .38);
+    line-height: 45px;
+}
+
+.card.settings .form-row .hint {
+    width: 240px;
+    margin-right: 24px;
+    font-weight: 500;
+}
+
+.card.settings .form-row .input-flex {
+    flex-grow: 1;
+}
+
+.card.settings .form-row .input-flex.thin {
+    max-width: 680px;
+}
+
+.card-settings .form-row .input-flex input[type="text"] {
+    width: 100%;
+}
 
 
 
