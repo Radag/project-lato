@@ -45,6 +45,9 @@ class GroupPresenter extends BasePresenter
         'removeMembers' => false
     );
     
+    /** @persistent */
+    public $id;
+
     
     public function __construct(UserManager $userManager, 
             MessageManager $messageManager, 
@@ -67,9 +70,13 @@ class GroupPresenter extends BasePresenter
     {
         parent::startup();
         $id = $this->getParameter('id');
-        $this->activeGroup = $this->groupManager->getGroup($id);
+        if(isset($id)) {
+            $this->activeGroup = $this->groupManager->getGroup($id);
+        } else {
+            $this->redirect(':Front:Homepage:groups');
+        }
         if(!$this->groupManager->isUserInGroup($this->activeUser->id, $this->activeGroup->id)){
-            $this->redirect(':Front:Stream:groups');
+            $this->redirect(':Front:Homepage:groups');
         }
         $this->setPermission();
         $this->template->activeGroup = $this->activeGroup;
