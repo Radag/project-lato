@@ -10,10 +10,19 @@
         </div>
         <h4>Povinnost</h4>
     </div>
-    <div class="input-field">
-    <input placeholder="Název (nepovinné)" id="first_name" type="text">
+    <div class="form-row">
+        <input placeholder="Název (nepovinné)" id="first_name" type="text">
+    </div>
+    <div class="form-row">
+        {input text class => 'materialize-textarea'}
+    </div>
+    <div class="form-row">
+        <div class="submit-control checkbox-vertical-align">
+          <input type="checkbox" class="filled-in" id="filled-in-box" checked="checked" />
+          <label for="filled-in-box">Termín</label>
+      </div>
+      <input type="date" class="datepicker no-border" placeholder="Datum">
   </div>
-  {input text class => 'materialize-textarea'}
   <ul class="attachments attachments_uploads" style="display: none;">        
   </ul>
 </div>
