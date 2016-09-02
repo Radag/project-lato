@@ -1,4 +1,6 @@
 <div class="col s12 l8">
+    
+    {if $streamPermission['addMessages']}
     <a href="#select-post-type-modal" class="card create-post clearfix modal-trigger">
         <div class="user-img left">
             <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
@@ -13,10 +15,10 @@
         <div class="modal-content">
             <h3>Vyberte typ příspěveku</h3>
             <ul id="select-post-type">
-                <li><a href="{link setMessageType! messageType=>1}" class="ajax"><i class="material-icons">message</i><span class="title">Vytvořit oznámení</span></a></li>
-                <li><a href="{link setMessageType! messageType=>2}" class="ajax"><i class="material-icons">library_books</i><span class="title">Vložit studijní materiál</span></a></li>
-                <li><a href="{link setMessageType! messageType=>3}" class="ajax"><i class="material-icons">event</i><span class="title">Vytvořit povinnost</span></a></li>
-                <li><a href="{link setMessageType! messageType=>4}" class="ajax"><i class="material-icons">assignment</i><span class="title">Vytvořit úkol</span></a></li>
+                <li><a href="/auth/group/23_fuck-you?stream-messageType=1&do=stream-setMessageType" {*"href="{link setMessageType! messageType=>1}"*} class="ajax"><i class="material-icons">message</i><span class="title">Vytvořit oznámení</span></a></li>
+                <li><a href="/auth/group/23_fuck-you?stream-messageType=2&do=stream-setMessageType" class="ajax"><i class="material-icons">library_books</i><span class="title">Vložit studijní materiál</span></a></li>
+                <li><a href="/auth/group/23_fuck-you?stream-messageType=3&do=stream-setMessageType" class="ajax"><i class="material-icons">event</i><span class="title">Vytvořit povinnost</span></a></li>
+                <li><a href="/auth/group/23_fuck-you?stream-messageType=4&do=stream-setMessageType" class="ajax"><i class="material-icons">assignment</i><span class="title">Vytvořit úkol</span></a></li>
             </ul>                                        
         </div>
         <div class="modal-footer clearfix">
@@ -46,6 +48,7 @@
             {control messageForm}
         {/snippet}
     </div>
+    {/if}
     {snippet messages}
     {foreach $messages as $message}  
     <div class="card clearfix" id="message-box-num_{$message->id}">   
@@ -62,7 +65,7 @@
                     <i class="material-icons">more_vert</i>
                 </a>
                 <ul id='message_dropdown_{$message->id}' class='dropdown-content'>
-                    {if $isOwner}
+                    {if $streamPermission['topAllMessages'] || ($activeUser->id === $message->user->id && $streamPermission['topOwnMessages'])}
                         {if !$message->priority}
                         <li><a href="{link topMessage! idMessage=>$message->id}">Přesunout nahoru</a></li>
                         {else}
@@ -74,7 +77,7 @@
                     {else}
                         <li><a href="{link followMessage! idMessage=>$message->id, enable=>false}">Zrušit sledování</a></li>
                     {/if}
-                    {if $isOwner || ($activeUser->id === $message->user->id)}
+                    {if $streamPermission['removeAllMessages'] || ($activeUser->id === $message->user->id && $streamPermission['removeOwnMessages'])}
                         <li class="divider"></li>
                         <li><a href="{link deleteMessage! idMessage=>$message->id}">Smazat</a></li>
                     {/if}

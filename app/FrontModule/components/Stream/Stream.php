@@ -72,6 +72,8 @@ class Stream extends Control
     protected $materialsFormFactory;
     
     
+    protected $streamPermission = array();
+    
     public function __construct(
             UserManager $userManager, 
             MessageManager $messageManager, 
@@ -96,6 +98,11 @@ class Stream extends Control
         $this->activeUser = $user;
     }
     
+    public function setStreamPermission($permission)
+    {
+        $this->streamPermission = $permission;
+    }
+    
     public function setGroup(\App\Model\Entities\Group $group)
     {
         $this->activeGroup = $group;
@@ -106,6 +113,7 @@ class Stream extends Control
         return $this->activeGroup;
     }
     
+    
     public function render()
     {
         $template = $this->template;
@@ -113,6 +121,7 @@ class Stream extends Control
         $template->activeUser = $this->activeUser;  
         $template->isOwner = ($this->activeUser->id === $this->activeGroup->owner->id) ? true : false;
         $template->messages = $messages;
+        $template->streamPermission = $this->streamPermission;
         $template->setFile(__DIR__ . '/Stream.latte');
         $template->render();
     }

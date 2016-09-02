@@ -64,7 +64,7 @@ class CommentForm extends Control
             ->addRule(\Nette\Forms\Form::FILLED, 'Zpráva musí obsahovat text');
         $form->addHidden('idMessage', $this->idMessage);
         $form->addSubmit('send', 'Publikovat');
-
+        $link = $this->presenter->link('this', array('id'=>$this->getParent()->getParent()->getActiveGroup()->id));
         $form->onSuccess[] = [$this, 'processForm'];
         return $form;
     }
@@ -73,9 +73,6 @@ class CommentForm extends Control
     {
         $template = $this->template;
         $template->setFile(__DIR__ . '/CommentForm.latte');
-        // vložíme do šablony nějaké parametry
-        //$template->form = $this->form;
-        // a vykreslíme ji
         $template->comments = $this->messageManager->getComments($this->idMessage);
         $template->discutionMembers = $this->messageManager->getDicscutionMembers($this->idMessage);
         $template->activeUser = $this->activeUser;

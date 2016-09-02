@@ -24,9 +24,9 @@
                                     <i class="material-icons">more_vert</i>
                                 </a>
                                 <ul id='stream-options-window' class='dropdown-content'>
-                                    <li><a href="{link Group:settings 'id' => $activeGroup->id}">Nastavení skupiny</a></li>
-                                    <li><a href="{link leaveGroup!, 'idGroup'=>$activeGroup->id}">Opustit skupinu</a></li>
-                                    <li><a href="{link archiveGroup!, 'idGroup'=>$activeGroup->id}">Archivovat skupinu</a></li>
+                                    <li n:if="$groupPermission['settings']"><a href="{link Group:settings 'id' => $activeGroup->id}">Nastavení skupiny</a></li>
+                                    <li n:if="$groupPermission['leave']"><a href="{link leaveGroup!, 'idGroup'=>$activeGroup->id}">Opustit skupinu</a></li>
+                                    <li n:if="$groupPermission['archive']"><a href="{link archiveGroup!, 'idGroup'=>$activeGroup->id}">Archivovat skupinu</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -70,7 +70,7 @@
                         <p class="secondary-par">V tuto cvhíli nemáte v předmětu zvěřejněny žádné povinnosti</p>  
                     </div>
                 </div>
-                <div class="card bottom-spacer">
+                <div class="card bottom-spacer" n:if="$groupPermission['settings']">
                     <div class="card-header">
                         <h3>Sdílení</h3>
                     </div>
@@ -117,7 +117,7 @@
                     {/snippet}
                 </div>
 
-                <div class="card bottom-spacer">
+                <div class="card bottom-spacer" n:if="$groupPermission['settings']">
                     <div class="card-header">
                         <h3>Výpis příspěvků</h3>
                     </div>

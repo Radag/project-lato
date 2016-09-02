@@ -30,6 +30,22 @@ class GroupPresenter extends BasePresenter
     /** @var  IStreamFactory  */
     protected $streamFactory;
     
+    protected $groupPermission = array(
+        'archive' => false,
+        'leave' => false,
+        'settings' => false,
+        'addMessages' => false,
+        'addCommets' => false,
+        'removeAllMessages' => false,
+        'removeOwnMessages' => false,
+        'removeAllComments' => false,
+        'removeOwnComments' => false,
+        'topAllMessages' => false,
+        'topOwnMessages' => false,
+        'removeMembers' => false
+    );
+    
+    
     public function __construct(UserManager $userManager, 
             MessageManager $messageManager, 
             GroupManager $groupManager,
@@ -55,9 +71,30 @@ class GroupPresenter extends BasePresenter
         if(!$this->groupManager->isUserInGroup($this->activeUser->id, $this->activeGroup->id)){
             $this->redirect(':Front:Stream:groups');
         }
-        
+        $this->setPermission();
         $this->template->activeGroup = $this->activeGroup;
         $this->template->activeUser = $this->activeUser;
+        $this->template->groupPermission = $this->groupPermission;
+    }
+    
+    protected function setPermission()
+    {
+        if($this->activeGroup->owner->id === $this->activeUser->id) {
+            $this->groupPermission['archive'] = true;
+            $this->groupPermission['settings'] = true;
+            $this->groupPermission['removeAllMessages'] = true;
+            $this->groupPermission['removeAllComments'] = true;
+            $this->groupPermission['topAllMessages'] = true;
+            $this->groupPermission['addMessages'] = true;
+            $this->groupPermission['addCommets'] = true;
+            $this->groupPermission['removeMembers'] = true;
+        } else {
+            $this->groupPermission['leave'] = true;
+            $this->groupPermission['addMessages'] = true;
+            $this->groupPermission['addCommets'] = true;
+            $this->groupPermission['removeOwnComments'] = true;
+            $this->groupPermission['removeOwnMessages'] = true;
+        }
     }
     
     protected function createComponentStream()
@@ -65,6 +102,7 @@ class GroupPresenter extends BasePresenter
         $stream = $this->streamFactory->create();
         $stream->setGroup($this->activeGroup);
         $stream->setUser($this->activeUser);
+        $stream->setStreamPermission($this->groupPermission);
         return $stream;
     }
     

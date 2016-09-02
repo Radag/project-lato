@@ -25,8 +25,8 @@
                                 <i class="material-icons">more_vert</i>
                             </a>
                             <ul id='stream-options-window' class='dropdown-content'>
-                                <li><a href="">Nastavení skupiny</a></li>
-                                <li><a href="{link leaveGroup!, 'idGroup'=>$activeGroup->id}">Opustit skupinu</a></li>
+                                <li n:if="$groupPermission['settings']"><a href="{link Group:settings 'id' => $activeGroup->id}">Nastavení skupiny</a></li>
+                                <li n:if="$groupPermission['leave']"><a href="{link leaveGroup!, 'idGroup'=>$activeGroup->id}">Opustit skupinu</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -145,14 +145,16 @@
                                     <i class="material-icons">add_box</i>
                                     <span class="label">Přidat hodnocení</span>
                                 </a> 
+                                {if $activeUser->id !== $member->id}
                                 <a href="" class="lowercase-btn">
                                     <i class="material-icons">email</i>
                                     <span class="label">Poslat zprávu</span>
                                 </a>
-                                <a href="{link removeFromGroup!, 'idGroup'=>$activeGroup->id,'idUser'=>$member->id}" class="lowercase-btn">
+                                <a n:if="$groupPermission['removeMembers']" href="{link removeFromGroup!, 'idGroup'=>$activeGroup->id,'idUser'=>$member->id}" class="lowercase-btn">
                                     <i class="material-icons">delete</i>
                                     <span class="label">Odebrat ze skupiny</span>
-                                </a> 
+                                </a>
+                                {/if}
                             </div>
                         </div>
                     </li>
