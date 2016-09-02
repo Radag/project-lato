@@ -24,8 +24,9 @@
                                     <i class="material-icons">more_vert</i>
                                 </a>
                                 <ul id='stream-options-window' class='dropdown-content'>
-                                    <li><a href="{link Stream:settings}">Nastavení skupiny</a></li>
+                                    <li><a href="{link Group:settings 'id' => $activeGroup->id}">Nastavení skupiny</a></li>
                                     <li><a href="{link leaveGroup!, 'idGroup'=>$activeGroup->id}">Opustit skupinu</a></li>
+                                    <li><a href="{link archiveGroup!, 'idGroup'=>$activeGroup->id}">Archivovat skupinu</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -56,7 +57,7 @@
                                 </li>
                             {/foreach}
                             </ul>
-                            <a href="{link Stream:users 'id'=>$activeGroup->urlId}" class="btn-flat secondary-color card-bottom">
+                            <a href="{link Group:users 'id'=>$activeGroup->urlId}" class="btn-flat secondary-color card-bottom">
                             Zobrazit vše
                         </a>
                     </div>

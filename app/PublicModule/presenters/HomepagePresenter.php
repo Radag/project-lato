@@ -61,7 +61,7 @@ class HomepagePresenter extends BasePresenter
             $redirect->remove();
             $this->redirect($link, $params);
         } else {
-            $this->redirect(':Front:Stream:groups');  
+            $this->redirect(':Front:Homepage:groups');  
         }
         
     }
@@ -69,7 +69,7 @@ class HomepagePresenter extends BasePresenter
     public function actionDefault()
     {
         if($this->user->isLoggedIn()) {
-          $this->redirect(':Front:Stream:groups');  
+          $this->redirect(':Front:Homepage:groups');  
         }
     }    
 }

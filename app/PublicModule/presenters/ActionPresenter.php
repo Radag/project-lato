@@ -40,7 +40,7 @@ class ActionPresenter extends BasePresenter
                 if($this->groupManager->isUserInGroup($this->user->id, $action->ID_GROUP)) {
                     $this->template->isInGroup = true;
                     $this->flashMessage('Již jste členem této skupiny.');
-                    $this->redirect(':Front:Stream:default', array('id'=>$action->URL_ID));
+                    $this->redirect(':Front:Group:default', array('id'=>$action->URL_ID));
                 } else {
                     $this->template->isInGroup = false;
                 }
@@ -63,7 +63,7 @@ class ActionPresenter extends BasePresenter
             if($this->user->isLoggedIn()) {
                 $this->groupManager->addUserToGroup($action->ID_GROUP, $this->user->id, 1);
                 $this->flashMessage('Byl jste přidán do skupiny.');
-                $this->redirect(':Front:Stream:default', array('id'=>$action->URL_ID));
+                $this->redirect(':Front:Group:default', array('id'=>$action->URL_ID));
             } else {
                 $redirectSection = $this->getSession()->getSection('redirect');
                 $redirectSection->params = $this->getParameters();

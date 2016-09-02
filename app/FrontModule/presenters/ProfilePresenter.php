@@ -86,10 +86,7 @@ class ProfilePresenter extends BasePresenter
         $this->template->userAccount = $this->activeUser;
     }
     
-    protected function createComponentTopPanel()
-    {
-        return new TopPanel($this->userManager, $this->groupManager, null, $this->privateMessageManager, $this->notificationManager, $this->activeUser);
-    }
+
     
     public function handleUploadProfileImage()
     {

@@ -34,7 +34,7 @@
                 </li>
                 <div class="divider"></div>
                 <h4>Hlavní nabídka</h4>
-                <li><a n:class="$presenter->isLinkCurrent('Stream:groups') ? active, waves-effect, waves-dark" href="{plink Stream:groups}" >
+                <li><a n:class="$presenter->isLinkCurrent('Homepage:groups') ? active, waves-effect, waves-dark" href="{plink Homepage:groups}" >
                     <i class="material-icons">dashboard</i>Nástěnka
                 </a></li>
                 {*<li class="no-padding">
@@ -59,14 +59,14 @@
                 <li class="no-padding">
                     <ul class="collapsible collapsible-accordion">
                         <li>
-                            <a n:class="($presenter->isLinkCurrent('Stream:default') ? active), collapsible-header, waves-effect, waves-dark">
+                            <a n:class="($presenter->isLinkCurrent('Group:default') ? active), collapsible-header, waves-effect, waves-dark">
                                 <i class="material-icons">people</i>Skupiny
                                 <i class="material-icons show-more">expand_more</i>
                             </a>
                             <div class="collapsible-body">
                                 <ul>
                                     {foreach $groups as $group}
-                                    <li><a n:class="$presenter->isLinkCurrent('Stream:default', array('id'=>$group->urlId)) ? active" href="{plink Stream:default 'id'=>$group->urlId}">
+                                    <li><a n:class="$presenter->isLinkCurrent('Group:default', array('id'=>$group->urlId)) ? active" href="{plink Group:default 'id'=>$group->urlId}">
                                         <div class="group-shortcut-circle" style="background-color: {$group->mainColor|noescape}" >{$group->shortcut|substr:0,1}</div>{$group->name}
                                     </a></li>
                                     {/foreach}
@@ -81,10 +81,10 @@
                         </li>
                     </ul>
                 </li>
-                <li><a n:class="$presenter->isLinkCurrent('Stream:groups') ? active, waves-effect, waves-dark" href="{plink Stream:groups}" >
+                <li><a n:class="$presenter->isLinkCurrent('Homepage:groups') ? active, waves-effect, waves-dark" href="{plink Homepage:groups}" >
                     <i class="material-icons">receipt</i>Povinnosti
                 </a></li>
-                <li><a n:class="$presenter->isLinkCurrent('Stream:groups') ? active, waves-effect, waves-dark" href="{plink Stream:groups}" >
+                <li><a n:class="$presenter->isLinkCurrent('Homepage:groups') ? active, waves-effect, waves-dark" href="{plink Homepage:groups}" >
                     <i class="material-icons">insert_invitation</i>Rozvrh
                 </a></li>
                 <li class="empty"></li>
@@ -103,7 +103,7 @@
                         </li>
                         <li class="divider divider-after"></li>
                         {foreach $notifications as $notification}
-                        <li><a href="{if $notification->idGroup}{plink Stream:default 'id'=>$notification->idGroup}{else}{plink Profile:default 'idUser'=>$notification->participant->urlId}{/if}" class="clearfix">
+                        <li><a href="{if $notification->idGroup}{plink Group:default 'id'=>$notification->idGroup}{else}{plink Profile:default 'idUser'=>$notification->participant->urlId}{/if}" class="clearfix">
                             <div class="user-img left">
                                 {if $notification->participant->profileImage}
                                     <img src="{$notification->participant->profileImage}" alt="some chick">

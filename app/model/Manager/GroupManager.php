@@ -203,6 +203,11 @@ class GroupManager extends Nette\Object{
         $this->database->query("UPDATE user_group SET ACTIVE=0 WHERE ID_USER=? AND ID_GROUP=?", $idUser, $idGroup);
     }
     
+    public function archiveGroup($idGroup)
+    {
+        $this->database->query("UPDATE groups SET ARCHIVED=1 WHERE ID_GROUP=?", $idGroup);
+    }
+    
     public function addUserToGroup($idGroup, $idUser, $relation, $fromLink = null)
     {
         $this->database->table('user_group')->insert(array(

@@ -54,14 +54,12 @@ class TopPanel extends Control
     
     public function __construct(UserManager $userManager,
             GroupManager $groupManager, 
-            $activeGroup, 
             PrivateMessageManager $privateMessageManager,
             NotificationManager $notificationManager,
             \App\Model\Entities\User $activeUser)
     {
         $this->userManager = $userManager;
         $this->groupManager = $groupManager;
-        $this->activeGroup = $activeGroup;
         $this->privateMessageManager = $privateMessageManager;
         $this->notificationManager = $notificationManager;
         $this->activeUser = $activeUser;

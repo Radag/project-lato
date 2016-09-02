@@ -3,7 +3,6 @@
 namespace App\FrontModule\Presenters;
 
 use App\Model\Manager\UserManager;
-use App\FrontModule\Components\TopPanel\TopPanel;
 use App\FrontModule\Components\Stream\Stream;
 use App\Model\Manager\MessageManager;
 use App\Model\Manager\GroupManager;
@@ -12,7 +11,7 @@ use App\Model\Manager\NotificationManager;
 use App\Model\Manager\FileManager;
 use App\FrontModule\Components\Stream\IStreamFactory;
 
-class StreamPresenter extends BasePresenter
+class GroupPresenter extends BasePresenter
 {    
     /**
      *
@@ -48,9 +47,17 @@ class StreamPresenter extends BasePresenter
         $this->streamFactory = $streamFactory;
     }
     
-    protected function createComponentTopPanel()
+    protected function startup()
     {
-        return new TopPanel($this->userManager, $this->groupManager, $this->activeGroup, $this->privateMessageManager, $this->notificationManager, $this->activeUser);
+        parent::startup();
+        $id = $this->getParameter('id');
+        $this->activeGroup = $this->groupManager->getGroup($id);
+        if(!$this->groupManager->isUserInGroup($this->activeUser->id, $this->activeGroup->id)){
+            $this->redirect(':Front:Stream:groups');
+        }
+        
+        $this->template->activeGroup = $this->activeGroup;
+        $this->template->activeUser = $this->activeUser;
     }
     
     protected function createComponentStream()
@@ -105,46 +112,38 @@ class StreamPresenter extends BasePresenter
         //check news from this time
         $this->sendPayload();
     }
-    
-    public function actionGroups()
-    {
-        $this->template->groups = $this->groupManager->getGroups($this->activeUser);
-    }
         
     
-    public function actionDefault($id)
-    {
-        $group = $this->groupManager->getGroup($id);
-        
-        if(!$this->groupManager->isUserInGroup($this->activeUser->id, $group->id)){
-            $this->redirect(':Front:Stream:groups');
-        }
-        $this->groupManager->setGroupVisited($this->activeUser, $group->id);
-        $this->activeGroup = $group;
-        $this->template->activeGroup = $this->activeGroup;
-        $this->template->activeUser = $this->activeUser;
-        $this->template->groupMembers = $this->groupManager->getGroupUsers($group->id);  
+    public function actionDefault()
+    {       
+        $this->groupManager->setGroupVisited($this->activeUser, $this->activeGroup->id);
+        $this->template->groupMembers = $this->groupManager->getGroupUsers($this->activeGroup->id);  
     }
     
-    public function actionSettings($id)
+    public function actionSettings()
     {
     }
     
-    public function actionUsers($id)
+    public function actionUsers()
     {
-        $group = $this->groupManager->getGroup($id);
-        $this->activeGroup = $group;
-        $this->template->activeGroup = $this->activeGroup;
-        $this->template->activeUser = $this->activeUser;
-        $this->template->groupMembers = $this->groupManager->getGroupUsers($group->id);
+        $this->activeGroup = $this->activeGroup;
+        $this->template->groupMembers = $this->groupManager->getGroupUsers($this->activeGroup->id);
     }
     
     public function handleLeaveGroup($idGroup)
     {
            $this->groupManager->removeUserFromGroup($idGroup, $this->activeUser->id);
            $this->flashMessage("Opustil jste skupinu");
-           $this->redirect(':Front:Stream:groups');
+           $this->redirect(':Front:Homepage:groups');
     }
+    
+    public function handleArchiveGroup($idGroup)
+    {
+           $this->groupManager->archiveGroup($idGroup);
+           $this->flashMessage("Skupina archivována");
+           $this->redirect(':Front:Homepage:groups');
+    }
+    
     
     public function handleRemoveFromGroup($idGroup, $idUser)
     {

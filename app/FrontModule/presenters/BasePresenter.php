@@ -10,7 +10,9 @@ namespace App\FrontModule\Presenters;
 
 use Nette;
 use \App\Model\Manager\UserManager;
-
+use App\FrontModule\Components\TopPanel\TopPanel;
+use App\Model\Manager\PrivateMessageManager;
+use App\Model\Manager\NotificationManager;
 
 /**
  * Description of BasePresenter
@@ -34,6 +36,9 @@ class BasePresenter extends Nette\Application\UI\Presenter
      */
     protected $userManager;
     
+    protected $privateMessageManager;
+    protected $notificationManager;
+    
     public function __construct(Nette\Database\Context $database, UserManager $userManager)
     {
         $this->database = $database;
@@ -53,5 +58,10 @@ class BasePresenter extends Nette\Application\UI\Presenter
     protected function setActiveUser()
     {
         $this->activeUser = $this->userManager->get($this->user->id);
+    }
+    
+    protected function createComponentTopPanel()
+    {
+        return new TopPanel($this->userManager, $this->groupManager, $this->privateMessageManager, $this->notificationManager, $this->activeUser);
     }
 }
