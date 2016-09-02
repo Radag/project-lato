@@ -64,7 +64,7 @@ class GroupManager extends Nette\Object{
             SELECT DISTINCT ID_GROUP FROM user_group WHERE ID_USER=? AND ACTIVE=1
             UNION 
             SELECT DISTINCT ID_GROUP FROM groups WHERE ID_OWNER=?) T1
-            LEFT JOIN groups T2 ON  T1.ID_GROUP = T2.ID_GROUP
+            LEFT JOIN groups T2 ON (T1.ID_GROUP = T2.ID_GROUP AND T2.ARCHIVED=0)
             LEFT JOIN group_color_scheme T3 ON T2.COLOR_SCHEME=T3.ID_SCHEME", $user->id, $user->id)->fetchAll(); 
         
         if(!empty($yourGroups)) {
@@ -175,7 +175,7 @@ class GroupManager extends Nette\Object{
                     WHERE T1.ID_USER=? AND T1.ACTIVE=1
                     GROUP BY T1.ID_GROUP
                 ) T5 ON T5.ID_GROUP=T1.ID_GROUP
-                WHERE T1.GROUP_TYPE=2 AND T1.ID_GROUP IN (" . implode(',', array_keys($userGroups)) . ")", $user->id)->fetchAll();
+                WHERE T1.ARCHIVED=0 AND T1.GROUP_TYPE=2 AND T1.ID_GROUP IN (" . implode(',', array_keys($userGroups)) . ")", $user->id)->fetchAll();
             foreach($groups as $group) {
                 $groupModel = new Group();
                 $teacher = new User();
