@@ -17,12 +17,14 @@ a {
     transition: color 300ms ease-in-out;
 }
 
-.datepicker {
-    width: auto !important;
+.right-16 {
+    margin-right: 16px !important;
 }
 
 [type="checkbox"]+label {
     color: rgba(0, 0, 0, .54);
+    height: 20px;
+    line-height: 20px;
 }
 
 .checkbox-vertical-align {
@@ -800,6 +802,11 @@ p.secondary-par strong {
 
 #create-post-modal textarea {
     min-height: 6em;
+}
+
+#create-post-modal .term-picker input {
+    width: auto !important;
+    text-align: right;
 }
 
 #create-post-modal .modal-footer {
@@ -2075,8 +2082,14 @@ textarea.materialize-textarea {
 
 .form-row {
     display: flex;
-    align-items: top;
+    align-items: center;
     margin-top: 20px;
+    min-height: 45px;
+}
+
+.form-row .label {
+    font-weight: 500;
+    font-size: 15px;
 }
 
 .card.settings .card-content h4 {

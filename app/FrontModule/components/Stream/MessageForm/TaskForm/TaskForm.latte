@@ -16,12 +16,13 @@
     <div class="form-row">
         {input text class => 'materialize-textarea'}
     </div>
-    <div class="form-row">
-        <div class="submit-control checkbox-vertical-align">
-          <input type="checkbox" class="filled-in" id="filled-in-box" checked="checked" />
-          <label for="filled-in-box">Termín</label>
+    <div class="form-row term-picker">
+        <div class="submit-control checkbox-vertical-align right-16">
+          <input type="checkbox" class="filled-in" id="filled-in-box" />
+          <label for="filled-in-box">Datum (termín)</label>
       </div>
-      <input type="date" class="datepicker no-border" placeholder="Datum">
+      <input type="date" class="datepicker no-border right-16" size=12 maxlength=12 value="2. 9. 2016">
+      <input type="text" class="no-border" value="23:50" size=5 maxlength=5 id="current-time">
   </div>
   <ul class="attachments attachments_uploads" style="display: none;">        
   </ul>
