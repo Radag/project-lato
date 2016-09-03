@@ -202,4 +202,27 @@ class GroupPresenter extends BasePresenter
            $this->notificationManager->addNotification($notification);
            $this->redirect('this');
     }
+    
+
+    
+    public function handleAddToGroup()
+    {
+        $userName = $this->getRequest()->getPost('userName');
+        $userId = $this->userManager->getByName($userName);
+
+        if(empty($userId) || $this->groupManager->isUserInGroup($userId, $this->activeGroup->id)) {
+            $this->flashMessage('Již je ve skupině.');
+        } else {
+            $this->groupManager->addUserToGroup($this->activeGroup->id, $userId, GroupManager::RELATION_STUDENT);
+            $this->flashMessage('Byl přidán do skupiny.');
+            
+            $notification = new \App\Model\Entities\Notification;
+            $notification->idUser = $userId;
+            $notification->title = "Byl jste přidán do skupiny";
+            $notification->text = "Byl jste přidán do skupiny " . $this->activeGroup->name;
+            $notification->idGroup = $this->activeGroup->id;
+            $this->notificationManager->addNotification($notification);
+        }
+        $this->redirect('this');
+   }
 }

@@ -104,6 +104,19 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
         {
             $this->database->query("UPDATE user SET NAME=?, SURNAME=?, EMAIL=?, BIRTHDAY=? WHERE ID_USER=?", $values['name'], $values['surname'], $values['email'], $values['birthday'], $user->id);
         }
+        
+        public function getUsersList() {
+            $return = array();
+            $users =  $this->database->query("SELECT * FROM vw_user_detail")->fetchAll();
+            foreach($users as $user) {
+                $return[$user->USERNAME] = 'https://cdn.lato.cz/' . $user->PROFILE_PATH . '/' . $user->PROFILE_FILENAME;
+            }
+            return $return;
+        }
+        
+        public function getByName($name) {
+            return $this->database->query("SELECT ID_USER FROM vw_user_detail WHERE USERNAME=?", $name)->fetchField();
+        }
 
 }
 

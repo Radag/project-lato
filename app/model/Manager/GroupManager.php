@@ -63,8 +63,8 @@ class GroupManager extends Nette\Object{
         $yourGroups = $this->database->query("SELECT T1.ID_GROUP, T3.MAIN_COLOR, T2.NAME, T2.SHORTCUT, T2.GROUP_TYPE, T2.URL_ID FROM (
             SELECT DISTINCT ID_GROUP FROM user_group WHERE ID_USER=? AND ACTIVE=1
             UNION 
-            SELECT DISTINCT ID_GROUP FROM groups WHERE ID_OWNER=?) T1
-            LEFT JOIN groups T2 ON (T1.ID_GROUP = T2.ID_GROUP AND T2.ARCHIVED=0)
+            SELECT DISTINCT ID_GROUP FROM groups WHERE ID_OWNER=? AND ARCHIVED=0) T1
+            JOIN groups T2 ON (T1.ID_GROUP = T2.ID_GROUP AND T2.ARCHIVED=0)
             LEFT JOIN group_color_scheme T3 ON T2.COLOR_SCHEME=T3.ID_SCHEME", $user->id, $user->id)->fetchAll(); 
         
         if(!empty($yourGroups)) {
@@ -210,12 +210,19 @@ class GroupManager extends Nette\Object{
     
     public function addUserToGroup($idGroup, $idUser, $relation, $fromLink = null)
     {
-        $this->database->table('user_group')->insert(array(
+        $row = $this->database->query("SELECT * FROM user_group WHERE ID_USER=? AND ID_GROUP=?", $idUser, $idGroup)->fetch();
+        
+        if(empty($row)) {
+            $this->database->table('user_group')->insert(array(
                 'ID_USER' => $idUser,
                 'ID_GROUP' => $idGroup,
                 'ID_RELATION' => $relation,
                 'FROM_LINK' => $fromLink
-        ));
+            ));  
+        } else {
+            $this->database->query("UPDATE user_group SET ACTIVE=1 WHERE ID_USER=? AND ID_GROUP=?", $idUser, $idGroup);
+        }
+
         
 //        $user = $this->userManager->get($idUser);
 //        $group = $this->getGroup($idGroup);

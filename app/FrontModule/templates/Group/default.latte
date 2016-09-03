@@ -1,165 +1,181 @@
-    {block content}
-
-    {control topPanel}
-    <section class="main">
-        <div class="container">
-            <div class="row">
-                <div class="col s12">
-                    <header class="section-header">
-                        <h3 class="">Všechny položky</h3>
-                        <div class="flex-spacer"></div>
-                        <ul class="right options">
-                            <li>
-                                <a class="btn-flat btn-icon dropdown-button" data-activates="filter-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
-                                    <i class="material-icons">filter_list</i>
-                                </a>
-                                <ul id='filter-window' class="dropdown-content">
-                                    <li><a href="#!">Všechny položky</a></li>
-                                    <li><a href="#!">Studijní materiály</a></li>
-                                    <li><a href="#!">Povinnosti</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a class="btn-flat btn-icon dropdown-button" data-activates="stream-options-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
-                                    <i class="material-icons">more_vert</i>
-                                </a>
-                                <ul id='stream-options-window' class='dropdown-content'>
-                                    <li n:if="$groupPermission['settings']"><a href="{link Group:settings 'id' => $activeGroup->urlId}">Nastavení skupiny</a></li>
-                                    <li n:if="$groupPermission['leave']"><a href="{link leaveGroup!, 'idGroup'=>$activeGroup->id}">Opustit skupinu</a></li>
-                                    <li n:if="$groupPermission['archive']"><a href="{link archiveGroup!, 'idGroup'=>$activeGroup->id}">Archivovat skupinu</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </header>  
-                </div>
-            </div>
-        </div>
-    </section>
-
+{block content}
+{control topPanel}
+<section class="main">
     <div class="container">
         <div class="row">
-            {control stream}
-            <div class="col s12 l4">
-                <div class="card bottom-spacer">
-                    <div class="card-header">
-                        <h3>Studenti</h3>
-                    </div>
-                    <div class="card-content clearfix">
-                        <p class="secondary-par">Seznam studentů, zapsaných v této skupině.</p>
-                            <ul class="user-collection">
-                            {foreach $groupMembers as $member}
-                                <li>
-                                    <a href="{plink Profile:default 'idUser'=>$member->id}" class="user">
-                                      <img src="{$member->profileImage}" alt="" class="user-img">
-                                      <span class="title">{if !empty($member->name)}{$member->name} {$member->surname}{/if}</span>
-                                    </a>
-                                    <a href="#"><i class="material-icons">more_horiz</i></a>
-                                </li>
-                            {/foreach}
+            <div class="col s12">
+                <header class="section-header">
+                    <h3 class="">Všechny položky</h3>
+                    <div class="flex-spacer"></div>
+                    <ul class="right options">
+                        <li>
+                            <a class="btn-flat btn-icon dropdown-button" data-activates="filter-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                                <i class="material-icons">filter_list</i>
+                            </a>
+                            <ul id='filter-window' class="dropdown-content">
+                                <li><a href="#!">Všechny položky</a></li>
+                                <li><a href="#!">Studijní materiály</a></li>
+                                <li><a href="#!">Povinnosti</a></li>
                             </ul>
-                            <a href="{link Group:users 'id'=>$activeGroup->urlId}" class="btn-flat secondary-color card-bottom">
-                            Zobrazit vše
-                        </a>
-                    </div>
+                        </li>
+                        <li>
+                            <a class="btn-flat btn-icon dropdown-button" data-activates="stream-options-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                                <i class="material-icons">more_vert</i>
+                            </a>
+                            <ul id='stream-options-window' class='dropdown-content'>
+                                <li n:if="$groupPermission['settings']"><a href="{link Group:settings 'id' => $activeGroup->urlId}">Nastavení skupiny</a></li>
+                                <li n:if="$groupPermission['leave']"><a href="{link leaveGroup!, 'idGroup'=>$activeGroup->id}">Opustit skupinu</a></li>
+                                <li n:if="$groupPermission['archive']"><a href="{link archiveGroup!, 'idGroup'=>$activeGroup->id}">Archivovat skupinu</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </header>  
+            </div>
+        </div>
+    </div>
+</section>
+<div class="container">
+    <div class="row">
+        {control stream}
+        <div class="col s12 l4">
+            <div class="card bottom-spacer">
+                <div class="card-header">
+                    <h3>Studenti</h3>
                 </div>
-                <div class="card bottom-spacer">
-                    <div class="card-header">
-                        <h3>Povinnosti</h3>
-                    </div>
-                    <div class="card-content clearfix">
-                        <p class="secondary-par">V tuto cvhíli nemáte v předmětu zvěřejněny žádné povinnosti</p>  
-                    </div>
+                <div class="card-content clearfix">
+                    <p class="secondary-par">Seznam studentů, zapsaných v této skupině.</p>
+                    <ul class="user-collection">
+                        {foreach $groupMembers as $member}
+                            <li>
+                                <a href="{plink Profile:default 'idUser'=>$member->id}" class="user">
+                                    <img src="{$member->profileImage}" alt="" class="user-img">
+                                    <span class="title">{if !empty($member->name)}{$member->name} {$member->surname}{/if}</span>
+                                </a>
+                                <a href="#"><i class="material-icons">more_horiz</i></a>
+                            </li>
+                        {/foreach}
+                    </ul>
+                    <a href="{link Group:users 'id'=>$activeGroup->urlId}" class="btn-flat secondary-color card-bottom">
+                        Zobrazit vše
+                    </a>
                 </div>
-                <div class="card bottom-spacer" n:if="$groupPermission['settings']">
-                    <div class="card-header">
-                        <h3>Sdílení</h3>
-                    </div>
-                    {snippet sharingFormWrap}
+            </div>
+            <div class="card bottom-spacer">
+                <div class="card-header">
+                    <h3>Povinnosti</h3>
+                </div>
+                <div class="card-content clearfix">
+                    <p class="secondary-par">V tuto cvhíli nemáte v předmětu zvěřejněny žádné povinnosti</p>  
+                </div>
+            </div>
+            <div class="card bottom-spacer" n:if="$groupPermission['settings']">
+                <div class="card-header">
+                    <h3>Sdílení</h3>
+                </div>
+                {snippet sharingFormWrap}
                     <div class="card-content clearfix">
                         {form sharingForm id=>"sharingForm"}
-                        <div class="switch-row" n:if="$activeGroup->owner->id === $activeUser->id">
-                            <p class="secondary-par left">
-                            {if $activeGroup->sharingOn == 1}
-                            Vypnout sdílení
-                            {else}
-                            Zapnout sdílení
-                            {/if}
-                            <div class="switch right">
-                                <label>
-                                    {input shareByCode:}
-                                    <span class="lever"></span>
-                                </label>
-                            </div> 
-                        </div>
+                            <div class="switch-row" n:if="$activeGroup->owner->id === $activeUser->id">
+                                <p class="secondary-par left">
+                                    {if $activeGroup->sharingOn == 1}
+                                        Vypnout sdílení
+                                    {else}
+                                        Zapnout sdílení
+                                    {/if}
+                                <div class="switch right">
+                                    <label>
+                                        {input shareByCode:}
+                                        <span class="lever"></span>
+                                    </label>
+                                </div> 
+                            </div>
                         {/form}
                         {if $activeGroup->sharingOn == 1}
-                        <p class="secondary-par left">Zápis do této skupiny mohou ostatní uživatelé provést pomocí kódu <strong>{$activeGroup->sharingCode}</strong></p>
-                        <a class="btn-flat light-gray card-bottom modal-trigger" href="#add-user-to-group">
-                            Přidat uživatele
-                        </a>
-                        <div id="add-user-to-group" class="modal">
-                            <div class="modal-content">
-                                <h3>Sdílení</h3>
-                                <p>
-                                    nebo odkazu {link //:Public:Action:default, id => $activeGroup->sharingCode}                    
-                                </p> 
-                            </div>
-                        </div>  
+                            <p class="secondary-par left">Zápis do této skupiny mohou ostatní uživatelé provést pomocí kódu <strong>{$activeGroup->sharingCode}</strong></p>
+                            <a class="btn-flat light-gray card-bottom modal-trigger" href="#add-user-to-group">
+                                Přidat uživatele
+                            </a>
+                            <div id="add-user-to-group" class="modal">
+                                <div class="modal-content">
+                                    <h3>Sdílení</h3>
+                                    <p>
+                                      <form action="{link addToGroup!}" method="post" >
+                                       <div class="row">
+                                        <div class="col s12">
+                                           <div class="row">
+                                            <div class="input-field col s12">
+                                              <input type="text" value="{link //:Public:Action:default, id => $activeGroup->sharingCode}" >
+                                              <label for="autocomplete-input">Odkaz ke sdílení</label>
+                                            </div>
+                                          </div>
+                                          <div class="row">
+                                            <div class="input-field col s12">
+                                              <input name="userName" type="text" id="userSearch" class="autocomplete">
+                                              <label for="userSearch">Vyhledat uživatele</label>
+                                            </div>
+                                          </div>
+                                          <div class="row">
+                                            <div class="input-field col s12">
+                                              <input type="submit" value="Vložit">
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      </form>
+                                    </p> 
+                                </div>
+                            </div>  
                         {/if}
                     </div>
                     <script>
-                        $(document).ready(function() {
-                            $("#sharingForm input[type='checkbox']").on('change', function() {
+                        $(document).ready(function () {
+                            $("#sharingForm input[type='checkbox']").on('change', function () {
                                 $("#sharingForm").submit();
                             });
                         });
                     </script>
-                    {/snippet}
+                {/snippet}
+            </div>
+            <div class="card bottom-spacer" n:if="$groupPermission['settings']">
+                <div class="card-header">
+                    <h3>Výpis příspěvků</h3>
                 </div>
-
-                <div class="card bottom-spacer" n:if="$groupPermission['settings']">
-                    <div class="card-header">
-                        <h3>Výpis příspěvků</h3>
-                    </div>
-                    <div class="card-content clearfix">
-                        <p class="secondary-par left">Zobrazit smazané položky</p>
-                        <div class="switch right">
-                            <label>
-                                <input type="checkbox">
-                                <span class="lever"></span>
-                            </label>
-                        </div>  
-                    </div>
+                <div class="card-content clearfix">
+                    <p class="secondary-par left">Zobrazit smazané položky</p>
+                    <div class="switch right">
+                        <label>
+                            <input type="checkbox">
+                            <span class="lever"></span>
+                        </label>
+                    </div>  
                 </div>
-
-                
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        var idSession = null;
+<script>
+    var idSession = null;
+    (function () {
+        if (idSession === null) {
+            var link = {link checkNews!};
+        } else {
+            var link = {link checkNews!} + '&idSession=' + idSession;
+            ;
+        }
 
-        (function(){
-            if(idSession === null) {
-                var link = {link checkNews!};
-            } else {
-                var link = {link checkNews!} + '&idSession=' + idSession;;
+        $.getJSON(link, function (data) {
+            idSession = data.idSession;
+            if (data.news > 0) {
+                $.nette.ajax({
+                    url: {link redrawNews!},
+                    method: 'GET'
+                });
             }
-
-            $.getJSON(link, function(data) {
-                idSession = data.idSession;
-                if(data.news > 0) {
-                    $.nette.ajax({
-                        url: {link redrawNews!},
-                        method: 'GET'
-                    });
-                }
-            });
-            setTimeout(arguments.callee, 5000);
-        })();
-
-    </script>
+        });
+        setTimeout(arguments.callee, 5000);
+    })();
+</script>
 
 
 

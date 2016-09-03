@@ -64,4 +64,11 @@ class BasePresenter extends Nette\Application\UI\Presenter
     {
         return new TopPanel($this->userManager, $this->groupManager, $this->privateMessageManager, $this->notificationManager, $this->activeUser);
     }
+    
+    public function handleGetUserList()
+    {
+        $users = $this->userManager->getUsersList();
+        $this->presenter->payload->users = json_encode($users);
+        $this->presenter->sendPayload();
+    }
 }

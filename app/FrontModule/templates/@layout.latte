@@ -21,12 +21,7 @@
 	<title>{ifset title}{include title|striptags} | {/ifset}Lato</title>
 </head>
 <body>
-        
-    
-    
-	
 	{include content}
-        
         {if $user->isLoggedIn()}
 	 <div id="chat-float" class="fixed-action-btn click-to-toggle" style="bottom: 45px; right: 24px;">
             <a class="btn-floating btn-large waves-effect waves-light" style="background-color: #009688"> 
@@ -59,12 +54,17 @@
             $(document).ready(function(){
                 // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
                 $('.modal-trigger').leanModal();
+             
+                $.get( {link getUserList!} , function(data) {
+                    $('#userSearch').autocomplete({
+                        data: JSON.parse(data.users)
+                    });
+                });
                 
-            });    
+                
+            });   
+            
         </script>
         {/block}
-        
-        
-        
 </body>
 </html>
