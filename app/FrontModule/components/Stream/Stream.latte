@@ -38,6 +38,20 @@
         $(document).ready(function(){
             $("#select-post-type a").on("click", function(e){
                 $('#create-post-modal').openModal();
+                $('#select-post-type-modal').closeModal();
+            });
+            
+            $.nette.ext('hideAjaxSubmitModal', {
+                start: function (jqXHR, settings) {              
+                    if(settings.nette !== undefined && $(settings.nette.ui).hasClass('hide-modal-ajax-submit')) { 
+                        $popup = $(settings.nette.ui).closest('div.modal');
+                        jqXHR.done(function( data, textStatus, jqXHR ) {
+                            if(data.invalidForm === undefined || !data.invalidForm) {
+                                $popup.closeModal();
+                            }
+                        });
+                    }
+                }
             });
         });   
 

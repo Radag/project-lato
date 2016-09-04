@@ -64,6 +64,7 @@ class TaskForm extends MessageForm
             ->setRequired('Napište zprávu');
 
         $form->addHidden('attachments');
+        $form->addHidden('messageType', self::TYPE_TASK);
         $form->addSubmit('send', 'Publikovat');
 
         $form->onSuccess[] = [$this, 'processForm'];

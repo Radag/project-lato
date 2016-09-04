@@ -21,6 +21,7 @@ class Message {
     public $attachments = null;
     public $followed = null;
     public $priority = null;
+    public $idType = null;
     
     
     function getId() {

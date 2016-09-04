@@ -67,52 +67,7 @@ abstract class MessageForm extends Control
     {
         $this->stream = $stream;
     }
-    
-    protected function createComponentForm()
-    {
-        $form = new \Nette\Application\UI\Form;
-        $form->getElementPrototype()->class('ajax');
-        $form->addTextArea('text', 'Zpráva')
-                ->setAttribute('placeholder', 'Sem napište Vaši zprávu ...')
-            ->setRequired('Napište zprávu');
-
-        $form->addHidden('attachments');
-        $form->addSubmit('send', 'Publikovat');
-
-        $form->onSuccess[] = [$this, 'processForm'];
-        return $form;
-    }
-    
-    public function render()
-    {
-        $template = $this->template;
-        $template->setFile(__DIR__ . '/MessageForm.latte');
-        // vložíme do šablony nějaké parametry
-        //$template->form = $this->form;
-        //
-        $template->activeUser = $this->activeUser;
-        // a vykreslíme ji
-        $template->render();
-    }
-    
-    public function processForm(Form $form, $values) 
-    {
-        $message = new \App\Model\Entities\Message;
-        $message->setText($values['text']);
-        $message->setUser($this->activeUser);
-        $message->idGroup = $this->stream->getActiveGroup()->id;
-        
-        $attachments = explode('_', $values['attachments']);
-
-    
-        $this->messageManager->createMessage($message, $attachments);
-        $form['text']->setValue("");
-        $form['attachments']->setValue("");
-        $this->stream->redrawControl('messages');
-        $this->redrawControl('messageForm');
-        
-    }
-    
+  
     public function handleUploadAttachment()
     {
         $file = $this->getPresenter()->request->getFiles();

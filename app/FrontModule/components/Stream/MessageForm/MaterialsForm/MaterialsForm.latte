@@ -1,6 +1,5 @@
 {includeblock '../MessageForm.latte'}
-{snippet messageForm}
-{form form}
+{form materialForm}
 <div class="modal-content">
     <div class="modal-header">
         <div class="user-img">
@@ -11,7 +10,7 @@
         <h4>Studijní materiál</h4>
     </div>
     <div class="form-row">
-    <input placeholder="Název (nepovinné)" id="first_name" type="text">
+    {input title}
     </div>
     <div class="form-row">
     {input text class => 'materialize-textarea no-border'}
@@ -42,10 +41,9 @@
     </div>
     <div class="form-control">
         <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat" >Zrušit</button>
-        {input send class => 'modal-action modal-close waves-effect waves-light btn btn-confirm disabled'}
+        {input send class => 'hide-modal-ajax-submit modal-action modal-close waves-effect waves-light btn btn-confirm disabled'}
     </div>
 </div>
 {include uploadBlock}
 {/form}
-{/snippet}
 {include attachmentTemplate}

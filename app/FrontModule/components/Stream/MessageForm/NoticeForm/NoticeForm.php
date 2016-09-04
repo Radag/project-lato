@@ -29,6 +29,7 @@ class NoticeForm extends MessageForm
                 ->setAttribute('placeholder', 'Sem napište Vaši zprávu ...')
             ->setRequired('Napište zprávu');
 
+        $form->addHidden('messageType', self::TYPE_NOTICE);
         $form->addHidden('attachments');
         $form->addSubmit('send', 'Publikovat');
 
@@ -50,32 +51,15 @@ class NoticeForm extends MessageForm
         $message->setText($values['text']);
         $message->setUser($this->activeUser);
         $message->idGroup = $this->stream->getActiveGroup()->id;
+        $message->idType = self::TYPE_NOTICE;
         
         $attachments = explode('_', $values['attachments']);
 
-    
         $this->messageManager->createMessage($message, $attachments);
         $form['text']->setValue("");
         $form['attachments']->setValue("");
         $this->stream->redrawControl('messages');
         $this->redrawControl('messageForm');
         
-    }
-    
-    public function handleUploadAttachment()
-    {
-        $file = $this->getPresenter()->request->getFiles();
-        $path = 'users/' . $this->activeUser->urlId . '/files';
-        
-        $uploadedFile = $this->fileManager->uploadFile($file['file'], $path);
-        $this->getPresenter()->payload->file = $uploadedFile;
-        $this->getPresenter()->sendPayload();
-    }
-    
-    public function handleDeleteAttachment($idFile)
-    {
-        $this->fileManager->removeFile($idFile);
-        $this->getPresenter()->payload->deleted = true;
-        $this->getPresenter()->sendPayload();
     }
 }

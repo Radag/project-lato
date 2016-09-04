@@ -31,6 +31,7 @@ class HomeworkForm extends MessageForm
             ->setRequired('Napište zprávu');
 
         $form->addHidden('attachments');
+        $form->addHidden('messageType', self::TYPE_HOMEWORK);
         $form->addSubmit('send', 'Publikovat');
 
         $form->onSuccess[] = [$this, 'processForm'];

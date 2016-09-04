@@ -11,6 +11,7 @@ use \Nette\Application\UI\Control;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\MessageManager;
 use App\Model\Manager\FileManager;
+use App\Model\Manager\MaterialManager;
 use App\FrontModule\Components\Stream\MessageForm\MessageForm;
 use App\FrontModule\Components\Stream\CommentForm\CommentForm;
 use App\FrontModule\Components\Stream\MessageForm\NoticeForm\INoticeFormFactory;
@@ -38,6 +39,11 @@ class Stream extends Control
     protected $messageManager;
     
     /**
+     * @var MaterialManager $materialManager
+     */
+    protected $materialManager;
+    
+    /**
      * @var FileManager
      */
     protected $fileManager;
@@ -57,6 +63,7 @@ class Stream extends Control
      */
     protected $activeUser;
     
+    /** @persistent */
     protected $messageType = 1;
     
     /** @var  INoticeFormFactory @inject */
@@ -78,6 +85,7 @@ class Stream extends Control
             UserManager $userManager, 
             MessageManager $messageManager, 
             FileManager $fileManager,
+            MaterialManager $materialManager,
             INoticeFormFactory $noticeFormFactory,
             ITaskFormFactory $taskFormFactory,
             IHomeworkFormFactory $homeworkFormFactory,
@@ -135,6 +143,11 @@ class Stream extends Control
     
     public function createComponentMessageForm()
     {
+        $type = $this->presenter->getRequest()->getPost('messageType');
+        if(isset($type) && $type !== NULL) {
+            $this->messageType = $this->presenter->getRequest()->getPost('messageType');
+        }
+        
         switch ($this->messageType) {
             case MessageForm::TYPE_NOTICE :
                 $form = $this->noticeFormFactory->create();

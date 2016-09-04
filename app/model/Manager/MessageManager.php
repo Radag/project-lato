@@ -45,7 +45,8 @@ class MessageManager extends Nette\Object{
         $this->database->table('message')->insert(array(
                     'TEXT' => $message->getText(),
                     'ID_USER' => $message->getUser()->id,
-                    'ID_GROUP' => $message->idGroup
+                    'ID_GROUP' => $message->idGroup,
+                    'ID_TYPE' => $message->idType
             ));
         
         $idMessage = $this->database->query("SELECT MAX(ID_MESSAGE) FROM message")->fetchField();
@@ -55,7 +56,7 @@ class MessageManager extends Nette\Object{
         
         $group = $this->groupManager->getGroup($message->idGroup);
         
-        $notification = new \App\Model\Entities\Notification;
+        $notification = new \App\Model\Entities\Notification();
         $notification->title = "Nový přispěvek";
         $notification->participant = $message->getUser();
         $notification->text = $message->text;
@@ -72,6 +73,8 @@ class MessageManager extends Nette\Object{
         
         
         $this->database->commit();
+        
+        return $idMessage;
     }
     
     public function createComment(Comment $comment)

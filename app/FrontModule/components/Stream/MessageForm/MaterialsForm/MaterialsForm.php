@@ -11,6 +11,7 @@ use \Nette\Application\UI\Form;
 use App\Model\Manager\MessageManager;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\FileManager;
+use App\Model\Manager\MaterialManager;
 use App\FrontModule\Components\Stream\MessageForm\MessageForm;
 
 /**
@@ -21,14 +22,31 @@ use App\FrontModule\Components\Stream\MessageForm\MessageForm;
 class MaterialsForm extends MessageForm
 {
     
-    protected function createComponentForm()
+    protected $materialManager;
+    
+    public function __construct(UserManager $userManager,
+            MessageManager $messageManager, 
+            FileManager $fileManager,
+            MaterialManager $materialManager)
+    {
+        $this->userManager = $userManager;
+        $this->messageManager = $messageManager;
+        $this->fileManager = $fileManager;
+        $this->materialManager = $materialManager;
+    }
+    
+    protected function createComponentMaterialForm()
     {
         $form = new \Nette\Application\UI\Form;
         $form->getElementPrototype()->class('ajax');
         $form->addTextArea('text', 'Zpráva')
-                ->setAttribute('placeholder', 'Sem napište Vaši zprávu ...')
-            ->setRequired('Napište zprávu');
+             ->setAttribute('placeholder', 'Sem napište Vaši zprávu ...')
+             ->setRequired('Napište zprávu');
+        
+        $form->addText('title', 'Název')
+             ->setAttribute('placeholder', 'Název (nepovinné)');
 
+        $form->addHidden('messageType', self::TYPE_MATERIALS);
         $form->addHidden('attachments');
         $form->addSubmit('send', 'Publikovat');
 
@@ -46,36 +64,25 @@ class MaterialsForm extends MessageForm
     
     public function processForm(Form $form, $values) 
     {
-        $message = new \App\Model\Entities\Message;
+        $message = new \App\Model\Entities\Message();
         $message->setText($values['text']);
         $message->setUser($this->activeUser);
         $message->idGroup = $this->stream->getActiveGroup()->id;
+        $message->idType = self::TYPE_MATERIALS;
         
-        $attachments = explode('_', $values['attachments']);
-
-    
-        $this->messageManager->createMessage($message, $attachments);
+        $attachments = explode('_', $values['attachments']);    
+        $idMessage = $this->messageManager->createMessage($message, $attachments);
+        
+        $material = new \App\Model\Entities\Material();
+        $material->title = $values->title;
+        $material->idMessage = $idMessage;
+        
+        $this->materialManager->createMaterial($material);
+        
         $form['text']->setValue("");
         $form['attachments']->setValue("");
         $this->stream->redrawControl('messages');
         $this->redrawControl('messageForm');
         
-    }
-    
-    public function handleUploadAttachment()
-    {
-        $file = $this->getPresenter()->request->getFiles();
-        $path = 'users/' . $this->activeUser->urlId . '/files';
-        
-        $uploadedFile = $this->fileManager->uploadFile($file['file'], $path);
-        $this->getPresenter()->payload->file = $uploadedFile;
-        $this->getPresenter()->sendPayload();
-    }
-    
-    public function handleDeleteAttachment($idFile)
-    {
-        $this->fileManager->removeFile($idFile);
-        $this->getPresenter()->payload->deleted = true;
-        $this->getPresenter()->sendPayload();
     }
 }
