@@ -42,7 +42,18 @@ class HomepagePresenter extends BasePresenter
     
     public function actionGroups()
     {
+        $this['topPanel']->setTitle('Nástěnka');
         $this->template->groups = $this->groupManager->getGroups($this->activeUser);
+    }
+    
+    public function actionTasks()
+    {
+        $this['topPanel']->setTitle('Povinnosti');
+    }
+    
+    public function actionTimetable()
+    {
+        $this['topPanel']->setTitle('Rozvrh');
     }
     
 }

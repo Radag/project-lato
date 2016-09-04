@@ -37,7 +37,7 @@ class PrivateMessageManager extends Nette\Object{
         $messages = $this->database->query("SELECT T1.TEXT, T1.ID_PRIVATE_MESSAGE, T2.NAME, T2.SURNAME, T1.CREATED FROM private_message T1 
                 LEFT JOIN user T2 ON T1.ID_USER_FROM=T2.ID_USER 
                 WHERE T1.ID_USER_TO=?
-                ORDER BY CREATED DESC LIMIT 10", $user->id)->fetchAll();
+                ORDER BY CREATED DESC LIMIT 5", $user->id)->fetchAll();
         foreach($messages as $message) {
             $mess = new PrivateMessage();
             $user = new User();

@@ -1,3 +1,4 @@
+{includeblock '_blocks.latte'}
 {block content}
 {control topPanel}
 <section class="main">
@@ -22,11 +23,7 @@
                             <a class="btn-flat btn-icon dropdown-button" data-activates="stream-options-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
                                 <i class="material-icons">more_vert</i>
                             </a>
-                            <ul id='stream-options-window' class='dropdown-content'>
-                                <li n:if="$groupPermission['settings']"><a href="{link Group:settings 'id' => $activeGroup->urlId}">Nastavení skupiny</a></li>
-                                <li n:if="$groupPermission['leave']"><a href="{link leaveGroup!, 'idGroup'=>$activeGroup->id}">Opustit skupinu</a></li>
-                                <li n:if="$groupPermission['archive']"><a href="{link archiveGroup!, 'idGroup'=>$activeGroup->id}">Archivovat skupinu</a></li>
-                            </ul>
+                            {include groupMenu}
                         </li>
                     </ul>
                 </header>  

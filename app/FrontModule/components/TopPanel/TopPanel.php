@@ -45,12 +45,14 @@ class TopPanel extends Control
     /**
      * @var \App\Model\Entities\Group $activeGroup
      */
-    protected $activeGroup;
+    protected $activeGroup = null;
     
     /**
      * @var \App\Model\Entities\User $activeUser
      */
     protected $activeUser;
+    
+    protected $title = "";
     
     public function __construct(UserManager $userManager,
             GroupManager $groupManager, 
@@ -73,6 +75,8 @@ class TopPanel extends Control
     public function render()
     {
         $template = $this->template;
+        
+        $template->title = $this->title;
         $template->activeGroup = $this->activeGroup;
         $template->activeUser = $this->activeUser;
         $groups = $this->groupManager->getUserGroups($this->activeUser);
@@ -93,6 +97,21 @@ class TopPanel extends Control
         $template->groups = $others;
         $template->setFile(__DIR__ . '/TopPanel.latte');
         $template->render();
+    }
+    
+    public function setTitle($title)
+    {
+        if($this->activeGroup === null) {
+            $this->title = $title;
+        } else {
+            $this->title = $this->activeGroup->name . " - " . $title;
+        }
+    }
+    
+    public function setActiveGroup($activeGroup)
+    {
+        $this->activeGroup = $activeGroup;
+        $this->title = $this->activeGroup->name;
     }
     
     public function createComponentNewGroupForm()

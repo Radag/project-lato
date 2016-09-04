@@ -79,6 +79,7 @@ class GroupPresenter extends BasePresenter
             $this->redirect(':Front:Homepage:groups');
         }
         $this->setPermission();
+        $this['topPanel']->setActiveGroup($this->activeGroup);
         $this->template->activeGroup = $this->activeGroup;
         $this->template->activeUser = $this->activeUser;
         $this->template->groupPermission = $this->groupPermission;
@@ -167,11 +168,12 @@ class GroupPresenter extends BasePresenter
     
     public function actionSettings()
     {
+        $this['topPanel']->setTitle('nastavení');
     }
     
     public function actionUsers()
     {
-        $this->activeGroup = $this->activeGroup;
+        $this['topPanel']->setTitle('uživatelé');
         $this->template->groupMembers = $this->groupManager->getGroupUsers($this->activeGroup->id);
     }
     

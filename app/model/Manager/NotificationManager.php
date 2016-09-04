@@ -45,7 +45,7 @@ class NotificationManager extends Nette\Object{
                 LEFT JOIN vw_user_detail T2 ON T1.ID_PARTICIPANT = T2.ID_USER
                 LEFT JOIN groups T3 ON T1.ID_GROUP = T3.ID_GROUP
                 WHERE T1.ID_USER=?
-                ORDER BY CREATED DESC LIMIT 10", $user->id)->fetchAll();
+                ORDER BY CREATED DESC LIMIT 5", $user->id)->fetchAll();
         foreach($messages as $message) {
             $participant = new \App\Model\Entities\User;
             $participant->name = $message->PART_NAME;

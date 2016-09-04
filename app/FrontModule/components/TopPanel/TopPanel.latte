@@ -9,7 +9,7 @@
                 <li><a n:class="$presenter->isLinkCurrent('Profile:default') ? active, waves-effect, waves-dark" href="{plink Profile:default}" >
                     <i class="material-icons">person</i>Profil
                 </a></li>
-                <li><a n:class="$presenter->isLinkCurrent('Profile:default') ? active" href="{plink Profile:default}" >
+                <li><a n:class="$presenter->isLinkCurrent('Profile:messages') ? active" href="{plink Profile:messages}" >
                     <i class="material-icons">email</i>Zprávy
                 </a></li>
                 <li class="no-padding">
@@ -81,17 +81,17 @@
                         </li>
                     </ul>
                 </li>
-                <li><a n:class="$presenter->isLinkCurrent('Homepage:groups') ? active, waves-effect, waves-dark" href="{plink Homepage:groups}" >
+                <li><a n:class="$presenter->isLinkCurrent('Homepage:tasks') ? active, waves-effect, waves-dark" href="{plink Homepage:tasks}" >
                     <i class="material-icons">receipt</i>Povinnosti
                 </a></li>
-                <li><a n:class="$presenter->isLinkCurrent('Homepage:groups') ? active, waves-effect, waves-dark" href="{plink Homepage:groups}" >
+                <li><a n:class="$presenter->isLinkCurrent('Homepage:timetable') ? active, waves-effect, waves-dark" href="{plink Homepage:timetable}" >
                     <i class="material-icons">insert_invitation</i>Rozvrh
                 </a></li>
                 <li class="empty"></li>
             </ul>
             <a href="#" data-activates="slide-out" class="button-collapse show-on-large slide-out-toggle">
               <i class="material-icons">menu</i></a>
-              <span class="nav-title truncate">{if !empty($activeGroup)}{$activeGroup->name}{else}Nástěnka{/if}</span>
+              <span class="nav-title truncate">{$title}</span>
               
               <ul class="right navbar-nav">
                 <li><a class="dropdown-button ajax" href="{link notificationRead!}" data-activates="notifications-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false"><i class="material-icons ">notifications</i>
@@ -125,7 +125,7 @@
                             </h4>
                         </a></li>
                         {/foreach}
-                        <li class="dropdown-footer"><a href="#!">Zobrazit vše</a></li>
+                        <li class="dropdown-footer"><a href="{plink Homepage:notifications}">Zobrazit vše</a></li>
                     </ul>
                 </li>
 
@@ -146,7 +146,7 @@
                         </a></li>
                         {/foreach}
                         <li class="divider divider-before"></li>
-                        <li class="dropdown-footer"><a href="#!">Zobrazit vše</a></li>
+                        <li class="dropdown-footer"><a href="{plink Profile:messages}">Zobrazit vše</a></li>
                     </ul>
                 </li>
 
