@@ -67,6 +67,7 @@
     {foreach $messages as $message}  
     <div class="card clearfix" id="message-box-num_{$message->id}">   
         <div class="card-header">
+            {if $message->priority == 1}<div class="topped"></div>{/if}
             <div class="card-title">
                 <a href="{plink Profile:default 'idUser'=>$message->user->id}" class="user-img">
                     <img src="{$message->user->profileImage}" alt="{$message->user->name}">

@@ -17,6 +17,17 @@ a {
     transition: color 300ms ease-in-out;
 }
 
+.topped {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 32px 32px 0;
+    border-color: transparent #00ab9d transparent transparent;
+}
+
 .right-16 {
     margin-right: 16px !important;
 }
@@ -331,6 +342,10 @@ input[type="password"] {
 
 .btn-flat {
     box-shadow: none;
+}
+
+.btn-flat:hover {
+    background-color: transparent;
 }
 
 .btn i.icon-push,
