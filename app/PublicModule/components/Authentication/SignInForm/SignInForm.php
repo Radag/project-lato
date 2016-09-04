@@ -76,7 +76,7 @@ class SignInForm extends Control
             $redirect->remove();
             $this->presenter->redirect($link, $params);
         } else {
-            $this->presenter->redirect(':Front:Stream:groups');  
+            $this->presenter->redirect(':Front:Homepage:groups');  
         }
     }
 }

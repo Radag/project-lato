@@ -112,7 +112,7 @@
                 {foreach $message->attachments['files'] as $file}  
                 <li>
                     <a href="https://cdn.lato.cz/{$file['path']}/{$file['filename']}" target="_blank" class="attached-file">
-                        <div class="attachment-icon document"><i class="material-icons">{if $file['type'] == 1 }image{elseif $file['type'] == 3}spreadsheet{elseif $file['type'] == 4}presentation{else}unknown{/if}</i></div>
+                        <div class="attachment-icon document"><i class="material-icons">{if $file['type'] == 1 }image{elseif $file['type'] == 3}insert_drive_file{elseif $file['type'] == 4}equalizer{elseif $file['type'] == 5}equalizer videocam{else}help_outline{/if}</i></div>
                         <div class="attachment-label truncate">{$file['filename']}</div>   
                     </a>
                 </li>
