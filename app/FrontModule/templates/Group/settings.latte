@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col s12">
                 <header class="section-header">
-                    <a class='dropdown-button back-to-stream' href='{link Group:default 'id'=>$activeGroup->urlId}' data-activates='stream-filter' data-beloworigin="true">
+                    <a class='back-to-stream' href='{link Group:default 'id'=>$activeGroup->urlId}'>
                         <i class="material-icons waves-effect waves-dark">arrow_back</i>Zpět na stream
                     </a>
                     <div class="flex-spacer"></div>
@@ -30,73 +30,161 @@
                 <div class="card settings">
                     <div class="card-header">
                         <h3 class="large">Nastavení</h3>
-                        <p></p>
                     </div>
                     <div class="card-content">
                         <section class="card-content-section">
-                            <h4>Nastavení skupiny</h4>
-                            <div class="row">
-                                <div class="col s12">
-                                    <div class="form-row">
-                                        <i class="material-icons icon-label">label</i>
-                                        <div class="input-flex">
-                                            <input type="text" class="validate" placeholder="Název skupiny">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col s12">
-                                    <div class="form-row">
-                                        <i class="material-icons icon-label">group</i>
-                                        <div class="input-flex">
-                                            <input type="text" placeholder="Název podskupiny (nepovinné)">
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-
+                            <h4>Informace o skupině</h4>
                             <div class="form-row">
+                                <p class="secondary-par">Základní informace o skupině, které se zobrazí uživatelům</p>
+                            </div>
+                            <div class="form-row">
+                                <i class="material-icons icon-label">label</i>
+                                <div class="input-flex">
+                                    <input type="text" class="validate" placeholder="Název skupiny">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <i class="material-icons icon-label">group</i>
+                                <div class="input-flex">
+                                    <input type="text" placeholder="Název podskupiny (nepovinné)">
+                                </div>
+                            </div>
+                            <div class="form-row flex-top">
                                 <i class="material-icons icon-label">description</i>
                                 <div class="input-flex">
                                     <textarea id="group-description" class="materialize-textarea" placeholder="Popis skupiny (nepovinné)"></textarea>
                                 </div>
                             </div>
+                            <div class="form-row">
+                                <i class="material-icons icon-label">location_on</i>
+                                <div class="input-flex">
+                                    <input type="text" placeholder="Místnost (nepovinné)">
+                                </div>
+                            </div>
                             <div class="row">
-                                <div class="col s4">
-                                    <div class="form-row">
-                                        <i class="material-icons icon-label">location_on</i>
-                                        <div class="input-flex">
-                                            <input type="text" placeholder="Místnost (nepovinné)">
-                                        </div>
+                                <div class="col m12 l4">
+                                    <div class="form-row term-picker">
+                                        <i class="material-icons icon-label">insert_invitation</i>
+                                        <span class="label">Kalendář</span>
                                     </div>
                                 </div>
-                                <div class="col s8">
+                                <div class="col m12 l8">
+                                    <div class="form-row term-picker"> 
+                                        <select class="with-remove">
+                                            <option value="1" selected>Pondělí</option>
+                                            <option value="2">Úterý</option>
+                                            <option value="3">Středa</option>
+                                            <option value="4">Čtvrtek</option>
+                                            <option value="5">Pátek</option>
+                                            <option value="delete">Odstranit</option>
+                                        </select>
+                                        <span class="inner-label">od</span>
+                                        <input type="text" maxlength=5 value="12:00">
+                                        <span class="inner-label">do</span>
+                                        <input type="text" value="12:45" maxlength=5 id="current-time">
+                                    </div>
                                     <div class="form-row">
-                                        <i class="material-icons icon-label">insert_invitation</i>
-                                        <div class="input-flex">
-                                            <input type="text" placeholder="Název podskupiny (nepovinné)">
-                                        </div>
+                                        <a href="" class="add-line"><i class="material-icons">add</i>Přidat další termín</a>
                                     </div>
                                 </div>
                             </div>
                         </section>
                         <section class="card-content-section">
                             <h4>Nastavení streamu</h4>
-                            <input type="text" class="validate" placeholder="Název skupiny">
-                            <input type="text" class="validate" placeholder="Podnázev skupiny"> 
+                            <div class="form-row">
+                                <p class="secondary-par">Povolené akce na streamu</p>
+                            </div>
+                            <div class="form-row">
+                                <div class="submit-control checkbox-vertical-align">
+                                    <input type="checkbox" class="filled-in black" id="1" checked="checked" />
+                                    <label for="1">Uživatelé mohou upravovat své příspěvky</label>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="submit-control checkbox-vertical-align">
+                                    <input type="checkbox" class="filled-in black" id="2" checked="checked" />
+                                    <label for="2">Uživatelé mohou smazat své příspěvky</label>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="submit-control checkbox-vertical-align">
+                                  <input type="checkbox" class="filled-in black" id="3" checked="checked" />
+                                  <label for="3">Uživatelé mohou vytvářet oznámení</label>
+                              </div>
+                          </div>
+                          <div class="form-row">
+                            <div class="submit-control checkbox-vertical-align">
+                                <input type="checkbox" class="filled-in black" id="4" checked="checked" />
+                                <label for="4">Příspěvky mohou být volně sdíleny mezi jinými skupinami</label>
+                            </div>
                         </section>
                         <section class="card-content-section">
-                            <h4>Sdílení</h4>
+                            <h4>Nastavení sdílení</h4>
+                            <div class="form-row">
+                                <p class="secondary-par">Lorem ipsum dolor sit amet</p>
+                            </div> 
+                            <div class="form-row">
+                                <p>Povolit sdílení</p>
+                                <div class="switch">
+                                    <label>
+                                        <input type="checkbox">
+                                        <span class="lever"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <p>Povolit sdílení pomocí kódu</p>
+                                <div class="switch">
+                                    <label>
+                                        <input type="checkbox">
+                                        <span class="lever"></span>
+                                    </label>
+                                </div>
+                                <span class="notice">Kód pro zápis je <strong>234567</strong></span>
+                            </div>
                         </section>
-                    </div>	
+                        <section class="card-content-section">
+                            <h4>Nastavení oprávnění</h4>
+                            <div class="form-row">
+                                <p class="secondary-par">Seznam uživatelů s administrátorským oprávněním</p>
+                            </div>
+                            <ul class="user-collection">
+                                <li>    
+                                    <a href="" class="user">
+                                        <img src="/images/user1.png" class="user-img">
+                                        <span class="title truncate">
+                                            Petr Šavelka
+                                        </span>
+                                    </a>
+                                    <a href="">
+                                        <i class="material-icons">clear</i>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="form-row">
+                                <a href="" class="add-line"><i class="material-icons">add</i>Přidat administrátora</a>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="card-footer">
+                        <div class="flex-spacer"></div>
+                        <div class="form-control">
+                            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat" >Zrušit</button>
+                            <input type="submit" class="modal-action modal-close waves-effect waves-light btn btn-confirm" value="Uložit nastavení">
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $('select').material_select();
+    });
+
+</script>
 
 
 
