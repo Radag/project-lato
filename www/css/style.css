@@ -1200,7 +1200,7 @@ textarea.materialize-textarea {
 }
 
 .section-header i {
-    font-size: 24px !important;
+    font-size: 22px !important;
 }
 
 .back-to-stream {
@@ -2244,5 +2244,14 @@ textarea.materialize-textarea {
 .card.settings .user-collection li .material-icons {
     font-size: 24px !important;
 }
+
+#layout-footer {
+    text-align: center;
+    padding: 36px;
+    color: rgba(0, 0, 0, .54);
+    font-size: 13px;
+}
+
+
 
 
