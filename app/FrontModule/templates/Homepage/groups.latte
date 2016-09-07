@@ -39,13 +39,17 @@
 <div class="container">
     <div class="row" id="group-cards">
         {foreach $groups as $group}
-        <div class="col l3 m6 s12">
-            <div class="card">
-                <div class="card-header" style="background-color:{$group->mainColor|noescape};">
-                    <a href="{link Group:default, 'id'=>$group->urlId}" class="group-name truncate">
-                        <!--<span>{$group->shortcut}</span>-->
-                        {$group->name}
-                    </a>
+        <div class="col l4 m6 s12">
+            <a href="{link Group:default, 'id'=>$group->urlId}" class="card">
+                        
+                        <div class="avatar" style="background-color:{$group->mainColor|noescape};">{$group->shortcut|substr:0,1}</div>
+                        <div class="title">
+                            {$group->name}
+                            <span>
+                                {$group->owner->name} {$group->owner->surname}
+                            </span>
+                        </div>
+                    
                     <!--<a href="#" class="group-users">
                         {if $group->numberOfStudents == 0}
                             Žádní studenti
@@ -57,21 +61,9 @@
                             {$group->numberOfStudents} studentů
                         {/if}
                     </a>-->
-                </div>
-                <div class="group-founder">
-                    <a href="{plink Profile:default 'idUser'=>$group->owner->id}" class="user-img">
-                        <img src="{$group->owner->profileImage}" alt="{$group->owner->name}">
-                    </a>
-                    <div class="user-info">
-                        <a href="{plink Profile:default 'idUser'=>$group->owner->id}" class="user-name">
-                            {$group->owner->name} {$group->owner->surname}
-                        </a>
-                        <div class="user-role">Zakladatel</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="group-activity">
-                    {if $group->newMessages == 0}
+                
+                <!-- <div class="group-activity">
+                   {if $group->newMessages == 0}
                         Žádné nové příspěvky
                     {elseif $group->newMessages == 1}
                         Jeden nový příspěvek
@@ -79,9 +71,9 @@
                         {$group->newMessages} příspěvky
                     {else}
                         {$group->newMessages} příspěvků
-                    {/if}
-                </div>
-            </div>
+                    {/if} 
+                </div>-->
+            </a>
         </div>
         {/foreach}
     </div>
