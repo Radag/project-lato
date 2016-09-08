@@ -6,13 +6,13 @@
             <div class="comments-count">{count($comments)}</div>
             <div class="flex-spacer"></div>
             {foreach $discutionMembers as $member}
-            <a href="{plink Profile:default 'idUser'=>$member->id}" class="user-img item"><img  src="{$member->profileImage}" alt="{$member->name}"></a>
+            <a href="{plink Profile:default 'idUser'=>$member->id}" class="avatar item"><img  src="{$member->profileImage}" alt="{$member->name}"></a>
             {/foreach}
         </div>
         <div class="comments-content">
            {foreach $comments as $comm}
            <div class="comment-row">
-                <a href="{plink Profile:default 'idUser'=>$member->id}" class="user-img small">
+                <a href="{plink Profile:default 'idUser'=>$member->id}" class="avatar small">
                     <img src="{$comm->user->profileImage}" alt="{$comm->user->name}">
                 </a>
                 <div class="comment-content">
@@ -37,7 +37,7 @@
     {/if}
     <div class="comments-footer clearfix">
         {form form}
-        <div class="user-img small">
+        <div class="avatar small">
             <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
         </div>
         <div class="textarea-wrapper">

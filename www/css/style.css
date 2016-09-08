@@ -230,8 +230,19 @@ a {
   margin: 0 -16px !important;
 }
 
+.row.same-height {
+    display: flex;
+    align-items: stretch;
+}
+
 .row .col {
     padding: 0 16px;   
+}
+
+.row.same-height .col {
+    padding: 0 16px;
+    display: flex;
+    flex-grow: 1;   
 }
 
 @media only screen and (max-width: 600px) {
@@ -305,8 +316,12 @@ input[type="password"] {
 }
 
 
-.card-header, .card-content, .card-footer {
-	padding: 24px;
+.card-header, .card-content {
+	padding: 20px 24px;
+}
+
+.card-footer {
+    padding: 0 24px 24px 24px;
 }
 
 .card-header {
@@ -570,12 +585,13 @@ input[type="password"] {
 /* ---------------- OLD OLD OLD ----------------- */
 
 
-.user-img.small {
+.avatar.small {
     height: 36px;
     width: 36px;
+    font-size: 16px;
 }
 
-.user-img.large {
+.avatar.large {
     height: 48px;
     width: 48px;
 }
@@ -789,7 +805,7 @@ strong {
     }
 }
 
-.user-img img {
+.avatar img {
     width: 100%;
     height: 100%;
     border-radius: 50%;
@@ -1396,7 +1412,7 @@ textarea.materialize-textarea {
     padding: 20px;
 }
 
-.side-nav .side-nav-header .user-img {
+.side-nav .side-nav-header .avatar {
     background-color: rgba(29, 29, 29, .16);
     padding: 4px;
     box-sizing: content-box;
@@ -1527,7 +1543,7 @@ textarea.materialize-textarea {
 /* ----- CARD TEMPLATE ----- */
 
 .card {
-    display:block;
+    display: flex;
     position:relative;
     width: 100%;
     background: #fff;
@@ -1537,15 +1553,18 @@ textarea.materialize-textarea {
     border-radius:0;
 }
 
+.flex-row {
+    flex-direction: row;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
 @media only screen and (max-width: 600px) {
     .card {
         margin-bottom: 16px;
     }
-}
-
-.card-bottom {
-    margin-top: 16px;
-    margin-bottom: -16px;
 }
 
 .card.simple {
@@ -2111,32 +2130,60 @@ textarea.materialize-textarea {
     height: 72px;
 }
 
-.user-collection {
+.custom-collection {
     margin: 24px 0;
 }
 
-.user-collection li {
+.custom-collection li {
     margin: 16px 0;
     display: flex;
 }
 
-.user-collection li a {
+.custom-collection li .item {
     display: flex;
     align-items: center;
 }
 
-.user-collection li a.user {
+.custom-collection li .item {
     flex-grow: 1;
+    min-height: 36px;
+    padding-right: 16px;
 }
 
-.user-collection li .title {
+.custom-collection li .item.note {
+    color: rgba(0, 0, 0, .54);
+    font-style: italic;
+}
+
+.custom-collection li .title {
     flex-grow: 1;
     font-weight: 500;
-    color: rgba(0, 0, 0, .75);
+    color: rgba(0, 0, 0, .87);
 }
 
-.user-collection li a .material-icons {
+.custom-collection li .title span {
+    color: rgba(0, 0, 0, .54);
+    font-weight: 400;
+    font-style: italic;
+    margin-left: 16px;
+}
+
+.custom-collection li a .material-icons {
     color: rgba(0, 0, 0, .38);
+}
+
+.custom-collection .remaining-time {
+    color: rgba(0, 0, 0, .54);
+}
+
+.custom-collection .btn-icon {
+    display: flex;
+    align-items: center;
+}
+
+.custom-collection .remaining-time.important {
+    color: #FF5252;
+    font-weight: 700;    
 }
 
 .form-row {
@@ -2233,15 +2280,15 @@ textarea.materialize-textarea {
     align-items: center;
 }
 
-.card.settings .user-collection li:first-child {
+.card.settings .custom-collection li:first-child {
     margin-top: 20px;
 }
 
-.card.settings .user-collection li .user {
+.card.settings .custom-collection li .item {
     max-width: 360px;
 }
 
-.card.settings .user-collection li .material-icons {
+.card.settings .custom-collection li .material-icons {
     font-size: 24px !important;
 }
 
@@ -2252,6 +2299,87 @@ textarea.materialize-textarea {
     font-size: 13px;
 }
 
+/* SCHEDULE */
 
+#one-day-schedule {
+    display: flex;
+    align-items: stretch;
+}
+
+#one-day-schedule .day-title {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 24px;
+    padding-right: 0;
+    background-color: #f5f5f5;
+    min-width: 114px;
+}
+
+#one-day-schedule .day-title .title {
+    display: block;
+    font-size: 35px;
+    line-height: 1em;
+    font-weight: 300;
+    color: rgba(0, 0, 0, .54);
+}
+
+#one-day-schedule .day-title .name {
+    display: block;
+    font-size: 14px; 
+    line-height: 1.5em;
+    font-weight: 400;
+    color: rgba(0, 0, 0, .54);
+    margin-top: 12px;
+}
+
+#one-day-schedule .day-title-spacer {
+    background-color: #f5f5f5;
+    margin-right: 8px;
+}
+
+#one-day-schedule .item {
+    padding: 20px 4px;
+}
+
+#one-day-schedule .item.filled {
+    width: 82px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+#one-day-schedule .item.empty {
+    flex-grow: 1;
+    max-width: 72px;
+    min-width: 8px;
+}
+
+#one-day-schedule .item .shortcut {
+    color: rgba(0, 0, 0, .87);
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+#one-day-schedule .item .time {
+    color: rgba(0, 0, 0, .87);
+    font-size: 13px;
+    font-weight: 500; 
+    text-align: center;  
+    line-height: 18px;
+}
+
+#one-day-schedule .item .time.end {
+    font-weight: 400;
+}
+
+#one-day-schedule .item .room {
+    color: rgba(0, 0, 0, .54);
+    font-size: 13px;
+    line-height: 18px;
+}
 
 

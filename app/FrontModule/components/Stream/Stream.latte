@@ -2,7 +2,7 @@
     
     {if $streamPermission['addMessages']}
     <a href="#select-post-type-modal" class="card create-post clearfix modal-trigger">
-        <div class="user-img left">
+        <div class="avatar left">
             <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
         </div>
         <div class="create-post-label left">
@@ -65,11 +65,11 @@
     {/if}
     {snippet messages}
     {foreach $messages as $message}  
-    <div class="card clearfix" id="message-box-num_{$message->id}">   
+    <div class="card flex-column" id="message-box-num_{$message->id}">   
         <div class="card-header">
             {if $message->priority == 1}<div class="topped"></div>{/if}
             <div class="card-title">
-                <a href="{plink Profile:default 'idUser'=>$message->user->id}" class="user-img">
+                <a href="{plink Profile:default 'idUser'=>$message->user->id}" class="avatar">
                     <img src="{$message->user->profileImage}" alt="{$message->user->name}">
                 </a>
                 <h2 class="truncate">

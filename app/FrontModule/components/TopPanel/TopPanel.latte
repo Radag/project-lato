@@ -3,7 +3,7 @@
         <div class="nav-wrapper">
             <ul id="slide-out" class="side-nav">
                 <a href="" class="side-nav-header">
-                    <div class="user-img large"><img src="{$activeUser->profileImage}"></div>
+                    <div class="avatar large"><img src="{$activeUser->profileImage}"></div>
                     <div class="title">{$activeUser->name} {$activeUser->surname}</div>
                 </a>
                 <li><a n:class="$presenter->isLinkCurrent('Profile:default') ? active, waves-effect, waves-dark" href="{plink Profile:default}" >

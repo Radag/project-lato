@@ -44,37 +44,11 @@
                     <h3>Povinnosti</h3>
                 </div>
                 <div class="card-content clearfix">
-                <p class="secondary-par">Seznam povinností, které je třeba v blízké době splnit</p>
-                    <ul class="custom-collection">
-                        <li>
-                            <a href="" class="item">
-                                <div class="avatar small" style="background-color: #00c256;">P</div>
-                                <div class="title truncate">Programování<span>Dodělat příklad z hodiny</span></div>
-                                <div class="flex-spacer"></div>
-                                <div class="remaining-time important">19 hodin</div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" class="item">
-                                <div class="avatar small" style="background-color: #e6bb28;">M</div>
-                                <div class="title truncate">Matematika<span>Učebnice str. 42, příklady 1, 2 a 3</span></div>
-                                <div class="flex-spacer"></div>
-                                <div class="remaining-time">3 dny</div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" class="item">
-                                <div class="avatar small" style="background-color: #00c2dc;">T</div>
-                                <div class="title truncate">Technické vybavení<span>Prezentace na téma periferie</span></div>
-                                <div class="flex-spacer"></div>
-                                <div class="remaining-time">5 dní</div>
-                            </a>
-                        </li>
-                    </ul>
+                
                 </div>
                 <div class="flex-spacer"></div>
                 <div class="card-footer">
-                    <a href="" class="btn-flat secondary-color">
+                    <a href="" class="btn-flat secondary-color card-bottom">
                         Zobrazit vše
                     </a>
                 </div>
@@ -86,25 +60,8 @@
                     <h3>Poznámky</h3>
                 </div>
                 <div class="card-content clearfix">
-                    <p class="secondary-par">Seznam poznámek</p>
-                    <ul class="custom-collection">
-                        <li>
-                            <div class="item note">
-                            13. 9. 2016 Maturita, Celý den
-                            </div>
-                            <a href="#" class="btn-icon"><i class="material-icons">edit</i></a>
-                        </li>
-                        <li>
-                            <div class="item note">
-                            Až se vyseru, tak si nesmim zapomenout utrit prdel a pak to vsechno poradne splachnout!!!
-                            </div>
-                            <a href="#" class="btn-icon"><i class="material-icons">edit</i></a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="flex-spacer"></div>
-                <div class="card-footer">
-                    <a href="" class="btn-flat secondary-color">
+                    <p><em>Poznámky</em></p>
+                    <a href="" class="btn-flat secondary-color card-bottom">
                         Zobrazit vše
                     </a>
                 </div>
@@ -246,15 +203,15 @@
         {foreach $groups as $group}
         <div class="col l4 m6 s12">
             <a href="{link Group:default, 'id'=>$group->urlId}" class="card">
-
-                <div class="avatar" style="background-color:{$group->mainColor|noescape};">{$group->shortcut|substr:0,1}</div>
-                <div class="title">
-                    {$group->name}
-                    <span>
-                        {$group->owner->name} {$group->owner->surname}
-                    </span>
-                </div>
-
+                        
+                        <div class="avatar" style="background-color:{$group->mainColor|noescape};">{$group->shortcut|substr:0,1}</div>
+                        <div class="title">
+                            {$group->name}
+                            <span>
+                                {$group->owner->name} {$group->owner->surname}
+                            </span>
+                        </div>
+                    
                     <!--<a href="#" class="group-users">
                         {if $group->numberOfStudents == 0}
                             Žádní studenti
@@ -266,7 +223,7 @@
                             {$group->numberOfStudents} studentů
                         {/if}
                     </a>-->
-
+                
                 <!-- <div class="group-activity">
                    {if $group->newMessages == 0}
                         Žádné nové příspěvky

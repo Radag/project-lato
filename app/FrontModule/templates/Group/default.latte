@@ -35,16 +35,16 @@
     <div class="row">
         {control stream}
         <div class="col s12 l4">
-            <div class="card bottom-spacer">
+            <div class="card flex-column">
                 <div class="card-header">
                     <h3>Studenti</h3>
                 </div>
                 <div class="card-content clearfix">
                     <p class="secondary-par">Seznam studentů, zapsaných v této skupině.</p>
-                    <ul class="user-collection">
+                    <ul class="custom-collection">
                         {foreach $groupMembers as $member}
                             <li>
-                                <a href="{plink Profile:default 'idUser'=>$member->id}" class="user">
+                                <a href="{plink Profile:default 'idUser'=>$member->id}" class="item">
                                     <img src="{$member->profileImage}" alt="" class="user-img">
                                     <span class="title">{if !empty($member->name)}{$member->name} {$member->surname}{/if}</span>
                                 </a>
@@ -57,7 +57,7 @@
                     </a>
                 </div>
             </div>
-            <div class="card bottom-spacer">
+            <div class="card flex-column">
                 <div class="card-header">
                     <h3>Povinnosti</h3>
                 </div>
@@ -65,7 +65,7 @@
                     <p class="secondary-par">V tuto cvhíli nemáte v předmětu zvěřejněny žádné povinnosti</p>  
                 </div>
             </div>
-            <div class="card bottom-spacer" n:if="$groupPermission['settings']">
+            <div class="card flex-column bottom-spacer" n:if="$groupPermission['settings']">
                 <div class="card-header">
                     <h3>Sdílení</h3>
                 </div>
@@ -133,7 +133,7 @@
                     </script>
                 {/snippet}
             </div>
-            <div class="card bottom-spacer" n:if="$groupPermission['settings']">
+            <div class="card flex-column" n:if="$groupPermission['settings']">
                 <div class="card-header">
                     <h3>Výpis příspěvků</h3>
                 </div>
