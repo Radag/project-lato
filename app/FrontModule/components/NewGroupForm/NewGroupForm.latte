@@ -2,8 +2,10 @@
     {form form}
     <div class="modal-content">
         <h3>Vytvořit skupinu</h3>
-        {input name class=>'validate'}
-        <div class="group-color-select">
+        <div class="form-row">
+            {input name class=>'validate'}
+        </div>
+        <div class="form-row group-color-select">
             {foreach $form[color]->items as $key => $label}
                 <label>
                     <i class="material-icons {$label}"></i>

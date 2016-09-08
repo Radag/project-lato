@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col s12">
                 <header class="section-header">
-                    <h3 class="left">Předměty a skupiny</h3>
+                    <h3 class="left">Připomenutí</h3>
                     <div class="flex-spacer"></div>
                     <ul class="right options">
                         <li>
@@ -38,14 +38,103 @@
 
 <div class="container">
     <div class="row" id="group-cards">
-        {foreach $groups as $group}
-        <div class="col l3 m6 s12">
+        <div class="col l6 m12 s12">
             <div class="card">
-                <div class="card-header" style="background-color:{$group->mainColor|noescape};">
-                    <a href="{link Group:default, 'id'=>$group->urlId}" class="group-name truncate">
-                        <!--<span>{$group->shortcut}</span>-->
-                        {$group->name}
-                    </a>
+                <p><em>Povinnosti</em></p>
+            </div>
+        </div>
+        <div class="col l6 m12 s12">
+            <div class="card">
+                <p><em>Poznámky</em></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="main">
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <header class="section-header">
+                    <h3 class="left">Rozvrh</h3>
+                    <div class="flex-spacer"></div>
+                    <ul class="right options">
+                        <li>
+                            <a class="btn-flat btn-icon dropdown-button" data-activates="filter-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                                <i class="material-icons">filter_list</i>
+                            </a>
+                            <ul id='filter-window' class="dropdown-content">
+                                <li><a href="#!">Všechny položky</a></li>
+                                <li><a href="#!">Studijní materiály</a></li>
+                                <li><a href="#!">Povinnosti</a></li>
+
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a class="btn-flat btn-icon dropdown-button" data-activates="stream-options-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                                <i class="material-icons">more_vert</i>
+                            </a>
+                            <ul id='stream-options-window' class='dropdown-content'>
+                                <li><a href="#!">Spravovat widgety</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </header>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="row" id="group-cards">
+        <div class="col s12">
+            <div class="card">
+               <p><em>Rozvrh</em></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<section class="main">
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <header class="section-header">
+                    <h3 class="left">Skupiny</h3>
+                    <div class="flex-spacer"></div>
+                    <ul class="right options">
+                        <li>
+                            <a class="btn-flat btn-icon dropdown-button" data-activates="add-group" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                                <i class="material-icons">add</i>
+                            </a>
+                            <ul id='add-group' class="dropdown-content">
+                                <li><a href="#create-group" class="waves-effect waves-dark modal-trigger">Vytvořit skupinu</a></li>
+                                <li><a href="#!">Zapsat se do skupiny</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </header>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="row" id="group-cards">
+        {foreach $groups as $group}
+        <div class="col l4 m6 s12">
+            <a href="{link Group:default, 'id'=>$group->urlId}" class="card">
+                        
+                        <div class="avatar" style="background-color:{$group->mainColor|noescape};">{$group->shortcut|substr:0,1}</div>
+                        <div class="title">
+                            {$group->name}
+                            <span>
+                                {$group->owner->name} {$group->owner->surname}
+                            </span>
+                        </div>
+                    
                     <!--<a href="#" class="group-users">
                         {if $group->numberOfStudents == 0}
                             Žádní studenti
@@ -57,21 +146,9 @@
                             {$group->numberOfStudents} studentů
                         {/if}
                     </a>-->
-                </div>
-                <div class="group-founder">
-                    <a href="{plink Profile:default 'idUser'=>$group->owner->id}" class="user-img">
-                        <img src="{$group->owner->profileImage}" alt="{$group->owner->name}">
-                    </a>
-                    <div class="user-info">
-                        <a href="{plink Profile:default 'idUser'=>$group->owner->id}" class="user-name">
-                            {$group->owner->name} {$group->owner->surname}
-                        </a>
-                        <div class="user-role">Zakladatel</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="group-activity">
-                    {if $group->newMessages == 0}
+                
+                <!-- <div class="group-activity">
+                   {if $group->newMessages == 0}
                         Žádné nové příspěvky
                     {elseif $group->newMessages == 1}
                         Jeden nový příspěvek
@@ -79,9 +156,9 @@
                         {$group->newMessages} příspěvky
                     {else}
                         {$group->newMessages} příspěvků
-                    {/if}
-                </div>
-            </div>
+                    {/if} 
+                </div>-->
+            </a>
         </div>
         {/foreach}
     </div>

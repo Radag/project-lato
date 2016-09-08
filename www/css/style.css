@@ -36,6 +36,11 @@ a {
     color: rgba(0, 0, 0, .54);
     height: 20px;
     line-height: 20px;
+    font-size: 14px;
+}
+
+[type="checkbox"].black+label {
+    color: rgba(0, 0, 0, .87);
 }
 
 .checkbox-vertical-align {
@@ -268,12 +273,12 @@ input[type="date"],
 input[type="password"] {
 	border-bottom: 1px solid rgba(0, 0, 0, .12);
     margin-bottom: 0;
-    height: 3em;
-    font-size: 15px;
+    height: 45px;
+    font-size: 14px;
 }
 
 .center-card .card-content input[type="submit"] {
-	font-size: 15px;
+	font-size: 14px;
 }
 
 .center-card .card-content .form-controls {
@@ -397,7 +402,7 @@ input[type="password"] {
 .modal-content textarea {
     padding: 0;
     padding-bottom: 8px;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .card .list {
@@ -712,6 +717,26 @@ ul.dropdown-content.main-nav-dropdown {
 }
 
 
+
+.select-wrapper input.select-dropdown {
+    margin: 0;
+    height: 45px;
+    line-height: 16px;
+    border-color: rgba(0, 0, 0, .12);
+}
+
+.select-wrapper.with-remove .select-dropdown li:last-child {
+    margin-top: 12px;
+}
+
+.select-wrapper.with-remove .select-dropdown li:last-child span {
+    color: rgba(0, 0, 0, .54);
+}
+
+
+
+
+
 /* --------- */
 
 /* KOALA CSS */
@@ -731,7 +756,7 @@ p.secondary-par {
     color: rgba(0, 0, 0, .54) !important;
 }
 
-p.secondary-par strong {
+strong {
     color: rgba(0, 0, 0, .87);
 }
 
@@ -742,6 +767,20 @@ p.secondary-par strong {
     margin-right: 16px;
     background-color: #f5f5f5;
     border-radius: 50%;
+}
+
+.avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px;
+    width: 42px;
+    margin-right: 16px;
+    background-color: #f5f5f5;
+    border-radius: 50%;
+    color: #fff;
+    font-weight: 500;
+    font-size: 18px;
 }
 
 @media only screen and (max-width: 600px) {
@@ -819,9 +858,16 @@ p.secondary-par strong {
     min-height: 6em;
 }
 
-#create-post-modal .term-picker input {
-    width: auto !important;
+.term-picker input {
+    flex-grow: 1;
     text-align: right;
+    width: auto !important;
+}
+
+.term-picker input.select-dropdown {
+    text-align: left !important;
+    width: 100% !important;
+    font-size: 14px;
 }
 
 #create-post-modal .modal-footer {
@@ -832,7 +878,7 @@ p.secondary-par strong {
 }
 
 .attachments {
-    padding: 12px 0 0 0;
+    padding: 24px 0 0 0;
     margin: 0;
 }
 
@@ -881,6 +927,7 @@ p.secondary-par strong {
 .attachments li .attachment-icon i {
     line-height: 36px;
     color: #fff;
+    font-size: 18px !important;
 }
 
 .attachments li .attachment-label {
@@ -1039,6 +1086,9 @@ textarea.materialize-textarea {
     border-bottom: 1px solid rgba(0, 0, 0, .12);
     margin-bottom: 0;
     padding: 12px 0 !important;
+    line-height: 1.5em;
+    font-size: 14px;
+    min-height: 45px !important;
 }
 
 .no-border {
@@ -1150,14 +1200,14 @@ textarea.materialize-textarea {
 }
 
 .section-header i {
-    font-size: 24px !important;
+    font-size: 22px !important;
 }
 
 .back-to-stream {
-    color: rgba(0, 0, 0, .38);
+    color: rgba(0, 0, 0, .54);
     display: flex;
     align-items: center;
-    font-size: 15px;
+    font-size: 14px;
     text-transform: uppercase;
 }
 
@@ -1178,7 +1228,7 @@ textarea.materialize-textarea {
 
 .section-header h3 {
     margin: 0;
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1em;
     color: rgba(0, 0, 0, .54);   
     text-transform: uppercase;
@@ -1635,7 +1685,7 @@ textarea.materialize-textarea {
 }
 
 .card .card-content-section {
-    margin-bottom: 32px;
+    margin-bottom: 56px;
 }
 
 .card .media-container {
@@ -1803,8 +1853,8 @@ textarea.materialize-textarea {
     padding: 0 !important;
     width: 100%;
     float: left;
-    min-height:22px;
-    height:22px;
+    min-height:21px !important;
+    height: 21px;
     font-size: 14px;
 }
 
@@ -1865,32 +1915,26 @@ textarea.materialize-textarea {
 /* GROUPS */
 
 #group-cards .card {
-    text-align:left;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
 }
 
-#group-cards .card-header {
-    position:relative;
-    color:#fff;
-    padding:0;
+
+
+#group-cards .card .title {
+    font-size:14px;
+    line-height:21px;
+    font-weight:500;
+    color: rgba(0, 0, 0, .87);
 }
 
-#group-cards a.group-name  {
-    display:block;
-    font-size:21px;
-    line-height:24px;
-    margin: 0;
-    padding:56px 24px 20px 24px;
-    color: rgba(255, 255, 255, 1);
+#group-cards .card .title span {
+    display: block;
+    color: rgba(0, 0, 0, .54);
     font-weight: 400;
-    width: 100%;
-}
-
-#group-cards a.group-name span {
-    font-size:35px;
-    line-height:40px;
-    margin:8px 0;
-    font-weight:300;
-    display:block;
+    font-size: 13px;
+    line-height: 19px;
 }
 
 #group-cards .group-users {
@@ -2099,18 +2143,47 @@ textarea.materialize-textarea {
     display: flex;
     align-items: center;
     margin-top: 20px;
-    min-height: 45px;
+    min-height: 32px;
+}
+
+.form-row.right {
+    justify-content: right;
+}
+
+.form-row.flex-top {
+    align-items: flex-start;
+}
+
+.form-row p {
+    max-width: 360px;
+    flex-grow: 1;
 }
 
 .form-row .label {
     font-weight: 500;
-    font-size: 15px;
+    line-height: 1em;
 }
 
+.form-row .inner-label {
+    margin: 0 16px 0 32px;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+}
+
+.form-row.term-picker .label {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+}
+
+
 .card.settings .card-content h4 {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 500;
     margin: 0;
+    margin-bottom: 16px;
+    line-height: 32px;
 }
 
 .card.settings .form-row .icon-label {
@@ -2129,6 +2202,7 @@ textarea.materialize-textarea {
 
 .card.settings .form-row .input-flex {
     flex-grow: 1;
+    line-height: 0;
 }
 
 .card.settings .form-row .input-flex.thin {
@@ -2138,6 +2212,46 @@ textarea.materialize-textarea {
 .card-settings .form-row .input-flex input[type="text"] {
     width: 100%;
 }
+
+.form-row .notice {
+    margin-left: 16px;
+    color: rgba(0, 0, 0, .54);
+}
+
+.add-line {
+    display: flex;
+    align-items: center;
+}
+
+.add-line i {
+    margin-right: 12px;
+}
+
+.card.settings .card-footer {
+    padding: 24px;
+    display: flex;
+    align-items: center;
+}
+
+.card.settings .user-collection li:first-child {
+    margin-top: 20px;
+}
+
+.card.settings .user-collection li .user {
+    max-width: 360px;
+}
+
+.card.settings .user-collection li .material-icons {
+    font-size: 24px !important;
+}
+
+#layout-footer {
+    text-align: center;
+    padding: 36px;
+    color: rgba(0, 0, 0, .54);
+    font-size: 13px;
+}
+
 
 
 
