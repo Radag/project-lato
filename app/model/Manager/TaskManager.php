@@ -9,6 +9,7 @@
 namespace App\Model\Manager;
 
 use Nette;
+use App\Model\Entities\Task;
 
 /**
  * Description of TaskManager
@@ -28,5 +29,13 @@ class TaskManager extends Nette\Object{
     }
     
    
-    
+    public function createTask(Task $task)
+    {
+        $this->database->beginTransaction();
+        $this->database->table('tasks')->insert(array(
+                    'TITLE' => $task->title,
+                    'ID_MESSAGE' => $task->idMessage
+            ));        
+        $this->database->commit();
+    }
 }
