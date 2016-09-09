@@ -14,4 +14,5 @@ services:
 	noticeFormFactory: App\FrontModule\Components\Stream\MessageForm\NoticeForm\INoticeFormFactory 
 	homeworkFormFactory: App\FrontModule\Components\Stream\MessageForm\HomeworkForm\IHomeworkFormFactory 
 	materialsFormFactory: App\FrontModule\Components\Stream\MessageForm\MaterialsForm\IMaterialsFormFactory
-	taskFormFactory: App\FrontModule\Components\Stream\MessageForm\TaskForm\ITaskFormFactory       
+	taskFormFactory: App\FrontModule\Components\Stream\MessageForm\TaskForm\ITaskFormFactory  
+	groupSettingForm: App\FrontModule\Components\GroupSettingsForm\IGroupSettingsFormFactory      

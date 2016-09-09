@@ -27,6 +27,9 @@ class Group {
     public $groupType = null;
     public $newMessages = null;
     public $owner = null;
+    public $description = null;
+    public $room = null;
+    public $subgroup = null;
     
     public $sharingOn = null;
     public $sharingCode = null;

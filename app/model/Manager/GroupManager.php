@@ -107,6 +107,9 @@ class GroupManager extends Nette\Object{
                 T1.URL_ID,
                 T1.NAME,
                 T1.SHORTCUT,
+                T1.DESCRIPTION,
+                T1.ROOM,
+                T1.SUBGROUP,
                 T1.ID_OWNER AS OWNER_ID,
                 T2.NAME AS OWNER_NAME,
                 T2.SURNAME AS OWNER_SURNAME,
@@ -136,9 +139,26 @@ class GroupManager extends Nette\Object{
         $groupModel->sharingOn = $group->SHARE_BY_LINK;
         $groupModel->sharingCode = $group->HASH_CODE;
         $groupModel->urlId = $group->URL_ID;
+        $groupModel->description = $group->DESCRIPTION;
+        $groupModel->room = $group->ROOM;
+        $groupModel->subgroup = $group->SUBGROUP;
         
         return $groupModel;       
     }
+    
+    public function getPrivileges($idGroup)
+    {
+        $group = $this->database->query("SELECT 
+                T1.ID_GROUP,
+                T1.PR_DELETE_OWN_MSG,
+                T1.PR_CREATE_MSG,
+                T1.PR_EDIT_OWN_MSG,
+                T1.PR_SHARE_MSG
+        FROM groups T1 WHERE T1.ID_GROUP=?", $idGroup)->fetch();
+        
+        return $group;
+    }
+    
     
     /**
      * 
@@ -207,6 +227,26 @@ class GroupManager extends Nette\Object{
     {
         $this->database->query("UPDATE groups SET ARCHIVED=1 WHERE ID_GROUP=?", $idGroup);
     }
+    
+    
+    public function editGroup(Group $group)
+    {
+        $data = [
+            'NAME' => $group->name,
+            'DESCRIPTION' => $group->description,
+            'ROOM' => $group->room,
+            'SUBGROUP' => $group->subgroup,
+            'SHORTCUT' => $group->shortcut
+        ];
+        
+        $this->database->query("UPDATE groups SET ? WHERE ID_GROUP=?", $data, $group->id);
+    }
+    
+    public function editGroupPrivileges($privileges, $idGroup)
+    {      
+        $this->database->query("UPDATE groups SET ? WHERE ID_GROUP=?", $privileges, $idGroup);
+    }
+    
     
     public function addUserToGroup($idGroup, $idUser, $relation, $fromLink = null)
     {

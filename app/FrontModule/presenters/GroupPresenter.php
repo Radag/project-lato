@@ -10,6 +10,7 @@ use App\Model\Manager\PrivateMessageManager;
 use App\Model\Manager\NotificationManager;
 use App\Model\Manager\FileManager;
 use App\FrontModule\Components\Stream\IStreamFactory;
+use App\FrontModule\Components\GroupSettingsForm\IGroupSettingsFormFactory;
 
 class GroupPresenter extends BasePresenter
 {    
@@ -26,6 +27,8 @@ class GroupPresenter extends BasePresenter
     
     /** @var \App\Model\Entities\Group */
     protected $activeGroup = null;
+    
+    protected $groupSettings = null;
     
     /** @var  IStreamFactory  */
     protected $streamFactory;
@@ -55,7 +58,8 @@ class GroupPresenter extends BasePresenter
             PrivateMessageManager $privateMessageManager,
             NotificationManager $notificationManager,
             FileManager $fileManager,
-            IStreamFactory $streamFactory)
+            IStreamFactory $streamFactory,
+            IGroupSettingsFormFactory $groupSettings)
     {
         $this->userManager = $userManager;
         $this->messageManager = $messageManager;
@@ -64,6 +68,7 @@ class GroupPresenter extends BasePresenter
         $this->notificationManager = $notificationManager;
         $this->fileManager = $fileManager;
         $this->streamFactory = $streamFactory;
+        $this->groupSettings = $groupSettings;
     }
     
     protected function startup()
@@ -87,6 +92,8 @@ class GroupPresenter extends BasePresenter
     
     protected function setPermission()
     {
+        $privileges = $this->groupManager->getPrivileges($this->activeGroup->id);
+        
         if($this->activeGroup->owner->id === $this->activeUser->id) {
             $this->groupPermission['archive'] = true;
             $this->groupPermission['settings'] = true;
@@ -98,10 +105,10 @@ class GroupPresenter extends BasePresenter
             $this->groupPermission['removeMembers'] = true;
         } else {
             $this->groupPermission['leave'] = true;
-            $this->groupPermission['addMessages'] = true;
-            $this->groupPermission['addCommets'] = true;
-            $this->groupPermission['removeOwnComments'] = true;
-            $this->groupPermission['removeOwnMessages'] = true;
+            $this->groupPermission['addMessages'] = $privileges['PR_CREATE_MSG'];
+            $this->groupPermission['addCommets'] = $privileges['PR_CREATE_MSG'];
+            $this->groupPermission['removeOwnComments'] = $privileges['PR_DELETE_OWN_MSG'];
+            $this->groupPermission['removeOwnMessages'] = $privileges['PR_DELETE_OWN_MSG'];
         }
     }
     
@@ -112,6 +119,13 @@ class GroupPresenter extends BasePresenter
         $stream->setUser($this->activeUser);
         $stream->setStreamPermission($this->groupPermission);
         return $stream;
+    }
+    
+    public function createComponentGroupSettingsForm()
+    {
+        $component = $this->groupSettings->create();
+        $component->setGroup($this->activeGroup);
+        return $component;
     }
     
     protected function createComponentSharingForm()
