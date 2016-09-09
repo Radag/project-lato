@@ -33,7 +33,9 @@ class TaskManager extends Nette\Object{
     {
         $this->database->beginTransaction();
         $this->database->table('tasks')->insert(array(
-                    'TITLE' => $task->title,
+                    'NAME' => $task->title,
+                    'ID_MESSAGE' => $task->idMessage,
+                    'DEADLINE' => $task->deadline,
                     'ID_MESSAGE' => $task->idMessage
             ));        
         $this->database->commit();

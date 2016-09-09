@@ -147,7 +147,7 @@ class Stream extends Control
         if(isset($type) && $type !== NULL) {
             $this->messageType = $this->presenter->getRequest()->getPost('messageType');
         }
-        
+       
         switch ($this->messageType) {
             case MessageForm::TYPE_NOTICE :
                 $form = $this->noticeFormFactory->create();

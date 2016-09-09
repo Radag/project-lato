@@ -105,7 +105,7 @@ class TaskForm extends MessageForm
         $message->setText($values['text']);
         $message->setUser($this->activeUser);
         $message->idGroup = $this->stream->getActiveGroup()->id;
-        
+        $message->idType = self::TYPE_TASK;
         $attachments = explode('_', $values['attachments']);
 
         $idMessage = $this->messageManager->createMessage($message, $attachments);
@@ -114,7 +114,9 @@ class TaskForm extends MessageForm
         $task->idMessage = $idMessage;
         $task->online = false;
         $task->title = $values->title;
-        $task->deadline = $values->date;
+        
+        $deadline = new \DateTime();
+        $task->deadline = $deadline;
         
         $this->taskManager->createTask($task);
       
