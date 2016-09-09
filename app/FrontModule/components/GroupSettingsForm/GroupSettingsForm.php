@@ -34,6 +34,7 @@ class GroupSettingsForm extends Control
     public function setGroup(Group $group)
     {
         $this->group = $group;
+        
     }
 
     protected function createComponentForm()
@@ -94,6 +95,8 @@ class GroupSettingsForm extends Control
     {
         $template = $this->template;
         $template->activeGroup = $this->group;
+        \Tracy\Debugger::barDump($this->groupManager->getSchedule($this->group));
+        $template->schedule = $this->groupManager->getSchedule($this->group);
         $template->setFile(__DIR__ . '/GroupSettingsForm.latte');
         $template->render();
     }
@@ -109,7 +112,7 @@ class GroupSettingsForm extends Control
         $this->group->room = $values['room'];
                
         $this->groupManager->editGroup($this->group);
-        
+        //sdílení
         $privileges = [
             'PR_DELETE_OWN_MSG' => $values['PR_DELETE_OWN_MSG'],
             'PR_CREATE_MSG' => $values['PR_CREATE_MSG'],
@@ -119,6 +122,15 @@ class GroupSettingsForm extends Control
         
         $this->groupManager->editGroupPrivileges($privileges, $this->group->id);
         $this->groupManager->switchSharing($this->group, $values['shareByCode']);
+        
+        //rozvrh
+        
+        $scheduleData = $this->presenter->getRequest()->getPost('schedule');
+        foreach($scheduleData as $data) {
+            
+        } 
+                
+        $this->groupManager->insertSchedule($scheduleData, $this->group);
         
         $this->presenter->redirect('this');
     }

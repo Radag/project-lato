@@ -153,64 +153,25 @@
         <div class="col s12">
             <div class="card" id="one-day-schedule">
                 <div class="day-title">
-                    <span class="title">12. 9.</span>
-                    <span class="name">Pondělí</span>
+                    <span class="title">{date("j. n.")}</span>
+                    <span class="name">{$days[date("N")-1]}</span>
                 </div>
                 <div class="item empty day-title-spacer"></div>
-                
-                <div class="item filled">
-                    <span class="shortcut">mat</span>
-                    <span class="time">8:00</span>
-                    <span class="time end">(8:45)</span>
-                    <span class="room">U42</span>
-                </div>
-
-                <div class="item filled">
-                    <span class="shortcut">nej</span>
-                    <span class="time">8:55</span>
-                    <span class="time end">(9:40)</span>
-                    <span class="room">U24</span>
-                </div>
-
-                <div class="item filled">
-                    <span class="shortcut">tev</span>
-                    <span class="time">10:00</span>
-                    <span class="time end">(10:45)</span>
-                    <span class="room">uTEL</span>
-                </div>
-
-                <div class="item filled">
-                    <span class="shortcut">tea</span>
-                    <span class="time">10:55</span>
-                    <span class="time end">(11:40)</span>
-                    <span class="room">U01</span>
-                </div>
-
-                
-
-                <div class="item empty"></div>
-
-                <div class="item filled">
-                    <span class="shortcut">tea</span>
-                    <span class="time">12:45</span>
-                    <span class="time end">(13:30)</span>
-                    <span class="room">U01</span>
-                </div>
-
-                <div class="item filled">
-                    <span class="shortcut">tvy</span>
-                    <span class="time">13:40</span>
-                    <span class="time end">(14:25)</span>
-                    <span class="room">U42</span>
-                </div>
-
-                <div class="item filled">
-                    <span class="shortcut">tev</span>
-                    <span class="time">14:35</span>
-                    <span class="time end">(15:20)</span>
-                    <span class="room">uHAL</span>
-                </div>
-
+                {var $morningSubjects = false}
+                {if !empty($todaySchedule)}
+                    {foreach $todaySchedule as $item}
+                        {if !$morningSubjects && ($item->TIME_FROM->format("%h") >= 12) }
+                            {var $morningSubjects = true}
+                            {if !$iterator->first}<div class="item empty"></div>{/if}
+                        {/if}
+                        <div class="item filled">
+                            <span class="shortcut">{$item->SHORTCUT}</span>
+                            <span class="time">{$item->TIME_FROM->format("%H:%I")}</span>
+                            <span class="time end">({$item->TIME_TO->format("%H:%I")})</span>
+                            <span class="room">{$item->ROOM}</span>
+                        </div>
+                    {/foreach}
+                {/if}
             </div>
         </div>
     </div>

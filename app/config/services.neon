@@ -9,6 +9,7 @@ services:
 	classroomManager: App\Model\Manager\ClassroomManager
 	materialManager: App\Model\Manager\MaterialManager
 	taskManager: App\Model\Manager\TaskManager
+	schedulelManager: App\Model\Manager\SchedulelManager
 
 	streamFactory: App\FrontModule\Components\Stream\IStreamFactory
 	noticeFormFactory: App\FrontModule\Components\Stream\MessageForm\NoticeForm\INoticeFormFactory 

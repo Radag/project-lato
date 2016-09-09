@@ -321,5 +321,26 @@ class GroupManager extends Nette\Object{
          return $userArray;
     }
       
+    
+    
+    public function insertSchedule($schedule, Group $group)
+    {
+        $this->database->beginTransaction();
+        $this->database->query('DELETE FROM group_schedule WHERE ID_GROUP=?', $group->id);
+        foreach($schedule as $data) {
+            $this->database->table('group_schedule')->insert(array(
+                'ID_GROUP' => $group->id,
+                'DAY_IN_WEEK' => $data['DAY_IN_WEEK'],
+                'TIME_FROM' => $data['TIME_FROM'],
+                'TIME_TO' => $data['TIME_TO'],
+            ));  
+        }
+        $this->database->commit();
+    }
+    
+    public function getSchedule(Group $group)
+    {
+        return $this->database->query("SELECT * FROM group_schedule WHERE ID_GROUP=?", $group->id)->fetchAll();
+    }
         
 }

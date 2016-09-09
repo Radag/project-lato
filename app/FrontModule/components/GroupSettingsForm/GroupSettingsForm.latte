@@ -47,20 +47,39 @@
                         </div>
                     </div>
                     <div class="col m12 l8">
+                        {if empty($schedule)}
                         <div class="form-row term-picker"> 
-                            <select class="with-remove">
+                            <select name="schedule[1][DAY_IN_WEEK]" class="with-remove">
                                 <option value="1" selected>Pondělí</option>
-                                <option value="2">Úterý</option>
-                                <option value="3">Středa</option>
-                                <option value="4">Čtvrtek</option>
-                                <option value="5">Pátek</option>
+                                <option value="2" >Úterý</option>
+                                <option value="3" >Středa</option>
+                                <option value="4" >Čtvrtek</option>
+                                <option value="5" >Pátek</option>
                                 <option value="delete">Odstranit</option>
                             </select>
                             <span class="inner-label">od</span>
-                            <input type="text" maxlength=5 value="12:00">
+                            <input name="schedule[1][TIME_FROM]" type="text" maxlength=5 value="12:00">
                             <span class="inner-label">do</span>
-                            <input type="text" value="12:45" maxlength=5 id="current-time">
+                            <input name="schedule[1][TIME_TO]" type="text"  maxlength=5 value="12:45" id="current-time">
                         </div>
+                        {else}
+                        {foreach $schedule as $term}
+                        <div class="form-row term-picker"> 
+                            <select name="schedule[{$term->ID}][DAY_IN_WEEK]" class="with-remove">
+                                <option value="1" {if $term->DAY_IN_WEEK==1}selected{/if}>Pondělí</option>
+                                <option value="2" {if $term->DAY_IN_WEEK==2}selected{/if}>Úterý</option>
+                                <option value="3" {if $term->DAY_IN_WEEK==3}selected{/if}>Středa</option>
+                                <option value="4" {if $term->DAY_IN_WEEK==4}selected{/if}>Čtvrtek</option>
+                                <option value="5" {if $term->DAY_IN_WEEK==5}selected{/if}>Pátek</option>
+                                <option value="delete">Odstranit</option>
+                            </select>
+                            <span class="inner-label">od</span>
+                            <input name="schedule[{$term->ID}][TIME_FROM]" type="text" maxlength=5 value="{$term->TIME_FROM->format("%H:%I")}">
+                            <span class="inner-label">do</span>
+                            <input name="schedule[{$term->ID}][TIME_TO]" type="text"  maxlength=5 value="{$term->TIME_TO->format("%H:%I")}" id="current-time">
+                        </div>
+                        {/foreach}
+                        {/if}
                         <div class="form-row">
                             <a href="" class="add-line"><i class="material-icons">add</i>Přidat další termín</a>
                         </div>
