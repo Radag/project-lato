@@ -45,36 +45,32 @@
                 </div>
                 <div class="card-content clearfix">
                 <p class="secondary-par">Seznam povinností, které je třeba v blízké době splnit</p>
-                    <ul class="custom-collection">
+                    <ul class="custom-collection" n:if="!empty($actualTasks)">
+                        {foreach $actualTasks as $task}
                         <li>
-                            <a href="" class="item">
-                                <div class="avatar small" style="background-color: #00c256;">P</div>
-                                <div class="title truncate">Programování<span>Dodělat příklad z hodiny</span></div>
+                            <a href="{plink Group:default 'id'=>$task->group->urlId}" class="item">
+                                <div class="avatar small" style="background-color: {$task->group->mainColor};">{$task->group->shortcut}</div>
+                                <div class="title truncate">{$task->group->name}<span>{$task->title}</span></div>
                                 <div class="flex-spacer"></div>
-                                <div class="remaining-time important">19 hodin</div>
+                                {if $task->timeLeft->y > 0}
+                                    <div class="remaining-time">{$task->timeLeft->format('%y let')}</div>
+                                {elseif $task->timeLeft->m > 0}
+                                    <div class="remaining-time">{$task->timeLeft->format('%m měsíců')}</div>
+                                {elseif $task->timeLeft->d > 0}
+                                    <div class="remaining-time">{$task->timeLeft->format('%d dní')}</div>
+                                {elseif $task->timeLeft->h > 0}
+                                    <div class="remaining-time important">{$task->timeLeft->format('%h hodin')}</div>
+                                {elseif $task->timeLeft->i > 0}
+                                    <div class="remaining-time important">{$task->timeLeft->format('%i minut')}</div>
+                                {/if}       
                             </a>
                         </li>
-                        <li>
-                            <a href="" class="item">
-                                <div class="avatar small" style="background-color: #e6bb28;">M</div>
-                                <div class="title truncate">Matematika<span>Učebnice str. 42, příklady 1, 2 a 3</span></div>
-                                <div class="flex-spacer"></div>
-                                <div class="remaining-time">3 dny</div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" class="item">
-                                <div class="avatar small" style="background-color: #00c2dc;">T</div>
-                                <div class="title truncate">Technické vybavení<span>Prezentace na téma periferie</span></div>
-                                <div class="flex-spacer"></div>
-                                <div class="remaining-time">5 dní</div>
-                            </a>
-                        </li>
+                        {/foreach}
                     </ul>
                 </div>
                 <div class="flex-spacer"></div>
                 <div class="card-footer">
-                    <a href="" class="btn-flat secondary-color">
+                    <a href="{plink Homepage:tasks}" class="btn-flat secondary-color">
                         Zobrazit vše
                     </a>
                 </div>
@@ -104,7 +100,7 @@
                 </div>
                 <div class="flex-spacer"></div>
                 <div class="card-footer">
-                    <a href="" class="btn-flat secondary-color">
+                    <a href="{plink Homepage:notices}" class="btn-flat secondary-color">
                         Zobrazit vše
                     </a>
                 </div>

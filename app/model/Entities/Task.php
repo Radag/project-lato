@@ -17,4 +17,5 @@ class Task {
     public $idMessage = null;
     public $deadline = null;
     public $online = null;
+    public $timeLeft = null;
 }

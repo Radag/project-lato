@@ -7,6 +7,7 @@ use App\Model\Manager\GroupManager;
 use App\Model\Manager\PrivateMessageManager;
 use App\Model\Manager\NotificationManager;
 use App\Model\Manager\SchedulelManager;
+use App\Model\Manager\TaskManager;
 
 class HomepagePresenter extends BasePresenter
 {
@@ -15,6 +16,7 @@ class HomepagePresenter extends BasePresenter
     protected $privateMessageManager;
     protected $notificationManager;
     protected $scheduleManger;
+    protected $taskManager;
 
 
     public function __construct(
@@ -22,7 +24,8 @@ class HomepagePresenter extends BasePresenter
         GroupManager $groupManager,
         PrivateMessageManager $privateMessageManager,
         NotificationManager $notificationManager,
-        SchedulelManager $scheduleManger
+        SchedulelManager $scheduleManger,
+        TaskManager $taskManager
     )
     {
         $this->userManager = $userManager;
@@ -30,6 +33,7 @@ class HomepagePresenter extends BasePresenter
         $this->privateMessageManager = $privateMessageManager;
         $this->notificationManager = $notificationManager;
         $this->scheduleManger = $scheduleManger;
+        $this->taskManager = $taskManager;
     }
     
     public function actionDefault()
@@ -54,6 +58,8 @@ class HomepagePresenter extends BasePresenter
         $this->template->groups = $this->groupManager->getGroups($this->activeUser);;
         $this->template->todaySchedule = $this->scheduleManger->getTodaySchedule($groups);
         $this->template->days = array('Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota', 'Neděle');
+        $this->template->actualTasks = $this->taskManager->getClosestTask($groups);
+        \Tracy\Debugger::barDump($this->taskManager->getClosestTask($groups));
     }
     
     public function actionTasks()
