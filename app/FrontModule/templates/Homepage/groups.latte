@@ -83,20 +83,18 @@
                 </div>
                 <div class="card-content clearfix">
                     <p class="secondary-par">Seznam poznámek</p>
+                    {ifset $actualNotices}
                     <ul class="custom-collection">
+                        {foreach $actualNotices as $note}
                         <li>
                             <div class="item note">
-                            13. 9. 2016 Maturita, Celý den
+                            {$note->TEXT}
                             </div>
                             <a href="#" class="btn-icon"><i class="material-icons">edit</i></a>
                         </li>
-                        <li>
-                            <div class="item note">
-                            Až se vyseru, tak si nesmim zapomenout utrit prdel a pak to vsechno poradne splachnout!!!
-                            </div>
-                            <a href="#" class="btn-icon"><i class="material-icons">edit</i></a>
-                        </li>
+                        {/foreach}
                     </ul>
+                    {/ifset}
                 </div>
                 <div class="flex-spacer"></div>
                 <div class="card-footer">
