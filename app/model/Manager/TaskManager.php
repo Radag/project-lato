@@ -44,12 +44,13 @@ class TaskManager extends BaseManager
                             T1.DEADLINE,
                             T2.ID_GROUP
                     FROM tasks T1 JOIN message T2 ON T1.ID_MESSAGE = T2.ID_MESSAGE
-                    WHERE T2.ID_GROUP IN (" . implode(",", array_keys($groups)) . ") 
+                    WHERE T2.ID_GROUP IN (" . implode(",", array_keys($groups)) . ") AND T1.DEADLINE>=NOW()
                     ORDER BY T1.DEADLINE ASC LIMIT 5")->fetchAll();
             foreach($tasks as $task) {
                 $taskObject  = new Task();
                 $taskObject->deadline = $task->DEADLINE;
                 $taskObject->title = $task->NAME;
+                $taskObject->idMessage = $task->ID_MESSAGE;
                 $taskObject->group = $groups[$task->ID_GROUP];
                 $taskObject->timeLeft = $now->diff($task->DEADLINE);
                 $tasksArray[] = $taskObject;

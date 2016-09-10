@@ -180,6 +180,11 @@ class GroupPresenter extends BasePresenter
         $this->template->groupMembers = $this->groupManager->getGroupUsers($this->activeGroup->id);  
     }
     
+    public function actionMessage($idMessage)
+    {       
+        $this->template->message = $this->messageManager->getMessage($idMessage);
+    }
+    
     public function actionSettings()
     {
         $this['topPanel']->setTitle('nastavení');

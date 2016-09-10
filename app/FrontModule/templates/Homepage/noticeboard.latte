@@ -48,7 +48,7 @@
                     <ul class="custom-collection" n:if="!empty($actualTasks)">
                         {foreach $actualTasks as $task}
                         <li>
-                            <a href="{plink Group:default 'id'=>$task->group->urlId}" class="item">
+                            <a href="{plink Group:message 'id'=>$task->group->urlId, 'idMessage'=>$task->idMessage}" class="item">
                                 <div class="avatar small" style="background-color: {$task->group->mainColor};">{$task->group->shortcut}</div>
                                 <div class="title truncate">{$task->group->name}<span>{$task->title}</span></div>
                                 <div class="flex-spacer"></div>
