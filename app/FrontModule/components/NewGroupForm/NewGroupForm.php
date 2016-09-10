@@ -77,6 +77,6 @@ class NewGroupForm extends Control
         $group->shortcut = strtoupper(substr($values['name'], 0, 3));
         $group->mainColor = $values['color'];        
         $this->groupManager->createGroup($group);
-        $this->presenter->redirect('Stream:groups');
+        $this->presenter->redirect('Homepage:noticeboard');
     }
 }

@@ -16,19 +16,8 @@ use App\Model\Entities\Notification;
  *
  * @author Radaq
  */
-class NotificationManager extends Nette\Object{
- 
-    
-    /** @var Nette\Database\Context */
-    private $database;
-
-
-    public function __construct(Nette\Database\Context $database)
-    {
-            $this->database = $database;
-    }
-    
-   
+class NotificationManager extends BaseManager
+{   
     
     public function getNotifications($user)
     {

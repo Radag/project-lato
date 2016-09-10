@@ -20,24 +20,14 @@ use App\Model\Manager\GroupManager;
  *
  * @author Radaq
  */
-class MessageManager extends Nette\Object{
+class MessageManager extends BaseManager {
  
-    
-    /** @var Nette\Database\Context */
-    private $database;
-
-    /** @var NotificationManager */
+    /** @var NotificationManager @inject */
     private $notificationManager;
     
-    /** @var GroupManager */
+    /** @var GroupManager @inject */
     private $groupManager;
     
-    public function __construct(Nette\Database\Context $database, NotificationManager $notificationManager, GroupManager $groupManager)
-    {
-        $this->database = $database;
-        $this->notificationManager = $notificationManager;
-        $this->groupManager = $groupManager;
-    }
     
     public function createMessage(Message $message, $attachments)
     {

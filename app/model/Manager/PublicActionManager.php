@@ -15,18 +15,9 @@ use Nette;
  *
  * @author Radaq
  */
-class PublicActionManager extends Nette\Object{
- 
+class PublicActionManager extends BaseManager 
+{
     
-    /** @var Nette\Database\Context */
-    private $database;
-
-
-    public function __construct(Nette\Database\Context $database)
-    {
-        $this->database = $database;
-    }
-
     public function getAction($hashCode) {
         $action = $this->database->query("SELECT 
                 T1.ACTION_TYPE,

@@ -15,18 +15,9 @@ use Nette;
  *
  * @author Radaq
  */
-class NoticeManager extends Nette\Object{
+class NoticeManager extends BaseManager 
+{
  
-    
-    /** @var Nette\Database\Context */
-    private $database;
-
-
-    public function __construct(Nette\Database\Context $database)
-    {
-        $this->database = $database;
-    }
-    
    
     public function getNotices(\App\Model\Entities\User $user, $limit)
     {

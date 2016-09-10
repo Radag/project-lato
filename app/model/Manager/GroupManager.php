@@ -19,28 +19,17 @@ use App\Model\Manager\UserManager;
  *
  * @author Radaq
  */
-class GroupManager extends Nette\Object{
+class GroupManager extends BaseManager {
  
     const RELATION_OWNER = 3;
     const RELATION_TEACHER = 1;
     const RELATION_STUDENT = 2;
     
-    /** @var Nette\Database\Context */
-    private $database;
+    /** @var NotificationManager @inject */
+    protected $notificationManager;
     
-    /** @var NotificationManager */
-    private $notificationManager;
-    
-    /** @var UserManager */
-    private $userManager;
-
-
-    public function __construct(Nette\Database\Context $database, NotificationManager $notificationManager, UserManager $userManager)
-    {
-        $this->database = $database;
-        $this->notificationManager = $notificationManager;
-        $this->userManager = $userManager;
-    }
+    /** @var UserManager @inject */
+    protected $userManager;
 
     public function setGroupVisited(User $user, $idGroup)
     {

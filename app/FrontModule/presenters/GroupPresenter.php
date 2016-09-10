@@ -78,10 +78,10 @@ class GroupPresenter extends BasePresenter
         if(isset($id)) {
             $this->activeGroup = $this->groupManager->getGroup($id);
         } else {
-            $this->redirect(':Front:Homepage:groups');
+            $this->redirect(':Front:Homepage:noticeboard');
         }
         if(!$this->groupManager->isUserInGroup($this->activeUser->id, $this->activeGroup->id)){
-            $this->redirect(':Front:Homepage:groups');
+            $this->redirect(':Front:Homepage:noticeboard');
         }
         $this->setPermission();
         $this['topPanel']->setActiveGroup($this->activeGroup);
@@ -195,14 +195,14 @@ class GroupPresenter extends BasePresenter
     {
            $this->groupManager->removeUserFromGroup($idGroup, $this->activeUser->id);
            $this->flashMessage("Opustil jste skupinu");
-           $this->redirect(':Front:Homepage:groups');
+           $this->redirect(':Front:Homepage:noticeboard');
     }
     
     public function handleArchiveGroup($idGroup)
     {
            $this->groupManager->archiveGroup($idGroup);
            $this->flashMessage("Skupina archivována");
-           $this->redirect(':Front:Homepage:groups');
+           $this->redirect(':Front:Homepage:noticeboard');
     }
     
     

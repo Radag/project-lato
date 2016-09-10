@@ -15,17 +15,8 @@ use Nette;
  *
  * @author Radaq
  */
-class SchedulelManager extends Nette\Object{
- 
-    
-    /** @var Nette\Database\Context */
-    private $database;
-
-
-    public function __construct(Nette\Database\Context $database)
-    {
-        $this->database = $database;
-    }
+class SchedulelManager extends BaseManager
+{ 
     
     public function getTodaySchedule($groups) 
     {

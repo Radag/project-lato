@@ -20,24 +20,14 @@ use App\Model\Entities\Classroom;
  *
  * @author Radaq
  */
-class ClassroomManager extends Nette\Object{
-  
-    /** @var Nette\Database\Context */
-    private $database;
+class ClassroomManager extends BaseManager 
+{
     
-    /** @var NotificationManager */
-    private $notificationManager;
+    /** @var NotificationManager @inject */
+    protected $notificationManager;
     
-    /** @var UserManager */
-    private $userManager;
-
-
-    public function __construct(Nette\Database\Context $database, NotificationManager $notificationManager, UserManager $userManager)
-    {
-        $this->database = $database;
-        $this->notificationManager = $notificationManager;
-        $this->userManager = $userManager;
-    }
+    /** @var UserManager @inject */
+    protected $userManager;
 
     public function getRelation(User $user, $classes)
     {

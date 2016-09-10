@@ -43,7 +43,7 @@ class HomepagePresenter extends BasePresenter
     public function actionDefault()
     {
         if($this->user->isLoggedIn()) {
-            $this->redirect(':Front:Homepage:groups');
+            $this->redirect(':Front:Homepage:noticeboard');
         }
     }
     
@@ -53,7 +53,7 @@ class HomepagePresenter extends BasePresenter
         $this->redirect(':Public:Homepage:default');
     }
     
-    public function actionGroups()
+    public function actionNoticeboard()
     {
         $this['topPanel']->setTitle('Nástěnka');
         

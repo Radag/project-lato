@@ -59,7 +59,7 @@ class RegisterForm extends Nette\Object
                 $redirect->remove();
                 $this->presenter->redirect($link, $params);
             } else {
-                $this->presenter->redirect(':Front:Stream:groups');  
+                $this->presenter->redirect(':Front:Homepage:noticeboard');  
             }
         } catch (\Exception $ex) {
             $this->flashMessage($ex->getMessage(), 'error');

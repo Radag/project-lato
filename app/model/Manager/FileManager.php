@@ -8,7 +8,7 @@ use Nette;
 /**
  * Users management.
  */
-class FileManager extends Nette\Object
+class FileManager extends BaseManager
 {
     
     const FILE_TYPE_IMAGE = 1;
@@ -18,19 +18,6 @@ class FileManager extends Nette\Object
     const FILE_TYPE_POWERPOINT = 5;
     
     const USER_DIRECTORY = '/cdn/users/';
-    private $user;
-
-    /** @var Nette\Database\Context */
-    private $database;
-
-
-    public function __construct(Nette\Database\Context $database,
-                    Nette\Security\User $user
-            )
-    {
-            $this->database = $database;
-            $this->user = $user;
-    }
 
     
     public function removeFile($idFile)

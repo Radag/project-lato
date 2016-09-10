@@ -61,15 +61,14 @@ class HomepagePresenter extends BasePresenter
             $redirect->remove();
             $this->redirect($link, $params);
         } else {
-            $this->redirect(':Front:Homepage:groups');  
+            $this->redirect(':Front:Homepage:noticeboard');  
         }
-        
     }
     
     public function actionDefault()
     {
         if($this->user->isLoggedIn()) {
-          $this->redirect(':Front:Homepage:groups');  
+          $this->redirect(':Front:Homepage:noticeboard');  
         }
     }    
 }
