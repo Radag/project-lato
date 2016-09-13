@@ -34,9 +34,10 @@ class MessageManager extends BaseManager {
         $this->database->beginTransaction();
         $this->database->table('message')->insert(array(
                     'TEXT' => $message->getText(),
-                    'ID_USER' => $message->getUser()->id,
+                    'ID_USER' => $message->user->id,
                     'ID_GROUP' => $message->idGroup,
-                    'ID_TYPE' => $message->idType
+                    'ID_TYPE' => $message->idType,
+                    'CREATED_BY' => $this->user->id,
             ));
         
         $idMessage = $this->database->query("SELECT MAX(ID_MESSAGE) FROM message")->fetchField();
@@ -72,7 +73,8 @@ class MessageManager extends BaseManager {
         $this->database->table('comment')->insert(array(
                 'TEXT' => $comment->text,
                 'ID_USER' => $comment->user->id,
-                'ID_MESSAGE' => $comment->idMessage
+                'ID_MESSAGE' => $comment->idMessage,
+                'CREATED_BY' => $this->user->id
             ));
     }
     

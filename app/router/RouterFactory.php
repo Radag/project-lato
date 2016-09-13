@@ -21,6 +21,7 @@ class RouterFactory
 	$adminRouter[] = new Route('admin/<presenter>/<action>', 'Homepage:default');
 
 	$router[] = $frontRouter = new RouteList('Front');
+        $frontRouter[] = new Route('auth', 'Homepage:noticeboard');
 	$frontRouter[] = new Route('auth/group/<id>[/<action>]', 'Group:default');
 	$frontRouter[] = new Route('auth/<presenter>/<action>[/<id>]', 'Homepage:default');
         
@@ -43,6 +44,8 @@ class RouterFactory
 	$adminRouter[] = new Route('admin/<presenter>/<action>', 'Homepage:default', Route::SECURED);
 
 	$router[] = $frontRouter = new RouteList('Front');
+        $frontRouter[] = new Route('auth', 'Homepage:noticeboard', Route::SECURED);
+	$frontRouter[] = new Route('auth/group/<id>[/<action>]', 'Group:default', Route::SECURED);
 	$frontRouter[] = new Route('auth/<presenter>/<action>[/<id>]', 'Homepage:default', Route::SECURED);
         
         $router[] = $publicRouter = new RouteList('Public');
