@@ -45,15 +45,17 @@
                         {foreach $groupMembers as $member}
                             <li>
                                 <a href="{plink Profile:default 'idUser'=>$member->id}" class="item">
-                                    <img src="{$member->profileImage}" alt="" class="user-img">
+                                    <img src="{$member->profileImage}" alt="" class="avatar small">
                                     <span class="title">{if !empty($member->name)}{$member->name} {$member->surname}{/if}</span>
                                 </a>
                                 <a href="#"><i class="material-icons">more_horiz</i></a>
                             </li>
                         {/foreach}
                     </ul>
-                    <a href="{link Group:users 'id'=>$activeGroup->urlId}" class="btn-flat secondary-color card-bottom">
-                        Zobrazit vše
+                </div>
+                <div class="card-footer">
+                    <a href="{link Group:users 'id'=>$activeGroup->urlId}" class="btn-flat show-more card-bottom">
+                        <span class="avatar small"><i class="material-icons">search</i></span>Zobrazit vše
                     </a>
                 </div>
             </div>
@@ -61,9 +63,10 @@
                 <div class="card-header">
                     <h3>Povinnosti</h3>
                 </div>
-                <div class="card-content clearfix">
+                <div class="card-content">
                     <p class="secondary-par">V tuto cvhíli nemáte v předmětu zvěřejněny žádné povinnosti</p>  
                 </div>
+                <div class="card-footer"></div>
             </div>
             <div class="card flex-column bottom-spacer" n:if="$groupPermission['settings']">
                 <div class="card-header">

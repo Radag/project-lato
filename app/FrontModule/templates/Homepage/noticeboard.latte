@@ -8,28 +8,6 @@
                 <header class="section-header">
                     <h3 class="left">Připomenutí</h3>
                     <div class="flex-spacer"></div>
-                    <ul class="right options">
-                        <li>
-                            <a class="btn-flat btn-icon dropdown-button" data-activates="filter-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
-                                <i class="material-icons">filter_list</i>
-                            </a>
-                            <ul id='filter-window' class="dropdown-content">
-                                <li><a href="#!">Všechny položky</a></li>
-                                <li><a href="#!">Studijní materiály</a></li>
-                                <li><a href="#!">Povinnosti</a></li>
-
-                            </ul>
-                        </li>
-
-                        <li>
-                            <a class="btn-flat btn-icon dropdown-button" data-activates="stream-options-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
-                                <i class="material-icons">more_vert</i>
-                            </a>
-                            <ul id='stream-options-window' class='dropdown-content'>
-                                <li><a href="#!">Spravovat widgety</a></li>
-                            </ul>
-                        </li>
-                    </ul>
                 </header>
             </div>
         </div>
@@ -41,7 +19,7 @@
         <div class="col l6 m12 s12">
             <div class="card flex-column">
                 <div class="card-header">
-                    <h3>Povinnosti</h3>
+                    <h2>Povinnosti</h2>
                 </div>
                 <div class="card-content clearfix">
                 <p class="secondary-par">Seznam povinností, které je třeba v blízké době splnit</p>
@@ -49,7 +27,7 @@
                         {foreach $actualTasks as $task}
                         <li>
                             <a href="{plink Group:message 'id'=>$task->group->urlId, 'idMessage'=>$task->idMessage}" class="item">
-                                <div class="avatar small" style="background-color: {$task->group->mainColor};">{$task->group->shortcut}</div>
+                                <div class="avatar small" style="background-color: {$task->group->mainColor|noescape};">{$task->group->shortcut|substr:0,1}</div>
                                 <div class="title truncate">{$task->group->name}<span>{$task->title}</span></div>
                                 <div class="flex-spacer"></div>
                                 {if $task->timeLeft->y > 0}
@@ -70,8 +48,8 @@
                 </div>
                 <div class="flex-spacer"></div>
                 <div class="card-footer">
-                    <a href="{plink Homepage:tasks}" class="btn-flat secondary-color">
-                        Zobrazit vše
+                    <a href="{plink Homepage:tasks}" class="btn-flat show-more card-bottom">
+                        <span class="avatar small"><i class="material-icons">search</i></span>Zobrazit vše
                     </a>
                 </div>
             </div>
@@ -79,7 +57,7 @@
         <div class="col l6 m12 s12">
             <div class="card flex-column">
                 <div class="card-header">
-                    <h3>Poznámky</h3>
+                    <h2>Poznámky</h2>
                 </div>
                 <div class="card-content clearfix">
                     <p class="secondary-par">Seznam poznámek</p>
@@ -98,8 +76,8 @@
                 </div>
                 <div class="flex-spacer"></div>
                 <div class="card-footer">
-                    <a href="{plink Homepage:notices}" class="btn-flat secondary-color">
-                        Zobrazit vše
+                    <a href="{plink Homepage:notices}" class="btn-flat show-more card-bottom">
+                        <span class="avatar small"><i class="material-icons">search</i></span>Zobrazit vše
                     </a>
                 </div>
             </div>
