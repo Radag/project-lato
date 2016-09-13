@@ -21,13 +21,25 @@ use App\Model\Manager\GroupManager;
  * @author Radaq
  */
 class MessageManager extends BaseManager {
- 
+     
     /** @var NotificationManager @inject */
     private $notificationManager;
     
     /** @var GroupManager @inject */
     private $groupManager;
     
+    
+    public function __construct(Nette\Database\Context $database,
+                    Nette\Security\User $user,
+            NotificationManager $notificationManager,
+            GroupManager $groupManager
+    )
+    {
+            $this->database = $database;
+            $this->user = $user;
+            $this->notificationManager = $notificationManager;
+            $this->groupManager = $groupManager;
+    }
     
     public function createMessage(Message $message, $attachments)
     {
@@ -44,7 +56,7 @@ class MessageManager extends BaseManager {
         foreach($attachments as $idAttach) {
             $this->addAttachment($idAttach, $idMessage);
         }
-        
+
         $group = $this->groupManager->getGroup($message->idGroup);
         
         $notification = new \App\Model\Entities\Notification();

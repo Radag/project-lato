@@ -19,6 +19,8 @@ use App\Model\Entities\Notification;
 class NotificationManager extends BaseManager
 {   
     
+    
+    
     public function getNotifications($user)
     {
         $return = array();
