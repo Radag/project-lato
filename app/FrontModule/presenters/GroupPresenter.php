@@ -11,6 +11,7 @@ use App\Model\Manager\NotificationManager;
 use App\Model\Manager\FileManager;
 use App\FrontModule\Components\Stream\IStreamFactory;
 use App\FrontModule\Components\GroupSettingsForm\IGroupSettingsFormFactory;
+use App\FrontModule\Components\Stream\CommentForm\CommentForm;
 
 class GroupPresenter extends BasePresenter
 {    
@@ -89,6 +90,12 @@ class GroupPresenter extends BasePresenter
         $this->template->activeUser = $this->activeUser;
         $this->template->groupPermission = $this->groupPermission;
     }
+    
+    public function createComponentCommentForm($id)
+    {
+        $commentForm = new CommentForm($this->messageManager, $this->userManager, $this->activeUser);
+        return $commentForm;
+    }    
     
     protected function setPermission()
     {
@@ -183,6 +190,7 @@ class GroupPresenter extends BasePresenter
     public function actionMessage($idMessage)
     {       
         $this->template->message = $this->messageManager->getMessage($idMessage);
+        $this['commentForm']->setMessage($idMessage);
     }
     
     public function actionSettings()

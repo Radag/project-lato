@@ -2,75 +2,75 @@
 {block content}
 {control topPanel}
 <section class="main">
-	<div class="container offset">
-		<div class="row">
-			<div class="col s12">
-				<header class="section-header">
-					<a class='back-to-stream' href='{link Group:default 'id'=>$activeGroup->urlId}'>
-						<i class="material-icons waves-effect waves-dark">arrow_back</i>Zpět na stream
-					</a>
-					<div class="flex-spacer"></div>
-					<ul class="right options">
-						<li>
-							<a class="btn-flat btn-icon dropdown-button card-options" data-activates="share_{$message->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
-								<i class="material-icons">share</i>
-							</a>
-							<ul id='share_{$message->id}' class='dropdown-content'>
-								<li><a href="">Poslat jako soukromou zprávu</a></li>
-							</ul>
-						</li>
-						<li>
-							<a class="btn-flat btn-icon dropdown-button card-options" data-activates="message_dropdown_{$message->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
-								<i class="material-icons">more_vert</i>
-							</a>
-							<ul id='message_dropdown_{$message->id}' class='dropdown-content'>
-								<li><a href="">Ignorovat</a></li>
-							</ul>
-						</li>
-					</ul>
-				</header>  
-			</div>
-		</div>
-	</div>
+    <div class="container offset">
+        <div class="row">
+            <div class="col s12">
+                <header class="section-header">
+                    <a class='back-to-stream' href='{link Group:default 'id'=>$activeGroup->urlId}'>
+                        <i class="material-icons waves-effect waves-dark">arrow_back</i>Zpět na stream
+                    </a>
+                    <div class="flex-spacer"></div>
+                    <ul class="right options">
+                        <li>
+                            <a class="btn-flat btn-icon dropdown-button card-options" data-activates="share_{$message->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                                <i class="material-icons">share</i>
+                            </a>
+                            <ul id='share_{$message->id}' class='dropdown-content'>
+                                <li><a href="">Poslat jako soukromou zprávu</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="btn-flat btn-icon dropdown-button card-options" data-activates="message_dropdown_{$message->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                                <i class="material-icons">more_vert</i>
+                            </a>
+                            <ul id='message_dropdown_{$message->id}' class='dropdown-content'>
+                                <li><a href="">Ignorovat</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </header>  
+            </div>
+        </div>
+    </div>
 </section>
 <div class="container offset">
-	<div class="row">
-		<div class="col s12">
-			<div class="card flex-column">
-				<div class="card-header">	
-					<div class="card-title">
-						<a href="{plink Profile:default 'idUser'=>$message->user->id}" class="avatar">
-							<img src="{$message->user->profileImage}" alt="{$message->user->name}">
-						</a>
-						<h3 class="truncate">
-							<a href="{plink Profile:default 'idUser'=>$message->user->id}">{$message->user->name} {$message->user->surname}</a>
-						</h3>
-						<span class="card-date">{$message->getCreated()|date:"j. n."}</span>
-						<a class="btn-flat btn-icon dropdown-button card-options" data-activates="message_dropdown_{$message->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
-							<i class="material-icons">more_vert</i>
-						</a>
-						<ul id='message_dropdown_{$message->id}' class='dropdown-content'>
-							
-							
-							
-							{if !$message->followed}
-							<li><a href="{link followMessage! idMessage=>$message->id}">Sledovat</a></li>
-							{else}
-							<li><a href="{link followMessage! idMessage=>$message->id, enable=>false}">Zrušit sledování</a></li>
-							{/if}
-							{*if $streamPermission['removeAllMessages'] || ($activeUser->id === $message->user->id && $streamPermission['removeOwnMessages'])*}
-							<li class="divider"></li>
-							<li><a href="{link deleteMessage! idMessage=>$message->id}">Smazat</a></li>
-							{*/if*}
-						</ul>
-					</div>
-				</div>
-				<div class="card-content">
-					<p>{$message->text}</p>
-				</div>
-				{control commentForm-$message->id}
-			</div>
-		</div>
-	</div>
+    <div class="row">
+        <div class="col s12">
+            <div class="card flex-column">
+                <div class="card-header">	
+                    <div class="card-title">
+                        <a href="{plink Profile:default 'idUser'=>$message->user->id}" class="avatar">
+                            <img src="{$message->user->profileImage}" alt="{$message->user->name}">
+                        </a>
+                        <h3 class="truncate">
+                            <a href="{plink Profile:default 'idUser'=>$message->user->id}">{$message->user->name} {$message->user->surname}</a>
+                        </h3>
+                        <span class="card-date">{$message->getCreated()|date:"j. n."}</span>
+                        <a class="btn-flat btn-icon dropdown-button card-options" data-activates="message_dropdown_{$message->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                            <i class="material-icons">more_vert</i>
+                        </a>
+                        <ul id='message_dropdown_{$message->id}' class='dropdown-content'>
+
+
+
+                            {if !$message->followed}
+                                <li><a href="{link followMessage! idMessage=>$message->id}">Sledovat</a></li>
+                                {else}
+                                <li><a href="{link followMessage! idMessage=>$message->id, enable=>false}">Zrušit sledování</a></li>
+                                {/if}
+                                {*if $streamPermission['removeAllMessages'] || ($activeUser->id === $message->user->id && $streamPermission['removeOwnMessages'])*}
+                            <li class="divider"></li>
+                            <li><a href="{link deleteMessage! idMessage=>$message->id}">Smazat</a></li>
+                                {*/if*}
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <p>{$message->text}</p>
+                </div>
+                {control commentForm $message->id}
+            </div>
+        </div>
+    </div>
 </div>
 

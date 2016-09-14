@@ -39,6 +39,8 @@ class CommentForm extends Control
      */
     private $userManager;
     
+    
+    
     public function __construct(MessageManager $messageManager, UserManager $userManager, \App\Model\Entities\User $activeUser)
     {
         $this->messageManager = $messageManager;
@@ -64,7 +66,7 @@ class CommentForm extends Control
             ->addRule(\Nette\Forms\Form::FILLED, 'Zpráva musí obsahovat text');
         $form->addHidden('idMessage', $this->idMessage);
         $form->addSubmit('send', 'Publikovat');
-        $link = $this->presenter->link('this', array('id'=>$this->getParent()->getParent()->getActiveGroup()->id));
+        //$link = $this->presenter->link('this', array('id'=>$this->getParent()->getParent()->getActiveGroup()->id));
         $form->onSuccess[] = [$this, 'processForm'];
         return $form;
     }
