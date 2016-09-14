@@ -37,12 +37,38 @@
 	<div class="row">
 		<div class="col s12">
 			<div class="card flex-column">
-				<div class="card-header">
-					<h2>DSDA</h2>
+				<div class="card-header">	
+					<div class="card-title">
+						<a href="{plink Profile:default 'idUser'=>$message->user->id}" class="avatar">
+							<img src="{$message->user->profileImage}" alt="{$message->user->name}">
+						</a>
+						<h3 class="truncate">
+							<a href="{plink Profile:default 'idUser'=>$message->user->id}">{$message->user->name} {$message->user->surname}</a>
+						</h3>
+						<span class="card-date">{$message->getCreated()|date:"j. n."}</span>
+						<a class="btn-flat btn-icon dropdown-button card-options" data-activates="message_dropdown_{$message->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+							<i class="material-icons">more_vert</i>
+						</a>
+						<ul id='message_dropdown_{$message->id}' class='dropdown-content'>
+							
+							
+							
+							{if !$message->followed}
+							<li><a href="{link followMessage! idMessage=>$message->id}">Sledovat</a></li>
+							{else}
+							<li><a href="{link followMessage! idMessage=>$message->id, enable=>false}">Zrušit sledování</a></li>
+							{/if}
+							{*if $streamPermission['removeAllMessages'] || ($activeUser->id === $message->user->id && $streamPermission['removeOwnMessages'])*}
+							<li class="divider"></li>
+							<li><a href="{link deleteMessage! idMessage=>$message->id}">Smazat</a></li>
+							{*/if*}
+						</ul>
+					</div>
 				</div>
 				<div class="card-content">
-					{$message->text}
+					<p>{$message->text}</p>
 				</div>
+				{control commentForm-$message->id}
 			</div>
 		</div>
 	</div>

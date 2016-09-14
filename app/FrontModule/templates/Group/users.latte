@@ -10,16 +10,23 @@
                         <i class="material-icons waves-effect waves-dark">arrow_back</i>Zpět na stream
                     </a>
                     <div class="flex-spacer"></div>
+
                     <ul class="right options">
+
                         <li>
                             <a class="btn-flat btn-icon modal-trigger" href="#new-assessment-modal">
-                                <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přidat hodnocení">library_add</i>Přidat hodnocení
+                                <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přidat hodnocení">library_add</i> 
                             </a>  
                         </li>
                         <li>
-                            <a class="btn-flat btn-icon tooltipped" data-position="bottom" data-delay="50" data-tooltip="Vytisknout">
+                            <a class="btn-flat btn-icon tooltipped" data-position="bottom" data-delay="50" data-tooltip="Vytisknout seznam">
                                 <i class="material-icons">print</i>
                             </a>
+                        </li>
+                        <li>
+                            <a class="btn-flat btn-icon modal-trigger" href="#remove-users-modal">
+                                <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Odebrat studenty">delete</i> 
+                            </a>  
                         </li>
                         <li>
                             <a class="btn-flat btn-icon dropdown-button" data-activates="stream-options-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
@@ -28,140 +35,166 @@
                             {include groupMenu}
                         </li>
                     </ul>
-                </header>  
-            </div>
-        </div>
-    </div>
-</section>
-<!-- MODALS -->
-<div id="new-assessment-modal" class="modal modal-small">
-    <form>
-        <div class="modal-content">
-            <h3>Nové hodnocení</h3>
-            <input type="text" class="validate" placeholder="Téma"> 
-            <div class="form-row">
-                <input type="checkbox" id="user-selection" class="filled-in" checked>
-                <label for="user-selection">Pro všechny studenty</label>
-            </div>
-        </div>
-        <div class="modal-footer clearfix">
-            <div class="flex-spacer"></div>
-            <div class="form-control">
-                <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-                <input type="submit" class="waves-effect waves-light btn btn-confirm" value="Potvrdit">
-            </div>
-        </div>
-    </form>
-</div>
-<div class="container offset">
-    <div class="row">
-        <div class="col s12">
-            <form action="#">
-                <div class="card-header collapsible-card-header paper-shadow">
-                    <div class="title">
-                        <h2>
-                            Studenti
-                        </h2>
-                        <div class="flex-spacer"></div>
-                        <button href="" class="dropdown-button btn btn-empty disabled" data-activates="student-table-action" data-beloworigin="true" data-alignment="right"><span class="btn-label">Akce</span><i class="material-icons icon-push">arrow_drop_down</i></button>
+                    <!-- <button href="" class="dropdown-button btn btn-empty disabled" data-activates="student-table-action" data-beloworigin="true" data-alignment="right"><span class="btn-label">Akce</span><i class="material-icons icon-push">arrow_drop_down</i></button>
                         <ul id='student-table-action' class='dropdown-content'>
                             <li><a href="#!">Přidat hodnocení</a></li>
                             <li><a href="#!">Poslat hromadnou zprávu</a></li>
                             <li><a href="">Odebrat ze skupiny</a></li>
-                        </ul>
-
-                    </div>
-                    <div class="collapsible-card-table-header">
-                        <input type="checkbox" class="filled-in" id="select-all" />
-                        <label for="select-all"></label>   
-                        <div class="title">Student</div>
-                        <div class="flex-spacer"></div>
-                        <div class="table-field">Poslední změna</div>
-                        <div class="table-field">Hodnocení</div>
-                    </div>
+                        </ul> -->
+                    </header>  
                 </div>
-                <script>
-                    $(document).ready(function() {
-                        $("#select-all").on("change", function(e){
-                           if($(this).prop('checked')) {
-                               $(".user-checkbox").prop('checked', true);
-                           } else {
-                               $(".user-checkbox").prop('checked', false);
-                           }
-                        });
-                    });
-                </script>
+            </div>
+        </div>
+    </section>
 
-                <ul class="collapsible popout" data-collapsible="accordion">
-                    <li></li>
+    <!-- MODALS -->
+    <div id="new-assessment-modal" class="modal modal-small">
+        <form>
+            <div class="modal-content">
+                <h3>Nové hodnocení</h3>
+                <input type="text" class="validate" placeholder="Téma"> 
+                <div class="form-row">
+                    <input type="checkbox" id="user-selection" class="filled-in" checked>
+                    <label for="user-selection">Pro všechny studenty</label>
+                </div>
+            </div>
+            <div class="modal-footer clearfix">
+                <div class="flex-spacer"></div>
+                <div class="form-control">
+                    <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                    <input type="submit" class="waves-effect waves-light btn btn-confirm" value="Potvrdit">
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="remove-users-modal" class="modal modal-small">
+        <form>
+            <div class="modal-content">
+                <h3>Odebrat studenty</h3>
+                <p>Opravdu si přejete odebrat následující studenty?</p>
+                <ul class="custom-collection">
                     {foreach $groupMembers as $member}
                     <li>
-                        <div class="collapsible-header">
-                            <input type="checkbox" class="filled-in user-checkbox" id="user1" />
-                            <label for="user1"></label>
-                            <div class="avatar small">
-                                <img src="{$member->profileImage}">
-                            </div>
-                            <div class="title">
-                                <span>{$member->surname}</span>, {$member->name}
-                            </div>
-                            <div class="flex-spacer"></div>
-                            <div class="table-field">5. 9. 2016</div>
-                            <div class="grade table-field"><strong>3,5</strong>/5</div>
-                        </div>
-                        <div class="collapsible-body">
-                            <div class="grades-table">
-                                <div class="table-row">
-                                    <a href="" class="material-icons edit">edit</a>
-                                    <a href="" class="title truncate">
-                                        3D grafika – modelování zadané scény
-                                    </a>
-                                    <div class="flex-spacer"></div>
-                                    <div class="table-field">
-                                        5. 9. 2016
-                                    </div>
-                                    <div class="grade table-field">
-                                        <strong>3</strong>
-                                    </div>
-                                </div>
-                                <div class="table-row">
-                                    <a href="" class="material-icons edit">edit</a>
-                                    <a href="" class="title truncate">
-                                        3D grafika – textury (domácí úkol)
-                                    </a>
-                                    <div class="flex-spacer"></div>
-                                    <div class="table-field">
-                                        17. 6. 2016
-                                    </div>
-                                    <div class="grade table-field">
-                                        <strong>3</strong>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="collapsible-body-footer">
-                                <a href="" class="lowercase-btn">
-                                    <i class="material-icons">add_box</i>
-                                    <span class="label">Přidat hodnocení</span>
-                                </a> 
-                                {if $activeUser->id !== $member->id}
-                                <a href="" class="lowercase-btn">
-                                    <i class="material-icons">email</i>
-                                    <span class="label">Poslat zprávu</span>
-                                </a>
-                                <a n:if="$groupPermission['removeMembers']" href="{link removeFromGroup!, 'idGroup'=>$activeGroup->id,'idUser'=>$member->id}" class="lowercase-btn">
-                                    <i class="material-icons">delete</i>
-                                    <span class="label">Odebrat ze skupiny</span>
-                                </a>
-                                {/if}
-                            </div>
-                        </div>
+                        <div class="item">
+                            <img src="{$member->profileImage}" alt="" class="avatar small">
+                            <span class="title">{if !empty($member->name)}{$member->name} {$member->surname}{/if}</span>
+                        </div>        
                     </li>
                     {/foreach}
                 </ul>
-            </form>
+            </div>
+            <div class="modal-footer clearfix">
+                <div class="flex-spacer"></div>
+                <div class="form-control">
+                    <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                    <input type="submit" class="waves-effect waves-light btn btn-confirm" value="Potvrdit">
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <div class="container offset">
+        <div class="row">
+            <div class="col s12">
+                <form action="#">
+                    <div class="card-header collapsible-card-header">
+                        <div class="collapsible-card-table-header">
+                            <input type="checkbox" class="filled-in" id="select-all" />
+                            <label for="select-all"></label>   
+                            <div class="title">Student</div>
+                            <div class="flex-spacer"></div>
+                            <div class="table-field">Poslední změna</div>
+                            <div class="table-field">Hodnocení</div>
+                        </div>
+                    </div>
+                    <script>
+                        $(document).ready(function() {
+                            $("#select-all").on("change", function(e){
+                               if($(this).prop('checked')) {
+                                   $(".user-checkbox").prop('checked', true);
+                               } else {
+                                   $(".user-checkbox").prop('checked', false);
+                               }
+                           });
+                        });
+                    </script>
+
+                    <ul class="collapsible popout" data-collapsible="accordion">
+                        {foreach $groupMembers as $member}
+                        <li>
+                            <div class="collapsible-header">
+                                <input type="checkbox" class="filled-in user-checkbox" id="user1" />
+                                <label for="user1"></label>
+                                <div class="avatar small">
+                                    <img src="{$member->profileImage}">
+                                </div>
+                                <div class="title">
+                                    <span>{$member->surname}</span>, {$member->name}
+                                </div>
+                                <div class="flex-spacer"></div>
+                                <div class="table-field">5. 9. 2016</div>
+                                <div class="grade table-field"><strong>3,5</strong>/5</div>
+                            </div>
+                            <div class="collapsible-body">
+                                <div class="grades-table">
+                                    <div class="table-row">
+                                        <a href="" class="material-icons edit">edit</a>
+                                        <a href="" class="title truncate">
+                                            3D grafika – modelování zadané scény
+                                        </a>
+                                        <div class="flex-spacer"></div>
+                                        <div class="table-field">
+                                            5. 9. 2016
+                                        </div>
+                                        <div class="grade table-field">
+                                            <strong>3</strong>
+                                        </div>
+                                    </div>
+                                    <div class="table-row">
+                                        <a href="" class="material-icons edit">edit</a>
+                                        <a href="" class="title truncate">
+                                            3D grafika – textury (domácí úkol)
+                                        </a>
+                                        <div class="flex-spacer"></div>
+                                        <div class="table-field">
+                                            17. 6. 2016
+                                        </div>
+                                        <div class="grade table-field">
+                                            <strong>3</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="collapsible-body-footer">
+                                    {if $activeUser->id !== $member->id}
+                                    <ul>
+                                        <li>
+                                            <a class="btn-flat btn-icon modal-trigger" href="#new-assessment-modal">
+                                                <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přidat hodnocení">library_add</i> 
+                                            </a>  
+                                        </li>
+                                        <li>
+                                            <a class="btn-flat btn-icon tooltipped" data-position="bottom" data-delay="50" data-tooltip="Odeslat soukromou zprávu">
+                                                <i class="material-icons">email</i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="btn-flat btn-icon modal-trigger" href="#remove-users-modal">
+                                                <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Odebrat ze skupiny">delete</i> 
+                                            </a>  
+                                        </li>
+                                    </ul> 
+                                    {/if}
+                                </div>
+                            </div>
+                        </li>
+                        {/foreach}
+                    </ul>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
 
 

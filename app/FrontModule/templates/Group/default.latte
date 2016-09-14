@@ -43,13 +43,12 @@
                     <p class="secondary-par">Seznam studentů, zapsaných v této skupině.</p>
                     <ul class="custom-collection">
                         {foreach $groupMembers as $member}
-                            <li>
-                                <a href="{plink Profile:default 'idUser'=>$member->id}" class="item">
-                                    <img src="{$member->profileImage}" alt="" class="avatar small">
-                                    <span class="title">{if !empty($member->name)}{$member->name} {$member->surname}{/if}</span>
-                                </a>
-                                <a href="#"><i class="material-icons">more_horiz</i></a>
-                            </li>
+                        <li>
+                            <a href="{plink Profile:default 'idUser'=>$member->id}" class="item">
+                                <img src="{$member->profileImage}" alt="" class="avatar small">
+                                <span class="title">{if !empty($member->name)}{$member->name} {$member->surname}{/if}</span>
+                            </a>
+                        </li>
                         {/foreach}
                     </ul>
                 </div>
@@ -68,74 +67,75 @@
                 </div>
                 <div class="card-footer"></div>
             </div>
+            {if $activeGroup->sharingOn == 1}
             <div class="card flex-column bottom-spacer" n:if="$groupPermission['settings']">
                 <div class="card-header">
                     <h3>Sdílení</h3>
                 </div>
                 {snippet sharingFormWrap}
-                    <div class="card-content clearfix">
-                        {form sharingForm id=>"sharingForm"}
-                            <div class="switch-row" n:if="$activeGroup->owner->id === $activeUser->id">
-                                <p class="secondary-par left">
-                                    {if $activeGroup->sharingOn == 1}
-                                        Vypnout sdílení
-                                    {else}
-                                        Zapnout sdílení
-                                    {/if}
-                                <div class="switch right">
-                                    <label>
-                                        {input shareByCode:}
-                                        <span class="lever"></span>
-                                    </label>
-                                </div> 
+
+                <div class="card-content clearfix">
+                    {form sharingForm id=>"sharingForm"}
+                    <div class="switch-row" n:if="$activeGroup->owner->id === $activeUser->id">
+                        <p class="secondary-par left">
+                            {if $activeGroup->sharingOn == 1}
+                            Vypnout sdílení
+                            {else}
+                            Zapnout sdílení
+                            {/if}
+                            <div class="switch right">
+                                <label>
+                                    {input shareByCode:}
+                                    <span class="lever"></span>
+                                </label>
                             </div>
-                        {/form}
-                        {if $activeGroup->sharingOn == 1}
-                            <p class="secondary-par left">Zápis do této skupiny mohou ostatní uživatelé provést pomocí kódu <strong>{$activeGroup->sharingCode}</strong></p>
-                            <a class="btn-flat light-gray card-bottom modal-trigger" href="#add-user-to-group">
-                                Přidat uživatele
-                            </a>
-                            <div id="add-user-to-group" class="modal">
-                                <div class="modal-content">
-                                    <h3>Sdílení</h3>
-                                    <p>
-                                      <form action="{link addToGroup!}" method="post" >
-                                       <div class="row">
-                                        <div class="col s12">
-                                           <div class="row">
-                                            <div class="input-field col s12">
-                                              <input type="text" value="{link //:Public:Action:default, id => $activeGroup->sharingCode}" >
-                                              <label for="autocomplete-input">Odkaz ke sdílení</label>
-                                            </div>
-                                          </div>
-                                          <div class="row">
-                                            <div class="input-field col s12">
-                                              <input name="userName" type="text" id="userSearch" class="autocomplete">
-                                              <label for="userSearch">Vyhledat uživatele</label>
-                                            </div>
-                                          </div>
-                                          <div class="row">
-                                            <div class="input-field col s12">
-                                              <input type="submit" value="Vložit">
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      </form>
-                                    </p> 
-                                </div>
-                            </div>  
-                        {/if}
+                        </p> 
                     </div>
-                    <script>
-                        $(document).ready(function () {
-                            $("#sharingForm input[type='checkbox']").on('change', function () {
-                                $("#sharingForm").submit();
-                            });
+                    {/form}
+                    <p class="secondary-par left">Zápis do této skupiny mohou ostatní uživatelé provést pomocí kódu <strong>{$activeGroup->sharingCode}</strong></p>
+                    <a class="btn-flat light-gray card-bottom modal-trigger" href="#add-user-to-group">
+                        Přidat uživatele
+                    </a>
+
+                    <!-- Modal -->
+                    <div id="add-user-to-group" class="modal">
+                        <div class="modal-content">
+                            <h3>Sdílení</h3>
+                            <p>
+                                <form action="{link addToGroup!}" method="post" >
+                                    <div class="row form-row">
+                                        <div class="input-field col s12">
+                                            <input type="text" value="{link //:Public:Action:default, id => $activeGroup->sharingCode}" >
+                                            <label for="autocomplete-input">Odkaz ke sdílení</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <input name="userName" type="text" id="userSearch" class="autocomplete">
+                                            <label for="userSearch">Vyhledat uživatele</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <input type="submit" value="Vložit">
+                                        </div>
+                                    </div>
+                                </form>
+                            </p> 
+                        </div>
+                    </div>  
+                </div>
+                <script>
+                    $(document).ready(function () {
+                        $("#sharingForm input[type='checkbox']").on('change', function () {
+                            $("#sharingForm").submit();
                         });
-                    </script>
+                    });
+                </script>
+
                 {/snippet}
             </div>
+            {/if}
             <div class="card flex-column" n:if="$groupPermission['settings']">
                 <div class="card-header">
                     <h3>Výpis příspěvků</h3>
@@ -149,6 +149,7 @@
                         </label>
                     </div>  
                 </div>
+                <div class="card-footer"></div>
             </div>
         </div>
     </div>
