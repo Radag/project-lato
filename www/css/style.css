@@ -235,6 +235,7 @@ a {
 .row.same-height {
     display: flex;
     align-items: stretch;
+    flex-wrap: wrap;
 }
 
 .row .col {
@@ -253,7 +254,7 @@ a {
     }
 
     .row .col {
-        padding: 0;
+        padding: 0 !important;
     }
 }
 
@@ -318,7 +319,7 @@ input[type="password"] {
 }
 
 
-.card-header, .card-content {
+.card-content {
 	padding: 24px 24px;
 }
 
@@ -326,8 +327,20 @@ input[type="password"] {
     padding: 0 24px 24px 24px;
 }
 
+@media only screen and (max-width: 600px) {
+    .card-footer {
+        padding: 0 16px 16px 16px;
+    }
+}
+
 .card-header {
-    padding-bottom: 0px;
+    padding: 24px 24px 0px 24px;
+}
+
+@media only screen and (max-width: 600px) {
+    .card-header {
+        padding: 16px 16px 0 16px;
+    }
 }
 
 .remember-me {
@@ -1707,7 +1720,6 @@ textarea.materialize-textarea {
 }
 
 @media only screen and (max-width: 600px) {
-    .card .card-header,
     .card .card-content {
         padding: 16px;
     }

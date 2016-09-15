@@ -1,5 +1,5 @@
 <div class="col s12 l8">
-    
+
     {if $streamPermission['addMessages']}
     <a href="#select-post-type-modal" class="card create-post clearfix modal-trigger">
         <div class="avatar left">
@@ -7,7 +7,7 @@
         </div>
         <div class="create-post-label left">
             Chcete ostatním něco sdělit?
-         </div>
+        </div>
     </a>
     <!-- Modal Structure -->
 
@@ -59,7 +59,7 @@
     
     <div id="create-post-modal" class="modal">
         {snippet messageForm}
-            {control messageForm}
+        {control messageForm}
         {/snippet}
     </div>
     {/if}
@@ -80,21 +80,26 @@
                     <i class="material-icons">more_vert</i>
                 </a>
                 <ul id='message_dropdown_{$message->id}' class='dropdown-content'>
+                    <li><a href="#share-post" class="modal-trigger">Sdílet příspěvek</a></li>
+
+                    <div id="share-post" class="modal">
+                        sdílení
+                    </div>
                     {if $streamPermission['topAllMessages'] || ($activeUser->id === $message->user->id && $streamPermission['topOwnMessages'])}
-                        {if !$message->priority}
-                        <li><a href="{link topMessage! idMessage=>$message->id}">Přesunout nahoru</a></li>
-                        {else}
-                        <li><a href="{link topMessage! idMessage=>$message->id, enable=>false}">Zrušit přesunutí</a></li>
-                        {/if}
+                    {if !$message->priority}
+                    <li><a href="{link topMessage! idMessage=>$message->id}">Přesunout nahoru</a></li>
+                    {else}
+                    <li><a href="{link topMessage! idMessage=>$message->id, enable=>false}">Zrušit přesunutí</a></li>
+                    {/if}
                     {/if}
                     {if !$message->followed}
-                        <li><a href="{link followMessage! idMessage=>$message->id}">Sledovat</a></li>
+                    <li><a href="{link followMessage! idMessage=>$message->id}">Sledovat</a></li>
                     {else}
-                        <li><a href="{link followMessage! idMessage=>$message->id, enable=>false}">Zrušit sledování</a></li>
+                    <li><a href="{link followMessage! idMessage=>$message->id, enable=>false}">Zrušit sledování</a></li>
                     {/if}
                     {if $streamPermission['removeAllMessages'] || ($activeUser->id === $message->user->id && $streamPermission['removeOwnMessages'])}
-                        <li class="divider"></li>
-                        <li><a href="{link deleteMessage! idMessage=>$message->id}">Smazat</a></li>
+                    <li class="divider"></li>
+                    <li><a href="{link deleteMessage! idMessage=>$message->id}">Smazat</a></li>
                     {/if}
                 </ul>
             </div>
