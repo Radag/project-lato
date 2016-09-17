@@ -68,26 +68,23 @@ class TaskForm extends MessageForm
     
     protected function createComponentForm()
     {
-        $form = new \Nette\Application\UI\Form;
-        $form->getElementPrototype()->class('ajax');
-        $form->addTextArea('text', 'Zpráva')
-                ->setAttribute('placeholder', 'Sem napište Vaši zprávu ...')
-            ->setRequired('Napište zprávu');
-
+        $form = parent::getFormTemplate();
         $form->addText('title', 'Název')
              ->setAttribute('placeholder', 'Název (nepovinné)');
         $form->addText('date', 'Datum', null, 12)
+             ->setRequired('Vložte datum')
+             ->addRule(Form::PATTERN, 'Datum musí být ve formátu 15. 10. 2011', '([0-9]{2})\. ([0-9]{2})\. ([0-9]{4})')
              ->setAttribute('type', 'date')
-             ->setAttribute('placeholder', '2. 9. 2016');
+             ->setAttribute('placeholder', date('d. m. Y'));
         $form->addText('time', 'Čas', null, 5)
-             ->setAttribute('placeholder', '23:50');
-        
+             ->setRequired('Vložte čas')
+             ->addRule(Form::PATTERN, 'Čas musí být ve formátu 12:45', '([0-9]{2})\:([0-9]{2})')
+             ->setAttribute('placeholder', date('H:i'));
         
         $form->addHidden('attachments');
         $form->addHidden('messageType', self::TYPE_TASK);
         $form->addSubmit('send', 'Publikovat');
 
-        $form->onSuccess[] = [$this, 'processForm'];
         return $form;
     }
     
@@ -115,7 +112,7 @@ class TaskForm extends MessageForm
         $task->online = false;
         $task->title = $values->title;
         
-        $deadline = new \DateTime();
+        $deadline = $date = \DateTime::createFromFormat('d. m. Y H:i', $values->date . " " . $values->time);
         $task->deadline = $deadline;
         
         $this->taskManager->createTask($task);
@@ -123,6 +120,8 @@ class TaskForm extends MessageForm
     
         $form['text']->setValue("");
         $form['attachments']->setValue("");
+        $this->presenter->payload->idMessage = $idMessage;
+        $this->presenter->flashMessage('Připomenutí bylo vytvořeno.', 'success');
         $this->stream->redrawControl('messages');
         $this->redrawControl('messageForm');
         

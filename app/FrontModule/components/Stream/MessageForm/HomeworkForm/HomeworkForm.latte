@@ -1,63 +1,70 @@
-{includeblock '../MessageForm.latte'}
 {snippet messageForm}
-{form form}
-<div class="modal-content">
-    <div class="modal-header">
-        <div class="avatar">
-            <div class="post-type-icon">
-                <i class="material-icons full-size">assignment</i>
+    {includeblock '../MessageForm.latte'}
+    {form form}
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="avatar">
+                    <div class="post-type-icon">
+                        <i class="material-icons full-size">assignment</i>
+                    </div>
+                </div>
+                <h4>Úkol</h4>
+            </div>
+            <div class="form-row">
+                {input title}
+            </div>
+            <div class="form-row">
+                {input text class => 'materialize-textarea'}
+            </div>
+
+            <div class="form-row term-picker">
+                <span class="label right-16">Termín odevzdání</span>
+                {input date class => 'datepicker right-16'}
+                {input time}
+            </div>
+            <div class="form-row">
+                <div class="submit-control checkbox-vertical-align">
+                    {input online: class => 'filled-in black'}{label online:}{/label}
+                </div>
+            </div>
+            <ul class="attachments attachments_uploads" style="display: none;">        
+            </ul>
+        </div>
+        <div class="modal-footer clearfix">
+            <div class="attachments-nav">
+                {input attachments id => 'attachmentsIds'}
+                <ul>
+                    <li>
+                        <a href="javascript:addNewAttachment()" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit soubor">
+                            <i class="material-icons">attach_file</i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:addNewAttachment()" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit video z YouTube">
+                            <i class="material-icons">video_library</i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:addNewAttachment()" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit hypertextový odkaz">
+                            <i class="material-icons">insert_link</i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="form-control">
+                <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat" >Zrušit</button>
+                <button class="btn waves-effect waves-light hide-modal-ajax-submit" type="submit" name="send" >Publikovat</button>
             </div>
         </div>
-        <h4>Úkol</h4>
-    </div>
-    <div class="form-row">
-        <input placeholder="Název (nepovinné)" id="first_name" type="text">
-    </div>
-    <div class="form-row">
-      {input text class => 'materialize-textarea'}
-  </div>
-  
-  <div class="form-row term-picker">
-    <span class="label right-16">Termín odevzdání</span>
-    <input type="date" class="datepicker right-16" size=12 maxlength=12 value="2. 9. 2016">
-      <input type="text" value="23:50" size=8 maxlength=5 id="current-time">
-</div>
-<div class="form-row">
-    <div class="submit-control checkbox-vertical-align">
-      <input type="checkbox" class="filled-in" id="filled-in-box" checked="checked" />
-      <label for="filled-in-box">Odevzdat online</label>
-  </div>
-</div>
-<ul class="attachments attachments_uploads" style="display: none;">        
-</ul>
-</div>
-<div class="modal-footer clearfix">
-    <div class="attachments-nav">
-        {input attachments id => 'attachmentsIds'}
-        <ul>
-            <li>
-                <a href="javascript:addNewAttachment()" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit soubor">
-                    <i class="material-icons">attach_file</i>
-                </a>
-            </li>
-            <li>
-                <a href="javascript:addNewAttachment()" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit video z YouTube">
-                    <i class="material-icons">video_library</i>
-                </a>
-            </li>
-            <li>
-                <a href="javascript:addNewAttachment()" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit hypertextový odkaz">
-                    <i class="material-icons">insert_link</i>
-                </a>
-            </li>
-        </ul>
-    </div>
-    <div class="form-control">
-        <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat" >Zrušit</button>
-        <button class="btn waves-effect waves-light" type="submit" name="send" >Publikovat</button>
-    </div>
-</div>
-{include uploadBlock}
-{/form}
+        <script>
+            $(document).ready(function() {
+                $(".modal-close").on("click", function(e){
+                    $('#create-post-modal').closeModal();
+                });
+                latoLoadDatePicker();
+            });
+        </script>
+        {include uploadBlock}
+    {/form}
 {/snippet}
 {include attachmentTemplate}

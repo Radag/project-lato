@@ -25,7 +25,7 @@ class TaskManager extends BaseManager
                     'NAME' => $task->title,
                     'ID_MESSAGE' => $task->idMessage,
                     'DEADLINE' => $task->deadline,
-                    'ID_MESSAGE' => $task->idMessage
+                    'ONLINE' => $task->online,
             ));        
         $this->database->commit();
     }

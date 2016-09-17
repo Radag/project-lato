@@ -68,6 +68,25 @@ abstract class MessageForm extends Control
         $this->stream = $stream;
     }
   
+    public function getFormTemplate()
+    {   
+        $form = new \Nette\Application\UI\Form;
+        $form->getElementPrototype()->class('ajax');
+        $form->addTextArea('text', 'Zpráva')
+                ->setAttribute('placeholder', 'Sem napište Vaši zprávu ...')
+            ->setRequired('Napište zprávu');
+
+        $form->onSuccess[] = [$this, 'processForm'];
+        
+        $form->onError[] = function(Form $form) {
+            $this->presenter->payload->invalidForm = true;
+            foreach($form->getErrors() as $error) {
+                $this->presenter->flashMessage($error, 'error');
+            }            
+        };
+        return $form;
+    }    
+    
     public function handleUploadAttachment()
     {
         $file = $this->getPresenter()->request->getFiles();

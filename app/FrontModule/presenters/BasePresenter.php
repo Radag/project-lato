@@ -71,4 +71,9 @@ class BasePresenter extends Nette\Application\UI\Presenter
         $this->presenter->payload->users = json_encode($users);
         $this->presenter->sendPayload();
     }
+    
+    public function flashMessage($message, $type = 'info') {
+        parent::flashMessage($message, $type);
+        $this->redrawControl('flashMessages');
+    }
 }

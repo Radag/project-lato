@@ -41,9 +41,16 @@
     </div>
     <div class="form-control">
         <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat" >Zrušit</button>
-        <button class="btn waves-effect waves-light" type="submit" name="send" >Publikovat</button>
+        <button class="btn waves-effect waves-light hide-modal-ajax-submit" type="submit" name="send" >Publikovat</button>
     </div>
 </div>
+<script>  
+    $(document).ready(function() {
+        $(".modal-close").on("click", function(e){
+            $('#create-post-modal').closeModal();
+        });
+    });
+</script>
 {include uploadBlock}
 {/form}
 {include attachmentTemplate}

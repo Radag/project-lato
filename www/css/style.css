@@ -2409,3 +2409,20 @@ textarea.materialize-textarea {
 }
 
 
+/* TOASTY */
+
+#toast-container .toast.error {
+    background-color: #FF1744;
+}
+
+#toast-container .toast.success {
+    background-color: #dce775;
+}
+
+#toast-container .toast.warning {
+    background-color: #ffab00;
+}
+
+#toast-container .toast.info {
+    background-color: deepskyblue;
+}

@@ -63,7 +63,6 @@ class Stream extends Control
      */
     protected $activeUser;
     
-    /** @persistent */
     protected $messageType = 1;
     
     /** @var  INoticeFormFactory @inject */

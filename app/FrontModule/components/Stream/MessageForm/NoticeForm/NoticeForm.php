@@ -23,17 +23,11 @@ class NoticeForm extends MessageForm
 {  
     protected function createComponentForm()
     {
-        $form = new \Nette\Application\UI\Form;
-        $form->getElementPrototype()->class('ajax');
-        $form->addTextArea('text', 'Zpráva')
-                ->setAttribute('placeholder', 'Sem napište Vaši zprávu ...')
-            ->setRequired('Napište zprávu');
-
+        $form = parent::getFormTemplate();
         $form->addHidden('messageType', self::TYPE_NOTICE);
         $form->addHidden('attachments');
         $form->addSubmit('send', 'Publikovat');
-
-        $form->onSuccess[] = [$this, 'processForm'];
+        
         return $form;
     }
     
@@ -55,7 +49,9 @@ class NoticeForm extends MessageForm
         
         $attachments = explode('_', $values['attachments']);
 
-        $this->messageManager->createMessage($message, $attachments);
+        $idMessage = $this->messageManager->createMessage($message, $attachments);
+        $this->presenter->flashMessage('Zpráva uložena', 'success');
+        $this->presenter->payload->idMessage = $idMessage;
         $form['text']->setValue("");
         $form['attachments']->setValue("");
         $this->stream->redrawControl('messages');

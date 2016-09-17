@@ -37,20 +37,13 @@ class MaterialsForm extends MessageForm
     
     protected function createComponentMaterialForm()
     {
-        $form = new \Nette\Application\UI\Form;
-        $form->getElementPrototype()->class('ajax');
-        $form->addTextArea('text', 'Zpráva')
-             ->setAttribute('placeholder', 'Sem napište Vaši zprávu ...')
-             ->setRequired('Napište zprávu');
-        
+        $form = parent::getFormTemplate();
         $form->addText('title', 'Název')
              ->setAttribute('placeholder', 'Název (nepovinné)');
 
         $form->addHidden('messageType', self::TYPE_MATERIALS);
         $form->addHidden('attachments');
         $form->addSubmit('send', 'Publikovat');
-
-        $form->onSuccess[] = [$this, 'processForm'];
         return $form;
     }
     
@@ -78,7 +71,8 @@ class MaterialsForm extends MessageForm
         $material->idMessage = $idMessage;
         
         $this->materialManager->createMaterial($material);
-        
+        $this->presenter->flashMessage('Materiál vložen', 'success');
+        $this->presenter->payload->idMessage = $idMessage;
         $form['text']->setValue("");
         $form['attachments']->setValue("");
         $this->stream->redrawControl('messages');

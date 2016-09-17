@@ -42,10 +42,16 @@
         </div>
         {/if}
 
-	
+	{snippet flashMessages}
         <div id="flashMessagesWrapper" style="display:none;">
-            <div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+            <div n:foreach="$flashes as $key=>$flash" id="flashNum_{rand(1, 9999)}" n:class="flash" data-type="{$flash->type}">{$flash->message}</div>
         </div>
+        <script>  
+            $(function () {
+                latoShowUpFlashMessages();
+            });
+        </script>
+        {/snippet}
         
         {block scripts}
 	<script>  

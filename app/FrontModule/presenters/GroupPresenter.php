@@ -96,7 +96,7 @@ class GroupPresenter extends BasePresenter
         $commentForm = new CommentForm($this->messageManager, $this->userManager, $this->activeUser);
         return $commentForm;
     }    
-    
+        
     protected function setPermission()
     {
         $privileges = $this->groupManager->getPrivileges($this->activeGroup->id);
