@@ -12,6 +12,7 @@ use App\Model\Manager\FileManager;
 use App\FrontModule\Components\Stream\IStreamFactory;
 use App\FrontModule\Components\GroupSettingsForm\IGroupSettingsFormFactory;
 use App\FrontModule\Components\Stream\CommentForm\CommentForm;
+use App\Model\Manager\TaskManager;
 
 class GroupPresenter extends BasePresenter
 {    
@@ -25,6 +26,7 @@ class GroupPresenter extends BasePresenter
     protected $privateMessageManager;
     protected $notificationManager;
     protected $fileManager;
+    protected $taskManager;
     
     /** @var \App\Model\Entities\Group */
     protected $activeGroup = null;
@@ -60,6 +62,7 @@ class GroupPresenter extends BasePresenter
             NotificationManager $notificationManager,
             FileManager $fileManager,
             IStreamFactory $streamFactory,
+            TaskManager $taskManager,
             IGroupSettingsFormFactory $groupSettings)
     {
         $this->userManager = $userManager;
@@ -68,6 +71,7 @@ class GroupPresenter extends BasePresenter
         $this->privateMessageManager = $privateMessageManager;
         $this->notificationManager = $notificationManager;
         $this->fileManager = $fileManager;
+        $this->taskManager = $taskManager;
         $this->streamFactory = $streamFactory;
         $this->groupSettings = $groupSettings;
     }
@@ -183,6 +187,7 @@ class GroupPresenter extends BasePresenter
     
     public function actionDefault()
     {       
+        $this->template->actualTasks = $this->taskManager->getClosestTask(array($this->activeGroup->id => $this->activeGroup));
         $this->groupManager->setGroupVisited($this->activeUser, $this->activeGroup->id);
         $this->template->groupMembers = $this->groupManager->getGroupUsers($this->activeGroup->id);  
     }

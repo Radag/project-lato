@@ -92,19 +92,19 @@
                     </div>
                     {if $streamPermission['topAllMessages'] || ($activeUser->id === $message->user->id && $streamPermission['topOwnMessages'])}
                     {if !$message->priority}
-                    <li><a href="{link topMessage! idMessage=>$message->id}">Přesunout nahoru</a></li>
+                    <li><a href="{link topMessage! idMessage=>$message->id}" class="ajax">Přesunout nahoru</a></li>
                     {else}
-                    <li><a href="{link topMessage! idMessage=>$message->id, enable=>false}">Zrušit přesunutí</a></li>
+                    <li><a href="{link topMessage! idMessage=>$message->id, enable=>false}" class="ajax">Zrušit přesunutí</a></li>
                     {/if}
                     {/if}
                     {if !$message->followed}
-                    <li><a href="{link followMessage! idMessage=>$message->id}">Sledovat</a></li>
+                    <li><a href="{link followMessage! idMessage=>$message->id}" class="ajax">Sledovat</a></li>
                     {else}
-                    <li><a href="{link followMessage! idMessage=>$message->id, enable=>false}">Zrušit sledování</a></li>
+                    <li><a href="{link followMessage! idMessage=>$message->id, enable=>false}" class="ajax">Zrušit sledování</a></li>
                     {/if}
                     {if $streamPermission['removeAllMessages'] || ($activeUser->id === $message->user->id && $streamPermission['removeOwnMessages'])}
                     <li class="divider"></li>
-                    <li><a href="{link deleteMessage! idMessage=>$message->id}">Smazat</a></li>
+                    <li><a href="{link deleteMessage! idMessage=>$message->id}" class="ajax">Smazat</a></li>
                     {/if}
                 </ul>
             </div>

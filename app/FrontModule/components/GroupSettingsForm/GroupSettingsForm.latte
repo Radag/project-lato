@@ -46,7 +46,8 @@
                             <span class="label">Kalendář</span>
                         </div>
                     </div>
-                    <div class="col m12 l8">
+                    <div id="groupScheduleData" class="col m12 l8">
+                        {snippet scheduleAdmin}
                         {if empty($schedule)}
                         <div class="form-row term-picker"> 
                             <select name="schedule[1][DAY_IN_WEEK]" class="with-remove">
@@ -63,26 +64,39 @@
                             <input name="schedule[1][TIME_TO]" type="text"  maxlength=5 value="12:45" id="current-time">
                         </div>
                         {else}
-                        {foreach $schedule as $term}
+                        {foreach $schedule as $key=>$term}
                         <div class="form-row term-picker"> 
-                            <select name="schedule[{$term->ID}][DAY_IN_WEEK]" class="with-remove">
-                                <option value="1" {if $term->DAY_IN_WEEK==1}selected{/if}>Pondělí</option>
-                                <option value="2" {if $term->DAY_IN_WEEK==2}selected{/if}>Úterý</option>
-                                <option value="3" {if $term->DAY_IN_WEEK==3}selected{/if}>Středa</option>
-                                <option value="4" {if $term->DAY_IN_WEEK==4}selected{/if}>Čtvrtek</option>
-                                <option value="5" {if $term->DAY_IN_WEEK==5}selected{/if}>Pátek</option>
+                            <select name="schedule[{$key}][DAY_IN_WEEK]" class="with-remove">
+                                <option value="1" {if isset($term->DAY_IN_WEEK) && $term->DAY_IN_WEEK==1}selected{/if}>Pondělí</option>
+                                <option value="2" {if isset($term->DAY_IN_WEEK) && $term->DAY_IN_WEEK==2}selected{/if}>Úterý</option>
+                                <option value="3" {if isset($term->DAY_IN_WEEK) && $term->DAY_IN_WEEK==3}selected{/if}>Středa</option>
+                                <option value="4" {if isset($term->DAY_IN_WEEK) && $term->DAY_IN_WEEK==4}selected{/if}>Čtvrtek</option>
+                                <option value="5" {if isset($term->DAY_IN_WEEK) && $term->DAY_IN_WEEK==5}selected{/if}>Pátek</option>
                                 <option value="delete">Odstranit</option>
                             </select>
                             <span class="inner-label">od</span>
-                            <input name="schedule[{$term->ID}][TIME_FROM]" type="text" maxlength=5 value="{$term->TIME_FROM->format("%H:%I")}">
+                            <input name="schedule[{$key}][TIME_FROM]" type="text" maxlength=5 value="{ifset $term->TIME_FROM}{$term->TIME_FROM->format("%H:%I")}{/ifset}">
                             <span class="inner-label">do</span>
-                            <input name="schedule[{$term->ID}][TIME_TO]" type="text"  maxlength=5 value="{$term->TIME_TO->format("%H:%I")}" id="current-time">
+                            <input name="schedule[{$key}][TIME_TO]" type="text"  maxlength=5 value="{ifset $term->TIME_TO}{$term->TIME_TO->format("%H:%I")}{/ifset}" id="current-time">
                         </div>
                         {/foreach}
                         {/if}
+                        {/snippet}
                         <div class="form-row">
-                            <a href="" class="add-line"><i class="material-icons">add</i>Přidat další termín</a>
+                            <span id="addScheduleRow" class="add-line"><i class="material-icons">add</i>Přidat další termín</span>
                         </div>
+                        <script>
+                            $("#addScheduleRow").on('click', function(event) {
+                                event.preventDefault();
+                                $.nette.ajax({
+                                  url: {link addScheduleRow!},
+                                  method: 'POST',
+                                  data: $("#groupScheduleData select, #groupScheduleData input").serialize()
+                                 }).done(function( msg ) {
+                                    $('select').material_select();
+                                 });
+                            }); 
+                        </script>
                     </div>
                 </div>
             </section>
@@ -164,7 +178,7 @@
             <div class="flex-spacer"></div>
             <div class="form-control">
                 <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat" >Zrušit</button>
-                {input send class=>'modal-action modal-close waves-effect waves-light btn btn-confirm'}
+                <button class="btn waves-effect waves-light btn-confirm" type="submit" name="send" >Uložit nastavení</button>
             </div>
         </div>
     </div>

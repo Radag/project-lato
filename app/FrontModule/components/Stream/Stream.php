@@ -182,7 +182,7 @@ class Stream extends Control
         if($message->user->id === $this->activeUser->id || $this->activeUser->id === $this->activeGroup->owner->id) {
             $this->messageManager->deleteMessage($message);
             $this->presenter->flashMessage('Zpráva byla smazána.');
-            $this->presenter->redirect('this');
+            $this->redrawControl();
         }
     }
     
@@ -196,7 +196,7 @@ class Stream extends Control
             } else {
                 $this->presenter->flashMessage('Zrušeno topování zprávy.'); 
             }
-            $this->presenter->redirect('this');
+            $this->redrawControl();
         }
     }
     
@@ -209,6 +209,6 @@ class Stream extends Control
         } else {
             $this->presenter->flashMessage('Zpráva byla vyřazena ze sledovaných');
         }
-        $this->presenter->redirect('this');
+        $this->redrawControl();
     }
 }

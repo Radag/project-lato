@@ -63,7 +63,31 @@
                     <h3>Povinnosti</h3>
                 </div>
                 <div class="card-content">
-                    <p class="secondary-par">V tuto cvhíli nemáte v předmětu zvěřejněny žádné povinnosti</p>  
+                    {if !empty($actualTasks)}
+                    <ul class="custom-collection" n:if="!empty($actualTasks)">
+                        {foreach $actualTasks as $task}
+                        <li>
+                            <a href="{plink Group:message 'id'=>$task->group->urlId, 'idMessage'=>$task->idMessage}" class="item">
+                                <div class="title truncate"><span>{$task->title}</span></div>
+                                <div class="flex-spacer"></div>
+                                {if $task->timeLeft->y > 0}
+                                    <div class="remaining-time">{$task->timeLeft->format('%y let')}</div>
+                                {elseif $task->timeLeft->m > 0}
+                                    <div class="remaining-time">{$task->timeLeft->format('%m měsíců')}</div>
+                                {elseif $task->timeLeft->d > 0}
+                                    <div class="remaining-time">{$task->timeLeft->format('%d dní')}</div>
+                                {elseif $task->timeLeft->h > 0}
+                                    <div class="remaining-time important">{$task->timeLeft->format('%h hodin')}</div>
+                                {elseif $task->timeLeft->i > 0}
+                                    <div class="remaining-time important">{$task->timeLeft->format('%i minut')}</div>
+                                {/if}       
+                            </a>
+                        </li>
+                        {/foreach}
+                    </ul>
+                    {else}
+                    <p class="secondary-par">V tuto chvíli nemáte v předmětu zvěřejněny žádné povinnosti</p>  
+                    {/if}
                 </div>
                 <div class="card-footer"></div>
             </div>

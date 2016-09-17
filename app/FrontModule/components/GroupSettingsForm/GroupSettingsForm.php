@@ -11,6 +11,7 @@ use \Nette\Application\UI\Form;
 use \Nette\Application\UI\Control;
 use App\Model\Manager\GroupManager;
 use App\Model\Entities\Group;
+use Nette\Utils\Validators;
 
 
 
@@ -24,6 +25,7 @@ class GroupSettingsForm extends Control
         
     protected $groupManager;
     protected $group;
+    protected $scheduleTermsNum = 1;
     
     public function __construct(GroupManager $groupManager)
     {
@@ -88,6 +90,12 @@ class GroupSettingsForm extends Control
         $form->addSubmit('send', 'Uložit nastavení');
 
         $form->onSuccess[] = [$this, 'processForm'];
+        
+        $form->onError[] = function(Form $form) {
+            foreach($form->getErrors() as $error) {
+                $this->presenter->flashMessage($error, 'error');
+            }            
+        };
         return $form;
     }
     
@@ -95,10 +103,53 @@ class GroupSettingsForm extends Control
     {
         $template = $this->template;
         $template->activeGroup = $this->group;
-        \Tracy\Debugger::barDump($this->groupManager->getSchedule($this->group));
-        $template->schedule = $this->groupManager->getSchedule($this->group);
+        $schedule = $this->groupManager->getSchedule($this->group);
+        foreach($schedule as $sch) {
+            $scheRet[] = $sch;
+        }
+        for($i=0; $i<$this->scheduleTermsNum; $i++) {
+            $scheRet[] = array();
+        }
+        
+        $template->schedule = $scheRet;
         $template->setFile(__DIR__ . '/GroupSettingsForm.latte');
         $template->render();
+    }
+    
+    public function handleAddScheduleRow()
+    {
+        $scheduleData = $this->presenter->getRequest()->getPost('schedule');
+        $error = $this->validateSchedule($scheduleData);
+        if(!$error) {
+            $this->redrawControl('scheduleAdmin');   
+        }
+    }
+   
+    protected function validateSchedule($scheduleData) {
+        $persistData = array();
+        $error = false;
+        foreach($scheduleData as $data) {
+            if(!empty($data["TIME_FROM"]) && !empty($data["TIME_TO"])) {
+                $timeFrom = explode(':', $data["TIME_FROM"]);
+                $timeTo = explode(':', $data["TIME_TO"]);
+                if(Validators::isNumericInt($timeFrom[0]) && Validators::isInRange($timeFrom[0], array(0,60))
+                   && Validators::isNumericInt($timeFrom[1]) && Validators::isInRange($timeFrom[1], array(0,60))
+                   && Validators::isNumericInt($timeTo[0]) && Validators::isInRange($timeTo[0], array(0,60))
+                   && Validators::isNumericInt($timeTo[1]) && Validators::isInRange($timeTo[1], array(0,60))
+                ) {
+                    $persistData[] = $data;   
+                } else {
+                    $error = 'Časy musí být ve tvaru 12:55';
+                }
+            }
+        } 
+        
+        if($error) {
+            $this->presenter->flashMessage($error, 'error');
+        } else {
+            $this->groupManager->insertSchedule($persistData, $this->group); 
+        }
+        return $error;
     }
     
     public function processForm(Form $form, $values) 
@@ -126,12 +177,11 @@ class GroupSettingsForm extends Control
         //rozvrh
         
         $scheduleData = $this->presenter->getRequest()->getPost('schedule');
-        foreach($scheduleData as $data) {
-            
-        } 
-                
-        $this->groupManager->insertSchedule($scheduleData, $this->group);
+        $error = $this->validateSchedule($scheduleData);
+        if(!$error) {
+            $this->presenter->flashMessage('Nastavení uloženo', 'success');
+        }
         
-        $this->presenter->redirect('this');
+        $this->redrawControl();
     }
 }
