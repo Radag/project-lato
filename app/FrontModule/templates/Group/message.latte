@@ -11,21 +11,12 @@
                     </a>
                     <div class="flex-spacer"></div>
                     <ul class="right options">
+                        
                         <li>
-                            <a class="btn-flat btn-icon dropdown-button card-options" data-activates="share_{$message->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
-                                <i class="material-icons">share</i>
-                            </a>
-                            <ul id='share_{$message->id}' class='dropdown-content'>
-                                <li><a href="">Poslat jako soukromou zprávu</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="btn-flat btn-icon dropdown-button card-options" data-activates="message_dropdown_{$message->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                            <a class="btn-flat btn-icon dropdown-button" data-activates="stream-options-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
                                 <i class="material-icons">more_vert</i>
                             </a>
-                            <ul id='message_dropdown_{$message->id}' class='dropdown-content'>
-                                <li><a href="">Ignorovat</a></li>
-                            </ul>
+                            {include groupMenu}
                         </li>
                     </ul>
                 </header>  

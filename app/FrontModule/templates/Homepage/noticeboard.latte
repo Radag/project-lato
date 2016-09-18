@@ -18,11 +18,11 @@
     <div class="row same-height">
         <div class="col l6 m12">
             <div class="card flex-column">
-                <div class="card-header">
-                    <h2>Povinnosti</h2>
+                <div class="card-header highlighted">
+                    <h3>Povinnosti</h3>
                 </div>
+                <p class="card-header-par">Seznam povinností, které je třeba v blízké době splnit</p>
                 <div class="card-content clearfix">
-                <p class="secondary-par">Seznam povinností, které je třeba v blízké době splnit</p>
                     <ul class="custom-collection" n:if="!empty($actualTasks)">
                         {foreach $actualTasks as $task}
                         <li>
@@ -31,15 +31,15 @@
                                 <div class="title truncate">{$task->group->name}<span>{$task->title}</span></div>
                                 <div class="flex-spacer"></div>
                                 {if $task->timeLeft->y > 0}
-                                    <div class="remaining-time">{$task->timeLeft->format('%y let')}</div>
+                                <div class="remaining-time">{$task->timeLeft->format('%y let')}</div>
                                 {elseif $task->timeLeft->m > 0}
-                                    <div class="remaining-time">{$task->timeLeft->format('%m měsíců')}</div>
+                                <div class="remaining-time">{$task->timeLeft->format('%m měsíců')}</div>
                                 {elseif $task->timeLeft->d > 0}
-                                    <div class="remaining-time">{$task->timeLeft->format('%d dní')}</div>
+                                <div class="remaining-time">{$task->timeLeft->format('%d dní')}</div>
                                 {elseif $task->timeLeft->h > 0}
-                                    <div class="remaining-time important">{$task->timeLeft->format('%h hodin')}</div>
+                                <div class="remaining-time important">{$task->timeLeft->format('%h hodin')}</div>
                                 {elseif $task->timeLeft->i > 0}
-                                    <div class="remaining-time important">{$task->timeLeft->format('%i minut')}</div>
+                                <div class="remaining-time important">{$task->timeLeft->format('%i minut')}</div>
                                 {/if}       
                             </a>
                         </li>
@@ -56,19 +56,21 @@
         </div>
         <div class="col l6 m12">
             <div class="card flex-column">
-                <div class="card-header">
-                    <h2>Poznámky</h2>
+                <div class="card-header highlighted">
+                    <h3>Poznámky</h3>
+                    <a href="#create-note-modal" class="modal-trigger btn-icon"><i class="material-icons">add</i></a>
                 </div>
+                <p class="card-header-par">Seznam poznámek</p>
+
                 <div class="card-content clearfix">
-                    <p class="secondary-par">Seznam poznámek</p>
                     {ifset $actualNotices}
                     <ul class="custom-collection">
                         {foreach $actualNotices as $note}
                         <li>
-                            <div class="item note">
-                            {$note->TEXT}
-                            </div>
-                            <a href="#" class="btn-icon"><i class="material-icons">edit</i></a>
+                            <a href="#edit-note-modal" class="item note modal-trigger">
+                                <i class="material-icons">format_quote</i>
+                                {$note->TEXT}
+                            </a>
                         </li>
                         {/foreach}
                     </ul>
@@ -82,6 +84,44 @@
                 </div>
             </div>
         </div>
+
+        {* modal new note *}
+
+        <div id="create-note-modal" class="modal modal-small">
+            <div class="modal-content">
+                <h3>Vytvořit poznámku</h3>
+                <textarea class="materialize-textarea" placeholder="poznámka ..."></textarea>
+
+            </div>
+            <div class="modal-footer clearfix">
+                <div class="flex-spacer"></div>
+                <div class="form-control">
+                    <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                    <button class="btn waves-effect waves-light hide-modal-ajax-submit" type="submit" name="send" >Vytvořit</button>
+                </div>
+            </div>
+        </div>
+
+        {* modal edit note *}
+
+        <div id="edit-note-modal" class="modal modal-small">
+            <div class="modal-content">
+                <h3>Upravit poznámku</h3>
+                <textarea class="materialize-textarea" placeholder="To co tam původně bylo"></textarea>
+
+            </div>
+            <div class="modal-footer clearfix">
+                <div class="flex-spacer"></div>
+                <div class="form-control">
+                    <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                    <button class="btn waves-effect waves-light hide-modal-ajax-submit" type="submit" name="send" >Upravit</button>
+                </div>
+            </div>
+        </div>
+
+
+
+
     </div>
 </div>
 
@@ -131,18 +171,18 @@
                 <div class="item empty day-title-spacer"></div>
                 {var $morningSubjects = false}
                 {if !empty($todaySchedule)}
-                    {foreach $todaySchedule as $item}
-                        {if !$morningSubjects && ($item->TIME_FROM->format("%h") >= 12) }
-                            {var $morningSubjects = true}
-                            {if !$iterator->first}<div class="item empty"></div>{/if}
-                        {/if}
-                        <div class="item filled">
-                            <span class="shortcut">{$item->SHORTCUT}</span>
-                            <span class="time">{$item->TIME_FROM->format("%H:%I")}</span>
-                            <span class="time end">({$item->TIME_TO->format("%H:%I")})</span>
-                            <span class="room">{$item->ROOM}</span>
-                        </div>
-                    {/foreach}
+                {foreach $todaySchedule as $item}
+                {if !$morningSubjects && ($item->TIME_FROM->format("%h") >= 12) }
+                {var $morningSubjects = true}
+                {if !$iterator->first}<div class="item empty"></div>{/if}
+                {/if}
+                <div class="item filled">
+                    <span class="shortcut">{$item->SHORTCUT}</span>
+                    <span class="time">{$item->TIME_FROM->format("%H:%I")}</span>
+                    <span class="time end">({$item->TIME_TO->format("%H:%I")})</span>
+                    <span class="room">{$item->ROOM}</span>
+                </div>
+                {/foreach}
                 {/if}
             </div>
         </div>
