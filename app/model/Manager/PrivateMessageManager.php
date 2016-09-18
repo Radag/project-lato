@@ -52,6 +52,16 @@ class PrivateMessageManager extends BaseManager
         $data = array('IS_READ' => date('Y-m-d H:i:s'));
         $this->database->query("UPDATE private_message SET ? WHERE ID_USER_TO=? AND IS_READ IS NULL", $data, $idUser);
     }
+    
+    public function insertMessage(PrivateMessage $message)
+    {
+        $this->database->table('private_message')->insert(array(
+                    'TEXT' => $message->text,
+                    'ID_USER_FROM' => $message->idUserFrom,
+                    'ID_USER_TO' => $message->idUserTo,
+                    'CREATED_BY' => $this->user->id
+            ));
+    }
       
     
 }

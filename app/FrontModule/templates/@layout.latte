@@ -23,7 +23,7 @@
 	<title>{ifset title}{include title|striptags} | {/ifset}Lato</title>
 </head>
 <body>
-	{include content}
+    {include content}
     <footer id="layout-footer">
     &copy; Dva vepři z vepřína
     </footer>
@@ -42,6 +42,33 @@
         </div>
         {/if}
 
+        
+        <div id="private-message-modal" class="modal modal-small">
+            {snippet privateMessageForm}
+                {control privateMessageForm}
+            {/snippet}
+        </div>
+        <script>  
+            $(function () {
+                $.nette.ext('showPrivateMessageFormModal', {
+                    start: function (jqXHR, settings) {              
+                        if(settings.nette !== undefined && $(settings.nette.ui).hasClass('show-new-private-message')) { 
+                            $popup = $(settings.nette.ui).closest('div.modal');
+                            jqXHR.done(function( data, textStatus, jqXHR ) {
+                                $('#private-message-modal').openModal();
+                            });
+                        } else if(settings.nette !== undefined && $(settings.nette.ui).hasClass('submit-message-form')) { 
+                            jqXHR.done(function( data, textStatus, jqXHR ) {
+                                $('#private-message-modal').closeModal();
+                            });
+                        }
+                    }
+                });
+            });
+        </script>
+        
+        
+        
 	{snippet flashMessages}
         <div id="flashMessagesWrapper" style="display:none;">
             <div n:foreach="$flashes as $key=>$flash" id="flashNum_{rand(1, 9999)}" n:class="flash" data-type="{$flash->type}">{$flash->message}</div>

@@ -13,6 +13,7 @@ use \App\Model\Manager\UserManager;
 use App\FrontModule\Components\TopPanel\TopPanel;
 use App\Model\Manager\PrivateMessageManager;
 use App\Model\Manager\NotificationManager;
+use App\FrontModule\Components\PrivateMessageForm\PrivateMessageForm;
 
 /**
  * Description of BasePresenter
@@ -39,10 +40,14 @@ class BasePresenter extends Nette\Application\UI\Presenter
     protected $privateMessageManager;
     protected $notificationManager;
     
-    public function __construct(Nette\Database\Context $database, UserManager $userManager)
+    public function __construct(Nette\Database\Context $database, 
+            UserManager $userManager,
+            PrivateMessageManager $privateMessageManager
+            )
     {
         $this->database = $database;
         $this->userManager = $userManager;
+        $this->privateMessageManager = $privateMessageManager;
     }
     
     protected function startup()
@@ -63,6 +68,17 @@ class BasePresenter extends Nette\Application\UI\Presenter
     protected function createComponentTopPanel()
     {
         return new TopPanel($this->userManager, $this->groupManager, $this->privateMessageManager, $this->notificationManager, $this->activeUser);
+    }
+    
+    protected function createComponentPrivateMessageForm()
+    {
+        return new PrivateMessageForm($this->privateMessageManager, $this->activeUser);
+    }
+    
+    public function handleShowPrivateMessageForm($idUserTo)
+    {
+        $this['privateMessageForm']->setIdUserTo($idUserTo);
+        $this->redrawControl('privateMessageForm');
     }
     
     public function handleGetUserList()
