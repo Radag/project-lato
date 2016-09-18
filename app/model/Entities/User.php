@@ -22,6 +22,8 @@ class User {
     public $profileImage = null;    
 
     
+    public $classifications = null;
+    
     function getId() {
         return $this->id;
     }

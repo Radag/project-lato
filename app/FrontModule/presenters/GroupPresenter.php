@@ -13,6 +13,8 @@ use App\FrontModule\Components\Stream\IStreamFactory;
 use App\FrontModule\Components\GroupSettingsForm\IGroupSettingsFormFactory;
 use App\FrontModule\Components\Stream\CommentForm\CommentForm;
 use App\Model\Manager\TaskManager;
+use App\Model\Manager\ClassificationManager;
+use App\FrontModule\Components\NewClassificationForm\NewClassificationForm;
 
 class GroupPresenter extends BasePresenter
 {    
@@ -27,6 +29,7 @@ class GroupPresenter extends BasePresenter
     protected $notificationManager;
     protected $fileManager;
     protected $taskManager;
+    protected $classificationManager;
     
     /** @var \App\Model\Entities\Group */
     protected $activeGroup = null;
@@ -63,7 +66,8 @@ class GroupPresenter extends BasePresenter
             FileManager $fileManager,
             IStreamFactory $streamFactory,
             TaskManager $taskManager,
-            IGroupSettingsFormFactory $groupSettings)
+            IGroupSettingsFormFactory $groupSettings,
+            ClassificationManager $classificationManager)
     {
         $this->userManager = $userManager;
         $this->messageManager = $messageManager;
@@ -74,6 +78,7 @@ class GroupPresenter extends BasePresenter
         $this->taskManager = $taskManager;
         $this->streamFactory = $streamFactory;
         $this->groupSettings = $groupSettings;
+        $this->classificationManager = $classificationManager;
     }
     
     protected function startup()
@@ -136,6 +141,13 @@ class GroupPresenter extends BasePresenter
     {
         $component = $this->groupSettings->create();
         $component->setGroup($this->activeGroup);
+        return $component;
+    }
+    
+    
+    public function createComponentAddClassificationForm()
+    {
+        $component = new NewClassificationForm($this->classificationManager, $this->groupManager, $this->activeGroup);
         return $component;
     }
     
@@ -206,7 +218,11 @@ class GroupPresenter extends BasePresenter
     public function actionUsers()
     {
         $this['topPanel']->setTitle('uživatelé');
-        $this->template->groupMembers = $this->groupManager->getGroupUsers($this->activeGroup->id);
+        $members = $this->groupManager->getGroupUsers($this->activeGroup->id);
+        foreach($members as $member) {
+            $member->classifications = $this->classificationManager->getUserClassification($member->id, $this->activeGroup->id);
+        }
+        $this->template->groupMembers = $members;
     }
     
     public function handleLeaveGroup($idGroup)

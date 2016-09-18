@@ -11,6 +11,7 @@ services:
 	taskManager: App\Model\Manager\TaskManager
 	schedulelManager: App\Model\Manager\SchedulelManager
 	noticeManager: App\Model\Manager\NoticeManager
+	classificationManager: App\Model\Manager\ClassificationManager
 
 	streamFactory: App\FrontModule\Components\Stream\IStreamFactory
 	noticeFormFactory: App\FrontModule\Components\Stream\MessageForm\NoticeForm\INoticeFormFactory 

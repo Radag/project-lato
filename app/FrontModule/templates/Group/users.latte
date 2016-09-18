@@ -14,7 +14,7 @@
                     <ul class="right options">
 
                         <li>
-                            <a class="btn-flat btn-icon modal-trigger" href="#new-assessment-modal">
+                            <a class="btn-flat btn-icon modal-trigger" href="#new-classification-modal">
                                 <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přidat hodnocení">library_add</i> 
                             </a>  
                         </li>
@@ -48,26 +48,25 @@
     </section>
 
     <!-- MODALS -->
-    <div id="new-assessment-modal" class="modal modal-small">
-        <form>
-            <div class="modal-content">
-                <h3>Nové hodnocení</h3>
-                <input type="text" class="validate" placeholder="Téma"> 
-                <div class="form-row">
-                    <input type="checkbox" id="user-selection" class="filled-in" checked>
-                    <label for="user-selection">Pro všechny studenty</label>
-                </div>
-            </div>
-            <div class="modal-footer clearfix">
-                <div class="flex-spacer"></div>
-                <div class="form-control">
-                    <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-                    <input type="submit" class="waves-effect waves-light btn btn-confirm" value="Potvrdit">
-                </div>
-            </div>
-        </form>
+    <div id="new-classification-modal" class="modal modal-small">
+        {snippet addClassificationForm}
+            {control addClassificationForm}
+        {/snippet}
     </div>
-
+    <script>  
+        $(function () {
+            $.nette.ext('newClassification', {
+                start: function (jqXHR, settings) {              
+                    if(settings.nette !== undefined && $(settings.nette.ui).hasClass('submit-classification')) { 
+                        jqXHR.done(function( data, textStatus, jqXHR ) {
+                            $('#new-classification-modal').closeModal();
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+        
     <div id="remove-users-modal" class="modal modal-small">
         <form>
             <div class="modal-content">
@@ -120,7 +119,7 @@
                            });
                         });
                     </script>
-
+                    {snippet memberList}
                     <ul class="collapsible popout" data-collapsible="accordion">
                         {foreach $groupMembers as $member}
                         <li>
@@ -139,32 +138,19 @@
                             </div>
                             <div class="collapsible-body">
                                 <div class="grades-table">
+                                    {ifset $member->classifications}
+                                    {foreach $member->classifications as $classification}
                                     <div class="table-row">
                                         <a href="" class="material-icons edit">edit</a>
-                                        <a href="" class="title truncate">
-                                            3D grafika – modelování zadané scény
-                                        </a>
+                                        <a href="" class="title truncate">{$classification->name}</a>
                                         <div class="flex-spacer"></div>
-                                        <div class="table-field">
-                                            5. 9. 2016
-                                        </div>
+                                        <div class="table-field">{$classification->lastChange->format("j. n. Y")}</div>
                                         <div class="grade table-field">
-                                            <strong>3</strong>
+                                            <strong>{$classification->grade}</strong>
                                         </div>
                                     </div>
-                                    <div class="table-row">
-                                        <a href="" class="material-icons edit">edit</a>
-                                        <a href="" class="title truncate">
-                                            3D grafika – textury (domácí úkol)
-                                        </a>
-                                        <div class="flex-spacer"></div>
-                                        <div class="table-field">
-                                            17. 6. 2016
-                                        </div>
-                                        <div class="grade table-field">
-                                            <strong>3</strong>
-                                        </div>
-                                    </div>
+                                    {/foreach}
+                                    {/ifset}
                                 </div>
                                 <div class="collapsible-body-footer">
                                     {if $activeUser->id !== $member->id}
@@ -191,6 +177,7 @@
                         </li>
                         {/foreach}
                     </ul>
+                    {/snippet}
                 </form>
             </div>
         </div>

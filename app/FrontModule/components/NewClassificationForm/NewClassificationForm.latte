@@ -1,0 +1,16 @@
+{form form class=>'ajax'}
+    <div class="modal-content">
+        <h3>Nové hodnocení</h3>
+            {input name}
+        <div class="name-row" >
+            {input forAll: class => 'filled-in black'}{label forAll:}{/label}
+        </div>
+    </div>
+    <div class="modal-footer clearfix">
+        <div class="flex-spacer"></div>
+        <div class="form-control">
+            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-classification" >Potvrdit</button>
+        </div>
+    </div>
+{/form}
