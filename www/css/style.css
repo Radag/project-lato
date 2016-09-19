@@ -359,7 +359,7 @@ input[type="password"] {
     background-color: #f5f5f5;
 }
 
-.card-header.highlighted .btn-icon {
+.btn-icon.small {
     height: 24px;
     width: 24px;
 }
@@ -1136,23 +1136,33 @@ strong {
     margin-left: 24px !important;
 }
 
-.modal .modal-footer .modal-footer-help {
+.modal .modal-footer .modal-footer-note {
     display: flex;
+    align-items: center;
     padding: 18px 24px;
 }
 
 @media only screen and (max-width: 600px) {
-    .modal .modal-footer .modal-footer-help {
+    .modal .modal-footer .modal-footer-note {
         padding: 12px 16px;
     }
 }
 
-.modal .modal-footer .modal-footer-help i {
-    line-height: 36px;
+.modal .modal-footer .modal-footer-note a {
+    display: flex;
+    align-items: center;
+    color: rgba(0, 0, 0, .54);
+}
+
+.modal .modal-footer .modal-footer-note a.colored {
+    color: #2979FF;
+}
+
+.modal .modal-footer .modal-footer-note i {
     margin-right: 12px;
 }
 
-.modal .modal-footer .modal-footer-help .help-label {
+.modal .modal-footer .modal-footer-note .note-label {
     line-height: 36px;
 }
 
@@ -2196,7 +2206,7 @@ textarea.materialize-textarea {
 }
 
 .custom-collection:last-child {
-    margin-bottom: 8px;
+    margin-bottom: 16px;
 }
 
 .custom-collection li {
@@ -2206,6 +2216,10 @@ textarea.materialize-textarea {
 
 .custom-collection li:first-child {
     margin-top: 0;
+}
+
+.custom-collection li:last-child {
+    margin-bottom: 0;
 }
 
 .custom-collection li .item {
@@ -2225,19 +2239,18 @@ textarea.materialize-textarea {
 }
 
 .custom-collection li .title {
-    flex-grow: 1;
     font-weight: 500;
     color: rgba(0, 0, 0, .87);
 }
 
-.custom-collection li .title span {
+.custom-collection li .subtitle {
     color: rgba(0, 0, 0, .54);
     font-weight: 400;
     font-style: italic;
     margin-left: 16px;
 }
 
-.custom-collection li .item .title span:first-child {
+.custom-collection li .item .subtitle:first-child {
     margin-left: 0;
 }
 

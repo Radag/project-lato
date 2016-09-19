@@ -20,7 +20,7 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="#" class="btn-flat btn-icon dropdown-button">
+                            <a href="{link Group:users 'id'=>$activeGroup->urlId}" class="btn-flat btn-icon">
                                 <i class="material-icons">people</i>
                             </a>  
                         </li>
@@ -73,7 +73,7 @@
                         {foreach $actualTasks as $task}
                         <li>
                             <a href="{plink Group:message 'id'=>$task->group->urlId, 'idMessage'=>$task->idMessage}" class="item">
-                                <div class="title truncate"><span>{$task->title}</span></div>
+                                <div class="subtitle truncate">{$task->title}</div>
                                 <div class="flex-spacer"></div>
                                 {if $task->timeLeft->y > 0}
                                     <div class="remaining-time">{$task->timeLeft->format('%y let')}</div>

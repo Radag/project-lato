@@ -18,17 +18,19 @@
     <div class="row same-height">
         <div class="col l6 m12">
             <div class="card flex-column">
-                <div class="card-header highlighted">
+                <div class="card-header">
                     <h3>Povinnosti</h3>
                 </div>
-                <p class="card-header-par">Seznam povinností, které je třeba v blízké době splnit</p>
+                
                 <div class="card-content clearfix">
+                    <p class="secondary-par">Seznam povinností, které je třeba v blízké době splnit</p>
                     <ul class="custom-collection" n:if="!empty($actualTasks)">
                         {foreach $actualTasks as $task}
                         <li>
                             <a href="{plink Group:message 'id'=>$task->group->urlId, 'idMessage'=>$task->idMessage}" class="item">
                                 <div class="avatar small" style="background-color: {$task->group->mainColor|noescape};">{$task->group->shortcut|substr:0,1}</div>
-                                <div class="title truncate">{$task->group->name}<span>{$task->title}</span></div>
+                                <div class="title truncate">{$task->group->name}</div>
+                                <div class="subtitle truncate">{$task->title}</div>
                                 <div class="flex-spacer"></div>
                                 {if $task->timeLeft->y > 0}
                                 <div class="remaining-time">{$task->timeLeft->format('%y let')}</div>
@@ -56,13 +58,12 @@
         </div>
         <div class="col l6 m12">
             <div class="card flex-column">
-                <div class="card-header highlighted">
+                <div class="card-header">
                     <h3>Poznámky</h3>
-                    <a href="#create-note-modal" class="modal-trigger btn-icon"><i class="material-icons">add</i></a>
+                    <a href="#create-note-modal" class="modal-trigger btn-icon small"><i class="material-icons">add</i></a>
                 </div>
-                <p class="card-header-par">Seznam poznámek</p>
-
                 <div class="card-content clearfix">
+                    <p class="secondary-par">Seznam poznámek</p>
                     {ifset $actualNotices}
                     <ul class="custom-collection">
                         {foreach $actualNotices as $note}
@@ -111,6 +112,9 @@
 
             </div>
             <div class="modal-footer clearfix">
+                <div class="modal-footer-note">
+                    <a href="" class="btn-icon small"><i class="material-icons">delete</i></a>
+                </div>
                 <div class="flex-spacer"></div>
                 <div class="form-control">
                     <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
