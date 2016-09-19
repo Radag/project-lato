@@ -695,7 +695,6 @@ input[type="password"] {
 }
 
 .navbar-nav {
-    margin-right: -6px;
     display: flex;
 }
 
@@ -2388,21 +2387,36 @@ textarea.materialize-textarea {
 
 /* SCHEDULE */
 
-#one-day-schedule {
-    display: flex;
-    align-items: stretch;
+#one-day-schedule, 
+#one-week-schedule {
+    display: table;
+    table-layout: fixed;
+}
+
+.schedule-row {
+    border-bottom: 1px solid #eaeaea !important;
+}
+
+.schedule-row:last-child {
+    border-bottom: 0;
+}
+
+.schedule-row td {
+    vertical-align: top;
+}
+
+.schedule-row .day-title {
+    padding: 20px 24px !important;
+    padding-right: 0;
+    width: 16%;
+    text-align: left !important;
 }
 
 #one-day-schedule .day-title {
-    display: flex;
-    flex-direction: column;
-    padding: 20px 24px;
-    padding-right: 0;
     background-color: #f5f5f5;
-    min-width: 114px;
 }
 
-#one-day-schedule .day-title .title {
+.schedule-row .day-title .title {
     display: block;
     font-size: 35px;
     line-height: 1em;
@@ -2410,48 +2424,44 @@ textarea.materialize-textarea {
     color: rgba(0, 0, 0, .54);
 }
 
-#one-day-schedule .day-title .name {
-    display: block;
-    font-size: 13px; 
-    line-height: 1.5em;
+.schedule-row .day-title .name {
+    display: block; 
+    font-size: 14px;
+    line-height: 1em;
     font-weight: 400;
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .87);
+}
+
+#one-day-schedule .day-title .name {
     margin-top: 12px;
+    font-size: 13px;
+    color: rgba(0, 0, 0, .54);
+}
+
+.schedule-row .day-title-spacer {
 }
 
 #one-day-schedule .day-title-spacer {
     background-color: #f5f5f5;
-    margin-right: 8px;
 }
 
-#one-day-schedule .item {
-    padding: 20px 4px;
+.schedule-row .item {
+    padding: 20px 0;
+    text-align: center;
 }
 
-#one-day-schedule .item.filled {
-    width: 82px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-}
-
-#one-day-schedule .item.empty {
-    flex-grow: 1;
-    max-width: 72px;
-    min-width: 8px;
-}
-
-#one-day-schedule .item .shortcut {
+.schedule-row .item .shortcut {
+    display: block;
     color: rgba(0, 0, 0, .87);
     font-size: 16px;
-    line-height: 20px;
+    line-height: 1em;
     font-weight: 500;
     text-transform: uppercase;
     margin-bottom: 12px;
 }
 
-#one-day-schedule .item .time {
+.schedule-row .item .time {
+    display: block;
     color: rgba(0, 0, 0, .87);
     font-size: 13px;
     font-weight: 500; 
@@ -2459,16 +2469,26 @@ textarea.materialize-textarea {
     line-height: 18px;
 }
 
-#one-day-schedule .item .time.end {
+.schedule-row .item .time.end {
+    display: block;
     font-weight: 400;
 }
 
-#one-day-schedule .item .room {
+.schedule-row .item .room {
+    display: block;
     color: rgba(0, 0, 0, .54);
     font-size: 13px;
     line-height: 18px;
 }
 
+.schedule-row.schedule-header .item {
+    color: rgba(0, 0, 0, .38) !important;
+    font-weight: 500;
+    font-size: 12px;
+}
+
+.schedule-row .row-end {
+}
 
 /* TOASTY */
 

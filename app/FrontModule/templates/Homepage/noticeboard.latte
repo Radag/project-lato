@@ -167,28 +167,73 @@
 <div class="container">
     <div class="row">
         <div class="col s12">
-            <div class="card" id="one-day-schedule">
-                <div class="day-title">
-                    <span class="title">{date("j. n.")}</span>
-                    <span class="name">{$days[date("N")-1]}</span>
-                </div>
-                <div class="item empty day-title-spacer"></div>
-                {var $morningSubjects = false}
-                {if !empty($todaySchedule)}
-                {foreach $todaySchedule as $item}
-                {if !$morningSubjects && ($item->TIME_FROM->format("%h") >= 12) }
-                {var $morningSubjects = true}
-                {if !$iterator->first}<div class="item empty"></div>{/if}
-                {/if}
-                <div class="item filled">
-                    <span class="shortcut">{$item->SHORTCUT}</span>
-                    <span class="time">{$item->TIME_FROM->format("%H:%I")}</span>
-                    <span class="time end">({$item->TIME_TO->format("%H:%I")})</span>
-                    <span class="room">{$item->ROOM}</span>
-                </div>
-                {/foreach}
-                {/if}
+            <div class="card">
+                <table id="one-day-schedule">
+                    <tbody>
+                        <tr class="schedule-row">
+                            <td class="item day-title">
+                                <span class="title">{date("j. n.")}</span>
+                                <span class="name">{$days[date("N")-1]}</span>
+                            </td>
+                            <td class="item">
+                                <span class="shortcut">MAT</span>
+                                <span class="time">8:00</span>
+                                <span class="time end">8:45</span>
+                                <span class="room">U32</span>
+                            </td>
+                            <td class="item"></td>
+                            <td class="item">
+                                <span class="shortcut">MAT</span>
+                                <span class="time">8:00</span>
+                                <span class="time end">8:45</span>
+                                <span class="room">U32</span>
+                            </td>
+                            <td class="item">
+                                <span class="shortcut">MAT</span>
+                                <span class="time">8:00</span>
+                                <span class="time end">8:45</span>
+                                <span class="room">U32</span>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td class="item filled">
+                                <span class="shortcut">MAT</span>
+                                <span class="time">8:00</span>
+                                <span class="time end">8:45</span>
+                                <span class="room">U32</span>
+                            </td>
+                            <td class="item filled">
+                                <span class="shortcut">MAT</span>
+                                <span class="time">8:00</span>
+                                <span class="time end">8:45</span>
+                                <span class="room">U32</span>
+                            </td>
+                            <td class="item filled">
+                                <span class="shortcut">MAT</span>
+                                <span class="time">8:00</span>
+                                <span class="time end">8:45</span>
+                                <span class="room">U32</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                    
             </div>
+            {var $morningSubjects = false}
+                    {if !empty($todaySchedule)}
+                    {foreach $todaySchedule as $item}
+                    {if !$morningSubjects && ($item->TIME_FROM->format("%h") >= 12) }
+                    {var $morningSubjects = true}
+                    {if !$iterator->first}<div class="item empty"></div>{/if}
+                    {/if}
+                    <div class="item filled">
+                        <span class="shortcut">{$item->SHORTCUT}</span>
+                        <span class="time">{$item->TIME_FROM->format("%H:%I")}</span>
+                        <span class="time end">({$item->TIME_TO->format("%H:%I")})</span>
+                        <span class="room">{$item->ROOM}</span>
+                    </div>
+                    {/foreach}
+                    {/if}
         </div>
     </div>
 </div>
