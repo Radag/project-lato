@@ -73,21 +73,21 @@ a {
     text-overflow: ellipsis;
 }
 
-.collapsible-card-header {
+.collapsible-table-card-header {
     padding-bottom: 20px !important;
 }
 
-.collapsible-card-header .btn-icon {
+.collapsible-table-card-header .btn-icon {
     margin-right: 24px;
     color: rgba(0, 0, 0, .54);
     height: 36px;
 }
 
-.collapsible-card-header .btn-icon i {
+.collapsible-table-card-header .btn-icon i {
     font-size: 22px !important;
 }
 
-.collapsible-card-table-header {
+.collapsible-table-card-header {
     flex-grow: 1;
     margin-top: 16px;
     text-transform: uppercase;
@@ -97,7 +97,7 @@ a {
     font-weight: 500;
 }
 
-.collapsible-card-table-header [type="checkbox"].filled-in:not(:checked)+label:after {
+.collapsible-table-card-header [type="checkbox"].filled-in:not(:checked)+label:after {
     border-color: rgba(0, 0, 0, .38);
 }
 
@@ -123,7 +123,7 @@ a {
     border-color: #eaeaea;
 }
 
-.collapsible-card-table-header .table-field,
+.collapsible-table-card-header .table-field,
 .collapsible-header .table-field,
 .collapsible-body .table-field {
     margin-left: 32px;
@@ -135,7 +135,7 @@ a {
     border-bottom: 1px solid transparent;
 }
 
-.collapsible-card-table-header [type="checkbox"]+label,
+.collapsible-table-card-header [type="checkbox"]+label,
 .collapsible-header [type="checkbox"]+label {
     padding-left: 20px;
     margin-left: 6px;
@@ -413,6 +413,10 @@ input[type="password"] {
 
 .btn-flat:hover {
     background-color: transparent;
+}
+
+.btn-confirm {
+    margin-left: 24px;
 }
 
 .btn-icon {
@@ -1614,7 +1618,7 @@ textarea.materialize-textarea {
     position:relative;
     width: 100%;
     background: #fff;
-    box-shadow: 0 1px 3px  rgba(0, 0, 0, .2); 
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .2); 
     margin-bottom:32px;
     margin-top:0;
     border-radius:0;
@@ -2391,6 +2395,10 @@ textarea.materialize-textarea {
 #one-week-schedule {
     display: table;
     table-layout: fixed;
+}
+
+.schedule tbody {
+    background-color: #fff;
 }
 
 .schedule-row {
