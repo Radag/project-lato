@@ -89,18 +89,7 @@
         {* modal new note *}
 
         <div id="create-note-modal" class="modal modal-small">
-            <div class="modal-content">
-                <h3>Vytvořit poznámku</h3>
-                <textarea class="materialize-textarea" placeholder="poznámka ..."></textarea>
-
-            </div>
-            <div class="modal-footer clearfix">
-                <div class="flex-spacer"></div>
-                <div class="form-control">
-                    <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-                    <button class="btn waves-effect waves-light hide-modal-ajax-submit" type="submit" name="send" >Vytvořit</button>
-                </div>
-            </div>
+            {control noticeForm}
         </div>
 
         {* modal edit note *}
@@ -109,7 +98,6 @@
             <div class="modal-content">
                 <h3>Upravit poznámku</h3>
                 <textarea class="materialize-textarea" placeholder="To co tam původně bylo"></textarea>
-
             </div>
             <div class="modal-footer clearfix">
                 <div class="modal-footer-note">
@@ -122,10 +110,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
     </div>
 </div>
 

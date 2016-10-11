@@ -9,6 +9,7 @@ use App\Model\Manager\NotificationManager;
 use App\Model\Manager\SchedulelManager;
 use App\Model\Manager\TaskManager;
 use App\Model\Manager\NoticeManager;
+use App\FrontModule\Components\NewNoticeForm\NewNoticeForm;
 
 class HomepagePresenter extends BasePresenter
 {
@@ -96,6 +97,11 @@ class HomepagePresenter extends BasePresenter
         $this->template->schedule = $schedule;
         $this->template->days = $this->days;
         
+    }
+    
+    protected function createComponentNoticeForm()
+    {
+        return new NewNoticeForm($this->noticeManager, $this->activeUser);
     }
     
 }
