@@ -2,151 +2,80 @@
 {control topPanel}
 
 <section class="main">
-	<div class="container">
-		<div class="row">
-			<div class="col s12">
-				<header class="section-header">
-					<h3 class="">Rozvrh</h3>
-					<div class="flex-spacer"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <header class="section-header">
+                    <h3 class="">Rozvrh</h3>
+                    <div class="flex-spacer"></div>
+                    <ul class="right options">
+                        <li>
+                            <a class="btn-flat btn-icon modal-trigger" href="#new-classification-modal">
+                                <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přidat hodnocení">library_add</i> 
+                            </a>  
+                        </li>
+                        <li>
+                            <a class="btn-flat btn-icon tooltipped" data-position="bottom" data-delay="50" data-tooltip="Vytisknout seznam">
+                                <i class="material-icons">print</i>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="btn-flat btn-icon modal-trigger" href="#remove-users-modal">
+                                <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Odebrat studenty">delete</i> 
+                            </a>  
+                        </li>
+                        <li>
+                            <a class="btn-flat btn-icon dropdown-button" data-activates="stream-options-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                                <i class="material-icons">more_vert</i>
+                            </a>
 
-					<ul class="right options">
-
-						<li>
-							<a class="btn-flat btn-icon modal-trigger" href="#new-classification-modal">
-								<i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přidat hodnocení">library_add</i> 
-							</a>  
-						</li>
-						<li>
-							<a class="btn-flat btn-icon tooltipped" data-position="bottom" data-delay="50" data-tooltip="Vytisknout seznam">
-								<i class="material-icons">print</i>
-							</a>
-						</li>
-						<li>
-							<a class="btn-flat btn-icon modal-trigger" href="#remove-users-modal">
-								<i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Odebrat studenty">delete</i> 
-							</a>  
-						</li>
-						<li>
-							<a class="btn-flat btn-icon dropdown-button" data-activates="stream-options-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
-								<i class="material-icons">more_vert</i>
-							</a>
-							
-						</li>
-					</ul>	
-				</header>  
-			</div>
-		</div>
-	</div>
+                        </li>
+                    </ul>	
+                </header>  
+            </div>
+        </div>
+    </div>
 </section>
+{dump $schedule}
 <div class="container">
-	<div class="row">
-		<div class="col s12">
-				<table id="one-week-schedule" class="card">
-					<thead>
-						<tr class="schedule-row schedule-header">
-							<td class="item day-title">Všední den</td>
-							<td class="item">1</td>
-							<td class="item">2</td>
-							<td class="item">3</td>
-							<td class="item">4</td>
-							<td class="item">5</td>
-							<td class="item">6</td>
-							<td class="item">7</td>
-							<td class="item">8</td>
-							<td class="item">9</td>
-						</tr>
-					</thead>
-					<tbody>
-						<tr class="schedule-row">
-							<td class="item day-title">
-								<span class="name">Pondělí</span>
-							</td>
-							<td class="item">
-								<span class="shortcut">MAT</span>
-								<span class="time">8:00</span>
-								<span class="time end">8:45</span>
-								<span class="room">U32</span>
-							</td>
-							<td class="item"></td>
-							<td class="item">
-								<span class="shortcut">MAT</span>
-								<span class="time">8:00</span>
-								<span class="time end">8:45</span>
-								<span class="room">U32</span>
-							</td>
-							<td class="item">
-								<span class="shortcut">MAT</span>
-								<span class="time">8:00</span>
-								<span class="time end">8:45</span>
-								<span class="room">U32</span>
-							</td>
-							<td></td>
-							<td></td>
-							<td class="item filled">
-								<span class="shortcut">MAT</span>
-								<span class="time">8:00</span>
-								<span class="time end">8:45</span>
-								<span class="room">U32</span>
-							</td>
-							<td class="item filled">
-								<span class="shortcut">MAT</span>
-								<span class="time">8:00</span>
-								<span class="time end">8:45</span>
-								<span class="room">U32</span>
-							</td>
-							<td class="item filled">
-								<span class="shortcut">MAT</span>
-								<span class="time">8:00</span>
-								<span class="time end">8:45</span>
-								<span class="room">U32</span>
-							</td>
-						</tr>
-						<tr class="schedule-row">
-							<td class="item day-title">
-								<span class="name">Úterý</span>
-							</td>
-							<td class="item">
-								<span class="shortcut">MAT</span>
-								<span class="time">8:00</span>
-								<span class="time end">8:45</span>
-								<span class="room">U32</span>
-							</td>
-							<td class="item"></td>
-							<td class="item">
-								<span class="shortcut">MAT</span>
-								<span class="time">8:00</span>
-								<span class="time end">8:45</span>
-								<span class="room">U32</span>
-							</td>
-							<td class="item">
-								<span class="shortcut">MAT</span>
-								<span class="time">8:00</span>
-								<span class="time end">8:45</span>
-								<span class="room">U32</span>
-							</td>
-							<td></td>
-							<td></td>
-							<td class="item filled">
-								<span class="shortcut">MAT</span>
-								<span class="time">8:00</span>
-								<span class="time end">8:45</span>
-								<span class="room">U32</span>
-							</td>
-							<td class="item filled">
-								<span class="shortcut">MAT</span>
-								<span class="time">8:00</span>
-								<span class="time end">8:45</span>
-								<span class="room">U32</span>
-							</td>
-							<td class="item filled">
-								<span class="shortcut">MAT</span>
-								<span class="time">8:00</span>
-								<span class="time end">8:45</span>
-								<span class="room">U32</span>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-		</div>
-	</div>
+    <div class="row">
+        <div class="col s12">
+            <table id="one-week-schedule" class="card">
+                <thead>
+                    <tr class="schedule-row schedule-header">
+                        <td class="item day-title">Všední den</td>
+                        {for $i = $minHour; $i < $maxHour; $i++}
+                        <td class="item">{$i - $minHour + 1}</td>
+                        {/for}
+                    </tr>
+                </thead>
+                <tbody>
+                    {foreach $schedule as $key=>$day}
+                    <tr class="schedule-row">
+                        <td class="item day-title">
+                            <span class="name">{$days[$key]}</span>
+                        </td>
+                        {for $i = $minHour; $i < $maxHour; $i++}
+                            {var $done = false}
+                            {foreach $day as $hour}
+                                {if $hour->TIME_FROM->format("%H") == $i}
+                                <td class="item">
+                                    <span class="shortcut">{$hour->SHORTCUT}</span>
+                                    <span class="time">{$hour->TIME_FROM->format("%H:%I")}</span>
+                                    <span class="time end">({$hour->TIME_TO->format("%H:%I")})</span>
+                                    <span class="room">{$hour->ROOM}</span>
+                                </td>
+                                {var $done = true}
+                                {/if}
+                            {/foreach}
+                            {if !$done}
+                                <td class="item"></td>
+                            {/if}
+                        {/for}
+                    </tr>
+                    {/foreach}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
