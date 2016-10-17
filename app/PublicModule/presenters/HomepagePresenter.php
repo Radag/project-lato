@@ -29,31 +29,49 @@ class HomepagePresenter extends BasePresenter
     protected function createComponentRegisterForm()
     {
         $form = new Form;
-        $form->addText('username', 'Uživatelské jméno:')
-            ->setRequired('Prosím vyplňte své uživatelské jméno.');
+        $form->addText('email', 'Váš email:')
+             ->addRule(Form::EMAIL, 'Email nemá správný formát.')
+             ->setRequired('Prosím vyplňte váš email.');
 
-        $form->addPassword('password', 'Heslo:')
+        $form->addText('name', 'Jméno:')
+            ->setRequired('Prosím vyplňte své jméno.');
+        
+        $form->addText('surname', 'Příjmení:')
+            ->setRequired('Prosím vyplňte své příjmení.');
+        
+        $form->addPassword('password1', 'Heslo:')
             ->setRequired('Prosím vyplňte své heslo.');
+        
+        $form->addPassword('password2', 'Heslo znovu:')
+            ->setRequired('Prosím napište heslo znovu pro kontrolu.')
+            ->addRule(Form::EQUAL, 'Hesla se neshodují', $form['password1']);
 
 
         $form->addSubmit('send', 'Registrovat');
 
         $form->onSuccess[] = [$this, 'registerFormSucceeded'];
+        
+        $form->onError[] = function (Form $form) {
+            foreach($form->getErrors() as $error) {
+                $this->flashMessage($error, 'error');
+            }
+        };
+        
         return $form;
     }
     
     public function registerFormSucceeded(Form $form, $values) 
     {
         try {
-            $pass = $values->password;
-            $this->userManager->add($values->username, $values->password);
+            $pass = $values->password1;
+            $this->userManager->add($values);
             $this->flashMessage('Byl jste zaregistrován. Vítejte !', 'succes');
             
         } catch (\Exception $ex) {
             $this->flashMessage($ex->getMessage(), 'error');
         }
         
-        $this->user->login($values->username, $pass);
+        $this->user->login($values->email, $pass);
         if($this->session->hasSection('redirect')) {    
             $redirect = $this->session->getSection('redirect');
             $link = ':' . $redirect->link . ':' . $redirect->action;

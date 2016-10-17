@@ -56,7 +56,8 @@ class SchedulelManager extends BaseManager
             }
             ksort($schedule);
             
-            return $schedule;
+            
         }
+        return $schedule;
     }
 }

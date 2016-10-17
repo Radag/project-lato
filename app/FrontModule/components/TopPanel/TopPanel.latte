@@ -103,7 +103,7 @@
                         </li>
                         <li class="divider divider-after"></li>
                         {foreach $notifications as $notification}
-                        <li><a href="{if $notification->idGroup}{plink Group:default 'id'=>$notification->idGroup}{else}{plink Profile:default 'idUser'=>$notification->participant->urlId}{/if}" class="clearfix">
+                        <li><a href="{if $notification->idGroup}{plink Group:default 'id'=>$notification->idGroup}{else}{plink Profile:default 'id'=>$notification->participant->urlId}{/if}" class="clearfix">
                             <div class="avatar left">
                                 {if $notification->participant->profileImage}
                                     <img src="{$notification->participant->profileImage}" alt="some chick">

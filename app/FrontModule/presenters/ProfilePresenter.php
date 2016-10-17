@@ -40,18 +40,19 @@ class ProfilePresenter extends BasePresenter
         $this->classroomManager = $classroomManager;
     }
     
-    public function actionDefault($idUser = null)
+    public function renderDefault($id = null)
     {
         $this->template->activeUser = $this->activeUser;
-        if($idUser === null) {          
+        if($id === null) {          
             $this->template->profileUser = $this->activeUser;
             $this->template->isMe = true;
         } else {
-            $profileUser = $this->userManager->get($idUser);
+            $profileUser = $this->userManager->get($id, true);
             $this->template->activeUser = $profileUser; 
             $this->template->isMe = false;
             $myClasses = $this->classroomManager->getClasses($this->activeUser);
             $this->template->relation = $this->classroomManager->getRelation($profileUser, $myClasses);
+            $this->template->isFriend = $this->userManager->isFriend($this->activeUser->id, $profileUser->id);
         }
     }
     
@@ -100,4 +101,17 @@ class ProfilePresenter extends BasePresenter
         $this->sendPayload();
     }
     
+    public function handleAddFriend($idUser)
+    {
+        $this->userManager->switchUserRelation($this->activeUser->id, $idUser, true);
+        $this->flashMessage('Uživatel byl přidán mezi přátele');   
+        $this->redrawControl('profileMenu');
+    }
+    
+    public function handleRemoveFriend($idUser)
+    {
+        $this->userManager->switchUserRelation($this->activeUser->id, $idUser, false);
+        $this->flashMessage('Uživatel byl odebrán z přátel');
+        $this->redrawControl('profileMenu');
+    }
 }

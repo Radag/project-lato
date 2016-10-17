@@ -38,7 +38,8 @@ class ClassroomManager extends BaseManager
         
         $relations = "";
             
-        if(!empty($mm)) {
+        
+        if(!empty(implode(",", $mm))) {
             $rows = $this->database->query("SELECT * FROM vw_user_schools WHERE ID_CLASS IN (" . implode(",", $mm) . ") AND ID_USER=?", $user->id)->fetchAll();
 
             foreach($rows as $class) {

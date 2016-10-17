@@ -93,7 +93,7 @@ class MessageManager extends BaseManager {
     public function getMessages($group, \App\Model\Entities\User $user)
     {
         $return = array();
-        $messages = $this->database->query("SELECT T1.TEXT, T1.ID_MESSAGE, T2.ID_USER, T2.NAME, T2.SURNAME, T1.CREATED_WHEN,
+        $messages = $this->database->query("SELECT T1.TEXT, T1.ID_MESSAGE, T2.ID_USER, T2.SEX, T2.URL_ID, T2.NAME, T2.SURNAME, T1.CREATED_WHEN,
                         T3.PATH,
                         T3.FILENAME,
                         T1.PRIORITY,
@@ -110,7 +110,16 @@ class MessageManager extends BaseManager {
             $user->surname = $message->SURNAME;
             $user->name = $message->NAME;
             $user->id = $message->ID_USER;
-            $user->profileImage = "https://cdn.lato.cz/" . $message->PATH . "/" . $message->FILENAME;
+            $user->urlId = $message->URL_ID;
+            if($message->PATH) {
+                $user->profileImage = "https://cdn.lato.cz/" . $message->PATH . "/" . $message->FILENAME;
+            } else {
+                if($message->SEX == 'M') {
+                    $user->profileImage = '/images/default-avatar_man.png';
+                } else {
+                    $user->profileImage = '/images/default-avatar_woman.png';
+                }
+            }
             $mess->text = $message->TEXT;
             $mess->id = $message->ID_MESSAGE;
             $mess->created = $message->CREATED_WHEN;
@@ -128,7 +137,9 @@ class MessageManager extends BaseManager {
     {
         $message = $this->database->query("SELECT T1.TEXT, T1.ID_MESSAGE, T2.ID_USER, T2.NAME, T2.SURNAME, T1.CREATED_WHEN,
                         T3.PATH,
-                        T3.FILENAME
+                        T3.FILENAME,
+                        T2.URL_ID,
+                        T2.SEX
                 FROM message T1 
                 LEFT JOIN user T2 ON T1.ID_USER=T2.ID_USER 
                 LEFT JOIN file_list T3 ON T3.ID_FILE=T2.PROFILE_IMAGE
@@ -139,7 +150,16 @@ class MessageManager extends BaseManager {
         $user->surname = $message->SURNAME;
         $user->name = $message->NAME;
         $user->id = $message->ID_USER;
-        $user->profileImage = "https://cdn.lato.cz/" . $message->PATH . "/" . $message->FILENAME;
+        $user->urlId = $message->URL_ID;
+        if($message->PATH) {
+            $user->profileImage = "https://cdn.lato.cz/" . $message->PATH . "/" . $message->FILENAME;
+        } else {
+            if($message->SEX == 'M') {
+                $user->profileImage = '/images/default-avatar_man.png';
+            } else {
+                $user->profileImage = '/images/default-avatar_woman.png';
+            }
+        }
         $mess->text = $message->TEXT;
         $mess->id = $message->ID_MESSAGE;
         $mess->created = $message->CREATED_WHEN;
@@ -188,6 +208,8 @@ class MessageManager extends BaseManager {
                     T3.PATH,
                     T2.ID_USER,
                     T3.FILENAME,
+                    T2.SEX,
+                    T2.URL_ID,
                     T2.SURNAME AS USER_SURNAME FROM comment T1
                     LEFT JOIN user T2 ON T1.ID_USER=T2.ID_USER
                     LEFT JOIN file_list T3 ON T3.ID_FILE=T2.PROFILE_IMAGE
@@ -198,7 +220,16 @@ class MessageManager extends BaseManager {
             $user->surname = $comment->USER_SURNAME;
             $user->name = $comment->USER_NAME;  
             $user->id = $comment->ID_USER;
-            $user->profileImage = "https://cdn.lato.cz/" . $comment->PATH . "/" . $comment->FILENAME;
+            $user->urlId = $comment->URL_ID;
+            if($comment->PATH) {
+                $user->profileImage = "https://cdn.lato.cz/" . $comment->PATH . "/" . $comment->FILENAME;
+            } else {
+                if($comment->SEX == 'M') {
+                    $user->profileImage = '/images/default-avatar_man.png';
+                } else {
+                    $user->profileImage = '/images/default-avatar_woman.png';
+                }
+            }
             $comm->text = $comment->TEXT;
             $comm->id = $comment->ID_COMMENT;
             $comm->created = $comment->CREATED_WHEN;

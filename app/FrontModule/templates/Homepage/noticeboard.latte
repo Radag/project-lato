@@ -151,71 +151,33 @@
 <div class="container">
     <div class="row">
         <div class="col s12">
-                <table id="one-day-schedule" class="card">
-                    <tbody>
-                        <tr class="schedule-row">
-                            <td class="day-title">
-                                <span class="title">{date("j. n.")}</span>
-                                <span class="name">{$days[date("N")-1]}</span>
-                            </td>
-                            <td class="item">
-                                <span class="shortcut">MAT</span>
-                                <span class="time">8:00</span>
-                                <span class="time end">8:45</span>
-                                <span class="room">U32</span>
-                            </td>
-                            <td class="item"></td>
-                            <td class="item">
-                                <span class="shortcut">MAT</span>
-                                <span class="time">8:00</span>
-                                <span class="time end">8:45</span>
-                                <span class="room">U32</span>
-                            </td>
-                            <td class="item">
-                                <span class="shortcut">MAT</span>
-                                <span class="time">8:00</span>
-                                <span class="time end">8:45</span>
-                                <span class="room">U32</span>
-                            </td>
-                            <td></td>
-                            <td></td>
-                            <td class="item filled">
-                                <span class="shortcut">MAT</span>
-                                <span class="time">8:00</span>
-                                <span class="time end">8:45</span>
-                                <span class="room">U32</span>
-                            </td>
-                            <td class="item filled">
-                                <span class="shortcut">MAT</span>
-                                <span class="time">8:00</span>
-                                <span class="time end">8:45</span>
-                                <span class="room">U32</span>
-                            </td>
-                            <td class="item filled">
-                                <span class="shortcut">MAT</span>
-                                <span class="time">8:00</span>
-                                <span class="time end">8:45</span>
-                                <span class="room">U32</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                    
-            {var $morningSubjects = false}
-                    {if !empty($todaySchedule)}
-                    {foreach $todaySchedule as $item}
-                    {if !$morningSubjects && ($item->TIME_FROM->format("%h") >= 12) }
-                    {var $morningSubjects = true}
-                    {if !$iterator->first}<div class="item empty"></div>{/if}
-                    {/if}
-                    <div class="item filled">
-                        <span class="shortcut">{$item->SHORTCUT}</span>
-                        <span class="time">{$item->TIME_FROM->format("%H:%I")}</span>
-                        <span class="time end">({$item->TIME_TO->format("%H:%I")})</span>
-                        <span class="room">{$item->ROOM}</span>
-                    </div>
-                    {/foreach}
-                    {/if}
+            <table id="one-day-schedule" class="card">
+                <tbody>
+                    <tr class="schedule-row">
+                        <td class="day-title">
+                            <span class="title">{date("j. n.")}</span>
+                            <span class="name">{$days[date("N")-1]}</span>
+                        </td>
+                        {for $i = $minHour; $i <= $maxHour; $i++}
+                            {var $done = false}
+                            {foreach $todaySchedule as $hour}
+                                {if $hour->TIME_FROM->format("%H") == $i}
+                                <td class="item">
+                                    <span class="shortcut">{$hour->SHORTCUT}</span>
+                                    <span class="time">{$hour->TIME_FROM->format("%H:%I")}</span>
+                                    <span class="time end">({$hour->TIME_TO->format("%H:%I")})</span>
+                                    <span class="room">{$hour->ROOM}</span>
+                                </td>
+                                {var $done = true}
+                                {/if}
+                            {/foreach}
+                            {if !$done}
+                                <td class="item"></td>
+                            {/if}
+                        {/for}
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

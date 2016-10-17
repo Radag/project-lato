@@ -282,7 +282,7 @@ class GroupManager extends BaseManager {
     
     public function getGroupUsers($idGroup)
     {
-         $users = $this->database->query("SELECT DISTINCT T1.ID_USER, T2.NAME, T2.SURNAME, T2.USERNAME, T2.PROFILE_PATH, T2.PROFILE_FILENAME FROM 
+         $users = $this->database->query("SELECT DISTINCT T1.ID_USER, T2.SEX, T2.NAME, T2.SURNAME, T2.USERNAME, T2.PROFILE_PATH, T2.PROFILE_FILENAME FROM 
             (SELECT ID_OWNER AS ID_USER FROM groups WHERE ID_GROUP=? 
             UNION SELECT ID_USER FROM user_group WHERE ID_GROUP=? AND ACTIVE=1) T1
             LEFT JOIN vw_user_detail T2 ON T1.ID_USER = T2.ID_USER", $idGroup, $idGroup)->fetchAll();
@@ -296,6 +296,12 @@ class GroupManager extends BaseManager {
              $user->username = $us->USERNAME;
              if($us->PROFILE_FILENAME) {
                 $user->profileImage = "https://cdn.lato.cz/" . $us->PROFILE_PATH . "/" . $us->PROFILE_FILENAME;
+             } else {
+                if($us->SEX == 'M') {
+                    $user->profileImage = '/images/default-avatar_man.png';
+                } else {
+                    $user->profileImage = '/images/default-avatar_woman.png';
+                }
              }
              $userArray[] = $user;
              

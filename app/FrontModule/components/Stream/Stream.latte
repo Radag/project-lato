@@ -75,11 +75,11 @@
     <div class="card flex-column" id="message-box-num_{$message->id}">   
         <div class="card-header">
             {if $message->priority == 1}<div class="topped"></div>{/if}
-            <a href="{plink Profile:default 'idUser'=>$message->user->id}" class="avatar">
+            <a href="{plink Profile:default 'id'=>$message->user->urlId}" class="avatar">
                 <img src="{$message->user->profileImage}" alt="{$message->user->name}">
             </a>
             <h3 class="truncate">
-                <a href="{plink Profile:default 'idUser'=>$message->user->id}">{$message->user->name} {$message->user->surname}</a>
+                <a href="{plink Profile:default 'id'=>$message->user->urlId}">{$message->user->name} {$message->user->surname}</a>
             </h3>
             <span class="card-date">{$message->getCreated()|date:"j. n."}</span>
             <a class="btn-flat btn-icon dropdown-button card-options waves-effect waves-dark" data-activates="message_dropdown_{$message->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">

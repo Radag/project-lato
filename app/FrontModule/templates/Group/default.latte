@@ -49,7 +49,7 @@
                     <ul class="custom-collection">
                         {foreach $groupMembers as $member}
                         <li>
-                            <a href="{plink Profile:default 'idUser'=>$member->id}" class="item">
+                            <a href="{plink Profile:default 'id'=>$member->urlId}" class="item">
                                 <img src="{$member->profileImage}" alt="" class="avatar small">
                                 <span class="title">{if !empty($member->name)}{$member->name} {$member->surname}{/if}</span>
                             </a>

@@ -44,7 +44,7 @@
                 <thead>
                     <tr class="schedule-row schedule-header">
                         <td class="item day-title">Všední den</td>
-                        {for $i = $minHour; $i < $maxHour; $i++}
+                        {for $i = $minHour; $i <= $maxHour; $i++}
                         <td class="item">{$i - $minHour + 1}</td>
                         {/for}
                     </tr>
@@ -55,7 +55,7 @@
                         <td class="item day-title">
                             <span class="name">{$days[$key]}</span>
                         </td>
-                        {for $i = $minHour; $i < $maxHour; $i++}
+                        {for $i = $minHour; $i <= $maxHour; $i++}
                             {var $done = false}
                             {foreach $day as $hour}
                                 {if $hour->TIME_FROM->format("%H") == $i}

@@ -62,7 +62,24 @@ class HomepagePresenter extends BasePresenter
         $groups = $this->groupManager->getUserGroups($this->activeUser);
         
         $this->template->groups = $this->groupManager->getGroups($this->activeUser);
-        $this->template->todaySchedule = $this->scheduleManger->getTodaySchedule($groups);
+        $todaySchedule = $this->scheduleManger->getTodaySchedule($groups);
+        
+        $maxHour = 0;
+        $minHour = 24;
+        
+        foreach($todaySchedule as $hour) {
+            if($maxHour < $hour->TIME_FROM->format("%H")) {
+                $maxHour = $hour->TIME_FROM->format("%H");
+            }
+            if($minHour > $hour->TIME_FROM->format("%H")) {
+                $minHour = $hour->TIME_FROM->format("%H");
+            }
+        }
+        
+        $this->template->maxHour = $maxHour;
+        $this->template->minHour = $minHour;
+        $this->template->todaySchedule = $todaySchedule;
+        
         $this->template->days = $this->days;
         $this->template->actualTasks = $this->taskManager->getClosestTask($groups);
         $this->template->actualNotices = $this->noticeManager->getNotices($this->activeUser, 3);
@@ -98,7 +115,7 @@ class HomepagePresenter extends BasePresenter
         $this->template->days = $this->days;
         
     }
-    
+       
     protected function createComponentNoticeForm()
     {
         return new NewNoticeForm($this->noticeManager, $this->activeUser);
