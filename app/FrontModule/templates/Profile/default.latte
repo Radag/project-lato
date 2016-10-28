@@ -12,7 +12,7 @@
                             <img src="{$activeUser->profileImage}" alt="some-chich">
                         </div>
                         <div class="profile-title">
-                            {$activeUser->name} {$activeUser->surname}<span>, {if $isMe}můj profil{else}{$relation}{/if}</span>
+                            {$activeUser->name} {$activeUser->surname}<span>{if $isMe}, můj profil{else}{$relation}{/if}</span>
                         </div>
                         {snippet profileMenu}
                         <ul class="controls">
@@ -45,16 +45,19 @@
                 </a>
                 {/if}
                 <div class="card flex-column">
+                    {dump $schools}
                     <div class="card-header">
                         <h2>Osobní a kontaktní informace</h2>
                     </div>
                     <div class="card-content list clearfix">
+                        {ifset $schools}
+                        {foreach $schools as $school}
                         <div class="row">
                             <div class="col s3 label">
                                 Škola
                             </div>
                             <div class="col s9 text">
-                                Střední odborná škola Purkyňova 97
+                                {$school->school}
                             </div>
                         </div>
                         <div class="row">
@@ -62,39 +65,27 @@
                                 Třída
                             </div>
                             <div class="col s9  text">
-                                V4B
+                                {$school->className} {$school->classGrade}
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col s3 label">
-                                Zaměření
-                            </div>
-                            <div class="col s9 text">
-                                Grafika a webdesign (GRA)
-                            </div>
-                        </div>
+                        {/foreach}
+                        {/ifset}
+                        {if !empty($activeUser->birthday)}
                         <div class="row">
                             <div class="col s3 label">
                                 Datum narození
                             </div>
                             <div class="col s9 text">
-                                1. 1. 1990
+                                {$activeUser->birthday->format('d. m. Y')}
                             </div>
                         </div>
+                        {/if}
                         <div class="row">
                             <div class="col s3 label">
                                 E-mail
                             </div>
                             <div class="col s9 text">
                                 <a href="mailto:{$activeUser->email}">{$activeUser->email}</a>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col s3 label">
-                                Zájmy
-                            </div>
-                            <div class="col s9 text">
-                                nic mě nebaví
                             </div>
                         </div>
                     </div>

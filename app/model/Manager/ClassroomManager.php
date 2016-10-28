@@ -51,7 +51,9 @@ class ClassroomManager extends BaseManager
                 
             }
         }
-        $relations = "spolužák (" . $relations . ")";
+        if($relations != "") {
+            $relations = ", spolužák (" . $relations . ")";
+        }
         return $relations;
     }
     
@@ -65,6 +67,7 @@ class ClassroomManager extends BaseManager
              $classroom->id = $class->ID_CLASS;
              $classroom->className = $class->CLASS_NAME;
              $classroom->school = $class->SCHOOL_NAME;
+             $classroom->classGrade = $class->CLASS_GRADE;
              $return[] = $classroom;
              
          }

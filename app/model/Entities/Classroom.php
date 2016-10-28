@@ -17,4 +17,5 @@ class Classroom {
     public $id = null;
     public $className = null;
     public $school = null;
+    public $classGrade = null;
 }

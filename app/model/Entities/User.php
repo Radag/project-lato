@@ -19,7 +19,8 @@ class User {
     public $surname = null;
     public $username = null;
     public $email = null;
-    public $profileImage = null;    
+    public $profileImage = null;   
+    public $birthday = null;
 
     
     public $classifications = null;

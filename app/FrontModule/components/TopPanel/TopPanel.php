@@ -13,6 +13,7 @@ use App\Model\Manager\GroupManager;
 use App\Model\Manager\PrivateMessageManager;
 use App\Model\Manager\NotificationManager;
 use App\FrontModule\Components\NewGroupForm\NewGroupForm;
+use App\FrontModule\Components\NewGroupForm\JoinGroupForm;
 
 /**
  * Description of SignInForm
@@ -120,6 +121,11 @@ class TopPanel extends Control
         return $form;
     }
     
+    public function createComponentJoinGroupForm()
+    {
+        $form = new JoinGroupForm($this->groupManager);
+        return $form;
+    }
     
     public function handlePrivateMessagesRead()
     {

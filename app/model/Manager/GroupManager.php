@@ -72,7 +72,8 @@ class GroupManager extends BaseManager {
                 'ID_OWNER' => $group->owner->id,
                 'GROUP_TYPE' => $group->groupType,
                 'SHORTCUT' => $group->shortcut,
-                'COLOR_SCHEME' => $group->mainColor
+                'COLOR_SCHEME' => $group->mainColor,
+                'CODE' => strtoupper(substr(md5(openssl_random_pseudo_bytes(20)),-8))
         ));
         $idGroup = $this->database->query("SELECT MAX(ID_GROUP) FROM groups")->fetchField();
                
@@ -256,6 +257,12 @@ class GroupManager extends BaseManager {
       //  $this->notificationManager->addNotification($notification);
     }
     
+    public function getGroupByCode($code) 
+    {
+        return $this->database->query("SELECT T1.id_group FROM groups T1 JOIN group_sharing T2 ON T1.ID_GROUP=T2.ID_GROUP WHERE T2.SHARE_BY_CODE=1 AND T1.CODE=?", $code)->fetchField();
+        
+    }
+    
     public function switchSharing(Group $group, $state) 
     {
         $this->database->beginTransaction();
@@ -282,7 +289,7 @@ class GroupManager extends BaseManager {
     
     public function getGroupUsers($idGroup)
     {
-         $users = $this->database->query("SELECT DISTINCT T1.ID_USER, T2.SEX, T2.NAME, T2.SURNAME, T2.USERNAME, T2.PROFILE_PATH, T2.PROFILE_FILENAME FROM 
+         $users = $this->database->query("SELECT DISTINCT T1.ID_USER, T2.SEX, T2.NAME, T2.SURNAME, T2.USERNAME, T2.PROFILE_PATH, T2.URL_ID, T2.PROFILE_FILENAME FROM 
             (SELECT ID_OWNER AS ID_USER FROM groups WHERE ID_GROUP=? 
             UNION SELECT ID_USER FROM user_group WHERE ID_GROUP=? AND ACTIVE=1) T1
             LEFT JOIN vw_user_detail T2 ON T1.ID_USER = T2.ID_USER", $idGroup, $idGroup)->fetchAll();
@@ -294,6 +301,7 @@ class GroupManager extends BaseManager {
              $user->surname = $us->SURNAME;
              $user->name = $us->NAME;
              $user->username = $us->USERNAME;
+             $user->urlId = $us->URL_ID;
              if($us->PROFILE_FILENAME) {
                 $user->profileImage = "https://cdn.lato.cz/" . $us->PROFILE_PATH . "/" . $us->PROFILE_FILENAME;
              } else {

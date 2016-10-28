@@ -42,15 +42,18 @@ class ProfilePresenter extends BasePresenter
     
     public function renderDefault($id = null)
     {
+        $this['topPanel']->setTitle('Profil');
         $this->template->activeUser = $this->activeUser;
+        $myClasses = $this->classroomManager->getClasses($this->activeUser);
         if($id === null) {          
             $this->template->profileUser = $this->activeUser;
             $this->template->isMe = true;
+            $this->template->schools = $myClasses;
         } else {
             $profileUser = $this->userManager->get($id, true);
             $this->template->activeUser = $profileUser; 
             $this->template->isMe = false;
-            $myClasses = $this->classroomManager->getClasses($this->activeUser);
+            $this->template->schools = $this->classroomManager->getClasses($profileUser);
             $this->template->relation = $this->classroomManager->getRelation($profileUser, $myClasses);
             $this->template->isFriend = $this->userManager->isFriend($this->activeUser->id, $profileUser->id);
         }

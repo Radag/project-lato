@@ -30,7 +30,7 @@ class BasePresenter extends Nette\Application\UI\Presenter
      *  
      * @var \App\Model\Entities\User
      */
-    protected $activeUser;
+    public $activeUser;
     
     /**
      * @var UserManager 
