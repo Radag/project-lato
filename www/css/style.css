@@ -17,6 +17,14 @@ a {
     transition: color 300ms ease-in-out;
 }
 
+.lato-logo {
+}
+
+.lato-logo.medium {
+    height: 48px;
+    width: 48px;
+}
+
 .topped {
     position: absolute;
     right: 0;
@@ -30,6 +38,11 @@ a {
 
 .right-16 {
     margin-right: 16px !important;
+}
+
+[type="radio"]+label {
+    color: rgba(0, 0, 0, .87);
+    font-size: 14px !important;
 }
 
 [type="checkbox"]+label {
@@ -73,21 +86,21 @@ a {
     text-overflow: ellipsis;
 }
 
-.collapsible-table-card-header {
+.table-header {
     padding-bottom: 20px !important;
 }
 
-.collapsible-table-card-header .btn-icon {
+.table-header .btn-icon {
     margin-right: 24px;
     color: rgba(0, 0, 0, .54);
     height: 36px;
 }
 
-.collapsible-table-card-header .btn-icon i {
+.table-header .btn-icon i {
     font-size: 22px !important;
 }
 
-.collapsible-table-card-header {
+.table-header {
     flex-grow: 1;
     margin-top: 16px;
     text-transform: uppercase;
@@ -97,7 +110,7 @@ a {
     font-weight: 500;
 }
 
-.collapsible-table-card-header [type="checkbox"].filled-in:not(:checked)+label:after {
+.table-header [type="checkbox"].filled-in:not(:checked)+label:after {
     border-color: rgba(0, 0, 0, .38);
 }
 
@@ -114,29 +127,54 @@ a {
     box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
 }
 
-.collapsible-header {
+.custom-table {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+    background-color: #fff;
+    margin: 0;
+}
+
+.table-row {
     display: flex;
     padding: 20px 24px;
     align-items: center;
     min-height: 1em;
     line-height: 1em;
-    border-color: #eaeaea;
+    border-bottom: 1px solid #eaeaea;
 }
 
-.collapsible-table-card-header .table-field,
-.collapsible-header .table-field,
-.collapsible-body .table-field {
+.table-row.table-control {
+    background-color: #f5f5f5;
+}
+
+.table-header .table-field,
+.table-row .table-field {
     margin-left: 32px;
     width: 15%;
     text-align: right;
+}
+
+.table-row .table-field a {
+    cursor: pointer;
+    color: rgba(0, 0, 0, .38);
+}
+
+.table-row .table-field input {
+    text-align: right;
+    padding: 0;
+    color: initial;
+    height: 2em;
+}
+
+.table-row .table-field input::-webkit-input-placeholder {  
+   font-style: italic;  
 }
 
 .collapsible-header.active {
     border-bottom: 1px solid transparent;
 }
 
-.collapsible-table-card-header [type="checkbox"]+label,
-.collapsible-header [type="checkbox"]+label {
+.table-header [type="checkbox"]+label,
+.table-row [type="checkbox"]+label {
     padding-left: 20px;
     margin-left: 6px;
     margin-right: 26px;
@@ -144,23 +182,23 @@ a {
     line-height: 20px;
 }
 
-.collapsible-header .title {
+.table-row .title {
     font-weight: 500;
 }
 
-.collapsible-header .title span {
+.table-row .title span {
     text-transform: uppercase;
 }
 
-.collapsible-header .grade,
-.collapsible-body .grade {
+.table-row .classification,
+.collapsible-body .classification {
     color: rgba(0, 0, 0, .38);
     font-size: 16px;
     font-weight: 400;
 }
 
-.collapsible-header .grade strong,
-.collapsible-body .grade strong {
+.table-row .classification strong,
+.collapsible-body .classification strong {
     color: rgba(0, 0, 0, .87);
     font-weight: 500;
 }
@@ -170,25 +208,24 @@ a {
     border-color: transparent;
 }
 
-.collapsible-body .grades-table {
+.collapsible-body .classification-table {
     padding-left: 24px;
 }
 
-.collapsible-body .grades-table .table-row {
+.collapsible-body .classification-table .table-row {
     border-top: 1px solid #eaeaea;
+    border-bottom: 0;
     padding: 20px 24px 20px 0;
-    display: flex;
-    align-items: center;
 }
 
-.collapsible-body .grades-table .table-row .edit {
+.collapsible-body .classification-table .table-row .edit {
     width: 32px;
     text-align: center;
     margin-right: 20px;
     color: rgba(0, 0, 0, .54);
 }
 
-.collapsible-body .grades-table .table-row .title {
+.collapsible-body .classification-table .table-row .title {
     font-weight: 500;
     color: rgba(0, 0, 0, .87);
 }
@@ -211,6 +248,27 @@ a {
 
 .collapsible-body-footer ul li i {
     color: rgba(0, 0, 0, .54);
+}
+
+.classification-chips {
+    display: flex;
+    padding: 16px 24px 0 24px;
+}
+
+.classification-chips .chip {
+    display: flex;
+    align-items: center;
+    color: rgba(0, 0, 0, .54);
+}
+
+.classification-chips .chip .material-icons {
+    font-size: 16px !important;
+    margin-left: 12px;
+    color: rgba(0, 0, 0, .54);
+    height: 24px;
+    line-height: 24px;
+    width: 24px;
+    text-align: center;
 }
 
 /* ----- secondary color ----- */
@@ -277,10 +335,14 @@ a {
 }
 
 .center-card .card-header {
-	padding: 52px 24px 8px 24px !important;
-	font-size: 35px;
-	font-weight:300;
-	text-align: center;
+    justify-content: center;
+}
+
+.center-card .card-header h1 {
+    margin: 0;
+    margin-top: 32px;
+    font-size: 32px;
+    font-weight:300;
 }
 
 input[type="text"],
@@ -297,12 +359,13 @@ input[type="password"] {
 }
 
 .center-card .card-content .form-controls {
-	margin-top: 16px !important;
+	margin-top: 20px !important;
 	margin-bottom: 0;
 }
 
 .center-card .card-footer {
 	background-color: #f5f5f5;
+    padding: 24px;
 	text-align: center;
 	box-sizing: content-box;
 }
@@ -911,7 +974,7 @@ strong {
     font-size: 17px;
     font-weight: 500;
     color: rgba(0, 0, 0, .87);
-    margin: 0;
+    margin: 40px 0 32px 0;
     flex-grow: 1;
 }
 
@@ -1625,7 +1688,7 @@ textarea.materialize-textarea {
 }
 
 .flex-row {
-    flex-direction: row;
+    display: flex;
 }
 
 .flex-column {
