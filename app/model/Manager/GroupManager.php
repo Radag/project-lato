@@ -99,7 +99,9 @@ class GroupManager extends BaseManager {
                 T3.MAIN_COLOR,
                 T4.STUDENTS,
                 T5.SHARE_BY_LINK,
-                T6.HASH_CODE
+                T5.SHARE_BY_CODE,
+                T1.CODE AS INTER_CODE,
+                T6.HASH_CODE AS PUBLIC_CODE
         FROM groups T1
         LEFT JOIN user T2 ON T1.ID_OWNER=T2.ID_USER
         LEFT JOIN group_color_scheme T3 ON T1.COLOR_SCHEME=T3.ID_SCHEME
@@ -119,8 +121,10 @@ class GroupManager extends BaseManager {
         $groupModel->mainColor = $group->MAIN_COLOR;
         $groupModel->numberOfStudents = $group->STUDENTS;
         $groupModel->owner = $user;
-        $groupModel->sharingOn = $group->SHARE_BY_LINK;
-        $groupModel->sharingCode = $group->HASH_CODE;
+        $groupModel->interCode = $group->INTER_CODE;
+        $groupModel->publicCode = $group->PUBLIC_CODE;
+        $groupModel->shareByLink = $group->SHARE_BY_LINK;
+        $groupModel->shareByCode = $group->SHARE_BY_CODE;
         $groupModel->urlId = $group->URL_ID;
         $groupModel->description = $group->DESCRIPTION;
         $groupModel->room = $group->ROOM;
@@ -263,7 +267,7 @@ class GroupManager extends BaseManager {
         
     }
     
-    public function switchSharing(Group $group, $state) 
+    public function switchSharing(Group $group, $stateByLink, $stateByCode) 
     {
         $this->database->beginTransaction();
         $id = $this->database->query("SELECT ID FROM group_sharing WHERE ID_GROUP=?", $group->id)->fetchField();
@@ -277,10 +281,11 @@ class GroupManager extends BaseManager {
             $this->database->table('group_sharing')->insert(array(
                 'ID_GROUP' => $group->id,
                 'ID_ACTION' => $idAction,
-                'SHARE_BY_LINK' => $state
+                'SHARE_BY_LINK' => (int)$stateByLink,
+                'SHARE_BY_CODE' => (int)$stateByCode
             ));
         } else {
-            $this->database->query("UPDATE group_sharing SET SHARE_BY_LINK=? WHERE ID_GROUP=?", $state, $group->id);
+            $this->database->query("UPDATE group_sharing SET SHARE_BY_LINK=?, SHARE_BY_CODE=? WHERE ID_GROUP=?", (int)$stateByLink, (int)$stateByCode, $group->id);
         }
         
         $this->database->commit();

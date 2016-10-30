@@ -96,7 +96,7 @@
                 </div>
                 <div class="card-footer"></div>
             </div>
-            {if $activeGroup->sharingOn == 1}
+            {if $activeGroup->owner->id === $activeUser->id}
             <div class="card flex-column bottom-spacer" n:if="$groupPermission['settings']">
                 <div class="card-header">
                     <h3>Sdílení</h3>
@@ -105,12 +105,27 @@
 
                 <div class="card-content clearfix">
                     {form sharingForm id=>"sharingForm"}
-                    <div class="switch-row" n:if="$activeGroup->owner->id === $activeUser->id">
+                    <div class="switch-row">
                         <p class="secondary-par left">
-                            {if $activeGroup->sharingOn == 1}
-                            Vypnout sdílení
+                            {if $activeGroup->shareByLink == 1}
+                            Vypnout sdílení odkazem
                             {else}
-                            Zapnout sdílení
+                            Zapnout sdílení odkazem
+                            {/if}
+                            <div class="switch right">
+                                <label>
+                                    {input shareByLink:}
+                                    <span class="lever"></span>
+                                </label>
+                            </div>
+                        </p>
+                    </div>
+                    <div class="switch-row">
+                        <p class="secondary-par left">
+                            {if $activeGroup->shareByCode == 1}
+                            Vypnout sdílení kódem
+                            {else}
+                            Zapnout sdílení kódem
                             {/if}
                             <div class="switch right">
                                 <label>
@@ -118,10 +133,12 @@
                                     <span class="lever"></span>
                                 </label>
                             </div>
-                        </p> 
+                        </p>
                     </div>
                     {/form}
-                    <p class="secondary-par left">Zápis do této skupiny mohou ostatní uživatelé provést pomocí kódu <strong>{$activeGroup->sharingCode}</strong></p>
+                    <p class="secondary-par left">Zápis do této skupiny mohou ostatní uživatelé provést pomocí kódu <strong>{$activeGroup->interCode}</strong>
+                    {if $activeGroup->shareByLink == 1} nebo odkazem <strong>{link //:Public:Action:default, id => $activeGroup->publicCode}</strong>{/if}                    
+                    </p>
                     <a class="btn-flat light-gray card-bottom modal-trigger" href="#add-user-to-group">
                         Přidat uživatele
                     </a>
@@ -134,7 +151,7 @@
                                 <form action="{link addToGroup!}" method="post" >
                                     <div class="row form-row">
                                         <div class="input-field col s12">
-                                            <input type="text" value="{link //:Public:Action:default, id => $activeGroup->sharingCode}" >
+                                            <input type="text" value="{link //:Public:Action:default, id => $activeGroup->publicCode}" >
                                             <label for="autocomplete-input">Odkaz ke sdílení</label>
                                         </div>
                                     </div>

@@ -81,10 +81,10 @@ class GroupSettingsForm extends Control
              ->setDefaultValue($privileges->PR_SHARE_MSG);  
         
         //sdílení
-        $form->addCheckbox('allowSharing','Povolit sdílení', array(1,0))
-             ->setDefaultValue(1);
+        $form->addCheckbox('shareByLink','Povolit sdílení pomocí odkazu', array(1,0))
+             ->setDefaultValue($this->group->shareByLink);
         $form->addCheckbox('shareByCode','Povolit sdílení pomocí kódu', array(1,0))
-             ->setDefaultValue($this->group->sharingOn);
+             ->setDefaultValue($this->group->shareByCode);
         
         
         $form->addSubmit('send', 'Uložit nastavení');
@@ -172,7 +172,7 @@ class GroupSettingsForm extends Control
         ];
         
         $this->groupManager->editGroupPrivileges($privileges, $this->group->id);
-        $this->groupManager->switchSharing($this->group, $values['shareByCode']);
+        $this->groupManager->switchSharing($this->group, $values['shareByCode'], $values['shareByLink']);
         
         //rozvrh
         

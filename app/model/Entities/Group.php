@@ -31,7 +31,9 @@ class Group {
     public $room = null;
     public $subgroup = null;
     
-    public $sharingOn = null;
-    public $sharingCode = null;
+    public $interCode = null;
+    public $publicCode = null;
+    public $shareByLink = null;
+    public $shareByCode = null;
     public $deleted = null;
 }

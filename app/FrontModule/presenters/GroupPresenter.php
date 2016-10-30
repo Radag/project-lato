@@ -155,16 +155,14 @@ class GroupPresenter extends BasePresenter
     {
         $form = new \Nette\Application\UI\Form;
 
-        $form->addCheckbox('shareByCode','Zapnout sdílení', array(1,0))
-             ->setDefaultValue($this->activeGroup->sharingOn);
+        $form->addCheckbox('shareByCode','Zapnout sdílení kódem', array(1,0))
+             ->setDefaultValue($this->activeGroup->shareByCode);
+        $form->addCheckbox('shareByLink','Zapnout sdílení linkem', array(1,0))
+             ->setDefaultValue($this->activeGroup->shareByLink);
 
         $form->onSuccess[] = function($form, $values) {
-            $this->groupManager->switchSharing($this->activeGroup, $values['shareByCode']);
-            if($values['shareByCode']) {
-                $this->flashMessage('Sdílení zapnuto');
-            } else {
-                $this->flashMessage('Sdílení vypnuto');
-            }
+            $this->groupManager->switchSharing($this->activeGroup, $values['shareByLink'], $values['shareByCode']);
+            $this->flashMessage('Sdílení nastaveno');
             $this->redirect('this');
         };
         return $form;        
@@ -212,6 +210,10 @@ class GroupPresenter extends BasePresenter
     
     public function actionSettings()
     {
+        if(!$this->groupPermission['settings']) {
+            $this->redirect(':Front:Homepage:noticeboard');
+        }
+        
         $this['topPanel']->setTitle('nastavení');
     }
     

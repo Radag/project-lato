@@ -1,4 +1,5 @@
-{form form}
+{snippet}
+{form form class=>'ajax'}
     <div class="card flex-column settings">
         <div class="card-header">
             <h2>Nastavení</h2>
@@ -132,13 +133,14 @@
                     <p class="secondary-par">Lorem ipsum dolor sit amet</p>
                 </div> 
                 <div class="form-row">
-                    <p>Povolit sdílení</p>
+                    <p>Povolit sdílení pomocí odkazu</p>
                     <div class="switch">
                         <label>
-                            {input allowSharing:}
+                            {input shareByLink:}
                             <span class="lever"></span>
                         </label>
                     </div>
+                    <span n:if="$activeGroup->shareByLink" class="notice">Odkaz pro sdílení je <a href="{plink //:Public:Action:default, id => $activeGroup->publicCode}">{plink //:Public:Action:default, id => $activeGroup->publicCode}</a></span>
                 </div>
                 <div class="form-row">
                     <p>Povolit sdílení pomocí kódu</p>
@@ -148,7 +150,7 @@
                             <span class="lever"></span>
                         </label>
                     </div>
-                    <span n:if="$activeGroup->sharingOn" class="notice">Kód pro zápis je <strong>{$activeGroup->sharingCode}</strong></span>
+                    <span n:if="$activeGroup->shareByCode" class="notice">Kód pro zápis je <strong>{$activeGroup->interCode}</strong></span>
                 </div>
             </section>
             <section class="card-content-section">
@@ -183,3 +185,4 @@
         </div>
     </div>
 {/form}
+{/snippet}
