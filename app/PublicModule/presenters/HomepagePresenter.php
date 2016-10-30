@@ -30,19 +30,24 @@ class HomepagePresenter extends BasePresenter
     {
         $form = new Form;
         $form->addText('email', 'Váš email:')
+             ->setAttribute('placeholder', 'Váš email')
              ->addRule(Form::EMAIL, 'Email nemá správný formát.')
              ->setRequired('Prosím vyplňte váš email.');
 
         $form->addText('name', 'Jméno:')
+             ->setAttribute('placeholder', 'Jméno')
             ->setRequired('Prosím vyplňte své jméno.');
         
         $form->addText('surname', 'Příjmení:')
+             ->setAttribute('placeholder', 'Příjmení')
             ->setRequired('Prosím vyplňte své příjmení.');
         
         $form->addPassword('password1', 'Heslo:')
+             ->setAttribute('placeholder', 'Heslo')
             ->setRequired('Prosím vyplňte své heslo.');
         
         $form->addPassword('password2', 'Heslo znovu:')
+             ->setAttribute('placeholder', 'Heslo znovu')
             ->setRequired('Prosím napište heslo znovu pro kontrolu.')
             ->addRule(Form::EQUAL, 'Hesla se neshodují', $form['password1']);
 
