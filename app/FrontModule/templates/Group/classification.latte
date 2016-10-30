@@ -1,0 +1,158 @@
+{block content}
+{control topPanel}
+
+<section class="main">
+    <div class="container offset">
+        <div class="row">
+            <div class="col s12">
+                <header class="section-header">
+                    <h3>
+                        Čitatelé a jmenovatelé
+                    </h3>
+                    <div class="flex-spacer"></div>
+
+                    <ul class="right options">
+                        <li>
+                            <a class="btn-flat btn-icon dropdown-button" data-activates="grades-page-options" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                                <i class="material-icons">more_vert</i>
+                            </a>
+                            <ul id='grades-page-options' class="dropdown-content">
+                                <li><a href="#!">Upravit vlastnosti</a></li>
+                                <li><a href="#!">Smazat</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </header>  
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container offset">
+    <div class="row">
+        <div class="col s12">
+            <div class="classification-chips">
+                <a href="#edit-classification-modal" class="chip modal-trigger">
+                    Váha známky × 3
+                </a>
+                <a href="#edit-classification-modal" class="chip modal-trigger">
+                    5 klasifikačních stupňů
+                </a>
+            </div>
+        </div>
+    </div>
+    <div id="edit-classification-modal" class="modal modal-small">
+        <div class="card-content">
+            <h3>Upravit hodnocení</h3>
+            <div class="form-row">
+                <input type="text" placeholder="Oblast zkoušené látky">
+            </div>
+            <h4>Způsob hodnocení</h4>
+            <p>
+                <input name="group1" type="radio" id="classification-type-1">
+                <label for="classification-type-1">5-ti stupňová klasifikace</label>
+            </p>
+            <p>
+                <input name="group1" type="radio" id="classification-type-2">
+                <label for="classification-type-2">Procenta</label>
+            </p>
+            <p>
+                <input name="group1" type="radio" id="classification-type-3">
+                <label for="classification-type-3">Slovní hodnocení</label>
+            </p>
+
+        </div>
+        <div class="card-footer">
+
+        </div>             
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="card-header table-header">
+                <input type="checkbox" class="filled-in" id="select-all" />
+                <label for="select-all"></label>   
+                <div class="title">Student</div>
+                <div class="flex-spacer"></div>
+                <div class="table-field">Poznámka</div>
+                <div class="table-field">Hodnocení</div>
+            </div>
+
+            <ul class="custom-table">
+                <li>
+                    <div class="table-row">
+                        <input type="checkbox" class="filled-in user-checkbox" id="user1" />
+                        <label for="user1"></label>
+                        <div class="avatar small">
+                            <img src="/images/user1.png">
+                        </div>
+                        <div class="title">
+                            <span>Prijmeni</span>, Jmeno
+                        </div>
+                        <div class="flex-spacer"></div>
+                        <div class="table-field"><a class="material-icons">comment</a></div>
+                        <div class="grade table-field"><input type="text" class="no-border" placeholder="neuvedeno"></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="table-row">
+                        <input type="checkbox" class="filled-in user-checkbox" id="user1" />
+                        <label for="user1"></label>
+                        <div class="avatar small">
+                            <img src="/images/user1.png">
+                        </div>
+                        <div class="title">
+                            <span>Prijmeni</span>, Jmeno
+                        </div>
+                        <div class="flex-spacer"></div>
+                        <div class="table-field"><a class="material-icons">comment</a></div>
+                        <div class="grade table-field"><input type="text" class="no-border" placeholder="neuvedeno"></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="table-row">
+                        <input type="checkbox" class="filled-in user-checkbox" id="user1" />
+                        <label for="user1"></label>
+                        <div class="avatar small">
+                            <img src="/images/user1.png">
+                        </div>
+                        <div class="title">
+                            <span>Prijmeni</span>, Jmeno
+                        </div>
+                        <div class="flex-spacer"></div>
+                        <div class="table-field"><a class="material-icons">comment</a></div>
+                        <div class="grade table-field"><input type="text" class="no-border" placeholder="neuvedeno"></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="table-row table-control">
+                        <div class="flex-spacer">
+                        </div>  
+                        <div class="form-control">
+                            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-classification">Zapsat vše</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+
+        </div>
+    </div>
+</div>
+<script>
+  $(document).ready(function() {
+    $('select').material_select();
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
