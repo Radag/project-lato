@@ -41,6 +41,13 @@ class MessageManager extends BaseManager {
             $this->groupManager = $groupManager;
     }
     
+    public function cloneMessage(Message $message, \App\Model\Entities\Group $toGroup) 
+    {
+        $message->idGroup = $toGroup->id;
+        $this->createMessage($message, array());
+    }
+    
+    
     public function createMessage(Message $message, $attachments)
     {
         $this->database->beginTransaction();
@@ -90,20 +97,26 @@ class MessageManager extends BaseManager {
             ));
     }
     
-    public function getMessages($group, \App\Model\Entities\User $user)
+    public function getMessages($group, \App\Model\Entities\User $user, $deleted=false)
     {
         $return = array();
+        if($deleted) {
+            $delete = array(0,1);
+        } else {
+            $delete = array(0);
+        }
         $messages = $this->database->query("SELECT T1.TEXT, T1.ID_MESSAGE, T2.ID_USER, T2.SEX, T2.URL_ID, T2.NAME, T2.SURNAME, T1.CREATED_WHEN,
                         T3.PATH,
                         T3.FILENAME,
                         T1.PRIORITY,
-                        T4.ACTIVE AS IS_FOLLOWED
+                        T4.ACTIVE AS IS_FOLLOWED,
+                        T1.DELETED
                 FROM message T1 
                 LEFT JOIN user T2 ON T1.ID_USER=T2.ID_USER 
                 LEFT JOIN file_list T3 ON T3.ID_FILE=T2.PROFILE_IMAGE
                 LEFT JOIN message_following T4 ON (T1.ID_MESSAGE = T4.ID_MESSAGE AND T4.ID_USER=? AND T4.ACTIVE=1)
-                WHERE T1.ID_GROUP=? AND T1.DELETED=0
-                ORDER BY PRIORITY DESC, CREATED_WHEN DESC LIMIT 10", $user->id, $group->id)->fetchAll();
+                WHERE T1.ID_GROUP=? AND T1.DELETED IN (?)
+                ORDER BY PRIORITY DESC, CREATED_WHEN DESC LIMIT 10", $user->id, $group->id, $delete)->fetchAll();
         foreach($messages as $message) {
             $mess = new Message();
             $user = new User();
@@ -126,6 +139,7 @@ class MessageManager extends BaseManager {
             $mess->user = $user;
             $mess->followed = $message->IS_FOLLOWED;
             $mess->priority = $message->PRIORITY;
+            $mess->deleted = $message->DELETED;
             $mess->attachments = $this->getAttachments($message->ID_MESSAGE);
             $return[] = $mess;
         }
@@ -139,7 +153,8 @@ class MessageManager extends BaseManager {
                         T3.PATH,
                         T3.FILENAME,
                         T2.URL_ID,
-                        T2.SEX
+                        T2.SEX,
+                        T1.ID_TYPE
                 FROM message T1 
                 LEFT JOIN user T2 ON T1.ID_USER=T2.ID_USER 
                 LEFT JOIN file_list T3 ON T3.ID_FILE=T2.PROFILE_IMAGE
@@ -164,6 +179,7 @@ class MessageManager extends BaseManager {
         $mess->id = $message->ID_MESSAGE;
         $mess->created = $message->CREATED_WHEN;
         $mess->user = $user;
+        $mess->idType = $message->ID_TYPE;
         $mess->attachments = $this->getAttachments($message->ID_MESSAGE);
         return $mess;
     }

@@ -18,6 +18,7 @@ use App\FrontModule\Components\Stream\MessageForm\NoticeForm\INoticeFormFactory;
 use App\FrontModule\Components\Stream\MessageForm\TaskForm\ITaskFormFactory;
 use App\FrontModule\Components\Stream\MessageForm\HomeworkForm\IHomeworkFormFactory;
 use App\FrontModule\Components\Stream\MessageForm\MaterialsForm\IMaterialsFormFactory;
+use App\Model\Manager\GroupManager;
 
 
 /**
@@ -49,6 +50,11 @@ class Stream extends Control
     protected $fileManager;
     
     /**
+     * @var GroupManager
+     */
+    protected $groupManager;
+    
+    /**
      * @var CommentForm; 
      */
     protected $commentForm = null;
@@ -77,7 +83,8 @@ class Stream extends Control
     /** @var  IMaterialsFormFactory @inject */
     protected $materialsFormFactory;
     
-    
+    protected $showDeleted = false;
+
     protected $streamPermission = array();
     
     public function __construct(
@@ -88,7 +95,8 @@ class Stream extends Control
             INoticeFormFactory $noticeFormFactory,
             ITaskFormFactory $taskFormFactory,
             IHomeworkFormFactory $homeworkFormFactory,
-            IMaterialsFormFactory $materialsFormFactory
+            IMaterialsFormFactory $materialsFormFactory,
+            GroupManager $groupManager
             )
     {
         $this->userManager = $userManager;
@@ -98,6 +106,7 @@ class Stream extends Control
         $this->taskFormFactory = $taskFormFactory;
         $this->homeworkFormFactory = $homeworkFormFactory;
         $this->materialsFormFactory = $materialsFormFactory;
+        $this->groupManager = $groupManager;
     }
     
     public function setUser(\App\Model\Entities\User $user)
@@ -120,15 +129,20 @@ class Stream extends Control
         return $this->activeGroup;
     }
     
+    public function showDeleted($deleted)
+    {
+        $this->showDeleted = $deleted;
+    }
     
     public function render()
     {
         $template = $this->template;
-        $messages = $this->messageManager->getMessages($this->activeGroup, $this->activeUser);
+        $messages = $this->messageManager->getMessages($this->activeGroup, $this->activeUser, $this->showDeleted);
         $template->activeUser = $this->activeUser;  
         $template->isOwner = ($this->activeUser->id === $this->activeGroup->owner->id) ? true : false;
         $template->messages = $messages;
         $template->streamPermission = $this->streamPermission;
+        $template->userGroups = $this->groupManager->getGroups($this->activeUser);
         $template->setFile(__DIR__ . '/Stream.latte');
         $template->render();
     }
@@ -184,6 +198,17 @@ class Stream extends Control
             $this->presenter->flashMessage('Zpráva byla smazána.');
             $this->redrawControl();
         }
+    }
+    
+    public function handleShareMessage($idMessage) 
+    {   
+        $message = $this->messageManager->getMessage($idMessage);
+        $idGroup = $this->presenter->getRequest()->getPost('group');
+        //\Tracy\Debugger::barDump($idGroup);
+        $group = $this->groupManager->getGroup(22);
+        $this->messageManager->cloneMessage($message, $group);
+        $this->presenter->flashMessage('Zpráva byla sdílena.');
+        $this->redirect('this');
     }
     
     public function handleTopMessage($idMessage, $enable = true) 

@@ -182,18 +182,27 @@
                 {/snippet}
             </div>
             {/if}
-            <div class="card flex-column" n:if="$groupPermission['settings']">
+            <div class="card flex-column" n:if="$groupPermission['showDeleted']">
                 <div class="card-header">
                     <h3>Výpis příspěvků</h3>
                 </div>
                 <div class="card-content clearfix">
+                    {form streamSettingsForm id=>"streamSettingsForm"}
                     <p class="secondary-par left">Zobrazit smazané položky</p>
                     <div class="switch right">
                         <label>
-                            <input type="checkbox">
+                            {input showDeleted:}
                             <span class="lever"></span>
                         </label>
-                    </div>  
+                    </div> 
+                    {/form}
+                    <script>
+                    $(document).ready(function () {
+                        $("#streamSettingsForm input[type='checkbox']").on('change', function () {
+                            $("#streamSettingsForm").submit();
+                        });
+                    });
+                    </script>
                 </div>
                 <div class="card-footer"></div>
             </div>

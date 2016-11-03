@@ -21,6 +21,7 @@ class Message {
     public $attachments = null;
     public $followed = null;
     public $priority = null;
+    public $deleted = null;
     public $idType = null;
     
     

@@ -51,12 +51,14 @@ class GroupPresenter extends BasePresenter
         'removeOwnComments' => false,
         'topAllMessages' => false,
         'topOwnMessages' => false,
-        'removeMembers' => false
+        'removeMembers' => false,
+        'showDeleted' => false
     );
     
     /** @persistent */
     public $id;
 
+    public $showDeleted = false;
     
     public function __construct(UserManager $userManager, 
             MessageManager $messageManager, 
@@ -119,6 +121,7 @@ class GroupPresenter extends BasePresenter
             $this->groupPermission['addMessages'] = true;
             $this->groupPermission['addCommets'] = true;
             $this->groupPermission['removeMembers'] = true;
+            $this->groupPermission['showDeleted'] = true;
         } else {
             $this->groupPermission['leave'] = true;
             $this->groupPermission['addMessages'] = $privileges['PR_CREATE_MSG'];
@@ -134,6 +137,7 @@ class GroupPresenter extends BasePresenter
         $stream->setGroup($this->activeGroup);
         $stream->setUser($this->activeUser);
         $stream->setStreamPermission($this->groupPermission);
+        $stream->showDeleted($this->showDeleted);
         return $stream;
     }
     
@@ -168,6 +172,16 @@ class GroupPresenter extends BasePresenter
         return $form;        
     }
     
+    protected function createComponentStreamSettingsForm()
+    {
+        $form = new \Nette\Application\UI\Form;
+
+        $form->setMethod('get');
+        $form->addCheckbox('showDeleted','Zobrazit smazané položky', array(true, false))
+             ->setDefaultValue($this->showDeleted);
+        return $form;        
+    }
+    
     
     public function handleRedrawNews()
     {
@@ -195,11 +209,14 @@ class GroupPresenter extends BasePresenter
     }
         
     
-    public function actionDefault()
+    public function actionDefault($showDeleted)
     {       
         $this->template->actualTasks = $this->taskManager->getClosestTask(array($this->activeGroup->id => $this->activeGroup));
         $this->groupManager->setGroupVisited($this->activeUser, $this->activeGroup->id);
-        $this->template->groupMembers = $this->groupManager->getGroupUsers($this->activeGroup->id);  
+        $this->template->groupMembers = $this->groupManager->getGroupUsers($this->activeGroup->id);
+        if($this->groupPermission['showDeleted']) {
+            $this->showDeleted = $showDeleted;
+        }
     }
     
     public function actionMessage($idMessage)

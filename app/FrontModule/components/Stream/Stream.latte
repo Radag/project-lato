@@ -1,5 +1,4 @@
 <div class="col s12 l8">
-
     {if $streamPermission['addMessages']}
     <a href="#select-post-type-modal" class="card create-post clearfix modal-trigger">
         <div class="avatar left">
@@ -75,6 +74,7 @@
     <div class="card flex-column" id="message-box-num_{$message->id}">   
         <div class="card-header">
             {if $message->priority == 1}<div class="topped"></div>{/if}
+            {if $message->deleted == 1}<div class="deleted"></div>{/if}
             <a href="{plink Profile:default 'id'=>$message->user->urlId}" class="avatar">
                 <img src="{$message->user->profileImage}" alt="{$message->user->name}">
             </a>
@@ -86,7 +86,7 @@
                 <i class="material-icons">more_vert</i>
             </a>
             <ul id='message_dropdown_{$message->id}' class='dropdown-content'>
-                <li><a href="#share-post" class="modal-trigger">Sdílet příspěvek</a></li>
+                <li><a href="#share-post_{$message->id}" class="modal-trigger">Sdílet příspěvek</a></li>
                 {if $streamPermission['topAllMessages'] || ($activeUser->id === $message->user->id && $streamPermission['topOwnMessages'])}
                 {if !$message->priority}
                 <li><a href="{link topMessage! idMessage=>$message->id}" class="ajax">Přesunout nahoru</a></li>
@@ -104,11 +104,29 @@
                 <li><a href="{link deleteMessage! idMessage=>$message->id}" class="ajax">Smazat</a></li>
                 {/if}
             </ul>
-            <div id="share-post" class="modal">
-                    <div class="modal-content">
-                        <h3>Sdílení</h3>
+            <div id="share-post_{$message->id}" class="modal">
+                <div class="modal-content">
+                    <h3>Sdílení</h3>
+                    <form method="post" action="{link shareMessage! idMessage=>$message->id}">
+                    <div>Sdílet se skupinou</div>
+                    <div class="row">
+                        <div class="col s12">
+                          <div class="row">
+                            <div class="input-field col s12">
+                              <i class="material-icons prefix">textsms</i>
+                              <input type="text" name="group" id="autocomplete-input" class="autocomplete">
+                              <label for="autocomplete-input">Vyberte skupinu</label>
+                            </div>
+                          </div>
+                        </div>
                     </div>
+                    <div class="form-control">
+                        <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat" >Zrušit</button>
+                        <button class="btn waves-effect waves-light hide-modal-ajax-submit" type="submit" name="send" >Sdílet</button>
+                    </div>
+                    </form>
                 </div>
+            </div>
         </div>
         <div class="card-content clearfix">
             <p>{$message->getText()|escape|nl2br|noescape}</p>
@@ -213,7 +231,14 @@
                     });
                 }
             });
-        });   
-
+            
+            $('input.autocomplete').autocomplete({
+                data: {
+                  {foreach $userGroups as $group}
+                  {$group->name}: {$group->id}{if !$iterator->isLast()},{/if}
+                  {/foreach}
+                }
+            });      
+        });
     </script>
 </div>
