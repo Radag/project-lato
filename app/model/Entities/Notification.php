@@ -19,6 +19,7 @@ class Notification {
     public $icon = null;
     public $idUser = null;
     public $idGroup = null;
+    public $idType = null;
     public $participant = null;
     
     

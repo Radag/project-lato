@@ -19,6 +19,11 @@ use App\Model\Entities\Notification;
 class NotificationManager extends BaseManager
 {   
     
+    const TYPE_ADD_GROUP_MSG = 1;
+    const TYPE_ADD_COMMENT = 2;
+    const TYPE_NEW_GROUP_MEMBER = 3;
+    const TYPE_REMOVE_FROM_GROUP = 4;
+    const TYPE_ADD_ADD_TO_GROUP = 5;
     
     
     public function getNotifications($user)
@@ -72,6 +77,7 @@ class NotificationManager extends BaseManager
                 'TEXT' => $notification->text,
                 'TITLE' => $notification->title,
                 'ID_USER' => $notification->idUser,
+                'ID_TYPE' => $notification->idType,
                 'ID_PARTICIPANT' => $notification->participant ? $notification->participant->id : null,
                 'ID_GROUP' => $notification->idGroup ? $notification->idGroup : null
         ));
@@ -107,5 +113,29 @@ class NotificationManager extends BaseManager
                 'ID_TYPE' => $idType
             ));
         }
+    }
+    
+    public function getUserAllowedNotification(array $users, $idType)
+    {
+        $return = array('notification' => array(), 'mail' => array());
+        $userArray = array();
+        foreach($users as $user) {
+            $userArray[$user->id] = $user;
+        }
+        
+        $allowed = $this->database->query("SELECT * FROM notification_settings WHERE ID_TYPE=? AND ID_USER IN (" . implode(',', array_keys($userArray)) . ")", $idType)->fetchAll();
+        
+        foreach($allowed as $all) {
+            if($all->SHOW_NOTIFICATION == 1) {
+                $return['notification'][] = $userArray[$all->ID_USER];
+            }
+            
+            if($all->SEND_BY_EMAIL == 1) {
+                $return['mail'][] = $userArray[$all->ID_USER];
+            }
+        }
+        
+        return $return;
+        
     }
 }
