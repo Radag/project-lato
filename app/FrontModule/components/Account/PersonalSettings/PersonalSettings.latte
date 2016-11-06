@@ -1,0 +1,31 @@
+<div class="col s12 l8">
+    <div class="card flex-column bottom-spacer">
+        {form form id=>"accountSettingsForm"}
+        <div class="card-header">
+            <h2>Osobní údaje</h2>
+        </div>
+        <div class="card-content">
+            <div class="card-content-section">
+                <div class="form-row">
+                    {input name}
+                </div>
+                <div class="form-row">
+                    {input surname}
+                </div>
+                <div class="form-row">
+                    {input email}
+                </div>
+                <div class="form-row">
+                    {input birthday class=>'datepicker'}
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="flex-spacer"></div>
+            <div class="form-control">
+                <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" >Uložit</button>
+            </div>
+        </div>
+       {/form}
+    </div>
+</div>

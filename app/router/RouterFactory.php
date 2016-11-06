@@ -24,7 +24,6 @@ class RouterFactory
         $frontRouter[] = new Route('auth', 'Homepage:noticeboard');
 	$frontRouter[] = new Route('auth/group/<id>[/<action>]', 'Group:default');
         $frontRouter[] = new Route('auth/profile/<id>', 'Profile:default');
-        $frontRouter[] = new Route('auth/account', 'Profile:account');
         $frontRouter[] = new Route('auth/messages', 'Profile:messages');
         $frontRouter[] = new Route('auth/settings', 'Profile:settings');
 	$frontRouter[] = new Route('auth/<presenter>/<action>[/<id>]', 'Homepage:default');
@@ -51,7 +50,6 @@ class RouterFactory
         $frontRouter[] = new Route('auth', 'Homepage:noticeboard', Route::SECURED);
 	$frontRouter[] = new Route('auth/group/<id>[/<action>]', 'Group:default', Route::SECURED);
         $frontRouter[] = new Route('auth/profile/<id>', 'Profile:default', Route::SECURED);
-        $frontRouter[] = new Route('auth/account', 'Profile:account', Route::SECURED);
         $frontRouter[] = new Route('auth/messages', 'Profile:messages', Route::SECURED);
         $frontRouter[] = new Route('auth/settings', 'Profile:settings', Route::SECURED);
 	$frontRouter[] = new Route('auth/<presenter>/<action>[/<id>]', 'Homepage:default', Route::SECURED);

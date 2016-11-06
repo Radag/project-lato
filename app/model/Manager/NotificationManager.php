@@ -83,6 +83,29 @@ class NotificationManager extends BaseManager
         $this->database->query("UPDATE notification SET ? WHERE ID_USER=? AND IS_READ IS NULL", $data, $idUser);
     }
    
-      
+    public function getNotificationTypes()
+    {
+        return $this->database->query("SELECT * FROM notification_type")->fetchAll();
+    }
     
+    public function getNotificationSettings(\App\Model\Entities\User $user)
+    {
+        return $this->database->query("SELECT T1.ID_TYPE, T1.NAME, T2.SEND_BY_EMAIL, T2.SHOW_NOTIFICATION FROM notification_type T1 LEFT JOIN notification_settings T2 ON T1.ID_TYPE=T2.ID_TYPE WHERE T2.ID_USER=?", $user->id)->fetchAll();
+    }
+    
+    public function setSettings(\App\Model\Entities\User $user, $idType, $mail, $notification)
+    {
+        $type = $this->database->query("SELECT * FROM notification_settings WHERE ID_TYPE=? AND ID_USER=?", $idType, $user->id)->fetchAll();
+        if($type) {
+            $data = array('SHOW_NOTIFICATION' => $notification, 'SEND_BY_EMAIL' => $mail);
+            $this->database->query("UPDATE notification_settings SET ? WHERE ID_USER=? AND ID_TYPE=?", $data, $user->id, $idType);
+        } else {
+            $this->database->table('notification_settings')->insert(array(
+                'SHOW_NOTIFICATION' => $notification,
+                'SEND_BY_EMAIL' => $mail,
+                'ID_USER' => $user->id,
+                'ID_TYPE' => $idType
+            ));
+        }
+    }
 }

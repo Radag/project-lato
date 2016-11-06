@@ -15,13 +15,13 @@
                 <li class="no-padding">
                     <ul class="collapsible collapsible-accordion">
                         <li>
-                            <a n:class="($presenter->isLinkCurrent('Profile:account') ? active), collapsible-header, waves-effect, waves-dark">
+                            <a n:class="($presenter->isLinkCurrent('Account:*') ? active), collapsible-header, waves-effect, waves-dark">
                                 <i class="material-icons">settings</i>Nastavení
                                 <i class="material-icons show-more">expand_more</i>
                             </a>
                             <div class="collapsible-body">
                                 <ul>
-                                    <li><a href="{plink Profile:account}" n:class="$presenter->isLinkCurrent('Profile:account') ? active">
+                                    <li><a href="{plink Profile:account}" n:class="$presenter->isLinkCurrent('Account:*') ? active">
                                         <i class="material-icons">account_box</i>Správa účtu
                                     </a></li>
                                     <li><a href="{plink Homepage:logout}">

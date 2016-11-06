@@ -39,6 +39,7 @@ class ProfilePresenter extends BasePresenter
         $this->fileManager = $fileManager;       
         $this->classroomManager = $classroomManager;
     }
+
     
     public function renderDefault($id = null)
     {
@@ -58,52 +59,7 @@ class ProfilePresenter extends BasePresenter
             $this->template->isFriend = $this->userManager->isFriend($this->activeUser->id, $profileUser->id);
         }
     }
-    
-    
-    protected function createComponentAccountSettingsForm()
-    {
-        $form = new \Nette\Application\UI\Form;
-
-        $form->addText('name','Jméno')
-             ->setAttribute("placeholder","Jméno")
-             ->setDefaultValue($this->activeUser->name);
-        $form->addText('surname','Příjmení')
-             ->setAttribute("placeholder","Příjmení")
-             ->setDefaultValue($this->activeUser->surname);
-        $form->addText('email','Emailová adresa')
-             ->setAttribute("placeholder","Emailová adresa")
-             ->setDefaultValue($this->activeUser->email);
-        $form->addText('birthday','Datum narození')
-             ->setAttribute("placeholder","Datum narození");
-
-        $form->addSubmit('submit', 'Odeslat');
-        $form->onSuccess[] = function($form, $values) {
-            $this->userManager->updateUser($values, $this->activeUser );
-            $this->flashMessage('Nastavení uživatele uloženo');
-            $this->redirect('this');
-        };
-        return $form;        
-    }
-    
-    public function actionAccount()
-    {
-        $this->template->userAccount = $this->activeUser;
-    }
-    
-
-    
-    public function handleUploadProfileImage()
-    {
-        $files = $this->getRequest()->getFiles();
-        $path = 'users/' . $this->activeUser->urlId . '/profile';
-        $file = $this->fileManager->uploadFile($files['file'], $path);
-        if($file) {
-            $this->userManager->assignProfileImage($this->activeUser, $file);
-        }
-        $this->payload->image = $this->userManager->get($this->user->id)->profileImage;
-        $this->sendPayload();
-    }
-    
+        
     public function handleAddFriend($idUser)
     {
         $this->userManager->switchUserRelation($this->activeUser->id, $idUser, true);

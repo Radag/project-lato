@@ -1,0 +1,63 @@
+{block content}
+{control topPanel}
+<section class="main after-header">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 l4">
+                <div class="card clearfix simple">
+                    <form style="width: 100%; height: 100%; cursor:pointer;" id="profileImageDropzone">
+                        <div class="dz-message" data-dz-message>
+                            {if $userAccount->profileImage}
+                                <img width="100" height="100" src="{$userAccount->profileImage}">
+                            {else}
+                                <span>Nahrát fotku</span>
+                            {/if}
+                        </div> 
+                    </form>
+                </div>
+                <a href="{plink Account:default}" class="card clearfix simple waves-effect waves-dark">
+                    <i class="material-icons">account_circle</i>
+                    <div class="label">Nastavit osobní údaje</div>
+                </a>
+                <a href="{plink Account:sharing}" class="card clearfix simple waves-effect waves-dark">
+                    <i class="material-icons">share</i>
+                    <div class="label">Nastavit sdílení</div>
+                </a>
+
+                <a href="{plink Account:notification}" class="card clearfix simple waves-effect waves-dark">
+                    <i class="material-icons">notifications</i>
+                    <div class="label">Nastavit oznámení</div>
+                </a>
+            </div>
+            {snippet profileSettings}               
+                {if $presenter->isLinkCurrent('Account:default')}
+                    {control personalSettings}
+                {elseif $presenter->isLinkCurrent('Account:notification')}
+                    {control notificationSettings}
+                {elseif $presenter->isLinkCurrent('Account:sharing')}
+                    {control sharingSettings}
+                {/if}
+            {/snippet}
+        </div>
+    </div>
+</section>
+<script>
+
+    $('.datepicker').pickadate({
+        selectMonths: true, // Creates a dropdown to control month
+        selectYears: 15 // Creates a dropdown of 15 years to control year
+    });
+
+    $(function () {
+        var profileImage = new Dropzone("#profileImageDropzone", {
+            url: {link uploadProfileImage!},
+            previewTemplate: '<div id="preview-template" style="display: none;"></div>'
+        });
+        profileImage.on("complete", function (file) {
+            var image = JSON.parse(file.xhr.response);
+            $("#profileImageDropzone .dz-message").html('<img src="' + image.image + '">');
+        });
+
+    });
+
+</script>
