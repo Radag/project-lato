@@ -13,6 +13,7 @@ use App\Model\Entities\Group;
 use App\Model\Entities\User;
 use App\Model\Manager\NotificationManager;
 use App\Model\Manager\UserManager;
+use App\Model\Manager\PublicActionManager;
 
 /**
  * Description of MessageManager
@@ -30,6 +31,9 @@ class GroupManager extends BaseManager {
     
     /** @var UserManager @inject */
     protected $userManager;
+    
+    /** @var PublicActionManager @inject */
+    protected $publicActionManager;
 
     public function setGroupVisited(User $user, $idGroup)
     {
@@ -272,11 +276,7 @@ class GroupManager extends BaseManager {
         $this->database->beginTransaction();
         $id = $this->database->query("SELECT ID FROM group_sharing WHERE ID_GROUP=?", $group->id)->fetchField();
         if(empty($id)) {
-            $this->database->table('public_actions')->insert(array(
-                'HASH_CODE' => substr(md5(openssl_random_pseudo_bytes(20)),-8),
-                'ACTION_TYPE' => 1,
-                'ACTIVE' => 1
-            ));
+            $this->publicActionManager->addNewAction(PublicActionManager::ACTION_ADD_TO_GROUP);
             $idAction = $this->database->query("SELECT MAX(ID_ACTION) FROM public_actions")->fetchField();
             $this->database->table('group_sharing')->insert(array(
                 'ID_GROUP' => $group->id,

@@ -56,7 +56,7 @@ class HomepagePresenter extends BasePresenter
     }
     
     public function actionNoticeboard()
-    {
+    {        
         $this['topPanel']->setTitle('Nástěnka');
         
         $groups = $this->groupManager->getUserGroups($this->activeUser);

@@ -17,6 +17,11 @@ use Nette;
  */
 class PublicActionManager extends BaseManager 
 {
+    const ACTION_ADD_TO_GROUP = 1;
+    const ACTION_MAIL_VALIDATION = 2;
+    const ACTION_LOST_PASS = 3;
+    const ACTION_NEW_PASS = 4;
+    
     
     public function getAction($hashCode) {
         $action = $this->database->query("SELECT 
@@ -31,5 +36,26 @@ class PublicActionManager extends BaseManager
         WHERE T1.HASH_CODE=? AND T1.ACTIVE=1 AND T2.SHARE_BY_LINK=1", $hashCode)->fetch();
         
         return $action;
+    }
+    
+    public function getActionType($hashCode) {
+        $action = $this->database->query("SELECT 
+                T1.ACTION_TYPE
+        FROM public_actions T1
+        WHERE T1.HASH_CODE=? AND T1.ACTIVE=1", $hashCode)->fetchField();
+        
+        return $action;
+    }
+    
+    
+    public function addNewAction($actionType) 
+    {
+        $hashCode = substr(md5(openssl_random_pseudo_bytes(20)),-8);
+        $this->database->table('public_actions')->insert(array(
+            'HASH_CODE' => $hashCode,
+            'ACTION_TYPE' => $actionType,
+            'ACTIVE' => 1
+        ));
+        return $hashCode;
     }
 }
