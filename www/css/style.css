@@ -57,7 +57,7 @@ a {
 }
 
 [type="checkbox"]+label {
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
     height: 20px;
     line-height: 20px;
     font-size: 14px;
@@ -70,6 +70,10 @@ a {
 .checkbox-vertical-align {
     display: flex;
     align-items: center;
+}
+
+.waves-effect.waves-light-gray .waves-ripple {
+    background-color: rgba(0, 0, 0, .08);
 }
 
 .progress.loading-data {
@@ -95,6 +99,7 @@ a {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    min-width: 0;
 }
 
 .table-header {
@@ -103,7 +108,7 @@ a {
 
 .table-header .btn-icon {
     margin-right: 24px;
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
     height: 36px;
 }
 
@@ -115,14 +120,14 @@ a {
     flex-grow: 1;
     margin-top: 16px;
     text-transform: uppercase;
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
     display: flex;
     font-size: 13px;
     font-weight: 500;
 }
 
 .table-header [type="checkbox"].filled-in:not(:checked)+label:after {
-    border-color: rgba(0, 0, 0, .38);
+    border-color: rgba(0, 0, 0, .47);
 }
 
 .collapsible.popout {
@@ -166,7 +171,7 @@ a {
 
 .table-row .table-field a {
     cursor: pointer;
-    color: rgba(0, 0, 0, .38);
+    color: rgba(0, 0, 0, .47);
 }
 
 .table-row .table-field input {
@@ -203,7 +208,7 @@ a {
 
 .table-row .classification,
 .collapsible-body .classification {
-    color: rgba(0, 0, 0, .38);
+    color: rgba(0, 0, 0, .47);
     font-size: 16px;
     font-weight: 400;
 }
@@ -219,21 +224,17 @@ a {
     border-color: transparent;
 }
 
-.collapsible-body .classification-table {
-    padding-left: 24px;
-}
-
 .collapsible-body .classification-table .table-row {
     border-top: 1px solid #eaeaea;
     border-bottom: 0;
-    padding: 20px 24px 20px 0;
+    padding: 20px 24px;
 }
 
 .collapsible-body .classification-table .table-row .edit {
     width: 32px;
     text-align: center;
     margin-right: 20px;
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
 }
 
 .collapsible-body .classification-table .table-row .title {
@@ -258,7 +259,7 @@ a {
 }
 
 .collapsible-body-footer ul li i {
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
 }
 
 .classification-chips {
@@ -269,13 +270,13 @@ a {
 .classification-chips .chip {
     display: flex;
     align-items: center;
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
 }
 
 .classification-chips .chip .material-icons {
     font-size: 16px !important;
     margin-left: 12px;
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
     height: 24px;
     line-height: 24px;
     width: 24px;
@@ -395,7 +396,7 @@ input[type="password"] {
 
 
 .card-content {
-	padding: 24px 24px;
+	padding: 24px;
 }
 
 .card-footer {
@@ -420,7 +421,7 @@ input[type="password"] {
 }
 
 .card-header .material-icons {
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
 }
 
 @media only screen and (max-width: 600px) {
@@ -429,8 +430,9 @@ input[type="password"] {
     }
 }
 
-.card-header.highlighted {
-    background-color: #f5f5f5;
+.card-header.separated {
+    border-bottom: 1px solid rgba(0, 0, 0, .12);
+    padding-bottom: 24px;
 }
 
 .btn-icon.small {
@@ -500,6 +502,13 @@ input[type="password"] {
     justify-content: center;
 }
 
+.btn-inline {
+    margin: 0;
+    line-height: 1em;
+    padding: 0;
+    height: 1em;
+}
+
 .btn i.icon-push,
 .btn-flat i.icon-push {
     margin-right:-6px;
@@ -519,11 +528,8 @@ input[type="password"] {
     color: #2979FF;
 }
 
-.card-footer .show-more {
-    display: flex;
-    align-items: center;
+.btn-flat.secondary-colored {
     color: #00897B;
-    font-size: 13px;
 }
 
 .card-footer .show-more .avatar {
@@ -604,7 +610,7 @@ input[type="password"] {
 
 .profile-header .profile-navbar {
     display: flex;
-    background-color: rgba(29, 29, 29, .54);
+    background-color: rgba(29, 29, 29, .47);
     width: 100%;
     padding: 0;
     height: 88px;
@@ -651,7 +657,7 @@ input[type="password"] {
 .profile-header .profile-title span {
     font-size: 18px;
     font-weight: 400;
-    color: rgba(255, 255, 255, .54);
+    color: rgba(255, 255, 255, .47);
     text-transform: none;
 }
 
@@ -881,7 +887,7 @@ ul.dropdown-content.main-nav-dropdown {
 }
 
 .select-wrapper.with-remove .select-dropdown li:last-child span {
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
 }
 
 
@@ -893,10 +899,10 @@ ul.dropdown-content.main-nav-dropdown {
 /* KOALA CSS */
 
 p {
-    color: rgba(0, 0, 0, .54);
-    line-height: 1.5em;
+    color: rgba(0, 0, 0, .47);
+    line-height: 1.6em;
     margin-top: 0;
-    margin-top: 16px !important;
+    margin-top: 16px;
 }
 
 p:first-child {
@@ -904,7 +910,7 @@ p:first-child {
 }
 
 p.secondary-par {
-    color: rgba(0, 0, 0, .54) !important;
+    color: rgba(0, 0, 0, .47) !important;
 }
 
 strong {
@@ -987,6 +993,10 @@ strong {
     color: rgba(0, 0, 0, .87);
     margin: 40px 0 32px 0;
     flex-grow: 1;
+}
+
+.modal .modal-header h4 {
+    margin: 0;
 }
 
 @media only screen and (max-width: 600px) {
@@ -1100,7 +1110,7 @@ strong {
 
 #select-post-type a {
     display: flex;
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
 }
 
 #select-post-type a:hover {
@@ -1174,7 +1184,7 @@ strong {
 
 #create-post-modal .modal-footer .attachments-nav ul li i {
     line-height: 36px;
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
     font-size: 24px !important;
 }
 
@@ -1228,7 +1238,7 @@ strong {
 .modal .modal-footer .modal-footer-note a {
     display: flex;
     align-items: center;
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
 }
 
 .modal .modal-footer .modal-footer-note a.colored {
@@ -1247,7 +1257,7 @@ textarea.materialize-textarea {
     border-bottom: 1px solid rgba(0, 0, 0, .12);
     margin-bottom: 0;
     padding: 12px 0 !important;
-    line-height: 1.5em;
+    line-height: 1.6em;
     font-size: 14px;
     min-height: 45px !important;
 }
@@ -1365,7 +1375,7 @@ textarea.materialize-textarea {
 }
 
 .back-to-stream {
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
     display: flex;
     align-items: center;
     font-size: 14px;
@@ -1391,7 +1401,7 @@ textarea.materialize-textarea {
     margin: 0;
     font-size: 14px;
     line-height: 1em;
-    color: rgba(0, 0, 0, .54);   
+    color: rgba(0, 0, 0, .47);   
     text-transform: uppercase;
 }
 
@@ -1422,7 +1432,7 @@ textarea.materialize-textarea {
     padding:0;
     text-align:center;
     border-radius:50%;
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
     background-color: rgba(0, 0, 0, .0); 
     -webkit-transition:  300ms ease-in-out;
     -moz-transition:  300ms ease-in-out;
@@ -1496,7 +1506,7 @@ textarea.materialize-textarea {
 }
 
 .dropdown-content .dropdown-footer a {
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
     font-weight: 400;
     font-size: 12px;
     display: inline;
@@ -1534,7 +1544,7 @@ textarea.materialize-textarea {
 .main-nav-dropdown span {
     display:block;
     font-size:13px;
-    color:rgba(0, 0, 0, .54);
+    color:rgba(0, 0, 0, .47);
     font-weight:400;
 }
 
@@ -1572,7 +1582,7 @@ textarea.materialize-textarea {
     height: 50px;
     line-height: 50px;
     width: 100%;
-    background-color: rgba(29, 29, 29, .54);
+    background-color: rgba(29, 29, 29, .47);
     color: #fff;
     padding:0 20px;
     font-size: 14px;
@@ -1595,7 +1605,7 @@ textarea.materialize-textarea {
     display:block !important;
     float:left;
     line-height:48px;
-    color:rgba(0, 0, 0, .54);
+    color:rgba(0, 0, 0, .47);
     text-align: center;
     width: 30px;
     height:48px;
@@ -1617,7 +1627,7 @@ textarea.materialize-textarea {
     height: 30px;
     border-radius: 50%;
     float: left;
-    background-color: rgba(0, 0, 0, .38);
+    background-color: rgba(0, 0, 0, .47);
     text-align: center;
     margin: 9px 0px;
     margin-right: 24px;
@@ -1630,7 +1640,7 @@ textarea.materialize-textarea {
     float: right;
     font-size: 17px !important;
     margin: 0;
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
 }
 
 
@@ -1648,7 +1658,7 @@ textarea.materialize-textarea {
 .side-nav .collapsible-body li a {
     padding: 0 16px;
     font-weight: 400 !important;
-    color: rgba(0, 0, 0, .54) !important;
+    color: rgba(0, 0, 0, .47) !important;
     -webkit-transition: color 300ms ease-in-out;
     -moz-transition: color 300ms ease-in-out;
     -o-transition: color 300ms ease-in-out;
@@ -1719,12 +1729,12 @@ textarea.materialize-textarea {
 
 .card.simple .label {
     flex-grow: 1;
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
     line-height: 24px;
 }
 
 .card.simple .material-icons {
-    color: rgba(0, 0, 0, .38);
+    color: rgba(0, 0, 0, .47);
     margin-right: 16px;
 }
 
@@ -1762,6 +1772,8 @@ textarea.materialize-textarea {
 
 .card-header h3 {
     flex-grow: 1;
+    font-size:17px;
+    line-height: 1em;
 }
 
 .card-header h3 a {
@@ -1777,13 +1789,8 @@ textarea.materialize-textarea {
     margin-right: 12px;
 }
 
-.card-header h3 {
-    font-size:17px;
-    line-height: 24px;
-}
-
 .card-header .card-options {
-    color: rgba(0, 0, 0, .38);
+    color: rgba(0, 0, 0, .47);
     line-height: 36px;
     padding: 0;
     width: 36px;
@@ -1928,13 +1935,13 @@ textarea.materialize-textarea {
 
 .comments-header .show-comments.item .material-icons {
     line-height:36px;
-    color:rgba(0, 0, 0, .54);
+    color:rgba(0, 0, 0, .47);
 }
 
 .comments-header .comments-count {
     line-height:36px;
     padding:0 8px;
-    color:rgba(0, 0, 0, .54);
+    color:rgba(0, 0, 0, .47);
     font-size:13px;
 }
 
@@ -1982,7 +1989,7 @@ textarea.materialize-textarea {
 }
 
 .comment-row .comment-header span {
-    color: rgba(0, 0, 0, .38);
+    color: rgba(0, 0, 0, .47);
     font-size: 12px;
 } 
 
@@ -2094,10 +2101,9 @@ textarea.materialize-textarea {
 
 #group-cards .card .title span {
     display: block;
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
     font-weight: 400;
     font-size: 13px;
-    line-height: 19px;
 }
 
 #group-cards .group-users {
@@ -2148,7 +2154,7 @@ textarea.materialize-textarea {
     display: block;
     font-weight:400;
     font-size:13px;
-    color:rgba(0, 0, 0, .54);
+    color:rgba(0, 0, 0, .47);
     line-height:13px;
 }
 
@@ -2156,7 +2162,7 @@ textarea.materialize-textarea {
     padding:24px;
     font-size:14px;
     line-height:14px;
-    color:rgba(0, 0, 0, .54);
+    color:rgba(0, 0, 0, .47);
 }
 
 @media(max-width:1220px) {
@@ -2199,7 +2205,7 @@ textarea.materialize-textarea {
 }
 
 .modal p {
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
 }
 
 .group-color-select {
@@ -2321,7 +2327,7 @@ textarea.materialize-textarea {
 }
 
 .custom-collection li .subtitle {
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
     font-weight: 400;
     font-style: italic;
     margin-left: 16px;
@@ -2332,12 +2338,12 @@ textarea.materialize-textarea {
 }
 
 .custom-collection li a .material-icons {
-    color: rgba(0, 0, 0, .38);
+    color: rgba(0, 0, 0, .47);
     font-size: 18px !important
 }
 
 .custom-collection .remaining-time {
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
 }
 
 .custom-collection .btn-icon {
@@ -2401,7 +2407,7 @@ textarea.materialize-textarea {
     width: 24px;
     margin-right: 16px;
     font-size: 24px !important;
-    color: rgba(0, 0, 0, .38);
+    color: rgba(0, 0, 0, .47);
     line-height: 45px;
 }
 
@@ -2426,7 +2432,7 @@ textarea.materialize-textarea {
 
 .form-row .notice {
     margin-left: 16px;
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
 }
 
 .add-line {
@@ -2459,7 +2465,7 @@ textarea.materialize-textarea {
 #layout-footer {
     text-align: center;
     padding: 36px;
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
     font-size: 13px;
 }
 
@@ -2503,7 +2509,7 @@ textarea.materialize-textarea {
     font-size: 35px;
     line-height: 1em;
     font-weight: 300;
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
 }
 
 .schedule-row .day-title .name {
@@ -2517,7 +2523,7 @@ textarea.materialize-textarea {
 #one-day-schedule .day-title .name {
     margin-top: 12px;
     font-size: 13px;
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
 }
 
 .schedule-row .day-title-spacer {
@@ -2558,18 +2564,105 @@ textarea.materialize-textarea {
 
 .schedule-row .item .room {
     display: block;
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .47);
     font-size: 13px;
     line-height: 18px;
 }
 
 .schedule-row.schedule-header .item {
-    color: rgba(0, 0, 0, .38) !important;
+    color: rgba(0, 0, 0, .47) !important;
     font-weight: 500;
     font-size: 12px;
 }
 
 .schedule-row .row-end {
+}
+
+
+/* ----- Notifications -----  */
+
+.notification-row {
+    display: flex;
+    align-items: flex-start;
+    margin: 0 -24px;
+    padding: 16px 24px;
+}
+
+.notification-row:first-child {
+    margin-top: -8px;
+}
+
+.notification-icon {
+    width: 24px;
+    margin-right: 16px;
+    text-align: center;
+}
+
+.notification-icon i.material-icons {
+    font-size: 24px !important;
+}
+
+.notification-label {
+    flex-grow: 1;
+}
+
+.notification-title {
+    color: rgba(0, 0, 0, .87);
+    font-weight: 500;
+    font-size: 15px;
+}
+
+.notification-description {
+    color: rgba(0, 0, 0, .47);
+    margin-top: 6px;
+}
+
+/* ----- Noticeboard ----- */
+
+.card-link-big {
+    display: flex;
+}
+
+.card-link-big .icon {
+    padding: 24px;
+    border-right: 1px solid rgba(0, 0, 0, .12);
+}
+
+.card-link-big .icon .circle {
+    width: 72px;
+    height: 72px;
+    border: 4px solid #08ef69;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    font-weight: 300;
+    color: rgba(0, 0, 0, .47);
+}
+
+.card-link-big .icon .circle.border-blue {
+    border-color: #00c0f7;
+}
+
+.card-link-big .icon .circle strong {
+    color: rgba(0, 0, 0, .87);
+    font-weight: 400;
+}
+
+.card-link-big .label {
+    padding: 24px;
+}
+
+.card-link-big .label h3 {
+    color: rgba(0, 0, 0, .87);
+    font-size: 17px;
+    line-height: 1em;
+    margin: 0;
+    font-weight: 500;
+}
+
+.card-link-big .label p {
+    margin: 8px 0 0 0;
 }
 
 /* TOASTY */
