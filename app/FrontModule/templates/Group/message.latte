@@ -6,9 +6,13 @@
         <div class="row">
             <div class="col s12">
                 <header class="section-header">
-                    <a class='back-to-stream' href='{link Group:default 'id'=>$activeGroup->urlId}'>
-                        <i class="material-icons waves-effect waves-dark">arrow_back</i>Zpět na stream
-                    </a>
+                    <nav class="breadcrumbs">
+                        <div class="breadcrumb back-to-dashboard">
+                            <a class="material-icons" href="{plink Homepage:noticeboard}">dashboard</a>
+                        </div>
+                        <div class="breadcrumb"><a href='{link Group:default 'id'=>$activeGroup->urlId}'>Matematika</a></div>
+                        <div class="breadcrumb">Příspěvek</div>
+                    </nav>
                     <div class="flex-spacer"></div>
                     <ul class="right options">
                         

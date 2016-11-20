@@ -33,29 +33,10 @@
                     </ul>
                 </li>
                 <div class="divider"></div>
-                <h4>Hlavní nabídka</h4>
                 <li><a n:class="$presenter->isLinkCurrent('Homepage:noticeboard') ? active, waves-effect, waves-dark" href="{plink Homepage:noticeboard}" >
                     <i class="material-icons">dashboard</i>Nástěnka
                 </a></li>
-                {*<li class="no-padding">
-                    <ul class="collapsible collapsible-accordion">
-                        <li>
-                            <a class="collapsible-header waves-effect waves-dark">
-                                <i class="material-icons">school</i>Předměty
-                                <i class="material-icons show-more">expand_more</i>
-                            </a>
-                            <div class="collapsible-body">
-                                <ul>
-                                    {foreach $subjects as $subject}
-                                    <li><a href="{plink Stream:default 'id'=>$subject->urlId}">
-                                        <div class="group-shortcut-circle" style="background-color: {$subject->mainColor|noescape}">{$subject->shortcut|substr:0,1}</div>{$subject->name}
-                                    </a></li>
-                                    {/foreach}
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                </li>*}
+                
                 <li class="no-padding">
                     <ul class="collapsible collapsible-accordion">
                         <li>
@@ -82,18 +63,32 @@
                     </ul>
                 </li>
                 <li><a n:class="$presenter->isLinkCurrent('Homepage:tasks') ? active, waves-effect, waves-dark" href="{plink Homepage:tasks}" >
-                    <i class="material-icons">receipt</i>Povinnosti
+                    <i class="material-icons">library_books</i>Povinnosti
                 </a></li>
                 <li><a n:class="$presenter->isLinkCurrent('Homepage:timetable') ? active, waves-effect, waves-dark" href="{plink Homepage:timetable}" >
                     <i class="material-icons">insert_invitation</i>Rozvrh
                 </a></li>
+                <li><a n:class="$presenter->isLinkCurrent('Homepage:timetable') ? active, waves-effect, waves-dark" href="{plink Homepage:timetable}" >
+                    <i class="material-icons">star</i>Klasifikace
+                </a></li>
                 <li class="empty"></li>
             </ul>
-            <a href="#" data-activates="slide-out" class="button-collapse show-on-large slide-out-toggle">
-              <i class="material-icons">menu</i></a>
+
+
+            <div class="left-nav-flex">
+                <a href="#" data-activates="slide-out" class="button-collapse show-on-large slide-out-toggle">
+                  <i class="material-icons">menu</i>
+              </a>
               <span class="nav-title truncate">{$title}</span>
-              
-              <ul class="right navbar-nav">
+          </div>
+          <ul class="content-nav">
+            <li class="active"><a href="">stream</a></li>
+            <li><a href="">povinnosti</a></li>
+            <li><a href="">studenti</a></li>
+            <li><a href="">o skupině</a></li>
+        </ul>
+        <div class="right-nav-flex">
+            <ul class="right navbar-nav">
                 <li><a class="dropdown-button ajax" href="{link notificationRead!}" data-activates="notifications-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false"><i class="material-icons ">notifications</i>
                     {snippet notificationCount}{if $unreadNotifications > 0}<span class="nav-badge">{$unreadNotifications}</span>{/if}{/snippet}</a>
                     <ul id='notifications-window' class='dropdown-content main-nav-dropdown'>
@@ -106,20 +101,20 @@
                         <li><a href="{if $notification->idGroup}{plink Group:default 'id'=>$notification->idGroup}{else}{plink Profile:default 'id'=>$notification->participant->urlId}{/if}" class="clearfix">
                             <div class="avatar small left">
                                 {if $notification->participant->profileImage}
-                                    <img src="{$notification->participant->profileImage}" alt="some chick">
+                                <img src="{$notification->participant->profileImage}" alt="some chick">
                                 {else}
-                                    <img src="/images/user1.png" alt="some chick">
+                                <img src="/images/user1.png" alt="some chick">
                                 {/if}
                             </div>
                             <h4>
                                 {if $notification->participant->urlId}
-                                    {if $notification->participant->name}
-                                        {$notification->participant->name} {$notification->participant->surname}
-                                    {else}
-                                        {$notification->participant->username}
-                                    {/if}
+                                {if $notification->participant->name}
+                                {$notification->participant->name} {$notification->participant->surname}
                                 {else}
-                                    {$notification->title}
+                                {$notification->participant->username}
+                                {/if}
+                                {else}
+                                {$notification->title}
                                 {/if}
                                 <span class="truncate">{$notification->text}</span>
                             </h4>
@@ -152,10 +147,12 @@
 
                 <li><a href="#"><i class="material-icons">search</i></a></li>
             </ul>
-            
         </div>
-        <div class="progress loading-data" id="main-progress-loader"><div class="indeterminate"></div></div>
-    </nav>
+
+    </div>
+    <div class="progress loading-data" id="main-progress-loader"><div class="indeterminate"></div></div>
+</nav>
+
 
 </header>
 {control newGroupForm}

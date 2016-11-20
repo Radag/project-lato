@@ -16,12 +16,17 @@
 
 <div class="container">
     <div class="row same-height">
-        <div class="col l6 m12">
-            <div class="card flex-column">
-                <div class="card-header separated">
-                    <h3>Povinnosti na zítra</h3>                    
+        <div class="col l6 m12 s12">
+            <div class="card flex-column assignments">
+                <div class="card-header separated assignments-header">
+                    <h3>Povinnosti</h3> 
+                    <span class="assignments-header-count">1</span>
+                    <a href="" class="assignments-header-btn waves-effect waves-light-gray">
+                        <i class="material-icons">library_books</i>
+                    </a>                   
                 </div>      
                 <div class="card-content notifications">
+                        {* Zobrazovat maximalne 3 povinnosti *}
                         {foreach $actualTasks as $task}
                             <a href="{plink Group:message 'id'=>$task->group->urlId, 'idMessage'=>$task->idMessage}" class="notification-row waves-effect waves-light-gray">
                                 <div class="notification-icon" style="color: {$task->group->mainColor|noescape};">
@@ -39,37 +44,54 @@
                         {/foreach}
                 </div>
                 <div class="flex-spacer"></div>
-                <div class="card-footer">
-                    
+                <div class="card-footer assignments-footer">
+                    <a href="" class="material-icons">more_horiz</a>
                 </div>
             </div>
         </div>
-        <div class="col l6 m12 flex-column">
+
+        <div class="col l6 m12 s12">
             <a href="" class="card card-link-big">
+                <div class="label">
+                    <h3>Hodnocení</h3>
+                    <p>- - -</p>
+                </div>
+                <div class="flex-spacer"></div>
                 <div class="icon">
                     <div class="circle border-blue">
                     <strong>6</strong>
                     </div>
                 </div>
-                <div class="label">
-                    <h3>Poznámky</h3>
-                    <p>Celkem 3 nesplněné povinnosti</p>
-                </div>
             </a>
             <a href="" class="card card-link-big">
+                <div class="label">
+                    <h3>Zprávy</h3>
+                    <p>- - -</p>
+                </div>
+                <div class="flex-spacer"></div>
                 <div class="icon">
                     <div class="circle">
                     <strong>3</strong>/7
                     </div>
                 </div>
+            </a>
+            <a href="" class="card card-link-big">
                 <div class="label">
-                    <h3>Povinnosti</h3>
-                    <p>Celkem 3 nesplněné povinnosti</p>
+                    <h3>Poznámky</h3>
+                    <p>- - -</p>
+                </div>
+                <div class="flex-spacer"></div>
+                <div class="icon">
+                    <div class="circle">
+                    <strong>3</strong>/7
+                    </div>
                 </div>
             </a>
-            <div class="card">
+            
+                {*
+                <div class="card">
             <br><br><br><br><br><br><br><br><br>
-                {*<div class="card-header">
+                    <div class="card-header">
                     <h3>Poznámky</h3>
                     <a href="#create-note-modal" class="modal-trigger btn-icon small"><i class="material-icons">add</i></a>
                 </div>
@@ -94,9 +116,9 @@
                         <span class="avatar small"><i class="material-icons">search</i></span>Zobrazit vše
                     </a>
                 </div>
+             </div>
                 *}
-            </div>
-
+           
         </div>
 
         {* modal new note *}
@@ -168,8 +190,10 @@
                 <tbody>
                     <tr class="schedule-row">
                         <td class="day-title">
+                            <a href="{plink Homepage:timetable}" class="waves-effect waves-light-gray">
                             <span class="title">{date("j. n.")}</span>
                             <span class="name">{$days[date("N")-1]}</span>
+                            </a>
                         </td>
                         {for $i = $minHour; $i <= $maxHour; $i++}
                             {var $done = false}

@@ -1,12 +1,12 @@
 {includeblock '_blocks.latte'}
 {block content}
 {control topPanel}
-<section class="main">
+<section class="main two-level-nav">
     <div class="container">
         <div class="row">
             <div class="col s12">
                 <header class="section-header">
-                    <h3 class="">Všechny položky</h3>
+                    <h3 class="">Všechny příspěvky</h3>
                     <div class="flex-spacer"></div>
                     <ul class="right options">      
                         <li>
@@ -58,8 +58,8 @@
                     </ul>
                 </div>
                 <div class="card-footer">
-                    <a href="{link Group:users 'id'=>$activeGroup->urlId}" class="btn-flat show-more card-bottom">
-                        <span class="avatar small"><i class="material-icons">search</i></span>Zobrazit vše
+                    <a href="{link Group:users 'id'=>$activeGroup->urlId}" class="btn-flat secondary-colored card-bottom">
+                        Zobrazit vše
                     </a>
                 </div>
             </div>
