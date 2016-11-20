@@ -1,6 +1,6 @@
 <div class="col s12 l8">
     {if $streamPermission['addMessages']}
-    <a href="#select-post-type-modal" class="card create-post clearfix modal-trigger">
+    <a href="#select-post-type-modal" class="card create-post modal-trigger">
         <div class="avatar left">
             <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
         </div>
@@ -78,7 +78,7 @@
             <a href="{plink Profile:default 'id'=>$message->user->urlId}" class="avatar">
                 <img src="{$message->user->profileImage}" alt="{$message->user->name}">
             </a>
-            <h3 class="truncate">
+            <h3 class="name truncate">
                 <a href="{plink Profile:default 'id'=>$message->user->urlId}">{$message->user->name} {$message->user->surname}</a>
             </h3>
             <span class="card-date">{$message->getCreated()|date:"j. n."}</span>

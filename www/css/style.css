@@ -1903,6 +1903,14 @@ textarea.materialize-textarea {
     color: inherit !important;
 }
 
+
+
+@media only screen and (max-width: 600px) {
+    .card-header h3.name {
+        font-size: 15px !important;
+    }
+}
+
 .card-header .card-date {
     font-size:13px;
     line-height:18px;
@@ -1929,7 +1937,7 @@ textarea.materialize-textarea {
 }
 
 @media only screen and (max-width: 600px) {
-    .card-header .user-img {
+    .card-header .avatar {
         height: 36px;
         width: 36px;
     }
@@ -1958,6 +1966,11 @@ textarea.materialize-textarea {
 @media only screen and (max-width: 600px) {
     .create-post {
         padding: 16px;
+    }
+
+    .create-post .avatar {
+        width: 36px;
+        height: 36px;
     }
 
     .create-post .create-post-label {
@@ -2749,7 +2762,7 @@ textarea.materialize-textarea {
 
 @media only screen and (max-width: 600px) {
     .assignments-header-btn {
-        margin: -16px;
+        margin: -16px -16px -16px 0;
         padding:16px;
         min-width: 55px;
     }
