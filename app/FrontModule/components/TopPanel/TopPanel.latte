@@ -7,11 +7,11 @@
                     <div class="title">{$activeUser->name} {$activeUser->surname}</div>
                 </a>
                 <li><a n:class="$presenter->isLinkCurrent('Profile:default') ? active, waves-effect, waves-dark" href="{plink Profile:default}" >
-                    <i class="material-icons">person</i>Profil
-                </a></li>
+                        <i class="material-icons">person</i>Profil
+                    </a></li>
                 <li><a n:class="$presenter->isLinkCurrent('Profile:messages') ? active" href="{plink Profile:messages}" >
-                    <i class="material-icons">email</i>Zprávy
-                </a></li>
+                        <i class="material-icons">email</i>Zprávy
+                    </a></li>
                 <li class="no-padding">
                     <ul class="collapsible collapsible-accordion">
                         <li>
@@ -22,11 +22,11 @@
                             <div class="collapsible-body">
                                 <ul>
                                     <li><a href="{plink Account:default}" n:class="$presenter->isLinkCurrent('Account:*') ? active">
-                                        <i class="material-icons">account_box</i>Správa účtu
-                                    </a></li>
+                                            <i class="material-icons">account_box</i>Správa účtu
+                                        </a></li>
                                     <li><a href="{plink Homepage:logout}">
-                                        <i class="material-icons">power_settings_new</i>Odhlásit se
-                                    </a></li>
+                                            <i class="material-icons">power_settings_new</i>Odhlásit se
+                                        </a></li>
                                 </ul>
                             </div>
                         </li>
@@ -34,9 +34,9 @@
                 </li>
                 <div class="divider"></div>
                 <li><a n:class="$presenter->isLinkCurrent('Homepage:noticeboard') ? active, waves-effect, waves-dark" href="{plink Homepage:noticeboard}" >
-                    <i class="material-icons">dashboard</i>Nástěnka
-                </a></li>
-                
+                        <i class="material-icons">dashboard</i>Nástěnka
+                    </a></li>
+
                 <li class="no-padding">
                     <ul class="collapsible collapsible-accordion">
                         <li>
@@ -47,110 +47,113 @@
                             <div class="collapsible-body">
                                 <ul>
                                     {foreach $groups as $group}
-                                    <li><a n:class="$presenter->isLinkCurrent('Group:default', array('id'=>$group->urlId)) ? active" href="{plink Group:default 'id'=>$group->urlId}">
-                                        <div class="group-shortcut-circle" style="background-color: {$group->mainColor|noescape}" >{$group->shortcut|substr:0,1}</div>{$group->name}
-                                    </a></li>
-                                    {/foreach}
+                                        <li><a n:class="$presenter->isLinkCurrent('Group:default', array('id'=>$group->urlId)) ? active" href="{plink Group:default 'id'=>$group->urlId}">
+                                                <div class="group-shortcut-circle" style="background-color: {$group->mainColor|noescape}" >{$group->shortcut|substr:0,1}</div>{$group->name}
+                                            </a></li>
+                                        {/foreach}
                                     <li><a href="#create-group" class="waves-effect waves-dark modal-trigger">
-                                        <i class="material-icons">create</i>Vytvořit skupinu
-                                    </a></li>
+                                            <i class="material-icons">create</i>Vytvořit skupinu
+                                        </a></li>
                                     <li><a href="#join-group" class="waves-effect waves-dark modal-trigger">
-                                        <i class="material-icons">exposure_plus_1</i>Zapsat se do skupiny
-                                    </a></li>
+                                            <i class="material-icons">exposure_plus_1</i>Zapsat se do skupiny
+                                        </a></li>
                                 </ul>
                             </div>
                         </li>
                     </ul>
                 </li>
                 <li><a n:class="$presenter->isLinkCurrent('Homepage:tasks') ? active, waves-effect, waves-dark" href="{plink Homepage:tasks}" >
-                    <i class="material-icons">library_books</i>Povinnosti
-                </a></li>
+                        <i class="material-icons">library_books</i>Povinnosti
+                    </a></li>
                 <li><a n:class="$presenter->isLinkCurrent('Homepage:timetable') ? active, waves-effect, waves-dark" href="{plink Homepage:timetable}" >
-                    <i class="material-icons">insert_invitation</i>Rozvrh
-                </a></li>
-                <li><a n:class="$presenter->isLinkCurrent('Homepage:timetable') ? active, waves-effect, waves-dark" href="{plink Homepage:timetable}" >
-                    <i class="material-icons">star</i>Klasifikace
-                </a></li>
+                        <i class="material-icons">insert_invitation</i>Rozvrh
+                    </a></li>
+                <li><a n:class="$presenter->isLinkCurrent('Homepage:classification') ? active, waves-effect, waves-dark" href="{plink :Front:Homepage:classification}" >
+                        <i class="material-icons">star</i>Klasifikace
+                    </a></li>
                 <li class="empty"></li>
             </ul>
 
 
             <div class="left-nav-flex">
                 <a href="#" data-activates="slide-out" class="button-collapse show-on-large slide-out-toggle">
-                  <i class="material-icons">menu</i>
-              </a>
-              <span class="nav-title truncate">{$title}</span>
-          </div>
-          <ul class="content-nav">
-            <li class="active"><a href="">stream</a></li>
-            <li><a href="">povinnosti</a></li>
-            <li><a href="">studenti</a></li>
-            <li><a href="">o skupině</a></li>
-        </ul>
-        <div class="right-nav-flex">
-            <ul class="right navbar-nav">
-                <li><a class="dropdown-button ajax" href="{link notificationRead!}" data-activates="notifications-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false"><i class="material-icons ">notifications</i>
-                    {snippet notificationCount}{if $unreadNotifications > 0}<span class="nav-badge">{$unreadNotifications}</span>{/if}{/snippet}</a>
+                    <i class="material-icons">menu</i>
+                </a>
+                <span class="nav-title truncate">{$title}</span>
+            </div>
+            {if !empty($topMenu)}
+            <ul class="content-nav">
+                {foreach $topMenu as $item}
+                    <li {if $item->active}class="active"{/if}><a href="{$item->link}">{$item->name}</a></li>
+                {/foreach}
+            </ul>
+            {/if}
+            <script>  
+            $(document).ready(function(){
+                $('.dropdown-button').on('click', function() {
+                    $('.dropdown-button').not($(this)).dropdown('close');
+                });
+            });
+            </script>
+            <div class="right-nav-flex">
+                <ul class="right navbar-nav">
+                    <li><a class="dropdown-button ajax" href="{link notificationRead!}" data-activates="notifications-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false"><i class="material-icons ">notifications</i>
+                        {snippet notificationCount}{if $unreadNotifications > 0}<span class="nav-badge">{$unreadNotifications}</span>{/if}{/snippet}</a>
                     <ul id='notifications-window' class='dropdown-content main-nav-dropdown'>
                         <li class="dropdown-header">
                             <div class="title">Oznámení</div>
                             <div class="action"><i class="material-icons">done_all</i></div>
                         </li>
                         <li class="divider divider-after"></li>
-                        {foreach $notifications as $notification}
-                        <li><a href="{if $notification->idGroup}{plink Group:default 'id'=>$notification->idGroup}{else}{plink Profile:default 'id'=>$notification->participant->urlId}{/if}" class="clearfix">
-                            <div class="avatar small left">
-                                {if $notification->participant->profileImage}
-                                <img src="{$notification->participant->profileImage}" alt="some chick">
-                                {else}
-                                <img src="/images/user1.png" alt="some chick">
-                                {/if}
-                            </div>
-                            <h4>
-                                {if $notification->participant->urlId}
-                                {if $notification->participant->name}
-                                {$notification->participant->name} {$notification->participant->surname}
-                                {else}
-                                {$notification->participant->username}
-                                {/if}
-                                {else}
-                                {$notification->title}
-                                {/if}
-                                <span class="truncate">{$notification->text}</span>
-                            </h4>
-                        </a></li>
-                        {/foreach}
+                            {foreach $notifications as $notification}
+                            <li><a href="{if $notification->idGroup}{plink Group:default 'id'=>$notification->idGroup}{else}{plink Profile:default 'id'=>$notification->participant->urlId}{/if}" class="clearfix">
+                                    <div class="avatar small left">
+                                        <img src="{$notification->participant->profileImage}" alt="{$notification->participant->name}">
+                                    </div>
+                                    <h4>
+                                        {if $notification->participant->urlId}
+                                            {if $notification->participant->name}
+                                                {$notification->participant->name} {$notification->participant->surname}
+                                            {else}
+                                                {$notification->participant->username}
+                                            {/if}
+                                        {else}
+                                            {$notification->title}
+                                        {/if}
+                                        <span class="truncate">{$notification->text}</span>
+                                    </h4>
+                                </a></li>
+                            {/foreach}
                         <li class="dropdown-footer"><a href="{plink Homepage:notifications}">Zobrazit vše</a></li>
                     </ul>
                 </li>
 
                 <li><a class="dropdown-button ajax" href="{link privateMessagesRead!}" data-activates="message-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false"><i class="material-icons ">email</i>
                     {snippet messagesCount}{if $unreadPrivMessages > 0}<span class="nav-badge">{$unreadPrivMessages}</span>{/if}{/snippet}</a>
-                    <ul id='message-window' class='dropdown-content main-nav-dropdown'>
-                        <li class="dropdown-header">Zprávy</li>
-                        <li class="divider divider-after"></li>
+                <ul id='message-window' class='dropdown-content main-nav-dropdown'>
+                    <li class="dropdown-header">Zprávy</li>
+                    <li class="divider divider-after"></li>
                         {foreach $privateMessages as $message}
                         <li><a href="#!" class="clearfix">
-                            <div class="avatar left">
-                                <img src="/images/user1.png" alt="some chick">
-                            </div>
-                            <h4>
-                                {$message->user->name} {$message->user->surname}
-                                <span class="truncate">{$message->text}</span>
-                            </h4>
-                        </a></li>
+                                <div class="avatar left">
+                                    <img src="{$message->user->profileImage}" alt="{$message->user->name}">
+                                </div>
+                                <h4>
+                                    {$message->user->name} {$message->user->surname}
+                                    <span class="truncate">{$message->text}</span>
+                                </h4>
+                            </a></li>
                         {/foreach}
-                        <li class="divider divider-before"></li>
-                        <li class="dropdown-footer"><a href="{plink Profile:messages}">Zobrazit vše</a></li>
-                    </ul>
-                </li>
+                    <li class="divider divider-before"></li>
+                    <li class="dropdown-footer"><a href="{plink Profile:messages}">Zobrazit vše</a></li>
+                </ul>
+            </li>
 
-                <li><a href="#"><i class="material-icons">search</i></a></li>
-            </ul>
-        </div>
-
+            <li><a href="#"><i class="material-icons">search</i></a></li>
+        </ul>
     </div>
-    <div class="progress loading-data" id="main-progress-loader"><div class="indeterminate"></div></div>
+</div>
+<div class="progress loading-data" id="main-progress-loader"><div class="indeterminate"></div></div>
 </nav>
 
 

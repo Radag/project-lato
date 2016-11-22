@@ -20,8 +20,8 @@
             <div class="card flex-column assignments">
                 <div class="card-header separated assignments-header">
                     <h3>Povinnosti</h3> 
-                    <span class="assignments-header-count">1</span>
-                    <a href="" class="assignments-header-btn waves-effect waves-light-gray">
+                    <span class="assignments-header-count">{count($actualTasks)}</span>
+                    <a href="{link :Front:Homepage:tasks}" class="assignments-header-btn waves-effect waves-light-gray">
                         <i class="material-icons">library_books</i>
                     </a>                   
                 </div>      
@@ -45,13 +45,13 @@
                 </div>
                 <div class="flex-spacer"></div>
                 <div class="card-footer assignments-footer">
-                    <a href="" class="material-icons">more_horiz</a>
+                    <a href="{link :Front:Homepage:tasks}" class="material-icons">more_horiz</a>
                 </div>
             </div>
         </div>
 
         <div class="col l6 m12 s12">
-            <a href="" class="card card-link-big">
+            <a href="{link :Front:Homepage:classification}" class="card card-link-big">
                 <div class="label">
                     <h3>Hodnocení</h3>
                     <p>- - -</p>
@@ -63,7 +63,7 @@
                     </div>
                 </div>
             </a>
-            <a href="" class="card card-link-big">
+            <a href="{link :Front:Profile:messages}" class="card card-link-big">
                 <div class="label">
                     <h3>Zprávy</h3>
                     <p>- - -</p>
@@ -75,7 +75,7 @@
                     </div>
                 </div>
             </a>
-            <a href="" class="card card-link-big">
+            <a href="{link :Front:Homepage:notices}" class="card card-link-big">
                 <div class="label">
                     <h3>Poznámky</h3>
                     <p>- - -</p>

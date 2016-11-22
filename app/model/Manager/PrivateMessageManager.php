@@ -22,8 +22,10 @@ class PrivateMessageManager extends BaseManager
     public function getMessages($user)
     {
         $return = array();
-        $messages = $this->database->query("SELECT T1.TEXT, T1.ID_PRIVATE_MESSAGE, T2.NAME, T2.SURNAME, T1.CREATED FROM private_message T1 
-                LEFT JOIN user T2 ON T1.ID_USER_FROM=T2.ID_USER 
+        $messages = $this->database->query("SELECT T1.TEXT, T1.ID_PRIVATE_MESSAGE, T2.NAME, T2.SURNAME, T1.CREATED, 
+                T2.PROFILE_FILENAME,T2.PROFILE_PATH,T2.SEX
+                FROM private_message T1
+                LEFT JOIN vw_user_detail T2 ON T1.ID_USER_FROM=T2.ID_USER 
                 WHERE T1.ID_USER_TO=?
                 ORDER BY CREATED DESC LIMIT 5", $user->id)->fetchAll();
         foreach($messages as $message) {
@@ -31,6 +33,16 @@ class PrivateMessageManager extends BaseManager
             $user = new User();
             $user->surname = $message->SURNAME;
             $user->name = $message->NAME;
+            if($message->PROFILE_FILENAME) {
+                $user->profileImage = "https://cdn.lato.cz/" . $message->PROFILE_PATH . "/" . $message->PROFILE_FILENAME;
+            } else {
+                if($message->SEX == 'M') {
+                    $user->profileImage = '/images/default-avatar_man.png';
+                } else {
+                    $user->profileImage = '/images/default-avatar_woman.png';
+                }
+            }
+            
             $mess->text = $message->TEXT;
             $mess->id = $message->ID_PRIVATE_MESSAGE;
             $mess->created = $message->CREATED;

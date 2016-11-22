@@ -53,6 +53,8 @@ class TopPanel extends Control
      */
     protected $activeUser;
     
+    protected $topMenu = array();
+    
     protected $title = "";
     
     public function __construct(UserManager $userManager,
@@ -73,10 +75,15 @@ class TopPanel extends Control
         
     }
     
+    public function setTopMenu($items)
+    {
+        $this->topMenu = $items;
+    }
+    
     public function render()
     {
         $template = $this->template;
-        
+        $template->topMenu = $this->topMenu;
         $template->title = $this->title;
         $template->activeGroup = $this->activeGroup;
         $template->activeUser = $this->activeUser;
