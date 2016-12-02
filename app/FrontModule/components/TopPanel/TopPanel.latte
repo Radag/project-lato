@@ -81,13 +81,7 @@
                 </a>
                 <span class="nav-title truncate">{$title}</span>
             </div>
-            {if !empty($topMenu)}
-            <ul class="content-nav">
-                {foreach $topMenu as $item}
-                    <li {if $item->active}class="active"{/if}><a href="{$item->link}">{$item->name}</a></li>
-                {/foreach}
-            </ul>
-            {/if}
+            
             <script>  
             $(document).ready(function(){
                 $('.dropdown-button').on('click', function() {
@@ -158,5 +152,12 @@
 
 
 </header>
+{if !empty($topMenu)}
+    <ul class="content-nav">
+        {foreach $topMenu as $item}
+        <li {if $item->active}class="active"{/if}><a href="{$item->link}">{$item->name}</a></li>
+        {/foreach}
+    </ul>
+{/if}
 {control newGroupForm}
 {control joinGroupForm}

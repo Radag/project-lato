@@ -1,27 +1,15 @@
 {block content}
 {control topPanel}
 
-<section class="main">
+<section class="main two-level-nav">
     <div class="container offset">
         <div class="row">
             <div class="col s12">
                 <header class="section-header">
                     <h3>
-                        Čitatelé a jmenovatelé
+                        Přidat známku
                     </h3>
                     <div class="flex-spacer"></div>
-
-                    <ul class="right options">
-                        <li>
-                            <a class="btn-flat btn-icon dropdown-button" data-activates="grades-page-options" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
-                                <i class="material-icons">more_vert</i>
-                            </a>
-                            <ul id='grades-page-options' class="dropdown-content">
-                                <li><a href="#!">Upravit vlastnosti</a></li>
-                                <li><a href="#!">Smazat</a></li>
-                            </ul>
-                        </li>
-                    </ul>
                 </header>  
             </div>
         </div>
@@ -31,47 +19,37 @@
 <div class="container offset">
     <div class="row">
         <div class="col s12">
-            <div class="classification-chips">
-                <a href="#edit-classification-modal" class="chip modal-trigger">
-                    Váha známky × 3
-                </a>
-                <a href="#edit-classification-modal" class="chip modal-trigger">
-                    5 klasifikačních stupňů
-                </a>
-            </div>
+            <div class="card classification-properties modal-trigger" href="#edit-classification-modal">
+                <p class="minified-label">Retušování fotografie</p>
+                <div class="flex-spacer"></div>
+                <i class="minified-icon material-icons">more_horiz</i>
+            </div>   
         </div>
     </div>
     <div id="edit-classification-modal" class="modal modal-small">
-        <div class="card-content">
-            <h3>Upravit hodnocení</h3>
+        <div class="modal-content">
+            <h3>Vlastnosti známky</h3>
             <div class="form-row">
-                <input type="text" placeholder="Oblast zkoušené látky">
+                <input type="text" value="Retušování fotografie">
             </div>
-            <h4>Způsob hodnocení</h4>
-            <p>
-                <input name="group1" type="radio" id="classification-type-1">
-                <label for="classification-type-1">5-ti stupňová klasifikace</label>
-            </p>
-            <p>
-                <input name="group1" type="radio" id="classification-type-2">
-                <label for="classification-type-2">Procenta</label>
-            </p>
-            <p>
-                <input name="group1" type="radio" id="classification-type-3">
-                <label for="classification-type-3">Slovní hodnocení</label>
-            </p>
-
+            <div class="form-row">
+                <input type="text" placeholder="Datum (nepovinné)">
+            </div>
+            
+            
         </div>
-        <div class="card-footer">
-
-        </div>             
+        <div class="modal-footer clearfix">
+            <div class="flex-spacer"></div>
+            <div class="form-control">
+                <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                <button type="submit" class="waves-effect waves-light btn btn-confirm submit-classification" >Potvrdit</button>
+            </div>
+        </div>
     </div>
 
     <div class="row">
         <div class="col s12">
-            <div class="card-header table-header">
-                <input type="checkbox" class="filled-in" id="select-all" />
-                <label for="select-all"></label>   
+            <div class="card-header table-header">   
                 <div class="title">Student</div>
                 <div class="flex-spacer"></div>
                 <div class="table-field">Poznámka</div>
@@ -81,10 +59,25 @@
             <ul class="custom-table">
                 <li>
                     <div class="table-row">
-                        <input type="checkbox" class="filled-in user-checkbox" id="user1" />
-                        <label for="user1"></label>
                         <div class="avatar small">
-                            <img src="/images/user1.png">
+                            <img src="/images/default-avatar_man.png">
+                        </div>
+                        <div class="title">
+                            <span>Prijmeni</span>, Jmeno
+                        </div>
+                        <div class="flex-spacer"></div>
+                        <div class="table-field"><a class="material-icons">comment</a></div>
+                        <div class="grade table-field"><input type="text" class="no-border" placeholder="neuvedeno"></div>
+                        <div class="table-row-input">
+                            <textarea type="text" placeholder="Poznámka" class="materialize-textarea no-border"></textarea>
+                        </div>
+                    </div>
+
+                </li>
+                <li>
+                    <div class="table-row">
+                        <div class="avatar small">
+                            <img src="/images/default-avatar_man.png">
                         </div>
                         <div class="title">
                             <span>Prijmeni</span>, Jmeno
@@ -96,25 +89,8 @@
                 </li>
                 <li>
                     <div class="table-row">
-                        <input type="checkbox" class="filled-in user-checkbox" id="user1" />
-                        <label for="user1"></label>
                         <div class="avatar small">
-                            <img src="/images/user1.png">
-                        </div>
-                        <div class="title">
-                            <span>Prijmeni</span>, Jmeno
-                        </div>
-                        <div class="flex-spacer"></div>
-                        <div class="table-field"><a class="material-icons">comment</a></div>
-                        <div class="grade table-field"><input type="text" class="no-border" placeholder="neuvedeno"></div>
-                    </div>
-                </li>
-                <li>
-                    <div class="table-row">
-                        <input type="checkbox" class="filled-in user-checkbox" id="user1" />
-                        <label for="user1"></label>
-                        <div class="avatar small">
-                            <img src="/images/user1.png">
+                            <img src="/images/default-avatar_woman.png">
                         </div>
                         <div class="title">
                             <span>Prijmeni</span>, Jmeno

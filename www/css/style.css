@@ -17,6 +17,10 @@ a {
     transition: color 300ms ease-in-out;
 }
 
+.lean-overlay {
+    height: auto;
+}
+
 nav.breadcrumbs {
     display: flex;
     align-items: center;
@@ -31,7 +35,7 @@ nav.breadcrumbs {
 }
 
 .breadcrumb a {
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
 }
 
 .breadcrumb a:hover {
@@ -95,7 +99,7 @@ nav.breadcrumbs {
 }
 
 [type="checkbox"]+label {
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     height: 20px;
     line-height: 20px;
     font-size: 14px;
@@ -146,7 +150,7 @@ nav.breadcrumbs {
 
 .table-header .btn-icon {
     margin-right: 24px;
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     height: 36px;
 }
 
@@ -158,14 +162,14 @@ nav.breadcrumbs {
     flex-grow: 1;
     margin-top: 16px;
     text-transform: uppercase;
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     display: flex;
     font-size: 13px;
     font-weight: 500;
 }
 
 .table-header [type="checkbox"].filled-in:not(:checked)+label:after {
-    border-color: rgba(0, 0, 0, .47);
+    border-color: rgba(0, 0, 0, .54);
 }
 
 .collapsible.popout {
@@ -194,9 +198,17 @@ nav.breadcrumbs {
     min-height: 1em;
     line-height: 1em;
     border-bottom: 1px solid #eaeaea;
+    flex-wrap: wrap;
 }
 
-.table-row.table-control {
+@media only screen and (max-width: 600px) {
+    .table-row {
+        padding: 16px;
+    }
+}
+
+.card-footer.highlighted,
+.table-control {
     background-color: #f5f5f5;
 }
 
@@ -209,7 +221,7 @@ nav.breadcrumbs {
 
 .table-row .table-field a {
     cursor: pointer;
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
 }
 
 .table-row .table-field input {
@@ -230,8 +242,7 @@ nav.breadcrumbs {
 .table-header [type="checkbox"]+label,
 .table-row [type="checkbox"]+label {
     padding-left: 20px;
-    margin-left: 6px;
-    margin-right: 26px;
+    margin-right: 24px;
     height: 20px;
     line-height: 20px;
 }
@@ -246,7 +257,7 @@ nav.breadcrumbs {
 
 .table-row .classification,
 .collapsible-body .classification {
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     font-size: 16px;
     font-weight: 400;
 }
@@ -269,15 +280,16 @@ nav.breadcrumbs {
 }
 
 .collapsible-body .classification-table .table-row .edit {
-    width: 32px;
+    width: 20px;
     text-align: center;
-    margin-right: 20px;
-    color: rgba(0, 0, 0, .47);
+    margin-right: 24px;
+    color: rgba(0, 0, 0, .54);
 }
 
 .collapsible-body .classification-table .table-row .title {
     font-weight: 500;
     color: rgba(0, 0, 0, .87);
+    line-height: 1.5em;
 }
 
 .collapsible-body-footer {
@@ -297,7 +309,7 @@ nav.breadcrumbs {
 }
 
 .collapsible-body-footer ul li i {
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
 }
 
 .classification-chips {
@@ -308,17 +320,23 @@ nav.breadcrumbs {
 .classification-chips .chip {
     display: flex;
     align-items: center;
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
 }
 
 .classification-chips .chip .material-icons {
     font-size: 16px !important;
     margin-left: 12px;
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     height: 24px;
     line-height: 24px;
     width: 24px;
     text-align: center;
+}
+
+@media only screen and (max-width: 600px) {
+    .table-field.assessment-date {
+        display: none;
+    }
 }
 
 /* ----- secondary color ----- */
@@ -338,7 +356,7 @@ nav.breadcrumbs {
 }
 
 .row {
-  margin: 0 -16px !important;
+  margin: 0 -12px !important;
 }
 
 .row.same-height {
@@ -355,6 +373,16 @@ nav.breadcrumbs {
 
 .row .col {
     padding: 0 16px;   
+}
+
+@media only screen and (max-width: 992px) {
+    .row {
+        margin: 0 -8px !important;
+    }
+
+    .row .col {
+        padding: 0 8px !important;
+    }
 }
 
 @media only screen and (max-width: 600px) {
@@ -479,12 +507,8 @@ input[type="password"] {
 }
 
 .card-header .material-icons {
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
 }
-
-
-
-
 
 .btn-icon.small {
     height: 24px;
@@ -516,8 +540,18 @@ input[type="password"] {
     box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
 }
 
+.btn.no-shadow,
+.btn.no-shadow:hover {
+    box-shadow: none;
+}
+
 .btn:hover {
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+.btn.grayscale {
+    color: rgba(0, 0, 0, .87);
+    background-color: #fff;
 }
 
 .btn.disabled {
@@ -613,7 +647,7 @@ input[type="password"] {
 }
 
 .card .list .row .label {
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     margin-bottom: 16px;
 }
 
@@ -651,7 +685,7 @@ input[type="password"] {
 
 .profile-header .profile-navbar {
     display: flex;
-    background-color: rgba(29, 29, 29, .47);
+    background-color: rgba(29, 29, 29, .54);
     width: 100%;
     padding: 0;
     height: 88px;
@@ -698,7 +732,7 @@ input[type="password"] {
 .profile-header .profile-title span {
     font-size: 18px;
     font-weight: 400;
-    color: rgba(255, 255, 255, .47);
+    color: rgba(255, 255, 255, .54);
     text-transform: none;
 }
 
@@ -745,7 +779,7 @@ input[type="password"] {
 }
 
 .new-message-label {
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     font-size: 16px;
     flex-grow: 1;
     line-height: 40px;
@@ -842,8 +876,11 @@ input[type="password"] {
     align-items: center;
     justify-content: center;
     height: 70px; 
-    margin: 0;
+    line-height: 70px;
+    margin: 0 0 32px 0;
     padding: 0 16px;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(0, 0, 0, .12);
 }
 
 .content-nav li {
@@ -864,43 +901,43 @@ input[type="password"] {
     bottom: 0;
     width: 100%;
     height: 2px;
-    background-color: #fdfb8c;
+    background-color: #0090f7;
 }
 
 .content-nav li a {
     text-transform: uppercase;
     font-weight: 500;
-    font-size: 14px;
     padding: 0 32px;
-    color: rgba(255, 255, 255, .75);
+    color: rgba(0, 0, 0, .54);
     height: 100%;
     width: 100%;
     display: block;
     text-align: center;
+    font-size: 13px;
 }
 
 .content-nav li.active a {
-    color: rgba(255, 255, 255, 1);
+    color: rgba(0, 0, 0, .87);
 }
 
 .content-nav li a:hover {
     background-color: transparent;
-    color: rgba(255, 255, 255, 1);
+    color: rgba(0, 0, 0, .87);
 }
 
 @media only screen and (max-width: 992px) {
     .content-nav {
-        background-color: rgba(0, 0, 0, .05);
         order: 3;
-        height: 64px;
-        width: 100%;  
+        width: 100%;
     }  
 }
 
 @media only screen and (max-width: 600px) {
     .content-nav {
-        height: 56px;
-        padding: 0 12px;
+        padding: 0;
+        height: 64px;
+        line-height: 64px;
+        margin-bottom: 12px;
     }
 
     .content-nav li {
@@ -909,7 +946,6 @@ input[type="password"] {
 
     .content-nav li a {
         padding: 0;
-        font-size: 13px;
     }
 }
 
@@ -1008,7 +1044,9 @@ ul.dropdown-content.main-nav-dropdown {
     }
 }
 
-
+.select-dropdown {
+    padding: 0 !important;
+}
 
 .select-wrapper input.select-dropdown {
     margin: 0;
@@ -1022,7 +1060,7 @@ ul.dropdown-content.main-nav-dropdown {
 }
 
 .select-wrapper.with-remove .select-dropdown li:last-child span {
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
 }
 
 
@@ -1034,7 +1072,7 @@ ul.dropdown-content.main-nav-dropdown {
 /* KOALA CSS */
 
 p {
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     line-height: 1.6em;
     margin-top: 0;
     margin-top: 16px;
@@ -1045,7 +1083,7 @@ p:first-child {
 }
 
 p.secondary-par {
-    color: rgba(0, 0, 0, .47) !important;
+    color: rgba(0, 0, 0, .54) !important;
 }
 
 strong {
@@ -1094,6 +1132,7 @@ strong {
 .modal {
     width: calc(100% - 48px);
     max-width: 780px;
+    background-color: #fff;
 }
 
 @media only screen and (max-width: 600px) {
@@ -1144,6 +1183,7 @@ strong {
     display: flex;
     height: auto;
     padding: 0;
+    background-color: #fff;
 }
 
 #create-post-modal {
@@ -1245,7 +1285,7 @@ strong {
 
 #select-post-type a {
     display: flex;
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
 }
 
 #select-post-type a:hover {
@@ -1291,7 +1331,7 @@ strong {
 #create-post-modal .modal-content .attachments li .remove-attachment i {
     font-size: 20px;
     line-height: 36px;
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     -webkit-transition: color 300ms ease-in-out;
     -moz-transition: color 300ms ease-in-out;
     -o-transition: color 300ms ease-in-out;
@@ -1319,7 +1359,7 @@ strong {
 
 #create-post-modal .modal-footer .attachments-nav ul li i {
     line-height: 36px;
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     font-size: 24px !important;
 }
 
@@ -1373,7 +1413,7 @@ strong {
 .modal .modal-footer .modal-footer-note a {
     display: flex;
     align-items: center;
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
 }
 
 .modal .modal-footer .modal-footer-note a.colored {
@@ -1479,7 +1519,6 @@ textarea.materialize-textarea {
 
 @media only screen and (max-width: 992px) { 
     .main.two-level-nav {
-        margin-top: 84px;
     }
 }
 
@@ -1489,7 +1528,6 @@ textarea.materialize-textarea {
     }
 
     .main.two-level-nav {
-        margin-top: 72px;
     }
 }
 
@@ -1521,10 +1559,11 @@ textarea.materialize-textarea {
 }
 
 .section-header h3 {
+    font-weight: 400;
     margin: 0;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1em;
-    color: rgba(0, 0, 0, .47);   
+    color: rgba(0, 0, 0, .54);   
     text-transform: uppercase;
 }
 
@@ -1555,7 +1594,7 @@ textarea.materialize-textarea {
     padding:0;
     text-align:center;
     border-radius:50%;
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     background-color: rgba(0, 0, 0, .0); 
     -webkit-transition:  300ms ease-in-out;
     -moz-transition:  300ms ease-in-out;
@@ -1606,7 +1645,7 @@ textarea.materialize-textarea {
 }
 
 .dropdown-content .dropdown-header .action i {
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     line-height: 36px;
     display: block;
     cursor: pointer;
@@ -1629,7 +1668,7 @@ textarea.materialize-textarea {
 }
 
 .dropdown-content .dropdown-footer a {
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     font-weight: 400;
     font-size: 12px;
     display: inline;
@@ -1667,7 +1706,7 @@ textarea.materialize-textarea {
 .main-nav-dropdown span {
     display:block;
     font-size:13px;
-    color:rgba(0, 0, 0, .47);
+    color:rgba(0, 0, 0, .54);
     font-weight:400;
 }
 
@@ -1705,7 +1744,7 @@ textarea.materialize-textarea {
     height: 50px;
     line-height: 50px;
     width: 100%;
-    background-color: rgba(29, 29, 29, .47);
+    background-color: rgba(29, 29, 29, .54);
     color: #fff;
     padding:0 20px;
     font-size: 14px;
@@ -1728,7 +1767,7 @@ textarea.materialize-textarea {
     display:block !important;
     float:left;
     line-height:48px;
-    color:rgba(0, 0, 0, .47);
+    color:rgba(0, 0, 0, .54);
     text-align: center;
     width: 30px;
     height:48px;
@@ -1750,7 +1789,7 @@ textarea.materialize-textarea {
     height: 30px;
     border-radius: 50%;
     float: left;
-    background-color: rgba(0, 0, 0, .47);
+    background-color: rgba(0, 0, 0, .54);
     text-align: center;
     margin: 9px 0px;
     margin-right: 24px;
@@ -1763,7 +1802,7 @@ textarea.materialize-textarea {
     float: right;
     font-size: 17px !important;
     margin: 0;
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
 }
 
 
@@ -1781,7 +1820,7 @@ textarea.materialize-textarea {
 .side-nav .collapsible-body li a {
     padding: 0 16px;
     font-weight: 400 !important;
-    color: rgba(0, 0, 0, .47) !important;
+    color: rgba(0, 0, 0, .54) !important;
     -webkit-transition: color 300ms ease-in-out;
     -moz-transition: color 300ms ease-in-out;
     -o-transition: color 300ms ease-in-out;
@@ -1800,7 +1839,7 @@ textarea.materialize-textarea {
 
 
 .side-nav .collapsible-body li a i {
-    color: rgba(0, 0, 0, .47) !important;
+    color: rgba(0, 0, 0, .54) !important;
 }
 
 .side-nav .divider {
@@ -1809,7 +1848,7 @@ textarea.materialize-textarea {
 
 .side-nav h4 {
     font-size: 13px;
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     line-height: 48px;
     margin: 0;
     padding:0 20px;
@@ -1839,6 +1878,12 @@ textarea.materialize-textarea {
     flex-direction: column;
 }
 
+@media only screen and (max-width: 992px) {
+    .card {
+        margin-bottom: 16px;
+    }
+}
+
 @media only screen and (max-width: 600px) {
     .card {
         margin-bottom: 8px;
@@ -1852,12 +1897,12 @@ textarea.materialize-textarea {
 
 .card.simple .label {
     flex-grow: 1;
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     line-height: 24px;
 }
 
 .card.simple .material-icons {
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     margin-right: 16px;
 }
 
@@ -1914,14 +1959,14 @@ textarea.materialize-textarea {
 .card-header .card-date {
     font-size:13px;
     line-height:18px;
-    color:rgba(0, 0, 0, .47);
+    color:rgba(0, 0, 0, .54);
     font-weight:400;
     display:block;
     margin-right: 12px;
 }
 
 .card-header .card-options {
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     line-height: 36px;
     padding: 0;
     width: 36px;
@@ -1959,7 +2004,7 @@ textarea.materialize-textarea {
 
 .create-post .create-post-label {
     font-size: 16px;
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     line-height: 42px;
 }
 
@@ -2071,13 +2116,13 @@ textarea.materialize-textarea {
 
 .comments-header .show-comments.item .material-icons {
     line-height:36px;
-    color:rgba(0, 0, 0, .47);
+    color:rgba(0, 0, 0, .54);
 }
 
 .comments-header .comments-count {
     line-height:36px;
     padding:0 8px;
-    color:rgba(0, 0, 0, .47);
+    color:rgba(0, 0, 0, .54);
     font-size:13px;
 }
 
@@ -2125,7 +2170,7 @@ textarea.materialize-textarea {
 }
 
 .comment-row .comment-header span {
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     font-size: 12px;
 } 
 
@@ -2165,7 +2210,7 @@ textarea.materialize-textarea {
 }
 
 .comments-footer button {
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     margin-left: 6px;
     height: 36px;
     width: 36px;
@@ -2196,19 +2241,19 @@ textarea.materialize-textarea {
 
 
 ::-webkit-input-placeholder {
-   color: rgba(0, 0, 0, .47);
+   color: rgba(0, 0, 0, .54);
 }
 
 :-moz-placeholder { /* Firefox 18- */
-   color: rgba(0, 0, 0, .47);  
+   color: rgba(0, 0, 0, .54);  
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
-   color: rgba(0, 0, 0, .47);  
+   color: rgba(0, 0, 0, .54);  
 }
 
 :-ms-input-placeholder {  
-   color: rgba(0, 0, 0, .47);  
+   color: rgba(0, 0, 0, .54);  
 }
 
 
@@ -2237,7 +2282,7 @@ textarea.materialize-textarea {
 
 #group-cards .card .title span {
     display: block;
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     font-weight: 400;
     font-size: 13px;
 }
@@ -2290,7 +2335,7 @@ textarea.materialize-textarea {
     display: block;
     font-weight:400;
     font-size:13px;
-    color:rgba(0, 0, 0, .47);
+    color:rgba(0, 0, 0, .54);
     line-height:13px;
 }
 
@@ -2298,7 +2343,7 @@ textarea.materialize-textarea {
     padding:24px;
     font-size:14px;
     line-height:14px;
-    color:rgba(0, 0, 0, .47);
+    color:rgba(0, 0, 0, .54);
 }
 
 @media(max-width:1220px) {
@@ -2341,7 +2386,7 @@ textarea.materialize-textarea {
 }
 
 .modal p {
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
 }
 
 .group-color-select {
@@ -2463,7 +2508,7 @@ textarea.materialize-textarea {
 }
 
 .custom-collection li .subtitle {
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     font-weight: 400;
     font-style: italic;
     margin-left: 16px;
@@ -2474,12 +2519,12 @@ textarea.materialize-textarea {
 }
 
 .custom-collection li a .material-icons {
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     font-size: 18px !important
 }
 
 .custom-collection .remaining-time {
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
 }
 
 .custom-collection .btn-icon {
@@ -2543,7 +2588,7 @@ textarea.materialize-textarea {
     width: 24px;
     margin-right: 16px;
     font-size: 24px !important;
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     line-height: 45px;
 }
 
@@ -2568,7 +2613,7 @@ textarea.materialize-textarea {
 
 .form-row .notice {
     margin-left: 16px;
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
 }
 
 .add-line {
@@ -2601,7 +2646,7 @@ textarea.materialize-textarea {
 #layout-footer {
     text-align: center;
     padding: 36px;
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     font-size: 13px;
 }
 
@@ -2657,7 +2702,7 @@ textarea.materialize-textarea {
     font-size: 35px;
     line-height: 1em;
     font-weight: 300;
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
 }
 
 .schedule-row .day-title .name {
@@ -2671,7 +2716,7 @@ textarea.materialize-textarea {
 #one-day-schedule .day-title .name {
     margin-top: 12px;
     font-size: 13px;
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
 }
 
 .schedule-row .day-title-spacer {
@@ -2712,13 +2757,13 @@ textarea.materialize-textarea {
 
 .schedule-row .item .room {
     display: block;
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     font-size: 13px;
     line-height: 18px;
 }
 
 .schedule-row.schedule-header .item {
-    color: rgba(0, 0, 0, .47) !important;
+    color: rgba(0, 0, 0, .54) !important;
     font-weight: 500;
     font-size: 12px;
 }
@@ -2744,7 +2789,7 @@ textarea.materialize-textarea {
     -moz-transition: background-color 300ms ease-in-out;
     -o-transition: background-color 300ms ease-in-out;
     transition: background-color 300ms ease-in-out;
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2780,7 +2825,7 @@ textarea.materialize-textarea {
 }
 
 .assignments-footer a {
-    color: rgba(0, 0, 0, .47);   
+    color: rgba(0, 0, 0, .54);   
 }
 
 .assignments-footer a:hover {
@@ -2826,8 +2871,50 @@ textarea.materialize-textarea {
 }
 
 .notification-description {
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
     margin-top: 6px;
+}
+
+/* ----- Classification ----- */
+
+.classification-properties {
+    align-items: center;
+    cursor: pointer;
+}
+
+.classification-properties:hover {
+    box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+}
+
+.classification-properties .minified-label {
+    padding: 24px;
+    margin: 0;
+    color: rgba(0, 0, 0, .87);
+    font-weight: 500;
+}
+
+.classification-properties .minified-label span {
+    font-weight: 400;
+    color: rgba(0, 0, 0, .54);
+    font-size: 14px;
+}
+
+.classification-properties .minified-icon {
+    color: rgba(0, 0, 0, .54);
+    padding: 24px;
+    display: block;
+}
+
+.table-row-input {
+    display: flex;
+    position: relative;
+    margin-top: 24px;
+    width: 100%;
+}
+
+.table-row-input textarea {
+    line-height: 1.5em;
+    min-height: 1.5em !important;
 }
 
 /* ----- Noticeboard ----- */
@@ -2850,7 +2937,7 @@ textarea.materialize-textarea {
     justify-content: center;
     font-size: 17px;
     font-weight: 300;
-    color: rgba(0, 0, 0, .47);
+    color: rgba(0, 0, 0, .54);
 }
 
 .card-link-big .icon .circle.border-blue {
