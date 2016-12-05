@@ -151,13 +151,14 @@
             {/foreach}
         </div>
         {/ifset}
+        {if $message->idType === 4}
         <div class="assignment">
             <div class="icon-circle"><i class="material-icons">access_time</i></div>
             <div class="time-left">7 dní do odevzdání</div>
             <div class="flex-spacer"></div>
             <a href="" class="btn gray">Odevzdat</a>
         </div>  
-        
+        {/if}
         {control commentForm-$message->id}
     </div>
     {/foreach}
