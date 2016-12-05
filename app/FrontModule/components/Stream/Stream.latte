@@ -130,13 +130,7 @@
         </div>
         <div class="card-content clearfix">
             <p>{$message->getText()|escape|nl2br|noescape}</p>
-            {ifset $message->attachments['media']}
-            <div class="media-container clearfix">
-                {foreach $message->attachments['media'] as $media}
-                <div class="{if $iterator->first}img-full-size{else}img-half-size{/if}" style="background-image: url('https://cdn.lato.cz/{$media['path']|noescape}/{$media['filename']|noescape}');"></div>
-                {/foreach}
-            </div>
-            {/ifset}            
+
             {ifset $message->attachments['files']}
             <ul class="attachments">
                 {foreach $message->attachments['files'] as $file}  
@@ -150,6 +144,19 @@
             </ul>
             {/ifset}
         </div>
+        {ifset $message->attachments['media']}
+        <div class="media-container clearfix">
+            {foreach $message->attachments['media'] as $media}
+            <div class="{if $iterator->first}img-full-size{else}img-half-size{/if}" style="background-image: url('https://cdn.lato.cz/{$media['path']|noescape}/{$media['filename']|noescape}');"></div>
+            {/foreach}
+        </div>
+        {/ifset}
+        <div class="assignment">
+            <div class="icon-circle"><i class="material-icons">access_time</i></div>
+            <div class="time-left">7 dní do odevzdání</div>
+            <div class="flex-spacer"></div>
+            <a href="" class="btn gray">Odevzdat</a>
+        </div>  
         
         {control commentForm-$message->id}
     </div>
