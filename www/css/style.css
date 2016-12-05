@@ -2540,7 +2540,7 @@ textarea.materialize-textarea {
 .form-row {
     display: flex;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 16px;
     min-height: 32px;
 }
 
