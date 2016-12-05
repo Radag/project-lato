@@ -109,7 +109,7 @@ class MessageManager extends BaseManager {
         } else {
             $delete = array(0);
         }
-        $messages = $this->database->query("SELECT T1.TEXT, T1.ID_MESSAGE, T2.ID_USER, T2.SEX, T2.URL_ID, T2.NAME, T2.SURNAME, T1.CREATED_WHEN,
+        $messages = $this->database->query("SELECT T1.TEXT, T1.ID_TYPE, T1.ID_MESSAGE, T2.ID_USER, T2.SEX, T2.URL_ID, T2.NAME, T2.SURNAME, T1.CREATED_WHEN,
                         T3.PATH,
                         T3.FILENAME,
                         T1.PRIORITY,
@@ -144,6 +144,7 @@ class MessageManager extends BaseManager {
             $mess->followed = $message->IS_FOLLOWED;
             $mess->priority = $message->PRIORITY;
             $mess->deleted = $message->DELETED;
+            $mess->idType = $message->ID_TYPE;
             $mess->attachments = $this->getAttachments($message->ID_MESSAGE);
             $return[] = $mess;
         }
