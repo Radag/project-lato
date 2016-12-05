@@ -58,7 +58,7 @@
     </div>
 </div>
 
-
+{*
 <div class="container">
     <div class="row same-height">
         <div class="col l6 m12 s12">
@@ -71,7 +71,6 @@
                     </a>                   
                 </div>      
                 <div class="card-content notifications">
-                        {* Zobrazovat maximalne 3 povinnosti *}
                         {foreach $actualTasks as $task}
                             <a href="{plink Group:message 'id'=>$task->group->urlId, 'idMessage'=>$task->idMessage}" class="notification-row waves-effect waves-light-gray">
                                 <div class="notification-icon" style="color: {$task->group->mainColor|noescape};">
@@ -173,7 +172,7 @@
         </div>
 
         {* modal edit note *}
-
+{*
         <div id="edit-note-modal" class="modal modal-small">
             <div class="modal-content">
                 <h3>Upravit poznámku</h3>
@@ -194,7 +193,7 @@
 </div>
 
 
-
+*}
 
 <section class="main">
     <div class="container">
