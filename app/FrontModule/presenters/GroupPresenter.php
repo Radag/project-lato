@@ -15,6 +15,7 @@ use App\FrontModule\Components\Stream\CommentForm\CommentForm;
 use App\Model\Manager\TaskManager;
 use App\Model\Manager\ClassificationManager;
 use App\FrontModule\Components\NewClassificationForm\NewClassificationForm;
+use App\FrontModule\Components\NewClassificationForm\UserClassificationForm;
 
 class GroupPresenter extends BasePresenter
 {    
@@ -161,6 +162,30 @@ class GroupPresenter extends BasePresenter
     {
         $component = new NewClassificationForm($this->classificationManager, $this->groupManager, $this->activeGroup);
         return $component;
+    }
+    
+    public function createComponentUserClassificationForm()
+    {
+        $component = new UserClassificationForm($this->classificationManager, $this->groupManager, $this->activeGroup);
+        return $component;
+    }
+    
+    public function handleShowUserClassificationForm($idUserTo) 
+    {
+        $this['userClassificationForm']->setUser($idUserTo);
+        $this->redrawControl('userClassificationForm');
+    }
+    
+    public function handleEditUserClassificationForm($idClassification) 
+    {
+        $classification = $this->classificationManager->getClassification($idClassification);
+        $this['userClassificationForm']['form']->setDefaults(array(
+            'name' => $classification->name,
+            'grade' => $classification->grade,
+            'notice' => $classification->notice,
+            'idClassification' => $classification->idClassification
+        ));
+        $this->redrawControl('userClassificationForm');
     }
     
     protected function createComponentSharingForm()

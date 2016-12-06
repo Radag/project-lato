@@ -7,7 +7,7 @@
             <div class="col s12">
                 <header class="section-header no-padding">
                     <a class="btn white modal-trigger" href="#new-classification-modal">
-                    Přidat známku
+                        Přidat známku
                     </a>
                     <div class="flex-spacer"></div>
 
@@ -24,148 +24,152 @@
                             </a>
                         </li>
                     </ul>
-                    </header>  
-                </div>
+                </header>  
             </div>
         </div>
-    </section>
-
-    <!-- MODALS -->
-    <div id="new-classification-modal" class="modal modal-small">
-        {snippet addClassificationForm}
-            {control addClassificationForm}
-        {/snippet}
     </div>
-    <script>  
-        $(function () {
-            $.nette.ext('newClassification', {
-                start: function (jqXHR, settings) {              
-                    if(settings.nette !== undefined && $(settings.nette.ui).hasClass('submit-classification')) { 
-                        jqXHR.done(function( data, textStatus, jqXHR ) {
-                            $('#new-classification-modal').closeModal();
-                        });
-                    }
+</section>
+
+<!-- MODALS -->
+<div id="new-classification-modal" class="modal modal-small">
+    {snippet addClassificationForm}
+        {control addClassificationForm}
+    {/snippet}
+</div>
+
+<div id="user-classification-modal" class="modal modal-small">
+    {snippet userClassificationForm}
+        {control userClassificationForm}
+    {/snippet}
+</div>
+<script>
+    $(function () {
+        $.nette.ext('newClassification', {
+            start: function (jqXHR, settings) {
+                if (settings.nette !== undefined && $(settings.nette.ui).hasClass('submit-classification')) {
+                    jqXHR.done(function (data, textStatus, jqXHR) {
+                        $('#new-classification-modal').closeModal();
+                    });
+                } else if (settings.nette !== undefined && $(settings.nette.ui).hasClass('add-user-classification')) {
+                    jqXHR.done(function (data, textStatus, jqXHR) {
+                        $('#user-classification-modal').openModal();
+                    });
                 }
-            });
+            }
         });
-    </script>
-        
-    <div id="remove-users-modal" class="modal modal-small">
-        <form>
-            <div class="modal-content">
-                <h3>Odebrat studenty</h3>
-                <p>Opravdu si přejete odebrat následující studenty?</p>
-                <ul class="custom-collection">
-                    {foreach $groupMembers as $member}
+    });
+</script>
+
+<div id="remove-users-modal" class="modal modal-small">
+    <form>
+        <div class="modal-content">
+            <h3>Odebrat studenty</h3>
+            <p>Opravdu si přejete odebrat následující studenty?</p>
+            <ul class="custom-collection">
+                {foreach $groupMembers as $member}
                     <li>
                         <div class="item">
                             <img src="{$member->profileImage}" alt="" class="avatar small">
                             <span class="title">{if !empty($member->name)}{$member->name} {$member->surname}{/if}</span>
                         </div>        
                     </li>
-                    {/foreach}
-                </ul>
-            </div>
-            <div class="modal-footer clearfix">
-                <div class="flex-spacer"></div>
-                <div class="form-control">
-                    <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-                    <input type="submit" class="waves-effect waves-light btn btn-confirm" value="Potvrdit">
-                </div>
-            </div>
-        </form>
-    </div>
-
-
-    <div class="container offset">
-        <div class="row">
-            <div class="col s12">
-                <form action="#">
-                    <div class="card-header table-header">
-                            <input type="checkbox" class="filled-in" id="select-all" />
-                            <label for="select-all"></label>   
-                            <div class="title">Student</div>
-                            <div class="flex-spacer"></div>
-                            <div class="table-field assessment-date">Poslední změna</div>
-                            <div class="table-field">Hodnocení</div>
-                    </div>
-                    <script>
-                        $(document).ready(function() {
-                            $("#select-all").on("change", function(e){
-                               if($(this).prop('checked')) {
-                                   $(".user-checkbox").prop('checked', true);
-                               } else {
-                                   $(".user-checkbox").prop('checked', false);
-                               }
-                           });
-                        });
-                    </script>
-                    {snippet memberList}
-                    <ul class="collapsible popout" data-collapsible="expandable">
-                        {foreach $groupMembers as $member}
-                        <li>
-                            <div class="collapsible-header table-row">
-                                <input type="checkbox" class="filled-in user-checkbox" id="user1" />
-                                <label for="user1"></label>
-                                <div class="avatar small">
-                                    <img src="{$member->profileImage}">
-                                </div>
-                                <div class="title">
-                                    <span>{$member->surname}</span>, {$member->name}
-                                </div>
-                                <div class="flex-spacer"></div>
-                                <div class="table-field">5. 9. 2016</div>
-                                <div class=".classification table-field"><strong>3,5</strong>/5</div>
-                            </div>
-                            <div class="collapsible-body">
-                                <div class="classification-table">
-                                    {ifset $member->classifications}
-                                    {foreach $member->classifications as $classification}
-                                    <div class="table-row">
-                                        <a href="{if $classification->idClassificationGroup}{link :Front:Group:classification 'idGroupClassification'=>$classification->idClassificationGroup}{/if}" class="material-icons edit">edit</a>
-                                        <a href="" class="title truncate">{$classification->name}</a>
-                                        <div class="flex-spacer"></div>
-                                        <div class="table-field">{*$classification->lastChange->format("j. n. Y")*}</div>
-                                        <div class=".classification table-field">
-                                            <strong>{$classification->grade}</strong>
-                                        </div>
-                                    </div>
-                                    {/foreach}
-                                    {/ifset}
-                                </div>
-                                <div class="collapsible-body-footer">
-                                    {if $activeUser->id !== $member->id}
-                                    <ul>
-                                        <li>
-                                            <a class="btn-flat btn-icon modal-trigger" href="#new-assessment-modal">
-                                                <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přidat hodnocení">assessment</i> 
-                                            </a>  
-                                        </li>
-                                        <li>
-                                            <a href="{link showPrivateMessageForm! 'idUserTo'=>$member->id}" class="ajax btn-flat btn-icon tooltipped show-new-private-message" data-position="bottom" data-delay="50" data-tooltip="Odeslat soukromou zprávu">
-                                                <i class="material-icons">email</i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="btn-flat btn-icon modal-trigger" href="#remove-users-modal">
-                                                <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Odebrat ze skupiny">delete</i> 
-                                            </a>  
-                                        </li>
-                                    </ul> 
-                                    {/if}
-                                </div>
-                            </div>
-                        </li>
-                        {/foreach}
-                    </ul>
-                    {/snippet}
-                </form>
+                {/foreach}
+            </ul>
+        </div>
+        <div class="modal-footer clearfix">
+            <div class="flex-spacer"></div>
+            <div class="form-control">
+                <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                <input type="submit" class="waves-effect waves-light btn btn-confirm" value="Potvrdit">
             </div>
         </div>
+    </form>
+</div>
+
+
+<div class="container offset">
+    <div class="row">
+        <div class="col s12">
+            <form action="#">
+                <div class="card-header table-header">
+                    <input type="checkbox" class="filled-in" id="select-all" />
+                    <label for="select-all"></label>   
+                    <div class="title">Student</div>
+                    <div class="flex-spacer"></div>
+                    <div class="table-field assessment-date">Poslední změna</div>
+                    <div class="table-field">Hodnocení</div>
+                </div>
+                <script>
+                    $(document).ready(function () {
+                        $("#select-all").on("change", function (e) {
+                            if ($(this).prop('checked')) {
+                                $(".user-checkbox").prop('checked', true);
+                            } else {
+                                $(".user-checkbox").prop('checked', false);
+                            }
+                        });
+                    });
+                </script>
+                {snippet memberList}
+                    <ul class="collapsible popout" data-collapsible="expandable">
+                        {foreach $groupMembers as $member}
+                            <li>
+                                <div class="collapsible-header table-row">
+                                    <input type="checkbox" class="filled-in user-checkbox" id="user1" />
+                                    <label for="user1"></label>
+                                    <div class="avatar small">
+                                        <img src="{$member->profileImage}">
+                                    </div>
+                                    <div class="title">
+                                        <span>{$member->surname}</span>, {$member->name}
+                                    </div>
+                                    <div class="flex-spacer"></div>
+                                    <div class="table-field">5. 9. 2016</div>
+                                    <div class=".classification table-field"><strong>3,5</strong>/5</div>
+                                </div>
+                                <div class="collapsible-body">
+                                    <div class="classification-table">
+                                        {ifset $member->classifications}
+                                            {foreach $member->classifications as $classification}
+                                                <div class="table-row">
+                                                    <a href="{if $classification->idClassificationGroup}{link :Front:Group:classification 'idGroupClassification'=>$classification->idClassificationGroup}{else}{link editUserClassificationForm! 'idClassification'=>$classification->idClassification}{/if}" class="{if !$classification->idClassificationGroup}ajax add-user-classification{/if} material-icons edit">edit</a>
+                                                    <a href="" class="title truncate">{$classification->name}</a>
+                                                    <div class="flex-spacer"></div>
+                                                    <div class="table-field">{*$classification->lastChange->format("j. n. Y")*}</div>
+                                                    <div class=".classification table-field">
+                                                        <strong>{$classification->grade}</strong>
+                                                    </div>
+                                                </div>
+                                            {/foreach}
+                                        {/ifset}
+                                    </div>
+                                    <div class="collapsible-body-footer">
+                                        {if $activeUser->id !== $member->id}
+                                            <ul>
+                                                <li>
+                                                    <a class="btn-flat btn-icon add-user-classification ajax" href="{link showUserClassificationForm! 'idUserTo'=>$member->id}">
+                                                        <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přidat hodnocení">assessment</i> 
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="{link showPrivateMessageForm! 'idUserTo'=>$member->id}" class="ajax btn-flat btn-icon tooltipped show-new-private-message" data-position="bottom" data-delay="50" data-tooltip="Odeslat soukromou zprávu">
+                                                        <i class="material-icons">email</i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="btn-flat btn-icon modal-trigger" href="#remove-users-modal">
+                                                        <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Odebrat ze skupiny">delete</i> 
+                                                    </a>  
+                                                </li>
+                                            </ul>
+                                        {/if}
+                                    </div>
+                                </div>
+                            </li>
+                        {/foreach}
+                    </ul>
+                {/snippet}
+            </form>
+        </div>
     </div>
-
-
-
-
-
-
+</div>

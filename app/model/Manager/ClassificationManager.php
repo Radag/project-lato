@@ -30,7 +30,10 @@ class ClassificationManager extends BaseManager
                 $this->database->query("UPDATE classification SET ? WHERE ID_CLASSIFICATION=?", $data, $idClassification);
             } else {
                 $insert = true;
-            }           
+            }   
+        } else if($classification->idClassification !== null) {
+            $data = array('NOTICE' => $classification->notice, 'GRADE' => $classification->grade);
+            $this->database->query("UPDATE classification SET ? WHERE ID_CLASSIFICATION=?", $data, $classification->idClassification);       
         } else {
             $insert = true;
         }
@@ -74,6 +77,22 @@ class ClassificationManager extends BaseManager
         }
         
         return $classificationsArray;
+    }
+    
+    public function getClassification($idClassification)
+    {
+        $query = "SELECT * FROM classification WHERE ID_CLASSIFICATION=?";
+        $class = $this->database->query($query, $idClassification)->fetch();
+
+        $classification = new Classification;
+        $classification->idClassificationGroup = $class->ID_CLASSIFICATION_GROUP;
+        $classification->idClassification = $class->ID_CLASSIFICATION;
+        $classification->name = $class->NAME;
+        $classification->user = $class->ID_USER;
+        $classification->group = $class->ID_GROUP;
+        $classification->grade = $class->GRADE;
+        
+        return $classification;
     }
     
     public function getGroupClassification($idGroupClassification)
