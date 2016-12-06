@@ -20,7 +20,7 @@
     <div class="row">
         <div class="col s12">
             <div class="card classification-properties modal-trigger" href="#edit-classification-modal">
-                <p class="minified-label">Retušování fotografie</p>
+                <p class="minified-label">{$classificationGroup->name}</p>
                 <div class="flex-spacer"></div>
                 <i class="minified-icon material-icons">more_horiz</i>
             </div>   
@@ -49,57 +49,32 @@
 
     <div class="row">
         <div class="col s12">
+            {form classificationForm}
             <div class="card-header table-header">   
                 <div class="title">Student</div>
                 <div class="flex-spacer"></div>
                 <div class="table-field">Poznámka</div>
                 <div class="table-field">Hodnocení</div>
             </div>
-
             <ul class="custom-table">
+                {foreach $members as $member}
                 <li>
                     <div class="table-row">
                         <div class="avatar small">
-                            <img src="/images/default-avatar_man.png">
+                            <img src="{$member->profileImage}">
                         </div>
                         <div class="title">
-                            <span>Prijmeni</span>, Jmeno
+                            {if !empty($member->name)}<span>{$member->surname}</span>, {$member->name}{/if}  
                         </div>
                         <div class="flex-spacer"></div>
                         <div class="table-field"><a class="material-icons">comment</a></div>
-                        <div class="grade table-field"><input type="text" class="no-border" placeholder="neuvedeno"></div>
+                        <div class="grade table-field">{input grade$member->id class=>'no-border'}</div>
                         <div class="table-row-input">
-                            <textarea type="text" placeholder="Poznámka" class="materialize-textarea no-border"></textarea>
+                            {input notice$member->id class=>'materialize-textarea no-border'}
                         </div>
                     </div>
-
                 </li>
-                <li>
-                    <div class="table-row">
-                        <div class="avatar small">
-                            <img src="/images/default-avatar_man.png">
-                        </div>
-                        <div class="title">
-                            <span>Prijmeni</span>, Jmeno
-                        </div>
-                        <div class="flex-spacer"></div>
-                        <div class="table-field"><a class="material-icons">comment</a></div>
-                        <div class="grade table-field"><input type="text" class="no-border" placeholder="neuvedeno"></div>
-                    </div>
-                </li>
-                <li>
-                    <div class="table-row">
-                        <div class="avatar small">
-                            <img src="/images/default-avatar_woman.png">
-                        </div>
-                        <div class="title">
-                            <span>Prijmeni</span>, Jmeno
-                        </div>
-                        <div class="flex-spacer"></div>
-                        <div class="table-field"><a class="material-icons">comment</a></div>
-                        <div class="grade table-field"><input type="text" class="no-border" placeholder="neuvedeno"></div>
-                    </div>
-                </li>
+                {/foreach}
                 <li>
                     <div class="table-row table-control">
                         <div class="flex-spacer">
@@ -111,7 +86,7 @@
                     </div>
                 </li>
             </ul>
-
+            {/form}
 
         </div>
     </div>

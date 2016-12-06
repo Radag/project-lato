@@ -90,6 +90,12 @@ class HomepagePresenter extends BasePresenter
         $this['topPanel']->setTitle('Povinnosti');
     }
     
+    public function actionNotices()
+    {
+        $this['topPanel']->setTitle('Poznámky');
+        $this->template->notices = $this->noticeManager->getNotices($this->activeUser, 10);
+    }
+    
     public function actionTimetable()
     {
         $this['topPanel']->setTitle('Rozvrh');

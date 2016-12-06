@@ -11,13 +11,9 @@ namespace App\Model\Entities;
  *
  * @author Radaq
  */
-class Classification {
-    public $idClassification = null;
-    public $user = null;
+class ClassificationGroup {
+    public $idClassificationGroup = null;
     public $group = null;
     public $name = null;
-    public $grade = null;
-    public $lastChange = null;
-    public $notice = null;
-    public $idClassificationGroup = null;
+    public $classifications = array();
 }

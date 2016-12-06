@@ -227,6 +227,56 @@ class GroupPresenter extends BasePresenter
         }
     }
     
+    public function actionClassification($idGroupClassification)
+    {       
+        $classificationGroup = $this->classificationManager->getGroupClassification($idGroupClassification);
+        $members = $this->groupManager->getGroupUsers($this->activeGroup->id);
+        $this->template->classificationGroup = $classificationGroup;
+        $this['classificationForm']->setDefaults(array(
+            'idGroupClassification' => $idGroupClassification
+        ));
+        
+        foreach($classificationGroup->classifications as $classification) {
+            $this['classificationForm']->setDefaults(array(
+                'grade' . $classification->user => $classification->grade,
+                'notice' . $classification->user => $classification->notice
+            )); 
+        }
+        
+        $this->template->members = $members;
+    }
+    
+    protected function createComponentClassificationForm()
+    {
+        $members = $this->groupManager->getGroupUsers($this->activeGroup->id);
+        $form = new \Nette\Application\UI\Form;
+        foreach($members as $member) {
+            $form->addText('grade' . $member->id, 'Známka')
+                 ->setAttribute('placeholder', 'Neuvedeno');
+            $form->addTextArea('notice' . $member->id, 'Poznámka')
+                 ->setAttribute('placeholder', 'Poznámka');
+        }
+        $form->addHidden('idGroupClassification');
+        $form->addSubmit('send', 'Uložit');
+
+        $form->onSuccess[] = function(\Nette\Application\UI\Form $form) {
+            $members = $this->groupManager->getGroupUsers($this->activeGroup->id);
+            $values = $form->getValues(true);
+            foreach($members as $member) {
+                $classification = new \App\Model\Entities\Classification();
+                $classification->grade = $values['grade' . $member->id];
+                $classification->notice = $values['notice' . $member->id];
+                $classification->idClassificationGroup = $values['idGroupClassification'];
+                $classification->group = $this->activeGroup;
+                $classification->user = $member;
+                $this->classificationManager->createClassification($classification);
+            }
+            $this->redirect('this');
+        };
+        
+        return $form;
+    }
+    
     public function actionMessage($idMessage)
     {       
         $this->template->message = $this->messageManager->getMessage($idMessage);

@@ -45,7 +45,6 @@ class NewClassificationForm extends Control
         $form->addText('name', 'Hodnocení')
              ->setAttribute('placeholder', 'název hodnocení')
              ->setRequired('Prosím napiště téma hodnocení.');
-        $form->addCheckbox('forAll', 'Pro všechny studenty');
         $form->addSubmit('send', 'Vytvořit');
 
         $form->onSuccess[] = [$this, 'processForm'];
@@ -61,17 +60,22 @@ class NewClassificationForm extends Control
     
     public function processForm(Form $form, $values) 
     {
-        $members = $this->groupManager->getGroupUsers($this->activeGroup->id);
-        foreach($members as $member) {
-            $classification = new \App\Model\Entities\Classification();
-            $classification->group = $this->activeGroup;
-            $classification->user = $member;
-            $classification->name = $form->getValues()->name;
-            $this->classificationManager->createClassification($classification);
-        }
+        $classificationGroup = new \App\Model\Entities\ClassificationGroup();
+        $classificationGroup->group = $this->activeGroup;
+        $classificationGroup->name = $form->getValues()->name;
+        $id = $this->classificationManager->createGroupClassification($classificationGroup);
+        
+//        $members = $this->groupManager->getGroupUsers($this->activeGroup->id);
+//        foreach($members as $member) {
+//            $classification = new \App\Model\Entities\Classification();
+//            $classification->group = $this->activeGroup;
+//            $classification->user = $member;
+//            $classification->name = $form->getValues()->name;
+//            $this->classificationManager->createClassification($classification);
+//        }
 
         $this->presenter->flashMessage('Hodnocení vloženo', 'success');
-        $this->presenter->redrawControl('memberList');
+        $this->presenter->redirect(':Front:Group:classification', array('idGroupClassification' => $id));
         
     }
 }

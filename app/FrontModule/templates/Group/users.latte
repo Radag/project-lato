@@ -122,10 +122,10 @@
                                     {ifset $member->classifications}
                                     {foreach $member->classifications as $classification}
                                     <div class="table-row">
-                                        <a href="" class="material-icons edit">edit</a>
+                                        <a href="{if $classification->idClassificationGroup}{link :Front:Group:classification 'idGroupClassification'=>$classification->idClassificationGroup}{/if}" class="material-icons edit">edit</a>
                                         <a href="" class="title truncate">{$classification->name}</a>
                                         <div class="flex-spacer"></div>
-                                        <div class="table-field">{$classification->lastChange->format("j. n. Y")}</div>
+                                        <div class="table-field">{*$classification->lastChange->format("j. n. Y")*}</div>
                                         <div class=".classification table-field">
                                             <strong>{$classification->grade}</strong>
                                         </div>

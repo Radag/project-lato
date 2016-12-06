@@ -1,2 +1,7 @@
 {block content}
 {control topPanel}
+<div class="container">
+    {foreach $notices as $notice}
+    <div>{$notice->TEXT}</div>
+    {/foreach}
+</div>
