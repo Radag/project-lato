@@ -26,13 +26,13 @@ class ClassificationManager extends BaseManager
         if($classification->idClassificationGroup !== null) {
             $idClassification = $this->database->query("SELECT ID_CLASSIFICATION FROM classification WHERE ID_CLASSIFICATION_GROUP=? AND ID_USER=?", $classification->idClassificationGroup, $classification->user->id)->fetchField();
             if($idClassification) {
-                $data = array('NOTICE' => $classification->notice, 'GRADE' => $classification->grade);
+                $data = array('NOTICE' => $classification->notice, 'GRADE' => $classification->grade, 'LAST_CHANGE' => new \DateTime());
                 $this->database->query("UPDATE classification SET ? WHERE ID_CLASSIFICATION=?", $data, $idClassification);
             } else {
                 $insert = true;
             }   
         } else if($classification->idClassification !== null) {
-            $data = array('NOTICE' => $classification->notice, 'GRADE' => $classification->grade);
+            $data = array('NOTICE' => $classification->notice, 'GRADE' => $classification->grade, 'LAST_CHANGE' => new \DateTime());
             $this->database->query("UPDATE classification SET ? WHERE ID_CLASSIFICATION=?", $data, $classification->idClassification);       
         } else {
             $insert = true;
@@ -72,7 +72,7 @@ class ClassificationManager extends BaseManager
             $classification->user = $class->ID_USER;
             $classification->group = $class->ID_GROUP;
             $classification->grade = $class->GRADE;
-            $classification->lastChange = '';//$class->LAST_CHANGE;
+            $classification->classificationDate = $class->CLASSIFICATION_DATE;
             $classificationsArray[] = $classification;
         }
         
@@ -91,6 +91,7 @@ class ClassificationManager extends BaseManager
         $classification->user = $class->ID_USER;
         $classification->group = $class->ID_GROUP;
         $classification->grade = $class->GRADE;
+        $classification->notice = $class->NOTICE;
         
         return $classification;
     }
@@ -101,6 +102,7 @@ class ClassificationManager extends BaseManager
         $classificationGroup = new ClassificationGroup();
         $classificationGroup->idClassificationGroup = $classificationArray->ID_CLASSIFICATION_GROUP;
         $classificationGroup->name = $classificationArray->NAME;
+        $classificationGroup->classificationDate = $classificationArray->CLASSIFICATION_DATE;
         
         $classifications = $this->database->query("SELECT * FROM classification WHERE ID_CLASSIFICATION_GROUP=?", $idGroupClassification)->fetchAll();
         foreach($classifications as $classification) {
@@ -122,5 +124,12 @@ class ClassificationManager extends BaseManager
             ));
         
         return $this->database->query("SELECT MAX(ID_CLASSIFICATION_GROUP) FROM classification_group")->fetchField();
+    }
+    
+    public function updateClassificationGroup($values)
+    {
+        $data = array('NAME' => $values->name, 'CLASSIFICATION_DATE' => $values->date);
+        $this->database->query("UPDATE classification_group SET ? WHERE ID_CLASSIFICATION_GROUP=?", $data, $values->id);       
+       
     }
 }

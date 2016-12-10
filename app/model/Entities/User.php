@@ -22,8 +22,15 @@ class User {
     public $profileImage = null;   
     public $birthday = null;
 
+    private $classification = null;
     
-    public $classifications = null;
+    public function getClassification() {
+        if($this->classification === null) {
+            $this->classification = (object)['items' => array(), 'averageGrade' => null, 'lastDate' => null];
+        }
+        
+        return $this->classification;
+    }
     
     function getId() {
         return $this->id;

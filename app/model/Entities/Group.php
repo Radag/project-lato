@@ -16,6 +16,10 @@ class Group {
     const TYPE_SUBJECT = 1;
     const TYPE_GROUP = 2;
     
+    const RELATION_TEACHER = 1;
+    const RELATION_STUDENT = 2;
+    const RELATION_OWNER = 3;
+    
     public $id = null;
     public $urlId = null;
     public $name = null;

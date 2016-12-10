@@ -83,6 +83,7 @@ class HomepagePresenter extends BasePresenter
         $this->template->days = $this->days;
         $this->template->actualTasks = $this->taskManager->getClosestTask($groups);
         $this->template->actualNotices = $this->noticeManager->getNotices($this->activeUser, 3);
+        $this->template->activeUser = $this->activeUser;
     }
     
     public function actionTasks()

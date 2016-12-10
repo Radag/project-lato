@@ -14,8 +14,7 @@ use App\FrontModule\Components\GroupSettingsForm\IGroupSettingsFormFactory;
 use App\FrontModule\Components\Stream\CommentForm\CommentForm;
 use App\Model\Manager\TaskManager;
 use App\Model\Manager\ClassificationManager;
-use App\FrontModule\Components\NewClassificationForm\NewClassificationForm;
-use App\FrontModule\Components\NewClassificationForm\UserClassificationForm;
+use App\FrontModule\Components\Group\IUsersListFactory;
 
 class GroupPresenter extends BasePresenter
 {    
@@ -40,6 +39,9 @@ class GroupPresenter extends BasePresenter
     /** @var  IStreamFactory  */
     protected $streamFactory;
     
+    /** @var  IUsersListFactory  */
+    protected $usersListFactory;
+    
     protected $groupPermission = array(
         'archive' => false,
         'leave' => false,
@@ -53,7 +55,8 @@ class GroupPresenter extends BasePresenter
         'topAllMessages' => false,
         'topOwnMessages' => false,
         'removeMembers' => false,
-        'showDeleted' => false
+        'showStudentsList' => false,
+        'editClassification' => false
     );
     
     /** @persistent */
@@ -70,7 +73,9 @@ class GroupPresenter extends BasePresenter
             IStreamFactory $streamFactory,
             TaskManager $taskManager,
             IGroupSettingsFormFactory $groupSettings,
-            ClassificationManager $classificationManager)
+            ClassificationManager $classificationManager,
+            IUsersListFactory $userListFactory
+            )
     {
         $this->userManager = $userManager;
         $this->messageManager = $messageManager;
@@ -82,6 +87,7 @@ class GroupPresenter extends BasePresenter
         $this->streamFactory = $streamFactory;
         $this->groupSettings = $groupSettings;
         $this->classificationManager = $classificationManager;
+        $this->usersListFactory = $userListFactory;
     }
     
     protected function startup()
@@ -131,6 +137,8 @@ class GroupPresenter extends BasePresenter
             $this->groupPermission['addCommets'] = true;
             $this->groupPermission['removeMembers'] = true;
             $this->groupPermission['showDeleted'] = true;
+            $this->groupPermission['showStudentsList'] = true;
+            $this->groupPermission['editClassification'] = true;
         } else {
             $this->groupPermission['leave'] = true;
             $this->groupPermission['addMessages'] = $privileges['PR_CREATE_MSG'];
@@ -158,35 +166,17 @@ class GroupPresenter extends BasePresenter
     }
     
     
-    public function createComponentAddClassificationForm()
+    public function createComponentUsersList()
     {
-        $component = new NewClassificationForm($this->classificationManager, $this->groupManager, $this->activeGroup);
-        return $component;
+        $usersList = $this->usersListFactory->create();
+        $usersList->setGroup($this->activeGroup);
+        $usersList->setUser($this->activeUser);
+        $usersList->setStreamPermission($this->groupPermission);
+        return $usersList;
     }
     
-    public function createComponentUserClassificationForm()
-    {
-        $component = new UserClassificationForm($this->classificationManager, $this->groupManager, $this->activeGroup);
-        return $component;
-    }
     
-    public function handleShowUserClassificationForm($idUserTo) 
-    {
-        $this['userClassificationForm']->setUser($idUserTo);
-        $this->redrawControl('userClassificationForm');
-    }
-    
-    public function handleEditUserClassificationForm($idClassification) 
-    {
-        $classification = $this->classificationManager->getClassification($idClassification);
-        $this['userClassificationForm']['form']->setDefaults(array(
-            'name' => $classification->name,
-            'grade' => $classification->grade,
-            'notice' => $classification->notice,
-            'idClassification' => $classification->idClassification
-        ));
-        $this->redrawControl('userClassificationForm');
-    }
+
     
     protected function createComponentSharingForm()
     {
@@ -252,56 +242,6 @@ class GroupPresenter extends BasePresenter
         }
     }
     
-    public function actionClassification($idGroupClassification)
-    {       
-        $classificationGroup = $this->classificationManager->getGroupClassification($idGroupClassification);
-        $members = $this->groupManager->getGroupUsers($this->activeGroup->id);
-        $this->template->classificationGroup = $classificationGroup;
-        $this['classificationForm']->setDefaults(array(
-            'idGroupClassification' => $idGroupClassification
-        ));
-        
-        foreach($classificationGroup->classifications as $classification) {
-            $this['classificationForm']->setDefaults(array(
-                'grade' . $classification->user => $classification->grade,
-                'notice' . $classification->user => $classification->notice
-            )); 
-        }
-        
-        $this->template->members = $members;
-    }
-    
-    protected function createComponentClassificationForm()
-    {
-        $members = $this->groupManager->getGroupUsers($this->activeGroup->id);
-        $form = new \Nette\Application\UI\Form;
-        foreach($members as $member) {
-            $form->addText('grade' . $member->id, 'Známka')
-                 ->setAttribute('placeholder', 'Neuvedeno');
-            $form->addTextArea('notice' . $member->id, 'Poznámka')
-                 ->setAttribute('placeholder', 'Poznámka');
-        }
-        $form->addHidden('idGroupClassification');
-        $form->addSubmit('send', 'Uložit');
-
-        $form->onSuccess[] = function(\Nette\Application\UI\Form $form) {
-            $members = $this->groupManager->getGroupUsers($this->activeGroup->id);
-            $values = $form->getValues(true);
-            foreach($members as $member) {
-                $classification = new \App\Model\Entities\Classification();
-                $classification->grade = $values['grade' . $member->id];
-                $classification->notice = $values['notice' . $member->id];
-                $classification->idClassificationGroup = $values['idGroupClassification'];
-                $classification->group = $this->activeGroup;
-                $classification->user = $member;
-                $this->classificationManager->createClassification($classification);
-            }
-            $this->redirect('this');
-        };
-        
-        return $form;
-    }
-    
     public function actionMessage($idMessage)
     {       
         $this->template->message = $this->messageManager->getMessage($idMessage);
@@ -320,11 +260,6 @@ class GroupPresenter extends BasePresenter
     public function actionUsers()
     {
         $this['topPanel']->setTitle('uživatelé');
-        $members = $this->groupManager->getGroupUsers($this->activeGroup->id);
-        foreach($members as $member) {
-            $member->classifications = $this->classificationManager->getUserClassification($member->id, $this->activeGroup->id);
-        }
-        $this->template->groupMembers = $members;
     }
     
     public function handleLeaveGroup($idGroup)

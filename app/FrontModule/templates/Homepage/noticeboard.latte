@@ -10,10 +10,10 @@
                     </div>
                     <div class="profile-navbar">
                         <div class="avatar">
-                            <img src="images/default-avatar_man.png" alt="Jméno a příjmení">
+                            <img src="{$activeUser->profileImage}" alt="{$activeUser->name} {$activeUser->surname}">
                         </div>
                         <div class="profile-title">
-                            Jméno Příjmení
+                            {$activeUser->name} {$activeUser->surname}
                         </div>
                     </div>
                 </div>

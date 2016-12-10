@@ -41,12 +41,15 @@ class UserClassificationForm extends Control
     
     protected function createComponentForm()
     {
-        $form = new \Nette\Application\UI\Form;
+        $form = new Form;
         $form->addText('name', 'Název hodnocení')
              ->setAttribute('placeholder', 'název hodnocení')
              ->setRequired('Prosím napiště téma hodnocení.');
         $form->addText('grade', 'Hodnocení')
-             ->setAttribute('placeholder', 'známka');
+             ->setAttribute('placeholder', 'známka')
+             ->addConditionOn($form['grade'], Form::FILLED)
+                 ->addRule(Form::NUMERIC, 'Hodnocení musí být číslo větší než 0.')
+                 ->addRule(Form::MIN, 'Hodnocení musí být číslo větší než 0.', 0);
         $form->addTextArea('notice', 'Poznámka')
              ->setAttribute('placeholder', 'poznámka');
         $form->addHidden('idUser');
@@ -76,10 +79,10 @@ class UserClassificationForm extends Control
         $classification = new \App\Model\Entities\Classification();
         $classification->group = $this->activeGroup;
         $classification->user = $user;
-        $classification->name = $form->getValues()->name;
-        $classification->grade = $form->getValues()->grade;
-        $classification->notice = $form->getValues()->notice;
-        $classification->idClassification = $form->getValues()->idClassification;
+        $classification->name = $values->name;
+        $classification->grade = $values->grade;
+        $classification->notice = $values->notice;
+        $classification->idClassification = empty($values->idClassification) ? null : $values->idClassification;
         $this->classificationManager->createClassification($classification);
 
         $this->presenter->flashMessage('Hodnocení vloženo', 'success');

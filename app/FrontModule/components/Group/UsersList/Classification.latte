@@ -1,0 +1,92 @@
+<section class="main two-level-nav">
+    <div class="container offset">
+        <div class="row">
+            <div class="col s12">
+                <header class="section-header">
+                    <h3>Přidat známku</h3>
+                    <div class="flex-spacer"></div>
+                </header>  
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container offset">
+    <div class="row">
+        <div class="col s12">
+            <div class="card classification-properties modal-trigger" href="#edit-classification-modal">
+                <p class="minified-label">{$classificationGroup->name}</p>
+                <div class="flex-spacer"></div>
+                <i class="minified-icon material-icons">more_horiz</i>
+            </div>   
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            {form classificationForm}
+            <div class="card-header table-header">   
+                <div class="title">Student</div>
+                <div class="flex-spacer"></div>
+                <div class="table-field">Poznámka</div>
+                <div class="table-field">Hodnocení</div>
+            </div>
+            <ul class="custom-table">
+                {foreach $members as $member}
+                <li>
+                    <div class="table-row">
+                        <div class="avatar small">
+                            <img src="{$member->profileImage}">
+                        </div>
+                        <div class="title">
+                            {if !empty($member->name)}<span>{$member->surname}</span>, {$member->name}{/if}  
+                        </div>
+                        <div class="flex-spacer"></div>
+                        <div class="table-field"><a class="material-icons">comment</a></div>
+                        <div class="grade table-field">{input grade$member->id class=>'no-border'}</div>
+                        <div class="table-row-input">
+                            {input notice$member->id class=>'materialize-textarea no-border'}
+                        </div>
+                    </div>
+                </li>
+                {/foreach}
+                <li>
+                    <div class="table-row table-control">
+                        <div class="flex-spacer">
+                        </div>  
+                        <div class="form-control">
+                            <a href="{link 'this'}" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</a>
+                            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-classification">Zapsat vše</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            {/form}
+        </div>
+    </div>
+</div>
+<script>
+  $(document).ready(function() {
+    $('select').material_select();
+});
+</script>
+
+<div id="edit-classification-modal" class="modal modal-small">
+    {form editClassGroupForm}
+    <div class="modal-content">
+        <h3>Vlastnosti známky</h3>
+        <div class="form-row">
+            {input name}
+        </div>
+        <div class="form-row">
+            {input date}
+        </div>
+    </div>
+    <div class="modal-footer clearfix">
+        <div class="flex-spacer"></div>
+        <div class="form-control">
+            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-classification" >Potvrdit</button>
+        </div>
+    </div>
+    {/form}
+</div>

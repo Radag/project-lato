@@ -65,17 +65,8 @@ class NewClassificationForm extends Control
         $classificationGroup->name = $form->getValues()->name;
         $id = $this->classificationManager->createGroupClassification($classificationGroup);
         
-//        $members = $this->groupManager->getGroupUsers($this->activeGroup->id);
-//        foreach($members as $member) {
-//            $classification = new \App\Model\Entities\Classification();
-//            $classification->group = $this->activeGroup;
-//            $classification->user = $member;
-//            $classification->name = $form->getValues()->name;
-//            $this->classificationManager->createClassification($classification);
-//        }
-
         $this->presenter->flashMessage('Hodnocení vloženo', 'success');
-        $this->presenter->redirect(':Front:Group:classification', array('idGroupClassification' => $id));
+        $this->presenter->redirect('this', array('do'=> 'usersList-classification' , 'usersList-idGroupClassification' => $id));
         
     }
 }

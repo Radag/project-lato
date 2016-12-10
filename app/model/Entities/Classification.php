@@ -20,4 +20,5 @@ class Classification {
     public $lastChange = null;
     public $notice = null;
     public $idClassificationGroup = null;
+    public $classificationDate = null;
 }

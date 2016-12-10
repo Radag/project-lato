@@ -292,12 +292,19 @@ class GroupManager extends BaseManager {
         
     }
     
-    public function getGroupUsers($idGroup)
-    {
-         $users = $this->database->query("SELECT DISTINCT T1.ID_USER, T2.SEX, T2.NAME, T2.SURNAME, T2.USERNAME, T2.PROFILE_PATH, T2.URL_ID, T2.PROFILE_FILENAME FROM 
+    public function getGroupUsers($idGroup, $filterRelation = null)
+    {         
+        if($filterRelation === null) {
+            $users = $this->database->query("SELECT DISTINCT T1.ID_USER, T2.SEX, T2.NAME, T2.SURNAME, T2.USERNAME, T2.PROFILE_PATH, T2.URL_ID, T2.PROFILE_FILENAME FROM 
             (SELECT ID_OWNER AS ID_USER FROM groups WHERE ID_GROUP=? 
             UNION SELECT ID_USER FROM user_group WHERE ID_GROUP=? AND ACTIVE=1) T1
             LEFT JOIN vw_user_detail T2 ON T1.ID_USER = T2.ID_USER", $idGroup, $idGroup)->fetchAll();
+        } else {
+            $users = $this->database->query("SELECT DISTINCT T1.ID_USER, T2.SEX, T2.NAME, T2.SURNAME, T2.USERNAME, T2.PROFILE_PATH, T2.URL_ID, T2.PROFILE_FILENAME FROM 
+            (SELECT ID_USER FROM user_group WHERE ID_GROUP=? AND ID_RELATION=? AND ACTIVE=1) T1
+            LEFT JOIN vw_user_detail T2 ON T1.ID_USER = T2.ID_USER", $idGroup, $filterRelation)->fetchAll();
+        }
+         
         
          $userArray = array();
          foreach($users as $us) {
