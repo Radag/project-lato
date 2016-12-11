@@ -56,7 +56,8 @@ class GroupPresenter extends BasePresenter
         'topOwnMessages' => false,
         'removeMembers' => false,
         'showStudentsList' => false,
-        'editClassification' => false
+        'editClassification' => false,
+        'showDeleted' => false
     );
     
     /** @persistent */
@@ -104,14 +105,18 @@ class GroupPresenter extends BasePresenter
         }
         $this->setPermission();
         $this['topPanel']->setActiveGroup($this->activeGroup);
-        $this['topPanel']->setTopMenu(
-            array(
-                (object)array('name' => 'stream', 'link' => $this->link('default'), 'active' => $this->isLinkCurrent('default')),
-                (object)array('name' => 'povinnosti', 'link' => $this->link('tasks'), 'active' => $this->isLinkCurrent('tasks')),
-                (object)array('name' => 'studenti', 'link' => $this->link('users'), 'active' => $this->isLinkCurrent('users')),
-                (object)array('name' => 'o skupině', 'link' => $this->link('about'), 'active' => $this->isLinkCurrent('about'))
-            )
-        );
+        $this['topPanel']->addToMenu((object)array('name' => 'stream', 'link' => $this->link('default'), 'active' => $this->isLinkCurrent('default')));
+        $this['topPanel']->addToMenu((object)array('name' => 'povinnosti', 'link' => $this->link('tasks'), 'active' => $this->isLinkCurrent('tasks')));
+        $this['topPanel']->addToMenu((object)array('name' => 'o skupině', 'link' => $this->link('about'), 'active' => $this->isLinkCurrent('about')));
+        
+        if($this->groupPermission['settings']) {
+            $this['topPanel']->addToMenu((object)array('name' => 'Nastavení', 'link' => $this->link('settings'), 'active' => $this->isLinkCurrent('settings')));
+        }
+        
+        if($this->groupPermission['showStudentsList']) {
+            $this['topPanel']->addToMenu((object)array('name' => 'studenti', 'link' => $this->link('users'), 'active' => $this->isLinkCurrent('users')));
+        }
+        
         $this->template->activeGroup = $this->activeGroup;
         $this->template->activeUser = $this->activeUser;
         $this->template->groupPermission = $this->groupPermission;
@@ -171,7 +176,7 @@ class GroupPresenter extends BasePresenter
         $usersList = $this->usersListFactory->create();
         $usersList->setGroup($this->activeGroup);
         $usersList->setUser($this->activeUser);
-        $usersList->setStreamPermission($this->groupPermission);
+        $usersList->setGroupPermission($this->groupPermission);
         return $usersList;
     }
     
@@ -259,6 +264,10 @@ class GroupPresenter extends BasePresenter
     
     public function actionUsers()
     {
+        if(!$this->groupPermission['showStudentsList']) {
+            $this->redirect(':Front:Homepage:noticeboard');
+        }
+        
         $this['topPanel']->setTitle('uživatelé');
     }
     

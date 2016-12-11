@@ -75,9 +75,9 @@ class TopPanel extends Control
         
     }
     
-    public function setTopMenu($items)
+    public function addToMenu($item)
     {
-        $this->topMenu = $items;
+        $this->topMenu[] = $item;
     }
     
     public function render()

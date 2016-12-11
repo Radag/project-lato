@@ -36,7 +36,7 @@ class UsersList extends Control
     protected $activeUser;
     
     
-    protected $streamPermission = array();
+    protected $groupPermission = array();
     
     protected $isDefault = true;
     
@@ -54,9 +54,9 @@ class UsersList extends Control
         $this->activeUser = $user;
     }
     
-    public function setStreamPermission($permission)
+    public function setGroupPermission($permission)
     {
-        $this->streamPermission = $permission;
+        $this->groupPermission = $permission;
     }
     
     public function setGroup(\App\Model\Entities\Group $group)
@@ -83,6 +83,7 @@ class UsersList extends Control
     
     public function render()
     {
+        $this->template->permission = $this->groupPermission;
         $this->template->activeUser = $this->activeUser;
         if($this->isDefault) {
             $this->setDefault();
@@ -129,6 +130,9 @@ class UsersList extends Control
     
     public function handleEditUserClassificationForm($idClassification) 
     {
+        if(!$this->groupPermission['editClassification']) {
+            $this->redirect(':Front:Homepage:noticeboard');
+        }
         $classification = $this->classificationManager->getClassification($idClassification);
         $this['userClassificationForm']['form']->setDefaults(array(
             'name' => $classification->name,
@@ -158,12 +162,18 @@ class UsersList extends Control
     
     public function createComponentAddClassificationForm()
     {
+        if(!$this->groupPermission['editClassification']) {
+            $this->redirect(':Front:Homepage:noticeboard');
+        }
         $component = new NewClassificationForm($this->classificationManager, $this->groupManager, $this->activeGroup);
         return $component;
     }
     
     public function createComponentUserClassificationForm()
     {
+        if(!$this->groupPermission['editClassification']) {
+            $this->redirect(':Front:Homepage:noticeboard');
+        }
         $component = new UserClassificationForm($this->classificationManager, $this->groupManager, $this->activeGroup);
         return $component;
     }
