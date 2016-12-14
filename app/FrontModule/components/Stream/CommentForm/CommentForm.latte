@@ -1,7 +1,7 @@
 {snippet comments}
-<div class="card-comments">   
+<div class="card-comments"> 
+        {if count($comments) > 0}  
         <div class="comments-header">
-            {if count($comments) > 0}
             <a href="#!" class="show-comments item waves-effect waves-dark"><i class="material-icons">comment</i></a>
             <div class="comments-count">{count($comments)}</div>
             <div class="flex-spacer"></div>
@@ -33,8 +33,8 @@
                 </div>
             </div>
            {/foreach}
-           {/if}
         </div>
+        {/if}
     <div class="comments-footer clearfix">
         {form form}
         <div class="avatar small">

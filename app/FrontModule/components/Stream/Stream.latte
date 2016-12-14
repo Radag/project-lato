@@ -71,7 +71,68 @@
     {/if}
     {snippet messages}
     {foreach $messages as $message}  
-    <div class="card flex-column" id="message-box-num_{$message->id}">   
+    <div class="card flex-column" id="message-box-num_{$message->id}"> 
+        {if $message->idType === 4}
+        <div class="assignment">
+            <div class="icon-circle"><i class="material-icons">access_time</i></div>
+            <div class="time-left">7 dní do odevzdání</div>
+            <div class="flex-spacer"></div>
+            <a href="#submit-assignment" class="btn gray modal-trigger">Odevzdat</a>
+        </div>  
+        <div id="submit-assignment" class="modal modal-small">
+            <div class="modal-content">
+                <h3>Odevzdat úkol</h3>
+                <div class="form-row">
+                    <input type="text" class="validate" placeholder="Komentář k úkolu" href="javascript:addNewAttachment()">
+                </div>
+                <div class="form-row">
+                    <a type="text" class="upload-file-input" href="javascript:addNewAttachment()">Nahrát soubor</a>
+                </div>
+                <ul class="attachments attachments-uploads">
+                    <li>
+                        <a class="attached-file" href="javascript:addNewAttachment()">
+                            <div class="attachment-icon small presentation"><i class="material-icons">slideshow</i></div>
+                            <div class="attachment-label">
+                                <div class="file-name">Lorem ipsum</div>
+                            </div>
+                        </a>
+                        <a class="remove-attachment" href="">
+                            <i class="material-icons">delete</i>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="attached-file" href="" target="_blank">
+                            <div class="attachment-icon small presentation"><i class="material-icons">slideshow</i></div>
+                            <div class="attachment-label">
+                                <div class="file-name">Lorem ipsum</div>
+                            </div>
+                        </a>
+                        <a class="remove-attachment" href="">
+                            <i class="material-icons">delete</i>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="attached-file" href="" target="_blank">
+                            <div class="attachment-icon small presentation"><i class="material-icons">slideshow</i></div>
+                            <div class="attachment-label">
+                                <div class="file-name">Lorem ipsum</div>
+                            </div>
+                        </a>
+                        <a class="remove-attachment" href="">
+                            <i class="material-icons">delete</i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <div class="flex-spacer"></div>
+                <div class="form-control">
+                    <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                    <button class="btn waves-effect waves-light hide-modal-ajax-submit" type="submit" name="send" >Odevzdat</button>
+                </div>
+            </div>
+        </div>
+        {/if}  
         <div class="card-header">
             {if $message->priority == 1}<div class="topped"></div>{/if}
             {if $message->deleted == 1}<div class="deleted"></div>{/if}
@@ -136,7 +197,7 @@
                 {foreach $message->attachments['files'] as $file}  
                 <li>
                     <a href="https://cdn.lato.cz/{$file['path']}/{$file['filename']}" target="_blank" class="attached-file">
-                        <div class="attachment-icon document"><i class="material-icons">{if $file['type'] == 1 }image{elseif $file['type'] == 3}insert_drive_file{elseif $file['type'] == 4}equalizer{elseif $file['type'] == 5}videocam{else}help_outline{/if}</i></div>
+                        <div class="attachment-icon document"><i class="material-icons">{if $file['type'] == 1 }image{elseif $file['type'] == 3}insert_drive_file{elseif $file['type'] == 4}equalizer{elseif $file['type'] == 5}slideshow{else}attachment{/if}</i></div>
                         <div class="attachment-label truncate">{$file['filename']}</div>   
                     </a>
                 </li>
@@ -151,14 +212,6 @@
             {/foreach}
         </div>
         {/ifset}
-        {if $message->idType === 4}
-        <div class="assignment">
-            <div class="icon-circle"><i class="material-icons">access_time</i></div>
-            <div class="time-left">7 dní do odevzdání</div>
-            <div class="flex-spacer"></div>
-            <a href="" class="btn gray">Odevzdat</a>
-        </div>  
-        {/if}
         {control commentForm-$message->id}
     </div>
     {/foreach}

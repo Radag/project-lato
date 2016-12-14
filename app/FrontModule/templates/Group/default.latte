@@ -40,7 +40,30 @@
     <div class="row">
         {control stream}
         <div class="col s12 l4">
-                        <div class="card flex-column">
+            <div class="card flex-column">
+                <div class="card-header">
+                    <h3>Studenti</h3>
+                </div>
+                <div class="card-content clearfix">
+                    <p class="secondary-par">Seznam studentů, zapsaných v této skupině.</p>
+                    <ul class="custom-collection">
+                        {foreach $groupMembers as $member}
+                        <li>
+                            <a href="{plink Profile:default 'id'=>$member->urlId}" class="item">
+                                <img src="{$member->profileImage}" alt="" class="avatar small">
+                                <span class="title">{if !empty($member->name)}{$member->name} {$member->surname}{/if}</span>
+                            </a>
+                        </li>
+                        {/foreach}
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="{link Group:users 'id'=>$activeGroup->urlId}" class="btn-flat secondary-colored card-bottom">
+                        Zobrazit vše
+                    </a>
+                </div>
+            </div>
+            <div class="card flex-column">
                 <div class="card-header">
                     <h3>Povinnosti</h3>
                 </div>
@@ -72,29 +95,6 @@
                     {/if}
                 </div>
                 <div class="card-footer"></div>
-            </div>
-            <div class="card flex-column">
-                <div class="card-header">
-                    <h3>Studenti</h3>
-                </div>
-                <div class="card-content clearfix">
-                    <p class="secondary-par">Seznam studentů, zapsaných v této skupině.</p>
-                    <ul class="custom-collection">
-                        {foreach $groupMembers as $member}
-                        <li>
-                            <a href="{plink Profile:default 'id'=>$member->urlId}" class="item">
-                                <img src="{$member->profileImage}" alt="" class="avatar small">
-                                <span class="title">{if !empty($member->name)}{$member->name} {$member->surname}{/if}</span>
-                            </a>
-                        </li>
-                        {/foreach}
-                    </ul>
-                </div>
-                <div class="card-footer">
-                    <a href="{link Group:users 'id'=>$activeGroup->urlId}" class="btn-flat secondary-colored card-bottom">
-                        Zobrazit vše
-                    </a>
-                </div>
             </div>
             {if $activeGroup->owner->id === $activeUser->id}
             <div class="card flex-column bottom-spacer" n:if="$groupPermission['settings']">
@@ -188,13 +188,15 @@
                 </div>
                 <div class="card-content clearfix">
                     {form streamSettingsForm id=>"streamSettingsForm"}
-                    <p class="secondary-par left">Zobrazit smazané položky</p>
-                    <div class="switch right">
-                        <label>
-                            {input showDeleted:}
-                            <span class="lever"></span>
-                        </label>
-                    </div> 
+                    <div class="switch-row">
+                        <p class="secondary-par left">Zobrazit smazané položky</p>
+                        <div class="switch right">
+                            <label>
+                                {input showDeleted:}
+                                <span class="lever"></span>
+                            </label>
+                        </div> 
+                    </div>
                     {/form}
                     <script>
                     $(document).ready(function () {
