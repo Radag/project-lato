@@ -10,6 +10,7 @@ namespace App\Model\Manager;
 
 use Nette;
 use App\Model\Entities\Task;
+use App\Model\Entities\TaskCommit;
 
 /**
  * Description of TaskManager
@@ -58,6 +59,35 @@ class TaskManager extends BaseManager
             return $tasksArray;
         } else {
             return array();
+        }
+    }
+    
+    public function createTaskCommit(TaskCommit $taskCommit, $attachments)
+    {
+        $this->database->beginTransaction();
+        $this->database->table('task_commit')->insert(array(
+                    'ID_TASK' => $taskCommit->idTask,
+                    'ID_USER' => $taskCommit->user->id,
+                    'CREATED_BY' => $this->user->id,
+                    'COMMENT' => $taskCommit->comment
+            ));
+        
+        $idCommit = $this->database->query("SELECT MAX(ID_COMMIT) FROM task_commit")->fetchField();
+        foreach($attachments as $idAttach) {
+            $this->addAttachment($idAttach, $idCommit);
+        }
+        $this->database->commit();
+        return $idCommit;
+    }
+    
+    
+    public function addAttachment($idFile, $idCommit = null)
+    {
+        if(!empty($idFile)) {
+            $this->database->table('task_commit_attachment')->insert(array(
+                'ID_COMMIT' => $idCommit,
+                'ID_FILE' => $idFile
+            ));
         }
     }
 }

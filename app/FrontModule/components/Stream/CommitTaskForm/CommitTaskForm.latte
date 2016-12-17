@@ -1,0 +1,122 @@
+{form form}
+    <div class="modal-content">
+        <h3>Odevzdat úkol</h3>
+        <div id="taskCommitDropzone" style="display: none; text-align: center; padding-top: 15%; font-size: 18px; border: 0 !important; position: absolute; background-color: white; opacity: 0.94; width: 100%; height: 100%; top:0px; left:0px; z-index:999; ">
+            Přesuňte soubor prosím zde
+        </div>
+        <div class="form-row">
+            {input comment}
+        </div>
+        <div class="form-row">
+            <a type="text" class="upload-file-input" href="javascript:addNewTaskCommit()">Nahrát soubor</a>
+        </div>
+        {input attachments id => 'taskAttachmentsIds'}
+        <ul class="attachments task-attachments-uploads">
+            
+        </ul>
+    </div>
+    <div class="modal-footer">
+        <div class="flex-spacer"></div>
+        <div class="form-control">
+            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+            <button class="btn waves-effect waves-light hide-modal-ajax-submit" type="submit" name="send" >Odevzdat</button>
+        </div>
+    </div>
+{/form}
+<div id="taskAttachmentTemplate" style="display: none;">
+    <li>
+        <a href="javascript:void(0)" target="_blank" class="attached-file" >
+            <div class="attachment-icon small presentation"><i class="material-icons">slideshow</i></div>
+            <div class="attachment-label">
+                <div class="file-name"></div>
+                <div class="progress upload-file-progress">
+                    <div class="determinate" style="width: 0%"></div>
+                </div>
+            </div>
+        </a>
+        <a class="remove-attachment" href="#">
+            <i class="material-icons">delete</i>
+        </a>
+    </li>
+</div>
+<script>    
+    function addNewTaskCommit() 
+    {
+        $("#taskCommitDropzone").trigger('click');
+    }
+    
+    $(function() {
+        var taskCommitContent = new Dropzone("#taskCommitDropzone", { 
+            url: {link uploadAttachment!},
+            previewTemplate: '<div id="preview-template" style="display: none;"></div>'
+        });
+        
+        
+        
+        
+        taskCommitContent.on("addedfile", function(file) {
+            var id = Math.random().toString(36).substr(2, 10);
+            var attachTemplate = $("#taskAttachmentTemplate li").clone();
+            attachTemplate.addClass(id);
+            attachTemplate.css('display', 'flex');
+            attachTemplate.find(".attachment-label .file-name").text(file.name);
+            file.classId = id;
+            $(".task-attachments-uploads").append(attachTemplate).show();
+            
+            attachTemplate.find('.remove-attachment').on('click', function(event) {
+                event.preventDefault();
+                if(file.remoteIdFile != undefined) {
+                    var link = {link deleteAttachment!, idFile=>'XXXX'}.replace('XXXX', file.remoteIdFile);
+                    $.get( link, function( data ) {
+                        if(data.deleted) {
+                            var values = $("#taskAttachmentsIds").val();
+                            $("#taskAttachmentsIds").val(values.replace("_" + file.remoteIdFile, ""));
+                            attachTemplate.remove();
+                        }
+                    });
+                } else {
+                    //TODO - zastavit upload
+                }
+            });
+        });
+        
+        
+        taskCommitContent.on("uploadprogress", function(file) {
+            $("." + file.classId).find('.determinate').css('width', file.upload.progress + '%');
+        });
+        
+        taskCommitContent.on("complete", function(file) {   
+            var uploadedFile = JSON.parse(file.xhr.response);
+            var attachTemplate = $("." + file.classId);
+            attachTemplate.find(".progress").hide();
+            attachTemplate.find(".attachment-label .file-name").text(uploadedFile.file.fileName);
+            switch(uploadedFile.file.type) {
+                case 1:
+                attachTemplate.find(".attachment-icon").addClass('image');
+                attachTemplate.find(".attachment-icon .material-icons").text('image');
+                break;
+                case 3:
+                attachTemplate.find(".attachment-icon").addClass('document');
+                attachTemplate.find(".attachment-icon .material-icons").text('insert_drive_file');
+                break;
+                case 4:
+                attachTemplate.find(".attachment-icon").addClass('spreadsheet');
+                attachTemplate.find(".attachment-icon .material-icons").text('equalizer');
+                break;
+                case 5:
+                attachTemplate.find(".attachment-icon").addClass('presentation');
+                attachTemplate.find(".attachment-icon .material-icons").text('videocam');
+                break;
+                default:
+                attachTemplate.find(".attachment-icon").addClass('unknown');
+                attachTemplate.find(".attachment-icon .material-icons").text('help_outline');
+            }
+            
+            attachTemplate.find(".attached-file").attr('href', uploadedFile.file.fullPath);
+            attachTemplate.css('display', 'flex');
+            $(".task-attachments-uploads").append(attachTemplate);
+            file.remoteIdFile = uploadedFile.file.idFile;
+            $("#taskAttachmentsIds").val($("#taskAttachmentsIds").val() + "_" + uploadedFile.file.idFile);
+        });
+    });
+</script>

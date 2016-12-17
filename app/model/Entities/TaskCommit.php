@@ -11,12 +11,10 @@ namespace App\Model\Entities;
  *
  * @author Radaq
  */
-class Task {
+class TaskCommit {
     public $idTask = null;
-    public $title = null;
-    public $idMessage = null;
-    public $deadline = null;
-    public $online = null;
-    public $timeLeft = null;
-    public $commits = array();
+    public $idCommit = null;
+    public $comment = null;
+    public $user = null;
+    public $files = array();
 }

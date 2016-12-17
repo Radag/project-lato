@@ -18,6 +18,7 @@ use App\FrontModule\Components\Stream\MessageForm\NoticeForm\INoticeFormFactory;
 use App\FrontModule\Components\Stream\MessageForm\TaskForm\ITaskFormFactory;
 use App\FrontModule\Components\Stream\MessageForm\HomeworkForm\IHomeworkFormFactory;
 use App\FrontModule\Components\Stream\MessageForm\MaterialsForm\IMaterialsFormFactory;
+use App\FrontModule\Components\Stream\ICommitTaskFormFactory;
 use App\Model\Manager\GroupManager;
 
 
@@ -83,6 +84,9 @@ class Stream extends Control
     /** @var  IMaterialsFormFactory @inject */
     protected $materialsFormFactory;
     
+    /** @var  ICommitTaskFormFactory @inject */
+    protected $commitTaskFormFactory;
+    
     protected $showDeleted = false;
 
     protected $streamPermission = array();
@@ -96,6 +100,7 @@ class Stream extends Control
             ITaskFormFactory $taskFormFactory,
             IHomeworkFormFactory $homeworkFormFactory,
             IMaterialsFormFactory $materialsFormFactory,
+            ICommitTaskFormFactory $commitTaskFormFactory,
             GroupManager $groupManager
             )
     {
@@ -106,6 +111,7 @@ class Stream extends Control
         $this->taskFormFactory = $taskFormFactory;
         $this->homeworkFormFactory = $homeworkFormFactory;
         $this->materialsFormFactory = $materialsFormFactory;
+        $this->commitTaskFormFactory = $commitTaskFormFactory;
         $this->groupManager = $groupManager;
     }
     
@@ -179,6 +185,19 @@ class Stream extends Control
         $form->setStream($this);
         
         return $form;
+    }
+    
+    public function createComponentCommitTaskForm()
+    {
+        $form = $this->commitTaskFormFactory->create();                
+        $form->setActiveUser($this->activeUser);
+        return $form;
+    }
+    
+    public function handleSetTaskCommit($idTask)
+    {
+        $this['commitTaskForm']->setTaskId($idTask);
+        $this->redrawControl('commitTaskForm');
     }
     
     public function createComponentCommentForm()

@@ -23,7 +23,7 @@ class Message {
     public $priority = null;
     public $deleted = null;
     public $idType = null;
-    
+    public $task;
     
     function getId() {
         return $this->id;

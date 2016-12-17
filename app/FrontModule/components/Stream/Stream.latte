@@ -56,6 +56,12 @@
                                 $('#create-post-modal').openModal();
                             }
                         });
+                    } else if(settings.nette !== undefined && $(settings.nette.ui).hasClass('open-commit-task')) { 
+                        jqXHR.done(function( data, textStatus, jqXHR ) {
+                            if(data.invalidForm === undefined || !data.invalidForm) {
+                                $('#commit-task-modal').openModal();
+                            }
+                        });
                     }
                 }
             });
@@ -65,7 +71,12 @@
     
     <div id="create-post-modal" class="modal">
         {snippet messageForm}
-        {control messageForm}
+            {control messageForm}
+        {/snippet}
+    </div>
+    <div id="commit-task-modal" class="modal modal-small">
+        {snippet commitTaskForm}
+            {control commitTaskForm}
         {/snippet}
     </div>
     {/if}
@@ -74,64 +85,27 @@
     <div class="card flex-column" id="message-box-num_{$message->id}"> 
         {if $message->idType === 4}
         <div class="assignment">
+            {if count($message->task->commits) === 0}
             <div class="icon-circle"><i class="material-icons">access_time</i></div>
-            <div class="time-left">7 dní do odevzdání</div>
+            <div class="time-left">
+                {if $message->task->timeLeft->y > 0}
+                    <div class="remaining-time">{$message->task->timeLeft->format('%y let')}</div>
+                {elseif $message->task->timeLeft->m > 0}
+                    <div class="remaining-time">{$message->task->timeLeft->format('%m měsíců')}</div>
+                {elseif $message->task->timeLeft->d > 0}
+                    <div class="remaining-time">{$message->task->timeLeft->format('%d dní')}</div>
+                {elseif $message->task->timeLeft->h > 0}
+                    <div class="remaining-time important">{$message->task->timeLeft->format('%h hodin')}</div>
+                {elseif $message->task->timeLeft->i > 0}
+                    <div class="remaining-time important">{$message->task->timeLeft->format('%i minut')}</div>
+                {/if} 
+            </div>
             <div class="flex-spacer"></div>
-            <a href="#submit-assignment" class="btn gray modal-trigger">Odevzdat</a>
+            <a href="{link setTaskCommit! idTask=>$message->task->idTask}" class="btn ajax gray open-commit-task">Odevzdat</a>
+            {else}
+                Úkol odevzdán
+            {/if}
         </div>  
-        <div id="submit-assignment" class="modal modal-small">
-            <div class="modal-content">
-                <h3>Odevzdat úkol</h3>
-                <div class="form-row">
-                    <input type="text" class="validate" placeholder="Komentář k úkolu" href="javascript:addNewAttachment()">
-                </div>
-                <div class="form-row">
-                    <a type="text" class="upload-file-input" href="javascript:addNewAttachment()">Nahrát soubor</a>
-                </div>
-                <ul class="attachments attachments-uploads">
-                    <li>
-                        <a class="attached-file" href="javascript:addNewAttachment()">
-                            <div class="attachment-icon small presentation"><i class="material-icons">slideshow</i></div>
-                            <div class="attachment-label">
-                                <div class="file-name">Lorem ipsum</div>
-                            </div>
-                        </a>
-                        <a class="remove-attachment" href="">
-                            <i class="material-icons">delete</i>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="attached-file" href="" target="_blank">
-                            <div class="attachment-icon small presentation"><i class="material-icons">slideshow</i></div>
-                            <div class="attachment-label">
-                                <div class="file-name">Lorem ipsum</div>
-                            </div>
-                        </a>
-                        <a class="remove-attachment" href="">
-                            <i class="material-icons">delete</i>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="attached-file" href="" target="_blank">
-                            <div class="attachment-icon small presentation"><i class="material-icons">slideshow</i></div>
-                            <div class="attachment-label">
-                                <div class="file-name">Lorem ipsum</div>
-                            </div>
-                        </a>
-                        <a class="remove-attachment" href="">
-                            <i class="material-icons">delete</i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <div class="flex-spacer"></div>
-                <div class="form-control">
-                    <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-                    <button class="btn waves-effect waves-light hide-modal-ajax-submit" type="submit" name="send" >Odevzdat</button>
-                </div>
-            </div>
-        </div>
         {/if}  
         <div class="card-header">
             {if $message->priority == 1}<div class="topped"></div>{/if}

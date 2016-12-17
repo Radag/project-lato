@@ -114,13 +114,20 @@ class MessageManager extends BaseManager {
                         T3.FILENAME,
                         T1.PRIORITY,
                         T4.ACTIVE AS IS_FOLLOWED,
-                        T1.DELETED
+                        T1.DELETED,
+                        T5.ID_TASK,
+                        T5.DEADLINE,
+                        T5.NAME AS TASK_NAME,
+                        T6.ID_COMMIT
                 FROM message T1 
                 LEFT JOIN user T2 ON T1.ID_USER=T2.ID_USER 
                 LEFT JOIN file_list T3 ON T3.ID_FILE=T2.PROFILE_IMAGE
                 LEFT JOIN message_following T4 ON (T1.ID_MESSAGE = T4.ID_MESSAGE AND T4.ID_USER=? AND T4.ACTIVE=1)
+                LEFT JOIN tasks T5 ON T1.ID_MESSAGE = T5.ID_MESSAGE
+                LEFT JOIN task_commit T6 ON (T6.ID_TASK=T5.ID_TASK AND T6.ID_USER=?)
                 WHERE T1.ID_GROUP=? AND T1.DELETED IN (?)
-                ORDER BY PRIORITY DESC, CREATED_WHEN DESC LIMIT 10", $user->id, $group->id, $delete)->fetchAll();
+                ORDER BY PRIORITY DESC, CREATED_WHEN DESC LIMIT 10", $user->id, $user->id, $group->id, $delete)->fetchAll();
+        $now = new \DateTime();
         foreach($messages as $message) {
             $mess = new Message();
             $user = new User();
@@ -146,6 +153,19 @@ class MessageManager extends BaseManager {
             $mess->deleted = $message->DELETED;
             $mess->idType = $message->ID_TYPE;
             $mess->attachments = $this->getAttachments($message->ID_MESSAGE);
+            if($message->ID_TYPE == 4) {
+                $mess->task = new \App\Model\Entities\Task();
+                $mess->task->idTask = $message->ID_TASK;
+                $mess->task->name = $message->TASK_NAME;
+                $mess->task->deadline = $message->DEADLINE;
+                $mess->task->timeLeft = $now->diff($message->DEADLINE);
+                if(!empty($message->ID_COMMIT)) {
+                    $commit = new \App\Model\Entities\TaskCommit();
+                    $commit->idCommit = $message->ID_COMMIT;
+                    $mess->task->commits[] = $commit;
+                }
+            }
+            
             $return[] = $mess;
         }
         
