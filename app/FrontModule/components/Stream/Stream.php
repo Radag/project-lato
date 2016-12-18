@@ -7,11 +7,12 @@
 
 namespace App\FrontModule\Components\Stream;
 
-use \Nette\Application\UI\Control;
+use App\Components\PreparedControl;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\MessageManager;
 use App\Model\Manager\FileManager;
 use App\Model\Manager\MaterialManager;
+use App\Model\Manager\TaskManager;
 use App\FrontModule\Components\Stream\MessageForm\MessageForm;
 use App\FrontModule\Components\Stream\CommentForm\CommentForm;
 use App\FrontModule\Components\Stream\MessageForm\NoticeForm\INoticeFormFactory;
@@ -27,7 +28,7 @@ use App\Model\Manager\GroupManager;
  *
  * @author Radaq
  */
-class Stream extends Control
+class Stream extends PreparedControl
 {
     
     /**
@@ -54,6 +55,11 @@ class Stream extends Control
      * @var GroupManager
      */
     protected $groupManager;
+    
+    /**
+     * @var TaskManager
+     */
+    protected $taskManager;
     
     /**
      * @var CommentForm; 
@@ -101,7 +107,8 @@ class Stream extends Control
             IHomeworkFormFactory $homeworkFormFactory,
             IMaterialsFormFactory $materialsFormFactory,
             ICommitTaskFormFactory $commitTaskFormFactory,
-            GroupManager $groupManager
+            GroupManager $groupManager,
+            TaskManager $taskManager
             )
     {
         $this->userManager = $userManager;
@@ -113,6 +120,7 @@ class Stream extends Control
         $this->materialsFormFactory = $materialsFormFactory;
         $this->commitTaskFormFactory = $commitTaskFormFactory;
         $this->groupManager = $groupManager;
+        $this->taskManager = $taskManager;
     }
     
     public function setUser(\App\Model\Entities\User $user)
@@ -142,7 +150,7 @@ class Stream extends Control
     
     public function render()
     {
-        $template = $this->template;
+        $template = $this->getTemplate();
         $messages = $this->messageManager->getMessages($this->activeGroup, $this->activeUser, $this->showDeleted);
         $template->activeUser = $this->activeUser;  
         $template->isOwner = ($this->activeUser->id === $this->activeGroup->owner->id) ? true : false;
@@ -197,6 +205,14 @@ class Stream extends Control
     public function handleSetTaskCommit($idTask)
     {
         $this['commitTaskForm']->setTaskId($idTask);
+        $this->redrawControl('commitTaskForm');
+    }
+    
+    
+    public function handleEditTaskCommit($idCommit)
+    {
+        $commit = $this->taskManager->getCommit($idCommit);
+        $this['commitTaskForm']->setDefault($commit);
         $this->redrawControl('commitTaskForm');
     }
     

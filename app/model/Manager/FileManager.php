@@ -26,7 +26,9 @@ class FileManager extends BaseManager
         $file = $this->database->query('SELECT PATH, FILENAME FROM file_list WHERE ID_FILE=?', $idFile)->fetch();
         if($file) {
             $connId = $this->getFtpConnection();
-            ftp_delete($connId, '/cdn/' . $file['PATH'] . '/' . $file['FILENAME']); 
+            if(ftp_size($connId , '/cdn/' . $file['PATH'] . '/' . $file['FILENAME']) !== -1) {
+                ftp_delete($connId, '/cdn/' . $file['PATH'] . '/' . $file['FILENAME']);
+            }
             $this->deleteFile($idFile);
         }
         $this->database->commit();

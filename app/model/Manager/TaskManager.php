@@ -62,22 +62,50 @@ class TaskManager extends BaseManager
         }
     }
     
+    public function getCommit($idCommit) 
+    {        
+        $return = new TaskCommit();
+        $commit = $this->database->query("SELECT T1.ID_COMMIT, T1.COMMENT, T2.ID_FILE,
+                            T3.PATH,
+                            T3.FILENAME
+                        FROM task_commit T1
+                        LEFT JOIN task_commit_attachment T2 ON T1.ID_COMMIT=T2.ID_COMMIT
+                        LEFT JOIN file_list T3 ON T2.ID_FILE=T3.ID_FILE
+                        WHERE T1.ID_COMMIT = ?", $idCommit)->fetchAll();
+        foreach($commit as $attach) {
+            $return->idCommit = $attach->ID_COMMIT;
+            $return->comment = $attach->COMMENT;
+            if(!empty($attach->ID_FILE)) {
+                $return->files[] = (object)array('idFile' => $attach->ID_FILE, 'path' => 'https://cdn.lato.cz/' . $attach->PATH . '/' . $attach->FILENAME, 'filename' => $attach->FILENAME);
+            }
+        }
+        return $return;
+    }
+    
     public function createTaskCommit(TaskCommit $taskCommit, $attachments)
     {
         $this->database->beginTransaction();
-        $this->database->table('task_commit')->insert(array(
+        if(empty($taskCommit->idCommit)) {
+            $this->database->table('task_commit')->insert(array(
                     'ID_TASK' => $taskCommit->idTask,
                     'ID_USER' => $taskCommit->user->id,
                     'CREATED_BY' => $this->user->id,
                     'COMMENT' => $taskCommit->comment
             ));
-        
-        $idCommit = $this->database->query("SELECT MAX(ID_COMMIT) FROM task_commit")->fetchField();
-        foreach($attachments as $idAttach) {
-            $this->addAttachment($idAttach, $idCommit);
+            $taskCommit->idCommit = $this->database->query("SELECT MAX(ID_COMMIT) FROM task_commit")->fetchField();
+        } else {
+            $data = array('COMMENT' => $taskCommit->comment, 'UPDATED_WHEN' => new \DateTime());
+            $this->database->query("UPDATE task_commit SET ? WHERE ID_COMMIT=?", $data, $taskCommit->idCommit);
         }
+        
+        if(!empty($attachments)) {
+            foreach($attachments as $idAttach) {
+                $this->addAttachment($idAttach, $taskCommit->idCommit);
+            }
+        }
+        
         $this->database->commit();
-        return $idCommit;
+        return $taskCommit->idCommit;
     }
     
     
@@ -88,6 +116,13 @@ class TaskManager extends BaseManager
                 'ID_COMMIT' => $idCommit,
                 'ID_FILE' => $idFile
             ));
+        }
+    }
+    
+    public function removeAttachment($idFile)
+    {
+        if(!empty($idFile)) {     
+            $this->database->query("DELETE FROM task_commit_attachment WHERE ID_FILE=?", $idFile);
         }
     }
 }

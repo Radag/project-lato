@@ -18,5 +18,5 @@ class Task {
     public $deadline = null;
     public $online = null;
     public $timeLeft = null;
-    public $commits = array();
+    public $commit = null;
 }

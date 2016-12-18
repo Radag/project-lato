@@ -62,6 +62,12 @@
                                 $('#commit-task-modal').openModal();
                             }
                         });
+                    } else if(settings.nette !== undefined && $(settings.nette.ui).hasClass('delete-commit-attachment')) { 
+                        jqXHR.done(function( data, textStatus, jqXHR ) {
+                            if(data.invalidForm === undefined || !data.invalidForm) {
+                                $('#commit-task-modal .attachments li[data-file-id="' + data.idFile + '"]').remove();
+                            }
+                        });
                     }
                 }
             });
@@ -85,25 +91,17 @@
     <div class="card flex-column" id="message-box-num_{$message->id}"> 
         {if $message->idType === 4}
         <div class="assignment">
-            {if count($message->task->commits) === 0}
-            <div class="icon-circle"><i class="material-icons">access_time</i></div>
-            <div class="time-left">
-                {if $message->task->timeLeft->y > 0}
-                    <div class="remaining-time">{$message->task->timeLeft->format('%y let')}</div>
-                {elseif $message->task->timeLeft->m > 0}
-                    <div class="remaining-time">{$message->task->timeLeft->format('%m měsíců')}</div>
-                {elseif $message->task->timeLeft->d > 0}
-                    <div class="remaining-time">{$message->task->timeLeft->format('%d dní')}</div>
-                {elseif $message->task->timeLeft->h > 0}
-                    <div class="remaining-time important">{$message->task->timeLeft->format('%h hodin')}</div>
-                {elseif $message->task->timeLeft->i > 0}
-                    <div class="remaining-time important">{$message->task->timeLeft->format('%i minut')}</div>
-                {/if} 
-            </div>
-            <div class="flex-spacer"></div>
-            <a href="{link setTaskCommit! idTask=>$message->task->idTask}" class="btn ajax gray open-commit-task">Odevzdat</a>
+            {if empty($message->task->commit)}
+                <div class="icon-circle"><i class="material-icons">access_time</i></div>
+                <div class="time-left">
+                    {$message->task->timeLeft|timeDifferceText|noescape}
+                </div>
+                <div class="flex-spacer"></div>
+                <a href="{link setTaskCommit! idTask=>$message->task->idTask}" class="btn ajax gray open-commit-task">Odevzdat</a>
             {else}
-                Úkol odevzdán
+                <div>Úkol odevzdán dne {$message->task->commit->created->format("j. n.")} v {$message->task->commit->created->format("H:i")}</div>
+                <div class="flex-spacer"></div>
+                <a href="{link editTaskCommit! idCommit=>$message->task->commit->idCommit}" class="btn ajax gray open-commit-task">Upravit</a>
             {/if}
         </div>  
         {/if}  

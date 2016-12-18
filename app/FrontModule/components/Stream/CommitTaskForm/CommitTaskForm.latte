@@ -12,7 +12,19 @@
         </div>
         {input attachments id => 'taskAttachmentsIds'}
         <ul class="attachments task-attachments-uploads">
-            
+            {if !empty($attachments)}
+            {foreach $attachments as $attach}
+                <li data-file-id="{$attach->idFile}">
+                    <a href="{$attach->path|noescape}" target="_blank" class="attached-file" >
+                        <div class="attachment-icon small presentation"><i class="material-icons">slideshow</i></div>
+                        <div class="attachment-label">
+                            <div class="file-name">{$attach->filename}</div>
+                        </div>
+                    </a>
+                    <a class="ajax remove-attachment delete-commit-attachment" href="{link deleteAttachment!, idFile=>$attach->idFile}"><i class="material-icons">delete</i></a>
+                </li>
+            {/foreach}
+            {/if}
         </ul>
     </div>
     <div class="modal-footer">
@@ -50,9 +62,6 @@
             url: {link uploadAttachment!},
             previewTemplate: '<div id="preview-template" style="display: none;"></div>'
         });
-        
-        
-        
         
         taskCommitContent.on("addedfile", function(file) {
             var id = Math.random().toString(36).substr(2, 10);

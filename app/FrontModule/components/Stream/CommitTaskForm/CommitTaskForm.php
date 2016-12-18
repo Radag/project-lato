@@ -14,6 +14,7 @@ use App\Model\Manager\TaskManager;
 use App\Model\Entities\Task;
 use \Nette\Application\UI\Form;
 use \Nette\Application\UI\Control;
+use App\Model\Entities\TaskCommit;
 
 
 /**
@@ -74,9 +75,8 @@ class CommitTaskForm extends Control
         
         $form->addHidden('attachments');
         $form->addHidden('idTask');
+        $form->addHidden('idCommit');
         $form->addSubmit('send', 'Odevzdat');
-
-        
         
         $form->onSuccess[] = [$this, 'processForm'];
         
@@ -89,6 +89,16 @@ class CommitTaskForm extends Control
         
         return $form;
     }
+    
+    public function setDefault(TaskCommit $commit)
+    {
+        $this['form']->setDefaults(array(
+            'comment' => $commit->comment,
+            'idCommit' => $commit->idCommit
+        ));
+        $this->template->attachments = $commit->files;
+    }
+            
     
     public function setTaskId($idTask)
     {
@@ -108,6 +118,7 @@ class CommitTaskForm extends Control
         $taskCommit->comment = $values['comment'];
         $taskCommit->user = $this->activeUser;
         $taskCommit->idTask = $values['idTask'];
+        $taskCommit->idCommit = $values['idCommit'];
         
         $attachments = explode('_', $values['attachments']);    
         $idTaskCommit = $this->taskManager->createTaskCommit($taskCommit, $attachments);
@@ -133,7 +144,9 @@ class CommitTaskForm extends Control
     
     public function handleDeleteAttachment($idFile)
     {
+        $this->taskManager->removeAttachment($idFile);
         $this->fileManager->removeFile($idFile);
+        $this->getPresenter()->payload->idFile = $idFile;
         $this->getPresenter()->payload->deleted = true;
         $this->getPresenter()->sendPayload();
     }

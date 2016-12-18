@@ -17,4 +17,5 @@ class TaskCommit {
     public $comment = null;
     public $user = null;
     public $files = array();
+    public $created = null;
 }
