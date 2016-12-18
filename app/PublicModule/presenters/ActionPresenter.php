@@ -38,7 +38,7 @@ class ActionPresenter extends BasePresenter
         $action = $this->publicActionManager->getActionType($id);
         switch ($action) {
             case PublicActionManager::ACTION_ADD_TO_GROUP :
-                $this->addToGroup();
+                $this->addToGroup($id);
                 break;
             case PublicActionManager::ACTION_MAIL_VALIDATION :
                 $this->validateMail();
@@ -47,12 +47,11 @@ class ActionPresenter extends BasePresenter
                 $this->newPassword($action);
                 break;
         }
-       
-        $this->template->action = $action;
     }    
     
-    protected function addToGroup() 
+    protected function addToGroup($id) 
     {
+        $action = $this->publicActionManager->getGroupSharingAction($id);
         if($this->user->isLoggedIn()) {
             if($this->groupManager->isUserInGroup($this->user->id, $action->ID_GROUP)) {
                 $this->template->isInGroup = true;
@@ -60,6 +59,7 @@ class ActionPresenter extends BasePresenter
                 $this->redirect(':Front:Group:default', array('id'=>$action->URL_ID));
             } else {
                 $this->template->isInGroup = false;
+                $this->template->action = $action;
             }
         } else {
             $redirectSection = $this->getSession()->getSection('redirect');
@@ -143,8 +143,8 @@ class ActionPresenter extends BasePresenter
     
     public function handleAddToGroup($id)
     {
-        $action = $this->publicActionManager->getAction($id);
-        if(!empty($action) && $action->ACTION_TYPE === 1) {
+        $action = $this->publicActionManager->getGroupSharingAction($id);
+        if(!empty($action) && $action->ACTION_TYPE === PublicActionManager::ACTION_ADD_TO_GROUP) {
             if($this->user->isLoggedIn()) {
                 $this->groupManager->addUserToGroup($action->ID_GROUP, $this->user->id, 1);
                 $this->flashMessage('Byl jste přidán do skupiny.');

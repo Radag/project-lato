@@ -53,6 +53,7 @@ $(function() {
 function latoShowUpFlashMessages() {
     $("#flashMessagesWrapper .flash").each(function(index, value){
         Materialize.toast($(value).text(), 4000, $(value).data('type'));
+        $(this).remove();
     });
 }
 

@@ -23,7 +23,7 @@ class PublicActionManager extends BaseManager
     const ACTION_NEW_PASS = 4;
     
     
-    public function getAction($hashCode) {
+    public function getGroupSharingAction($hashCode) {
         $action = $this->database->query("SELECT 
                 T1.ACTION_TYPE,
                 T2.ID_ACTION,
