@@ -1,3 +1,5 @@
+var latoAfterAjaxStart = [];
+
 $(function() {
     $("#main-progress-loader").hide();
     
@@ -14,8 +16,38 @@ $(function() {
         }
     });
     
-    
-   latoShowUpFlashMessages();
+    latoShowUpFlashMessages();
+
+    latoAddAfterStartMethod({
+        submitClass: 'hide-modal-ajax-submit',
+        beginFunction: function(settings) {
+            return $(settings.nette.ui).closest('div.modal');
+        },
+        doneFunction: function(data, beforeParam) {
+            if(data.invalidForm === undefined || !data.invalidForm) {
+                beforeParam.closeModal();
+            }
+        }
+    });
+
+    $.nette.ext('afterStartAjax', {
+        start: function (jqXHR, settings) {
+            var doneFunction = [];
+            if(settings.nette !== undefined) {
+                for(var i=0; i<(latoAfterAjaxStart.length); i++) {
+                    if($(settings.nette.ui).hasClass(latoAfterAjaxStart[i].submitClass)) {
+                        var beforeParam = latoAfterAjaxStart[i].beginFunction(settings);
+                        doneFunction.push(latoAfterAjaxStart[i].doneFunction);
+                        jqXHR.done(function( data, textStatus, jqXHR ) {
+                            for(var k=0; k<(doneFunction.length); k++) {
+                                doneFunction[k](data, beforeParam);
+                            }
+                        });
+                    }
+                }
+            }
+        }
+    });
 });
 
 function latoShowUpFlashMessages() {
@@ -51,4 +83,17 @@ function latoLoadDatePicker() {
         // Formats
         format: 'dd. mm. yyyy'
     });
+}
+
+function latoAddAfterStartMethod(data)
+{  
+    var exist = false;
+    for(var i=0; i<(latoAfterAjaxStart.length); i++) {
+        if(latoAfterAjaxStart[i].submitClass === data.submitClass) {
+            exist = true;
+        }
+    }
+    if(!exist) {
+        latoAfterAjaxStart.push(data);
+    }
 }

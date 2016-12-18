@@ -36,43 +36,29 @@
     <!-- Modal Structure -->
 
     <script>  
-        $(document).ready(function(){
-            $.nette.ext('hideAjaxSubmitModal', {
-                start: function (jqXHR, settings) {              
-                    if(settings.nette !== undefined && $(settings.nette.ui).hasClass('hide-modal-ajax-submit')) { 
-                        $popup = $(settings.nette.ui).closest('div.modal');
-                        jqXHR.done(function( data, textStatus, jqXHR ) {
-                            if(data.invalidForm === undefined || !data.invalidForm) {
-                                $popup.closeModal();
-                                $('html, body').animate({
-                                    scrollTop: $('#message-box-num_' + data.idMessage).offset().top
-                                }, 700);
-                            }
-                        });
-                    } else if(settings.nette !== undefined && $(settings.nette.ui).hasClass('change-popup-type-button')) { 
-                        $('#select-post-type-modal').closeModal();
-                        jqXHR.done(function( data, textStatus, jqXHR ) {
-                            if(data.invalidForm === undefined || !data.invalidForm) {
-                                $('#create-post-modal').openModal();
-                            }
-                        });
-                    } else if(settings.nette !== undefined && $(settings.nette.ui).hasClass('open-commit-task')) { 
-                        jqXHR.done(function( data, textStatus, jqXHR ) {
-                            if(data.invalidForm === undefined || !data.invalidForm) {
-                                $('#commit-task-modal').openModal();
-                            }
-                        });
-                    } else if(settings.nette !== undefined && $(settings.nette.ui).hasClass('delete-commit-attachment')) { 
-                        jqXHR.done(function( data, textStatus, jqXHR ) {
-                            if(data.invalidForm === undefined || !data.invalidForm) {
-                                $('#commit-task-modal .attachments li[data-file-id="' + data.idFile + '"]').remove();
-                            }
-                        });
-                    }
+        latoAddAfterStartMethod({
+            submitClass: 'scroll-to-message',
+            beginFunction: function() {},
+            doneFunction: function(data, beforeParam) {
+                if(data.invalidForm === undefined || !data.invalidForm) {
+                    $('html, body').animate({
+                        scrollTop: $('#message-box-num_' + data.idMessage).offset().top
+                    }, 700);
                 }
-            });
-        });   
-
+            }
+        });
+        
+        latoAddAfterStartMethod({
+            submitClass: 'change-popup-type-button',
+            beginFunction: function() {
+                $('#select-post-type-modal').closeModal();
+            },
+            doneFunction: function(data, beforeParam) {
+                if(data.invalidForm === undefined || !data.invalidForm) {
+                    $('#create-post-modal').openModal();
+                }
+            }
+        });
     </script>
     
     <div id="create-post-modal" class="modal">
@@ -80,12 +66,12 @@
             {control messageForm}
         {/snippet}
     </div>
+    {/if}
     <div id="commit-task-modal" class="modal modal-small">
         {snippet commitTaskForm}
             {control commitTaskForm}
         {/snippet}
     </div>
-    {/if}
     {snippet messages}
     {foreach $messages as $message}  
     <div class="card flex-column" id="message-box-num_{$message->id}"> 

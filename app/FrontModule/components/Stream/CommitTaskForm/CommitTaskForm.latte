@@ -51,7 +51,28 @@
         </a>
     </li>
 </div>
-<script>    
+<script> 
+    latoAddAfterStartMethod({
+        submitClass: 'open-commit-task',
+        beginFunction: function() {},
+        doneFunction: function(data, beforeParam) {
+            if(data.invalidForm === undefined || !data.invalidForm) {
+                $('#commit-task-modal').openModal();
+            }
+        }
+    });
+
+    latoAddAfterStartMethod({
+        submitClass: 'delete-commit-attachment',
+        beginFunction: function() {},
+        doneFunction: function(data, beforeParam) {
+            if(data.invalidForm === undefined || !data.invalidForm) {
+                $('#commit-task-modal .attachments li[data-file-id="' + data.idFile + '"]').remove();
+            }
+        }
+    });
+    
+    
     function addNewTaskCommit() 
     {
         $("#taskCommitDropzone").trigger('click');
