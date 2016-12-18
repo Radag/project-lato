@@ -124,6 +124,8 @@ class CommitTaskForm extends Control
         $idTaskCommit = $this->taskManager->createTaskCommit($taskCommit, $attachments);
         
         $this->presenter->flashMessage('Úkol odevzdán', 'success');
+        
+        $this->getParent()->redrawControl('messages');
     }
     
     

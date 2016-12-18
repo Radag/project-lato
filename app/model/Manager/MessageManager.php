@@ -119,7 +119,8 @@ class MessageManager extends BaseManager {
                         T5.DEADLINE,
                         T5.NAME AS TASK_NAME,
                         T6.ID_COMMIT,
-                        T6.CREATED_WHEN AS COMMIT_CREATED
+                        T6.CREATED_WHEN AS COMMIT_CREATED,
+                        T6.UPDATED_WHEN AS COMMIT_UPDATED
                 FROM message T1 
                 LEFT JOIN user T2 ON T1.ID_USER=T2.ID_USER 
                 LEFT JOIN file_list T3 ON T3.ID_FILE=T2.PROFILE_IMAGE
@@ -164,6 +165,7 @@ class MessageManager extends BaseManager {
                     $commit = new \App\Model\Entities\TaskCommit();
                     $commit->idCommit = $message->ID_COMMIT;
                     $commit->created = $message->COMMIT_CREATED;
+                    $commit->updated = $message->COMMIT_UPDATED;
                     $mess->task->commit = $commit;
                 }
             }
