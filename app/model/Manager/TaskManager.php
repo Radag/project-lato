@@ -62,6 +62,28 @@ class TaskManager extends BaseManager
         }
     }
     
+    public function getTask($idTask) 
+    {
+        $now = new \DateTime();
+        $task = $this->database->query("SELECT 
+                        T1.ID_TASK,
+                        T1.NAME,
+                        T1.ID_MESSAGE,
+                        T1.DEADLINE,
+                        T2.ID_CLASSIFICATION_GROUP
+                FROM tasks T1 
+                LEFT JOIN classification_group T2 ON T1.ID_TASK = T2.ID_TASK
+                WHERE T1.ID_TASK = ?", $idTask)->fetch();
+        $taskObject  = new Task();
+        $taskObject->idTask = $task->ID_TASK;
+        $taskObject->deadline = $task->DEADLINE;
+        $taskObject->title = $task->NAME;
+        $taskObject->idMessage = $task->ID_MESSAGE;
+        $taskObject->timeLeft = $now->diff($task->DEADLINE);
+        $taskObject->idClassificationGroup = $task->ID_CLASSIFICATION_GROUP;
+        return $taskObject;
+    }
+    
     public function getCommit($idCommit) 
     {        
         $return = new TaskCommit();
@@ -72,6 +94,31 @@ class TaskManager extends BaseManager
                         LEFT JOIN task_commit_attachment T2 ON T1.ID_COMMIT=T2.ID_COMMIT
                         LEFT JOIN file_list T3 ON T2.ID_FILE=T3.ID_FILE
                         WHERE T1.ID_COMMIT = ?", $idCommit)->fetchAll();
+        foreach($commit as $attach) {
+            $return->idCommit = $attach->ID_COMMIT;
+            $return->comment = $attach->COMMENT;
+            if(!empty($attach->ID_FILE)) {
+                $return->files[] = (object)array('idFile' => $attach->ID_FILE, 'path' => 'https://cdn.lato.cz/' . $attach->PATH . '/' . $attach->FILENAME, 'filename' => $attach->FILENAME);
+            }
+        }
+        return $return;
+    }
+    
+    
+    public function getCommitByUser($idTask, $idUser) 
+    {        
+        $return = new TaskCommit();
+        $commit = $this->database->query("SELECT T1.ID_COMMIT, T1.COMMENT, T2.ID_FILE,
+                            T3.PATH,
+                            T3.FILENAME
+                        FROM task_commit T1
+                        LEFT JOIN task_commit_attachment T2 ON T1.ID_COMMIT=T2.ID_COMMIT
+                        LEFT JOIN file_list T3 ON T2.ID_FILE=T3.ID_FILE
+                        WHERE T1.ID_TASK = ? AND T1.ID_USER = ?", $idTask, $idUser)->fetchAll();
+        if(!$commit) {
+            return null;
+        }
+        
         foreach($commit as $attach) {
             $return->idCommit = $attach->ID_COMMIT;
             $return->comment = $attach->COMMENT;

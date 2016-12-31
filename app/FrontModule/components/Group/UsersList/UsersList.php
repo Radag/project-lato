@@ -13,6 +13,7 @@ use App\Model\Manager\GroupManager;
 use App\FrontModule\Components\NewClassificationForm\NewClassificationForm;
 use App\FrontModule\Components\NewClassificationForm\UserClassificationForm;
 use App\Model\Manager\ClassificationManager;
+use App\Model\Manager\TaskManager;
 
 
 /**
@@ -25,6 +26,9 @@ class UsersList extends Control
         
     /** @var GroupManager */
     private $groupManager;
+    
+    /** @var TaskManager */
+    private $taskManager;
     
     /** @var ClassificationManager */
     private $classificationManager;
@@ -42,11 +46,13 @@ class UsersList extends Control
     
     
     public function __construct(GroupManager $groupManager,
-                                ClassificationManager $classificationManager
+                                ClassificationManager $classificationManager,
+                                TaskManager $taskManager
             )
     {
         $this->groupManager = $groupManager;
         $this->classificationManager = $classificationManager;
+        $this->taskManager = $taskManager;
     }
     
     public function setUser(\App\Model\Entities\User $user)
@@ -104,6 +110,12 @@ class UsersList extends Control
 
         $classificationGroup = $this->classificationManager->getGroupClassification($idGroupClassification);
         $members = $this->groupManager->getGroupUsers($this->activeGroup->id, \App\Model\Entities\Group::RELATION_STUDENT);
+        if(!empty($classificationGroup->task)) {
+            foreach($members as $member) {
+                $classificationGroup->task->commitArray[$member->id] = $this->taskManager->getCommitByUser($classificationGroup->task->idTask, $member->id);
+            }
+        }
+        
         $this->template->classificationGroup = $classificationGroup;
         $this['classificationForm']->setDefaults(array(
             'idGroupClassification' => $idGroupClassification

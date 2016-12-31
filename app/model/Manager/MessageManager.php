@@ -120,13 +120,15 @@ class MessageManager extends BaseManager {
                         T5.NAME AS TASK_NAME,
                         T6.ID_COMMIT,
                         T6.CREATED_WHEN AS COMMIT_CREATED,
-                        T6.UPDATED_WHEN AS COMMIT_UPDATED
+                        T6.UPDATED_WHEN AS COMMIT_UPDATED,
+                        T7.COMMIT_COUNT
                 FROM message T1 
                 LEFT JOIN user T2 ON T1.ID_USER=T2.ID_USER 
                 LEFT JOIN file_list T3 ON T3.ID_FILE=T2.PROFILE_IMAGE
                 LEFT JOIN message_following T4 ON (T1.ID_MESSAGE = T4.ID_MESSAGE AND T4.ID_USER=? AND T4.ACTIVE=1)
                 LEFT JOIN tasks T5 ON T1.ID_MESSAGE = T5.ID_MESSAGE
                 LEFT JOIN task_commit T6 ON (T6.ID_TASK=T5.ID_TASK AND T6.ID_USER=?)
+                LEFT JOIN (SELECT COUNT(ID_COMMIT) AS COMMIT_COUNT, ID_TASK FROM task_commit GROUP BY ID_TASK) T7 ON T7.ID_TASK=T5.ID_TASK
                 WHERE T1.ID_GROUP=? AND T1.DELETED IN (?)
                 ORDER BY PRIORITY DESC, CREATED_WHEN DESC LIMIT 10", $user->id, $user->id, $group->id, $delete)->fetchAll();
         $now = new \DateTime();
@@ -161,6 +163,7 @@ class MessageManager extends BaseManager {
                 $mess->task->name = $message->TASK_NAME;
                 $mess->task->deadline = $message->DEADLINE;
                 $mess->task->timeLeft = $now->diff($message->DEADLINE);
+                $mess->task->commitCount = $message->COMMIT_COUNT;
                 if(!empty($message->ID_COMMIT)) {
                     $commit = new \App\Model\Entities\TaskCommit();
                     $commit->idCommit = $message->ID_COMMIT;

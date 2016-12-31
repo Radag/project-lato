@@ -20,7 +20,9 @@ use App\FrontModule\Components\Stream\MessageForm\TaskForm\ITaskFormFactory;
 use App\FrontModule\Components\Stream\MessageForm\HomeworkForm\IHomeworkFormFactory;
 use App\FrontModule\Components\Stream\MessageForm\MaterialsForm\IMaterialsFormFactory;
 use App\FrontModule\Components\Stream\ICommitTaskFormFactory;
+use App\Model\Manager\ClassificationManager;
 use App\Model\Manager\GroupManager;
+use App\Model\Entities\ClassificationGroup;
 
 
 /**
@@ -59,7 +61,12 @@ class Stream extends PreparedControl
     /**
      * @var TaskManager
      */
-    protected $taskManager;
+    protected $taskManager;    
+    
+    /**
+     * @var ClassificationManager
+     */
+    protected $classificationManager;
     
     /**
      * @var CommentForm; 
@@ -102,6 +109,7 @@ class Stream extends PreparedControl
             MessageManager $messageManager, 
             FileManager $fileManager,
             MaterialManager $materialManager,
+            ClassificationManager $classificationManager,
             INoticeFormFactory $noticeFormFactory,
             ITaskFormFactory $taskFormFactory,
             IHomeworkFormFactory $homeworkFormFactory,
@@ -121,6 +129,7 @@ class Stream extends PreparedControl
         $this->commitTaskFormFactory = $commitTaskFormFactory;
         $this->groupManager = $groupManager;
         $this->taskManager = $taskManager;
+        $this->classificationManager = $classificationManager;
     }
     
     public function setUser(\App\Model\Entities\User $user)
@@ -153,6 +162,7 @@ class Stream extends PreparedControl
         $template = $this->getTemplate();
         $messages = $this->messageManager->getMessages($this->activeGroup, $this->activeUser, $this->showDeleted);
         $template->activeUser = $this->activeUser;  
+        $template->activeGroup = $this->activeGroup;  
         $template->isOwner = ($this->activeUser->id === $this->activeGroup->owner->id) ? true : false;
         $template->messages = $messages;
         $template->streamPermission = $this->streamPermission;
@@ -206,6 +216,21 @@ class Stream extends PreparedControl
     {
         $this['commitTaskForm']->setTaskId($idTask);
         $this->redrawControl('commitTaskForm');
+    }
+    
+    public function handleSetTaskClassification($idTask)
+    {
+        $task = $this->taskManager->getTask($idTask);
+        if(empty($task->idClassificationGroup)) {
+            $groupClassification = new ClassificationGroup();
+            $groupClassification->name = $task->title;
+            $groupClassification->group = $this->activeGroup;
+            $groupClassification->task = $task;
+            $idGroupClassification = $this->classificationManager->createGroupClassification($groupClassification);
+        } else {
+            $idGroupClassification = $task->idClassificationGroup;
+        }
+        $this->presenter->redirect(':Front:Group:users', array('do'=> 'usersList-classification' , 'usersList-idGroupClassification' => $idGroupClassification)); 
     }
     
     

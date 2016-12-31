@@ -103,6 +103,11 @@ class ClassificationManager extends BaseManager
         $classificationGroup->idClassificationGroup = $classificationArray->ID_CLASSIFICATION_GROUP;
         $classificationGroup->name = $classificationArray->NAME;
         $classificationGroup->classificationDate = $classificationArray->CLASSIFICATION_DATE;
+        if(!empty($classificationArray->ID_TASK)) {
+            $classificationGroup->task = new \App\Model\Entities\Task();
+            $classificationGroup->task->idTask = $classificationArray->ID_TASK;
+        }
+        
         
         $classifications = $this->database->query("SELECT * FROM classification WHERE ID_CLASSIFICATION_GROUP=?", $idGroupClassification)->fetchAll();
         foreach($classifications as $classification) {
@@ -118,10 +123,14 @@ class ClassificationManager extends BaseManager
     
     public function createGroupClassification(ClassificationGroup $groupClassification)
     {
-        $this->database->table('classification_group')->insert(array(
+        $values = array(
                 'ID_GROUP' => $groupClassification->group->id,
-                'NAME' => $groupClassification->name
-            ));
+                'NAME' => $groupClassification->name,
+                'ID_TASK' => isset($groupClassification->task) ? $groupClassification->task->idTask : null
+                );
+                
+        
+        $this->database->table('classification_group')->insert($values);
         
         return $this->database->query("SELECT MAX(ID_CLASSIFICATION_GROUP) FROM classification_group")->fetchField();
     }

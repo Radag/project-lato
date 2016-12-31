@@ -138,4 +138,17 @@ class NotificationManager extends BaseManager
         return $return;
         
     }
+    
+    public function sendToGroup($notification, $idGroup)
+    {  
+        $users = $this->groupManager->getNotificationUsers($idGroup, $notification);
+        if(!empty($users)) {
+            $allowedUsers = $this->notificationManager->getUserAllowedNotification($users, NotificationManager::TYPE_ADD_GROUP_MSG);
+            foreach($allowedUsers['notification'] as $user) {
+                $this->notificationManager->addNotification($notification);              
+            } 
+        }
+        
+    }
+    
 }

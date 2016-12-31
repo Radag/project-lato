@@ -77,20 +77,29 @@
     <div class="card flex-column" id="message-box-num_{$message->id}"> 
         {if $message->idType === 4}
         <div class="assignment">
-            {if empty($message->task->commit)}
+            {if $isOwner}
                 <div class="icon-circle"><i class="material-icons">access_time</i></div>
-                <div class="time-left">
-                    {$message->task->timeLeft|timeDifferceText|noescape}
-                </div>
+                <div class="time-left">{$message->task->timeLeft|timeDifferceText|noescape}</div>
                 <div class="flex-spacer"></div>
-                <a href="{link setTaskCommit! idTask=>$message->task->idTask}" class="btn ajax gray open-commit-task">Odevzdat</a>
+                <div>odevzdáno {$message->task->commitCount}/{$activeGroup->numberOfStudents} </div>
+                <div class="flex-spacer"></div>
+                <a href="{link setTaskClassification! idTask=>$message->task->idTask}" class="btn gray">Oznámkovat</a>
             {else}
-                <div>
-                    Úkol odevzdán dne {$message->task->commit->created->format("j. n. v H:i")}
-                    {if !empty($message->task->commit->updated)}(upraven {$message->task->commit->updated->format("j. n. v H:i")}){/if}
-                </div>
-                <div class="flex-spacer"></div>
-                <a href="{link editTaskCommit! idCommit=>$message->task->commit->idCommit}" class="btn ajax gray open-commit-task">Upravit</a>
+                {if empty($message->task->commit)}
+                    <div class="icon-circle"><i class="material-icons">access_time</i></div>
+                    <div class="time-left">
+                        {$message->task->timeLeft|timeDifferceText|noescape}
+                    </div>
+                    <div class="flex-spacer"></div>
+                    <a href="{link setTaskCommit! idTask=>$message->task->idTask}" class="btn ajax gray open-commit-task">Odevzdat</a>
+                {else}
+                    <div>
+                        Úkol odevzdán dne {$message->task->commit->created->format("j. n. v H:i")}
+                        {if !empty($message->task->commit->updated)}(upraven {$message->task->commit->updated->format("j. n. v H:i")}){/if}
+                    </div>
+                    <div class="flex-spacer"></div>
+                    <a href="{link editTaskCommit! idCommit=>$message->task->commit->idCommit}" class="btn ajax gray open-commit-task">Upravit</a>
+                {/if}
             {/if}
         </div>  
         {/if}  

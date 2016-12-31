@@ -43,6 +43,29 @@
                         <div class="flex-spacer"></div>
                         <div class="table-field"><a class="material-icons">comment</a></div>
                         <div class="grade table-field">{input grade$member->id class=>'no-border'}</div>
+                        {if !empty($classificationGroup->task)}
+                            {ifset $classificationGroup->task->commitArray[$member->id]}
+                            <div class="table-row-input">{$classificationGroup->task->commitArray[$member->id]->comment}</div>
+                            <div class="table-row-input">
+                                <ul class="attachments task-attachments-uploads">
+                                    {if !empty($classificationGroup->task->commitArray[$member->id]->files)}
+                                    {foreach $classificationGroup->task->commitArray[$member->id]->files as $attach}
+                                        <li data-file-id="{$attach->idFile}">
+                                            <a href="{$attach->path|noescape}" target="_blank" class="attached-file" >
+                                                <div class="attachment-icon small presentation"><i class="material-icons">slideshow</i></div>
+                                                <div class="attachment-label">
+                                                    <div class="file-name">{$attach->filename}</div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    {/foreach}
+                                    {/if}
+                                </ul>
+                            </div>
+                            {else}
+                                <div class="table-row-input">Neodevzdáno</div>
+                            {/ifset}
+                        {/if}
                         <div class="table-row-input">
                             {input notice$member->id class=>'materialize-textarea no-border'}
                         </div>

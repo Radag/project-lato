@@ -15,6 +15,7 @@ class ClassificationGroup {
     public $idClassificationGroup = null;
     public $group = null;
     public $name = null;
+    public $task = null;
     public $classifications = array();
     public $classificationDate = null;
 }
