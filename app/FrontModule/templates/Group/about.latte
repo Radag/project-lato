@@ -1,3 +1,46 @@
 {includeblock '_blocks.latte'}
 {block content}
 {control topPanel}
+<div class="container offset">
+    <div class="card flex-column settings">
+        <div class="card-content">
+            <section class="card-content-section">
+                <h4>Informace o skupině</h4>
+                <div class="form-row">
+                    <p class="secondary-par">Základní informace o skupině, které se zobrazí uživatelům</p>
+                </div>
+                <div class="form-row">
+                    <i class="material-icons icon-label">label</i>
+                    <div class="input-flex">
+                        {$activeGroup->name}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <i class="material-icons icon-label">group</i>
+                    <div class="input-flex">
+                        {$activeGroup->subgroup}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <i class="material-icons icon-label">explicit</i>
+                    <div class="input-flex">
+                        {$activeGroup->shortcut}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <i class="material-icons icon-label">description</i>
+                    <div class="input-flex">
+                        {$activeGroup->description}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <i class="material-icons icon-label">location_on</i>
+                    <div class="input-flex">
+                        {$activeGroup->room}
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
