@@ -1,42 +1,7 @@
 {includeblock '_blocks.latte'}
 {block content}
 {control topPanel}
-{*<section class="main two-level-nav">
-    <div class="container">
-        <div class="row">
-            <div class="col s12">
-                <header class="section-header">
-                    <h3 class="">Všechny příspěvky</h3>
-                    <div class="flex-spacer"></div>
-                    <ul class="right options">      
-                        <li>
-                            <a class="btn-flat btn-icon dropdown-button" data-activates="filter-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
-                                <i class="material-icons">filter_list</i>
-                            </a>
-                            <ul id='filter-window' class="dropdown-content">
-                                <li><a href="#!">Všechny položky</a></li>
-                                <li><a href="#!">Studijní materiály</a></li>
-                                <li><a href="#!">Povinnosti</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="{link Group:users 'id'=>$activeGroup->urlId}" class="btn-flat btn-icon">
-                                <i class="material-icons">people</i>
-                            </a>  
-                        </li>
-                        <li>
-                            <a class="btn-flat btn-icon dropdown-button" data-activates="stream-options-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
-                                <i class="material-icons">more_vert</i>
-                            </a>
-                            {include groupMenu}
-                        </li>
-                    </ul>
-                </header>  
-            </div>
-        </div>
-    </div>
-</section>*}
-<div class="container">
+<div class="container main two-level-nav">
     <div class="row">
         {control stream}
         <div class="col s12 l4">

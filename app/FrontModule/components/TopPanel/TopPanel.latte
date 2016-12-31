@@ -89,6 +89,13 @@
                 });
             });
             </script>
+            {if !empty($topMenu)}
+                <ul class="content-nav">
+                    {foreach $topMenu as $item}
+                    <li {if $item->active}class="active"{/if}><a href="{$item->link}">{$item->name}</a></li>
+                    {/foreach}
+                </ul>
+            {/if}
             <div class="right-nav-flex">
                 <ul class="right navbar-nav">
                     <li><a class="dropdown-button ajax" href="{link notificationRead!}" data-activates="notifications-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false"><i class="material-icons ">notifications</i>
@@ -152,12 +159,6 @@
 
 
 </header>
-{if !empty($topMenu)}
-    <ul class="content-nav">
-        {foreach $topMenu as $item}
-        <li {if $item->active}class="active"{/if}><a href="{$item->link}">{$item->name}</a></li>
-        {/foreach}
-    </ul>
-{/if}
+
 {control newGroupForm}
 {control joinGroupForm}

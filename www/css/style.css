@@ -907,10 +907,8 @@ input[type="password"] {
     justify-content: center;
     height: 70px; 
     line-height: 70px;
-    margin: 0 0 32px 0;
     padding: 0 16px;
     font-size: 13px;
-    border-bottom: 1px solid rgba(0, 0, 0, .12);
 }
 
 .content-nav li {
@@ -922,56 +920,55 @@ input[type="password"] {
 }
 
 .content-nav li.active {
-    background-color: transparent;
-}
-
-.content-nav li.active:before {
-    content: " ";
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 2px;
-    background-color: #0090f7;
+    background-color: rgba(0, 0, 0, .05);
 }
 
 .content-nav li a {
     text-transform: uppercase;
-    font-weight: 500;
-    padding: 0 32px;
-    color: rgba(0, 0, 0, .54);
+    font-weight: 700;
+    padding: 0 24px;
+    color: rgba(255, 255, 255, .54);
     height: 100%;
     width: 100%;
     display: block;
     text-align: center;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .content-nav li.active a {
-    color: rgba(0, 0, 0, .87);
+    color: rgba(255, 255, 255, .87);
 }
 
 .content-nav li a:hover {
-    background-color: transparent;
-    color: rgba(0, 0, 0, .87);
+    background-color: rgba(0, 0, 0, .05);
+    color: rgba(255, 255, 255, .87);
 }
 
 @media only screen and (max-width: 992px) {
     .content-nav {
         order: 3;
         width: 100%;
-    }  
-}
-
-@media only screen and (max-width: 600px) {
-    .content-nav {
         padding: 0;
-        height: 64px;
-        line-height: 64px;
-        margin-bottom: 12px;
-    }
+        height: 56px;
+        line-height: 56px;
+        background-color: rgba(0, 0, 0, .05);
+    }  
 
     .content-nav li {
         flex-grow: 1;
+    }
+
+    .content-nav li.active {
+        background-color: transparent;
+    }
+
+    .content-nav li.active:before {
+        content: " ";
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #fff);
     }
 
     .content-nav li a {
@@ -1556,11 +1553,16 @@ textarea.materialize-textarea {
 }
 
 .main {
-    margin-top: 24px;
+    margin-top: 32px;
+}
+
+.main.two-level-nav {
+    
 }
 
 @media only screen and (max-width: 992px) { 
     .main.two-level-nav {
+        margin-top: 64px;
     }
 }
 
