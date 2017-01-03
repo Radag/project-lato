@@ -98,8 +98,12 @@ class GroupManager extends BaseManager {
                 T1.ROOM,
                 T1.SUBGROUP,
                 T1.ID_OWNER AS OWNER_ID,
+                T2.URL_ID AS OWNER_URL_ID,
                 T2.NAME AS OWNER_NAME,
                 T2.SURNAME AS OWNER_SURNAME,
+                T2.PROFILE_PATH AS OWNER_PROFILE_PATH,
+                T2.PROFILE_FILENAME AS OWNER_PROFILE_FILENAME,
+                T2.SEX AS OWNER_SEX,
                 T3.MAIN_COLOR,
                 T4.STUDENTS,
                 T5.SHARE_BY_LINK,
@@ -107,24 +111,26 @@ class GroupManager extends BaseManager {
                 T1.CODE AS INTER_CODE,
                 T6.HASH_CODE AS PUBLIC_CODE
         FROM groups T1
-        LEFT JOIN user T2 ON T1.ID_OWNER=T2.ID_USER
+        LEFT JOIN vw_user_detail T2 ON T1.ID_OWNER=T2.ID_USER
         LEFT JOIN group_color_scheme T3 ON T1.COLOR_SCHEME=T3.ID_SCHEME
-        LEFT JOIN (SELECT COUNT(ID_USER) AS STUDENTS, ID_GROUP FROM user_group WHERE ACTIVE=1 GROUP BY ID_GROUP) T4 ON T4.ID_GROUP=T1.ID_GROUP
+        LEFT JOIN (SELECT COUNT(ID_USER) AS STUDENTS, ID_GROUP FROM user_group WHERE ACTIVE=1 AND ID_RELATION=2 GROUP BY ID_GROUP) T4 ON T4.ID_GROUP=T1.ID_GROUP
         LEFT JOIN group_sharing T5 ON T1.ID_GROUP=T5.ID_GROUP
         LEFT JOIN public_actions T6 ON T5.ID_ACTION=T6.ID_ACTION
         WHERE T1.URL_ID=?", $idGroup)->fetch();
 
         $groupModel = new Group();
-        $user = new User();
-        $user->surname = $group->OWNER_SURNAME;
-        $user->name = $group->OWNER_NAME;
-        $user->id = $group->OWNER_ID;
+        $teacher = new User();
+        $teacher->surname = $group->OWNER_SURNAME;
+        $teacher->name = $group->OWNER_NAME;
+        $teacher->id = $group->OWNER_ID;
+        $teacher->urlId = $group->OWNER_URL_ID;
+        $teacher->profileImage = User::createProfilePath($group->OWNER_PROFILE_PATH, $group->OWNER_PROFILE_FILENAME, $group->OWNER_SEX);
         $groupModel->id = $group->ID_GROUP;
         $groupModel->name = $group->NAME;
         $groupModel->shortcut = $group->SHORTCUT;
         $groupModel->mainColor = $group->MAIN_COLOR;
         $groupModel->numberOfStudents = $group->STUDENTS;
-        $groupModel->owner = $user;
+        $groupModel->owner = $teacher;
         $groupModel->interCode = $group->INTER_CODE;
         $groupModel->publicCode = $group->PUBLIC_CODE;
         $groupModel->shareByLink = $group->SHARE_BY_LINK;

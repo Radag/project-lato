@@ -139,15 +139,8 @@ class MessageManager extends BaseManager {
             $user->name = $message->NAME;
             $user->id = $message->ID_USER;
             $user->urlId = $message->URL_ID;
-            if($message->PATH) {
-                $user->profileImage = "https://cdn.lato.cz/" . $message->PATH . "/" . $message->FILENAME;
-            } else {
-                if($message->SEX == 'M') {
-                    $user->profileImage = '/images/default-avatar_man.png';
-                } else {
-                    $user->profileImage = '/images/default-avatar_woman.png';
-                }
-            }
+            $user->profileImage = User::createProfilePath($message->PATH, $message->FILENAME, $message->SEX);
+            
             $mess->text = $message->TEXT;
             $mess->id = $message->ID_MESSAGE;
             $mess->created = $message->CREATED_WHEN;
@@ -157,7 +150,7 @@ class MessageManager extends BaseManager {
             $mess->deleted = $message->DELETED;
             $mess->idType = $message->ID_TYPE;
             $mess->attachments = $this->getAttachments($message->ID_MESSAGE);
-            if($message->ID_TYPE == 4) {
+            if($message->ID_TYPE == Message::TYPE_HOMEWORK) {
                 $mess->task = new \App\Model\Entities\Task();
                 $mess->task->idTask = $message->ID_TASK;
                 $mess->task->name = $message->TASK_NAME;
@@ -198,15 +191,8 @@ class MessageManager extends BaseManager {
         $user->name = $message->NAME;
         $user->id = $message->ID_USER;
         $user->urlId = $message->URL_ID;
-        if($message->PATH) {
-            $user->profileImage = "https://cdn.lato.cz/" . $message->PATH . "/" . $message->FILENAME;
-        } else {
-            if($message->SEX == 'M') {
-                $user->profileImage = '/images/default-avatar_man.png';
-            } else {
-                $user->profileImage = '/images/default-avatar_woman.png';
-            }
-        }
+        $user->profileImage = User::createProfilePath($message->PATH, $message->FILENAME, $message->SEX);
+
         $mess->text = $message->TEXT;
         $mess->id = $message->ID_MESSAGE;
         $mess->created = $message->CREATED_WHEN;
@@ -269,15 +255,8 @@ class MessageManager extends BaseManager {
             $user->name = $comment->USER_NAME;  
             $user->id = $comment->ID_USER;
             $user->urlId = $comment->URL_ID;
-            if($comment->PATH) {
-                $user->profileImage = "https://cdn.lato.cz/" . $comment->PATH . "/" . $comment->FILENAME;
-            } else {
-                if($comment->SEX == 'M') {
-                    $user->profileImage = '/images/default-avatar_man.png';
-                } else {
-                    $user->profileImage = '/images/default-avatar_woman.png';
-                }
-            }
+            $user->profileImage = User::createProfilePath($comment->PATH, $comment->FILENAME, $comment->SEX);
+            
             $comm->text = $comment->TEXT;
             $comm->id = $comment->ID_COMMENT;
             $comm->created = $comment->CREATED_WHEN;

@@ -13,12 +13,13 @@ namespace App\Model\Entities;
  */
 class Classification {
     public $idClassification = null;
+    public $idClassificationGroup = null;
+    
     public $user = null;
     public $group = null;
     public $name = null;
     public $grade = null;
     public $lastChange = null;
     public $notice = null;
-    public $idClassificationGroup = null;
     public $classificationDate = null;
 }

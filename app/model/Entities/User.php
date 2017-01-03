@@ -32,6 +32,21 @@ class User {
         return $this->classification;
     }
     
+    public static function createProfilePath($path, $file, $sex = null)
+    {
+        if($path) {
+            $profileImage = "https://cdn.lato.cz/" . $path . "/" . $file;
+        } else {
+            if(empty($sex) || $sex == 'M') {
+                $profileImage = '/images/default-avatar_man.png';
+            } else {
+                $profileImage = '/images/default-avatar_woman.png';
+            }
+        }
+        return $profileImage;
+    }
+    
+    
     function getId() {
         return $this->id;
     }

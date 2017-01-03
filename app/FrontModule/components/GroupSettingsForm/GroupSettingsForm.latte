@@ -156,24 +156,24 @@
             <section class="card-content-section">
                 <h4>Nastavení oprávnění</h4>
                 <div class="form-row">
-                    <p class="secondary-par">Seznam uživatelů s administrátorským oprávněním</p>
+                    <p class="secondary-par">Uživatel s administrátorským oprávněním (učitel)</p>
                 </div>
                 <ul class="custom-collection">
                     <li>    
-                        <a href="" class="item">
-                            <img src="/images/user1.png" class="user-img">
+                        <a href="{plink Profile:default 'id'=>$activeGroup->owner->urlId}" class="item">
+                            <img src="{$activeGroup->owner->profileImage}" class="user-img">
                             <span class="title truncate">
-                                Petr Šavelka
+                                {$activeGroup->owner->name} {$activeGroup->owner->name}
                             </span>
                         </a>
-                        <a href="">
+                        {*<a href="">
                             <i class="material-icons">clear</i>
-                        </a>
+                        </a>*}
                     </li>
                 </ul>
-                <div class="form-row">
+                {*<div class="form-row">
                     <a href="" class="add-line"><i class="material-icons">add</i>Přidat administrátora</a>
-                </div>
+                </div>*}
             </section>
         </div>
         <div class="card-footer highlighted">

@@ -15,6 +15,7 @@ use App\FrontModule\Components\Stream\CommentForm\CommentForm;
 use App\Model\Manager\TaskManager;
 use App\Model\Manager\ClassificationManager;
 use App\FrontModule\Components\Group\IUsersListFactory;
+use App\Model\Entities\Group;
 
 class GroupPresenter extends BasePresenter
 {    
@@ -106,11 +107,11 @@ class GroupPresenter extends BasePresenter
         $this->setPermission();
         $this['topPanel']->setActiveGroup($this->activeGroup);
         $this['topPanel']->addToMenu((object)array('name' => 'stream', 'link' => $this->link('default'), 'active' => $this->isLinkCurrent('default')));
-        $this['topPanel']->addToMenu((object)array('name' => 'povinnosti', 'link' => $this->link('tasks'), 'active' => $this->isLinkCurrent('tasks')));
-        $this['topPanel']->addToMenu((object)array('name' => 'o skupině', 'link' => $this->link('about'), 'active' => $this->isLinkCurrent('about')));
         
         if($this->groupPermission['settings']) {
-            $this['topPanel']->addToMenu((object)array('name' => 'Nastavení', 'link' => $this->link('settings'), 'active' => $this->isLinkCurrent('settings')));
+            $this['topPanel']->addToMenu((object)array('name' => 'nastavení', 'link' => $this->link('settings'), 'active' => $this->isLinkCurrent('settings')));
+        } else {
+            $this['topPanel']->addToMenu((object)array('name' => 'o skupině', 'link' => $this->link('about'), 'active' => $this->isLinkCurrent('about')));
         }
         
         if($this->groupPermission['showStudentsList']) {
@@ -131,7 +132,7 @@ class GroupPresenter extends BasePresenter
     protected function setPermission()
     {
         $privileges = $this->groupManager->getPrivileges($this->activeGroup->id);
-        
+        //zatím je oprávnění pouze pro učitele a studenty
         if($this->activeGroup->owner->id === $this->activeUser->id) {
             $this->groupPermission['archive'] = true;
             $this->groupPermission['settings'] = true;
@@ -146,6 +147,7 @@ class GroupPresenter extends BasePresenter
             $this->groupPermission['editClassification'] = true;
         } else {
             $this->groupPermission['leave'] = true;
+            //tohle jsou nastavení z db které se dají nastavit per groupu
             $this->groupPermission['addMessages'] = $privileges['PR_CREATE_MSG'];
             $this->groupPermission['addCommets'] = $privileges['PR_CREATE_MSG'];
             $this->groupPermission['removeOwnComments'] = $privileges['PR_DELETE_OWN_MSG'];
@@ -241,7 +243,8 @@ class GroupPresenter extends BasePresenter
     {       
         $this->template->actualTasks = $this->taskManager->getClosestTask(array($this->activeGroup->id => $this->activeGroup));
         $this->groupManager->setGroupVisited($this->activeUser, $this->activeGroup->id);
-        $this->template->groupMembers = $this->groupManager->getGroupUsers($this->activeGroup->id);
+        $this->template->groupMembers = $this->groupManager->getGroupUsers($this->activeGroup->id, Group::RELATION_STUDENT);
+        //pokud se mají ukázat smazané příspěvky
         if($this->groupPermission['showDeleted']) {
             $this->showDeleted = $showDeleted;
         }

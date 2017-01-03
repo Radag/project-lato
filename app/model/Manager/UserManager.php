@@ -111,17 +111,8 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
         $user->urlId = $userData->URL_ID;
         $user->username = $userData->USERNAME;
         $user->birthday = $userData->BIRTHDAY;
-
-        if($userData->PROFILE_FILENAME) {
-            $user->profileImage = "https://cdn.lato.cz/" . $userData->PROFILE_PATH . "/" . $userData->PROFILE_FILENAME;
-        } else {
-            if($userData->SEX == 'M') {
-                $user->profileImage = '/images/default-avatar_man.png';
-            } else {
-                $user->profileImage = '/images/default-avatar_woman.png';
-            }
-        }
-
+        $user->profileImage = User::createProfilePath($userData->PROFILE_PATH, $userData->PROFILE_FILENAME, $userData->SEX);
+        
         return $user;
     }
 

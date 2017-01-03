@@ -13,6 +13,11 @@ namespace App\Model\Entities;
  */
 class Message {
     
+    const TYPE_NOTICE = 1;
+    const TYPE_MATERIAL = 2;
+    const TYPE_TASK = 3;
+    const TYPE_HOMEWORK = 4;
+    
     public $id = null;
     public $text = null;
     public $user = null;

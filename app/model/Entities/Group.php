@@ -24,13 +24,15 @@ class Group {
     public $urlId = null;
     public $name = null;
     public $email = null;
-    public $teacher = null;
     public $shortcut = null;
     public $mainColor = null;
     public $numberOfStudents = null;
     public $groupType = null;
     public $newMessages = null;
+    //teacher a owner jsou ti stejný - skupina má zatím pouze jednoho učitele
+    public $teacher = null;
     public $owner = null;
+    
     public $description = null;
     public $room = null;
     public $subgroup = null;
