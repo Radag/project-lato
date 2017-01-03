@@ -117,7 +117,6 @@
                 <i class="material-icons">more_vert</i>
             </a>
             <ul id='message_dropdown_{$message->id}' class='dropdown-content'>
-                <li><a href="#share-post_{$message->id}" class="modal-trigger">Sdílet příspěvek</a></li>
                 {if $streamPermission['topAllMessages'] || ($activeUser->id === $message->user->id && $streamPermission['topOwnMessages'])}
                 {if !$message->priority}
                 <li><a href="{link topMessage! idMessage=>$message->id}" class="ajax">Přesunout nahoru</a></li>
@@ -125,8 +124,9 @@
                 <li><a href="{link topMessage! idMessage=>$message->id, enable=>false}" class="ajax">Zrušit přesunutí</a></li>
                 {/if}
                 {/if}
+                <li><a href="#share-post_{$message->id}" class="modal-trigger">Znovu použít příspěvek</a></li>
                 {if !$message->followed}
-                <li><a href="{link followMessage! idMessage=>$message->id}" class="ajax">Sledovat</a></li>
+                <li><a href="{link followMessage! idMessage=>$message->id}" class="ajax">Kopírovat odkaz</a></li>
                 {else}
                 <li><a href="{link followMessage! idMessage=>$message->id, enable=>false}" class="ajax">Zrušit sledování</a></li>
                 {/if}
@@ -135,46 +135,44 @@
                 <li><a href="{link deleteMessage! idMessage=>$message->id}" class="ajax">Smazat</a></li>
                 {/if}
             </ul>
-            <div id="share-post_{$message->id}" class="modal">
+            <div id="share-post_{$message->id}" class="modal modal-small">
                 <div class="modal-content">
-                    <h3>Sdílení</h3>
                     <form method="post" action="{link shareMessage! idMessage=>$message->id}">
-                    <div>Sdílet se skupinou</div>
-                    <div class="row">
-                        <div class="col s12">
-                          <div class="row">
-                            <div class="input-field col s12">
-                              <i class="material-icons prefix">textsms</i>
-                              <input type="text" name="group" id="autocomplete-input" class="autocomplete">
-                              <label for="autocomplete-input">Vyberte skupinu</label>
-                            </div>
-                          </div>
-                        </div>
+                    <h3>Znovu použít příspěvek</h3>
+                    <div class="form-row">
+                        <select class="full-width">
+                            <option value="" disabled selected>Choose your option</option>
+                            <option value="1">Option 1</option>
+                            <option value="2">Option 2</option>
+                            <option value="3">Option 3</option>
+                        </select>
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="flex-spacer"></div>
                     <div class="form-control">
-                        <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat" >Zrušit</button>
-                        <button class="btn waves-effect waves-light hide-modal-ajax-submit" type="submit" name="send" >Sdílet</button>
+                        <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                        <button type="submit" name="send" class="btn btn-confirm waves-effect waves-light hide-modal-ajax-submit" >Zapsat se</button>
                     </div>
-                    </form>
                 </div>
             </div>
+            </form>
         </div>
         <div class="card-content clearfix">
             <p>{$message->getText()|escape|nl2br|noescape}</p>
-
-            {ifset $message->attachments['files']}
-            <ul class="attachments">
-                {foreach $message->attachments['files'] as $file}  
-                <li>
-                    <a href="https://cdn.lato.cz/{$file['path']}/{$file['filename']}" target="_blank" class="attached-file">
-                        <div class="attachment-icon document"><i class="material-icons">{if $file['type'] == 1 }image{elseif $file['type'] == 3}insert_drive_file{elseif $file['type'] == 4}equalizer{elseif $file['type'] == 5}slideshow{else}attachment{/if}</i></div>
-                        <div class="attachment-label truncate">{$file['filename']}</div>   
-                    </a>
-                </li>
-                {/foreach}
-            </ul>
-            {/ifset}
         </div>
+        {ifset $message->attachments['files']}
+        <ul class="attachments">
+            {foreach $message->attachments['files'] as $file}  
+            <li>
+                <a href="https://cdn.lato.cz/{$file['path']}/{$file['filename']}" target="_blank" class="attached-file">
+                    <div class="attachment-icon document"><i class="material-icons">{if $file['type'] == 1 }image{elseif $file['type'] == 3}insert_drive_file{elseif$file['type'] == 4}equalizer{elseif $file['type'] == 5}slideshow{else}attachment{/if}</i></div>
+                    <div class="attachment-label truncate">{$file['filename']}</div>   
+                </a>
+            </li>
+            {/foreach}
+        </ul>
+        {/ifset}
         {ifset $message->attachments['media']}
         <div class="media-container clearfix">
             {foreach $message->attachments['media'] as $media}
@@ -199,24 +197,7 @@
             <div class="empty-line" style="width: 90%;"></div>
             <div class="empty-line" style="width: 30%;"></div>
             
-            <!--<ul class="attachments">
-                <li>
-                    <a href="" class="attached-file">
-                        <div class="attachment-icon"></div>
-                        <div class="attachment-label">
-                            <div class="empty-line" style="width: 40%;"></div>
-                        </div>   
-                    </a>
-                </li>
-                <li>
-                    <a href="" class="attached-file">
-                        <div class="attachment-icon"></div>
-                        <div class="attachment-label">
-                            <div class="empty-line" style="width: 40%;"></div>
-                        </div>   
-                    </a>
-                </li>
-            </ul>-->
+           
         </div>
         <div class="comments-footer clearfix"></div>
     </div>
