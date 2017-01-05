@@ -236,8 +236,16 @@ nav.breadcrumbs {
    font-style: italic;  
 }
 
+.collapsible-header {
+    -webkit-transition:  300ms ease-in-out;
+    -moz-transition:  300ms ease-in-out;
+    -o-transition:  300ms ease-in-out;
+    transition:  300ms ease-in-out;
+}
+
 .collapsible-header.active {
     border-bottom: 1px solid transparent;
+    background-color: #fafafa;
 }
 
 .table-header [type="checkbox"]+label,
@@ -288,7 +296,7 @@ nav.breadcrumbs {
 }
 
 .collapsible-body .classification-table .table-row .title {
-    font-weight: 500;
+    font-weight: 400;
     color: rgba(0, 0, 0, .87);
     line-height: 1.5em;
 }
@@ -1041,7 +1049,7 @@ ul.dropdown-content.main-nav-dropdown {
 }
 
 .dropdown-content {
-    padding: 14px 0 !important;
+    padding: 10px 0 !important;
     box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
     width: 240px !important;
 }
@@ -1055,10 +1063,6 @@ ul.dropdown-content.main-nav-dropdown {
     color: rgba(0, 0, 0, .87);
     padding: 10px 24px;
     font-weight: 400;
-}
-
-.dropdown-content li:hover, .dropdown-content li.active, .dropdown-content li.selected {
-  background-color: rgba(0, 0, 0, .03) !important;
 }
 
 .dropdown-content li.divider {
@@ -1094,6 +1098,28 @@ ul.dropdown-content.main-nav-dropdown {
     color: rgba(0, 0, 0, .54);
 }
 
+/* ----- NESTYLOVANÝ SELECT ----- */
+
+
+.select-browser-default {
+    background: #fff;
+    overflow: hidden;
+    height: 45px;
+    border-bottom: 1px solid rgba(0, 0, 0, .12);
+}
+
+.select-browser-default.full-width {
+    width: 100%;
+}
+
+select.browser-default {
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+
+}
 
 
 
@@ -1626,6 +1652,7 @@ textarea.materialize-textarea {
 .section-header ul.options {
     display: flex;
     margin: 0;
+    margin-left: 6px;
     line-height: 36px;
 }
 
@@ -1660,10 +1687,6 @@ textarea.materialize-textarea {
 /* ---------- */
 
 /* ----- DROPDOWN ---- */
-
-.dropdown-content a:hover {
-    background-color: rgba(0, 0, 0, .03);
-}
 
 .dropdown-content .divider.divider-after {
     margin-bottom: 8px;

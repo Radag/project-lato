@@ -1,2 +1,125 @@
 {block content}
 {control topPanel}
+
+<section class="main">
+    <div class="container offset">
+        <div class="row">
+            <div class="col s12">
+                <header class="section-header no-padding">
+                    <a  class="btn white dropdown-button" data-activates='season-dropdown'>
+                        Druhé pololetí
+                    </a>
+
+                    <ul id='season-dropdown' class='dropdown-content'>
+					    <li><a href="#!">První pololetí</a></li>
+					    <li class="active"><a href="#!">Druhé pololetí</a></li>
+					</ul>
+                    
+                    <ul class="right options">
+                        <li>
+                            <a class="btn-flat btn-icon modal-trigger" href="#new-classification-modal">
+                                <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Otevřít všechny karty">visibility</i>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="flex-spacer"></div>
+                </header>  
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container offset">
+    <div class="row">
+        <div class="col s12">
+            <form action="#">
+                <div class="card-header table-header">  
+                    <div class="title">Předmět</div>
+                    <div class="flex-spacer"></div>
+                    <div class="table-field assessment-date">Poslední změna</div>
+                    <div class="table-field">Hodnocení</div>
+                </div>
+              
+                <ul class="collapsible popout" data-collapsible="expandable">
+                    <li>
+                        <div class="collapsible-header table-row">
+                            <div class="avatar small" style="background-color: #ffc900;">M</div>
+                            <div class="title">
+                                Matematika
+                            </div>
+                            <div class="flex-spacer"></div>
+                            <div class="table-field">22. 1. 2017</div>
+                            <div class="classification table-field"><strong>2.5</strong> (2)</div>
+                        </div>
+                        <div class="collapsible-body">
+                            <div class="classification-table">
+                                <div class="table-row">
+                                    <a class="title truncate">Lineární rovnice</a>
+                                    <div class="flex-spacer"></div>
+                                    <div class="table-field">22. 1. 2017</div>
+                                    <div class="classification table-field">
+                                        <strong>1</strong>
+                                    </div>
+                                </div>
+                                <div class="table-row">
+                                    <a class="title truncate">Lomenné výrazy</a>
+                                    <div class="flex-spacer"></div>
+                                    <div class="table-field">9. 1. 2017</div>
+                                    <div class="classification table-field">
+                                        <strong>4</strong>
+                                    </div>
+                                </div>
+                      
+                            </div>
+                            
+                        </div>
+                    </li>
+
+
+					<li>
+                        <div class="collapsible-header table-row">
+                            <div class="avatar small" style="background-color: #ffc900;">M</div>
+                            <div class="title">
+                                Matematika
+                            </div>
+                            <div class="flex-spacer"></div>
+                            <div class="table-field">22. 1. 2017</div>
+                            <div class="classification table-field"><strong>2.3</strong> (3)</div>
+                        </div>
+                        <div class="collapsible-body">
+                            <div class="classification-table">
+                                <div class="table-row">
+                                    <a class="title truncate">Lineární rovnice</a>
+                                    <div class="flex-spacer"></div>
+                                    <div class="table-field">22. 1. 2017</div>
+                                    <div class="classification table-field">
+                                        <strong>2</strong>
+                                    </div>
+                                </div>
+                                <div class="table-row">
+                                    <a class="title truncate">Kvadratické rovnice</a>
+                                    <div class="flex-spacer"></div>
+                                    <div class="table-field">9. 1. 2017</div>
+                                    <div class="classification table-field">
+                                        <strong>3</strong>
+                                    </div>
+                                </div>
+                                <div class="table-row">
+                                    <a class="title truncate">Lomenné výrazy</a>
+                                    <div class="flex-spacer"></div>
+                                    <div class="table-field">9. 1. 2017</div>
+                                    <div class="classification table-field">
+                                        <strong>2</strong>
+                                    </div>
+                                </div>
+                      
+                            </div>
+                            
+                        </div>
+                    </li>
+
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>
