@@ -1,34 +1,10 @@
 {includeblock '_blocks.latte'}
 {block content}
 {control topPanel}
-<section class="main">
-    <div class="container offset">
-        <div class="row">
-            <div class="col s12">
-                <header class="section-header">
-                    <nav class="breadcrumbs">
-                        <div class="breadcrumb back-to-dashboard">
-                            <a class="material-icons" href="{plink Homepage:noticeboard}">dashboard</a>
-                        </div>
-                        <div class="breadcrumb"><a href='{link Group:default 'id'=>$activeGroup->urlId}'>Matematika</a></div>
-                        <div class="breadcrumb">Příspěvek</div>
-                    </nav>
-                    <div class="flex-spacer"></div>
-                    <ul class="right options">
-                        
-                        <li>
-                            <a class="btn-flat btn-icon dropdown-button" data-activates="stream-options-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
-                                <i class="material-icons">more_vert</i>
-                            </a>
-                            {include groupMenu}
-                        </li>
-                    </ul>
-                </header>  
-            </div>
-        </div>
-    </div>
+<section class="main two-level-nav">
+    
 </section>
-<div class="container offset">
+<div class="container offset-2">
     <div class="row">
         <div class="col s12">
             <div class="card flex-column">
@@ -41,7 +17,7 @@
                             <a href="{plink Profile:default 'id'=>$message->user->urlId}">{$message->user->name} {$message->user->surname}</a>
                         </h3>
                         <span class="card-date">{$message->getCreated()|date:"j. n."}</span>
-                        <a class="btn-flat btn-icon dropdown-button card-options" data-activates="message_dropdown_{$message->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                        <a class="btn-flat btn-icon dropdown-button card-options waves-effect waves-dark" data-activates="message_dropdown_{$message->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
                             <i class="material-icons">more_vert</i>
                         </a>
                         <ul id='message_dropdown_{$message->id}' class='dropdown-content'>
