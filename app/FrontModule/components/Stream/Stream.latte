@@ -78,12 +78,14 @@
         {if $message->idType === 4}
         <div class="assignment">
             {if $isOwner}
-                <div class="icon-circle"><i class="material-icons">access_time</i></div>
                 <div class="time-left">{$message->task->timeLeft|timeDifferceText|noescape}</div>
                 <div class="flex-spacer"></div>
-                <div>odevzdáno {$message->task->commitCount}/{$activeGroup->numberOfStudents} </div>
-                <div class="flex-spacer"></div>
-                <a href="{link setTaskClassification! idTask=>$message->task->idTask}" class="btn gray">Oznámkovat</a>
+                <div class="submit-count">
+                    <span class="done">{$message->task->commitCount}</span> 
+                    <div class="divider"></div>
+                    <span class="undone"> {$activeGroup->numberOfStudents}</span>
+                </div>
+                <a href="{link setTaskClassification! idTask=>$message->task->idTask}" class="btn gray">Hodnocení</a>
             {else}
                 {if empty($message->task->commit)}
                     <div class="icon-circle"><i class="material-icons">access_time</i></div>
