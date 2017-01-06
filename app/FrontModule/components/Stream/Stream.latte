@@ -80,7 +80,11 @@
             {if $isOwner}
                 <div class="time-left">{$message->task->timeLeft|timeDifferceText|noescape}</div>
                 <div class="flex-spacer"></div>
-                <div class="submit-count">{$message->task->commitCount} / {$activeGroup->numberOfStudents}</div>
+                <div class="submit-count">
+                    <span class="done">{$message->task->commitCount}</span> 
+                    <div class="divider"></div>
+                    <span class="undone"> {$activeGroup->numberOfStudents}</span>
+                </div>
                 <a href="{link setTaskClassification! idTask=>$message->task->idTask}" class="btn gray">Hodnocení</a>
             {else}
                 {if empty($message->task->commit)}

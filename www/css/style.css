@@ -2858,6 +2858,24 @@ textarea.materialize-textarea {
 .assignment .submit-count {
     font-weight: 500;
     margin-right: 16px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.assignment .submit-count .divider {
+    height: 36px;
+    width: 1px;
+    background-color: rgba(0, 0, 0, .1);
+    margin: 0 16px;
+}
+
+.assignment .submit-count .done {
+    color: #00a55b;
+}
+
+.assignment .submit-count .undone {
+    color: #f22318;
 }
 
 
