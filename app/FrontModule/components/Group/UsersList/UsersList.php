@@ -213,6 +213,7 @@ class UsersList extends Control
                 $classification->idClassificationGroup = $values['idGroupClassification'];
                 $classification->group = $this->activeGroup;
                 $classification->user = $member;
+                $classification->idPeriod = $this->presenter->activePeriod;
                 $this->classificationManager->createClassification($classification);
             }
             $this->redirect('this');

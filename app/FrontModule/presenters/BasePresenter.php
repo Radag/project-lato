@@ -40,6 +40,10 @@ class BasePresenter extends Nette\Application\UI\Presenter
     protected $privateMessageManager;
     protected $notificationManager;
     
+    /** @persistent */
+    public $activePeriod = 1;
+    
+    
     public function __construct(Nette\Database\Context $database, 
             UserManager $userManager,
             PrivateMessageManager $privateMessageManager
@@ -86,6 +90,12 @@ class BasePresenter extends Nette\Application\UI\Presenter
         $users = $this->userManager->getUsersList();
         $this->presenter->payload->users = json_encode($users);
         $this->presenter->sendPayload();
+    }
+    
+    public function handleChangePeriod($idPeriod)
+    {
+        $this->activePeriod = $idPeriod;
+        $this->redirect('this');
     }
     
     public function flashMessage($message, $type = 'info') {

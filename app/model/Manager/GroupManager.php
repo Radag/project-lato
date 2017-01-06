@@ -356,5 +356,32 @@ class GroupManager extends BaseManager {
     {
         return $this->database->query("SELECT * FROM group_schedule WHERE ID_GROUP=?", $group->id)->fetchAll();
     }
+    
+    
+    public function addGroupToPeriods(Group $group, $activePeriods)
+    {
+        $this->database->beginTransaction();
+        $this->database->query("DELETE FROM group_period WHERE ID_GROUP=?", $group->id);
+        foreach($activePeriods as $period) {
+            $this->database->table('group_period')->insert(array(
+                'ID_GROUP' => $group->id,
+                'ID_PERIOD' => $period
+            )); 
+        }
+        $this->database->commit();
+    }
+    
+    public function getGroupPeriods(Group $group)
+    {
+        $return = array();
+        $periods = $this->database->query("SELECT T2.* FROM group_period T1 LEFT JOIN school_period T2 ON T1.ID_PERIOD=T2.ID_PERIOD WHERE T1.ID_GROUP=?", $group->id)->fetchAll();
+        
+        foreach($periods as $period) {
+            $return[$period->ID_PERIOD] = $period;
+        }
+        
+        return $return;
+    }
+        
         
 }

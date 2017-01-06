@@ -42,4 +42,7 @@ class Group {
     public $shareByLink = null;
     public $shareByCode = null;
     public $deleted = null;
+    public $classification = null;
+    
+    public $statistics = null;
 }

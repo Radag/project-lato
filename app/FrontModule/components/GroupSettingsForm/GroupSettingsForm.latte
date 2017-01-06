@@ -102,6 +102,16 @@
                 </div>
             </section>
             <section class="card-content-section">
+                <h4>Je aktivní v obdobích</h4>
+                {foreach $form['activePeriods']->items as $key => $label}
+                    <div class="form-row">
+                        <div class="submit-control checkbox-vertical-align">
+                            <input type="checkbox" n:name="activePeriods:$key" class="filled-in black" ><label n:name="activePeriods:$key">{$label}</label>
+                        </div>
+                    </div>
+                {/foreach}
+            </section>
+            <section class="card-content-section">
                 <h4>Nastavení streamu</h4>
                 <div class="form-row">
                     <p class="secondary-par">Povolené akce na streamu</p>

@@ -83,6 +83,7 @@ class UserClassificationForm extends Control
         $classification->grade = $values->grade;
         $classification->notice = $values->notice;
         $classification->idClassification = empty($values->idClassification) ? null : $values->idClassification;
+        $classification->idPeriod = $this->presenter->activePeriod;
         $this->classificationManager->createClassification($classification);
 
         $this->presenter->flashMessage('Hodnocení vloženo', 'success');

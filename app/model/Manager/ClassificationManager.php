@@ -47,7 +47,8 @@ class ClassificationManager extends BaseManager
                 'NOTICE' => $classification->notice,
                 'CREATED_WHEN' => new \DateTime(),
                 'CREATED_BY' => $this->user->id,
-                'GRADE' => $classification->grade
+                'GRADE' => $classification->grade,
+                'ID_PERIOD' => $classification->idPeriod
             ));   
         }
              
@@ -141,4 +142,65 @@ class ClassificationManager extends BaseManager
         $this->database->query("UPDATE classification_group SET ? WHERE ID_CLASSIFICATION_GROUP=?", $data, $values->id);       
        
     }
+
+    public function getSchoolPeriods()
+    {
+        return $this->database->query("SELECT * FROM school_period")->fetchAll();
+    }
+    
+    public function getMyClassification(\App\Model\Entities\User $user, $period)
+    {
+        $classifications = $this->database->query(
+              "SELECT 
+                    T1.*,
+                    T3.GRADE,
+                    T3.ID_CLASSIFICATION,
+                    T3.NOTICE AS GRADE_NOTICE,
+                    IF(T3.ID_CLASSIFICATION_GROUP IS NULL, T3.NAME, T4.NAME) AS GRADE_NAME,
+                    IF(T3.LAST_CHANGE IS NULL, T3.CREATED_WHEN, T3.LAST_CHANGE) AS GRADE_LAST_CHANGE
+                FROM 
+                    vw_user_groups_detail T1 
+                    LEFT JOIN group_period T2 ON T1.ID_GROUP=T2.ID_GROUP 
+                    LEFT JOIN classification T3 ON (T3.ID_GROUP = T1.ID_GROUP AND T1.ID_USER=T3.ID_USER AND T3.ID_PERIOD=?)
+                    LEFT JOIN classification_group T4 ON T4.ID_CLASSIFICATION_GROUP=T3.ID_CLASSIFICATION_GROUP
+                WHERE (T2.ID_PERIOD=? OR T2.ID_PERIOD IS NULL) AND T1.ID_USER=? AND T1.ID_RELATION=2",
+              $period, $period , $user->id)->fetchAll();
+        
+        $return = array();
+        foreach($classifications as $class) {
+            if(!isset($return[$class->ID_GROUP])) {
+                $group = new \App\Model\Entities\Group();
+                $group->name = $class->NAME;
+                $group->mainColor = $class->MAIN_COLOR;
+                $group->shortcut = $class->SHORTCUT;
+                $group->statistics = array('last_change' => null, 'avg_grade' => 0, 'count_grade' => 0);
+                $group->classification = array();
+                $return[$class->ID_GROUP] = $group;
+            }
+            if(!empty($class->ID_CLASSIFICATION)) {
+                $classObject = new Classification();
+                $classObject->grade = $class->GRADE;
+                $classObject->notice = $class->GRADE_NOTICE;
+                $classObject->name = $class->GRADE_NAME;
+                $classObject->lastChange = $class->GRADE_LAST_CHANGE;    
+                $return[$class->ID_GROUP]->classification[] = $classObject;
+                if($return[$class->ID_GROUP]->statistics['last_change'] === null ||
+                   $class->GRADE_LAST_CHANGE > $return[$class->ID_GROUP]->statistics['last_change']
+                ) {
+                    $return[$class->ID_GROUP]->statistics['last_change'] = $class->GRADE_LAST_CHANGE;
+                }
+                $return[$class->ID_GROUP]->statistics['avg_grade'] += $class->GRADE;
+                $return[$class->ID_GROUP]->statistics['count_grade']++;
+            }
+        }
+        
+        foreach($return as $ret) {
+            if($ret->statistics['count_grade'] > 0) {
+                $ret->statistics['avg_grade'] = round($ret->statistics['avg_grade']/$ret->statistics['count_grade'], 2);
+            }
+        }
+        return $return;
+        
+    }
+    
 }

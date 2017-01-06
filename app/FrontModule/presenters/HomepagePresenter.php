@@ -9,6 +9,7 @@ use App\Model\Manager\NotificationManager;
 use App\Model\Manager\SchedulelManager;
 use App\Model\Manager\TaskManager;
 use App\Model\Manager\NoticeManager;
+use App\Model\Manager\ClassificationManager;
 use App\FrontModule\Components\NewNoticeForm\NewNoticeForm;
 
 class HomepagePresenter extends BasePresenter
@@ -20,8 +21,10 @@ class HomepagePresenter extends BasePresenter
     protected $scheduleManger;
     protected $taskManager;
     protected $noticeManager;
+    protected $classificationManager;
     protected $days = array('Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota', 'Neděle');
 
+    
 
     public function __construct(
         UserManager $userManager,
@@ -30,7 +33,8 @@ class HomepagePresenter extends BasePresenter
         NotificationManager $notificationManager,
         SchedulelManager $scheduleManger,
         TaskManager $taskManager,
-        NoticeManager $noticeManager
+        NoticeManager $noticeManager,
+        ClassificationManager $classificationManager
     )
     {
         $this->userManager = $userManager;
@@ -40,6 +44,7 @@ class HomepagePresenter extends BasePresenter
         $this->scheduleManger = $scheduleManger;
         $this->taskManager = $taskManager;
         $this->noticeManager = $noticeManager;
+        $this->classificationManager = $classificationManager;
     }
     
     public function actionDefault()
@@ -47,6 +52,15 @@ class HomepagePresenter extends BasePresenter
         if($this->user->isLoggedIn()) {
             $this->redirect(':Front:Homepage:noticeboard');
         }
+    }
+    
+    public function actionClassification()
+    {
+        $this['topPanel']->setTitle('Klasifikace');
+        $this->template->schoolPeriods = $this->classificationManager->getSchoolPeriods();
+        $this->template->activePeriod = $this->activePeriod;
+        $myClassification = $this->classificationManager->getMyClassification($this->activeUser, $this->activePeriod);
+        $this->template->myClassification = $myClassification;
     }
     
     public function actionLogout()

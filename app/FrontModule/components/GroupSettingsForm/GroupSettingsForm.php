@@ -10,6 +10,7 @@ namespace App\FrontModule\Components\GroupSettingsForm;
 use \Nette\Application\UI\Form;
 use \Nette\Application\UI\Control;
 use App\Model\Manager\GroupManager;
+use App\Model\Manager\ClassificationManager;
 use App\Model\Entities\Group;
 use Nette\Utils\Validators;
 
@@ -24,13 +25,17 @@ class GroupSettingsForm extends Control
 {
         
     protected $groupManager;
+    protected $classificationManager;
     protected $group;
     protected $scheduleTermsNum = 1;
     
-    public function __construct(GroupManager $groupManager)
+    public function __construct(
+                GroupManager $groupManager,
+                ClassificationManager $classificationManager
+            )
     {
         $this->groupManager = $groupManager;
-        
+        $this->classificationManager = $classificationManager;
     }
     
     public function setGroup(Group $group)
@@ -86,6 +91,16 @@ class GroupSettingsForm extends Control
         $form->addCheckbox('shareByCode','Povolit sdílení pomocí kódu', array(1,0))
              ->setDefaultValue($this->group->shareByCode);
         
+        $periods = $this->classificationManager->getSchoolPeriods();
+        $perriodArray = array();
+        foreach($periods as $period) {
+            $perriodArray[$period->ID_PERIOD] = $period->NAME . " " . $period->YEAR;
+        }
+        
+        $activePeriods = $this->groupManager->getGroupPeriods($this->group);
+        
+        $form->addCheckboxList('activePeriods', 'Je aktivní v obdobích', $perriodArray)
+             ->setDefaultValue(array_keys($activePeriods));
         
         $form->addSubmit('send', 'Uložit nastavení');
 
@@ -173,6 +188,11 @@ class GroupSettingsForm extends Control
         
         $this->groupManager->editGroupPrivileges($privileges, $this->group->id);
         $this->groupManager->switchSharing($this->group, $values['shareByCode'], $values['shareByLink']);
+        
+        //období
+        $this->groupManager->addGroupToPeriods($this->group, $values['activePeriods']);
+        
+        
         
         //rozvrh
         
