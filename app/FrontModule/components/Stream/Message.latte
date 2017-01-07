@@ -1,0 +1,110 @@
+{if $message->idType === 4}
+<div class="assignment">
+    {if $isOwner}
+        <div class="time-left">{$message->task->timeLeft|timeDifferceText|noescape}</div>
+        <div class="flex-spacer"></div>
+        <div class="submit-count">
+            <span class="done">{$message->task->commitCount}</span> 
+            <div class="divider"></div>
+            <span class="undone"> {$activeGroup->numberOfStudents}</span>
+        </div>
+        <a href="{link setTaskClassification! idTask=>$message->task->idTask}" class="btn gray">Hodnocení</a>
+    {else}
+        {if empty($message->task->commit)}
+            <div class="icon-circle"><i class="material-icons">access_time</i></div>
+            <div class="time-left">
+                {$message->task->timeLeft|timeDifferceText|noescape}
+            </div>
+            <div class="flex-spacer"></div>
+            <a href="{link setTaskCommit! idTask=>$message->task->idTask}" class="btn ajax gray open-commit-task">Odevzdat</a>
+        {else}
+            <div>
+                Úkol odevzdán dne {$message->task->commit->created->format("j. n. v H:i")}
+                {if !empty($message->task->commit->updated)}(upraven {$message->task->commit->updated->format("j. n. v H:i")}){/if}
+            </div>
+            <div class="flex-spacer"></div>
+            <a href="{link editTaskCommit! idCommit=>$message->task->commit->idCommit}" class="btn ajax gray open-commit-task">Upravit</a>
+        {/if}
+    {/if}
+</div>  
+{/if}  
+<div class="card-header">
+    {if $message->priority == 1}<div class="topped"></div>{/if}
+    {if $message->deleted == 1}<div class="deleted"></div>{/if}
+    <a href="{plink Profile:default 'id'=>$message->user->urlId}" class="avatar">
+        <img src="{$message->user->profileImage}" alt="{$message->user->name}">
+    </a>
+    <h3 class="name truncate">
+        <a href="{plink Profile:default 'id'=>$message->user->urlId}">{$message->user->name} {$message->user->surname}</a>
+    </h3>
+    <span class="card-date">{$message->getCreated()|date:"j. n."}</span>
+    <a class="btn-flat btn-icon dropdown-button card-options waves-effect waves-dark" data-activates="message_dropdown_{$message->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+        <i class="material-icons">more_vert</i>
+    </a>
+    <ul id='message_dropdown_{$message->id}' class='dropdown-content'>
+        {if $streamPermission['topAllMessages'] || ($activeUser->id === $message->user->id && $streamPermission['topOwnMessages'])}
+        {if !$message->priority}
+        <li><a href="{link topMessage! idMessage=>$message->id}" class="ajax">Přesunout nahoru</a></li>
+        {else}
+        <li><a href="{link topMessage! idMessage=>$message->id, enable=>false}" class="ajax">Zrušit přesunutí</a></li>
+        {/if}
+        {/if}
+        <li><a href="#share-post_{$message->id}" class="modal-trigger">Znovu použít příspěvek</a></li>
+        {if !$message->followed}
+        <li><a href="{link followMessage! idMessage=>$message->id}" class="ajax">Kopírovat odkaz</a></li>
+        {else}
+        <li><a href="{link followMessage! idMessage=>$message->id, enable=>false}" class="ajax">Zrušit sledování</a></li>
+        {/if}
+        {if $streamPermission['removeAllMessages'] || ($activeUser->id === $message->user->id && $streamPermission['removeOwnMessages'])}
+        <li class="divider"></li>
+        <li><a href="{link deleteMessage! idMessage=>$message->id}" class="ajax">Smazat</a></li>
+        {/if}
+        {if $streamPermission['editAllMessages'] || ($activeUser->id === $message->user->id && $streamPermission['editOwnMessages'])}
+        <li><a href="{link editMessage! idMessage=>$message->id}" class="ajax edit-message-button">Upravit zprávu</a></li>
+        {/if}
+    </ul>
+    <div id="share-post_{$message->id}" class="modal modal-small">
+        <div class="modal-content">
+            <form method="post" action="{link shareMessage! idMessage=>$message->id}">
+            <h3>Znovu použít příspěvek</h3>
+            <div class="form-row">
+                <select class="full-width">
+                    <option value="" disabled selected>Choose your option</option>
+                    <option value="1">Option 1</option>
+                    <option value="2">Option 2</option>
+                    <option value="3">Option 3</option>
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="flex-spacer"></div>
+            <div class="form-control">
+                <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                <button type="submit" name="send" class="btn btn-confirm waves-effect waves-light hide-modal-ajax-submit" >Použít</button>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+<div class="card-content clearfix">
+    <p>{$message->getText()|escape|nl2br|noescape}</p>
+</div>
+{ifset $message->attachments['files']}
+<ul class="attachments">
+    {foreach $message->attachments['files'] as $file}  
+    <li>
+        <a href="https://cdn.lato.cz/{$file['path']}/{$file['filename']}" target="_blank" class="attached-file">
+            <div class="attachment-icon document"><i class="material-icons">{if $file['type'] == 1 }image{elseif $file['type'] == 3}insert_drive_file{elseif$file['type'] == 4}equalizer{elseif $file['type'] == 5}slideshow{else}attachment{/if}</i></div>
+            <div class="attachment-label truncate">{$file['filename']}</div>   
+        </a>
+    </li>
+    {/foreach}
+</ul>
+{/ifset}
+{ifset $message->attachments['media']}
+<div class="media-container clearfix">
+    {foreach $message->attachments['media'] as $media}
+    <div class="{if $iterator->first}img-full-size{else}img-half-size{/if}" style="background-image: url('https://cdn.lato.cz/{$media['path']|noescape}/{$media['filename']|noescape}');"></div>
+    {/foreach}
+</div>
+{/ifset}

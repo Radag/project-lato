@@ -1,7 +1,7 @@
 <?php
 
 require __DIR__ . '/../vendor/autoload.php';
-
+define('APP_DIR', __DIR__ );
 $configurator = new Nette\Configurator;
 
 //$configurator->setDebugMode(true); // enable for your remote IP

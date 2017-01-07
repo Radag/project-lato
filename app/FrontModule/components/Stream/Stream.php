@@ -104,6 +104,8 @@ class Stream extends PreparedControl
 
     protected $streamPermission = array();
     
+    protected $singleMode = null;
+    
     public function __construct(
             UserManager $userManager, 
             MessageManager $messageManager, 
@@ -160,7 +162,15 @@ class Stream extends PreparedControl
     public function render()
     {
         $template = $this->getTemplate();
-        $messages = $this->messageManager->getMessages($this->activeGroup, $this->activeUser, $this->showDeleted);
+        if($this->singleMode === null) {
+            $this->template->singleMode = false;
+            $messages = $this->messageManager->getMessages($this->activeGroup, $this->activeUser, $this->showDeleted);    
+        } else {
+            $this->template->singleMode = true;
+            $message = $this->messageManager->getMessage($this->singleMode);
+            $messages = array($message);
+        }
+        
         $template->activeUser = $this->activeUser;  
         $template->activeGroup = $this->activeGroup;  
         $template->isOwner = ($this->activeUser->id === $this->activeGroup->owner->id) ? true : false;
@@ -303,5 +313,10 @@ class Stream extends PreparedControl
             $this->presenter->flashMessage('Zpráva byla vyřazena ze sledovaných');
         }
         $this->redrawControl();
+    }
+    
+    public function setSingleMode($idMessage)
+    {
+        $this->singleMode = $idMessage;
     }
 }

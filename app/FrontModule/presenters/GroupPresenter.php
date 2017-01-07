@@ -256,8 +256,7 @@ class GroupPresenter extends BasePresenter
     
     public function actionMessage($idMessage)
     {       
-        $this->template->message = $this->messageManager->getMessage($idMessage);
-        $this['commentForm']->setMessage($idMessage);
+        $this['stream']->setSingleMode($idMessage);
     }
     
     public function actionSettings()

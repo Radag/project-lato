@@ -14,6 +14,7 @@ use App\FrontModule\Components\TopPanel\TopPanel;
 use App\Model\Manager\PrivateMessageManager;
 use App\Model\Manager\NotificationManager;
 use App\FrontModule\Components\PrivateMessageForm\PrivateMessageForm;
+use App\Helpers\HelpersList;
 
 /**
  * Description of BasePresenter
@@ -62,6 +63,10 @@ class BasePresenter extends Nette\Application\UI\Presenter
         } else {
             $this->setActiveUser();
         }
+        
+        $this->template->addFilter('timeDifferceText',function($timeLeft) {
+            return HelpersList::timeDifferceText($timeLeft);
+        });
     }
     
     protected function setActiveUser()
