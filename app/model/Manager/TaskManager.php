@@ -22,12 +22,24 @@ class TaskManager extends BaseManager
     public function createTask(Task $task)
     {
         $this->database->beginTransaction();
-        $this->database->table('tasks')->insert(array(
+        $idTask = $this->database->query("SELECT ID_TASK FROM tasks WHERE ID_MESSAGE=?", $task->idMessage)->fetchField(); 
+        if($idTask) {
+            $data = array(
+                'NAME' => $task->title,
+                'DEADLINE' => $task->deadline,
+                'ONLINE' => $task->online
+            );
+            $this->database->query("UPDATE tasks SET ? WHERE ID_TASK=?", $data, $idTask);    
+        } else {
+            $this->database->table('tasks')->insert(array(
                     'NAME' => $task->title,
                     'ID_MESSAGE' => $task->idMessage,
                     'DEADLINE' => $task->deadline,
                     'ONLINE' => $task->online,
-            ));        
+            )); 
+        }
+        
+               
         $this->database->commit();
     }
     
@@ -44,7 +56,7 @@ class TaskManager extends BaseManager
                             T1.ID_MESSAGE,
                             T1.DEADLINE,
                             T2.ID_GROUP
-                    FROM tasks T1 JOIN message T2 ON T1.ID_MESSAGE = T2.ID_MESSAGE
+                    FROM tasks T1 JOIN message T2 ON (T1.ID_MESSAGE = T2.ID_MESSAGE AND T2.DELETED=0)
                     WHERE T2.ID_GROUP IN (" . implode(",", array_keys($groups)) . ") AND T1.DEADLINE>=NOW()
                     ORDER BY T1.DEADLINE ASC LIMIT 5")->fetchAll();
             foreach($tasks as $task) {

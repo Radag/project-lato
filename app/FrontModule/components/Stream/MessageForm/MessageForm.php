@@ -12,6 +12,7 @@ use \Nette\Application\UI\Control;
 use App\Model\Manager\MessageManager;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\FileManager;
+use App\Model\Entities\Message;
 
 
 /**
@@ -46,6 +47,11 @@ abstract class MessageForm extends Control
      */
     protected $fileManager;
     
+    /**
+     * @var Message $message 
+     */
+    protected $defaultMessage = null;
+    
      /**
      * @var \App\Model\Entities\User $activeUser
      */
@@ -75,6 +81,7 @@ abstract class MessageForm extends Control
         $form->addTextArea('text', 'Zpráva')
                 ->setAttribute('placeholder', 'Sem napište Vaši zprávu ...')
             ->setRequired('Napište zprávu');
+        $form->addHidden('idMessage');      
 
         $form->onSuccess[] = [$this, 'processForm'];
         
@@ -86,6 +93,21 @@ abstract class MessageForm extends Control
         };
         return $form;
     }    
+    
+    public function render()
+    {
+        if($this->defaultMessage !== null) {
+            $this->template->attachments = array_merge($this->defaultMessage->attachments['files'], $this->defaultMessage->attachments['media']);
+            $this->template->submitButtonName = 'Upravit';
+        } else {
+            $this->template->submitButtonName = 'Publikovat';
+        }
+    }
+    
+    public function setDefaults(Message $message)
+    {
+        $this->defaultMessage = $message;
+    }
     
     public function handleUploadAttachment()
     {

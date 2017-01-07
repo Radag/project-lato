@@ -51,15 +51,25 @@ class MessageManager extends BaseManager {
     public function createMessage(Message $message, $attachments)
     {
         $this->database->beginTransaction();
-        $this->database->table('message')->insert(array(
+        
+        if(empty($message->id)) {
+            $this->database->table('message')->insert(array(
                     'TEXT' => $message->getText(),
                     'ID_USER' => $message->user->id,
                     'ID_GROUP' => $message->idGroup,
                     'ID_TYPE' => $message->idType,
                     'CREATED_BY' => $this->user->id,
             ));
+            $idMessage = $this->database->query("SELECT MAX(ID_MESSAGE) FROM message")->fetchField(); 
+        } else {
+            $data = array(
+                'TEXT' => $message->text,
+                'LAST_CHANGE' => new \DateTime
+            );
+            $this->database->query("UPDATE message SET ? WHERE ID_MESSAGE=?", $data, $message->id);
+            $idMessage = $message->id;
+        }
         
-        $idMessage = $this->database->query("SELECT MAX(ID_MESSAGE) FROM message")->fetchField();
         foreach($attachments as $idAttach) {
             $this->addAttachment($idAttach, $idMessage);
         }
@@ -152,17 +162,19 @@ class MessageManager extends BaseManager {
             $mess->attachments = $this->getAttachments($message->ID_MESSAGE);
             if($message->ID_TYPE == Message::TYPE_HOMEWORK) {
                 $mess->task = new \App\Model\Entities\Task();
-                $mess->task->idTask = $message->ID_TASK;
-                $mess->task->name = $message->TASK_NAME;
-                $mess->task->deadline = $message->DEADLINE;
-                $mess->task->timeLeft = $now->diff($message->DEADLINE);
-                $mess->task->commitCount = $message->COMMIT_COUNT;
-                if(!empty($message->ID_COMMIT)) {
-                    $commit = new \App\Model\Entities\TaskCommit();
-                    $commit->idCommit = $message->ID_COMMIT;
-                    $commit->created = $message->COMMIT_CREATED;
-                    $commit->updated = $message->COMMIT_UPDATED;
-                    $mess->task->commit = $commit;
+                if(!empty($message->ID_TASK)) {
+                    $mess->task->idTask = $message->ID_TASK;
+                    $mess->task->title = $message->TASK_NAME;
+                    $mess->task->deadline = $message->DEADLINE;
+                    $mess->task->timeLeft = $now->diff($message->DEADLINE);
+                    $mess->task->commitCount = $message->COMMIT_COUNT;
+                    if(!empty($message->ID_COMMIT)) {
+                        $commit = new \App\Model\Entities\TaskCommit();
+                        $commit->idCommit = $message->ID_COMMIT;
+                        $commit->created = $message->COMMIT_CREATED;
+                        $commit->updated = $message->COMMIT_UPDATED;
+                        $mess->task->commit = $commit;
+                    }
                 }
             }
             
@@ -179,12 +191,17 @@ class MessageManager extends BaseManager {
                         T3.FILENAME,
                         T2.URL_ID,
                         T2.SEX,
-                        T1.ID_TYPE
+                        T1.ID_TYPE,
+                        T4.ID_TASK,
+                        T4.DEADLINE,
+                        T4.ONLINE,
+                        T4.NAME AS TASK_NAME
                 FROM message T1 
                 LEFT JOIN user T2 ON T1.ID_USER=T2.ID_USER 
                 LEFT JOIN file_list T3 ON T3.ID_FILE=T2.PROFILE_IMAGE
+                LEFT JOIN tasks T4 ON T1.ID_MESSAGE = T4.ID_MESSAGE
                 WHERE T1.ID_MESSAGE=? AND T1.DELETED=0", $idMessage)->fetch();
-
+        
         $mess = new Message();
         $user = new User();
         $user->surname = $message->SURNAME;
@@ -199,11 +216,20 @@ class MessageManager extends BaseManager {
         $mess->user = $user;
         $mess->idType = $message->ID_TYPE;
         $mess->attachments = $this->getAttachments($message->ID_MESSAGE);
+        $now = new \DateTime();
+        if($message->ID_TYPE == Message::TYPE_HOMEWORK) {
+            $mess->task = new \App\Model\Entities\Task();
+            $mess->task->idTask = $message->ID_TASK;
+            $mess->task->title = $message->TASK_NAME;
+            $mess->task->deadline = $message->DEADLINE;
+            $mess->task->online = $message->ONLINE;
+            $mess->task->timeLeft = $now->diff($message->DEADLINE);
+        }
         return $mess;
     }
     
     public function getAttachments($idMessage) {
-        $return = array();
+        $return = array('media' => array(), 'files' => array());
         $attachments = $this->database->query("SELECT T2.ID_FILE, T2.ID_TYPE, T2.PATH, T2.FILENAME FROM message_attachment T1
             LEFT JOIN file_list T2 ON T1.ID_FILE=T2.ID_FILE WHERE T1.ID_MESSAGE=?", $idMessage)->fetchAll();    
         foreach($attachments as $attach) {
@@ -211,10 +237,12 @@ class MessageManager extends BaseManager {
                 $return['media'][$attach->ID_FILE]['type'] = $attach->ID_TYPE;
                 $return['media'][$attach->ID_FILE]['path'] = $attach->PATH;
                 $return['media'][$attach->ID_FILE]['filename'] = $attach->FILENAME;   
+                $return['media'][$attach->ID_FILE]['id_file'] = $attach->ID_FILE;   
             } else {
                 $return['files'][$attach->ID_FILE]['type'] = $attach->ID_TYPE;
                 $return['files'][$attach->ID_FILE]['path'] = $attach->PATH;
-                $return['files'][$attach->ID_FILE]['filename'] = $attach->FILENAME;   
+                $return['files'][$attach->ID_FILE]['filename'] = $attach->FILENAME; 
+                $return['files'][$attach->ID_FILE]['id_file'] = $attach->ID_FILE;  
             }
         }
         

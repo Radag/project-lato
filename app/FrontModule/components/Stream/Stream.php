@@ -178,6 +178,14 @@ class Stream extends PreparedControl
         $this->redrawControl('messageForm');
     }
     
+    public function handleEditMessage($idMessage)
+    {
+        $message = $this->messageManager->getMessage($idMessage);
+        $this->messageType = $message->idType;
+        $this['messageForm']->setDefaults($message);
+        $this->redrawControl('messageForm');
+    }
+    
     public function createComponentMessageForm()
     {
         $type = $this->presenter->getRequest()->getPost('messageType');

@@ -51,6 +51,8 @@ class GroupPresenter extends BasePresenter
         'addCommets' => false,
         'removeAllMessages' => false,
         'removeOwnMessages' => false,
+        'editAllMessages' => false,
+        'editOwnMessages' => false,
         'removeAllComments' => false,
         'removeOwnComments' => false,
         'topAllMessages' => false,
@@ -145,8 +147,10 @@ class GroupPresenter extends BasePresenter
             $this->groupPermission['showDeleted'] = true;
             $this->groupPermission['showStudentsList'] = true;
             $this->groupPermission['editClassification'] = true;
+            $this->groupPermission['editAllMessages'] = true;
         } else {
             $this->groupPermission['leave'] = true;
+            $this->groupPermission['editOwnMessages'] = true;
             //tohle jsou nastavení z db které se dají nastavit per groupu
             $this->groupPermission['addMessages'] = $privileges['PR_CREATE_MSG'];
             $this->groupPermission['addCommets'] = $privileges['PR_CREATE_MSG'];

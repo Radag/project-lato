@@ -95,6 +95,27 @@
 </script>
 {/define}
 
+{define attachmentBlock}
+    <ul class="attachments attachments_uploads" {if empty($attachments)}style="display: none;"{/if}>
+      {if !empty($attachments)}
+            {foreach $attachments as $attach}
+            <li>
+                <a href="https://cdn.lato.cz/{$attach['path']|noescape}/{$attach['filename']}" target="_blank" class="attached-file">
+                    <div class="attachment-icon unknown"><i class="material-icons">help_outline</i></div>
+                    <div class="attachment-label">
+                        <div class="file-name">{$attach['filename']}</div>
+                    </div>
+                </a>
+                <a href="{link deleteAttachment!, idFile=>$attach['id_file']}" class="ajax remove-attachment">
+                    <i class="material-icons">close</i>    
+                </a>
+            </li>
+            {/foreach}
+      {/if}
+    </ul>
+{/define}
+
+
 {define attachmentTemplate}
 <div id="attachmentTemplate" style="display: none;">
     <li>

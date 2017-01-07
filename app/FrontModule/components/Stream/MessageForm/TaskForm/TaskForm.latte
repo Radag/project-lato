@@ -21,8 +21,7 @@
       {input date class => 'datepicker right-16'}
       {input time}
   </div>
-  <ul class="attachments attachments_uploads" style="display: none;">        
-  </ul>
+  {include attachmentBlock}
 </div>
 <div class="modal-footer clearfix">
     <div class="attachments-nav">
@@ -47,7 +46,7 @@
     </div>
     <div class="form-control">
         <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat" >Zrušit</button>
-        <button class="btn waves-effect waves-light hide-modal-ajax-submit scroll-to-message" type="submit" name="send" >Publikovat</button>
+        <button class="btn waves-effect waves-light hide-modal-ajax-submit scroll-to-message" type="submit" name="send" >{$submitButtonName}</button>
     </div>
 </div>
 <script>

@@ -27,12 +27,19 @@ class NoticeForm extends MessageForm
         $form->addHidden('messageType', self::TYPE_NOTICE);
         $form->addHidden('attachments');
         $form->addSubmit('send', 'Publikovat');
+        if($this->defaultMessage !== null) {
+            $form->setDefaults(array(
+                'text' => $this->defaultMessage->text,
+                'idMessage', $this->defaultMessage->id
+            ));
+        }
         
         return $form;
     }
     
     public function render()
     {
+        parent::render();
         $template = $this->template;
         $template->setFile(__DIR__ . '/NoticeForm.latte');
         $template->activeUser = $this->activeUser;
@@ -46,6 +53,11 @@ class NoticeForm extends MessageForm
         $message->setUser($this->activeUser);
         $message->idGroup = $this->stream->getActiveGroup()->id;
         $message->idType = self::TYPE_NOTICE;
+        
+        if(!empty($values['idMessage'])) {
+            //TODO - kontrola oprávnění
+            $message->id = $values['idMessage'];
+        }
         
         $attachments = explode('_', $values['attachments']);
 

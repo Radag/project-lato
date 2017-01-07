@@ -59,6 +59,16 @@
                 }
             }
         });
+        
+        latoAddAfterStartMethod({
+            submitClass: 'edit-message-button',
+            beginFunction: function() { },
+            doneFunction: function(data, beforeParam) {
+                if(data.invalidForm === undefined || !data.invalidForm) {
+                    $('#create-post-modal').openModal();
+                }
+            }
+        });
     </script>
     
     <div id="create-post-modal" class="modal">
@@ -135,6 +145,9 @@
                 {if $streamPermission['removeAllMessages'] || ($activeUser->id === $message->user->id && $streamPermission['removeOwnMessages'])}
                 <li class="divider"></li>
                 <li><a href="{link deleteMessage! idMessage=>$message->id}" class="ajax">Smazat</a></li>
+                {/if}
+                {if $streamPermission['editAllMessages'] || ($activeUser->id === $message->user->id && $streamPermission['editOwnMessages'])}
+                <li><a href="{link editMessage! idMessage=>$message->id}" class="ajax edit-message-button">Upravit zprávu</a></li>
                 {/if}
             </ul>
             <div id="share-post_{$message->id}" class="modal modal-small">

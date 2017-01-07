@@ -44,11 +44,19 @@ class MaterialsForm extends MessageForm
         $form->addHidden('messageType', self::TYPE_MATERIALS);
         $form->addHidden('attachments');
         $form->addSubmit('send', 'Publikovat');
+        
+        if($this->defaultMessage !== null) {
+            $form->setDefaults(array(
+                'text' => $this->defaultMessage->text,
+                'idMessage' => $this->defaultMessage->id
+            ));
+        }
         return $form;
     }
     
     public function render()
     {
+        parent::render();
         $template = $this->template;
         $template->setFile(__DIR__ . '/MaterialsForm.latte');
         $template->activeUser = $this->activeUser;
@@ -63,7 +71,12 @@ class MaterialsForm extends MessageForm
         $message->idGroup = $this->stream->getActiveGroup()->id;
         $message->idType = self::TYPE_MATERIALS;
         
-        $attachments = explode('_', $values['attachments']);    
+        $attachments = explode('_', $values['attachments']);   
+        
+        if(!empty($values['idMessage'])) {
+            //TODO - kontrola oprávnění
+            $message->id = $values['idMessage'];
+        }
         $idMessage = $this->messageManager->createMessage($message, $attachments);
         
         $material = new \App\Model\Entities\Material();

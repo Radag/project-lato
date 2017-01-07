@@ -85,12 +85,24 @@ class HomeworkForm extends MessageForm
         $form->addHidden('attachments');
         $form->addHidden('messageType', self::TYPE_HOMEWORK);
         $form->addSubmit('send', 'Publikovat');
+        
+        if($this->defaultMessage !== null) {
+            $form->setDefaults(array(
+                'text' => $this->defaultMessage->text,
+                'idMessage' => $this->defaultMessage->id,
+                'title' => $this->defaultMessage->task->title,
+                'date' => $this->defaultMessage->task->deadline->format('d. m. Y'),
+                'time' => $this->defaultMessage->task->deadline->format('H:i'),
+                'online' => $this->defaultMessage->task->online
+            ));
+        }
 
         return $form;
     }
     
     public function render()
     {
+        parent::render();
         $template = $this->template;
         $template->setFile(__DIR__ . '/HomeworkForm.latte');
         $template->activeUser = $this->activeUser;
@@ -105,6 +117,10 @@ class HomeworkForm extends MessageForm
         $message->idGroup = $this->stream->getActiveGroup()->id;
         $message->idType = self::TYPE_HOMEWORK;
         $attachments = explode('_', $values['attachments']);
+        if(!empty($values['idMessage'])) {
+            //TODO - kontrola oprávnění
+            $message->id = $values['idMessage'];
+        }
         $idMessage = $this->messageManager->createMessage($message, $attachments);
         
         $task = new Task();

@@ -84,12 +84,20 @@ class TaskForm extends MessageForm
         $form->addHidden('attachments');
         $form->addHidden('messageType', self::TYPE_TASK);
         $form->addSubmit('send', 'Publikovat');
+        
+        if($this->defaultMessage !== null) {
+            $form->setDefaults(array(
+                'text' => $this->defaultMessage->text,
+                'idMessage', $this->defaultMessage->id
+            ));
+        }
 
         return $form;
     }
     
     public function render()
     {
+        parent::render();
         $template = $this->template;
         $template->setFile(__DIR__ . '/TaskForm.latte');
         $template->activeUser = $this->activeUser;
@@ -105,6 +113,11 @@ class TaskForm extends MessageForm
         $message->idType = self::TYPE_TASK;
         $attachments = explode('_', $values['attachments']);
 
+        if(!empty($values['idMessage'])) {
+            //TODO - kontrola oprávnění
+            $message->id = $values['idMessage'];
+        }
+        
         $idMessage = $this->messageManager->createMessage($message, $attachments);
         
         $task = new Task();
