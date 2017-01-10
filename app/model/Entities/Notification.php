@@ -21,7 +21,7 @@ class Notification {
     public $idGroup = null;
     public $idType = null;
     public $participant = null;
-    
+    public $idMessage = null;
     
     function getId() {
         return $this->id;

@@ -36,7 +36,8 @@ class NotificationManager extends BaseManager
                     T2.PROFILE_FILENAME AS PART_PROFILE_FILENAME,
                     T2.USERNAME AS PART_USERNAME,
                     T2.URL_ID AS PART_URL_ID,
-                    T3.URL_ID AS GROUP_URL_ID
+                    T3.URL_ID AS GROUP_URL_ID,
+                    T1.ID_MESSAGE
                 FROM notification T1 
                 LEFT JOIN vw_user_detail T2 ON T1.ID_PARTICIPANT = T2.ID_USER
                 LEFT JOIN groups T3 ON T1.ID_GROUP = T3.ID_GROUP
@@ -60,6 +61,7 @@ class NotificationManager extends BaseManager
             $mess->id = $message->ID_NOTIFICATION;
             $mess->participant = $participant;
             $mess->idGroup = $message->GROUP_URL_ID;
+            $mess->idMessage = $message->ID_MESSAGE;
             $return[] = $mess;
         }
         
@@ -79,7 +81,8 @@ class NotificationManager extends BaseManager
                 'ID_USER' => $notification->idUser,
                 'ID_TYPE' => $notification->idType,
                 'ID_PARTICIPANT' => $notification->participant ? $notification->participant->id : null,
-                'ID_GROUP' => $notification->idGroup ? $notification->idGroup : null
+                'ID_GROUP' => $notification->idGroup ? $notification->idGroup : null,
+                'ID_MESSAGE' => $notification->idMessage ? $notification->idMessage : null
         ));
     }
     

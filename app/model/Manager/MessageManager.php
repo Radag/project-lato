@@ -82,6 +82,7 @@ class MessageManager extends BaseManager {
         $notification->text = $message->text;
         $notification->idGroup = $message->idGroup;
         $notification->idType = NotificationManager::TYPE_ADD_GROUP_MSG;
+        $notification->idMessage = $idMessage;
         $users = $this->groupManager->getGroupUsers($message->idGroup);
         if(!empty($users)) {
             $allowedUsers = $this->notificationManager->getUserAllowedNotification($users, NotificationManager::TYPE_ADD_GROUP_MSG);

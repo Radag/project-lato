@@ -58,7 +58,7 @@
                                 {foreach $group->classification as $classification}
                                 <div class="table-row">
                                     <a class="title truncate">{ifset $classification->name}{$classification->name}{/ifset}</a>
-                                    <div class="flex-spacer"></div>
+                                    <div class="flex-spacer">{ifset $classification->notice}{$classification->notice}{/ifset}</div>
                                     <div class="table-field">{ifset $classification->lastChange}{$classification->lastChange->format("j. n. v H:i")}{/ifset}</div>
                                     <div class="classification table-field">
                                         <strong>{ifset $classification->grade}{$classification->grade}{/ifset}</strong>
