@@ -112,7 +112,7 @@ class TopPanel extends Control
         if($this->activeGroup === null) {
             $this->title = $title;
         } else {
-            $this->title = $this->activeGroup->name . " - " . $title;
+            $this->title = $this->activeGroup->name . " | " . $title;
         }
     }
     
