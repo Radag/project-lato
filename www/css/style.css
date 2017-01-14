@@ -579,7 +579,10 @@ input[type="password"] {
 .btn.gray {
     color: rgba(0, 0, 0, .87);
     background-color: #f1f1f1;
-    box-shadow: none;
+}
+
+.btn.no-shadow.white {
+    border: 1px solid rgba(0, 0, 0, .12);
 }
 
 .btn.disabled {
@@ -2333,7 +2336,7 @@ textarea.materialize-textarea {
 /* GROUPS */
 
 #group-cards .card {
-    padding: 20px 24px;
+    padding: 24px;
     display: flex;
     align-items: center;
 }
@@ -2857,25 +2860,57 @@ textarea.materialize-textarea {
 
 .assignment .submit-count {
     font-weight: 500;
-    margin-right: 16px;
     display: flex;
     align-items: center;
-    flex-direction: row;
+    height: 36px;
+    border: 1px solid rgba(0, 0, 0, .12);
+    border-radius: 2px;
+}
+
+.assignment i {
+    font-size: 18px !important;
+    margin-right: 8px;
 }
 
 .assignment .submit-count .divider {
     height: 36px;
     width: 1px;
     background-color: rgba(0, 0, 0, .1);
-    margin: 0 16px;
 }
 
 .assignment .submit-count .done {
+    width: 64px;
+    justify-content: center;
     color: #00a55b;
+    display: flex;
+    align-items: center;
 }
 
 .assignment .submit-count .undone {
-    color: #f22318;
+    width: 64px;
+    justify-content: center;
+    color: rgba(0, 0, 0, .54);
+    display: flex;
+    align-items: center;
+}
+
+.assignment-preview {
+    display: flex;
+    align-items: center;
+    padding: 24px;
+}
+
+.assignment-preview .title {
+    display: flex;
+    flex-direction: column;
+    color: rgba(0, 0, 0, .87);
+    font-weight: 500;
+}
+
+.assignment-preview .title span {
+    font-size: 13px;
+    color: rgba(0, 0, 0, .54);
+    font-weight: 400;
 }
 
 
