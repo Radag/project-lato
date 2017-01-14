@@ -34,13 +34,28 @@ class GroupManager extends BaseManager {
     
     /** @var PublicActionManager @inject */
     protected $publicActionManager;
+    
+    public function __construct(Nette\Database\Context $database,
+                    Nette\Security\User $user,
+                    UserManager $userManager,
+                    PublicActionManager $publicActionManager,
+                    NotificationManager $notificationManager
+    )
+    {
+            $this->database = $database;
+            $this->user = $user;
+            $this->userManager = $userManager;
+            $this->publicActionManager = $publicActionManager;
+            $this->notificationManager = $notificationManager;
+    }
+    
 
     public function setGroupVisited(User $user, $idGroup)
     {
         $this->database->query("UPDATE user_group SET LAST_VISIT=NOW() WHERE ID_USER=? AND ID_GROUP=?", $user->id, $idGroup);
     }
     
-    public function isUserInGroup($idUser, $idGroup) 
+    public function isUserInGroup($idUser, $idGroup)
     {
         $id = $this->database->query("SELECT DISTINCT ID_GROUP FROM vw_user_groups WHERE ID_GROUP=? AND ID_USER=?", $idGroup, $idUser)->fetchField();
         return !empty($id);
@@ -260,15 +275,9 @@ class GroupManager extends BaseManager {
             $this->database->query("UPDATE user_group SET ACTIVE=1 WHERE ID_USER=? AND ID_GROUP=?", $idUser, $idGroup);
         }
 
-        
-//        $user = $this->userManager->get($idUser);
-//        $group = $this->getGroup($idGroup);
-//        $notification = new \App\Model\Entities\Notification;
-//        $notification->idUser = $group->teacher->id;
-//        $notification->title = "Nový člen";
-//        $notification->text = "Do vaší skupiny " . $group->name . " se přidal nový člen " . $user->username . ".";
-  
-      //  $this->notificationManager->addNotification($notification);
+        $data['user'] = $this->userManager->get($idUser);
+        $data['group'] = $this->getGroup($idGroup);
+        $this->notificationManager->addNotificationType(NotificationManager::TYPE_NEW_GROUP_MEMBER, $data);
     }
     
     public function getGroupByCode($code) 

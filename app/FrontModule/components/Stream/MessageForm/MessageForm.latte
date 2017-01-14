@@ -24,9 +24,6 @@
             previewTemplate: '<div id="preview-template" style="display: none;"></div>'
         });
         
-        
-        
-        
         messageContent.on("addedfile", function(file) {
             var id = Math.random().toString(36).substr(2, 10);
             var attachTemplate = $("#attachmentTemplate li").clone();
@@ -53,6 +50,17 @@
             });
         });
         
+        latoAddAfterStartMethod({
+            submitClass: 'remove-attach-button',
+            beginFunction: function(settings) {
+                return $(settings.nette.ui).closest('li');
+            },
+            doneFunction: function(data, beforeParam) {
+                if(data.deleted === true) {
+                    beforeParam.remove();
+                }
+            }
+        });
         
         messageContent.on("uploadprogress", function(file) {
             $("." + file.classId).find('.determinate').css('width', file.upload.progress + '%');
@@ -106,7 +114,7 @@
                         <div class="file-name">{$attach['filename']}</div>
                     </div>
                 </a>
-                <a href="{link deleteAttachment!, idFile=>$attach['id_file']}" class="ajax remove-attachment">
+                <a href="{link deleteAttachment!, idFile=>$attach['id_file']}" class="ajax remove-attachment remove-attach-button">
                     <i class="material-icons">close</i>    
                 </a>
             </li>

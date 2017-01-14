@@ -49,11 +49,7 @@
         {/if}
         {/if}
         <li><a href="#share-post_{$message->id}" class="modal-trigger">Znovu použít příspěvek</a></li>
-        {if !$message->followed}
         <li><a href="{link followMessage! idMessage=>$message->id}" class="ajax">Kopírovat odkaz</a></li>
-        {else}
-        <li><a href="{link followMessage! idMessage=>$message->id, enable=>false}" class="ajax">Zrušit sledování</a></li>
-        {/if}
         {if $streamPermission['removeAllMessages'] || ($activeUser->id === $message->user->id && $streamPermission['removeOwnMessages'])}
         <li class="divider"></li>
         <li><a href="{link deleteMessage! idMessage=>$message->id}" class="ajax">Smazat</a></li>

@@ -14,6 +14,8 @@ use App\FrontModule\Components\NewClassificationForm\NewClassificationForm;
 use App\FrontModule\Components\NewClassificationForm\UserClassificationForm;
 use App\Model\Manager\ClassificationManager;
 use App\Model\Manager\TaskManager;
+use App\Model\Manager\UserManager;
+use App\Model\Manager\NotificationManager;
 
 
 /**
@@ -23,12 +25,18 @@ use App\Model\Manager\TaskManager;
  */
 class UsersList extends Control
 {
-        
+       
     /** @var GroupManager */
     private $groupManager;
     
+    /** @var UserManager */
+    private $userManager;
+    
     /** @var TaskManager */
     private $taskManager;
+    
+    /** @var NotificationManager */
+    private $notificationManager;
     
     /** @var ClassificationManager */
     private $classificationManager;
@@ -47,12 +55,16 @@ class UsersList extends Control
     
     public function __construct(GroupManager $groupManager,
                                 ClassificationManager $classificationManager,
-                                TaskManager $taskManager
+                                TaskManager $taskManager,
+                                UserManager $userManager,
+                                NotificationManager $notificationManager
             )
     {
         $this->groupManager = $groupManager;
         $this->classificationManager = $classificationManager;
         $this->taskManager = $taskManager;
+        $this->userManager = $userManager;
+        $this->notificationManager = $notificationManager;
     }
     
     public function setUser(\App\Model\Entities\User $user)
@@ -98,6 +110,30 @@ class UsersList extends Control
     }
     
    
+    public function handleDeleteUsers($users, $confirmed = false) 
+    {
+        if(!$confirmed) {
+            $usersArray = explode('_', $users);
+            foreach($usersArray as $idUser) {
+                $confirmDeleteUsers = array();
+                $confirmDeleteUsers[] = $this->userManager->get($idUser);
+                $this->template->confirmDeleteUsers = $confirmDeleteUsers;
+            } 
+            $this->redrawControl('removeUsersModal');
+        } else {
+            $users = $this->presenter->getRequest()->getPost('users');
+            $usersArray = array();
+            foreach($users as $idUser) {
+                $this->groupManager->removeUserFromGroup($this->activeGroup->id, $idUser);
+                $usersArray[] = (object)array('id' => $idUser);
+            }
+            $data['users'] = $usersArray;
+            $data['group'] = $this->groupManager->getGroup($this->activeGroup->id);
+            $this->notificationManager->addNotificationType(NotificationManager::TYPE_REMOVE_FROM_GROUP, $data);
+            $this->flashMessage('Uživatel byl odebrán ze skupiny.', 'success');
+            $this->redirect('this');
+        }
+    }
     
     public function handleShowUserClassificationForm($idUserTo) 
     {

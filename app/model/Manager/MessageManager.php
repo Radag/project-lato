@@ -51,7 +51,7 @@ class MessageManager extends BaseManager {
     public function createMessage(Message $message, $attachments)
     {
         $this->database->beginTransaction();
-        
+        $sendNotification = true;
         if(empty($message->id)) {
             $this->database->table('message')->insert(array(
                     'TEXT' => $message->getText(),
@@ -60,46 +60,29 @@ class MessageManager extends BaseManager {
                     'ID_TYPE' => $message->idType,
                     'CREATED_BY' => $this->user->id,
             ));
-            $idMessage = $this->database->query("SELECT MAX(ID_MESSAGE) FROM message")->fetchField(); 
+            $message->id = $this->database->query("SELECT MAX(ID_MESSAGE) FROM message")->fetchField(); 
         } else {
             $data = array(
                 'TEXT' => $message->text,
                 'LAST_CHANGE' => new \DateTime
             );
             $this->database->query("UPDATE message SET ? WHERE ID_MESSAGE=?", $data, $message->id);
-            $idMessage = $message->id;
+            $sendNotification = false;
         }
         
         foreach($attachments as $idAttach) {
-            $this->addAttachment($idAttach, $idMessage);
+            $this->addAttachment($idAttach, $message->id);
+        }
+        //notifikace
+        if($sendNotification) {
+            $data['message'] = $message;
+            $data['groupUsers'] = $this->groupManager->getGroupUsers($message->idGroup);
+            $this->notificationManager->addNotificationType(NotificationManager::TYPE_ADD_GROUP_MSG, $data);
         }
 
-        $group = $this->groupManager->getGroup($message->idGroup);
-        
-        $notification = new \App\Model\Entities\Notification();
-        $notification->title = "Nový přispěvek";
-        $notification->participant = $message->getUser();
-        $notification->text = $message->text;
-        $notification->idGroup = $message->idGroup;
-        $notification->idType = NotificationManager::TYPE_ADD_GROUP_MSG;
-        $notification->idMessage = $idMessage;
-        $users = $this->groupManager->getGroupUsers($message->idGroup);
-        if(!empty($users)) {
-            $allowedUsers = $this->notificationManager->getUserAllowedNotification($users, NotificationManager::TYPE_ADD_GROUP_MSG);
-            foreach($allowedUsers['notification'] as $user) {
-                if($user->id != $message->getUser()->id) {
-                    $notification->idUser = $user->id;
-                    $this->notificationManager->addNotification($notification);          
-                }
-            } 
-        }
-        
-        
-        
-        
         $this->database->commit();
         
-        return $idMessage;
+        return $message->id;
     }
     
     public function createComment(Comment $comment)
@@ -110,6 +93,8 @@ class MessageManager extends BaseManager {
                 'ID_MESSAGE' => $comment->idMessage,
                 'CREATED_BY' => $this->user->id
             ));
+        $data['comment'] = $comment;
+        $this->notificationManager->addNotificationType(NotificationManager::TYPE_ADD_COMMENT, $data);
     }
     
     public function getMessages($group, \App\Model\Entities\User $user, $deleted=false)

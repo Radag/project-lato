@@ -10,6 +10,7 @@ namespace App\Model\Manager;
 
 use Nette;
 use App\Model\Entities\Notification;
+use App\Model\Manager\GroupManager;
 
 /**
  * Description of MessageManager
@@ -18,13 +19,17 @@ use App\Model\Entities\Notification;
  */
 class NotificationManager extends BaseManager
 {   
-    
+
+    //přidání zprávy do skupiny
     const TYPE_ADD_GROUP_MSG = 1;
+    //přidání komentáře do skupiny
     const TYPE_ADD_COMMENT = 2;
+    //nový člen ve skupině
     const TYPE_NEW_GROUP_MEMBER = 3;
+    //byl vyhozem ze skupiny
     const TYPE_REMOVE_FROM_GROUP = 4;
+    //byl přidán do skupiny
     const TYPE_ADD_ADD_TO_GROUP = 5;
-    
     
     public function getNotifications($user)
     {
@@ -130,11 +135,11 @@ class NotificationManager extends BaseManager
         
         foreach($allowed as $all) {
             if($all->SHOW_NOTIFICATION == 1) {
-                $return['notification'][] = $userArray[$all->ID_USER];
+                $return['notification'][$all->ID_USER] = $userArray[$all->ID_USER];
             }
             
             if($all->SEND_BY_EMAIL == 1) {
-                $return['mail'][] = $userArray[$all->ID_USER];
+                $return['mail'][$all->ID_USER] = $userArray[$all->ID_USER];
             }
         }
         
@@ -142,16 +147,66 @@ class NotificationManager extends BaseManager
         
     }
     
-    public function sendToGroup($notification, $idGroup)
-    {  
-        $users = $this->groupManager->getNotificationUsers($idGroup, $notification);
-        if(!empty($users)) {
-            $allowedUsers = $this->notificationManager->getUserAllowedNotification($users, NotificationManager::TYPE_ADD_GROUP_MSG);
+    public function addNotificationType($type, $data)
+    {
+        switch($type) {
+            case self::TYPE_ADD_GROUP_MSG : $this->addNotificationNewMessage($data['message'], $data['groupUsers']); break;
+            case self::TYPE_NEW_GROUP_MEMBER : $this->addNotificationNewGroupMember($data['user'], $data['group']); break;
+            case self::TYPE_REMOVE_FROM_GROUP : $this->addNotificationRemoveFromGroup($data['users'], $data['group']); break;
+        }
+    }
+    
+    
+    public function addNotificationNewMessage(\App\Model\Entities\Message $message, $groupUsers) {
+        $notification = new Notification();
+        $notification->title = "Nový přispěvek";
+        $notification->participant = $message->user;
+        $notification->text = $message->text;
+        $notification->idGroup = $message->idGroup;
+        $notification->idType = self::TYPE_ADD_GROUP_MSG;
+        $notification->idMessage = $message->id;
+
+        if(!empty($groupUsers)) {
+            $allowedUsers = $this->getUserAllowedNotification($groupUsers, self::TYPE_ADD_GROUP_MSG);
             foreach($allowedUsers['notification'] as $user) {
-                $this->notificationManager->addNotification($notification);              
+                if($user->id != $message->user->id) {
+                    $notification->idUser = $user->id;
+                    $this->addNotification($notification);          
+                }
             } 
         }
+    }
+    
+    public function addNotificationNewGroupMember(\App\Model\Entities\User $user, \App\Model\Entities\Group $group) 
+    { 
+        $notification = new Notification();
+        $notification->participant = $user;
+        $notification->title = "Nový člen";
+        $notification->text = "Do vaší skupiny " . $group->name . " se přidal nový člen " . $user->username . ".";
+        $notification->idUser = $group->owner->id;
+        $notification->idType = self::TYPE_NEW_GROUP_MEMBER;
         
+        $allowedUsers = $this->getUserAllowedNotification(array($group->owner), self::TYPE_NEW_GROUP_MEMBER);
+        if(!empty($allowedUsers['notification'][$group->owner->id])) {
+            $this->addNotification($notification);          
+        }
+
+    }
+    
+    public function addNotificationRemoveFromGroup($users, \App\Model\Entities\Group $group) 
+    { 
+        $notification = new Notification();
+        $notification->title = "Byl jste vyhozen ze skupiny";
+        $notification->text = "Byl jste vyhozen ze skupiny " . $group->name . ".";
+        $notification->idGroup = $group->id;
+        $notification->idType = self::TYPE_REMOVE_FROM_GROUP;
+        
+        $allowedUsers = $this->getUserAllowedNotification($users, self::TYPE_REMOVE_FROM_GROUP);
+        
+        foreach($allowedUsers['notification'] as $user) {
+            $notification->idUser = $user->id;
+            $this->addNotification($notification);          
+        }
     }
     
 }
