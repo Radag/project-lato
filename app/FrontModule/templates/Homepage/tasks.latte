@@ -6,9 +6,10 @@
 <div class="container offset-2">
     <div class="row">
     	<div class="col s12">
+            {foreach $tasks as $task}
             <div class="card flex-column">
                 <div class="assignment">
-                    <div class="time-left">Zbývají 3 dny</div>
+                    <div class="time-left">{$task->timeLeft|timeDifferceText|noescape}</div>
                     <div class="flex-spacer"></div>
                     <a href="" class="submit-count">
                         <span class="done"><i class="material-icons">lens</i>3</span> 
@@ -16,64 +17,19 @@
                         <span class="undone"><i class="material-icons">panorama_fish_eye</i>12</span>
                     </a> 
                 </div>
-                <a href="" class="assignment-preview waves-effect waves-light-gray">
+                <a href="{plink Group:message 'id'=>$task->group->urlId, 'idMessage'=>$task->idMessage}" class="assignment-preview waves-effect waves-light-gray">
                     <div class="avatar">
-                        <img src="/images/default-avatar_man.png">
+                        <img src="{$task->message->user->profileImage|noescape}">
                     </div>
                     <div class="title">
-                            Petr Šavelka | Matematika
+                            {$task->message->user->name} {$task->message->user->surname} | {$task->group->name}
                         <span>
-                            Lorem ipsum ...
+                            {$task->title}
                         </span>
                     </div>
                 </a>
             </div>
-
-            <div class="card flex-column">
-                <div class="assignment">
-                    <div class="time-left">Zbývají 3 dny</div>
-                    <div class="flex-spacer"></div>
-                    <a href="" class="submit-count">
-                        <span class="done"><i class="material-icons">lens</i>3</span> 
-                        <div class="divider"></div>
-                        <span class="undone"><i class="material-icons">panorama_fish_eye</i>12</span>
-                    </a> 
-                </div>
-                <a href="" class="assignment-preview waves-effect waves-light-gray">
-                    <div class="avatar">
-                        <img src="/images/default-avatar_man.png">
-                    </div>
-                    <div class="title">
-                            Petr Šavelka | Matematika
-                        <span>
-                            Lorem ipsum ...
-                        </span>
-                    </div>
-                </a>
-            </div>
-
-            <div class="card flex-column">
-                <div class="assignment">
-                    <div class="time-left">Zbývají 3 dny</div>
-                    <div class="flex-spacer"></div>
-                    <a href="" class="submit-count">
-                        <span class="done"><i class="material-icons">lens</i>3</span> 
-                        <div class="divider"></div>
-                        <span class="undone"><i class="material-icons">panorama_fish_eye</i>12</span>
-                    </a> 
-                </div>
-                <a href="" class="assignment-preview waves-effect waves-light-gray">
-                    <div class="avatar">
-                        <img src="/images/default-avatar_man.png">
-                    </div>
-                    <div class="title">
-                            Petr Šavelka | Matematika
-                        <span>
-                            Lorem ipsum ...
-                        </span>
-                    </div>
-                </a>
-            </div>
+            {/foreach}
         </div>
     </div>
 </div>

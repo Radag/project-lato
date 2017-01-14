@@ -215,7 +215,7 @@
         <div class="col l6 m6 s12">
             <div class="card flex-column">
                 <div class="assignment">
-                    <div class="time-left">Zbývají 3 dny</div>
+                    <div class="time-left">{$task->timeLeft|timeDifferceText|noescape}</div>
                     <div class="flex-spacer"></div>
                     <a href="" class="submit-count">
                         <span class="done"><i class="material-icons">lens</i>3</span> 
@@ -225,10 +225,10 @@
                 </div>
                 <a href="{plink Group:message 'id'=>$task->group->urlId, 'idMessage'=>$task->idMessage}" class="assignment-preview waves-effect waves-light-gray">
                     <div class="avatar">
-                        <img src="/images/default-avatar_man.png">
+                        <img src="{$task->message->user->profileImage|noescape}">
                     </div>
                     <div class="title">
-                            Petr Šavelka | {$task->group->name}
+                            {$task->message->user->name} {$task->message->user->surname} | {$task->group->name}
                         <span>
                             {$task->title}
                         </span>

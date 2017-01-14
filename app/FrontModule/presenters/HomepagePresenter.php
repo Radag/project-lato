@@ -103,6 +103,9 @@ class HomepagePresenter extends BasePresenter
     public function actionTasks()
     {
         $this['topPanel']->setTitle('Povinnosti');
+        $groups = $this->groupManager->getUserGroups($this->activeUser);
+        $this->template->tasks = $this->taskManager->getClosestTask($groups);
+        
     }
     
     public function actionNotices()

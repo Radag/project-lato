@@ -18,6 +18,7 @@ class Task {
     public $idMessage = null;
     public $deadline = null;
     public $online = null;
+    public $message = null;
     public $timeLeft = null;
     //konkrétní úkol pro právě přihlášeného uživatele
     public $commit = null;

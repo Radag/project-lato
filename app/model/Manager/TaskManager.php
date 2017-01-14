@@ -55,12 +55,25 @@ class TaskManager extends BaseManager
                             T1.NAME,
                             T1.ID_MESSAGE,
                             T1.DEADLINE,
-                            T2.ID_GROUP
-                    FROM tasks T1 JOIN message T2 ON (T1.ID_MESSAGE = T2.ID_MESSAGE AND T2.DELETED=0)
+                            T2.ID_GROUP,
+                            T3.NAME AS USER_NAME,
+                            T3.SURNAME AS USER_SURNAME,
+                            T3.PROFILE_PATH,
+                            T3.PROFILE_FILENAME,
+                            T3.SEX
+                    FROM tasks T1 
+                    JOIN message T2 ON (T1.ID_MESSAGE = T2.ID_MESSAGE AND T2.DELETED=0)
+                    JOIN vw_user_detail T3 ON (T2.ID_USER=T3.ID_USER)
                     WHERE T2.ID_GROUP IN (" . implode(",", array_keys($groups)) . ") AND T1.DEADLINE>=NOW()
                     ORDER BY T1.DEADLINE ASC LIMIT 5")->fetchAll();
             foreach($tasks as $task) {
                 $taskObject  = new Task();
+                $taskObject->message = new \App\Model\Entities\Message();
+                $taskObject->message->user = new \App\Model\Entities\User();
+                $taskObject->message->user->name = $task->USER_NAME;
+                $taskObject->message->user->surname = $task->USER_SURNAME;
+                $taskObject->message->user->profileImage = \App\Model\Entities\User::createProfilePath($task->PROFILE_PATH, $task->PROFILE_FILENAME, $task->SEX);
+        
                 $taskObject->deadline = $task->DEADLINE;
                 $taskObject->title = $task->NAME;
                 $taskObject->idMessage = $task->ID_MESSAGE;
@@ -68,6 +81,7 @@ class TaskManager extends BaseManager
                 $taskObject->timeLeft = $now->diff($task->DEADLINE);
                 $tasksArray[] = $taskObject;
             }
+            
             return $tasksArray;
         } else {
             return array();
