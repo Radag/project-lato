@@ -56,30 +56,47 @@ class TaskManager extends BaseManager
                             T1.ID_MESSAGE,
                             T1.DEADLINE,
                             T2.ID_GROUP,
+                            T3.ID_USER,
                             T3.NAME AS USER_NAME,
                             T3.SURNAME AS USER_SURNAME,
                             T3.PROFILE_PATH,
                             T3.PROFILE_FILENAME,
-                            T3.SEX
+                            T3.SEX,
+                            T4.COMMIT_COUNT,
+                            T5.ID_COMMIT,
+                            T5.CREATED_WHEN AS COMMIT_CREATED,
+                            T5.UPDATED_WHEN AS COMMIT_UPDATED
                     FROM tasks T1 
                     JOIN message T2 ON (T1.ID_MESSAGE = T2.ID_MESSAGE AND T2.DELETED=0)
                     JOIN vw_user_detail T3 ON (T2.ID_USER=T3.ID_USER)
+                    LEFT JOIN (SELECT COUNT(ID_COMMIT) AS COMMIT_COUNT, ID_TASK FROM task_commit GROUP BY ID_TASK) T4 ON T4.ID_TASK=T1.ID_TASK
+                    LEFT JOIN task_commit T5 ON T1.ID_TASK=T5.ID_TASK
                     WHERE T2.ID_GROUP IN (" . implode(",", array_keys($groups)) . ") AND T1.DEADLINE>=NOW()
                     ORDER BY T1.DEADLINE ASC LIMIT 5")->fetchAll();
             foreach($tasks as $task) {
                 $taskObject  = new Task();
                 $taskObject->message = new \App\Model\Entities\Message();
                 $taskObject->message->user = new \App\Model\Entities\User();
+                $taskObject->message->user->id = $task->ID_USER;
                 $taskObject->message->user->name = $task->USER_NAME;
                 $taskObject->message->user->surname = $task->USER_SURNAME;
                 $taskObject->message->user->profileImage = \App\Model\Entities\User::createProfilePath($task->PROFILE_PATH, $task->PROFILE_FILENAME, $task->SEX);
         
+                $taskObject->commitCount = $task->COMMIT_COUNT;
                 $taskObject->deadline = $task->DEADLINE;
                 $taskObject->title = $task->NAME;
                 $taskObject->idMessage = $task->ID_MESSAGE;
                 $taskObject->group = $groups[$task->ID_GROUP];
                 $taskObject->timeLeft = $now->diff($task->DEADLINE);
-                $tasksArray[] = $taskObject;
+                $taskObject->idTask = $task->ID_TASK;
+                
+                if(!empty($task->ID_COMMIT)) {
+                    $taskObject->commit = new \App\Model\Entities\TaskCommit();
+                    $taskObject->commit->idCommit = $task->ID_COMMIT;
+                    $taskObject->commit->created = $task->COMMIT_CREATED;
+                    $taskObject->commit->updated = $task->COMMIT_UPDATED;
+                }
+                $tasksArray[$task->ID_TASK] = $taskObject;
             }
             
             return $tasksArray;
@@ -96,9 +113,11 @@ class TaskManager extends BaseManager
                         T1.NAME,
                         T1.ID_MESSAGE,
                         T1.DEADLINE,
-                        T2.ID_CLASSIFICATION_GROUP
+                        T2.ID_CLASSIFICATION_GROUP,
+                        T3.ID_GROUP
                 FROM tasks T1 
                 LEFT JOIN classification_group T2 ON T1.ID_TASK = T2.ID_TASK
+                LEFT JOIN message T3 ON T3.ID_MESSAGE=T1.ID_MESSAGE
                 WHERE T1.ID_TASK = ?", $idTask)->fetch();
         $taskObject  = new Task();
         $taskObject->idTask = $task->ID_TASK;
@@ -107,6 +126,9 @@ class TaskManager extends BaseManager
         $taskObject->idMessage = $task->ID_MESSAGE;
         $taskObject->timeLeft = $now->diff($task->DEADLINE);
         $taskObject->idClassificationGroup = $task->ID_CLASSIFICATION_GROUP;
+        $taskObject->message = new \App\Model\Entities\Message();
+        $taskObject->message->group = new \App\Model\Entities\Group();
+        $taskObject->message->group->id = $task->ID_GROUP;
         return $taskObject;
     }
     

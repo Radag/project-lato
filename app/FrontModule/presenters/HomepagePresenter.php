@@ -10,7 +10,10 @@ use App\Model\Manager\SchedulelManager;
 use App\Model\Manager\TaskManager;
 use App\Model\Manager\NoticeManager;
 use App\Model\Manager\ClassificationManager;
+use App\FrontModule\Components\TaskHeader\ITaskHeader;
 use App\FrontModule\Components\NewNoticeForm\NewNoticeForm;
+use App\FrontModule\Components\Stream\ICommitTaskFormFactory;
+
 
 class HomepagePresenter extends BasePresenter
 {
@@ -22,8 +25,14 @@ class HomepagePresenter extends BasePresenter
     protected $taskManager;
     protected $noticeManager;
     protected $classificationManager;
+    protected $taskHeaderFactory;
     protected $days = array('Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota', 'Neděle');
-
+    
+    protected $tasks = array();
+    /**
+     * @var ICommitTaskFormFactory
+     */
+    public $commitTaskFormFactory;
     
 
     public function __construct(
@@ -34,7 +43,9 @@ class HomepagePresenter extends BasePresenter
         SchedulelManager $scheduleManger,
         TaskManager $taskManager,
         NoticeManager $noticeManager,
-        ClassificationManager $classificationManager
+        ClassificationManager $classificationManager,
+        ITaskHeader $taskHeader,
+        ICommitTaskFormFactory $commitTaskFormFactory
     )
     {
         $this->userManager = $userManager;
@@ -45,6 +56,8 @@ class HomepagePresenter extends BasePresenter
         $this->taskManager = $taskManager;
         $this->noticeManager = $noticeManager;
         $this->classificationManager = $classificationManager;
+        $this->taskHeaderFactory = $taskHeader;
+        $this->commitTaskFormFactory = $commitTaskFormFactory;
     }
     
     public function actionDefault()
@@ -95,7 +108,8 @@ class HomepagePresenter extends BasePresenter
         $this->template->todaySchedule = $todaySchedule;
         
         $this->template->days = $this->days;
-        $this->template->actualTasks = $this->taskManager->getClosestTask($groups);
+        $this->tasks = $this->taskManager->getClosestTask($groups);
+        $this->template->actualTasks = $this->tasks;
         $this->template->actualNotices = $this->noticeManager->getNotices($this->activeUser, 3);
         $this->template->activeUser = $this->activeUser;
     }
@@ -104,8 +118,18 @@ class HomepagePresenter extends BasePresenter
     {
         $this['topPanel']->setTitle('Povinnosti');
         $groups = $this->groupManager->getUserGroups($this->activeUser);
-        $this->template->tasks = $this->taskManager->getClosestTask($groups);
-        
+        $this->tasks = $this->taskManager->getClosestTask($groups);
+        $this->template->tasks = $this->tasks;
+        $this->template->activeUser = $this->activeUser; 
+    }
+    
+    public function createComponentTaskHeader()
+    {
+        return new \Nette\Application\UI\Multiplier(function ($idTask) {
+            $taskHeader = $this->taskHeaderFactory->create();
+            $taskHeader->setTask($this->tasks[$idTask]);
+            return $taskHeader;
+        });
     }
     
     public function actionNotices()
@@ -145,4 +169,10 @@ class HomepagePresenter extends BasePresenter
         return new NewNoticeForm($this->noticeManager, $this->activeUser);
     }
     
+    protected function createComponentCommitTaskForm()
+    {
+        $form = $this->commitTaskFormFactory->create();                
+        $form->setActiveUser($this->presenter->activeUser);
+        return $form;
+    }
 }

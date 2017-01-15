@@ -22,3 +22,4 @@ services:
 	groupSettingForm: App\FrontModule\Components\GroupSettingsForm\IGroupSettingsFormFactory  
 	usersList: App\FrontModule\Components\Group\IUsersListFactory
 	commitTaskForm: App\FrontModule\Components\Stream\ICommitTaskFormFactory
+	taskHeader: App\FrontModule\Components\TaskHeader\ITaskHeader

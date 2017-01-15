@@ -14,6 +14,7 @@ use App\FrontModule\Components\TopPanel\TopPanel;
 use App\Model\Manager\PrivateMessageManager;
 use App\Model\Manager\NotificationManager;
 use App\FrontModule\Components\PrivateMessageForm\PrivateMessageForm;
+use App\FrontModule\Components\Stream\ICommitTaskFormFactory;
 use App\Helpers\HelpersList;
 
 /**
@@ -34,6 +35,11 @@ class BasePresenter extends Nette\Application\UI\Presenter
     public $activeUser;
     
     /**
+     * @var ICommitTaskFormFactory
+     */
+    public $commitTaskFormFactory;
+    
+    /**
      * @var UserManager 
      */
     protected $userManager;
@@ -47,12 +53,14 @@ class BasePresenter extends Nette\Application\UI\Presenter
     
     public function __construct(Nette\Database\Context $database, 
             UserManager $userManager,
-            PrivateMessageManager $privateMessageManager
+            PrivateMessageManager $privateMessageManager,
+            ICommitTaskFormFactory $commitTaskFormFactory
             )
     {
         $this->database = $database;
         $this->userManager = $userManager;
         $this->privateMessageManager = $privateMessageManager;
+        $this->commitTaskFormFactory = $commitTaskFormFactory;
     }
     
     protected function startup()
@@ -83,7 +91,7 @@ class BasePresenter extends Nette\Application\UI\Presenter
     {
         return new PrivateMessageForm($this->privateMessageManager, $this->activeUser);
     }
-    
+       
     public function handleShowPrivateMessageForm($idUserTo)
     {
         $this['privateMessageForm']->setIdUserTo($idUserTo);
