@@ -70,6 +70,7 @@ class BasePresenter extends Nette\Application\UI\Presenter
             $this->redirect(':Public:Homepage:default');
         } else {
             $this->setActiveUser();
+            $this->userManager->setLastLogin($this->user->id);
         }
         
         $this->template->addFilter('timeDifferceText',function($timeLeft) {

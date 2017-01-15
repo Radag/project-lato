@@ -45,12 +45,19 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
                             'PASSWORD' => Passwords::hash($password),
                     ));
             }
-
+            $this->setLastLogin($row['ID_USER']);
+            
             $arr = $row->toArray();
             unset($arr['PASSWORD']);
             return new Nette\Security\Identity($row['ID_USER'], 'admin', $arr);
     }
 
+    public function setLastLogin($idUser)
+    {
+        $data = array('LAST_LOGIN' => new \DateTime, 'LAST_LOGIN_IP' => $_SERVER['REMOTE_ADDR']);
+        $this->database->query("UPDATE user SET ? WHERE ID_USER=?", $data, $idUser);
+
+    }
 
     /**
      * Adds new user.
@@ -68,7 +75,8 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
                         'EMAIL' => $values->email,
                         'NAME' => $values->name,
                         'SURNAME' => $values->surname,
-                        'PASSWORD' => Passwords::hash($values->password1)
+                        'PASSWORD' => Passwords::hash($values->password1),
+                        'REGISTER_IP' => $_SERVER['REMOTE_ADDR']
                 ));
                 $idUser = $this->database->query('SELECT MAX(ID_USER) FROM user')->fetchField();
 
