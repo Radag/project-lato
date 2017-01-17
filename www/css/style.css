@@ -826,6 +826,10 @@ input[type="password"] {
     line-height: 40px;
 }
 
+.single-message {
+    width: 100% !important;
+    margin: 0 !important;
+}
 
 
 /* ----- CHAT ----- */
