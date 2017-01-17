@@ -40,10 +40,14 @@
         submitClass: 'scroll-to-message',
         beginFunction: function() {},
         doneFunction: function(data, beforeParam) {
-            if(data.invalidForm === undefined || !data.invalidForm) {
-                $('html, body').animate({
+            if(data.invalidForm === undefined || !data.invalidForm) {    
+                $('.masonry-grid').masonry('destroy');
+                $('.masonry-grid').masonry({
+                    itemSelector: '.grid-item',
+                });
+                /*$('html, body').animate({
                     scrollTop: $('#message-box-num_' + data.idMessage).offset().top
-                }, 700);
+                }, 700);*/
             }
         }
     });

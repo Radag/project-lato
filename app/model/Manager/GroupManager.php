@@ -320,7 +320,7 @@ class GroupManager extends BaseManager {
             LEFT JOIN vw_user_detail T2 ON T1.ID_USER = T2.ID_USER", $idGroup, $filterRelation)->fetchAll();
         }
          
-        
+ 
          $userArray = array();
          foreach($users as $us) {
              $user = new \App\Model\Entities\User;

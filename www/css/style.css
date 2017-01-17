@@ -3118,21 +3118,3 @@ textarea.materialize-textarea {
 .card-link-big .label p {
     margin: 8px 0 0 0;
 }
-
-/* TOASTY */
-
-#toast-container .toast.error {
-    background-color: #FF1744;
-}
-
-#toast-container .toast.success {
-    background-color: #dce775;
-}
-
-#toast-container .toast.warning {
-    background-color: #ffab00;
-}
-
-#toast-container .toast.info {
-    background-color: deepskyblue;
-}
