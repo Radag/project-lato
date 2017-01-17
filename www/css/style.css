@@ -882,7 +882,7 @@ input[type="password"] {
 
 @media only screen and (max-width: 600px) {
     .container {
-        padding:0 6px;
+        padding:0 8px;
         max-width: 550px !important;
     }
 }
@@ -1141,6 +1141,7 @@ p {
     line-height: 1.6em;
     margin-top: 0;
     margin-top: 16px;
+    word-break: break-all;
 }
 
 p:first-child {
@@ -1948,9 +1949,19 @@ textarea.materialize-textarea {
     width: 100%;
     background: #fff;
     box-shadow: 0 1px 3px rgba(0, 0, 0, .2); 
-    margin-bottom:32px;
+    margin-bottom: 32px;
     margin-top:0;
     border-radius:0;
+}
+
+.card.grid-item {
+    width: calc(50% - 32px);
+    margin-left: 16px;
+    margin-right: 16px;
+}
+
+.card.grid-item.grid-item-fst {
+    margin-top: 122px;
 }
 
 .flex-row {
@@ -1963,13 +1974,13 @@ textarea.materialize-textarea {
 
 @media only screen and (max-width: 992px) {
     .card {
-        margin-bottom: 16px;
+        margin-bottom: 24px;
     }
 }
 
 @media only screen and (max-width: 600px) {
     .card {
-        margin-bottom: 8px;
+        margin-bottom: 16px;
     }
 }
 
@@ -2077,7 +2088,8 @@ textarea.materialize-textarea {
 /* CREATE POST */
 
 .create-post {
-    padding: 20px 24px;
+    width: calc(50% - 16px);
+    padding: 24px;
     cursor: pointer;
 }
 
