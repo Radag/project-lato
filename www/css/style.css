@@ -17,6 +17,10 @@ a {
     transition: color 300ms ease-in-out;
 }
 
+.material-icons {
+    font-size: 24px !important;
+}
+
 .lean-overlay {
     height: auto;
 }
@@ -128,10 +132,6 @@ nav.breadcrumbs {
 
 .indeterminate {
     background-color: rgba(0, 171, 157, 1) !important;
-}
-
-.material-icons {
-    font-size: 22px !important;
 }
 
 .material-icons.full-size {
@@ -392,6 +392,16 @@ nav.breadcrumbs {
     .row .col {
         padding: 0 8px !important;
     }
+
+    .row.masonry-grid {
+        margin: 0;
+    }
+
+    .row.masonry-grid .grid-item {
+        margin-left: 8px;
+        margin-right: 8px;
+        width: calc(100% - 16px);
+    }
 }
 
 @media only screen and (max-width: 600px) {
@@ -401,6 +411,12 @@ nav.breadcrumbs {
 
     .row .col {
         padding: 0 !important;
+    }
+
+    .row.masonry-grid .grid-item {
+        margin-left: 0px;
+        margin-right: 0px;
+        width: 100%;
     }
 }
 
@@ -1295,7 +1311,7 @@ strong {
     width: 100%;
     margin-bottom: 12px;
     border: 1px solid rgba(0, 0, 0, .12);
-    height: 52px;
+    height: 56px;
     align-items: stretch;
 }
 
@@ -1309,7 +1325,7 @@ strong {
 }
 
 .attachments li .attachment-icon {
-    width: 43px;
+    width: 42px;
     margin-right: 12px;
     margin: -1px 12px -1px -1px;
     display: flex;
@@ -1324,24 +1340,23 @@ strong {
 }
 
 .attachments li .attachment-icon.unknown {
-    background-color: rgba(0, 0, 0, .37);
+    background-color: #878787;
 }
 
 .attachments li .attachment-icon.document {
-    background-color: #00a2ff;
+    background-color: #0091EA;
 }
 
 .attachments li .attachment-icon.spreadsheet {
-    background-color: #55bf66;
+    background-color: #8BC34A;
 }
 
 .attachments li .attachment-icon.presentation {
-    background-color: #ddaf24;
+    background-color: #FFD600;
 }
 
 .attachments li .attachment-icon i {
     color: #fff;
-    font-size: 22px !important;
 }
 
 .attachments li .attachment-icon.small i {
@@ -1607,7 +1622,7 @@ textarea.materialize-textarea {
 
 @media only screen and (max-width: 992px) { 
     .main.two-level-nav {
-        margin-top: 80px;
+        margin-top: 88px;
     }
 }
 
@@ -1617,7 +1632,7 @@ textarea.materialize-textarea {
     }
 
     .main.two-level-nav {
-        margin-top: 72px;
+        margin-top: 76px;
     }
 
 }
@@ -1958,14 +1973,26 @@ textarea.materialize-textarea {
     border-radius:0;
 }
 
-.card.grid-item {
+.grid-item {
     width: calc(50% - 32px);
     margin-left: 16px;
     margin-right: 16px;
 }
 
-.card.grid-item.grid-item-fst {
+.grid-item.grid-item-fst {
     margin-top: 122px;
+}
+
+@media only screen and (max-width: 992px) {
+    .grid-item.grid-item-fst {
+        margin-top: 114px;
+    } 
+}
+
+@media only screen and (max-width: 600px) {
+    .grid-item.grid-item-fst {
+        margin-top: 88px;
+    } 
 }
 
 .flex-row {
@@ -2095,6 +2122,12 @@ textarea.materialize-textarea {
     width: calc(50% - 16px);
     padding: 24px;
     cursor: pointer;
+}
+
+@media only screen and (max-width: 992px) {
+    .create-post {
+        width: 100%;
+    }
 }
 
 .create-post:hover {
