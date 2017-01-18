@@ -587,6 +587,10 @@ input[type="password"] {
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
+.btn:hover:disabled {
+    box-shadow: none;
+}
+
 .btn.white {
     color: rgba(0, 0, 0, .87);
     background-color: #fff;
@@ -1682,11 +1686,14 @@ textarea.materialize-textarea {
 .section-header ul.options {
     display: flex;
     margin: 0;
-    margin-left: 6px;
     line-height: 36px;
 }
 
-.section-header .options > li {
+.section-header .left.options > li {
+    margin-right: 6px;
+}
+
+.section-header .right.options > li {
     margin-left: 6px;
 }
 
@@ -1694,6 +1701,10 @@ textarea.materialize-textarea {
     .section-header .options > li {
         margin-left: 1px;
     }
+}
+
+.section-header .btn {
+    margin-right: 16px;
 }
 
 .section-header .btn-icon {
@@ -2174,6 +2185,7 @@ textarea.materialize-textarea {
 
 .card .media-container {
     width: 100%;
+    margin-top: -24px;
 }
 
 .card .media-container .img-full-size {

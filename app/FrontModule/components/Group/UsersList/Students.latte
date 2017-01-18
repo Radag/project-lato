@@ -3,22 +3,31 @@
         <div class="row">
             <div class="col s12">
                 <header class="section-header no-padding">
-                    <a n:if="$permission['editClassification']" class="btn white modal-trigger" href="#new-classification-modal">
+                    <button n:if="$permission['editClassification']" class="btn white modal-trigger" href="#new-classification-modal">
                         Přidat známku
-                    </a>
-                    <div class="flex-spacer"></div>
-                    <ul class="right options">´
+                    </button>
+                    <button class="btn white dropdown-button" data-beloworigin="true" data-activates="action-dropdown" disabled>
+                        Akce
+                    </button>
+                    <ul id='action-dropdown' class='dropdown-content'>
+                        <li><a href="">Přidat známku</a></li>        
+                        <li><a href="">Poslat soukromou zprávu</a></li>
+                        <li><a href="">Odebrat ze skupiny</a></li>
+
+                    </ul>
+                    <ul class="left options">
                         <li>
                             <a class="btn-flat btn-icon modal-trigger" href="#new-classification-modal">
-                                <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Statistika známek">trending_up</i>
+                                <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Otevřít všechny karty">visibility</i>
                             </a>
                         </li>
                         <li>
-                            <a class="btn-flat btn-icon tooltipped" data-position="bottom" data-delay="50" data-tooltip="Vytisknout sestavu">
-                                <i class="material-icons">print</i>
+                            <a class="btn-flat btn-icon modal-trigger" href="#new-classification-modal">
+                                <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přidat studenta">person_add</i>
                             </a>
                         </li>
                     </ul>
+                    <div class="flex-spacer"></div>
                 </header>  
             </div>
         </div>
@@ -83,27 +92,6 @@
                                 </div>
                                 {/foreach}
                                 {/ifset}
-                            </div>
-                            <div class="collapsible-body-footer">
-                                {if $activeUser->id !== $member->id}
-                                    <ul>
-                                        <li n:if="$permission['editClassification']"  >
-                                            <a class="btn-flat btn-icon add-user-classification ajax" href="{link showUserClassificationForm! 'idUserTo'=>$member->id}">
-                                                <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přidat hodnocení">assessment</i> 
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="{plink showPrivateMessageForm! 'idUserTo'=>$member->id}" class="ajax btn-flat btn-icon tooltipped show-new-private-message" data-position="bottom" data-delay="50" data-tooltip="Odeslat soukromou zprávu">
-                                                <i class="material-icons">email</i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="btn-flat btn-icon modal-trigger ajax delete-user-button" href="{link deleteUsers! 'users' => $member->id}">
-                                                <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Odebrat ze skupiny">delete</i> 
-                                            </a>  
-                                        </li>
-                                    </ul>
-                                {/if}
                             </div>
                         </div>
                     </li>

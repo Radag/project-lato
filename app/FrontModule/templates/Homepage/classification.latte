@@ -6,17 +6,17 @@
         <div class="row">
             <div class="col s12">
                 <header class="section-header no-padding">
-                    <a  class="btn white dropdown-button" data-beloworigin="true" data-activates='season-dropdown'>
+                    <button  class="btn white dropdown-button" data-beloworigin="true" data-activates='season-dropdown'>
                         {foreach $schoolPeriods as $period}
                             {if $activePeriod == $period->ID_PERIOD}{$period->NAME}{/if}
                         {/foreach}
-                    </a>
+                    </button>
                     <ul id='season-dropdown' class='dropdown-content'>
                         {foreach $schoolPeriods as $period}
                             <li><a href="{link changePeriod! idPeriod=>$period->ID_PERIOD}">{$period->NAME}</a></li>
                         {/foreach}
                     </ul>
-                    <ul class="right options">
+                    <ul class="left options">
                         <li>
                             <a class="btn-flat btn-icon modal-trigger" href="#new-classification-modal">
                                 <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Otevřít všechny karty">visibility</i>
