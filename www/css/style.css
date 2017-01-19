@@ -2257,6 +2257,7 @@ textarea.materialize-textarea {
     background-color:rgba(0, 0, 0, .06);
     border-radius:50%;
     text-align:center;
+    border: none !important;
 }
 
 .comments-header .show-comments.item .material-icons {

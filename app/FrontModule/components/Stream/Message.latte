@@ -81,7 +81,7 @@
     </div>
     </form>
 </div>
-<div class="card-content clearfix">
+<div class="card-content">
     <p>{$message->getText()|escape|nl2br|noescape}</p>
 </div>
 {if isset($message->attachments['files']) && !empty($message->attachments['files']) }
