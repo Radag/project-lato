@@ -866,6 +866,11 @@ input[type="password"] {
 
 /* ---------------- OLD OLD OLD ----------------- */
 
+.avatar.tiny {
+    height: 32px;
+    width: 32px;
+    font-size: 14px;
+}
 
 .avatar.small {
     height: 36px;
@@ -876,6 +881,15 @@ input[type="password"] {
 .avatar.large {
     height: 48px;
     width: 48px;
+}
+
+.message-modal-users {
+    display: flex;
+}
+
+.message-modal-users .avatar {
+    margin-left: 12px;
+    margin-right: 0;
 }
 
 .clearfix:before,
@@ -1221,7 +1235,7 @@ strong {
 
 .modal {
     width: calc(100% - 48px);
-    max-width: 780px;
+    max-width: 540px;
     background-color: #fff;
 }
 
@@ -2516,6 +2530,10 @@ textarea.materialize-textarea {
     margin-bottom: 24px;
 }
 
+.modal .modal-header h3 {
+    margin-bottom: 0;
+}
+
 .modal p {
     color: rgba(0, 0, 0, .54);
 }
@@ -2673,6 +2691,10 @@ textarea.materialize-textarea {
     align-items: center;
     margin-top: 16px;
     min-height: 32px;
+}
+
+.form-row.chips-block {
+    display: block;
 }
 
 .form-row.right {

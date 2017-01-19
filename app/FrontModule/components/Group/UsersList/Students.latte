@@ -6,15 +6,19 @@
                     <button n:if="$permission['editClassification']" class="btn white modal-trigger" href="#new-classification-modal">
                         Přidat známku
                     </button>
-                    <button class="btn white dropdown-button" data-beloworigin="true" data-activates="action-dropdown" disabled>
+                    <button class="btn white dropdown-button" data-beloworigin="true" data-activates="action-dropdown">
                         Akce
                     </button>
                     <ul id='action-dropdown' class='dropdown-content'>
                         <li><a href="">Přidat známku</a></li>        
-                        <li><a href="">Poslat soukromou zprávu</a></li>
-                        <li><a href="">Odebrat ze skupiny</a></li>
+                        <li><a href="#send-message-modal" class="modal-trigger">Poslat soukromou zprávu</a></li>
+                        <li><a href="#remove-users-modal" class="modal-trigger">Odebrat ze skupiny</a></li>
 
                     </ul>
+
+
+
+
                     <ul class="left options">
                         <li>
                             <a class="btn-flat btn-icon modal-trigger" href="#new-classification-modal">
@@ -71,7 +75,7 @@
                             </div>
                             <div class="flex-spacer"></div>
                             <div class="table-field">{if !empty($member->getClassification()->lastDate)}{$member->getClassification()->lastDate->format("j. n. Y")}{else}--{/if}</div>
-                            <div class="classification table-field"><strong>{$member->getClassification()->averageGrade ?: '--'}</strong>/{count($member->getClassification()->items)}</div>
+                            <div class="classification table-field"><strong>{$member->getClassification()->averageGrade ?: '--'} </strong>({count($member->getClassification()->items)})</div>
                         </div>
                         <div class="collapsible-body">
                             <div class="classification-table">
@@ -144,11 +148,40 @@
 </script>
 
 
+<div id="send-message-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Soukromá zpráva</h3>
+            <div class="flex-spacer"></div>
+            <div class="message-modal-users">
+                <div class="avatar tiny">
+                    <img src="/images/default-avatar_man.png" alt="Contact Person">
+                </div>
+                <div class="avatar tiny">
+                    <img src="/images/default-avatar_man.png" alt="Contact Person">
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+        <textarea class="materialize-textarea no-boer" placeholder="Napište zprávu ..."></textarea>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <div class="flex-spacer"></div>
+        <div class="form-control">
+            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+            <input type="submit" class="waves-effect waves-light btn btn-confirm" value="Odeslat">
+        </div>
+    </div>
+
+</div>
+
 <div id="remove-users-modal" class="modal modal-small">
     {snippet removeUsersModal}
     <form action="{link deleteUsers! 'confirmed' => true}" method="post" >
         <div class="modal-content">
-            <h3>Odebrat studenty</h3>
+            <h3>Odebrat ze skupiny</h3>
             <p>Opravdu si přejete odebrat následující studenty?</p>
             <ul class="custom-collection">
                 {ifset $confirmDeleteUsers}
@@ -164,7 +197,7 @@
                 {/ifset}
             </ul>
         </div>
-        <div class="modal-footer clearfix">
+        <div class="modal-footer">
             <div class="flex-spacer"></div>
             <div class="form-control">
                 <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
