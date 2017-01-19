@@ -2,7 +2,7 @@
 <div class="card-comments"> 
         {if count($comments) > 0}  
         <div class="comments-header">
-            <a href="#!" class="show-comments item waves-effect waves-dark"><i class="material-icons">comment</i></a>
+            <a href="javascript:void(0)" onclick="latoShowAllComments(this);" class="show-comments item waves-effect waves-dark"><i class="material-icons">comment</i></a>
             <div class="comments-count">{count($comments)}</div>
             <div class="flex-spacer"></div>
             {foreach $discutionMembers as $member}
@@ -11,7 +11,7 @@
         </div>
         <div class="comments-content">
            {foreach $comments as $comm}
-           <div class="comment-row">
+                <div class="comment-row" {if !$iterator->isLast()}style="display: none;"{/if}>
                 <a href="{plink Profile:default 'id'=>$member->urlId}" class="avatar small">
                     <img src="{$comm->user->profileImage}" alt="{$comm->user->name}">
                 </a>
@@ -43,11 +43,9 @@
         <div class="textarea-wrapper">
             {input text class => 'materialize-textarea no-border'}
         </div>
-        <button class="btn btn-flat waves-effect waves-dark" type="submit" name="action">
+        <button class="btn btn-flat waves-effect waves-dark refresh-wall-messages" type="submit" name="action">
             <i class="material-icons">send</i>
         </button>
-        
-
         {/form}
     </div>
 </div>

@@ -41,13 +41,20 @@
         beginFunction: function() {},
         doneFunction: function(data, beforeParam) {
             if(data.invalidForm === undefined || !data.invalidForm) {    
-                $('.masonry-grid').masonry('destroy');
-                $('.masonry-grid').masonry({
-                    itemSelector: '.grid-item',
-                });
+                latoReloadMessageWall();
                 /*$('html, body').animate({
                     scrollTop: $('#message-box-num_' + data.idMessage).offset().top
                 }, 700);*/
+            }
+        }
+    });
+    
+    latoAddAfterStartMethod({
+        submitClass: 'refresh-wall-messages',
+        beginFunction: function() {},
+        doneFunction: function(data, beforeParam) {
+            if(data.invalidForm === undefined || !data.invalidForm) {    
+                latoReloadMessageWall();
             }
         }
     });
@@ -87,7 +94,7 @@
 </div>
 {snippet messages}
 {foreach $messages as $message}  
-<div class="card grid-item flex-column {if $singleMode}single-message{else}{if $iterator->isFirst()}grid-item-fst{/if}{/if}" id="message-box-num_{$message->id}"> 
+<div class="card grid-item flex-column {if $singleMode}single-message{else}{if $iterator->isFirst() && $streamPermission['addMessages']}grid-item-fst{/if}{/if}" id="message-box-num_{$message->id}"> 
     {includeblock 'Message.latte'}
     {control commentForm-$message->id}
 </div>

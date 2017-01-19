@@ -66,7 +66,7 @@ class GroupManager extends BaseManager {
     {
         $return = array();
         $yourGroups = $this->database->query("SELECT ID_GROUP, MAIN_COLOR, NAME, SHORTCUT, GROUP_TYPE, URL_ID FROM 
-            vw_user_groups_detail WHERE ID_USER=? AND ARCHIVED=0", $user->id)->fetchAll(); 
+            vw_user_groups_detail WHERE ID_USER=? AND ARCHIVED=0 ORDER BY NAME ASC", $user->id)->fetchAll(); 
         
         if(!empty($yourGroups)) {
             foreach($yourGroups as $s) {
@@ -207,7 +207,7 @@ class GroupManager extends BaseManager {
                     WHERE T1.ID_USER=? AND T1.ACTIVE=1
                     GROUP BY T1.ID_GROUP
                 ) T5 ON T5.ID_GROUP=T1.ID_GROUP
-                WHERE T1.ARCHIVED=0 AND T1.GROUP_TYPE=2 AND T1.ID_GROUP IN (" . implode(',', array_keys($userGroups)) . ")", $user->id)->fetchAll();
+                WHERE T1.ARCHIVED=0 AND T1.GROUP_TYPE=2 AND T1.ID_GROUP IN (" . implode(',', array_keys($userGroups)) . ") ORDER BY T1.NAME ASC", $user->id)->fetchAll();
             foreach($groups as $group) {
                 $groupModel = new Group();
                 $teacher = new User();

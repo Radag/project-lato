@@ -50,6 +50,19 @@ $(function() {
     });
 });
 
+function latoReloadMessageWall()
+{
+    $('.masonry-grid').masonry('destroy');
+    $('.masonry-grid').masonry({
+        itemSelector: '.grid-item',
+    });
+}
+
+function latoShowAllComments(comment) {
+    $(comment).closest(".card-comments").find(".comments-content .comment-row").show();
+    latoReloadMessageWall();
+}
+
 function latoShowUpFlashMessages() {
     $("#flashMessagesWrapper .flash").each(function(index, value){
         Materialize.toast($(value).text(), 4000, $(value).data('type'));

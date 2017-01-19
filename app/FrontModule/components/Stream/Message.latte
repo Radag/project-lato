@@ -52,7 +52,7 @@
         <li><a href="{link followMessage! idMessage=>$message->id}" class="ajax">Kopírovat odkaz</a></li>
         {if $streamPermission['removeAllMessages'] || ($activeUser->id === $message->user->id && $streamPermission['removeOwnMessages'])}
         <li class="divider"></li>
-        <li><a href="{link deleteMessage! idMessage=>$message->id}" class="ajax">Smazat</a></li>
+        <li><a href="{link deleteMessage! idMessage=>$message->id}" class="ajax refresh-wall-messages">Smazat</a></li>
         {/if}
         {if $streamPermission['editAllMessages'] || ($activeUser->id === $message->user->id && $streamPermission['editOwnMessages'])}
         <li><a href="{link editMessage! idMessage=>$message->id}" class="ajax edit-message-button">Upravit zprávu</a></li>
@@ -84,7 +84,7 @@
 <div class="card-content clearfix">
     <p>{$message->getText()|escape|nl2br|noescape}</p>
 </div>
-{ifset $message->attachments['files']}
+{if isset($message->attachments['files']) && !empty($message->attachments['files']) }
 <ul class="attachments">
     {foreach $message->attachments['files'] as $file}  
     <li>
@@ -95,11 +95,11 @@
     </li>
     {/foreach}
 </ul>
-{/ifset}
-{ifset $message->attachments['media']}
+{/if}
+{if isset($message->attachments['media']) && !empty($message->attachments['media']) }
 <div class="media-container clearfix">
     {foreach $message->attachments['media'] as $media}
     <div class="{if $iterator->first}img-full-size{else}img-half-size{/if}" style="background-image: url('https://cdn.lato.cz/{$media['path']|noescape}/{$media['filename']|noescape}');"></div>
     {/foreach}
 </div>
-{/ifset}
+{/if}
