@@ -1319,7 +1319,8 @@ strong {
 
 .attachments {
     margin: 0;
-    padding: 8px 24px 24px 24px;
+    margin-top: -24px;
+    padding: 8px 24px 40px 24px;
 }
 
 
@@ -2187,6 +2188,10 @@ textarea.materialize-textarea {
     padding: 24px;
 }
 
+.card.grid-item .card-content {
+    padding-bottom: 48px;
+}
+
 @media only screen and (max-width: 600px) {
     .card .card-content {
         padding: 16px;
@@ -2197,9 +2202,10 @@ textarea.materialize-textarea {
     margin-bottom: 56px;
 }
 
-.card .media-container {
+.card.grid-item .media-container {
     width: 100%;
     margin-top: -24px;
+    margin-bottom: 24px;
 }
 
 .card .media-container .img-full-size {
@@ -2234,6 +2240,7 @@ textarea.materialize-textarea {
 
 .comments-header {
     padding: 24px;
+    padding-top: 0;
     display:flex;
 }
 
@@ -2246,6 +2253,9 @@ textarea.materialize-textarea {
 .comments-header .item {
     height:36px;
     width:36px;
+    display: flex;
+    vertical-align: center;
+    justify-content: center;
 }
 
 .comments-header .avatar.item {
@@ -2261,7 +2271,7 @@ textarea.materialize-textarea {
 }
 
 .comments-header .show-comments.item .material-icons {
-    line-height:36px;
+    line-height:24px;
     color:rgba(0, 0, 0, .54);
 }
 
