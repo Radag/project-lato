@@ -2149,6 +2149,7 @@ textarea.materialize-textarea {
 
 .create-post {
     width: calc(50% - 16px);
+    width: 100%;
     padding: 24px;
     cursor: pointer;
 }
