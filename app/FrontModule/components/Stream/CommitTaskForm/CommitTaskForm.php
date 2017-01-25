@@ -70,7 +70,7 @@ class CommitTaskForm extends Control
     protected function createComponentForm()
     {
         $form = new Form;
-        $form->addText('comment', 'Komentář')
+        $form->addTextarea('comment', 'Komentář')
              ->setAttribute('placeholder', 'Komentář k úkolu');
         
         $form->addHidden('attachments');

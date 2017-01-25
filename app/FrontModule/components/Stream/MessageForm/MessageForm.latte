@@ -104,7 +104,7 @@
 {/define}
 
 {define attachmentBlock}
-    <ul class="attachments attachments_uploads" {if empty($attachments)}style="display: none;"{/if}>
+    <ul class="form-row attachments attachments_uploads no-padding" {if empty($attachments)}style="display: none;"{/if}>
       {if !empty($attachments)}
             {foreach $attachments as $attach}
             <li>

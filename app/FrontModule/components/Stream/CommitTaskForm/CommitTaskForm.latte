@@ -5,20 +5,20 @@
             Přesuňte soubor prosím zde
         </div>
         <div class="form-row">
-            {input comment}
+            {input comment class => 'materialize-textarea'}
         </div>
         <div class="form-row">
             <a type="text" class="upload-file-input" href="javascript:addNewTaskCommit()">Nahrát soubor</a>
         </div>
         {input attachments id => 'taskAttachmentsIds'}
-        <ul class="attachments task-attachments-uploads">
+        <ul class="attachments task-attachments-uploads form-row no-padding">
             {if !empty($attachments)}
             {foreach $attachments as $attach}
                 <li data-file-id="{$attach->idFile}">
-                    <a href="{$attach->path|noescape}" target="_blank" class="attached-file" >
-                        <div class="attachment-icon small presentation"><i class="material-icons">slideshow</i></div>
+                    <a href="{$attach->path|noescape}" target="_blank" class="attached-file">
+                        <div class="attachment-icon presentation"><i class="material-icons">slideshow</i></div>
                         <div class="attachment-label">
-                            <div class="file-name">{$attach->filename}</div>
+                            {$attach->filename}
                         </div>
                     </a>
                     <a class="ajax remove-attachment delete-commit-attachment" href="{link deleteAttachment!, idFile=>$attach->idFile}"><i class="material-icons">delete</i></a>

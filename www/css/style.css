@@ -17,6 +17,10 @@ a {
     transition: color 300ms ease-in-out;
 }
 
+.no-margin {
+    margin: 0 !important;
+}
+
 .material-icons {
     font-size: 24px !important;
 }
@@ -142,7 +146,6 @@ nav.breadcrumbs {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    min-width: 0;
 }
 
 .table-header {
@@ -1313,20 +1316,19 @@ strong {
 #create-post-modal .modal-footer {
     display: flex;
     justify-content: flex-end;
-    border-top: 1px solid rgba(0, 0, 0, .12);
     flex-wrap: wrap;
 }
 
 .attachments {
+    display: flex;
+    flex-direction: column;
     margin: 0;
     margin-top: -24px;
     padding: 8px 24px 40px 24px;
 }
 
-
 .attachments li {
     display: flex;
-    align-items: center;
     width: 100%;
     margin-bottom: 12px;
     border: 1px solid rgba(0, 0, 0, .12);
@@ -1339,7 +1341,7 @@ strong {
 }
 
 .attachments li a.attached-file {
-    flex-grow: 1;
+    width: calc(100% - 58px);
     display: flex;
 }
 
@@ -1440,10 +1442,11 @@ strong {
 }
 
 .attachments li a.remove-attachment {
-    width: 24px;
-    height: 24px;
-    text-align: center;
-    margin-left: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    margin-left: 16px;
 }
 
 .attachments li .remove-attachment i {
