@@ -87,13 +87,21 @@ class UsersList extends Control
         foreach($members as $member) {
             $member->getClassification()->items = $this->classificationManager->getUserClassification($member->id, $this->activeGroup->id);
             $averageGrade = 0;
+            $items = 0;
             foreach($member->getClassification()->items as $class) {
-                $averageGrade = $averageGrade + $class->grade;
+                if($class->grade !== null) {
+                    $averageGrade = $averageGrade + $class->grade;
+                    $items++;
+                }
                 if($member->getClassification()->lastDate === null || $member->getClassification()->lastDate < $class->classificationDate) {
                     $member->getClassification()->lastDate = $class->classificationDate;
                 }
             }
-            $member->getClassification()->averageGrade = round($averageGrade/count($member->getClassification()->items), 2);
+            if($items>0) {
+                $member->getClassification()->averageGrade = round($averageGrade/$items, 2);     
+            } else {
+                $member->getClassification()->averageGrade = null;    
+            }
         }
         $this->template->groupMembers = $members;
         $this->template->setFile(__DIR__ . '/Students.latte');
