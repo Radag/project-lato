@@ -16,6 +16,7 @@ use App\Model\Manager\TaskManager;
 use App\Model\Manager\ClassificationManager;
 use App\FrontModule\Components\Group\IUsersListFactory;
 use App\Model\Entities\Group;
+use App\FrontModule\Components\Stream\ICommitTaskFormFactory;
 
 class GroupPresenter extends BasePresenter
 {    
@@ -42,6 +43,9 @@ class GroupPresenter extends BasePresenter
     
     /** @var  IUsersListFactory  */
     protected $usersListFactory;
+    
+    /** @var  ICommitTaskFormFactory */
+    public $commitTaskFormFactory;
     
     protected $groupPermission = array(
         'archive' => false,
@@ -78,7 +82,8 @@ class GroupPresenter extends BasePresenter
             TaskManager $taskManager,
             IGroupSettingsFormFactory $groupSettings,
             ClassificationManager $classificationManager,
-            IUsersListFactory $userListFactory
+            IUsersListFactory $userListFactory,
+            ICommitTaskFormFactory $commitTaskFormFactory
             )
     {
         $this->userManager = $userManager;
@@ -92,6 +97,7 @@ class GroupPresenter extends BasePresenter
         $this->groupSettings = $groupSettings;
         $this->classificationManager = $classificationManager;
         $this->usersListFactory = $userListFactory;
+        $this->commitTaskFormFactory = $commitTaskFormFactory;
     }
     
     protected function startup()
@@ -216,6 +222,16 @@ class GroupPresenter extends BasePresenter
         return $form;        
     }
     
+    public function redrawTasks() {
+        $this['stream']->redrawControl('messages');
+    }
+    
+    public function createComponentCommitTaskForm()
+    {
+        $form = $this->commitTaskFormFactory->create();                
+        $form->setActiveUser($this->activeUser);
+        return $form;
+    }
     
     public function handleRedrawNews()
     {

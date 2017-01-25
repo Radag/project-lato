@@ -19,11 +19,10 @@ use App\FrontModule\Components\Stream\MessageForm\NoticeForm\INoticeFormFactory;
 use App\FrontModule\Components\Stream\MessageForm\TaskForm\ITaskFormFactory;
 use App\FrontModule\Components\Stream\MessageForm\HomeworkForm\IHomeworkFormFactory;
 use App\FrontModule\Components\Stream\MessageForm\MaterialsForm\IMaterialsFormFactory;
-use App\FrontModule\Components\Stream\ICommitTaskFormFactory;
 use App\Model\Manager\ClassificationManager;
 use App\Model\Manager\GroupManager;
 use App\Model\Entities\ClassificationGroup;
-
+use App\FrontModule\Components\TaskHeader\ITaskHeader;
 
 /**
  * Description of SignInForm
@@ -97,14 +96,16 @@ class Stream extends PreparedControl
     /** @var  IMaterialsFormFactory @inject */
     protected $materialsFormFactory;
     
-    /** @var  ICommitTaskFormFactory @inject */
-    protected $commitTaskFormFactory;
+    /** @var  ITaskHeader @inject */
+    protected $taskHeaderFactory;
     
     protected $showDeleted = false;
 
     protected $streamPermission = array();
     
     protected $singleMode = null;
+    
+    protected $messages = array();
     
     public function __construct(
             UserManager $userManager, 
@@ -116,9 +117,9 @@ class Stream extends PreparedControl
             ITaskFormFactory $taskFormFactory,
             IHomeworkFormFactory $homeworkFormFactory,
             IMaterialsFormFactory $materialsFormFactory,
-            ICommitTaskFormFactory $commitTaskFormFactory,
             GroupManager $groupManager,
-            TaskManager $taskManager
+            TaskManager $taskManager,
+            ITaskHeader $taskHeaderFactory
             )
     {
         $this->userManager = $userManager;
@@ -128,10 +129,10 @@ class Stream extends PreparedControl
         $this->taskFormFactory = $taskFormFactory;
         $this->homeworkFormFactory = $homeworkFormFactory;
         $this->materialsFormFactory = $materialsFormFactory;
-        $this->commitTaskFormFactory = $commitTaskFormFactory;
         $this->groupManager = $groupManager;
         $this->taskManager = $taskManager;
         $this->classificationManager = $classificationManager;
+        $this->taskHeaderFactory = $taskHeaderFactory;
     }
     
     public function setUser(\App\Model\Entities\User $user)
@@ -164,23 +165,42 @@ class Stream extends PreparedControl
         $template = $this->getTemplate();
         if($this->singleMode === null) {
             $this->template->singleMode = false;
-            $messages = $this->messageManager->getMessages($this->activeGroup, $this->activeUser, $this->showDeleted);    
+            $this->messages = $this->messageManager->getMessages($this->activeGroup, $this->activeUser, $this->showDeleted);    
         } else {
             $this->template->singleMode = true;
             $message = $this->messageManager->getMessage($this->singleMode);
-            $messages = array($message);
+            $this->messages = array($message);
         }
         
         $template->activeUser = $this->activeUser;  
         $template->activeGroup = $this->activeGroup;  
         $template->isOwner = ($this->activeUser->id === $this->activeGroup->owner->id) ? true : false;
-        $template->messages = $messages;
+        $template->messages = $this->messages;
         $template->streamPermission = $this->streamPermission;
         $template->userGroups = $this->groupManager->getGroups($this->activeUser);
         $template->setFile(__DIR__ . '/Stream.latte');
         $template->render();
     }
     
+    public function createComponentTaskHeader()
+    {
+        return new \Nette\Application\UI\Multiplier(function ($idTask) {
+            $taskHeader = $this->taskHeaderFactory->create();
+            if(!empty($this->messages)) {
+                foreach($this->messages as $message) {
+                    if(isset($message->task) && $message->task->idTask == $idTask) {
+                        $task = $message->task;
+                        $task->message = $message;
+                    }
+                }
+            } else {
+                $task = $this->taskManager->getTask($idTask);
+            }
+            
+            $taskHeader->setTask($task);
+            return $taskHeader;
+        });
+    }
  
     public function handleSetMessageType($messageType)
     {
@@ -222,19 +242,7 @@ class Stream extends PreparedControl
         
         return $form;
     }
-    
-    public function createComponentCommitTaskForm()
-    {
-        $form = $this->commitTaskFormFactory->create();                
-        $form->setActiveUser($this->activeUser);
-        return $form;
-    }
-    
-    public function handleSetTaskCommit($idTask)
-    {
-        $this['commitTaskForm']->setTaskId($idTask);
-        $this->redrawControl('commitTaskForm');
-    }
+
     
     public function handleSetTaskClassification($idTask)
     {

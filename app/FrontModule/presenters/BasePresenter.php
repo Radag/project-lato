@@ -116,4 +116,9 @@ class BasePresenter extends Nette\Application\UI\Presenter
         parent::flashMessage($message, $type);
         $this->redrawControl('flashMessages');
     }
+    
+    public function redrawTasks()
+    {
+        
+    }
 }

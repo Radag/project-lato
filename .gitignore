@@ -12,3 +12,4 @@ composer.lock
 *.lock
 /temp/cache/
 /temp/
+/node_modules

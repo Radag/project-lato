@@ -125,7 +125,7 @@ class CommitTaskForm extends Control
         
         $this->presenter->flashMessage('Úkol odevzdán', 'success');
         
-        $this->getParent()->redrawControl('messages');
+        $this->presenter->redrawTasks();
     }
     
     

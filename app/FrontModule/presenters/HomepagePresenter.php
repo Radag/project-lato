@@ -169,6 +169,12 @@ class HomepagePresenter extends BasePresenter
         return new NewNoticeForm($this->noticeManager, $this->activeUser);
     }
     
+    public function redrawTasks() {
+        $groups = $this->groupManager->getUserGroups($this->activeUser);
+        $this->tasks = $this->taskManager->getClosestTask($groups);
+        $this->redrawControl('actualTasks');
+    }
+    
     protected function createComponentCommitTaskForm()
     {
         $form = $this->commitTaskFormFactory->create();                

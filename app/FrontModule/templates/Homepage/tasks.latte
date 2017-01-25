@@ -6,6 +6,7 @@
 <div class="container offset-2">
     <div class="row">
     	<div class="col s12">
+            {snippet actualTasks}
             {foreach $tasks as $task}
             <div class="card flex-column">
                 <div class="assignment">
@@ -24,6 +25,7 @@
                 </a>
             </div>
             {/foreach}
+            {/snippet}
         </div>
     </div>
 </div>
