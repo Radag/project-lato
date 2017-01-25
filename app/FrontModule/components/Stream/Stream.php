@@ -274,8 +274,21 @@ class Stream extends PreparedControl
         if($message->user->id === $this->activeUser->id || $this->activeUser->id === $this->activeGroup->owner->id) {
             $this->messageManager->deleteMessage($message);
             $this->presenter->flashMessage('Zpráva byla smazána.');
-            $this->redrawControl();
+            $this->presenter->payload->idMessage = $idMessage;
+            $this->presenter->sendPayload();
         }
+    }
+    
+    public function handleGetAllMessages()
+    {
+        $messages = $this->messageManager->getMessages($this->activeGroup, $this->activeUser, $this->showDeleted);    
+        foreach($messages as $message) {
+            $message->links = array();
+            $message->links['delete'] = $this->link('deleteMessage', array('idMessage' => $message->id));
+        }
+        
+        $this->presenter->payload->messages = $messages;
+        $this->presenter->sendPayload();
     }
     
     public function handleShareMessage($idMessage) 

@@ -139,7 +139,7 @@ class MessageManager extends BaseManager {
             
             $mess->text = $message->TEXT;
             $mess->id = $message->ID_MESSAGE;
-            $mess->created = $message->CREATED_WHEN;
+            $mess->created = $message->CREATED_WHEN->format("j. n. v H:i");
             $mess->user = $user;
             $mess->followed = $message->IS_FOLLOWED;
             $mess->priority = $message->PRIORITY;
@@ -198,7 +198,7 @@ class MessageManager extends BaseManager {
 
         $mess->text = $message->TEXT;
         $mess->id = $message->ID_MESSAGE;
-        $mess->created = $message->CREATED_WHEN;
+        $mess->created = $message->CREATED_WHEN->format("j. n. v H:i");
         $mess->user = $user;
         $mess->idType = $message->ID_TYPE;
         $mess->attachments = $this->getAttachments($message->ID_MESSAGE);

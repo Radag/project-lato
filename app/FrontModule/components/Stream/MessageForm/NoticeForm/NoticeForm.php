@@ -66,8 +66,7 @@ class NoticeForm extends MessageForm
         $this->presenter->payload->idMessage = $idMessage;
         $form['text']->setValue("");
         $form['attachments']->setValue("");
-        $this->stream->redrawControl('messages');
         $this->redrawControl('messageForm');
-        
+        $this->presenter->payload->message = $this->messageManager->getMessage($idMessage);     
     }
 }

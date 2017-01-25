@@ -29,6 +29,7 @@ class Message {
     public $deleted = null;
     public $idType = null;
     public $task;
+    public $links = null;
     
     function getId() {
         return $this->id;

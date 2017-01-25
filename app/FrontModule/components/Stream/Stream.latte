@@ -1,53 +1,53 @@
 {if $streamPermission['addMessages'] && !$singleMode}
-<a href="#select-post-type-modal" class="card create-post modal-trigger">
-    <div class="avatar left">
-        <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
-    </div>
-    <div class="create-post-label left">
-        Chcete ostatním něco sdělit?
-    </div>
-</a>
-<!-- Modal Structure -->
+    {if $isOwner}
+    {*<a href="#select-post-type-modal" class="card create-post modal-trigger" style="display:none;">
+        <div class="avatar left">
+            <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
+        </div>
+        <div class="create-post-label left">
+            Chcete ostatním něco sdělit?
+        </div>
+    </a>*}
+    <!-- Modal Structure -->
 
-<div id="select-post-type-modal" class="modal modal-small">
-    <div class="modal-content">
-        <h3>Vyberte typ příspěveku</h3>
-        <ul id="select-post-type">
-            <li><a href="{link setMessageType! messageType=>1}" class="ajax change-popup-type-button"><i class="material-icons">message</i><span class="title">Vytvořit oznámení</span></a></li>
-            <li><a href="{link setMessageType! messageType=>2}" class="ajax change-popup-type-button"><i class="material-icons">school</i><span class="title">Vložit studijní materiál</span></a></li>
-            <li><a href="{link setMessageType! messageType=>3}" class="ajax change-popup-type-button"><i class="material-icons">event</i><span class="title">Vytvořit připomenutí</span></a></li>
-            <li><a href="{link setMessageType! messageType=>4}" class="ajax change-popup-type-button"><i class="material-icons">assignment</i><span class="title">Vytvořit úkol</span></a></li>
-        </ul>                                        
-    </div>
-    <div class="modal-footer clearfix">
-        <div class="modal-footer-note"> 
-            <a href="" class="colored">
-                <i class="material-icons">help</i>
-                <div class="note-label">Nápověda</div>
-            </a>
+    <div id="select-post-type-modal" class="modal modal-small">
+        <div class="modal-content">
+            <h3>Vyberte typ příspěveku</h3>
+            <ul id="select-post-type">
+                <li><a href="{link setMessageType! messageType=>1}" class="ajax change-popup-type-button"><i class="material-icons">message</i><span class="title">Vytvořit oznámení</span></a></li>
+                <li><a href="{link setMessageType! messageType=>2}" class="ajax change-popup-type-button"><i class="material-icons">school</i><span class="title">Vložit studijní materiál</span></a></li>
+                <li><a href="{link setMessageType! messageType=>3}" class="ajax change-popup-type-button"><i class="material-icons">event</i><span class="title">Vytvořit připomenutí</span></a></li>
+                <li><a href="{link setMessageType! messageType=>4}" class="ajax change-popup-type-button"><i class="material-icons">assignment</i><span class="title">Vytvořit úkol</span></a></li>
+            </ul>                                        
         </div>
-        <div class="flex-spacer"></div>
-        <div class="form-control">
-            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+        <div class="modal-footer clearfix">
+            <div class="modal-footer-note"> 
+                <a href="" class="colored">
+                    <i class="material-icons">help</i>
+                    <div class="note-label">Nápověda</div>
+                </a>
+            </div>
+            <div class="flex-spacer"></div>
+            <div class="form-control">
+                <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+            </div>
         </div>
     </div>
-</div>
+    {else}
+    <a href="{link setMessageType! messageType=>1}" class="card create-post ajax change-popup-type-button">
+        <div class="avatar left">
+            <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
+        </div>
+        <div class="create-post-label left">
+            Chcete ostatním něco sdělit?
+        </div>
+    </a>
+    {/if}
 {/if}
 <!-- Modal Structure -->
 
 <script>  
-    latoAddAfterStartMethod({
-        submitClass: 'scroll-to-message',
-        beginFunction: function() {},
-        doneFunction: function(data, beforeParam) {
-            if(data.invalidForm === undefined || !data.invalidForm) {    
-                latoReloadMessageWall();
-                /*$('html, body').animate({
-                    scrollTop: $('#message-box-num_' + data.idMessage).offset().top
-                }, 700);*/
-            }
-        }
-    });
+    
     
     latoAddAfterStartMethod({
         submitClass: 'refresh-wall-messages',
@@ -92,14 +92,17 @@
         {control commitTaskForm}
     {/snippet}
 </div>
-{snippet messages}
+<div id="root" data-link="{link getAllMessages!}"></div>
+<script n:syntax="off"  src="/js/bundle.js"></script>
+
+{*snippet messages}
 {foreach $messages as $message}  
 <div class="card grid-item flex-column {if $singleMode}single-message{else}{if $iterator->isFirst() && $streamPermission['addMessages']}grid-item-fst{/if}{/if}" id="message-box-num_{$message->id}"> 
     {includeblock 'Message.latte'}
     {control commentForm-$message->id}
 </div>
 {/foreach}
-{/snippet}
+{/snippet*}
 
 
 

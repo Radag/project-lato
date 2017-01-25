@@ -110,14 +110,14 @@ class GroupPresenter extends BasePresenter
         $this['topPanel']->setActiveGroup($this->activeGroup);
         $this['topPanel']->addToMenu((object)array('name' => 'stream', 'link' => $this->link('default'), 'active' => $this->isLinkCurrent('default')));
         
+        if($this->groupPermission['showStudentsList']) {
+            $this['topPanel']->addToMenu((object)array('name' => 'studenti', 'link' => $this->link('users'), 'active' => $this->isLinkCurrent('users')));
+        }
+        
         if($this->groupPermission['settings']) {
             $this['topPanel']->addToMenu((object)array('name' => 'nastavení', 'link' => $this->link('settings'), 'active' => $this->isLinkCurrent('settings')));
         } else {
             $this['topPanel']->addToMenu((object)array('name' => 'o skupině', 'link' => $this->link('about'), 'active' => $this->isLinkCurrent('about')));
-        }
-        
-        if($this->groupPermission['showStudentsList']) {
-            $this['topPanel']->addToMenu((object)array('name' => 'studenti', 'link' => $this->link('users'), 'active' => $this->isLinkCurrent('users')));
         }
         
         $this->template->activeGroup = $this->activeGroup;
