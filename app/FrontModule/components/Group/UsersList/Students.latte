@@ -12,18 +12,14 @@
                     <ul id='action-dropdown' class='dropdown-content'>
                         <li><a href="">Přidat známku</a></li>        
                         <li><a href="#send-message-modal" class="modal-trigger">Poslat soukromou zprávu</a></li>
-                        <li><a href="#remove-users-modal" class="modal-trigger">Odebrat ze skupiny</a></li>
+                        <li><a href="{link deleteUsers!}" id="delete-user-button" >Odebrat ze skupiny</a></li>
 
                     </ul>
-
-
-
-
                     <ul class="left options">
                         <li>
-                            <a class="btn-flat btn-icon modal-trigger" href="#new-classification-modal">
+                            <button type="button" id="button-open-all-cards" data-status="close" class="btn-flat btn-icon">
                                 <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Otevřít všechny karty">visibility</i>
-                            </a>
+                            </button>
                         </li>
                         <li>
                             <a class="btn-flat btn-icon modal-trigger" href="#new-classification-modal">
@@ -57,6 +53,28 @@
                             } else {
                                 $(".user-checkbox").prop('checked', false);
                             }
+                        });
+                        
+                        $("#button-open-all-cards").on("click", function() {
+                            if($(this).data('status') == 'close') {
+                                $(".collapsible-header").addClass("active");
+                                $(".collapsible").collapsible({ accordion: false }); 
+                                $(this).data('status', 'open');
+                            } else {
+                                $(".collapsible-header").removeClass(function(){
+                                    return "active";
+                                });
+                                $(".collapsible").collapsible({ accordion: true });
+                                $(".collapsible").collapsible({ accordion: false });
+                                 $(this).data('status', 'close');
+                            }                          
+                        });
+                        
+                        $("#delete-user-button").on("click", function(event) {
+                            event.preventDefault();
+                            $.nette.ajax({
+                                url: $(this).attr('href')
+                            });
                         });
                     });
                 </script>

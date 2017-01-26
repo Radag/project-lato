@@ -177,6 +177,12 @@ class TaskManager extends BaseManager
         return $return;
     }
     
+    public function isUserCommit($idCommit, \App\Model\Entities\User $user)
+    {
+        $id = $this->database->query("SELECT ID_COMMIT FROM task_commit WHERE ID_COMMIT=? AND ID_USER=?", $idCommit, $user->id)->fetchField();
+        return $idCommit == $id;
+    }
+    
     public function createTaskCommit(TaskCommit $taskCommit, $attachments)
     {
         $this->database->beginTransaction();

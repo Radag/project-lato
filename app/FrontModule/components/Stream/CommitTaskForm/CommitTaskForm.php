@@ -114,6 +114,10 @@ class CommitTaskForm extends Control
     
     public function processForm(Form $form, $values) 
     {
+        if(!empty($values['idCommit']) && !$this->taskManager->isUserCommit($values['idCommit'], $this->activeUser)) {
+            throw new \Exception('Není vlastník');
+        }
+        
         $taskCommit = new \App\Model\Entities\TaskCommit();
         $taskCommit->comment = $values['comment'];
         $taskCommit->user = $this->activeUser;
