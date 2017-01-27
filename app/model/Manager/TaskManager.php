@@ -114,10 +114,12 @@ class TaskManager extends BaseManager
                         T1.ID_MESSAGE,
                         T1.DEADLINE,
                         T2.ID_CLASSIFICATION_GROUP,
-                        T3.ID_GROUP
+                        T3.ID_GROUP,
+                        T4.URL_ID
                 FROM tasks T1 
                 LEFT JOIN classification_group T2 ON T1.ID_TASK = T2.ID_TASK
                 LEFT JOIN message T3 ON T3.ID_MESSAGE=T1.ID_MESSAGE
+                LEFT JOIN groups T4 ON T3.ID_GROUP = T4.ID_GROUP
                 WHERE T1.ID_TASK = ?", $idTask)->fetch();
         $taskObject  = new Task();
         $taskObject->idTask = $task->ID_TASK;
@@ -129,6 +131,7 @@ class TaskManager extends BaseManager
         $taskObject->message = new \App\Model\Entities\Message();
         $taskObject->message->group = new \App\Model\Entities\Group();
         $taskObject->message->group->id = $task->ID_GROUP;
+        $taskObject->message->group->urlId = $task->URL_ID;
         return $taskObject;
     }
     

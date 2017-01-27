@@ -168,7 +168,7 @@ class Stream extends PreparedControl
             $this->messages = $this->messageManager->getMessages($this->activeGroup, $this->activeUser, $this->showDeleted);    
         } else {
             $this->template->singleMode = true;
-            $message = $this->messageManager->getMessage($this->singleMode);
+            $message = $this->messageManager->getMessage($this->singleMode, $this->activeUser);
             $this->messages = array($message);
         }
         

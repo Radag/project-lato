@@ -133,6 +133,7 @@ class GroupManager extends BaseManager {
         LEFT JOIN public_actions T6 ON T5.ID_ACTION=T6.ID_ACTION
         WHERE T1.URL_ID=?", $idGroup)->fetch();
 
+        \Tracy\Debugger::barDump($idGroup);
         $groupModel = new Group();
         $teacher = new User();
         $teacher->surname = $group->OWNER_SURNAME;

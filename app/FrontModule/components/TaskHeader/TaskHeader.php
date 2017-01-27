@@ -93,15 +93,15 @@ class TaskHeader extends PreparedControl
     {
         $task = $this->taskManager->getTask($idTask);
         if(empty($task->idClassificationGroup)) {
-            $groupClassification = new ClassificationGroup();
+            $groupClassification = new \App\Model\Entities\ClassificationGroup();
             $groupClassification->name = $task->title;
-            $groupClassification->group = $this->presenter->activeGroup;
+            $groupClassification->group = $task->message->group;
             $groupClassification->task = $task;
             $idGroupClassification = $this->classificationManager->createGroupClassification($groupClassification);
         } else {
             $idGroupClassification = $task->idClassificationGroup;
         }
-        $this->presenter->redirect(':Front:Group:users', array('do'=> 'usersList-classification' ,'id' => $task->message->group->id , 'usersList-idGroupClassification' => $idGroupClassification)); 
+        $this->presenter->redirect(':Front:Group:users', array('do'=> 'usersList-classification' ,'id' => $task->message->group->urlId , 'usersList-idGroupClassification' => $idGroupClassification)); 
     }
     
     

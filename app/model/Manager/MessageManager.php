@@ -170,7 +170,7 @@ class MessageManager extends BaseManager {
         return $return;
     }
         
-    public function getMessage($idMessage)
+    public function getMessage($idMessage, $user)
     {
         $message = $this->database->query("SELECT T1.TEXT, T1.ID_MESSAGE, T2.ID_USER, T2.NAME, T2.SURNAME, T1.CREATED_WHEN,
                         T3.PATH,
@@ -181,12 +181,18 @@ class MessageManager extends BaseManager {
                         T4.ID_TASK,
                         T4.DEADLINE,
                         T4.ONLINE,
-                        T4.NAME AS TASK_NAME
+                        T4.NAME AS TASK_NAME,
+                        T6.ID_COMMIT,
+                        T6.CREATED_WHEN AS COMMIT_CREATED,
+                        T6.UPDATED_WHEN AS COMMIT_UPDATED,
+                        T7.COMMIT_COUNT
                 FROM message T1 
                 LEFT JOIN user T2 ON T1.ID_USER=T2.ID_USER 
                 LEFT JOIN file_list T3 ON T3.ID_FILE=T2.PROFILE_IMAGE
                 LEFT JOIN tasks T4 ON T1.ID_MESSAGE = T4.ID_MESSAGE
-                WHERE T1.ID_MESSAGE=? AND T1.DELETED=0", $idMessage)->fetch();
+                LEFT JOIN task_commit T6 ON (T6.ID_TASK=T4.ID_TASK AND T6.ID_USER=?)
+                LEFT JOIN (SELECT COUNT(ID_COMMIT) AS COMMIT_COUNT, ID_TASK FROM task_commit GROUP BY ID_TASK) T7 ON T7.ID_TASK=T4.ID_TASK    
+                WHERE T1.ID_MESSAGE=? AND T1.DELETED=0", $user->id, $idMessage)->fetch();
         
         $mess = new Message();
         $user = new User();
@@ -210,6 +216,13 @@ class MessageManager extends BaseManager {
             $mess->task->deadline = $message->DEADLINE;
             $mess->task->online = $message->ONLINE;
             $mess->task->timeLeft = $now->diff($message->DEADLINE);
+            if(!empty($message->ID_COMMIT)) {
+                $commit = new \App\Model\Entities\TaskCommit();
+                $commit->idCommit = $message->ID_COMMIT;
+                $commit->created = $message->COMMIT_CREATED;
+                $commit->updated = $message->COMMIT_UPDATED;
+                $mess->task->commit = $commit;
+            }
         }
         return $mess;
     }
