@@ -62,9 +62,15 @@ class JoinGroupForm extends Control
     
     public function processForm(Form $form, $values) 
     {
-        $idGroup = $this->groupManager->getGroupByCode($values->code);
-        $this->groupManager->addUserToGroup($idGroup, $this->presenter->activeUser->id, GroupManager::RELATION_STUDENT);
-        $this->presenter->flashMessage('Byl jste přiřazen do skupiny.', 'success');
+        $group = $this->groupManager->getGroupByCode($values->code);
+        if(!empty($group)) {
+            $this->groupManager->addUserToGroup($group, $this->presenter->activeUser->id, GroupManager::RELATION_STUDENT);
+            $this->presenter->flashMessage('Byl jste přiřazen do skupiny.', 'success');
+            $this->presenter->redirect(':Front:Group:default', array('id' => $group->urlId));
+        } else {
+            $this->presenter->flashMessage('Zadaný köd není platný.', 'warning');
+        }
+        
     }
     
     public function validateCode(Form $form, $values)

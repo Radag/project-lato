@@ -102,7 +102,7 @@ class GroupManager extends BaseManager {
         $this->database->commit();         
     }
     
-    public function getGroup($idGroup)
+    public function getGroup($urlIdGroup)
     {
         $group = $this->database->query("SELECT 
                 T1.ID_GROUP,
@@ -131,9 +131,8 @@ class GroupManager extends BaseManager {
         LEFT JOIN (SELECT COUNT(ID_USER) AS STUDENTS, ID_GROUP FROM user_group WHERE ACTIVE=1 AND ID_RELATION=2 GROUP BY ID_GROUP) T4 ON T4.ID_GROUP=T1.ID_GROUP
         LEFT JOIN group_sharing T5 ON T1.ID_GROUP=T5.ID_GROUP
         LEFT JOIN public_actions T6 ON T5.ID_ACTION=T6.ID_ACTION
-        WHERE T1.URL_ID=?", $idGroup)->fetch();
+        WHERE T1.URL_ID=?", $urlIdGroup)->fetch();
 
-        \Tracy\Debugger::barDump($idGroup);
         $groupModel = new Group();
         $teacher = new User();
         $teacher->surname = $group->OWNER_SURNAME;
@@ -261,30 +260,34 @@ class GroupManager extends BaseManager {
     }
     
     
-    public function addUserToGroup($idGroup, $idUser, $relation, $fromLink = null)
+    public function addUserToGroup(Group $group, $idUser, $relation, $fromLink = null)
     {
-        $row = $this->database->query("SELECT * FROM user_group WHERE ID_USER=? AND ID_GROUP=?", $idUser, $idGroup)->fetch();
+        $row = $this->database->query("SELECT * FROM user_group WHERE ID_USER=? AND ID_GROUP=?", $idUser, $group->id)->fetch();
         
         if(empty($row)) {
             $this->database->table('user_group')->insert(array(
                 'ID_USER' => $idUser,
-                'ID_GROUP' => $idGroup,
+                'ID_GROUP' => $group->id,
                 'ID_RELATION' => $relation,
                 'FROM_LINK' => $fromLink
             ));  
         } else {
-            $this->database->query("UPDATE user_group SET ACTIVE=1 WHERE ID_USER=? AND ID_GROUP=?", $idUser, $idGroup);
+            $this->database->query("UPDATE user_group SET ACTIVE=1 WHERE ID_USER=? AND ID_GROUP=?", $idUser, $group->id);
         }
 
         $data['user'] = $this->userManager->get($idUser);
-        $data['group'] = $this->getGroup($idGroup);
+        $data['group'] = $this->getGroup($group->urlId);
         $this->notificationManager->addNotificationType(NotificationManager::TYPE_NEW_GROUP_MEMBER, $data);
     }
     
     public function getGroupByCode($code) 
     {
-        return $this->database->query("SELECT T1.id_group FROM groups T1 JOIN group_sharing T2 ON T1.ID_GROUP=T2.ID_GROUP WHERE T2.SHARE_BY_CODE=1 AND T1.CODE=?", $code)->fetchField();
-        
+        $group = $this->database->query("SELECT T1.ID_GROUP, T1.URL_ID FROM groups T1 JOIN group_sharing T2 ON T1.ID_GROUP=T2.ID_GROUP WHERE T2.SHARE_BY_CODE=1 AND T1.CODE=?", $code)->fetch();
+        if(empty($group)) {
+            return false;
+        } else {
+            return new Group($group);
+        }
     }
     
     public function switchSharing(Group $group, $stateByLink, $stateByCode) 

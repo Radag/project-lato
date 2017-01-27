@@ -45,4 +45,26 @@ class Group {
     public $classification = null;
     
     public $statistics = null;
+    
+    
+    private $mapFields = array(
+        'ID_GROUP' => 'id',
+        'NAME' => 'name',
+        'SHORTCUT' => 'shortcut',
+        'MAIN_COLOR' => 'mainColor',
+        'STUDENTS' => 'numberOfStudents',
+        'NEW_MESSAGE' => 'newMessages',
+        'URL_ID' => 'urlId'
+    );
+    
+    
+    public function __construct($data = null) {
+        if(!empty($data) && is_object($data)) {
+            foreach($data as $key=>$value) {
+                if(isset($this->mapFields[$key])) {
+                    $this->{$this->mapFields[$key]} = $value;
+                }
+            }   
+        }
+    }
 }

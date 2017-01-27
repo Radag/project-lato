@@ -146,7 +146,8 @@ class ActionPresenter extends BasePresenter
         $action = $this->publicActionManager->getGroupSharingAction($id);
         if(!empty($action) && $action->ACTION_TYPE === PublicActionManager::ACTION_ADD_TO_GROUP) {
             if($this->user->isLoggedIn()) {
-                $this->groupManager->addUserToGroup($action->ID_GROUP, $this->user->id, 1);
+                $group = new \App\Model\Entities\Group($action);
+                $this->groupManager->addUserToGroup($group, $this->user->id, \App\Model\Entities\Group::RELATION_STUDENT);
                 $this->flashMessage('Byl jste přidán do skupiny.');
                 $this->redirect(':Front:Group:default', array('id'=>$action->URL_ID));
             } else {
