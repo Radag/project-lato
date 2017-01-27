@@ -72,8 +72,20 @@
                         
                         $("#delete-user-button").on("click", function(event) {
                             event.preventDefault();
+                            var users = [];
+                            $.each($(".user-checkbox:checked"), function(key, val) {
+                                users.push($(val).data('id'));
+                            });
+
                             $.nette.ajax({
-                                url: $(this).attr('href')
+                                url: $(this).attr('href'),
+                                method: 'POST',
+                                data: {
+                                    'users': users
+                                },
+                                complete: function(data) {
+                                    $('#remove-users-modal').openModal();
+                                }
                             });
                         });
                     });
@@ -83,7 +95,7 @@
                     {foreach $groupMembers as $member}
                     <li>
                         <div class="collapsible-header table-row">
-                            <input type="checkbox" class="filled-in user-checkbox" id="user_{$member->id}" />
+                            <input type="checkbox" class="filled-in user-checkbox" id="user_{$member->id}" data-id="{$member->id}"/>
                             <label for="user_{$member->id}"></label>
                             <div class="avatar small">
                                 <img src="{$member->profileImage}">
@@ -150,15 +162,6 @@
                         $('#user-classification-modal').openModal();
                     });
                 }
-            }
-        });
-        
-        latoAddAfterStartMethod({
-            submitClass: 'delete-user-button',
-            beginFunction: function() {
-            },
-            doneFunction: function(data, beforeParam) {
-                $('#remove-users-modal').openModal();
             }
         });
     });

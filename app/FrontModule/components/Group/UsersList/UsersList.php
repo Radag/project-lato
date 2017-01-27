@@ -118,18 +118,17 @@ class UsersList extends Control
     }
     
    
-    public function handleDeleteUsers($users, $confirmed = false) 
+    public function handleDeleteUsers($confirmed = false) 
     {
+        $users = $this->presenter->getRequest()->getPost('users');
         if(!$confirmed) {
-            $usersArray = explode('_', $users);
-            foreach($usersArray as $idUser) {
-                $confirmDeleteUsers = array();
+            $confirmDeleteUsers = array();
+            foreach($users as $idUser) {
                 $confirmDeleteUsers[] = $this->userManager->get($idUser);
-                $this->template->confirmDeleteUsers = $confirmDeleteUsers;
-            } 
+            }
+            $this->template->confirmDeleteUsers = $confirmDeleteUsers;
             $this->redrawControl('removeUsersModal');
         } else {
-            $users = $this->presenter->getRequest()->getPost('users');
             $usersArray = array();
             foreach($users as $idUser) {
                 $this->groupManager->removeUserFromGroup($this->activeGroup->id, $idUser);
