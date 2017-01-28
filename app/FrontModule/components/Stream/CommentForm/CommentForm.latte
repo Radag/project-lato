@@ -43,11 +43,22 @@
         <div class="textarea-wrapper">
             {input text class => 'materialize-textarea no-border'}
         </div>
-        <button class="btn btn-flat waves-effect waves-dark refresh-wall-messages" type="submit" name="action">
+        <button style="display: none;" class="btn btn-flat waves-effect waves-dark refresh-wall-messages" type="submit" name="action">
             <i class="material-icons">done</i>
         </button>
         {/form}
     </div>
+    <script>
+        $(document).ready(function(){
+            $(".card-comments .textarea-wrapper textarea").off('keydown').on('keydown', function(){
+                if($(this).val().length > 0) {
+                    $(this).parents(".comments-footer").find("button").show();
+                } else {
+                    $(this).parents(".comments-footer").find("button").hide();
+                }
+            });
+        });
+    </script>
 </div>
 {/snippet}
 

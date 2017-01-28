@@ -16,6 +16,7 @@ class FileManager extends BaseManager
     const FILE_TYPE_WORD = 3;
     const FILE_TYPE_EXCEL = 4;
     const FILE_TYPE_POWERPOINT = 5;
+    const FILE_TYPE_PDF = 6;
     
     const USER_DIRECTORY = '/cdn/users/';
 
@@ -58,6 +59,8 @@ class FileManager extends BaseManager
                     $newFile['ID_TYPE'] = self::FILE_TYPE_EXCEL;
                 } elseif ($file->getContentType() == 'application/vnd.ms-powerpoint' || $file->getContentType() == 'application/vnd.openxmlformats-officedocument.presentationml.presentation') {
                     $newFile['ID_TYPE'] = self::FILE_TYPE_POWERPOINT;
+                } elseif ($file->getContentType() == 'application/pdf') {
+                    $newFile['ID_TYPE'] = self::FILE_TYPE_PDF;
                 } else {
                     $newFile['ID_TYPE'] = self::FILE_TYPE_OTHER;
                 }                
