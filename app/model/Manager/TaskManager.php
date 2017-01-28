@@ -65,12 +65,14 @@ class TaskManager extends BaseManager
                             T4.COMMIT_COUNT,
                             T5.ID_COMMIT,
                             T5.CREATED_WHEN AS COMMIT_CREATED,
-                            T5.UPDATED_WHEN AS COMMIT_UPDATED
+                            T5.UPDATED_WHEN AS COMMIT_UPDATED,
+                            T6.TASK_USERS
                     FROM tasks T1 
                     JOIN message T2 ON (T1.ID_MESSAGE = T2.ID_MESSAGE AND T2.DELETED=0)
                     JOIN vw_user_detail T3 ON (T2.ID_USER=T3.ID_USER)
                     LEFT JOIN (SELECT COUNT(ID_COMMIT) AS COMMIT_COUNT, ID_TASK FROM task_commit GROUP BY ID_TASK) T4 ON T4.ID_TASK=T1.ID_TASK
                     LEFT JOIN task_commit T5 ON T1.ID_TASK=T5.ID_TASK
+                    LEFT JOIN ( SELECT COUNT(*) AS TASK_USERS, M.ID_MESSAGE FROM message M JOIN user_group G ON M.ID_GROUP=G.ID_GROUP GROUP BY M.ID_MESSAGE) T6 ON T6.ID_MESSAGE = T2.ID_MESSAGE
                     WHERE T2.ID_GROUP IN (" . implode(",", array_keys($groups)) . ") AND T1.DEADLINE>=NOW()
                     ORDER BY T1.DEADLINE ASC LIMIT 5")->fetchAll();
             foreach($tasks as $task) {
@@ -89,6 +91,7 @@ class TaskManager extends BaseManager
                 $taskObject->group = $groups[$task->ID_GROUP];
                 $taskObject->timeLeft = $now->diff($task->DEADLINE);
                 $taskObject->idTask = $task->ID_TASK;
+                $taskObject->taskMembers = $task->TASK_USERS;
                 
                 if(!empty($task->ID_COMMIT)) {
                     $taskObject->commit = new \App\Model\Entities\TaskCommit();
@@ -115,11 +118,13 @@ class TaskManager extends BaseManager
                         T1.DEADLINE,
                         T2.ID_CLASSIFICATION_GROUP,
                         T3.ID_GROUP,
-                        T4.URL_ID
+                        T4.URL_ID,
+                        T5.TASK_USERS
                 FROM tasks T1 
                 LEFT JOIN classification_group T2 ON T1.ID_TASK = T2.ID_TASK
                 LEFT JOIN message T3 ON T3.ID_MESSAGE=T1.ID_MESSAGE
                 LEFT JOIN groups T4 ON T3.ID_GROUP = T4.ID_GROUP
+                LEFT JOIN ( SELECT COUNT(*) AS TASK_USERS, M.ID_MESSAGE FROM message M JOIN user_group G ON M.ID_GROUP=G.ID_GROUP GROUP BY M.ID_MESSAGE) T5 ON T5.ID_MESSAGE = T3.ID_MESSAGE
                 WHERE T1.ID_TASK = ?", $idTask)->fetch();
         $taskObject  = new Task();
         $taskObject->idTask = $task->ID_TASK;
@@ -132,6 +137,7 @@ class TaskManager extends BaseManager
         $taskObject->message->group = new \App\Model\Entities\Group();
         $taskObject->message->group->id = $task->ID_GROUP;
         $taskObject->message->group->urlId = $task->URL_ID;
+        $taskObject->taskMembers = $task->TASK_USERS;
         return $taskObject;
     }
     

@@ -4,7 +4,7 @@
     <a href="{link setTaskClassification! idTask=>$task->idTask}" class="submit-count">
         <span class="done"><i class="material-icons">lens</i>{$task->commitCount}</span> 
         <div class="divider"></div>
-        <span class="undone"><i class="material-icons">panorama_fish_eye</i>12</span>
+        <span class="undone"><i class="material-icons">panorama_fish_eye</i>{$task->taskMembers}</span>
     </a>
 {else}
     {if empty($task->commit)}

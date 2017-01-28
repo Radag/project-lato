@@ -26,4 +26,6 @@ class Task {
     public $commitCount = null;
     //pole všech odevzdaných ukolů
     public $commitArray = array();
+    //počet studentů, kteří ukol maji
+    public $taskMembers = null;
 }

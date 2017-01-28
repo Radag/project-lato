@@ -18,9 +18,9 @@
                     </ul>
                     <ul class="left options">
                         <li>
-                            <a class="btn-flat btn-icon modal-trigger" href="#new-classification-modal">
+                            <button type="button" class="btn-flat btn-icon" data-status="close" id="button-open-all-cards">
                                 <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Otevřít všechny karty">visibility</i>
-                            </a>
+                            </button>
                         </li>
                     </ul>
                     <div class="flex-spacer"></div>
@@ -72,6 +72,24 @@
                     {/foreach}
                 </ul>
             </form>
+            <script>
+                $(document).ready(function () {
+                    $("#button-open-all-cards").on("click", function() {
+                        if($(this).data('status') == 'close') {
+                            $(".collapsible-header").addClass("active");
+                            $(".collapsible").collapsible({ accordion: false }); 
+                            $(this).data('status', 'open');
+                        } else {
+                            $(".collapsible-header").removeClass(function(){
+                                return "active";
+                            });
+                            $(".collapsible").collapsible({ accordion: true });
+                            $(".collapsible").collapsible({ accordion: false });
+                             $(this).data('status', 'close');
+                        }                          
+                    });
+                });
+            </script>
         </div>
     </div>
 </div>
