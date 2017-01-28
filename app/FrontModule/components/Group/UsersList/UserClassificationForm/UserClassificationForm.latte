@@ -1,6 +1,19 @@
 {form form}
     <div class="modal-content">
-        <h3>Přidat známku</h3>
+        <div class="modal-header">
+            <h3>Přidat známku</h3>
+            <div class="flex-spacer"></div>
+            <div class="message-modal-users">
+                {ifset $classificationUsers}
+                    {foreach $classificationUsers as $user}
+                    <div class="avatar tiny">
+                        <img src="{$user->profileImage}" alt="{if !empty($user->name)}{$user->name} {$user->surname}{/if}">
+                        <input type="hidden" value="{$user->id}" name="users[]">
+                    </div>
+                    {/foreach}
+                {/ifset}
+            </div>
+        </div>
         <div class="form-row">
             {input name}
         </div>

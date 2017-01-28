@@ -10,8 +10,8 @@
                         Akce
                     </button>
                     <ul id='action-dropdown' class='dropdown-content'>
-                        <li><a href="">Přidat známku</a></li>        
-                        <li><a href="#send-message-modal" class="modal-trigger">Poslat soukromou zprávu</a></li>
+                        <li><a href="{link addClassificationToUsers!}" id="add-user-classification-button" >Přidat známku</a></li>        
+                        <li><a href="{link sendMessageToUsers!}" id="send-message-user-button" >Poslat soukromou zprávu</a></li>
                         <li><a href="{link deleteUsers!}" id="delete-user-button" >Odebrat ze skupiny</a></li>
 
                     </ul>
@@ -22,7 +22,7 @@
                             </button>
                         </li>
                         <li>
-                            <a class="btn-flat btn-icon modal-trigger" href="#new-classification-modal">
+                            <a class="btn-flat btn-icon modal-trigger" href="#add-user-to-group">
                                 <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přidat studenta">person_add</i>
                             </a>
                         </li>
@@ -85,6 +85,63 @@
                                 },
                                 complete: function(data) {
                                     $('#remove-users-modal').openModal();
+                                }
+                            });
+                        });
+                        
+                        $("#add-user-classification-button").on("click", function(event) {
+                            event.preventDefault();
+                            var users = [];
+                            $.each($(".user-checkbox:checked"), function(key, val) {
+                                users.push($(val).data('id'));
+                            });
+
+                            $.nette.ajax({
+                                url: $(this).attr('href'),
+                                method: 'POST',
+                                data: {
+                                    'users': users
+                                },
+                                complete: function(data) {
+                                    $('#user-classification-modal').openModal();
+                                }
+                            });
+                        });
+                        
+                        $("#send-message-user-button").on("click", function(event) {
+                            event.preventDefault();
+                            var users = [];
+                            $.each($(".user-checkbox:checked"), function(key, val) {
+                                users.push($(val).data('id'));
+                            });
+
+                            $.nette.ajax({
+                                url: $(this).attr('href'),
+                                method: 'POST',
+                                data: {
+                                    'users': users
+                                },
+                                complete: function(data) {
+                                    $('#send-message-modal').openModal();
+                                }
+                            });
+                        });
+                        
+                        $("#send-message-user-button").on("click", function(event) {
+                            event.preventDefault();
+                            var users = [];
+                            $.each($(".user-checkbox:checked"), function(key, val) {
+                                users.push($(val).data('id'));
+                            });
+
+                            $.nette.ajax({
+                                url: $(this).attr('href'),
+                                method: 'POST',
+                                data: {
+                                    'users': users
+                                },
+                                complete: function(data) {
+                                    $('#send-message-modal').openModal();
                                 }
                             });
                         });
@@ -170,32 +227,36 @@
 
 
 <div id="send-message-modal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3>Soukromá zpráva</h3>
-            <div class="flex-spacer"></div>
-            <div class="message-modal-users">
-                <div class="avatar tiny">
-                    <img src="/images/default-avatar_man.png" alt="Contact Person">
-                </div>
-                <div class="avatar tiny">
-                    <img src="/images/default-avatar_man.png" alt="Contact Person">
+    {snippet sendMessageModal}
+    <form action="{link sendMessageToUsers! 'confirmed' => true}" method="post" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Soukromá zpráva</h3>
+                <div class="flex-spacer"></div>
+                <div class="message-modal-users">
+                    {ifset $confirmMessageUsers}
+                        {foreach $confirmMessageUsers as $user}
+                        <div class="avatar tiny">
+                            <img src="{$user->profileImage}" alt="{if !empty($user->name)}{$user->name} {$user->surname}{/if}">
+                            <input type="hidden" value="{$user->id}" name="users[]">
+                        </div>
+                        {/foreach}
+                    {/ifset}
                 </div>
             </div>
+            <div class="form-row">
+            <textarea class="materialize-textarea no-boer"  name="text" placeholder="Napište zprávu ..."></textarea>
+            </div>
         </div>
-        <div class="form-row">
-        <textarea class="materialize-textarea no-boer" placeholder="Napište zprávu ..."></textarea>
+        <div class="modal-footer">
+            <div class="flex-spacer"></div>
+            <div class="form-control">
+                <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                <input type="submit" class="waves-effect waves-light btn btn-confirm" value="Odeslat">
+            </div>
         </div>
-
-    </div>
-    <div class="modal-footer">
-        <div class="flex-spacer"></div>
-        <div class="form-control">
-            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-            <input type="submit" class="waves-effect waves-light btn btn-confirm" value="Odeslat">
-        </div>
-    </div>
-
+    </form>
+    {/snippet}
 </div>
 
 <div id="remove-users-modal" class="modal modal-small">
@@ -228,3 +289,23 @@
     </form>
     {/snippet}
 </div>
+ <div id="add-user-to-group" class="modal">
+    <div class="modal-content">
+        <h3>Sdílení</h3>
+        <p>
+            <form action="{link addToGroup!}" method="post" >
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input name="userName" type="text" id="userSearch" class="autocomplete">
+                        <label for="userSearch">Vyhledat uživatele</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input type="submit" value="Vložit">
+                    </div>
+                </div>
+            </form>
+        </p> 
+    </div>
+</div> 

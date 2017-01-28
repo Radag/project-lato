@@ -307,43 +307,6 @@ class GroupPresenter extends BasePresenter
            $this->redirect(':Front:Homepage:noticeboard');
     }
     
-    
-    public function handleRemoveFromGroup($idGroup, $idUser)
-    {
-           $this->groupManager->removeUserFromGroup($idGroup, $idUser);
-           $this->flashMessage("Vyhodil jste uživatele");
-           $notification = new \App\Model\Entities\Notification;
-           $notification->text = "Byl jste vyhozen ze skupiny";
-           $notification->idGroup = $idGroup;
-           $notification->title = "Nepříjemnost";
-           $notification->idUser = $idUser;
-           $this->notificationManager->addNotification($notification);
-           $this->redirect('this');
-    }
-    
-
-    
-    public function handleAddToGroup()
-    {
-        $userName = $this->getRequest()->getPost('userName');
-        $userId = $this->userManager->getByName($userName);
-
-        if(empty($userId) || $this->groupManager->isUserInGroup($userId, $this->activeGroup->id)) {
-            $this->flashMessage('Již je ve skupině.');
-        } else {
-            $this->groupManager->addUserToGroup($this->activeGroup->id, $userId, GroupManager::RELATION_STUDENT);
-            $this->flashMessage('Byl přidán do skupiny.');
-            
-            $notification = new \App\Model\Entities\Notification;
-            $notification->idUser = $userId;
-            $notification->title = "Byl jste přidán do skupiny";
-            $notification->text = "Byl jste přidán do skupiny " . $this->activeGroup->name;
-            $notification->idGroup = $this->activeGroup->id;
-            $this->notificationManager->addNotification($notification);
-        }
-        $this->redirect('this');
-   }
-
    public function handleFollowMessage($idMessage, $enable = true) 
     {
         $message = $this->messageManager->getMessage($idMessage);

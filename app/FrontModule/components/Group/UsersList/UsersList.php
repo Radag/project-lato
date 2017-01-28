@@ -16,6 +16,7 @@ use App\Model\Manager\ClassificationManager;
 use App\Model\Manager\TaskManager;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\NotificationManager;
+use App\Model\Manager\PrivateMessageManager;
 
 
 /**
@@ -41,6 +42,9 @@ class UsersList extends Control
     /** @var ClassificationManager */
     private $classificationManager;
     
+    /** @var PrivateMessageManager */
+    private $privateMessageManager;
+    
     /** @var \App\Model\Entities\Group $activeGroup */
     protected $activeGroup;
     
@@ -57,7 +61,8 @@ class UsersList extends Control
                                 ClassificationManager $classificationManager,
                                 TaskManager $taskManager,
                                 UserManager $userManager,
-                                NotificationManager $notificationManager
+                                NotificationManager $notificationManager,
+                                PrivateMessageManager $privateMessageManager
             )
     {
         $this->groupManager = $groupManager;
@@ -65,6 +70,7 @@ class UsersList extends Control
         $this->taskManager = $taskManager;
         $this->userManager = $userManager;
         $this->notificationManager = $notificationManager;
+        $this->privateMessageManager = $privateMessageManager;
     }
     
     public function setUser(\App\Model\Entities\User $user)
@@ -117,6 +123,73 @@ class UsersList extends Control
         $this->template->render();
     }
     
+    
+    public function handleAddToGroup()
+    {
+        $userName = $this->presenter->getRequest()->getPost('userName');
+        $userId = $this->userManager->getByName($userName);
+
+        if(empty($userId) || $this->groupManager->isUserInGroup($userId, $this->activeGroup->id)) {
+            $this->presenter->flashMessage('Již je ve skupině.');
+        } else {
+            $this->groupManager->addUserToGroup($this->activeGroup, $userId, GroupManager::RELATION_STUDENT);
+            $this->presenter->flashMessage('Byl přidán do skupiny.');
+            
+            $notification = new \App\Model\Entities\Notification;
+            $notification->idUser = $userId;
+            $notification->title = "Byl jste přidán do skupiny";
+            $notification->text = "Byl jste přidán do skupiny " . $this->activeGroup->name;
+            $notification->idGroup = $this->activeGroup->id;
+            $this->notificationManager->addNotification($notification);
+        }
+        $this->presenter->redirect('this');
+    }
+    
+    public function handleAddClassificationToUsers($confirmed = false) 
+    {
+        $users = $this->presenter->getRequest()->getPost('users');
+        if(!$confirmed) {
+            $classificationUsers = array();
+            foreach($users as $idUser) {
+                $classificationUsers[] = $this->userManager->get($idUser);
+            }
+            $this['userClassificationForm']->setUsers($classificationUsers);
+            $this->redrawControl('userClassificationForm');
+        } else {
+            foreach($users as $idUser) {
+                $message = new \App\Model\Entities\PrivateMessage();
+                $message->text = $this->presenter->getRequest()->getPost('text');
+                $message->idUserFrom = $this->presenter->activeUser->id;
+                $message->idUserTo = $idUser;
+                $this->privateMessageManager->insertMessage($message);
+            }
+            $this->flashMessage('Zpáva byla odeslána.', 'success');
+            $this->redirect('this');
+        }
+    }
+    
+    public function handleSendMessageToUsers($confirmed = false) 
+    {
+        $users = $this->presenter->getRequest()->getPost('users');
+        if(!$confirmed) {
+            $confirmMessageUsers = array();
+            foreach($users as $idUser) {
+                $confirmMessageUsers[] = $this->userManager->get($idUser);
+            }
+            $this->template->confirmMessageUsers = $confirmMessageUsers;
+            $this->redrawControl('sendMessageModal');
+        } else {
+            foreach($users as $idUser) {
+                $message = new \App\Model\Entities\PrivateMessage();
+                $message->text = $this->presenter->getRequest()->getPost('text');
+                $message->idUserFrom = $this->presenter->activeUser->id;
+                $message->idUserTo = $idUser;
+                $this->privateMessageManager->insertMessage($message);
+            }
+            $this->flashMessage('Zpáva byla odeslána.', 'success');
+            $this->redirect('this');
+        }
+    }
    
     public function handleDeleteUsers($confirmed = false) 
     {
@@ -142,11 +215,6 @@ class UsersList extends Control
         }
     }
     
-    public function handleShowUserClassificationForm($idUserTo) 
-    {
-        $this['userClassificationForm']->setUser($idUserTo);
-        $this->redrawControl('userClassificationForm');
-    }
     
     public function handleClassification($idGroupClassification) 
     {
@@ -195,6 +263,8 @@ class UsersList extends Control
             'notice' => $classification->notice,
             'idClassification' => $classification->idClassification
         ));
+        
+        $this['userClassificationForm']->setUsers(array($classification->user));
         $this->redrawControl('userClassificationForm');
     }
     

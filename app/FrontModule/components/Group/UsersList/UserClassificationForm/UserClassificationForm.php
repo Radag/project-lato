@@ -52,17 +52,22 @@ class UserClassificationForm extends Control
                  ->addRule(Form::MIN, 'Hodnocení musí být číslo větší než 0.', 0);
         $form->addTextArea('notice', 'Poznámka')
              ->setAttribute('placeholder', 'poznámka');
-        $form->addHidden('idUser');
         $form->addHidden('idClassification');
         $form->addSubmit('send', 'Vytvořit');
 
         $form->onSuccess[] = [$this, 'processForm'];
         return $form;
     }
-    
-    public function setUser($idUser) 
+        
+    public function setUsers($users) 
     {
-        $this['form']['idUser']->setValue($idUser);
+        $classificationUsers = array();
+        if(is_array($users)) {
+            foreach($users as $user) {
+                $classificationUsers[] = $user;
+            }
+        }
+        $this->template->classificationUsers = $classificationUsers;
     }
     
     public function render()
@@ -74,17 +79,20 @@ class UserClassificationForm extends Control
     
     public function processForm(Form $form, $values) 
     {
-        $user = new \App\Model\Entities\User();
-        $user->id = $values->idUser;
         $classification = new \App\Model\Entities\Classification();
+        $classification->user = new \App\Model\Entities\User();
         $classification->group = $this->activeGroup;
-        $classification->user = $user;
         $classification->name = $values->name;
         $classification->grade = $values->grade;
         $classification->notice = $values->notice;
         $classification->idClassification = empty($values->idClassification) ? null : $values->idClassification;
         $classification->idPeriod = $this->presenter->activePeriod;
-        $this->classificationManager->createClassification($classification);
+        
+        $users = $this->presenter->getRequest()->getPost('users');
+        foreach($users as $idUser) {
+            $classification->user->id = $idUser;
+            $this->classificationManager->createClassification($classification);
+        }
 
         $this->presenter->flashMessage('Hodnocení vloženo', 'success');
         $this->presenter->redirect(':Front:Group:users');

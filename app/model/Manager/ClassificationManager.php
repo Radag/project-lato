@@ -89,7 +89,8 @@ class ClassificationManager extends BaseManager
         $classification->idClassificationGroup = $class->ID_CLASSIFICATION_GROUP;
         $classification->idClassification = $class->ID_CLASSIFICATION;
         $classification->name = $class->NAME;
-        $classification->user = $class->ID_USER;
+        $classification->user = new \App\Model\Entities\User();
+        $classification->user->id = $class->ID_USER;
         $classification->group = $class->ID_GROUP;
         $classification->grade = $class->GRADE;
         $classification->notice = $class->NOTICE;
