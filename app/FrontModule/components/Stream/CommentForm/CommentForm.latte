@@ -1,5 +1,5 @@
 {snippet comments}
-<div class="card-comments"> 
+<div class="card-comments {if count($comments) == 0}card-comments-empty{/if}"> 
         {if count($comments) > 0}  
         <div class="comments-header">
             <button type="button" onclick="latoShowAllComments(this);" class="show-comments item waves-effect waves-dark"><i class="material-icons">comment</i></button>
