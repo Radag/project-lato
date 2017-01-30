@@ -17,9 +17,9 @@
                     </ul>
                     <ul class="left options">
                         <li>
-                            <button type="button" id="button-open-all-cards" data-status="close" class="btn-flat btn-icon">
+                            <a type="button" id="button-open-all-cards" data-status="close" class="btn-flat btn-icon">
                                 <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Otevřít všechny karty">visibility</i>
-                            </button>
+                            </a>
                         </li>
                         <li>
                             <a class="btn-flat btn-icon modal-trigger" href="#add-user-to-group">
@@ -289,23 +289,20 @@
     </form>
     {/snippet}
 </div>
- <div id="add-user-to-group" class="modal">
-    <div class="modal-content">
-        <h3>Sdílení</h3>
-        <p>
-            <form action="{link addToGroup!}" method="post" >
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input name="userName" type="text" id="userSearch" class="autocomplete">
-                        <label for="userSearch">Vyhledat uživatele</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input type="submit" value="Vložit">
-                    </div>
-                </div>
-            </form>
-        </p> 
-    </div>
+ <div id="add-user-to-group" class="modal modal-small">
+    <form action="{link addToGroup!}" method="post">
+        <div class="modal-content">
+            <h3>Přidat studenta</h3>
+            <div class="form-row">
+                <input name="userName" type="text" {*id="userSearch"*} class="validate" placeholder="E-mail studenta">
+            </div>            
+        </div>
+        <div class="modal-footer">
+            <div class="flex-spacer"></div>
+            <div class="form-control">
+                <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" >Přidat</button>
+            </div>
+        </div>
+    </form>
 </div> 
