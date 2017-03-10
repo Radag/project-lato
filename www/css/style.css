@@ -283,6 +283,7 @@ nav.breadcrumbs {
 .collapsible-body {
     background-color: #fff;
     border-color: transparent;
+    border-bottom: none;
 }
 
 .collapsible-body .classification-table .table-row {
@@ -372,7 +373,7 @@ nav.breadcrumbs {
 }
 
 .row {
-  margin: 0 -12px !important;
+  margin: 0 -16px !important;
 }
 
 .row.same-height {
@@ -427,19 +428,6 @@ nav.breadcrumbs {
     }
 }
 
-.center-card {
-    margin: auto;
-    margin-top: 5%;
-	width: 400px;
-	background-color: rgba(255, 255, 255, 1);
-}
-
-@media(max-width: 600px) {
-    .center-card {
-        width: 100%;
-    }
-}
-
 .paper-shadow {
 	box-shadow: 0 1px 3px  rgba(0, 0, 0, .2); 
 }
@@ -475,34 +463,6 @@ input[type="password"] {
     align-items: center;
     width: 100%;
     cursor: pointer;
-}
-
-.center-card .card-content input[type="submit"] {
-	font-size: 14px;
-}
-
-.center-card .card-content .form-controls {
-	margin-top: 20px !important;
-	margin-bottom: 0;
-}
-
-.center-card .card-footer {
-	background-color: #f5f5f5;
-    padding: 24px;
-	text-align: center;
-	box-sizing: content-box;
-}
-
-.center-card .card-footer a {
-	text-transform: uppercase;
-	color: rgba(0, 0, 0, .87);
-	line-height: 20px;
-}
-
-.center-card .card-footer a i {
-	line-height: 20px;
-	float: right;
-	margin-left: 16px;
 }
 
 .card-footer {
@@ -2709,6 +2669,10 @@ textarea.materialize-textarea {
     min-height: 32px;
 }
 
+.form-row.static {
+    margin-top: 8px;
+}
+
 .form-row.chips-block {
     display: block;
 }
@@ -2722,7 +2686,6 @@ textarea.materialize-textarea {
 }
 
 .form-row p {
-    max-width: 360px;
     flex-grow: 1;
 }
 
@@ -2746,7 +2709,7 @@ textarea.materialize-textarea {
 
 
 .card.settings .card-content h4 {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 500;
     margin: 0;
     margin-bottom: 16px;
