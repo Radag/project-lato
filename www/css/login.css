@@ -91,6 +91,22 @@ input[type="password"] {
     font-size: 14px;
 }
 
+::-webkit-input-placeholder {
+   color: rgba(0, 0, 0, .54);
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: rgba(0, 0, 0, .54);  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: rgba(0, 0, 0, .54);  
+}
+
+:-ms-input-placeholder {  
+   color: rgba(0, 0, 0, .54);  
+}
+
 .form-row {
     display: flex;
     align-items: center;
@@ -108,11 +124,15 @@ input[type="password"] {
     line-height: 36px;
 }
 
-.forgotten-pass {
+.remember-me label {
+    color: rgba(0, 0, 0, .54);
+}
+
+.bottom-link {
     text-align: center;
     margin-top:48px;
 }
 
-.forgotten-pass a {
+.bottom-link a {
     color: #2979FF;
 }

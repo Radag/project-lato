@@ -1,11 +1,8 @@
 {block content}
 <div class="main">
     <div class="container">
-        <div class="center-card z-depth-2">
+        <div class="card z-depth-2">
             <div class="card-header flex-column">
-                <div class="lato-logo medium">
-                    <img src="/images/logo.png" alt="Lato - logo BETA">
-                </div>
                 <h1>Registrace</h1>
             </div>
             <div class="card-content">
@@ -34,11 +31,12 @@
                         <div class="flex-spacer"></div>
                         <button class="btn waves-effect waves-light" type="submit" >Registrovat</button>
                     </div>
+                    <div class="col s12 bottom-link">
+                        <a href="{plink :Public:Homepage:lostPassword}">Podmínky používání</a>
+                    </div>
                 {/form}
             </div>
-            <div class="card-footer">
-                <a href="{link Homepage:default}">Přihlásit se</a>
-            </div>
+            <a href="{link Homepage:default}" class="card-footer">Přihlásit se</a>
         </div>	
     </div>
 </div>
