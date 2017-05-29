@@ -2387,7 +2387,7 @@ textarea.materialize-textarea {
 /* GROUPS */
 
 #group-cards .card {
-    padding: 24px;
+    padding: 20px 24px;
     display: flex;
     align-items: center;
 }

@@ -32,7 +32,6 @@ class RouterFactory
         $publicRouter[] = new Route('a/<id>', 'Action:default');
 	$publicRouter[] = new Route('<presenter>/<action>[/<id>]', 'Homepage:default');
         
-        
         return $router;
     }
     
@@ -41,6 +40,7 @@ class RouterFactory
      */
     public static function createSecuredRouter()
     {
+        
         $router = new RouteList;
         
         $router[] = $adminRouter = new RouteList('Admin');
@@ -57,7 +57,6 @@ class RouterFactory
         $router[] = $publicRouter = new RouteList('Public');
         $publicRouter[] = new Route('a/<id>', 'Action:default', Route::SECURED);
 	$publicRouter[] = new Route('<presenter>/<action>[/<id>]', 'Homepage:default', Route::SECURED);
-        
         
         return $router;
     }

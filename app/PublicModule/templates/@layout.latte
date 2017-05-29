@@ -22,9 +22,20 @@
 </head>
 <body>
 	<div id="flashMessagesWrapper" style="display:none;">
-            <div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+        <div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+    </div>
+    <div class="main">
+        <div class="container">
+        <div id="page-header">
+            <div id="logo"></div>
+           <p>Sociální síť pro základní a střední školy</p>
         </div>
-	{include content}
+	    {include content}
+        <div id="page-footer">
+        <p>Lato.cz @ 2016</p>
+        </div>
+        </div>
+    </div>
 
 	{block scripts}
 	<script>  
