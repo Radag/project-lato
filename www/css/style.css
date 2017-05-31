@@ -880,6 +880,11 @@ input[type="password"] {
     max-width: 820px;
 }
 
+.container.offset-3 {
+    width: 100%;
+    max-width: 620px;
+}
+
 @media only screen and (max-width: 600px) {
     .container {
         padding:0 8px;
@@ -2716,7 +2721,7 @@ textarea.materialize-textarea {
     line-height: 32px;
 }
 
-.card.settings .form-row .icon-label {
+.form-row .icon-label {
     width: 24px;
     margin-right: 16px;
     font-size: 24px !important;
@@ -2724,18 +2729,18 @@ textarea.materialize-textarea {
     line-height: 45px;
 }
 
-.card.settings .form-row .hint {
+.form-row .hint {
     width: 240px;
     margin-right: 24px;
     font-weight: 500;
 }
 
-.card.settings .form-row .input-flex {
+.form-row .input-flex {
     flex-grow: 1;
     line-height: 0;
 }
 
-.card.settings .form-row .input-flex.thin {
+.form-row .input-flex.thin {
     max-width: 680px;
 }
 
@@ -3176,4 +3181,50 @@ textarea.materialize-textarea {
 
 .card-link-big .label p {
     margin: 8px 0 0 0;
+}
+
+#search-page {
+    margin-top: 80px;
+}
+
+#search-value {
+    font-size: 17px;
+}
+
+#search-button {
+    margin: 8px;
+}
+
+#search-results {
+    margin-top: 48px;
+}
+
+#search-results .card {
+    padding: 20px 24px;
+    margin-bottom: 16px;
+}
+
+#search-results .card .title {
+    display: flex;
+    flex-direction: column;
+    color: rgba(0, 0, 0, .87);
+    font-weight: 500;
+}
+
+#search-results .card .title span {
+    font-size: 13px;
+    color: rgba(0, 0, 0, .54);
+    font-weight: 400;
+}
+
+#search-results .card .send-message {
+    text-align: center;
+    height: 42px;
+    width: 42px;
+    border-radius: 50%;
+}
+
+#search-results .card .send-message i {
+    line-height: 42px;
+    color: rgba(0, 0, 0, .54);
 }
