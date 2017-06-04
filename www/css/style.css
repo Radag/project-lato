@@ -29,6 +29,65 @@ a {
     height: auto;
 }
 
+.avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px;
+    width: 42px;
+    margin-right: 12px;
+    background-color: #f5f5f5;
+    border-radius: 50%;
+    color: #fff;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+@media only screen and (max-width: 600px) {
+    .avatar {
+        height: 36px;
+        width: 36px;
+    }
+}
+
+.user-img {
+    display: block;
+    height: 42px;
+    width: 42px;
+    margin-right: 16px;
+    background-color: #f5f5f5;
+    border-radius: 50%;
+}
+
+@media only screen and (max-width: 600px) {
+    .user-img {
+        margin-right: 12px;
+    }
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.avatar.tiny {
+    height: 32px;
+    width: 32px;
+    font-size: 14px;
+}
+
+.avatar.small {
+    height: 36px;
+    width: 36px;
+    font-size: 16px;
+}
+
+.avatar.large {
+    height: 48px;
+    width: 48px;
+}
+
 nav.breadcrumbs {
     display: flex;
     align-items: center;
@@ -207,7 +266,12 @@ nav.breadcrumbs {
 
 @media only screen and (max-width: 600px) {
     .table-row {
-        padding: 16px;
+        padding: 16px 12px;
+    }
+
+    .table-row .avatar {
+        width: 32px;
+        height: 32px;
     }
 }
 
@@ -219,7 +283,7 @@ nav.breadcrumbs {
 .table-header .table-field,
 .table-row .table-field {
     margin-left: 32px;
-    width: 15%;
+    min-width: 15%;
     text-align: right;
 }
 
@@ -257,6 +321,13 @@ nav.breadcrumbs {
     margin-right: 24px;
     height: 20px;
     line-height: 20px;
+}
+
+@media only screen and (max-width: 600px) {
+    .table-header [type="checkbox"]+label,
+    .table-row [type="checkbox"]+label {
+        margin-right: 16px;
+    }
 }
 
 .table-row .title {
@@ -493,7 +564,7 @@ input[type="password"] {
 @media only screen and (max-width: 600px) {
     
     .card-header {
-        padding: 16px 16px 0 16px;
+        padding: 16px 12px 0 12px;
     }
 
     .card-header.separated {
@@ -693,6 +764,13 @@ input[type="password"] {
 
 /* ----- Profil ----- */
 
+@media only screen and (max-width: 992px) {
+    section.profile  .container {
+        width: 100% !important;
+        padding: 0;
+    }
+}
+
 .profile-header {
     height: 420px;
     background-image: url("../images/media-picture-large.png") !important;
@@ -701,6 +779,12 @@ input[type="password"] {
     display: flex !important;
     align-items: flex-end;
     margin-top: -24px !important;
+}
+
+@media only screen and (max-width: 600px) {
+    .profile-header {
+        height: 240px;
+    }
 }
 
 .profile-header .profile-cover {
@@ -712,7 +796,12 @@ input[type="password"] {
     width: 100%;
     padding: 0;
     height: 88px;
+}
 
+@media only screen and (max-width: 600px) {
+    .profile-header .profile-navbar {
+        height: 64px;
+    }    
 }
 
 .profile-header .avatar {
@@ -725,24 +814,13 @@ input[type="password"] {
     background-color: rgba(29, 29, 29, .16);
 }
 
-/* .profile-header .user-img {
-    display: block;
-    width: 130px;
-    height: 130px;
-    border-radius: 50%;
-    padding: 8px;
-    margin:0 48px;
-    background-color: rgba(29, 29, 29, .16);
-    -webkit-transition:  300ms ease-in-out;
-    -moz-transition:  300ms ease-in-out;
-    -o-transition:  300ms ease-in-out;
-    transition:  300ms ease-in-out;
+@media only screen and (max-width: 600px) {
+    .profile-header .avatar {
+        width: 48px;
+        height: 48px;
+        margin: 8px 16px;
+    }    
 }
-
-.profile-header .user-img:hover {
-    background-color: rgba(29, 29, 29, .24);
-} */
-
 
 .profile-header .profile-title {
     color: rgba(255, 255, 255, 1);
@@ -750,6 +828,13 @@ input[type="password"] {
     line-height: 88px;
     font-weight: 500;
     flex-grow: 1;
+}
+
+@media only screen and (max-width: 600px) {
+    .profile-header .profile-title {
+        line-height: 64px;
+        font-size: 18px;
+    }    
 }
 
 .profile-header .profile-title span {
@@ -826,24 +911,7 @@ input[type="password"] {
     z-index: 996;
 }
 
-/* ---------------- OLD OLD OLD ----------------- */
 
-.avatar.tiny {
-    height: 32px;
-    width: 32px;
-    font-size: 14px;
-}
-
-.avatar.small {
-    height: 36px;
-    width: 36px;
-    font-size: 16px;
-}
-
-.avatar.large {
-    height: 48px;
-    width: 48px;
-}
 
 .message-modal-users {
     display: flex;
@@ -885,10 +953,15 @@ input[type="password"] {
     max-width: 620px;
 }
 
+@media only screen and (max-width: 992px) {
+    .container {
+        padding:0 16px;
+    }
+}
+
 @media only screen and (max-width: 600px) {
     .container {
         padding:0 8px;
-        max-width: 550px !important;
     }
 }
 
@@ -914,7 +987,7 @@ input[type="password"] {
 @media only screen and (max-width: 600px) {
     .navbar-fixed nav .left-nav-flex,
     .navbar-fixed nav .right-nav-flex {
-        padding: 0 12px;
+        padding: 0 6px 0 12px;
     }
 }
 
@@ -970,17 +1043,25 @@ input[type="password"] {
         order: 3;
         width: 100%;
         padding: 0;
-        height: 56px;
-        line-height: 56px;
-        background-color: rgba(0, 0, 0, .05);
+        height: 52px;
+        line-height: 52px;
     }  
 
     .content-nav li {
-        flex-grow: 1;
+    }
+
+    .content-nav li a {
+        font-size: 13px;
+    }
+
+    .content-nav li a:hover {
+        background-color: transparent;
+        color: rgba(255, 255, 255, .87);
     }
 
     .content-nav li.active {
         background-color: transparent;
+        border-bottom: 2px solid #fff;
     }
 
     .content-nav li.active:before {
@@ -990,6 +1071,12 @@ input[type="password"] {
         width: 100%;
         height: 2px;
         background-color: #fff);
+    }
+}
+
+@media only screen and (max-width: 600px) { 
+    .content-nav li {
+        flex-grow: 1;
     }
 
     .content-nav li a {
@@ -1161,41 +1248,6 @@ strong {
     color: rgba(0, 0, 0, .87);
 }
 
-.user-img {
-    display: block;
-    height: 42px;
-    width: 42px;
-    margin-right: 16px;
-    background-color: #f5f5f5;
-    border-radius: 50%;
-}
-
-.avatar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 42px;
-    width: 42px;
-    margin-right: 12px;
-    background-color: #f5f5f5;
-    border-radius: 50%;
-    color: #fff;
-    font-weight: 500;
-    font-size: 18px;
-}
-
-@media only screen and (max-width: 600px) {
-    .user-img {
-        margin-right: 10px;
-    }
-}
-
-.avatar img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-}
-
 /* --------- */
 
 /* MODAL */
@@ -1209,7 +1261,7 @@ strong {
 @media only screen and (max-width: 600px) {
     .modal {
 /*        top: 6px !important; */
-        width: calc(100% - 24px) !important;
+        width: calc(100% - 24px);
 /*        max-height: calc(100% - 12px) !important;  */
     }
 }
@@ -1288,6 +1340,12 @@ strong {
     flex-direction: column;
     margin: 0;
     padding: 0px 24px 32px 24px;
+}
+
+@media only screen and (max-width: 600px) {
+    .attachments {
+        padding: 0 12px 32px 12px;
+    }
 }
 
 .attachments li {
@@ -1576,7 +1634,7 @@ textarea.materialize-textarea {
 @media only screen and (max-width: 600px) { 
     .nav-title {
         font-size: 16px;
-        margin-left: 8px;
+        padding-left: 12px;
     }
 }
 
@@ -1601,13 +1659,9 @@ textarea.materialize-textarea {
     margin-top: 32px;
 }
 
-.main.two-level-nav {
-    
-}
-
 @media only screen and (max-width: 992px) { 
-    .main.two-level-nav {
-        margin-top: 88px;
+    .two-level-nav {
+        margin-top: 72px;
     }
 }
 
@@ -1616,8 +1670,8 @@ textarea.materialize-textarea {
         margin-top: 20px;
     }
 
-    .main.two-level-nav {
-        margin-top: 76px;
+    .two-level-nav {
+        margin-top: 64px;
     }
 
 }
@@ -1640,7 +1694,7 @@ textarea.materialize-textarea {
 
 @media only screen and (max-width: 600px) { 
     .section-header {
-        padding: 0 16px;
+        padding: 0 12px;
         margin-bottom: 12px;
     }
 }
@@ -1996,13 +2050,13 @@ textarea.materialize-textarea {
 
 @media only screen and (max-width: 992px) {
     .card {
-        margin-bottom: 24px;
+        margin-bottom: 16px;
     }
 }
 
 @media only screen and (max-width: 600px) {
     .card {
-        margin-bottom: 16px;
+        margin-bottom: 8px;
     }
 }
 
@@ -2110,7 +2164,6 @@ textarea.materialize-textarea {
 /* CREATE POST */
 
 .create-post {
-    width: calc(50% - 16px);
     width: 100%;
     padding: 24px;
     cursor: pointer;
@@ -2118,7 +2171,13 @@ textarea.materialize-textarea {
 
 @media only screen and (max-width: 992px) {
     .create-post {
-        width: 100%;
+        padding: 16px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .create-post {
+        padding: 16px 12px;
     }
 }
 
@@ -2129,14 +2188,10 @@ textarea.materialize-textarea {
 .create-post .create-post-label {
     font-size: 16px;
     color: rgba(0, 0, 0, .54);
-    line-height: 42px;
+    line-height: 36px;
 }
 
 @media only screen and (max-width: 600px) {
-    .create-post {
-        padding: 16px;
-    }
-
     .create-post .avatar {
         width: 36px;
         height: 36px;
@@ -2144,7 +2199,6 @@ textarea.materialize-textarea {
 
     .create-post .create-post-label {
         font-size: 15px;
-        line-height: 40px;
     }
 }
 
@@ -2161,7 +2215,7 @@ textarea.materialize-textarea {
 
 @media only screen and (max-width: 600px) {
     .card .card-content {
-        padding: 16px;
+        padding: 16px 12px;
     }
 }
 
@@ -2216,7 +2270,7 @@ textarea.materialize-textarea {
 
 @media only screen and (max-width: 600px) {
     .comments-header {
-        padding: 12px 16px 16px 16px;
+        padding: 12px 12px 16px 12px;
     }
 }
 
@@ -2271,7 +2325,7 @@ textarea.materialize-textarea {
 
 @media only screen and (max-width: 600px) {
     .comment-row {
-        padding: 12px 16px;
+        padding: 12px;
     }
 }
 
@@ -2284,7 +2338,7 @@ textarea.materialize-textarea {
     clear: both;
     width: 100%;
     line-height: 1em;
-    margin-bottom: 3px;
+    margin-bottom: 5px;
     display: flex;
     align-items: baseline;
 }
@@ -2315,7 +2369,7 @@ textarea.materialize-textarea {
 
 @media only screen and (max-width: 600px) {
     .comments-footer {
-        padding: 16px;
+        padding: 16px 12px;
     }
 }
 
@@ -2397,7 +2451,17 @@ textarea.materialize-textarea {
     align-items: center;
 }
 
+@media only screen and (max-width: 992px) {
+    #group-cards .card {
+        padding: 16px;
+    }
+}
 
+@media only screen and (max-width: 600px) {
+    #group-cards .card {
+        padding: 16px 12px;
+    }
+}
 
 #group-cards .card .title {
     font-size:14px;
@@ -2500,7 +2564,7 @@ textarea.materialize-textarea {
 }
 
 .modal-small {
-    width: 360px;
+    max-width: 360px;
 }
 
 .modal h3 {
@@ -2812,9 +2876,21 @@ textarea.materialize-textarea {
 }
 
 .schedule-row .day-title {
-    padding: 20px 24px !important;
+    padding: 20px 24px;
     width: 20%;
-    text-align: left !important;
+    text-align: left;
+}
+
+@media(max-width:992px) {
+    .schedule-row .day-title {
+        padding: 16px;
+    }
+}
+
+@media(max-width:600px) {
+    .schedule-row .day-title {
+        padding: 16px 12px;
+    }
 }
 
 #one-day-schedule .day-title {
@@ -2828,6 +2904,20 @@ textarea.materialize-textarea {
     padding: 20px 24px;
     margin: -20px -24px;
     box-sizing: content-box;
+}
+
+@media(max-width:992px) {
+    #one-day-schedule .day-title > a {
+        padding: 16px;
+        margin: -16px;
+    }
+}
+
+@media(max-width:600px) {
+    #one-day-schedule .day-title > a {
+        padding: 16px 12px;
+        margin: -16px -12px;
+    }
 }
 
 #one-day-schedule .day-title > a:hover {
@@ -2920,6 +3010,18 @@ textarea.materialize-textarea {
     align-items: center;
 }
 
+@media(max-width:992px) {
+    .assignment {
+        padding: 16px;
+    }
+}
+
+@media(max-width:600px) {
+    .assignment {
+        padding: 16px 12px;
+    }
+}
+
 .noticeboard-assignment {
     border-bottom: none;
     background-color: #f5f5f5;
@@ -2974,6 +3076,18 @@ textarea.materialize-textarea {
     display: flex;
     align-items: center;
     padding: 24px;
+}
+
+@media(max-width:992px) {
+    .assignment-preview {
+        padding: 16px;
+    }
+}
+
+@media(max-width:600px) {
+    .assignment-preview {
+        padding: 16px 12px;
+    }
 }
 
 .assignment-preview .title {
@@ -3201,7 +3315,7 @@ textarea.materialize-textarea {
 
 #search-results .card {
     padding: 20px 24px;
-    margin-bottom: 16px;
+    margin-bottom: 24px;
 }
 
 #search-results .card .title {
