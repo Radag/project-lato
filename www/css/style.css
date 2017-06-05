@@ -36,7 +36,7 @@ a {
     height: 42px;
     width: 42px;
     margin-right: 12px;
-    background-color: #f5f5f5;
+    background-color: #f9f9f9;
     border-radius: 50%;
     color: #fff;
     font-weight: 500;
@@ -55,7 +55,7 @@ a {
     height: 42px;
     width: 42px;
     margin-right: 16px;
-    background-color: #f5f5f5;
+    background-color: #f9f9f9;
     border-radius: 50%;
 }
 
@@ -277,7 +277,7 @@ nav.breadcrumbs {
 
 .card-footer.highlighted,
 .table-control {
-    background-color: #f5f5f5;
+    background-color: #f9f9f9;
 }
 
 .table-header .table-field,
@@ -312,7 +312,7 @@ nav.breadcrumbs {
 
 .collapsible-header.active {
     border-bottom: 1px solid transparent;
-    background-color: #f5f5f5;
+    background-color: #f9f9f9;
 }
 
 .table-header [type="checkbox"]+label,
@@ -557,7 +557,7 @@ input[type="password"] {
 }
 
 .card-header.separated {
-    border-bottom: 1px solid rgba(0, 0, 0, .12);
+    border-bottom: 1px solid #f1f1f1;
     padding-bottom: 24px;
 }
 
@@ -590,7 +590,7 @@ input[type="password"] {
     padding: 12px 24px 24px 24px;
     margin: 0 !important;
     font-size: 13px;
-    background-color: #f5f5f5;
+    background-color: #f9f9f9;
 }
 
 .remember-me {
@@ -627,6 +627,7 @@ input[type="password"] {
 .btn.white {
     color: rgba(0, 0, 0, .87);
     background-color: #fff;
+    box-shadow: none;
 }
 
 .btn.gray {
@@ -635,7 +636,7 @@ input[type="password"] {
 }
 
 .btn.no-shadow.white {
-    border: 1px solid rgba(0, 0, 0, .12);
+    border: 1px solid #f1f1f1;
 }
 
 .btn.disabled {
@@ -654,10 +655,13 @@ input[type="password"] {
 .btn-flat {
     box-shadow: none;
     padding: 0;
+    height: 1em;
+    line-height: 1em;
 }
 
 .btn-flat:hover {
     background-color: transparent;
+    box-shadow: none;
 }
 
 .btn-confirm {
@@ -1187,7 +1191,7 @@ ul.dropdown-content.main-nav-dropdown {
     margin: 0;
     height: 45px;
     line-height: 16px;
-    border-color: rgba(0, 0, 0, .12);
+    border-color: #f1f1f1;
 }
 
 .select-wrapper.with-remove .select-dropdown li:last-child {
@@ -1233,7 +1237,7 @@ p {
     line-height: 1.6em;
     margin-top: 0;
     margin-top: 16px;
-    word-break: break-all;
+    word-break: break-word;
 }
 
 p:first-child {
@@ -1352,7 +1356,7 @@ strong {
     display: flex;
     width: 100%;
     margin-bottom: 12px;
-    border: 1px solid rgba(0, 0, 0, .12);
+    border: 1px solid #f1f1f1;
     height: 56px;
     align-items: stretch;
 }
@@ -1527,7 +1531,7 @@ strong {
     }
 
     #create-post-modal .modal-footer .form-control {
-        border-top: 1px solid rgba(0, 0, 0, .12);
+        border-top: 1px solid #f1f1f1;
         width: 100%;
     }
 
@@ -1692,10 +1696,17 @@ textarea.materialize-textarea {
     align-items: center;
 }
 
+@media only screen and (max-width: 992px) { 
+    .section-header {
+        padding: 0 12px;
+        margin-bottom: 8px;
+    }
+}
+
 @media only screen and (max-width: 600px) { 
     .section-header {
         padding: 0 12px;
-        margin-bottom: 12px;
+        margin-bottom: 4px;
     }
 }
 
@@ -2278,7 +2289,7 @@ textarea.materialize-textarea {
     height:36px;
     width:36px;
     display: flex;
-    vertical-align: center;
+    align-items: center;
     justify-content: center;
 }
 
@@ -2312,7 +2323,7 @@ textarea.materialize-textarea {
 
 .comments-content {
     border-bottom:1px solid rgba(0, 0, 0, .1);
-    background-color:#f5f5f5;
+    background-color:#f9f9f9;
     padding: 8px 0;
     display: flex;
     flex-direction: column;
@@ -2337,29 +2348,30 @@ textarea.materialize-textarea {
 .comment-row .comment-content .comment-header {
     clear: both;
     width: 100%;
-    line-height: 1em;
-    margin-bottom: 5px;
+    font-size: 14px;
+    line-height: 1.5em;
     display: flex;
-    align-items: baseline;
+    align-items: center;
+    margin-top: -3px;
 }
 
 .comment-row .comment-header a {
-    margin-right: 6px;
-    font-weight: 500;
     color: rgba(0, 0, 0, .87);
+    font-weight: 500;
 }
 
 .comment-row .comment-header span {
-    color: rgba(0, 0, 0, .54);
     font-size: 12px;
+    color: rgba(0, 0, 0, .54);
 } 
 
 .comment-row .comment-content .comment-text {
     clear: both;
+    padding-right: 56px;
 }
 
 .comments-footer {
-    background-color:#f5f5f5;
+    background-color:#f9f9f9;
     padding: 20px 24px;
 }
 
@@ -2628,7 +2640,7 @@ textarea.materialize-textarea {
 
 .group-link {
     padding: 16px;
-    background-color: #f5f5f5;
+    background-color: #f9f9f9;
     margin-bottom: 24px;
 }
 
@@ -2786,11 +2798,18 @@ textarea.materialize-textarea {
 }
 
 .form-row .icon-label {
-    width: 24px;
-    margin-right: 16px;
+    width: 36px;
+    margin-right: 12px;
     font-size: 24px !important;
     color: rgba(0, 0, 0, .54);
     line-height: 45px;
+    text-align: center;
+}
+
+@media(max-width:600px) {
+    .form-row .icon-label {
+        margin-right: 8px;
+    }
 }
 
 .form-row .hint {
@@ -2875,6 +2894,11 @@ textarea.materialize-textarea {
     vertical-align: top;
 }
 
+.schedule-row .item {
+    padding: 20px 0;
+    text-align: center;
+}
+
 .schedule-row .day-title {
     padding: 20px 24px;
     width: 20%;
@@ -2894,7 +2918,7 @@ textarea.materialize-textarea {
 }
 
 #one-day-schedule .day-title {
-    background-color: #f5f5f5;
+    background-color: #f9f9f9;
 }
 
 #one-day-schedule .day-title > a {
@@ -2950,12 +2974,7 @@ textarea.materialize-textarea {
 }
 
 #one-day-schedule .day-title-spacer {
-    background-color: #f5f5f5;
-}
-
-.schedule-row .item {
-    padding: 20px 0;
-    text-align: center;
+    background-color: #f9f9f9;
 }
 
 .schedule-row .item .shortcut {
@@ -3001,9 +3020,16 @@ textarea.materialize-textarea {
 
 /* ----- ASSIGNMENTS ----- */
 
+.assignment-preview {
+    color: rgba(0, 0, 0, .87);
+}
+
+.assignment-preview .card-content p {
+    padding-right: 56px;
+}
+
 .assignment {
-    border-top: 1px solid rgba(0, 0, 0, .0);
-    border-bottom: 1px solid rgba(0, 0, 0, .1);
+    border-bottom: 1px solid #f1f1f1;
     padding: 20px 24px;
     width: 100%;
     display: flex;
@@ -3022,12 +3048,6 @@ textarea.materialize-textarea {
     }
 }
 
-.noticeboard-assignment {
-    border-bottom: none;
-    background-color: #f5f5f5;
-
-}
-
 .noticeboard-assignment .btn.white {
     background-color: transparent !important;
 }
@@ -3042,7 +3062,7 @@ textarea.materialize-textarea {
     display: flex;
     align-items: center;
     height: 36px;
-    border: 1px solid rgba(0, 0, 0, .12);
+    border: 1px solid #f1f1f1;
 }
 
 .assignment i {
@@ -3072,38 +3092,6 @@ textarea.materialize-textarea {
     align-items: center;
 }
 
-.assignment-preview {
-    display: flex;
-    align-items: center;
-    padding: 24px;
-}
-
-@media(max-width:992px) {
-    .assignment-preview {
-        padding: 16px;
-    }
-}
-
-@media(max-width:600px) {
-    .assignment-preview {
-        padding: 16px 12px;
-    }
-}
-
-.assignment-preview .title {
-    display: flex;
-    flex-direction: column;
-    color: rgba(0, 0, 0, .87);
-    font-weight: 500;
-}
-
-.assignment-preview .title span {
-    font-size: 13px;
-    color: rgba(0, 0, 0, .54);
-    font-weight: 400;
-}
-
-
 /* ----- Notifications -----  */
 
 .card.assignments {
@@ -3116,7 +3104,7 @@ textarea.materialize-textarea {
 }
 
 .assignments-header-btn {
-    background-color: #f5f5f5;
+    background-color: #f9f9f9;
     -webkit-transition: background-color 300ms ease-in-out;
     -moz-transition: background-color 300ms ease-in-out;
     -o-transition: background-color 300ms ease-in-out;
@@ -3257,7 +3245,7 @@ textarea.materialize-textarea {
 
 .card-link-big .icon {
     padding: 24px;
-    border-left: 1px solid rgba(0, 0, 0, .12);
+    border-left: 1px solid #f1f1f1;
 }
 
 .card-link-big .icon .circle {
@@ -3298,11 +3286,23 @@ textarea.materialize-textarea {
 }
 
 #search-page {
-    margin-top: 80px;
+    margin-top: 56px;
+}
+
+@media only screen and (max-width: 992px) {
+    #search-page {
+        margin-top: 32px;
+    }
 }
 
 #search-value {
     font-size: 17px;
+}
+
+@media only screen and (max-width: 600px) {
+    #search-value {
+        font-size: 15px;
+    }
 }
 
 #search-button {
@@ -3316,6 +3316,21 @@ textarea.materialize-textarea {
 #search-results .card {
     padding: 20px 24px;
     margin-bottom: 24px;
+    align-items: center;
+}
+
+@media only screen and (max-width: 992px) {
+    #search-results .card {
+        padding: 16px;
+        margin-bottom: 16px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    #search-results .card {
+        padding: 16px 12px;
+        margin-bottom: 8px;
+    }
 }
 
 #search-results .card .title {
@@ -3342,3 +3357,15 @@ textarea.materialize-textarea {
     line-height: 42px;
     color: rgba(0, 0, 0, .54);
 }
+
+@media only screen and (max-width: 992px) {
+    #search-results .card .send-message,
+    #search-results .card .send-message i {
+        height: 36px;
+        line-height: 36px;
+        width: 36px;
+    }
+}
+
+
+

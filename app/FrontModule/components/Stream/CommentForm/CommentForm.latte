@@ -19,15 +19,19 @@
                     <div class="comment-header">
                         <a href="{plink Profile:default 'id'=>$member->urlId}">{$comm->user->name} {$comm->user->surname}</a>
                         <div class="flex-spacer"></div>
+                        <span>
                         {if $comm->sinceStart->d >= 1}
-                            <span>{$comm->created|date:"j. n."}</span>
-                        {elseif $comm->sinceStart->h > 1}
-                            <span>Před {$comm->sinceStart->h} hodinami</span>
+                            {$comm->created|date:"j. n."}
+
+                        {*{elseif $comm->sinceStart->h > 1}
+                            Před {$comm->sinceStart->h} hodinami
                         {elseif $comm->sinceStart->i > 1}
-                            <span>Před {$comm->sinceStart->i} minutami</span>
+                            Před {$comm->sinceStart->i} minutami*}
+
                         {else}
-                            <span>Právě teď</span>
+                            {$comm->created|date:"h:i"}
                         {/if}
+                        </span>
                     </div>
                     <div class="comment-text">{$comm->text|escape|nl2br|noescape}</div>
                 </div>
