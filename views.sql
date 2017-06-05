@@ -1,3 +1,4 @@
+
 CREATE VIEW vw_user_groups AS
 SELECT user_group.ID_GROUP, user_group.ID_USER, user_group.ID_RELATION, group_relations.NAME FROM user_group 
 LEFT JOIN group_relations ON user_group.ID_RELATION = group_relations.ID_RELATION
