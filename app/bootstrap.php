@@ -6,7 +6,7 @@ $configurator = new Nette\Configurator;
 
 $configurator->setDebugMode(true); // enable for your remote IP
 $configurator->enableDebugger(__DIR__ . '/../log');
-
+                                  //ahoj
 $configurator->setTempDirectory(__DIR__ . '/../temp');
 
 $configurator->createRobotLoader()
