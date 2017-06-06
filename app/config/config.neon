@@ -19,10 +19,10 @@ session:
 
 
 services:
-	router: App\RouterFactory::createSecuredRouter
+	router: App\RouterFactory::createRouter
 
 
 database:
-	dsn: 'mysql:host=185.8.238.199;dbname=koala'
+	dsn: 'mysql:host=89.221.211.158;dbname=koala'
 	user: 'koala_user'
 	password: '6JdEvQmcSBrbq4Mz'

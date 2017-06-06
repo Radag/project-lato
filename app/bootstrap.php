@@ -16,7 +16,7 @@ $configurator->createRobotLoader()
 
 $configurator->addConfig(__DIR__ . '/config/services.neon');
 $configurator->addConfig(__DIR__ . '/config/config.neon');
-if ($configurator->isDebugMode()) {
+if (is_readable(__DIR__ . '/config/config.local.neon')) {
     $configurator->addConfig(__DIR__ . '/config/config.local.neon');
 }
 
