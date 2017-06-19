@@ -2,46 +2,25 @@
     <nav>
         <div class="nav-wrapper">
             <ul id="slide-out" class="side-nav">
-                <a href="" class="side-nav-header">
-                    <div class="avatar large"><img src="{$activeUser->profileImage}"></div>
-                    <div class="title">{$activeUser->name} {$activeUser->surname}</div>
-                </a>
-                <li><a n:class="$presenter->isLinkCurrent('Profile:default') ? active, waves-effect, waves-dark" href="{plink Profile:default}" >
-                        <i class="material-icons">person</i>Profil
-                    </a></li>
-                <li><a n:class="$presenter->isLinkCurrent('Profile:messages') ? active" href="{plink Profile:messages}" >
-                        <i class="material-icons">email</i>Zprávy
-                    </a></li>
-                <li class="no-padding">
-                    <ul class="collapsible collapsible-accordion">
-                        <li>
-                            <a n:class="($presenter->isLinkCurrent('Account:*') ? active), collapsible-header, waves-effect, waves-dark">
-                                <i class="material-icons">settings</i>Nastavení
-                                <i class="material-icons show-more">expand_more</i>
-                            </a>
-                            <div class="collapsible-body">
-                                <ul>
-                                    <li><a href="{plink Account:default}" n:class="$presenter->isLinkCurrent('Account:*') ? active">
-                                            <i class="material-icons">account_box</i>Správa účtu
-                                        </a></li>
-                                    <li><a href="{plink Homepage:logout}">
-                                            <i class="material-icons">power_settings_new</i>Odhlásit se
-                                        </a></li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
+                <li class="side-nav-close">
+                    <i class="material-icons">keyboard_arrow_left</i>Zavřít panel    
                 </li>
-                <div class="divider"></div>
+                <li class="side-nav-header">
+                    <div class="avatar small"><img src="{$activeUser->profileImage}"></div>
+                    <div class="title">{$activeUser->name} {$activeUser->surname}</div>
+                </li>
                 <li><a n:class="$presenter->isLinkCurrent('Homepage:noticeboard') ? active, waves-effect, waves-dark" href="{plink Homepage:noticeboard}" >
                         <i class="material-icons">dashboard</i>Nástěnka
-                    </a></li>
-
+                </a></li>
+                <li><a n:class="$presenter->isLinkCurrent('Profile:messages') ? active" href="{plink Profile:messages}" >
+                        <i class="material-icons">email</i>Zprávy
+                </a></li>
                 <li class="no-padding">
                     <ul class="collapsible collapsible-accordion">
                         <li>
                             <a n:class="($presenter->isLinkCurrent('Group:default') ? active), collapsible-header, waves-effect, waves-dark">
                                 <i class="material-icons">people</i>Skupiny
+                                <div class="flex-spacer"></div>
                                 <i class="material-icons show-more">expand_more</i>
                             </a>
                             <div class="collapsible-body">
@@ -71,7 +50,21 @@
                 <li><a n:class="$presenter->isLinkCurrent('Homepage:classification') ? active, waves-effect, waves-dark" href="{plink :Front:Homepage:classification}" >
                         <i class="material-icons">star</i>Klasifikace
                     </a></li>
+
+
+                <li class="divider"></li>
+                <h4>Správa účtu</h4>
+                <li><a href="{plink Account:default}" n:class="$presenter->isLinkCurrent('Account:*') ? active">
+                    <i class="material-icons">settings</i>Nastavení
+                </a></li>
+                <li><a href="{plink Homepage:logout}">
+                    <i class="material-icons">power_settings_new</i>Odhlásit se
+                </a></li>
+                  
+                
+
                 <li class="empty"></li>
+                
             </ul>
 
 
@@ -150,7 +143,7 @@
                 </ul>
             </li>
 
-            <li><a class="waves-effect waves-dark" href="{plink Homepage:search}"><i class="material-icons">search</i></a></li>
+            <li><a href="{plink Homepage:search}" class="waves-effect waves-dark"><i class="material-icons">search</i></a></li>
         </ul>
     </div>
 </div>
@@ -159,6 +152,14 @@
 
 
 </header>
+<script>
+$(document).ready(function(){
+    $('.side-nav-close').on('click', function() {
+        $('.button-collapse').sideNav('hide');
+    });
+   
+});
+</script>
 
 {control newGroupForm}
 {control joinGroupForm}

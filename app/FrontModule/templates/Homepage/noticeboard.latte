@@ -81,7 +81,7 @@
                 <div class="assignment noticeboard-assignment">
                     {control taskHeader-$task->idTask}
                 </div>
-                <a href="{plink Group:message 'id'=>$task->group->urlId, 'idMessage'=>$task->idMessage}" class="assignment-preview waves-effect waves-light-gray">
+                <a href="{plink Group:message 'id'=>$task->group->urlId, 'idMessage'=>$task->idMessage}" class="assignment-preview">
                     <div class="card-header">
                         <div class="avatar">
                             <img src="{$task->message->user->profileImage|noescape}">

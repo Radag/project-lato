@@ -36,7 +36,6 @@ a {
     height: 42px;
     width: 42px;
     margin-right: 12px;
-    background-color: #f9f9f9;
     border-radius: 50%;
     color: #fff;
     font-weight: 500;
@@ -47,6 +46,7 @@ a {
     .avatar {
         height: 36px;
         width: 36px;
+        margin-right: 8px;
     }
 }
 
@@ -546,6 +546,12 @@ input[type="password"] {
     }
 }
 
+@media only screen and (max-width: 600px) {
+    .card-footer {
+        padding: 0 12px 16px 12px;
+    }
+}
+
 .card-bottom {
     margin-bottom: -8px;
 }
@@ -683,6 +689,8 @@ input[type="password"] {
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 36px;
+    width: 36px;
 }
 
 .btn-inline {
@@ -822,7 +830,7 @@ input[type="password"] {
     .profile-header .avatar {
         width: 48px;
         height: 48px;
-        margin: 8px 16px;
+        margin: 8px 8px 8px 16px;
     }    
 }
 
@@ -980,6 +988,12 @@ input[type="password"] {
   position: fixed;
 }
 
+@media only screen and (max-width: 992px) {
+    .navbar-fixed nav {
+        box-shadow: 0 1px 3px  rgba(0, 0, 0, .2);     
+    }
+}
+
 
 .navbar-fixed nav .left-nav-flex,
 .navbar-fixed nav .right-nav-flex {
@@ -993,6 +1007,12 @@ input[type="password"] {
     .navbar-fixed nav .right-nav-flex {
         padding: 0 6px 0 12px;
     }
+}
+
+.navbar-fixed nav .right-nav-flex {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 .navbar-fixed nav {
@@ -1046,9 +1066,9 @@ input[type="password"] {
     .content-nav {
         order: 3;
         width: 100%;
-        padding: 0;
-        height: 52px;
-        line-height: 52px;
+        padding: 0 8px;
+        height: 48px;
+        line-height: 48px;
     }  
 
     .content-nav li {
@@ -1103,17 +1123,17 @@ input[type="password"] {
 }
 
 .navbar-nav > li > a {
+    display: block;
     position:relative;
-    width: 42px;
+    width: 40px;
     padding: 0;
     border-radius: 50%;
     text-align: center;
-    margin: 7px 0;
 }
 
 .navbar-nav > li > a i {
-    line-height: 42px !important;
-    height: 42px !important;
+    line-height: 40px !important;
+    height: 40px !important;
 }
 
 .navbar-nav > li a:hover {
@@ -1135,12 +1155,7 @@ input[type="password"] {
   }
 
   .navbar-nav  > li {
-    height: 56px;
     margin: 0 6px;
-  }
-
-  .navbar-nav > li > a {
-    margin: 14px 0;
   }
 }
 
@@ -1665,7 +1680,7 @@ textarea.materialize-textarea {
 
 @media only screen and (max-width: 992px) { 
     .two-level-nav {
-        margin-top: 72px;
+        margin-top: 68px;
     }
 }
 
@@ -1675,7 +1690,7 @@ textarea.materialize-textarea {
     }
 
     .two-level-nav {
-        margin-top: 64px;
+        margin-top: 60px;
     }
 
 }
@@ -1873,66 +1888,97 @@ textarea.materialize-textarea {
 
 /* ----- SIDEBAR NAVIGATION ----- */
 
-.side-nav li.empty {
-    height: 30px !important;
+.side-nav li {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-grow: 1
+    padding: 0;
+}
+
+.side-nav li a {
+    display: flex;
+}
+
+.side-nav li i.material-icons {
+    color: rgba(0, 0, 0, .54);
+    text-align: center;
+    width: 36px !important;
+    margin-right: 32px;
+    line-height: 48px;
+    height: 48px;
+    font-size: 22px !important;
+}
+
+.side-nav .side-nav-close {
+    cursor: pointer;
+    border-bottom: 1px solid #efefef;
+    padding: 0 16px;
+    height: 56px;
+}
+
+@media only screen and (min-width: 601px) {
+    .side-nav .side-nav-close {
+        display: none;
+    } 
+}
+
+.side-nav .side-nav-close,
+.side-nav .side-nav-close i {
+    color: #2979FF !important;
 }
 
 .side-nav .side-nav-header {
-    position: relative;
-    display: block;
-    height: 160px;
-    width: 100%;
-    background-image: url("../images/media-picture-large.png");
-    background-size: cover;
-    margin-bottom: 12px;
-    padding: 20px;
+    display: flex;
+    padding: 20px 16px;
+    height: 36px;
+    line-height: 36px;
+    box-sizing: content-box;
+    border-bottom: 1px solid #efefef;
+    margin-bottom: 16px;
+}
+
+@media only screen and (max-width: 600px) {
+    .side-nav .side-nav-header {
+        padding: 16px;
+    } 
 }
 
 .side-nav .side-nav-header .avatar {
-    background-color: rgba(29, 29, 29, .16);
-    padding: 4px;
-    box-sizing: content-box;
-    border-radius: 50%;
-    margin-left: -4px;
+    margin-right: 32px;
 }
 
 .side-nav .side-nav-header .title {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 50px;
-    line-height: 50px;
-    width: 100%;
-    background-color: rgba(29, 29, 29, .54);
-    color: #fff;
-    padding:0 20px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
-}
-
-#slide-out li {
-    padding:0;
-}
-
-#slide-out li a {
-    font-size: 14px;
-    font-weight: 700;    
-    height: 100% !important;
-    line-height: 48px !important;
     color: rgba(0, 0, 0, .87);
 }
 
-#slide-out i {
-    display:block !important;
-    float:left;
-    line-height:48px;
-    color:rgba(0, 0, 0, .54);
-    text-align: center;
-    width: 30px;
-    height:48px;
-    margin-right: 16px;
-    font-size: 22px !important;
+@media only screen and (max-width: 600px) {
+    .side-nav .side-nav-header .title {
+        font-size: 15px;
+    } 
 }
+
+.side-nav li a {
+    flex-grow: 1;
+    font-weight: 700;
+    color: rgba(0, 0, 0, .87);
+}
+
+.side-nav .collapsible {
+    flex-grow: 1;
+}
+
+.side-nav .collapsible-body {
+    display: flex;
+    flex-grow: 1;
+}
+
+.side-nav .collapsible-body ul {
+    flex-grow: 1;
+}
+
 
 #slide-out .collapsible-body i {
     margin-right: 24px;
@@ -1943,15 +1989,15 @@ textarea.materialize-textarea {
     color: #2979FF;
 }
 
-#slide-out .group-shortcut-circle {
-    width: 30px;
-    height: 30px;
+.side-nav .group-shortcut-circle {
+    width: 36px;
+    height: 36px;
+    border: 3px solid #fff;
     border-radius: 50%;
-    float: left;
     background-color: rgba(0, 0, 0, .54);
     text-align: center;
-    margin: 9px 0px;
-    margin-right: 24px;
+    margin: 0;
+    margin-right: 32px;
     line-height: 30px;
     color: #fff;
     font-weight: 700;
@@ -1978,6 +2024,7 @@ textarea.materialize-textarea {
 
 .side-nav .collapsible-body li a {
     padding: 0 16px;
+    align-items: center;
     font-weight: 400 !important;
     color: rgba(0, 0, 0, .54) !important;
     -webkit-transition: color 300ms ease-in-out;
@@ -2002,16 +2049,21 @@ textarea.materialize-textarea {
 }
 
 .side-nav .divider {
-    margin: 12px 0;
+    margin: 20px 0;
+    background-color: #efefef;
 }
 
 .side-nav h4 {
     font-size: 13px;
     color: rgba(0, 0, 0, .54);
-    line-height: 48px;
+    line-height: 1em;
     margin: 0;
-    padding:0 20px;
-    font-weight: 400;
+    padding: 8px 16px 16px 16px;
+    font-weight: 500;
+}
+
+.side-nav .empty {
+    height: 40px;
 }
 
 /* ---------- */
@@ -2143,19 +2195,25 @@ textarea.materialize-textarea {
     color:rgba(0, 0, 0, .54);
     font-weight:400;
     display:block;
-    margin-right: 12px;
 }
 
 .card-header .card-options {
     color: rgba(0, 0, 0, .54);
     line-height: 36px;
     padding: 0;
+    margin-left: 12px;
     width: 36px;
     text-align: center;
      -webkit-transition:  300ms ease-in-out;
     -moz-transition:  300ms ease-in-out;
     -o-transition:  300ms ease-in-out;
     transition:  300ms ease-in-out;
+}
+
+@media only screen and (max-width: 600px) {
+    .card-header .card-options {
+        margin-left: 8px;
+    }
 }
 
 .card-header .card-options:hover {
@@ -2336,7 +2394,7 @@ textarea.materialize-textarea {
 
 @media only screen and (max-width: 600px) {
     .comment-row {
-        padding: 12px;
+        padding: 8px 12px;
     }
 }
 
@@ -2367,7 +2425,8 @@ textarea.materialize-textarea {
 
 .comment-row .comment-content .comment-text {
     clear: both;
-    padding-right: 56px;
+    padding-right: 5%;
+    word-break: break-word;
 }
 
 .comments-footer {
@@ -2610,6 +2669,8 @@ textarea.materialize-textarea {
     margin-right: 8px;
     color: #fff;
     cursor: pointer;
+    text-align: center;
+    font-size: 18px !important;
 }
 
 .group-color-select i.active:after {
@@ -3022,6 +3083,7 @@ textarea.materialize-textarea {
 
 .assignment-preview {
     color: rgba(0, 0, 0, .87);
+    cursor: default;
 }
 
 .assignment-preview .card-content p {
