@@ -27,8 +27,8 @@ class FileManager extends BaseManager
         $file = $this->database->query('SELECT PATH, FILENAME FROM file_list WHERE ID_FILE=?', $idFile)->fetch();
         if($file) {
             $connId = $this->getFtpConnection();
-            if(ftp_size($connId , '/cdn/' . $file['PATH'] . '/' . $file['FILENAME']) !== -1) {
-                ftp_delete($connId, '/cdn/' . $file['PATH'] . '/' . $file['FILENAME']);
+            if(ftp_size($connId , '/var/www/cdn/' . $file['PATH'] . '/' . $file['FILENAME']) !== -1) {
+                ftp_delete($connId, '/var/www/cdn/' . $file['PATH'] . '/' . $file['FILENAME']);
             }
             $this->deleteFile($idFile);
         }
@@ -49,7 +49,7 @@ class FileManager extends BaseManager
         $date = new \DateTime();
         $timestamp = $date->getTimestamp();
 
-        if (ftp_put($connId, '/cdn/' . $path . '/' . $timestamp . '_' . $file->getSanitizedName(), $file->getTemporaryFile(), FTP_BINARY)) {
+        if (ftp_put($connId, '/var/www/cdn/' . $path . '/' . $timestamp . '_' . $file->getSanitizedName(), $file->getTemporaryFile(), FTP_BINARY)) {
             if($file->isImage()) {
                 $newFile['ID_TYPE'] = self::FILE_TYPE_IMAGE;
             } else {
@@ -80,8 +80,8 @@ class FileManager extends BaseManager
 
     protected function getFtpConnection()
     {
-        $conn_id = ftp_connect('185.8.238.199') or die("Couldn't connect to '185.8.238.199'");
-        $login_result = ftp_login($conn_id, 'petr', 'petricek3');
+        $conn_id = ftp_connect('89.221.211.158') or die("Couldn't connect to '185.8.238.199'");
+        $login_result = ftp_login($conn_id, 'cdn', 'N0yeA4e');
         return $conn_id;
     }
 
