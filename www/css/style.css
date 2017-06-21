@@ -523,6 +523,14 @@ input[type="password"] {
     font-size: 14px;
 }
 
+@media only screen and (max-width: 992px) {
+    input[type="text"],
+    input[type="date"],
+    input[type="password"] {
+        font-size: 16px;
+    }
+}
+
 .upload-file-input {
     display: block;
     border-bottom: 1px solid rgba(0, 0, 0, .12);
@@ -1625,6 +1633,12 @@ textarea.materialize-textarea {
     min-height: 45px !important;
 }
 
+@media only screen and (max-width: 992px) {
+    textarea.materialize-textarea {
+        font-size: 16px;
+    }
+}
+
 .no-border {
     border-color: transparent !important;
 }
@@ -2485,7 +2499,6 @@ textarea.materialize-textarea {
     float: left;
     min-height:21px !important;
     height: 21px;
-    font-size: 14px;
 }
 
 .comments-footer button {
@@ -2516,22 +2529,23 @@ textarea.materialize-textarea {
     font-size: 22px;
 }
 
-
-
-
 ::-webkit-input-placeholder {
-   color: rgba(0, 0, 0, .54);
+    font-size: 14px;
+    color: rgba(0, 0, 0, .54);
 }
 
 :-moz-placeholder { /* Firefox 18- */
+   font-size: 14px
    color: rgba(0, 0, 0, .54);  
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
+   font-size: 14px
    color: rgba(0, 0, 0, .54);  
 }
 
 :-ms-input-placeholder {  
+   font-size: 14px;
    color: rgba(0, 0, 0, .54);  
 }
 

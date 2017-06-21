@@ -165,7 +165,7 @@ input[type="password"] {
    color: rgba(0, 0, 0, .54);  
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 992px) {
     input[type="text"],
     input[type="date"],
     input[type="password"] {
@@ -176,22 +176,22 @@ input[type="password"] {
     }
 
     ::-webkit-input-placeholder {
-        font-size: 14px;
+        font-size: 15px;
         color: rgba(0, 0, 0, .54);
     }
 
     :-moz-placeholder { /* Firefox 18- */
-        font-size: 14px;
+        font-size: 15px;
         color: rgba(0, 0, 0, .54);  
     }
 
     ::-moz-placeholder {  /* Firefox 19+ */
-        font-size: 14px;
+        font-size: 15px;
         color: rgba(0, 0, 0, .54);  
     }
 
     :-ms-input-placeholder {  
-        font-size: 14px;
+        font-size: 15px;
         color: rgba(0, 0, 0, .54);  
     }
 }
