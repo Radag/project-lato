@@ -18,7 +18,7 @@ class FileManager extends BaseManager
     const FILE_TYPE_POWERPOINT = 5;
     const FILE_TYPE_PDF = 6;
     
-    const USER_DIRECTORY = '/cdn/users/';
+    const USER_DIRECTORY = '/var/www/cdn/users/';
 
     
     public function removeFile($idFile)

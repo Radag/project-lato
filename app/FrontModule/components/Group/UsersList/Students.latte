@@ -1,3 +1,4 @@
+{if $groupMembers}
 <section class="main two-level-nav">
     <div class="container offset-1">
         <div class="row">
@@ -191,7 +192,9 @@
         </div>
     </div>
 </div>
-            
+{else}
+    Nikdo tu není 
+{/if}
 <!-- MODALS -->
 <div n:if="$permission['editClassification']" id="new-classification-modal" class="modal modal-small">
     {snippet addClassificationForm}
