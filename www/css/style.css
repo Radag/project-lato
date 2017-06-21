@@ -1367,6 +1367,30 @@ strong {
     }
 }
 
+.attachments_uploads li {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 12px;
+    border: 1px solid #efefef;
+    height: 56px;
+}
+
+.attachments_uploads li .file-name {
+    display: block;
+    flex-grow: 1;
+    font-weight: 500;
+    color: rgba(0, 0, 0, .87);
+}
+
+.attachments_uploads li .remove-attachment {
+    font-size: 20px;
+    color: rgba(0, 0, 0, .54);
+    margin-left: 12px;
+}
+
+/*
+
 .attachments li {
     display: flex;
     width: 100%;
@@ -1386,6 +1410,7 @@ strong {
 }
 
 .attachments li .attachment-icon {
+    display:none;
     width: 42px;
     margin-right: 12px;
     margin: -1px 12px -1px -1px;
@@ -1428,9 +1453,10 @@ strong {
     color: rgba(0, 0, 0, .87);
     font-weight: 500;
     flex-grow: 1;
-    display: flex;
-    align-items: center;
+    margin-top: 12px;
 }
+
+*/
 
 /* ----- SELECT POST TYPE ----- */
 
@@ -1478,7 +1504,7 @@ strong {
 
 #create-post-modal .modal-content .attachments li .attachment-label .upload-file-progress {
     position: relative;
-    margin:16px 0;
+    margin-top: 4px;
 }
 
 .attachments li a.remove-attachment {
@@ -1528,6 +1554,7 @@ strong {
     display: flex;
     padding: 18px 24px;
     justify-content: flex-end;
+    align-items: center;
 }
 
 @media only screen and (max-width: 600px) {
@@ -1944,6 +1971,12 @@ textarea.materialize-textarea {
     } 
 }
 
+@media only screen and (min-width: 601px) {
+    .side-nav .side-nav-header {
+        border-top: 5px solid #f9f9f9;
+    } 
+}
+
 .side-nav .side-nav-header .avatar {
     margin-right: 32px;
 }
@@ -1979,13 +2012,8 @@ textarea.materialize-textarea {
     flex-grow: 1;
 }
 
-
-#slide-out .collapsible-body i {
-    margin-right: 24px;
-}
-
-#slide-out > li > a.active,
-#slide-out > li > a.active i { 
+.side-nav > li > a.active,
+.side-nav > li > a.active i { 
     color: #2979FF;
 }
 

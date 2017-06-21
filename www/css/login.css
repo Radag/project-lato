@@ -42,28 +42,40 @@ h1 {
     margin: 16px 0 0 0;
 }
 
+@media only screen and (max-width: 600px) {
+    h1 {
+        font-size: 20px;
+        margin-top: 8px;
+    }
+}
+
 #page-header #logo {
-    height: 26px;
+    height: 28px;
     width: 64px;
     margin: auto;
     background: url("../images/logo.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+@media only screen and (max-width: 600px) {
+    #page-header #logo {
+        height: 21px;
+        width: 48px; 
+    }
 }
 
 #page-header p {
     text-align: center;
     color: rgba(0, 0, 0, .38);
-    margin: 24px 0;
-}
-
-@media only screen and (max-width: 992px) {
-    #page-header p {
-        margin: 20px 0; 
-    }
+    margin: 20px 0 24px 0;
 }
 
 @media only screen and (max-width: 600px) {
     #page-header p {
-        margin: 16px 0; 
+        font-size: 13px;
+        margin: 12px 0 16px 0; 
     }
 }
 
@@ -75,6 +87,7 @@ h1 {
 
 @media only screen and (max-width: 992px) {
     #page-footer p {
+        font-size: 13px;
         margin: 40px 0 20px 0; 
     }
 }
@@ -113,7 +126,7 @@ h1 {
 
 @media only screen and (max-width: 600px) {
     .card .card-content {
-        padding: 16px 12px; 
+        padding: 8px 12px; 
     }
 }
 
@@ -152,6 +165,37 @@ input[type="password"] {
    color: rgba(0, 0, 0, .54);  
 }
 
+@media only screen and (max-width: 600px) {
+    input[type="text"],
+    input[type="date"],
+    input[type="password"] {
+        border-bottom: 1px solid rgba(0, 0, 0, .12);
+        margin-bottom: 0;
+        height: 45px;
+        font-size: 16px;
+    }
+
+    ::-webkit-input-placeholder {
+        font-size: 14px;
+        color: rgba(0, 0, 0, .54);
+    }
+
+    :-moz-placeholder { /* Firefox 18- */
+        font-size: 14px;
+        color: rgba(0, 0, 0, .54);  
+    }
+
+    ::-moz-placeholder {  /* Firefox 19+ */
+        font-size: 14px;
+        color: rgba(0, 0, 0, .54);  
+    }
+
+    :-ms-input-placeholder {  
+        font-size: 14px;
+        color: rgba(0, 0, 0, .54);  
+    }
+}
+
 .form-row {
     display: flex;
     align-items: center;
@@ -164,18 +208,39 @@ input[type="password"] {
     margin-top: 24px;
 }
 
+@media only screen and (max-width: 600px) {
+    .form-controls {
+        flex-direction: column;
+        margin: 0;
+    }
+}
+
 .remember-me {
     margin: 0;
     line-height: 36px;
 }
 
+@media only screen and (max-width: 600px) {
+    .remember-me {
+        flex-grow: 1;
+        margin-bottom: 20px !important;
+    }
+}
+
 .remember-me label {
     color: rgba(0, 0, 0, .54);
+    line-height: 20px;
 }
 
 .bottom-link {
     text-align: center;
     margin-top:48px;
+}
+
+@media only screen and (max-width: 600px) {
+    .bottom-link {
+        margin-top: 32px;
+    }
 }
 
 .bottom-link a {
