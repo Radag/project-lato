@@ -953,6 +953,7 @@ input[type="password"] {
 }
 
 .container {
+    position: relative;
     width:100%;
     max-width:1220px;
     padding:0 32px;
@@ -1344,10 +1345,13 @@ strong {
     min-height: 6em;
 }
 
+.term-picker .select-wrapper {
+    width: 30%;
+}
+
 .term-picker input {
-    flex-grow: 1;
     text-align: right;
-    width: auto !important;
+    width: 30%;
 }
 
 .term-picker input.select-dropdown {
@@ -2155,6 +2159,7 @@ textarea.materialize-textarea {
 
 .flex-column {
     flex-direction: column;
+    align-items: flex-start;
 }
 
 @media only screen and (max-width: 992px) {
@@ -2322,7 +2327,7 @@ textarea.materialize-textarea {
 
 .card .card-content {
     padding: 24px;
-    padding-bottom: 32px;
+    width: 100%;
 }
 
 .card.grid-item .card-content {
@@ -2703,7 +2708,6 @@ textarea.materialize-textarea {
 
 .group-color-select {
     display: flex;
-    width: 100%;
     margin: 8px 0;
 }
 
@@ -2712,12 +2716,15 @@ textarea.materialize-textarea {
     border-radius: 50%;
     height: 26px;
     width: 26px;
-    padding-left: 1px;
     margin-right: 8px;
     color: #fff;
     cursor: pointer;
     text-align: center;
     font-size: 18px !important;
+}
+
+.group-color-select label:last-child i {
+    margin-right: 0;
 }
 
 .group-color-select i.active:after {
@@ -2886,6 +2893,7 @@ textarea.materialize-textarea {
 .form-row .inner-label {
     margin: 0 16px 0 32px;
     display: flex;
+    flex-grow: 1;
     align-items: center;
     font-weight: 500;
 }
@@ -2896,13 +2904,63 @@ textarea.materialize-textarea {
     flex-grow: 1;
 }
 
+/* ----- SETTINGS (GROUP) -----*/
 
-.card.settings .card-content h4 {
-    font-size: 18px;
-    font-weight: 500;
+.settings {
+    padding-bottom: 84px;
+}
+
+.card.settings-group-name .card-content {
+    display: flex;
+}
+
+.card.settings-group-name .card-content input {
+    flex-grow: 1;
+    margin-right: 24px;
+    font-size: 16px;
+}
+
+.card.settings-group-name .card-content ::-webkit-input-placeholder {
+    font-size: 16px;
+}
+
+.card.settings-group-name .card-content :-moz-placeholder { /* Firefox 18- */
+   font-size: 16px
+}
+
+.card.settings-group-name .card-content ::-moz-placeholder {  /* Firefox 19+ */
+   font-size: 16px
+}
+
+.card.settings-group-name .card-content :-ms-input-placeholder {  
+   font-size: 16px;
+}
+
+
+.card.settings .form-row:first-child {
+    margin-top: 0;
+}
+
+.card.settings .form-row #addScheduleRow {
+    cursor: pointer;
+    color: #2979FF;
+}
+
+.submit-settings {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 0;
+}
+
+.submit-settings .card {
     margin: 0;
-    margin-bottom: 16px;
-    line-height: 32px;
+    background-color: #f9f9f9;
+}
+
+.submit-settings .card .card-content {
+    display: flex;
 }
 
 .form-row .icon-label {
@@ -2935,9 +2993,6 @@ textarea.materialize-textarea {
     max-width: 680px;
 }
 
-.card-settings .form-row .input-flex input[type="text"] {
-    width: 100%;
-}
 
 .form-row .notice {
     margin-left: 16px;
@@ -2960,7 +3015,7 @@ textarea.materialize-textarea {
 }
 
 .card.settings .custom-collection li:first-child {
-    margin-top: 20px;
+    margin-top: 0px;
 }
 
 .card.settings .custom-collection li .item {
