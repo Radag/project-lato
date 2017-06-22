@@ -2,15 +2,14 @@
 {block content}
 {control topPanel}
 
-<div class="container offset-2 main two-level-nav">
+<div class="container main two-level-nav">
     <div class="row {*masonry-grid*}">
-        <div class="col s12 l12">
+        <div class="col s12 l8">
             {control stream}
         </div>
         
  
 
-        {* bocni panel
         <div class="col s12 l4">
             <div class="card flex-column">
                 <div class="card-header">
@@ -86,6 +85,7 @@
                 </div>
                 <div class="card-footer"></div>
             </div>
+            {*
             {if $activeGroup->owner->id === $activeUser->id}
             <div class="card flex-column bottom-spacer" n:if="$groupPermission['settings']">
                 <div class="card-header">
@@ -172,6 +172,7 @@
                 {/snippet}
             </div>
             {/if}
+            *}
             <div class="card flex-column" n:if="$groupPermission['showDeleted']">
                 <div class="card-header">
                     <h3>Výpis příspěvků</h3>
@@ -199,7 +200,7 @@
                 <div class="card-footer"></div>
             </div>
         </div>
-        *}
+        
 
     </div>
     <div id="commit-task-modal" class="modal modal-small">

@@ -182,8 +182,8 @@ nav.breadcrumbs {
     align-items: center;
 }
 
-.waves-effect.waves-light-gray .waves-ripple {
-    background-color: rgba(0, 0, 0, .12);
+.waves-effect.waves-dark .waves-ripple {
+    background-color: rgba(0, 0, 0, .09);
 }
 
 .progress.loading-data {
@@ -1720,18 +1720,22 @@ textarea.materialize-textarea {
 }
 
 @media only screen and (max-width: 992px) { 
+    .main {
+        margin-top: 16px;
+    }
+    
     .two-level-nav {
-        margin-top: 68px;
+        margin-top: 64px;
     }
 }
 
 @media only screen and (max-width: 600px) { 
     .main {
-        margin-top: 20px;
+        margin-top: 8px;
     }
 
     .two-level-nav {
-        margin-top: 60px;
+        margin-top: 56px;
     }
 
 }
@@ -2278,6 +2282,7 @@ textarea.materialize-textarea {
     width: 100%;
     padding: 24px;
     cursor: pointer;
+    align-items: center;
 }
 
 @media only screen and (max-width: 992px) {
