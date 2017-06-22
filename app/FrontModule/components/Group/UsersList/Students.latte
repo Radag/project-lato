@@ -1,8 +1,8 @@
-{if $groupMembers}
 <section class="main two-level-nav">
     <div class="container offset-1">
         <div class="row">
             <div class="col s12">
+                {if $groupMembers}
                 <header class="section-header no-padding">
                     
                     <button class="btn white dropdown-button" data-beloworigin="true" data-activates="action-dropdown">
@@ -31,170 +31,173 @@
             </div>
         </div>
     </div>
-</section>
-<div class="container offset-1">
-    <div class="row">
-        <div class="col s12">
-            <form action="#">
-                <div class="card-header table-header">
-                    <input type="checkbox" class="filled-in" id="select-all" />
-                    <label for="select-all"></label>   
-                    <div class="title">Student</div>
-                    <div class="flex-spacer"></div>
-                    <div class="table-field assessment-date">Poslední změna</div>
-                    <div class="table-field">Hodnocení</div>
-                </div>
-                <script>
-                    $(document).ready(function () {
-                        $("#select-all").on("change", function (e) {
-                            if ($(this).prop('checked')) {
-                                $(".user-checkbox").prop('checked', true);
-                            } else {
-                                $(".user-checkbox").prop('checked', false);
-                            }
-                        });
-                        
-                        $("#button-open-all-cards").on("click", function() {
-                            if($(this).data('status') == 'close') {
-                                $(".collapsible-header").addClass("active");
-                                $(".collapsible").collapsible({ accordion: false }); 
-                                $(this).data('status', 'open');
-                            } else {
-                                $(".collapsible-header").removeClass(function(){
-                                    return "active";
+    <div class="container offset-1">
+        <div class="row">
+            <div class="col s12">
+                <form action="#">
+                    <div class="card-header table-header">
+                        <input type="checkbox" class="filled-in" id="select-all" />
+                        <label for="select-all"></label>   
+                        <div class="title">Student</div>
+                        <div class="flex-spacer"></div>
+                        <div class="table-field assessment-date">Poslední změna</div>
+                        <div class="table-field">Hodnocení</div>
+                    </div>
+                    <script>
+                        $(document).ready(function () {
+                            $("#select-all").on("change", function (e) {
+                                if ($(this).prop('checked')) {
+                                    $(".user-checkbox").prop('checked', true);
+                                } else {
+                                    $(".user-checkbox").prop('checked', false);
+                                }
+                            });
+                            
+                            $("#button-open-all-cards").on("click", function() {
+                                if($(this).data('status') == 'close') {
+                                    $(".collapsible-header").addClass("active");
+                                    $(".collapsible").collapsible({ accordion: false }); 
+                                    $(this).data('status', 'open');
+                                } else {
+                                    $(".collapsible-header").removeClass(function(){
+                                        return "active";
+                                    });
+                                    $(".collapsible").collapsible({ accordion: true });
+                                    $(".collapsible").collapsible({ accordion: false });
+                                     $(this).data('status', 'close');
+                                }                          
+                            });
+                            
+                            $("#delete-user-button").on("click", function(event) {
+                                event.preventDefault();
+                                var users = [];
+                                $.each($(".user-checkbox:checked"), function(key, val) {
+                                    users.push($(val).data('id'));
                                 });
-                                $(".collapsible").collapsible({ accordion: true });
-                                $(".collapsible").collapsible({ accordion: false });
-                                 $(this).data('status', 'close');
-                            }                          
-                        });
-                        
-                        $("#delete-user-button").on("click", function(event) {
-                            event.preventDefault();
-                            var users = [];
-                            $.each($(".user-checkbox:checked"), function(key, val) {
-                                users.push($(val).data('id'));
-                            });
 
-                            $.nette.ajax({
-                                url: $(this).attr('href'),
-                                method: 'POST',
-                                data: {
-                                    'users': users
-                                },
-                                complete: function(data) {
-                                    $('#remove-users-modal').openModal();
-                                }
+                                $.nette.ajax({
+                                    url: $(this).attr('href'),
+                                    method: 'POST',
+                                    data: {
+                                        'users': users
+                                    },
+                                    complete: function(data) {
+                                        $('#remove-users-modal').openModal();
+                                    }
+                                });
                             });
-                        });
-                        
-                        $("#add-user-classification-button").on("click", function(event) {
-                            event.preventDefault();
-                            var users = [];
-                            $.each($(".user-checkbox:checked"), function(key, val) {
-                                users.push($(val).data('id'));
-                            });
+                            
+                            $("#add-user-classification-button").on("click", function(event) {
+                                event.preventDefault();
+                                var users = [];
+                                $.each($(".user-checkbox:checked"), function(key, val) {
+                                    users.push($(val).data('id'));
+                                });
 
-                            $.nette.ajax({
-                                url: $(this).attr('href'),
-                                method: 'POST',
-                                data: {
-                                    'users': users
-                                },
-                                complete: function(data) {
-                                    $('#user-classification-modal').openModal();
-                                }
+                                $.nette.ajax({
+                                    url: $(this).attr('href'),
+                                    method: 'POST',
+                                    data: {
+                                        'users': users
+                                    },
+                                    complete: function(data) {
+                                        $('#user-classification-modal').openModal();
+                                    }
+                                });
                             });
-                        });
-                        
-                        $("#send-message-user-button").on("click", function(event) {
-                            event.preventDefault();
-                            var users = [];
-                            $.each($(".user-checkbox:checked"), function(key, val) {
-                                users.push($(val).data('id'));
-                            });
+                            
+                            $("#send-message-user-button").on("click", function(event) {
+                                event.preventDefault();
+                                var users = [];
+                                $.each($(".user-checkbox:checked"), function(key, val) {
+                                    users.push($(val).data('id'));
+                                });
 
-                            $.nette.ajax({
-                                url: $(this).attr('href'),
-                                method: 'POST',
-                                data: {
-                                    'users': users
-                                },
-                                complete: function(data) {
-                                    $('#send-message-modal').openModal();
-                                }
+                                $.nette.ajax({
+                                    url: $(this).attr('href'),
+                                    method: 'POST',
+                                    data: {
+                                        'users': users
+                                    },
+                                    complete: function(data) {
+                                        $('#send-message-modal').openModal();
+                                    }
+                                });
                             });
-                        });
-                        
-                        $("#send-message-user-button").on("click", function(event) {
-                            event.preventDefault();
-                            var users = [];
-                            $.each($(".user-checkbox:checked"), function(key, val) {
-                                users.push($(val).data('id'));
-                            });
+                            
+                            $("#send-message-user-button").on("click", function(event) {
+                                event.preventDefault();
+                                var users = [];
+                                $.each($(".user-checkbox:checked"), function(key, val) {
+                                    users.push($(val).data('id'));
+                                });
 
-                            $.nette.ajax({
-                                url: $(this).attr('href'),
-                                method: 'POST',
-                                data: {
-                                    'users': users
-                                },
-                                complete: function(data) {
-                                    $('#send-message-modal').openModal();
-                                }
+                                $.nette.ajax({
+                                    url: $(this).attr('href'),
+                                    method: 'POST',
+                                    data: {
+                                        'users': users
+                                    },
+                                    complete: function(data) {
+                                        $('#send-message-modal').openModal();
+                                    }
+                                });
                             });
                         });
-                    });
-                </script>
-                {snippet memberList}
-                <ul class="collapsible popout" data-collapsible="expandable">
-                    {foreach $groupMembers as $member}
-                    <li>
-                        <div class="collapsible-header table-row">
-                            <input type="checkbox" class="filled-in user-checkbox" id="user_{$member->id}" data-id="{$member->id}"/>
-                            <label for="user_{$member->id}"></label>
-                            <div class="avatar small">
-                                <img src="{$member->profileImage}">
-                            </div>
-                            <div class="title">
-                                <span>{$member->surname}</span>, {$member->name}
-                            </div>
-                            <div class="flex-spacer"></div>
-                            <div class="table-field">{if !empty($member->getClassification()->lastDate)}{$member->getClassification()->lastDate->format("j. n. Y")}{else}--{/if}</div>
-                            <div class="classification table-field"><strong>{$member->getClassification()->averageGrade ?: '--'} </strong>({count($member->getClassification()->items)})</div>
-                        </div>
-                        <div class="collapsible-body">
-                            <div class="classification-table">
-                                {ifset $member->getClassification()->items}
-                                {foreach $member->getClassification()->items as $classification}
-                                <div class="table-row">
-                                    <a n:if="$permission['editClassification']"  href="{if $classification->idClassificationGroup}
-                                       {link classification! 'idGroupClassification'=>$classification->idClassificationGroup}
-                                       {else}{link editUserClassificationForm! 'idClassification'=>$classification->idClassification}{/if}" class="{if !$classification->idClassificationGroup}ajax add-user-classification{/if} material-icons edit">edit</a>
-                                    <a href="{if $classification->idClassificationGroup}
-                                       {link classification! 'idGroupClassification'=>$classification->idClassificationGroup}
-                                       {else}{link editUserClassificationForm! 'idClassification'=>$classification->idClassification}{/if}" class="{if !$classification->idClassificationGroup}ajax add-user-classification{/if} title truncate">{$classification->name}</a>
-                                    <div class="flex-spacer"></div>
-                                    <div class="table-field">{$classification->classificationDate->format("j. n. Y")}</div>
-                                    <div class="classification table-field">
-                                        <strong>{$classification->grade ?: '--'}</strong>
-                                    </div>
+                    </script>
+                    {snippet memberList}
+                    <ul class="collapsible popout" data-collapsible="expandable">
+                        {foreach $groupMembers as $member}
+                        <li>
+                            <div class="collapsible-header table-row">
+                                <input type="checkbox" class="filled-in user-checkbox" id="user_{$member->id}" data-id="{$member->id}"/>
+                                <label for="user_{$member->id}"></label>
+                                <div class="avatar small">
+                                    <img src="{$member->profileImage}">
                                 </div>
-                                {/foreach}
-                                {/ifset}
+                                <div class="title">
+                                    <span>{$member->surname}</span>, {$member->name}
+                                </div>
+                                <div class="flex-spacer"></div>
+                                <div class="table-field">{if !empty($member->getClassification()->lastDate)}{$member->getClassification()->lastDate->format("j. n. Y")}{else}--{/if}</div>
+                                <div class="classification table-field"><strong>{$member->getClassification()->averageGrade ?: '--'} </strong>({count($member->getClassification()->items)})</div>
                             </div>
-                        </div>
-                    </li>
-                    {/foreach}
-                </ul>
-                {/snippet}
-            </form>
+                            <div class="collapsible-body">
+                                <div class="classification-table">
+                                    {ifset $member->getClassification()->items}
+                                    {foreach $member->getClassification()->items as $classification}
+                                    <div class="table-row">
+                                        <a n:if="$permission['editClassification']"  href="{if $classification->idClassificationGroup}
+                                           {link classification! 'idGroupClassification'=>$classification->idClassificationGroup}
+                                           {else}{link editUserClassificationForm! 'idClassification'=>$classification->idClassification}{/if}" class="{if !$classification->idClassificationGroup}ajax add-user-classification{/if} material-icons edit">edit</a>
+                                        <a href="{if $classification->idClassificationGroup}
+                                           {link classification! 'idGroupClassification'=>$classification->idClassificationGroup}
+                                           {else}{link editUserClassificationForm! 'idClassification'=>$classification->idClassification}{/if}" class="{if !$classification->idClassificationGroup}ajax add-user-classification{/if} title truncate">{$classification->name}</a>
+                                        <div class="flex-spacer"></div>
+                                        <div class="table-field">{$classification->classificationDate->format("j. n. Y")}</div>
+                                        <div class="classification table-field">
+                                            <strong>{$classification->grade ?: '--'}</strong>
+                                        </div>
+                                    </div>
+                                    {/foreach}
+                                    {/ifset}
+                                </div>
+                            </div>
+                        </li>
+                        {/foreach}
+                    </ul>
+                    {/snippet}
+                </form>
+            
+                {else}
+                    <div class="no-students-icon modal-trigger" href="#add-user-to-group"><i class="material-icons">person_add</i></div>
+                    <button class="btn white modal-trigger" id="no-students-btn" href="#add-user-to-group">Přidat studenta</button>
+                {/if}
+            </div>
         </div>
     </div>
-</div>
-{else}
-    Nikdo tu není 
-{/if}
+</section>
+
 <!-- MODALS -->
 <div n:if="$permission['editClassification']" id="new-classification-modal" class="modal modal-small">
     {snippet addClassificationForm}

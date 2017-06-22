@@ -1723,7 +1723,7 @@ textarea.materialize-textarea {
     .main {
         margin-top: 16px;
     }
-    
+
     .two-level-nav {
         margin-top: 64px;
     }
@@ -3302,6 +3302,30 @@ textarea.materialize-textarea {
 .notification-description {
     color: rgba(0, 0, 0, .54);
     margin-top: 6px;
+}
+
+/* ----- STUDENTS (GROUP) ----- */
+
+.no-students-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 192px;
+    height: 192px;
+    background-color: rgba(0, 0, 0, .06);
+    margin: 10% auto 48px auto;
+    cursor: pointer;
+}
+
+.no-students-icon i {
+    font-size: 96px !important;
+    color: rgba(0, 0, 0, .54);
+}
+
+#no-students-btn {
+    display: block;
+    margin: auto;
 }
 
 /* ----- Classification ----- */
