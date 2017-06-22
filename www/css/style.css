@@ -2906,9 +2906,17 @@ textarea.materialize-textarea {
 
 /* ----- SETTINGS (GROUP) -----*/
 
-.settings {
+.main.settings {
     padding-bottom: 84px;
 }
+
+@media only screen and (max-width: 600px) {
+    .main.settings {
+        padding-bottom: 68px;
+    }
+}
+
+
 
 .card.settings-group-name .card-content {
     display: flex;
