@@ -2159,7 +2159,7 @@ textarea.materialize-textarea {
 
 .flex-column {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
 }
 
 @media only screen and (max-width: 992px) {
@@ -3206,6 +3206,12 @@ textarea.materialize-textarea {
     width: 100%;
     display: flex;
     align-items: center;
+    color: rgba(0, 0, 0, .54);
+}
+
+.assignment .remaining-time {
+    font-weight: 500;
+    color: rgba(0, 0, 0, .87);
 }
 
 @media(max-width:992px) {
@@ -3218,15 +3224,6 @@ textarea.materialize-textarea {
     .assignment {
         padding: 16px 12px;
     }
-}
-
-.noticeboard-assignment .btn.white {
-    background-color: transparent !important;
-}
-
-.assignment .time-left {
-    color: rgba(0, 0, 0, .87);
-    font-weight: 500;
 }
 
 .assignment .submit-count {

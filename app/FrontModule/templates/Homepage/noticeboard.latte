@@ -78,7 +78,7 @@
         {foreach $actualTasks as $task}
         <div class="col l6 m12 s12">
             <div class="card flex-column">
-                <div class="assignment noticeboard-assignment">
+                <div class="assignment">
                     {control taskHeader-$task->idTask}
                 </div>
                 <a href="{plink Group:message 'id'=>$task->group->urlId, 'idMessage'=>$task->idMessage}" class="assignment-preview">
