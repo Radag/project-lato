@@ -108,7 +108,8 @@
 {/define}
 
 {define attachmentBlock}
-    <ul class="form-row attachments attachments_uploads no-padding" {if empty($attachments)}style="display: none;"{/if}>
+    <ul class="form-row attachments attachments_uploads no-padding" {if empty($attachments)}style="display: block;"{/if} >
+      
       {if !empty($attachments)}
             {foreach $attachments as $attach}
             <li>
@@ -124,6 +125,28 @@
             </li>
             {/foreach}
       {/if}
+     
+      <li>
+          <div class="attached-file">
+            <a href="" class="file-name">IMG_0015 <span>(jpg)</span></a>
+            <div class="flex-spacer"></div>
+            <a href="" class="remove-attachment"><i class="material-icons">delete</i></a>
+          </div>
+          <div class="progress upload-file-progress">
+            <div class="determinate" style="width: 70%"></div>
+          </div>
+      </li>
+      
+      <li>
+          <div class="attached-file">
+            <a href="" class="file-name">IMG_0015 <span>(jpg)</span></a>
+            <div class="flex-spacer"></div>
+            <a href="" class="remove-attachment"><i class="material-icons">delete</i></a>
+          </div>
+          <div class="progress upload-file-progress">
+            <div class="determinate" style="width: 70%"></div>
+          </div>
+      </li>
     </ul>
 {/define}
 

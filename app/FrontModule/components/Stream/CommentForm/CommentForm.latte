@@ -2,8 +2,8 @@
 <div class="card-comments {if count($comments) == 0}card-comments-empty{/if}"> 
         {if count($comments) > 0}  
         <div class="comments-header">
-            <button type="button" onclick="latoShowAllComments(this);" class="show-comments item waves-effect waves-dark"><i class="material-icons">comment</i></button>
-            <div class="comments-count">{count($comments)}</div>
+            <div onclick="latoShowAllComments(this);" class="show-comments item waves-effect waves-dark"><i class="material-icons">comment</i></div>
+            <div  onclick="latoShowAllComments(this);" class="comments-count">{count($comments)}<span> komenářů</span></div>
             <div class="flex-spacer"></div>
             {foreach $discutionMembers as $member}
             <a href="{plink Profile:default 'id'=>$member->urlId}" class="avatar item"><img  src="{$member->profileImage}" alt="{$member->name}"></a>
@@ -48,7 +48,7 @@
             {input text class => 'materialize-textarea no-border'}
         </div>
         <button style="display: none;" class="btn btn-flat waves-effect waves-dark refresh-wall-messages" type="submit" name="action">
-            <i class="material-icons">done</i>
+            <i class="material-icons">send</i>
         </button>
         {/form}
     </div>

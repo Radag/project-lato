@@ -4,7 +4,6 @@
 
 body {
     background-color: #efefef;  
-    padding-top: 5%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-size:14px;
@@ -53,6 +52,7 @@ h1 {
     height: 28px;
     width: 64px;
     margin: auto;
+    margin-top: 32px;
     background: url("../images/logo.png");
     background-repeat: no-repeat;
     background-position: center;
@@ -63,6 +63,7 @@ h1 {
     #page-header #logo {
         height: 21px;
         width: 48px; 
+        margin-top: 24px;
     }
 }
 
