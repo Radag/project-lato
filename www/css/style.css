@@ -264,14 +264,24 @@ nav.breadcrumbs {
     flex-wrap: wrap;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 992px) {
     .table-row {
-        padding: 16px 12px;
+        padding: 20px 16px;
     }
 
     .table-row .avatar {
         width: 32px;
         height: 32px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .table-row {
+        padding: 20px 12px;
+    }
+
+    .table-row .avatar {
+        display: none;
     }
 }
 
@@ -338,6 +348,12 @@ nav.breadcrumbs {
     text-transform: uppercase;
 }
 
+@media only screen and (max-width: 600px) {
+    .collapsible-header .date {
+        display: none;
+    }
+}
+
 .table-row .classification,
 .collapsible-body .classification {
     color: rgba(0, 0, 0, .54);
@@ -363,6 +379,18 @@ nav.breadcrumbs {
     padding: 20px 24px;
 }
 
+@media only screen and (max-width: 992px) {
+    .collapsible-body .classification-table .table-row {
+        padding: 20px 16px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .collapsible-body .classification-table .table-row {
+        padding: 12px;
+    }
+}
+
 .collapsible-body .classification-table .table-row:first-child {
     border-top: none;
 }
@@ -374,11 +402,39 @@ nav.breadcrumbs {
     color: rgba(0, 0, 0, .54);
 }
 
+@media only screen and (max-width: 600px) {
+    .collapsible-body .classification-table .table-row .edit {
+        margin-right: 16px;
+        font-size: 18px !important;
+    }
+}
+
+.collapsible-body .classification-table .table-row .info {
+    display: flex;
+    flex-grow: 1;
+}
+
+@media only screen and (max-width: 600px) {
+    .collapsible-body .classification-table .table-row .info {
+        flex-direction: column;
+    }
+}
+
 .collapsible-body .classification-table .table-row .title {
     font-weight: 400;
     color: rgba(0, 0, 0, .87);
     line-height: 1.5em;
 }
+
+@media only screen and (max-width: 600px) {
+    .collapsible-body .classification-table .table-row .date {
+        color: rgba(0, 0, 0, .54);
+        font-size: 12px;
+        margin: 0;
+        text-align: left;
+    }
+}
+
 
 .collapsible-body-footer {
     display: flex;
@@ -1075,7 +1131,7 @@ input[type="password"] {
     .content-nav {
         order: 3;
         width: 100%;
-        padding: 0 8px;
+        padding: 0;
         height: 48px;
         line-height: 48px;
     }  

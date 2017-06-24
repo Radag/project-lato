@@ -159,7 +159,7 @@
                                     <span>{$member->surname}</span>, {$member->name}
                                 </div>
                                 <div class="flex-spacer"></div>
-                                <div class="table-field">{if !empty($member->getClassification()->lastDate)}{$member->getClassification()->lastDate->format("j. n. Y")}{else}--{/if}</div>
+                                <div class="table-field date">{if !empty($member->getClassification()->lastDate)}{$member->getClassification()->lastDate->format("j. n. Y")}{else}--{/if}</div>
                                 <div class="classification table-field"><strong>{$member->getClassification()->averageGrade ?: '--'} </strong>({count($member->getClassification()->items)})</div>
                             </div>
                             <div class="collapsible-body">
@@ -170,11 +170,13 @@
                                         <a n:if="$permission['editClassification']"  href="{if $classification->idClassificationGroup}
                                            {link classification! 'idGroupClassification'=>$classification->idClassificationGroup}
                                            {else}{link editUserClassificationForm! 'idClassification'=>$classification->idClassification}{/if}" class="{if !$classification->idClassificationGroup}ajax add-user-classification{/if} material-icons edit">edit</a>
-                                        <a href="{if $classification->idClassificationGroup}
-                                           {link classification! 'idGroupClassification'=>$classification->idClassificationGroup}
-                                           {else}{link editUserClassificationForm! 'idClassification'=>$classification->idClassification}{/if}" class="{if !$classification->idClassificationGroup}ajax add-user-classification{/if} title truncate">{$classification->name}</a>
-                                        <div class="flex-spacer"></div>
-                                        <div class="table-field">{$classification->classificationDate->format("j. n. Y")}</div>
+                                        <div class="info">
+                                            <a href="{if $classification->idClassificationGroup}
+                                               {link classification! 'idGroupClassification'=>$classification->idClassificationGroup}
+                                               {else}{link editUserClassificationForm! 'idClassification'=>$classification->idClassification}{/if}" class="{if !$classification->idClassificationGroup}ajax add-user-classification{/if} title truncate">{$classification->name}</a>
+                                            <div class="flex-spacer"></div>
+                                            <div class="table-field date">{$classification->classificationDate->format("j. n. Y")}</div>
+                                        </div>
                                         <div class="classification table-field">
                                             <strong>{$classification->grade ?: '--'}</strong>
                                         </div>
