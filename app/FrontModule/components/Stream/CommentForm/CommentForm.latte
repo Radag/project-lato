@@ -33,7 +33,7 @@
                         {/if}
                         </span>
                     </div>
-                    <div class="comment-text">{$comm->text|escape|nl2br|noescape}</div>
+                    <div class="comment-text">{$comm->text|breaklines}</div>
                 </div>
             </div>
            {/foreach}

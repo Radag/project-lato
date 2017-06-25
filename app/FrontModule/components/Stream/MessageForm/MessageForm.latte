@@ -28,8 +28,7 @@
             var id = Math.random().toString(36).substr(2, 10);
             var attachTemplate = $("#attachmentTemplate li").clone();
             attachTemplate.addClass(id);
-            attachTemplate.css('display', 'flex');
-            attachTemplate.find(".attachment-label .file-name").text(file.name);
+            attachTemplate.find(".file-name").text(file.name);
             file.classId = id;
             $(".attachments_uploads").append(attachTemplate).show();
             
@@ -70,7 +69,7 @@
             var uploadedFile = JSON.parse(file.xhr.response);
             var attachTemplate = $("." + file.classId);
             attachTemplate.find(".progress").hide();
-            attachTemplate.find(".attachment-label .file-name").text(uploadedFile.file.fileName);
+            attachTemplate.find(".file-name").html(uploadedFile.file.fileName + " <span>" + uploadedFile.file.type + "</span>");
             switch(uploadedFile.file.type) {
                 case 1:
                 attachTemplate.find(".attachment-icon").addClass('image');
@@ -97,8 +96,7 @@
                 attachTemplate.find(".attachment-icon .material-icons").text('help_outline');
             }
             
-            attachTemplate.find(".attached-file").attr('href', uploadedFile.file.fullPath);
-            attachTemplate.css('display', 'flex');
+            attachTemplate.find(".attached-file a").attr('href', uploadedFile.file.fullPath);
             $(".attachments_uploads").append(attachTemplate);
             file.remoteIdFile = uploadedFile.file.idFile;
             $("#attachmentsIds").val($("#attachmentsIds").val() + "_" + uploadedFile.file.idFile);
@@ -109,66 +107,33 @@
 
 {define attachmentBlock}
     <ul class="form-row attachments attachments_uploads no-padding" {if empty($attachments)}style="display: block;"{/if} >
-      
-      {if !empty($attachments)}
+        {if !empty($attachments)}
             {foreach $attachments as $attach}
             <li>
-                <a href="https://cdn.lato.cz/{$attach['path']|noescape}/{$attach['filename']}" target="_blank" class="attached-file">
-                    <div class="attachment-icon unknown"><i class="material-icons">help_outline</i></div>
-                    <div class="attachment-label">
-                        <div class="file-name">{$attach['filename']}</div>
-                    </div>
-                </a>
-                <a href="{link deleteAttachment!, idFile=>$attach['id_file']}" class="ajax remove-attachment remove-attach-button">
-                    <i class="material-icons">close</i>    
-                </a>
+                <div class="attached-file">
+                    <a href="https://cdn.lato.cz/{$attach['path']|noescape}/{$attach['filename']}" target="_blank" class="file-name">{$attach['filename']}<span></span></a>
+                    <div class="flex-spacer"></div>
+                    <a href="{link deleteAttachment!, idFile=>$attach['id_file']}" class="ajax remove-attachment"><i class="material-icons">delete</i></a>
+                </div>
+                <div class="progress upload-file-progress">
+                    <div class="determinate" style="width: 0%"></div>
+                </div> 
             </li>
             {/foreach}
-      {/if}
-     
-      <li>
-          <div class="attached-file">
-            <a href="" class="file-name">IMG_0015 <span>(jpg)</span></a>
-            <div class="flex-spacer"></div>
-            <a href="" class="remove-attachment"><i class="material-icons">delete</i></a>
-          </div>
-          <div class="progress upload-file-progress">
-            <div class="determinate" style="width: 70%"></div>
-          </div>
-      </li>
-      
-      <li>
-          <div class="attached-file">
-            <a href="" class="file-name">IMG_0015 <span>(jpg)</span></a>
-            <div class="flex-spacer"></div>
-            <a href="" class="remove-attachment"><i class="material-icons">delete</i></a>
-          </div>
-          <div class="progress upload-file-progress">
-            <div class="determinate" style="width: 70%"></div>
-          </div>
-      </li>
+        {/if}
     </ul>
 {/define}
-
-
 {define attachmentTemplate}
 <div id="attachmentTemplate" style="display: none;">
     <li>
-        <a href="javascript:void(0)" target="_blank" class="attached-file">
-            <div class="attachment-icon unknown"><i class="material-icons">help_outline</i></div>
-            <div class="attachment-label">
-                <div class="file-name"></div>
-                <div class="progress upload-file-progress">
-                    <div class="determinate" style="width: 0%"></div>
-                </div>
-            </div>
-        </a>
-        <a href="#" class="remove-attachment">
-            <i class="material-icons">close</i>    
-        </a>   
+        <div class="attached-file">
+            <a href="" target="_blank" class="file-name"></a>
+            <div class="flex-spacer"></div>
+            <a href="" class="remove-attachment"><i class="material-icons">delete</i></a>
+        </div>
+        <div class="progress upload-file-progress">
+            <div class="determinate" style="width: 0%"></div>
+        </div> 
     </li>
 </div>
 {/define}
-
-
-

@@ -5,10 +5,10 @@
             <div class="flex-spacer"></div>
             <div class="message-modal-users">
                 {ifset $classificationUsers}
-                    {foreach $classificationUsers as $user}
+                    {foreach $classificationUsers as $classUser}
                     <div class="avatar tiny">
-                        <img src="{$user->profileImage}" alt="{if !empty($user->name)}{$user->name} {$user->surname}{/if}">
-                        <input type="hidden" value="{$user->id}" name="users[]">
+                        <img src="{$classUser->profileImage}" alt="{if !empty($classUser->name)}{$classUser->name} {$classUser->surname}{/if}">
+                        <input type="hidden" value="{$classUser->id}" name="users[]">
                     </div>
                     {/foreach}
                 {/ifset}
