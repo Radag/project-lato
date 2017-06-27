@@ -65,12 +65,12 @@ class FileManager extends BaseManager
                     $newFile['ID_TYPE'] = self::FILE_TYPE_OTHER;
                 }                
             }
-            
             $newFile['PATH'] = $path;
             $newFile['FILENAME'] = $timestamp . '_' . $file->getSanitizedName();
             $return['idFile'] = $this->saveNewFile($newFile);
             $return['type'] = $newFile['ID_TYPE'];
             $return['fileName'] = $file->getName();
+            $return['type'] = $file->getContentType();
             $return['fullPath'] = 'https://cdn.lato.cz/' . $path . '/' . $newFile['FILENAME'];
             return $return; 
         } else {

@@ -210,7 +210,7 @@ class Stream extends PreparedControl
     
     public function handleEditMessage($idMessage)
     {
-        $message = $this->messageManager->getMessage($idMessage);
+        $message = $this->messageManager->getMessage($idMessage, $this->activeUser);
         $this->messageType = $message->idType;
         $this['messageForm']->setDefaults($message);
         $this->redrawControl('messageForm');

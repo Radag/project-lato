@@ -61,7 +61,7 @@
     </form>
 </div>
 <div class="card-content">
-    <p>{$message->getText()|escape|nl2br|noescape}</p>
+    <p>{$message->getText()|breaklines}</p>
 </div>
 {if isset($message->attachments['files']) && !empty($message->attachments['files']) }
 <ul class="attachments">
