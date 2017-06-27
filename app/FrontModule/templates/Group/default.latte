@@ -13,47 +13,6 @@
         <div class="col s12 l4">
             <div class="card flex-column">
                 <div class="card-header">
-                    <h3>Studenti</h3>
-                </div>
-                <div class="card-content clearfix">
-                    <p class="secondary-par">Seznam studentů, zapsaných v této skupině.</p>
-                    <ul class="custom-collection">
-                        {foreach $groupMembers as $member}
-                        <li>
-                            <a href="{plink Profile:default 'id'=>$member->urlId}" class="item">
-                                <img src="{$member->profileImage}" alt="" class="avatar small">
-                                <span class="title">{if !empty($member->name)}{$member->name} {$member->surname}{/if}</span>
-                            </a>
-                        </li>
-                        {/foreach}
-                    </ul>
-                </div>
-                <div class="card-footer">
-                    <a href="{link Group:users 'id'=>$activeGroup->urlId}" class="btn-flat secondary-colored card-bottom">
-                        Zobrazit vše
-                    </a>
-                </div>
-            </div>
-            <div class="card flex-column">
-                <div class="card-header">
-                    <h3>Mé známky</h3>
-                </div>
-                <div class="card-content clearfix">
-                    <ul class="collection">
-                      <li class="collection-item">
-                          <span class="title">Title</span>
-                          <p>First Line</p>
-                      </li>
-                    </ul>
-                </div>
-                <div class="card-footer">
-                    <a href="{link :Front:Homepage:classification}" class="btn-flat secondary-colored card-bottom">
-                        Zobrazit vše
-                    </a>
-                </div>
-            </div>
-            <div class="card flex-column">
-                <div class="card-header">
                     <h3>Povinnosti</h3>
                 </div>
                 <div class="card-content">
@@ -85,6 +44,76 @@
                 </div>
                 <div class="card-footer"></div>
             </div>
+            <div class="card flex-column">
+                <div class="card-header">
+                    <h3>Známky</h3>
+                </div>
+                <div class="card-content">
+                    <p class="secondary-par">Poslední změna <strong>23. 6. 22:30</strong></p>
+                </div>
+                <div class="card-footer">
+                    <a href="{link :Front:Homepage:classification}" class="btn-flat secondary-colored card-bottom">
+                        Zobrazit
+                    </a>
+                </div>
+            </div>
+
+
+            <div class="card flex-column">
+                <div class="card-header">
+                    <h3>Filtrovat příspěvky</h3>
+                </div>
+                <div class="card-content">
+                    <p class="secondary-par">Zobrazit pouze následující položky</p>
+                    <form class="checkbox-form-block">
+                        <div class="form-row">
+                            <input type="checkbox" class="filled-in" id="opt1" checked="checked" />
+                            <label for="opt1">Všechny příspěvky</label>
+                        </div>
+                        <div class="form-row">
+                            <input type="checkbox" class="filled-in" id="opt2" />
+                            <label for="opt2">Oznámení</label>
+                        </div>
+                        <div class="form-row">
+                            <input type="checkbox" class="filled-in" id="opt3" />
+                            <label for="opt3">Studijní materiály</label>
+                        </div>
+                        <div class="form-row">
+                            <input type="checkbox" class="filled-in" id="opt4" />
+                            <label for="opt4">Povinnosti</label>
+                        </div>
+                    </form>
+                </div>
+                
+            </div>
+            
+            <div class="card flex-column" n:if="$groupPermission['showDeleted']">
+                <div class="card-header">
+                    <h3>Výpis příspěvků</h3>
+                </div>
+                <div class="card-content clearfix">
+                    {form streamSettingsForm id=>"streamSettingsForm"}
+                    <div class="switch-row">
+                        <p class="secondary-par left">Zobrazit smazané položky</p>
+                        <div class="switch right">
+                            <label>
+                                {input showDeleted:}
+                                <span class="lever"></span>
+                            </label>
+                        </div> 
+                    </div>
+                    {/form}
+                    <script>
+                    $(document).ready(function () {
+                        $("#streamSettingsForm input[type='checkbox']").on('change', function () {
+                            $("#streamSettingsForm").submit();
+                        });
+                    });
+                    </script>
+                </div>
+                <div class="card-footer"></div>
+            </div>
+
             {*
             {if $activeGroup->owner->id === $activeUser->id}
             <div class="card flex-column bottom-spacer" n:if="$groupPermission['settings']">
@@ -173,32 +202,7 @@
             </div>
             {/if}
             *}
-            <div class="card flex-column" n:if="$groupPermission['showDeleted']">
-                <div class="card-header">
-                    <h3>Výpis příspěvků</h3>
-                </div>
-                <div class="card-content clearfix">
-                    {form streamSettingsForm id=>"streamSettingsForm"}
-                    <div class="switch-row">
-                        <p class="secondary-par left">Zobrazit smazané položky</p>
-                        <div class="switch right">
-                            <label>
-                                {input showDeleted:}
-                                <span class="lever"></span>
-                            </label>
-                        </div> 
-                    </div>
-                    {/form}
-                    <script>
-                    $(document).ready(function () {
-                        $("#streamSettingsForm input[type='checkbox']").on('change', function () {
-                            $("#streamSettingsForm").submit();
-                        });
-                    });
-                    </script>
-                </div>
-                <div class="card-footer"></div>
-            </div>
+            
         </div>
         
 

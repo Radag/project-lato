@@ -21,9 +21,9 @@
         <div class="card flex-column settings">
             <div class="card-header flex-column">
                 <h2>Informace o skupině</h2>
-                <p class="secondary-par">Základní informace o skupině, které se zobrazí uživatelům</p>
             </div>
             <div class="card-content">
+                <p class="secondary-par">Základní informace o skupině, které se zobrazí uživatelům</p>
                 <div class="form-row">
                     <i class="material-icons icon-label">group</i>
                     <div class="input-flex">
@@ -51,29 +51,31 @@
             </div>
         </div>
         <div class="card flex-column settings">
-            <div class="card-header flex-column">
+            <div class="card-header">
                 <h2>Stream</h2>
-                <p class="secondary-par">Povolené akce na streamu</p>
             </div>
             <div class="card-content">
-                <div class="form-row">
-                    <div class="submit-control checkbox-vertical-align">
-                        {input PR_EDIT_OWN_MSG: class => 'filled-in black'}{label PR_EDIT_OWN_MSG:}{/label}
+                <p class="secondary-par">Povolené akce na streamu</p>
+                <div class="checkbox-form-block">
+                    <div class="form-row">
+                        <div class="submit-control checkbox-vertical-align">
+                            {input PR_EDIT_OWN_MSG: class => 'filled-in'}{label PR_EDIT_OWN_MSG:}{/label}
+                        </div>
                     </div>
-                </div>
-                <div class="form-row">
-                    <div class="submit-control checkbox-vertical-align">
-                        {input PR_DELETE_OWN_MSG: class => 'filled-in black'}{label PR_DELETE_OWN_MSG:}{/label}
+                    <div class="form-row">
+                        <div class="submit-control checkbox-vertical-align">
+                            {input PR_DELETE_OWN_MSG: class => 'filled-in'}{label PR_DELETE_OWN_MSG:}{/label}
+                        </div>
                     </div>
-                </div>
-                <div class="form-row">
-                    <div class="submit-control checkbox-vertical-align">
-                        {input PR_CREATE_MSG: class => 'filled-in black'}{label PR_CREATE_MSG:}{/label}
+                    <div class="form-row">
+                        <div class="submit-control checkbox-vertical-align">
+                            {input PR_CREATE_MSG: class => 'filled-in'}{label PR_CREATE_MSG:}{/label}
+                        </div>
                     </div>
-                </div>
-                <div class="form-row">
-                    <div class="submit-control checkbox-vertical-align">
-                        {input PR_SHARE_MSG: class => 'filled-in black'}{label PR_SHARE_MSG:}{/label}
+                    <div class="form-row">
+                        <div class="submit-control checkbox-vertical-align">
+                            {input PR_SHARE_MSG: class => 'filled-in'}{label PR_SHARE_MSG:}{/label}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -81,28 +83,30 @@
         <div class="card flex-column settings">
             <div class="card-header flex-column">
                 <h2>Sdílení</h2>
-                <p class="secondary-par">Studenti mohou být přidáváni do skupiny následujícími způsoby</p>
             </div>
             <div class="card-content">
-                <div class="form-row">
-                    <p>Povolit sdílení pomocí odkazu</p>
-                    <div class="switch">
-                        <label>
-                            {input shareByLink:}
-                            <span class="lever"></span>
-                        </label>
+                <p class="secondary-par">Studenti mohou být přidáváni do skupiny následujícími způsoby</p>
+                <div class="checkbox-form-block">
+                    <div class="form-row">
+                        <p>Povolit sdílení pomocí odkazu</p>
+                        <div class="switch">
+                            <label>
+                                {input shareByLink:}
+                                <span class="lever"></span>
+                            </label>
+                        </div>
+                        <span n:if="$activeGroup->shareByLink" class="notice">Odkaz pro sdílení je <a href="{plink //:Public:Action:default, id => $activeGroup->publicCode}">{plink //:Public:Action:default, id => $activeGroup->publicCode}</a></span>
                     </div>
-                    <span n:if="$activeGroup->shareByLink" class="notice">Odkaz pro sdílení je <a href="{plink //:Public:Action:default, id => $activeGroup->publicCode}">{plink //:Public:Action:default, id => $activeGroup->publicCode}</a></span>
-                </div>
-                <div class="form-row">
-                    <p>Povolit sdílení pomocí kódu</p>
-                    <div class="switch">
-                        <label>
-                            {input shareByCode:}
-                            <span class="lever"></span>
-                        </label>
+                    <div class="form-row">
+                        <p>Povolit sdílení pomocí kódu</p>
+                        <div class="switch">
+                            <label>
+                                {input shareByCode:}
+                                <span class="lever"></span>
+                            </label>
+                        </div>
+                        <span n:if="$activeGroup->shareByCode" class="notice">Kód pro zápis je <strong>{$activeGroup->interCode}</strong></span>
                     </div>
-                    <span n:if="$activeGroup->shareByCode" class="notice">Kód pro zápis je <strong>{$activeGroup->interCode}</strong></span>
                 </div>
             </div>
         </div>
@@ -112,10 +116,11 @@
         <div class="card flex-column settings">
             <div class="card-header flex-column">
                 <h2>Kalendář</h2>
-                <p class="secondary-par">Výuka probíhá v následujících termínech</p>
             </div>
             <div class="card-content">
+                <p class="secondary-par">Výuka probíhá v následujících termínech</p>
                 {snippet scheduleAdmin}
+                <div class="form-block">
                 {if empty($schedule)}
                 <div class="form-row term-picker"> 
                     <select name="schedule[1][DAY_IN_WEEK]" class="with-remove">
@@ -126,7 +131,7 @@
                         <option value="5" >Pátek</option>
                         <option value="delete">Odstranit</option>
                     </select>
-                    <span class="inner-label">od</span>
+                    <span class="inner-label no-padding-inner-label">od</span>
                     <input name="schedule[1][TIME_FROM]" type="text" maxlength=5 value="12:00">
                     <span class="inner-label">do</span>
                     <input name="schedule[1][TIME_TO]" type="text"  maxlength=5 value="12:45" id="current-time">
@@ -142,15 +147,18 @@
                         <option value="5" {if isset($term->DAY_IN_WEEK) && $term->DAY_IN_WEEK==5}selected{/if}>Pátek</option>
                         <option value="delete">Odstranit</option>
                     </select>
-                    <span class="inner-label">od</span>
+                    <span class="inner-label no-padding-inner-label">od</span>
                     <input name="schedule[{$key}][TIME_FROM]" type="text" maxlength=5 value="{ifset $term->TIME_FROM}{$term->TIME_FROM->format("%H:%I")}{/ifset}">
                     <span class="inner-label">do</span>
                     <input name="schedule[{$key}][TIME_TO]" type="text"  maxlength=5 value="{ifset $term->TIME_TO}{$term->TIME_TO->format("%H:%I")}{/ifset}" id="current-time">
                 </div>
                 {/foreach}
                 {/if}
+                </div>
                 {/snippet}
-                <div class="form-row" id="groupScheduleData">
+                </div>
+                <div class="card-footer">
+                <div id="groupScheduleData">
                     <span id="addScheduleRow" class="add-line"><i class="material-icons">add</i>Přidat další termín</span>
                 </div>
                 <script>
@@ -171,24 +179,26 @@
       <div class="card flex-column settings">
         <div class="card-header flex-column">
             <h2>Známky</h2>
-            <p class="secondary-par">Známky jsou rozděleny do následujících období</p>
         </div>
         <div class="card-content">
-            {foreach $form['activePeriods']->items as $key => $label}
-            <div class="form-row">
-                <div class="submit-control checkbox-vertical-align">
-                    <input type="checkbox" n:name="activePeriods:$key" class="filled-in black" ><label n:name="activePeriods:$key">{$label}</label>
+            <p class="secondary-par">Známky jsou rozděleny do následujících období</p>
+            <div class="checkbox-form-block">
+                {foreach $form['activePeriods']->items as $key => $label}
+                <div class="form-row">
+                    <div class="submit-control checkbox-vertical-align">
+                        <input type="checkbox" n:name="activePeriods:$key" class="filled-in black" ><label n:name="activePeriods:$key">{$label}</label>
+                    </div>
                 </div>
+                {/foreach}
             </div>
-            {/foreach}
         </div>
     </div>
     <div class="card flex-column settings">
         <div class="card-header flex-column">
             <h2>Oprávnění</h2>
-            <p class="secondary-par">Uživatelé s administrátorským oprávněním (učitel)</p>
         </div>
         <div class="card-content">
+            <p class="secondary-par">Uživatelé s administrátorským oprávněním (učitel)</p>
             <ul class="custom-collection">
                 <li>    
                     <a href="{plink Profile:default 'id'=>$activeGroup->owner->urlId}" class="item">

@@ -168,13 +168,20 @@ nav.breadcrumbs {
 
 [type="checkbox"]+label {
     color: rgba(0, 0, 0, .54);
-    height: 20px;
     line-height: 20px;
+    height: auto;
     font-size: 14px;
 }
 
-[type="checkbox"].black+label {
+@media only screen and (max-width: 600px) {
+    [type="checkbox"]+label {
+        padding-left: 27px;
+    }
+}
+
+[type="checkbox"].filled-in:checked+label {
     color: rgba(0, 0, 0, .87);
+    font-weight: 500;
 }
 
 .checkbox-vertical-align {
@@ -487,7 +494,6 @@ nav.breadcrumbs {
 
 .switch-row {
     display: flex;
-    margin-bottom: 24px;
 }
 
 .switch-row p {
@@ -1134,6 +1140,7 @@ input[type="password"] {
         padding: 0;
         height: 48px;
         line-height: 48px;
+        background-color: rgba(0, 0, 0, .05);
     }  
 
     .content-nav li {
@@ -1315,9 +1322,14 @@ select.browser-default {
 p {
     color: rgba(0, 0, 0, .54);
     line-height: 1.6em;
-    margin-top: 0;
     margin-top: 16px;
     word-break: break-word;
+}
+
+@media only screen and (max-width: 600px) {
+    p {
+        margin-top: 8px;
+    }
 }
 
 p:first-child {
@@ -1401,8 +1413,20 @@ strong {
     min-height: 6em;
 }
 
+@media only screen and (max-width: 600px) {
+    .term-picker {
+        flex-wrap: wrap;
+    }
+}
+
 .term-picker .select-wrapper {
     width: 30%;
+}
+
+@media only screen and (max-width: 600px) {
+    .term-picker .select-wrapper {
+        width: 100%;
+    }
 }
 
 .term-picker input {
@@ -2280,8 +2304,8 @@ textarea.materialize-textarea {
 
 .card-header h2 {
     flex-grow: 1;
-    line-height: 28px;
     font-size: 18px;
+    line-height: 1em;
 }
 
 .card-header .card-title {
@@ -2293,8 +2317,7 @@ textarea.materialize-textarea {
 
 @media only screen and (max-width: 600px) {
     .card-header h2 {
-        font-size: 15px;
-        line-height: 36px;
+        font-size: 16px;
     }
 }
 
@@ -2851,7 +2874,13 @@ textarea.materialize-textarea {
 
 .group-color-select {
     display: flex;
-    margin: 8px 0;
+    margin: 0;
+}
+
+@media only screen and (max-width: 600px) {
+    .group-color-select {
+        margin-top: 16px;
+    }
 }
 
 .group-color-select i {
@@ -3001,11 +3030,29 @@ textarea.materialize-textarea {
     font-weight: 700;    
 }
 
+.form-block {
+    margin: 24px 0 8px 0;
+}
+
 .form-row {
     display: flex;
     align-items: center;
     margin-top: 16px;
-    min-height: 32px;
+}
+
+@media only screen and (max-width: 600px) {
+    .form-row {
+        margin-top: 8px;
+    }
+}
+
+.checkbox-form-block {
+    margin-top: 24px;
+    margin-bottom: 8px;
+}
+
+.checkbox-form-block .form-row {
+    margin-top: 20px;
 }
 
 .form-row.static {
@@ -3041,6 +3088,12 @@ textarea.materialize-textarea {
     font-weight: 500;
 }
 
+@media only screen and (max-width: 600px) {
+    .form-row .no-padding-inner-label {
+        margin-left: 0;
+    }
+}
+
 .form-row.term-picker .label {
     display: flex;
     align-items: center;
@@ -3059,16 +3112,28 @@ textarea.materialize-textarea {
     }
 }
 
-
-
 .card.settings-group-name .card-content {
     display: flex;
+    align-items: center;
+}
+
+@media only screen and (max-width: 600px) {
+    .card.settings-group-name .card-content {
+        flex-wrap: wrap;
+    }
 }
 
 .card.settings-group-name .card-content input {
     flex-grow: 1;
     margin-right: 24px;
     font-size: 16px;
+}
+
+
+@media only screen and (max-width: 600px) {
+    .card.settings-group-name .card-content input {
+        margin-right: 0;
+    }
 }
 
 .card.settings-group-name .card-content ::-webkit-input-placeholder {
@@ -3092,7 +3157,7 @@ textarea.materialize-textarea {
     margin-top: 0;
 }
 
-.card.settings .form-row #addScheduleRow {
+.card.settings #addScheduleRow {
     cursor: pointer;
     color: #2979FF;
 }
@@ -3126,6 +3191,7 @@ textarea.materialize-textarea {
 @media(max-width:600px) {
     .form-row .icon-label {
         margin-right: 8px;
+        width: 24px;
     }
 }
 
@@ -3157,12 +3223,6 @@ textarea.materialize-textarea {
 
 .add-line i {
     margin-right: 12px;
-}
-
-.card.settings .card-footer {
-    padding: 24px;
-    display: flex;
-    align-items: center;
 }
 
 .card.settings .custom-collection li:first-child {
@@ -3517,13 +3577,27 @@ textarea.materialize-textarea {
     width: 192px;
     height: 192px;
     background-color: rgba(0, 0, 0, .06);
-    margin: 10% auto 48px auto;
+    margin: 72px auto 48px auto;
     cursor: pointer;
+}
+
+@media only screen and (max-width: 600px) {
+    .no-students-icon {
+        width: 160px;
+        height: 160px;
+        margin: 48px auto 32px auto;
+    }
 }
 
 .no-students-icon i {
     font-size: 96px !important;
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .38);
+}
+
+@media only screen and (max-width: 600px) {
+    .no-students-icon i {
+        font-size: 80px !important;
+    }
 }
 
 #no-students-btn {
