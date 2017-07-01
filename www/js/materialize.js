@@ -2378,11 +2378,11 @@ $(document).ready(function(){
               $('body').append(dragTarget);
 
               if (options.edge === 'left') {
-                dragTarget.css({width: '50%', right: 0, left: ''});
+                dragTarget.css({width: '5%', right: 0, left: ''});
                 menu_id.velocity({'translateX': [0, -1 * options.menuWidth]}, {duration: 300, queue: false, easing: 'easeOutQuad'});
               }
               else {
-                dragTarget.css({width: '50%', right: '', left: 0});
+                dragTarget.css({width: '5%', right: '', left: 0});
                 menu_id.velocity({'translateX': [0, options.menuWidth]}, {duration: 300, queue: false, easing: 'easeOutQuad'});
               }
 

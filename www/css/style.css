@@ -76,11 +76,6 @@ a {
     width: 32px;
     font-size: 14px;
 }
-
-.drag-target {
-    width: 5% !important;
-}
-
 .avatar.small {
     height: 36px;
     width: 36px;
