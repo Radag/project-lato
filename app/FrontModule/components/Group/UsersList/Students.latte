@@ -5,14 +5,13 @@
                 {if $groupMembers}
                 <header class="section-header no-padding">
                     
-                    <button class="btn white dropdown-button" data-beloworigin="true" data-activates="action-dropdown">
+                    <button class="btn white dropdown-button" id="user-action-button" data-beloworigin="true" data-activates="action-dropdown" disabled="disabled">
                         Akce
                     </button>
                     <ul id='action-dropdown' class='dropdown-content'>
                         <li><a href="{link addClassificationToUsers!}" id="add-user-classification-button" >Přidat známku</a></li>        
                         <li><a href="{link sendMessageToUsers!}" id="send-message-user-button" >Poslat soukromou zprávu</a></li>
                         <li><a href="{link deleteUsers!}" id="delete-user-button" >Odebrat ze skupiny</a></li>
-
                     </ul>
                     <ul class="left options">
                         <li>
@@ -50,6 +49,14 @@
                                     $(".user-checkbox").prop('checked', true);
                                 } else {
                                     $(".user-checkbox").prop('checked', false);
+                                }
+                            });
+                            
+                            $(".user-checkbox").on("change", function (e) {
+                                if($(".user-checkbox:checked").length > 0) {
+                                    $("#user-action-button").prop('disabled', false);
+                                } else {
+                                    $("#user-action-button").prop('disabled', true);
                                 }
                             });
                             

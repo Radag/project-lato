@@ -2898,7 +2898,7 @@ textarea.materialize-textarea {
     margin-right: 0;
 }
 
-.group-color-select i.active:after {
+.group-color-select input:checked+i:after {
     content: "check";
     line-height: 26px;
     text-align: center;

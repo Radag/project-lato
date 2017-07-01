@@ -60,8 +60,8 @@ class GroupSettingsForm extends Control
              ->setAttribute('placeholder', 'Název skupiny')
              ->setDefaultValue($this->group->name)
              ->setRequired('Nápis musí být vyplněn');
-//        $form->addRadioList('color','Barevné schéma', $colors)
-//             ->setDefaultValue(1);
+        $form->addRadioList('color','Barevné schéma', $colors)
+             ->setDefaultValue($this->group->colorScheme);
         $form->addText('shortcut', 'Zkratka', null, 3)
              ->setDefaultValue($this->group->shortcut);
         $form->addText('subgroup', 'Název podskupiny', null, 100)
@@ -172,7 +172,7 @@ class GroupSettingsForm extends Control
         $this->group->name = trim($values['name']);
         $this->group->description = $values['description'];
         $this->group->room = $values['room'];
-        //$this->group->mainColor = $values['color'];
+        $this->group->colorScheme = $values['color'];
         $this->group->subgroup = $values['subgroup'];
         $this->group->shortcut = $values['shortcut'];
         $this->group->room = $values['room'];
@@ -202,6 +202,6 @@ class GroupSettingsForm extends Control
             $this->presenter->flashMessage('Nastavení uloženo', 'success');
         }
         
-        $this->redrawControl();
+        $this->presenter->redirect('this');
     }
 }

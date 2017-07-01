@@ -7,9 +7,9 @@
         </div>
         <div class="form-row group-color-select">
             {foreach $form[color]->items as $key => $label}
-                <label>
-                    <i class="material-icons {$label}"></i>
-                    <input type="radio" n:name="color:$key" style="" />
+                <label n:name="color:$key">
+                    <input n:name="color:$key" />
+                    <i class="material-icons {$label}"></i>       
                 </label>
             {/foreach}
         </div>

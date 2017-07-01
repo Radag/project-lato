@@ -1,16 +1,17 @@
 {snippet}
-{form form class=>'ajax'}
+{form form}
 <div class="row">
     <div class="col s12">
         <div class="card settings-group-name">
             <div class="card-content">
                 {input name class => 'validate'}
                 <div class="group-color-select">
-                    <label><i class="material-icons green-bg active"></i></label>
-                    <label><i class="material-icons yellow-bg"></i></label>
-                    <label><i class="material-icons blue-bg"></i></label>
-                    <label><i class="material-icons purple-bg"></i></label>
-                    <label><i class="material-icons orange-bg"></i></label>
+                    {foreach $form['color']->items as $key=>$code}
+                        <label n:name="color:$key">
+                            <input n:name="color:$key">
+                            <i class="material-icons {$code}"></i>
+                        </label>
+                    {/foreach}
                 </div>
             </div>
         </div>

@@ -126,17 +126,19 @@ class UsersList extends Control
     
     public function handleAddToGroup()
     {
-        $userName = $this->presenter->getRequest()->getPost('userName');
-        $userId = $this->userManager->getByName($userName);
-
-        if(empty($userId) || $this->groupManager->isUserInGroup($userId, $this->activeGroup->id)) {
+        $userEmail = $this->presenter->getRequest()->getPost('userName');
+        $user = $this->userManager->getUserByMail($userEmail);
+   
+        if (empty($user)) {
+            $this->presenter->flashMessage('Tento uživatel nepoužívá lato.');
+        } elseif ($this->groupManager->isUserInGroup($user->id, $this->activeGroup->id)) {
             $this->presenter->flashMessage('Již je ve skupině.');
         } else {
-            $this->groupManager->addUserToGroup($this->activeGroup, $userId, GroupManager::RELATION_STUDENT);
+            $this->groupManager->addUserToGroup($this->activeGroup, $user->id, GroupManager::RELATION_STUDENT);
             $this->presenter->flashMessage('Byl přidán do skupiny.');
             
             $notification = new \App\Model\Entities\Notification;
-            $notification->idUser = $userId;
+            $notification->idUser = $user->id;
             $notification->title = "Byl jste přidán do skupiny";
             $notification->text = "Byl jste přidán do skupiny " . $this->activeGroup->name;
             $notification->idGroup = $this->activeGroup->id;
