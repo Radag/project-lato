@@ -23,6 +23,7 @@
             url: {link uploadAttachment!},
             previewTemplate: '<div id="preview-template" style="display: none;"></div>'
         });
+        var uploadsFiles = {};
         
         messageContent.on("addedfile", function(file) {
             var id = Math.random().toString(36).substr(2, 10);
@@ -31,7 +32,7 @@
             attachTemplate.find(".file-name").text(file.name);
             file.classId = id;
             $(".attachments_uploads").append(attachTemplate).show();
-            
+            $("#message-submit-button").prop('disabled', true);
             attachTemplate.find('.remove-attachment').on('click', function(event) {
                 event.preventDefault();
                 if(file.remoteIdFile != undefined) {
@@ -62,10 +63,21 @@
         });
         
         messageContent.on("uploadprogress", function(file) {
+            uploadsFiles[file.classId] = false;
             $("." + file.classId).find('.determinate').css('width', file.upload.progress + '%');
         });
         
-        messageContent.on("complete", function(file) {   
+        messageContent.on("complete", function(file) {
+            uploadsFiles[file.classId] = true;
+            var allDone = true;
+            for(var i in uploadsFiles) {
+                if(!uploadsFiles[i]) {
+                    allDone = false;
+                }
+            }
+            if(allDone ) {
+                $("#message-submit-button").prop('disabled', false);
+            }
             var uploadedFile = JSON.parse(file.xhr.response);
             var attachTemplate = $("." + file.classId);
             attachTemplate.find(".progress").hide();
