@@ -60,6 +60,7 @@ function latoReloadMessageWall()
 
 function latoShowAllComments(comment) {
     $(comment).closest(".card-comments").find(".comments-content .comment-row").show();
+    $(comment).closest(".card-comments").find(".comments-content .comment-row .comment-text").removeClass('truncate');
     latoReloadMessageWall();
 }
 

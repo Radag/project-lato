@@ -141,7 +141,7 @@ class HomepagePresenter extends BasePresenter
     public function actionTimetable()
     {
         $this['topPanel']->setTitle('Rozvrh');
-        $groups = $this->groupManager->getUserGroups($this->activeUser);
+        $groups = $this->groupManager->getUserGroups($this->activeUser, true);
         $schedule = $this->scheduleManger->getWeekSchedule($groups);
         
         $maxHour = 0;

@@ -62,11 +62,17 @@ class GroupManager extends BaseManager {
     }
     
     
-    public function getUserGroups(User $user)
+    public function getUserGroups(User $user, $subjects = false)
     {
         $return = array();
-        $yourGroups = $this->database->query("SELECT ID_GROUP, MAIN_COLOR, NAME, SHORTCUT, GROUP_TYPE, URL_ID FROM 
-            vw_user_groups_detail WHERE ID_USER=? AND ARCHIVED=0 ORDER BY NAME ASC", $user->id)->fetchAll(); 
+        if($subjects) {
+            $yourGroups = $this->database->query("SELECT ID_GROUP, MAIN_COLOR, NAME, SHORTCUT, GROUP_TYPE, URL_ID FROM 
+                vw_user_groups_detail WHERE ID_USER=? AND ARCHIVED=0 AND GROUP_TYPE=1 ORDER BY NAME ASC", $user->id)->fetchAll();   
+        } else {
+            $yourGroups = $this->database->query("SELECT ID_GROUP, MAIN_COLOR, NAME, SHORTCUT, GROUP_TYPE, URL_ID FROM 
+                vw_user_groups_detail WHERE ID_USER=? AND ARCHIVED=0 ORDER BY NAME ASC", $user->id)->fetchAll(); 
+        }
+
         
         if(!empty($yourGroups)) {
             foreach($yourGroups as $s) {

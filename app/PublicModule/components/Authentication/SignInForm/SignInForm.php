@@ -35,8 +35,8 @@ class SignInForm extends Control
     protected function createComponentForm()
     {
         $form = new \Nette\Application\UI\Form;
-        $form->addText('email', 'Email:')
-                ->setAttribute('placeholder', 'Váš email')
+        $form->addEmail('email', 'Email:')
+                ->setAttribute('placeholder', 'E-mail')
             ->setRequired('Prosím vyplňte váš přihlašovací email');
 
         $form->addPassword('password', 'Heslo:')
@@ -63,9 +63,9 @@ class SignInForm extends Control
         try {
             $this->getPresenter()->user->setAuthenticator($this->userManager);
             $this->getPresenter()->user->login($values->email, $values->password);
-            $this->flashMessage('přihlášen', 'success');
+            $this->presenter->flashMessage('Přihlášen', 'success');
         } catch (\Exception $ex) {
-            $this->flashMessage($ex->getMessage(), 'error');
+            $this->presenter->flashMessage($ex->getMessage(), 'error');
             $this->presenter->redirect(':Public:Homepage:default');  
         }
         

@@ -33,7 +33,7 @@
                         {/if}
                         </span>
                     </div>
-                    <div class="comment-text">{$comm->text|breaklines}</div>
+                    <div class="comment-text {if $iterator->isLast()}truncate{/if}">{$comm->text|breaklines}</div>
                 </div>
             </div>
            {/foreach}
