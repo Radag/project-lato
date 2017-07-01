@@ -127,6 +127,7 @@ class GroupManager extends BaseManager {
                 T2.SEX AS OWNER_SEX,
                 T3.MAIN_COLOR,
                 T3.ID_SCHEME,
+                T3.CODE,
                 T4.STUDENTS,
                 T5.SHARE_BY_LINK,
                 T5.SHARE_BY_CODE,
@@ -161,8 +162,8 @@ class GroupManager extends BaseManager {
         $groupModel->description = $group->DESCRIPTION;
         $groupModel->room = $group->ROOM;
         $groupModel->subgroup = $group->SUBGROUP;
-        $groupModel->colorScheme = $group->ID_SCHEME;
-        
+        $groupModel->colorSchemeId = $group->ID_SCHEME;
+        $groupModel->colorScheme = $group->CODE;   
         return $groupModel;       
     }
     
@@ -257,7 +258,7 @@ class GroupManager extends BaseManager {
             'ROOM' => $group->room,
             'SUBGROUP' => $group->subgroup,
             'SHORTCUT' => $group->shortcut,
-            'COLOR_SCHEME' => $group->colorScheme
+            'COLOR_SCHEME' => $group->colorSchemeId
         ];
         
         $this->database->query("UPDATE groups SET ? WHERE ID_GROUP=?", $data, $group->id);

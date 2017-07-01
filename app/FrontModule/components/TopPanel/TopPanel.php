@@ -54,6 +54,7 @@ class TopPanel extends Control
     protected $activeUser;
     
     protected $topMenu = array();
+    protected $colorScheme = null;
     
     protected $title = "";
     
@@ -103,6 +104,8 @@ class TopPanel extends Control
         $template->privateMessages = $this->privateMessageManager->getMessages($this->activeUser);
         $template->subjects = $subject;
         $template->groups = $others;
+        $template->colorScheme = $this->colorScheme;
+
         $template->setFile(__DIR__ . '/TopPanel.latte');
         $template->render();
     }
@@ -114,6 +117,10 @@ class TopPanel extends Control
         } else {
             $this->title = $this->activeGroup->name;
         }
+    }
+    
+    public function setScheme($colorScheme) {
+        $this->colorScheme = $colorScheme;
     }
     
     public function setActiveGroup($activeGroup)

@@ -124,7 +124,7 @@ class GroupPresenter extends BasePresenter
             $this['topPanel']->addToMenu((object)array('name' => 'nastavení', 'link' => $this->link('settings'), 'active' => $this->isLinkCurrent('settings')));
         }
         $this['topPanel']->addToMenu((object)array('name' => 'o skupině', 'link' => $this->link('about'), 'active' => $this->isLinkCurrent('about')));    
-        
+        $this['topPanel']->setScheme($this->activeGroup->colorScheme);
         $this->template->activeGroup = $this->activeGroup;
         $this->template->activeUser = $this->activeUser;
         $this->template->groupPermission = $this->groupPermission;

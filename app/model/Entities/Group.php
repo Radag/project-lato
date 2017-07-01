@@ -27,6 +27,7 @@ class Group {
     public $shortcut = null;
     public $mainColor = null;
     public $colorScheme = null;
+    public $colorSchemeId = null;
     public $numberOfStudents = null;
     public $groupType = null;
     public $newMessages = null;

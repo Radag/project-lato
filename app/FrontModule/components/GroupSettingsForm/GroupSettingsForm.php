@@ -61,7 +61,7 @@ class GroupSettingsForm extends Control
              ->setDefaultValue($this->group->name)
              ->setRequired('Nápis musí být vyplněn');
         $form->addRadioList('color','Barevné schéma', $colors)
-             ->setDefaultValue($this->group->colorScheme);
+             ->setDefaultValue($this->group->colorSchemeId);
         $form->addText('shortcut', 'Zkratka', null, 3)
              ->setDefaultValue($this->group->shortcut);
         $form->addText('subgroup', 'Název podskupiny', null, 100)
@@ -172,7 +172,7 @@ class GroupSettingsForm extends Control
         $this->group->name = trim($values['name']);
         $this->group->description = $values['description'];
         $this->group->room = $values['room'];
-        $this->group->colorScheme = $values['color'];
+        $this->group->colorSchemeId = $values['color'];
         $this->group->subgroup = $values['subgroup'];
         $this->group->shortcut = $values['shortcut'];
         $this->group->room = $values['room'];
