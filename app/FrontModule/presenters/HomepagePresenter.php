@@ -13,7 +13,8 @@ use App\Model\Manager\ClassificationManager;
 use App\FrontModule\Components\TaskHeader\ITaskHeader;
 use App\FrontModule\Components\NewNoticeForm\NewNoticeForm;
 use App\FrontModule\Components\Stream\ICommitTaskFormFactory;
-
+use App\FrontModule\Components\SearchForm;
+use App\Model\Manager\SearchManager;
 
 class HomepagePresenter extends BasePresenter
 {
@@ -26,6 +27,7 @@ class HomepagePresenter extends BasePresenter
     protected $noticeManager;
     protected $classificationManager;
     protected $taskHeaderFactory;
+    protected $searchManager;
     protected $days = array('Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota', 'Neděle');
     
     protected $tasks = array();
@@ -45,7 +47,8 @@ class HomepagePresenter extends BasePresenter
         NoticeManager $noticeManager,
         ClassificationManager $classificationManager,
         ITaskHeader $taskHeader,
-        ICommitTaskFormFactory $commitTaskFormFactory
+        ICommitTaskFormFactory $commitTaskFormFactory,
+        SearchManager $searchManager
     )
     {
         $this->userManager = $userManager;
@@ -58,6 +61,7 @@ class HomepagePresenter extends BasePresenter
         $this->classificationManager = $classificationManager;
         $this->taskHeaderFactory = $taskHeader;
         $this->commitTaskFormFactory = $commitTaskFormFactory;
+        $this->searchManager = $searchManager;
     }
     
     public function actionDefault()
@@ -179,6 +183,12 @@ class HomepagePresenter extends BasePresenter
     {
         $form = $this->commitTaskFormFactory->create();                
         $form->setActiveUser($this->presenter->activeUser);
+        return $form;
+    }
+    
+    protected function createComponentSearchForm()
+    {
+        $form = new SearchForm($this->searchManager); 
         return $form;
     }
 }
