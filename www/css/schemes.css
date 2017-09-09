@@ -1,15 +1,1 @@
-header.blue-bg .nav-wrapper {
-  background-color: #ff4181;
-}
-header.green-bg .nav-wrapper {
-  background-color: #00b852;
-}
-header.yellow-bg .nav-wrapper {
-  background-color: #00bfd8;
-}
-header.purple-bg .nav-wrapper {
-  background-color: #ffd346;
-}
-header.orange-bg .nav-wrapper {
-  background-color: #e1b83d;
-}
+header.blue-bg .nav-wrapper{background-color:#fff}header.green-bg .nav-wrapper{background-color:#00b852}header.yellow-bg .nav-wrapper{background-color:#00bfd8}header.purple-bg .nav-wrapper{background-color:#ffd346}header.orange-bg .nav-wrapper{background-color:#e1b83d}
