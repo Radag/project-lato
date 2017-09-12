@@ -61,6 +61,10 @@ class GroupManager extends BaseManager {
         return !empty($id);
     }
     
+    public function getColorsSchemes() 
+    {
+        return $this->database->fetchPairs("SELECT ID_SCHEME, MAIN_COLOR FROM group_color_scheme");
+    }
     
     public function getUserGroups(User $user, $subjects = false)
     {

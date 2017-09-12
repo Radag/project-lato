@@ -10,7 +10,9 @@
 	<!--Import materialize.css-->
 	<link type="text/css" rel="stylesheet" href="/css/materialize.min.css"  media="screen,projection"/>
 	<link type="text/css" rel="stylesheet" href="/css/style.css"  media="screen,projection"/>
-	<link type="text/css" rel="stylesheet" href="/css/theme-purple.css"  media="screen,projection"/>
+	{ifset $colorScheme}
+            <link type="text/css" rel="stylesheet" href="/css/theme-{$colorScheme}.css"  media="screen,projection"/>
+        {/ifset}
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
         <script type="text/javascript" src="/js/dropzone.js"></script>
         <script type="text/javascript" src="/js/core.js"></script>

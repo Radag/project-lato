@@ -9,7 +9,7 @@
             {foreach $form[color]->items as $key => $label}
                 <label n:name="color:$key">
                     <input n:name="color:$key" />
-                    <i class="material-icons {$label}"></i>       
+                    <i class="material-icons" style="background-color: {$label|noescape};"></i>       
                 </label>
             {/foreach}
         </div>

@@ -37,13 +37,7 @@ class NewGroupForm extends Control
     
     protected function createComponentForm()
     {
-        $colors = array(
-            1 => 'green-bg',
-            4 => 'yellow-bg',
-            2 => 'blue-bg',
-            3 => 'purple-bg',
-            5 => 'orange-bg'
-        );
+        $colors = $this->groupManager->getColorsSchemes();
         $form = new \Nette\Application\UI\Form;
         $form->addText('name', 'Název skupiny')
              ->setAttribute('placeholder', 'Název skupiny')
