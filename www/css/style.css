@@ -327,7 +327,7 @@ nav.breadcrumbs {
 }
 
 .collapsible-header.active {
-    border-bottom: 1px solid transparent;
+    border-bottom: 0px solid transparent;
     background-color: #f9f9f9;
 }
 
@@ -700,9 +700,8 @@ input[type="password"] {
     box-shadow: none;
 }
 
-.btn.white {
-    color: rgba(0, 0, 0, .87) !important;
-    background-color: #fff !important;
+.btn.white:not(:disabled) {
+    color: rgba(0, 0, 0, .87);
     box-shadow: none;
 }
 
@@ -731,8 +730,8 @@ input[type="password"] {
 .btn-flat {
     box-shadow: none;
     padding: 0;
-    height: 1em;
-    line-height: 1em;
+    height: 1.5em;
+    line-height: 1.5em;
 }
 
 .btn-flat:hover {
@@ -1070,6 +1069,8 @@ input[type="password"] {
     flex: 1 1 .1rem;
     width: 50%;
     padding: 0 16px;
+    display: flex;
+    align-items: center;
 }
 
 @media only screen and (max-width: 600px) {
@@ -1215,11 +1216,12 @@ input[type="password"] {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
+nav .button-collapse {
+    margin: 0;
+    height: auto !important;
+}
+
 @media only screen and (min-width: 601px) {
-  nav, nav, nav a.button-collapse, nav a.button-collapse i {
-    height: 70px;
-    line-height: 70px;
-  }
 
   .navbar-fixed {
     height: 70px;
@@ -1773,6 +1775,7 @@ textarea.materialize-textarea {
 .main-nav > nav > .nav-wrapper {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
 }
 
 @media only screen and (max-width: 600px) {
@@ -1791,8 +1794,8 @@ textarea.materialize-textarea {
     text-align: center;
 }
 
-.nav-title {
-    padding-left:16px;
+nav .nav-title {
+    padding: 0 16px;
     font-size:18px;
     flex-grow: 1;
 }
@@ -2049,6 +2052,7 @@ textarea.materialize-textarea {
 
 .side-nav li a {
     display: flex;
+    padding: 0 16px;
 }
 
 .side-nav li i.material-icons {
@@ -2308,7 +2312,7 @@ textarea.materialize-textarea {
 .card-header h2 {
     flex-grow: 1;
     font-size: 18px;
-    line-height: 1em;
+    line-height: 1.5em;
 }
 
 .card-header .card-title {
@@ -2327,7 +2331,7 @@ textarea.materialize-textarea {
 .card-header h3 {
     flex-grow: 1;
     font-size:17px;
-    line-height: 1em;
+    line-height: 1.5em;
 }
 
 .card-header h3 a {
@@ -3080,7 +3084,7 @@ textarea.materialize-textarea {
 
 .form-row .label {
     font-weight: 500;
-    line-height: 1em;
+    line-height: 1.5em;
 }
 
 .form-row .inner-label {
@@ -3115,28 +3119,10 @@ textarea.materialize-textarea {
     }
 }
 
-.card.settings-group-name .card-content {
-    display: flex;
-    align-items: center;
-}
-
-@media only screen and (max-width: 600px) {
-    .card.settings-group-name .card-content {
-        flex-wrap: wrap;
-    }
-}
-
 .card.settings-group-name .card-content input {
-    flex-grow: 1;
-    margin-right: 24px;
+    width: 100%;
     font-size: 16px;
-}
-
-
-@media only screen and (max-width: 600px) {
-    .card.settings-group-name .card-content input {
-        margin-right: 0;
-    }
+    margin-bottom: 20px
 }
 
 .card.settings-group-name .card-content ::-webkit-input-placeholder {
@@ -3336,7 +3322,7 @@ textarea.materialize-textarea {
 .schedule-row .day-title .name {
     display: block; 
     font-size: 14px;
-    line-height: 1em;
+    line-height: 1.5em;
     font-weight: 400;
     color: rgba(0, 0, 0, .87);
 }
@@ -3358,7 +3344,7 @@ textarea.materialize-textarea {
     display: block;
     color: rgba(0, 0, 0, .87);
     font-size: 16px;
-    line-height: 1em;
+    line-height: 1.2em;
     font-weight: 500;
     text-transform: uppercase;
     margin-bottom: 12px;
