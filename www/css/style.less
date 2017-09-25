@@ -2,8 +2,10 @@
 
 /* PROMĚNNÉ */
 
+@background-highlighted: #f9f9f9;
 @secondary-text-color: rgba(0, 0, 0, .5);
-@mark-red: #ff3737;
+@secondary-color: #26a69a;
+@divider-color: rgba(0, 0, 0, .1);
 
 /* MATERIALIZE */
 
@@ -234,7 +236,7 @@ nav.breadcrumbs {
 
 .table-header {
     flex-grow: 1;
-    margin-top: 16px;
+    margin-top: 32px;
     text-transform: uppercase;
     color: rgba(0, 0, 0, .54);
     display: flex;
@@ -1861,11 +1863,14 @@ nav .nav-title {
 /* SECTION HEADER */
 
 .section-header  {   
-    padding: 0px 24px;
+    padding: 24px;
     height: 36px;
-    margin-bottom: 16px;
     display: flex;
     align-items: center;
+
+    &.title-header {
+        margin-top: 32px;
+    }
 }
 
 @media only screen and (max-width: 992px) { 
@@ -2230,26 +2235,110 @@ nav .nav-title {
 
 /* SIDE NAV RIGHT */
 
-.search-field-small {
-    display: flex;
-    align-items: center;
-    background-color: rgba(0, 0, 0, .12);
-    border-radius: 2px;
-    height: 36px;
-    padding: 0 8px;
 
-    i {
-        margin: 0 12px 0 0 !important;
-        height: 36px !important;
-        line-height: 36px !important;
+#messages {
+
+    .card {
+        flex-direction: column;
     }
 
-    input {
-        margin: 0 !important;
-        height: 36px !important;
-        color: rgba(0, 0, 0, .87);
+    .search-field {
+        display: flex;
+        align-items: center;
+        background-color: rgba(0, 0, 0, .05);
+        border-radius: 2px;
+        height: 36px;
+        padding: 0 8px;
+        width: 100%;
+        max-width: 420px;
+
+        i {
+            margin: 0 12px 0 4px !important;
+            height: 36px !important;
+            line-height: 36px !important;
+            color: @secondary-text-color;
+        }
+
+        .input-wrapper {
+            flex-grow: 1;
+
+            input {
+                font-size: 15px;
+                margin: 0 !important;
+                height: 36px !important;
+                color: rgba(0, 0, 0, .87);
+                width: 100%;
+            }
+
+            input::-webkit-input-placeholder {
+                font-size: 15px;
+                text-transform: uppercase;
+            }
+
+            input:-moz-placeholder { /* Firefox 18- */
+                font-size: 15px;
+                text-transform: uppercase;
+            }
+
+            input::-moz-placeholder {  /* Firefox 19+ */
+                font-size: 15px;
+                text-transform: uppercase;
+            }
+
+            input:-ms-input-placeholder {  
+                font-size: 15px;
+                text-transform: uppercase;
+            }
+        }
+
     }
 
+    .message-row {
+        position:relative;
+        display:flex;
+        align-items:center;
+        width: 100%;
+        padding: 20px 24px;
+        cursor: pointer;
+        border-bottom: 1px solid @divider-color;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        &.unread-mark {
+            background-color: @background-highlighted;
+            border-left: 2px solid @secondary-color;
+        }
+
+        .avatar {
+            margin-right: 16px;
+        }
+
+        .name {
+            width: 192px;
+            margin-right: 16px;
+            font-weight: 500;
+        }
+
+        .prefix {
+            flex-grow: 1;
+        }
+
+        .date {
+            width: 96px;
+            color: @secondary-text-color;
+            text-align: right;
+        }
+
+        .options {
+            margin-left: 16px;
+
+            .material-icons {
+                color: @secondary-text-color;
+            }
+        }
+    }
 }
 
 .side-nav.right-aligned {
@@ -2281,63 +2370,74 @@ nav .nav-title {
 
     .new-message {
         height: 56px;
-        line-height: 56px;
+        display: flex;
+        align-items: center;
+        color: @secondary-text-color;
+        margin-bottom: 16px;
 
         i {
-            height: 56px;
-            line-height: 56px;
-            margin-right: 24px;
+            dislay: block;
+            width: 32px !important;
+            height: 32px;
+            line-height: 32px;
+            border-radius: 50%;
+            margin-right: 16px;
+        }
+
+        &:hover {
+            background-color: transparent;
         }
 
     }
 
-    .search-field-small {
+    .search-field {
         width: 100%;
-        margin: 16px;
+        display: flex;
+        align-items: center;
+        height: 56px;
+        padding: 0 16px;
 
-        input {
-            font-size: 14px;
+        i {
+            margin: 0 16px 0 0 !important;
+            height: 36px !important;
+            width: 32px !important;
+            display: block;
+            text-align: center;
+            line-height: 36px !important;
+        }
+
+        .input-wrapper {
+            flex-grow: 1;
+        
+            input {
+                margin: 0 !important;
+                height: 36px !important;
+                color: rgba(0, 0, 0, .87);
+                font-size: 14px;
+                width: 100%;
+            }
         }
     }
 
     .chat-person {
         display: flex;
-        height: 56px;
-        padding: 10px 16px;
+        align-items: center;
+        padding: 8px 16px;
 
         .avatar {
-            margin-right: 24px;
+            margin-right: 16px;
+            height: 32px;
+            width: 32px;
         }
 
         .label {
             flex-grow: 1;
-
-            .name {
-                line-height: 18px;
-                margin-bottom: 4px;
-            }
-
-            .date {
-                font-size: 12px;
-                line-height: 14px;
-                color: @secondary-text-color;
-                font-weight: 400;
-            }
+            font-weight: 400;
         }
 
-        .unread-mark {
-            height: 36px;
-            width: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            .circle-mark {
-                height: 8px;
-                width: 8px;
-                border-radius: 50%;
-                background-color: @mark-red;
-            }
+        &.unread-mark {
+            background-color: @background-highlighted;
+            border-left: 2px solid @secondary-color;
         }
     }
 }
