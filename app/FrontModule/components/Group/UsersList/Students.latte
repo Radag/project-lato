@@ -89,7 +89,7 @@
                                         'users': users
                                     },
                                     complete: function(data) {
-                                        $('#remove-users-modal').openModal();
+                                        $('#remove-users-modal').modal('open');
                                     }
                                 });
                             });
@@ -108,7 +108,7 @@
                                         'users': users
                                     },
                                     complete: function(data) {
-                                        $('#user-classification-modal').openModal();
+                                        $('#user-classification-modal').modal('open');
                                     }
                                 });
                             });
@@ -127,7 +127,7 @@
                                         'users': users
                                     },
                                     complete: function(data) {
-                                        $('#send-message-modal').openModal();
+                                        $('#send-message-modal').modal('open');
                                     }
                                 });
                             });
@@ -146,7 +146,7 @@
                                         'users': users
                                     },
                                     complete: function(data) {
-                                        $('#send-message-modal').openModal();
+                                        $('#send-message-modal').modal('open');
                                     }
                                 });
                             });
@@ -225,11 +225,11 @@
             start: function (jqXHR, settings) {
                 if (settings.nette !== undefined && $(settings.nette.ui).hasClass('submit-classification')) {
                     jqXHR.done(function (data, textStatus, jqXHR) {
-                        $('#new-classification-modal').closeModal();
+                        $('#new-classification-modal').modal('close');
                     });
                 } else if (settings.nette !== undefined && $(settings.nette.ui).hasClass('add-user-classification')) {
                     jqXHR.done(function (data, textStatus, jqXHR) {
-                        $('#user-classification-modal').openModal();
+                        $('#user-classification-modal').modal('open');
                     });
                 }
             }

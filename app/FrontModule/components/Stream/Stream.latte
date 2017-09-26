@@ -73,11 +73,11 @@
     latoAddAfterStartMethod({
         submitClass: 'change-popup-type-button',
         beginFunction: function() {
-            $('#select-post-type-modal').closeModal();
+            $('#select-post-type-modal').modal('close');
         },
         doneFunction: function(data, beforeParam) {
             if(data.invalidForm === undefined || !data.invalidForm) {
-                $('#create-post-modal').openModal();
+                $('#create-post-modal').modal('open');
             }
         }
     });
@@ -87,7 +87,7 @@
         beginFunction: function() { },
         doneFunction: function(data, beforeParam) {
             if(data.invalidForm === undefined || !data.invalidForm) {
-                $('#create-post-modal').openModal();
+                $('#create-post-modal').modal('open');
             }
         }
     });
@@ -124,8 +124,8 @@
     <div class="comments-footer"></div>
 </div>*}
 <script>  
-    $(document).ready(function() {        
-        $('.modal-trigger-create-message').leanModal({
+    $(document).ready(function() {   
+        $('.modal-trigger-create-message').modal({
             ready: function() { 
                 var notHide = false;
                 var onWrapper = false;
@@ -165,7 +165,6 @@
                 });
             }
         });
-
         $('input.autocomplete').autocomplete({
             data: {
               {foreach $userGroups as $group}

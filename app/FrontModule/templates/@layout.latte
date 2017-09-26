@@ -60,11 +60,11 @@
                         if(settings.nette !== undefined && $(settings.nette.ui).hasClass('show-new-private-message')) { 
                             $popup = $(settings.nette.ui).closest('div.modal');
                             jqXHR.done(function( data, textStatus, jqXHR ) {
-                                $('#private-message-modal').openModal();
+                                $('#private-message-modal').modal('open');
                             });
                         } else if(settings.nette !== undefined && $(settings.nette.ui).hasClass('submit-message-form')) { 
                             jqXHR.done(function( data, textStatus, jqXHR ) {
-                                $('#private-message-modal').closeModal();
+                                $('#private-message-modal').modal('close');
                             });
                         }
                     }
@@ -89,24 +89,17 @@
 	<script>  
             $(function () {
                 $.nette.init();
-            });
-            $('.button-collapse').sideNav({
-                menuWidth: 300, // Default is 240
-            });
-
-            $(document).ready(function(){
                 // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-                $('.modal-trigger').leanModal();
-             
+                $('.modal').modal();
                 $.get( {link getUserList!} , function(data) {
                     $('#userSearch').autocomplete({
                         data: JSON.parse(data.users)
                     });
                 });
-                
-                
-            });   
-            
+            });
+            $('.button-collapse').sideNav({
+                menuWidth: 300, // Default is 240
+            });          
         </script>
         {/block}
 </body>

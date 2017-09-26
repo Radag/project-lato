@@ -52,7 +52,7 @@
 <script>
     $(document).ready(function() {
         $(".modal-close").on("click", function(e){
-            $('#create-post-modal').closeModal();
+            $('#create-post-modal').modal('close');
         });
         latoLoadDatePicker();
     });

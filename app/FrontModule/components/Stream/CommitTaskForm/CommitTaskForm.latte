@@ -57,7 +57,7 @@
         beginFunction: function() {},
         doneFunction: function(data, beforeParam) {
             if(data.invalidForm === undefined || !data.invalidForm) {
-                $('#commit-task-modal').openModal();
+                $('#commit-task-modal').modal('open');
             }
         }
     });
