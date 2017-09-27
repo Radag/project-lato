@@ -1,18 +1,16 @@
 {block content}
-
 {control topPanel}
-
 <section id="messages" class="main">
-	<div class="container offset-1">
-		<div class="row">
-			<div class="col s12">
-				<header class="section-header no-padding">
+    <div class="container offset-1">
+        <div class="row">
+            <div class="col s12">
+                <header class="section-header no-padding">
                     <button  class="btn white">
                         Nová zpráva
                     </button>
                     <div class="search-field">
-						<i class="material-icons">search</i>
-						<div class="input-wrapper">
+                        <i class="material-icons">search</i>
+                        <div class="input-wrapper">
                             <input type="text" placeholder="Hledat" class="no-border">
                         </div>
                     </div>
@@ -27,76 +25,49 @@
                             <a type="button" class="btn-flat btn-icon dropdown-button waves-effect waves-dark" data-activates="messages_filter" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
                                 <i class="material-icons">filter_list</i>
                             </a>                           
-						    <ul id='messages_filter' class='dropdown-content'>
-						        <li><a href="">Všechny konverzace</a></li>
-						        <li><a href="">Nepřečtené konverzace</a></li>
-						        <li><a href="">Ignorované konverzace</a></li>
-						    </ul>
+                            <ul id='messages_filter' class='dropdown-content'>
+                                <li><a href="">Všechny konverzace</a></li>
+                                <li><a href="">Nepřečtené konverzace</a></li>
+                                <li><a href="">Ignorované konverzace</a></li>
+                            </ul>
                         </li>
                     </ul>
                 </header>
-                <header class="section-header title-header">
-                    <h3 class="left">Dnes</h3>
-                    <div class="flex-spacer"></div>
-                </header> 
-                <div class="card">
-                	<div class="message-row unread-mark">
-                		<div class="avatar small">
-                			<img src="/images/default-avatar_man.png" alt="">
-                		</div>
-                		<div class="name">Adam Navrátil</div>
-                		<div class="prefix truncate">Lorem ipsum dolor sit amet ...</div>
-                		<div class="date">22:35</div>
-                		<div class="options">
-                			<a type="button" class="btn-flat btn-icon dropdown-button waves-effect waves-dark" data-activates="message_dropdown_options-1" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
-                                <i class="material-icons">more_vert</i>
-                            </a>                       
-						    <ul id='message_dropdown_options-1' class='dropdown-content'>
-						        <li><a href="">Označit jako přečtené</a></li>
-						        <li><a href="">Ignorovat uživatele</a></li>
-						    </ul>
-                		</div>
-                	</div>
-                	<div class="message-row">
-                		<div class="avatar small">
-                			<img src="/images/default-avatar_man.png" alt="">
-                		</div>
-                		<div class="name">David Čížek</div>
-                		<div class="prefix truncate">Lorem ipsum dolor sit amet ...</div>
-                		<div class="date">20:35</div>
-                		<div class="options">
-                			<a type="button" class="btn-flat btn-icon dropdown-button waves-effect waves-dark" data-activates="message_dropdown_options-2" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
-                                <i class="material-icons">more_vert</i>
-                            </a>                       
-						    <ul id='message_dropdown_options-2' class='dropdown-content'>
-						        <li><a href="">Označit jako přečtené</a></li>
-						        <li><a href="">Ignorovat uživatele</a></li>
-						    </ul>
-                		</div>
-                	</div>
-                </div>
-                <header class="section-header title-header">
-                    <h3 class="left">Včera</h3>
-                    <div class="flex-spacer"></div>
-                </header> 
-                <div class="card">
-                	as
-                </div>
-                <header class="section-header title-header">
-                    <h3 class="left">Září</h3>
-                    <div class="flex-spacer"></div>
-                </header> 
-                <div class="card">
-                	as
-                </div> 
-                <header class="section-header title-header">
-                    <h3 class="left">Srpen</h3>
-                    <div class="flex-spacer"></div>
-                </header> 
-                <div class="card">
-                	as
-                </div> 
-			</div>
-		</div>
-	</div>
+                {foreach $messages as $section}
+                    <header class="section-header title-header">
+                        <h3 class="left">{$section->name}</h3>
+                        <div class="flex-spacer"></div>
+                    </header>
+                    <div class="card">
+                    {foreach $section->messages as $message}
+                        <div class="message-row unread-mark" data-href="{link messagesDetail, 'user'=>$message->user->urlId }">
+                            <div class="avatar small">
+                                <img src="{$message->user->profileImage}" alt="">
+                            </div>
+                            <div class="name">{$message->user->name} {$message->user->surname}</div>
+                            <div class="prefix truncate">{$message->text}</div>
+                            <div class="date">{$message->created->format('h:m d.m.Y')}</div>
+                            <div class="options">
+                                <a type="button" class="btn-flat btn-icon dropdown-button waves-effect waves-dark" data-activates="message_dropdown_options-1" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                                    <i class="material-icons">more_vert</i>
+                                </a>                       
+                                <ul id='message_dropdown_options-1' class='dropdown-content'>
+                                    <li><a href="">Označit jako přečtené</a></li>
+                                    <li><a href="">Ignorovat uživatele</a></li>
+                                </ul>
+                            </div>
+                        </div>                
+                    {/foreach}
+                     </div>
+                {/foreach}
+            </div>
+            <script>
+                $(document).ready(function () {
+                    $(".message-row").on('click', function() {
+                        window.location.replace($(this).data('href'));
+                    });
+                });
+            </script>
+        </div>
+    </div>
 </section>

@@ -59,6 +59,34 @@ class ProfilePresenter extends BasePresenter
             $this->template->isFriend = $this->userManager->isFriend($this->activeUser->id, $profileUser->id);
         }
     }
+    
+    public function renderMessages()
+    {
+        $months = array('Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec');
+        $return = array();
+        $messages = $this->privateMessageManager->getMessages($this->activeUser);
+        foreach($messages as $message) {
+            $diff = (new \DateTime())->diff($message->created);
+            $diffDays = (integer)$diff->format( "%R%a" );
+            if($diffDays === 0) {
+                if(!isset($return['today'])) {
+                    $return['today'] = (object)array('messages' => array(), 'name' => 'Dnes'); 
+                }
+                $return['today']->messages[] = $message;
+            } elseif($diffDays === -1) {
+                if(!isset($return['yesterday'])) {
+                    $return['yesterday'] = (object)array('messages' => array(), 'name' => 'Včera'); 
+                }
+                $return['yesterday']->messages[] = $message;
+            } else {
+                if(!isset($return[$message->created->format("n")])) {
+                    $return[$message->created->format("n")] = (object)array('messages' => array(), 'name' => $months[$message->created->format("n") + 1]); 
+                }
+                $return[$message->created->format("n")]->messages[] = $message;
+            }
+        }
+        $this->template->messages = $return;
+    }
         
     public function handleAddFriend($idUser)
     {

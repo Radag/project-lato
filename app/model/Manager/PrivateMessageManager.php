@@ -22,7 +22,7 @@ class PrivateMessageManager extends BaseManager
     public function getMessages($user)
     {
         $return = array();
-        $messages = $this->database->query("SELECT T1.TEXT, T1.ID_PRIVATE_MESSAGE, T2.NAME, T2.SURNAME, T1.CREATED, 
+        $messages = $this->database->query("SELECT T1.TEXT, T1.ID_PRIVATE_MESSAGE, T2.NAME, T2.SURNAME, T1.CREATED, T2.URL_ID,
                 T2.PROFILE_FILENAME,T2.PROFILE_PATH,T2.SEX
                 FROM private_message T1
                 LEFT JOIN vw_user_detail T2 ON T1.ID_USER_FROM=T2.ID_USER 
@@ -33,6 +33,7 @@ class PrivateMessageManager extends BaseManager
             $user = new User();
             $user->surname = $message->SURNAME;
             $user->name = $message->NAME;
+            $user->urlId = $message->URL_ID;
             if($message->PROFILE_FILENAME) {
                 $user->profileImage = "https://cdn.lato.cz/" . $message->PROFILE_PATH . "/" . $message->PROFILE_FILENAME;
             } else {
