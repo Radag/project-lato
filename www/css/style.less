@@ -585,8 +585,8 @@ nav.breadcrumbs {
 input[type="text"],
 input[type="date"],
 input[type="password"] {
-	border-bottom: 1px solid rgba(0, 0, 0, .12);
-    margin-bottom: 0;
+	border-bottom: 1px solid rgba(0, 0, 0, .12) !important;
+    margin-bottom: 0 !important;
     height: 45px;
     font-size: 14px;
 }
@@ -1435,7 +1435,7 @@ strong {
 
 .term-picker input {
     text-align: right;
-    width: 30%;
+    width: 30% !important;
 }
 
 .term-picker input.select-dropdown {
@@ -1830,7 +1830,7 @@ nav .nav-title {
 }
 
 .main {
-    margin-top: 32px;
+    margin: 32px auto;
 }
 
 @media only screen and (max-width: 992px) { 
@@ -2054,7 +2054,7 @@ nav .nav-title {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    flex-grow: 1
+    flex-grow: 1;
     padding: 0;
 }
 
@@ -2132,7 +2132,7 @@ nav .nav-title {
 
 .side-nav li a {
     flex-grow: 1;
-    font-weight: 500;
+    font-weight: 700;
     color: rgba(0, 0, 0, .87);
 }
 
@@ -2341,6 +2341,124 @@ nav .nav-title {
     }
 }
 
+#message-detail {
+    .conversation {
+
+        .message {
+            display: flex;
+        
+            .avatar {
+                margin: 0;
+            }
+
+            .bubble {
+                flex-grow: 1;
+                flex-direction: column;
+                background-color: #fff;
+
+                &:before {
+                    content: "";
+                    background-color: #fff;
+                    position: absolute;
+                    top: 0;
+                    display: block;
+                    width: 18px;
+                    height: 16px;
+                }
+
+                .name {
+                    font-size: 15px;
+                }
+
+                .date {
+                    font-size: 13px;
+                    color: @secondary-text-color;
+                }
+
+                .card-content {
+                    padding-top: 16px;
+                    padding-bottom: 32px;
+                }
+            }
+
+            &.me {
+
+                .bubble {
+                    margin-right: 24px;
+
+                    &:before {
+                        right: -8px;
+                        -webkit-transform: skew( -45deg );
+                        box-shadow: 2px -1px 2px rgba(0, 0, 0, .04);
+                    }
+                } 
+            }
+
+            &.from {
+                flex-direction: row-reverse;
+
+                .bubble {
+                    margin-left: 24px;
+
+                    &:before {
+                        left: -8px;
+                        -webkit-transform: skew( 45deg );
+                        box-shadow: -2px -1px 2px rgba(0, 0, 0, .04);
+                    }
+                } 
+            }
+        }
+    }
+
+    .message-editor {
+        flex-direction: column;
+        margin-bottom: 0;
+
+        .card-content {
+            padding-bottom: 20px;
+
+            .materialize-textarea {
+                padding-top: 0 !important;
+            }
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+
+            .editor-options {
+                display: flex;
+                align-items: center;
+                margin: 0;
+
+                li {
+                    margin-right: 12px;
+
+                    &.divider {
+                        height: 24px;
+                        width: 1px;
+                    }
+
+                    a {
+                        color: @secondary-text-color;
+
+                        i {
+                            font-size: 20px !important;
+                            line-height: 36px;
+                        }
+                    }
+                }
+            }
+
+            button[type="submit"] {
+                margin-left: 24px;
+            }
+        }
+
+
+    }
+}
+
 .side-nav.right-aligned {
 
     .side-nav-header {
@@ -2374,6 +2492,7 @@ nav .nav-title {
         align-items: center;
         color: @secondary-text-color;
         margin-bottom: 16px;
+        font-weight: 500;
 
         i {
             dislay: block;
@@ -3101,7 +3220,7 @@ nav .nav-title {
 
 .group-color-select {
     display: flex;
-    margin: 0;
+    margin: 20px 0 0 0;
 }
 
 @media only screen and (max-width: 600px) {
@@ -3258,7 +3377,7 @@ nav .nav-title {
 }
 
 .form-block {
-    margin: 24px 0 8px 0;
+    margin: 16px 0 8px 0;
 }
 
 .form-row {
@@ -3330,7 +3449,7 @@ nav .nav-title {
 /* ----- SETTINGS (GROUP) -----*/
 
 .main.settings {
-    padding-bottom: 84px;
+    padding-bottom: 52px;
 }
 
 @media only screen and (max-width: 600px) {
@@ -3339,10 +3458,21 @@ nav .nav-title {
     }
 }
 
-.card.settings-group-name .card-content input {
-    width: 100%;
-    font-size: 16px;
-    margin-bottom: 20px
+.card.settings-group-name .card-content {
+    
+    input {
+        width: 100%;
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    .group-color-select {
+        input {
+            width: auto;
+            margin: 0;
+        }
+
+    }
 }
 
 .card.settings-group-name .card-content ::-webkit-input-placeholder {

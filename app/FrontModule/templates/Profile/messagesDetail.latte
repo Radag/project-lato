@@ -1,1 +1,92 @@
 {block content}
+{control topPanel}
+
+<section class="main" id="message-detail">
+	<div class="container offset-1">
+		<div class="row">
+			<div class="col s12">
+				<div class="conversation">
+					<div class="message me">
+						<div class="card bubble paper-shadow">
+							<div class="card-header">
+								<h3 class="name truncate">
+									<a href="">Petr Šavelka</a>
+								</h3>
+								<div class="flex-spacer"></div>
+								<div class="date">22. 9. 22:30</div>
+							</div>
+							<div class="card-content">
+								<p>Lorem ipsum dolor sit amet ...</p>
+							</div>
+						</div>
+						<div class="avatar">
+							<img src="images/default-avatar_man.png">
+						</div>
+					</div>
+					<div class="message from">
+						<div class="card bubble paper-shadow">
+							<div class="card-header">
+								<h3 class="name truncate">
+									<a href="">Adam Navrátil</a>
+								</h3>
+								<div class="flex-spacer"></div>
+								<div class="date">30. 9. 22:30</div>
+							</div>
+							<div class="card-content">
+								<p>Lorem ipsum dolor sit amet ...</p>
+							</div>
+						</div>
+						<div class="avatar">
+							<img src="images/default-avatar_man.png">
+						</div>	
+					</div>
+
+				</div>
+				<div class="card message-editor">
+					<div class="card-content">
+						<textarea placeholder="Napište zprávu ..." class="materialize-textarea"></textarea>
+					</div>
+					<div class="card-footer">
+						<ul class="editor-options">
+							<li>
+								<a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit soubor">
+				                    <i class="material-icons">attach_file</i>
+				                </a>
+				            </li>
+				            <li class="divider"></li>
+				            <li>
+								<a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Tučné">
+				                    <i class="material-icons">format_bold</i>
+				                </a>
+				            </li>
+				            <li>
+								<a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Kurzíva">
+				                    <i class="material-icons">format_italic</i>
+				                </a>
+				            </li>
+				            <li>
+								<a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Podtržené">
+				                    <i class="material-icons">format_underlined</i>
+				                </a>
+				            </li>
+				            <li class="divider"></li>
+				            <li>
+								<a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Nečíslovaný seznam">
+				                    <i class="material-icons">format_list_bulleted</i>
+				                </a>
+				            </li>
+				            <li>
+								<a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Číslovaný seznam">
+				                    <i class="material-icons">format_list_numbered</i>
+				                </a>
+				            </li>
+				        </ul>
+						<div class="flex-spacer"></div>
+						<button type="button" class="waves-effect waves-light btn-flat">Zrušit</button>
+						<button type="submit" class="waves-effect waves-light btn">Odeslat</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
