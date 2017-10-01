@@ -27,7 +27,7 @@ class PrivateMessageManager extends BaseManager
                 FROM private_message T1
                 LEFT JOIN vw_user_detail T2 ON T1.ID_USER_FROM=T2.ID_USER 
                 WHERE T1.ID_USER_TO=?
-                ORDER BY CREATED DESC LIMIT 5", $user->id)->fetchAll();
+                ORDER BY CREATED DESC LIMIT 20", $user->id)->fetchAll();
         foreach($messages as $message) {
             $mess = new PrivateMessage();
             $user = new User();
@@ -47,6 +47,44 @@ class PrivateMessageManager extends BaseManager
             $mess->text = $message->TEXT;
             $mess->id = $message->ID_PRIVATE_MESSAGE;
             $mess->created = $message->CREATED;
+            $mess->user = $user;
+            $return[] = $mess;
+        }
+        
+        return $return;
+    }
+    
+    public function getConversation($homeUser, $withUser)
+    {
+        $return = array();
+        $messages = $this->database->query("SELECT T1.TEXT, T1.ID_PRIVATE_MESSAGE, T1.CREATED, T2.NAME, T2.SURNAME,  T2.URL_ID,
+                T2.PROFILE_FILENAME,T2.PROFILE_PATH,T2.SEX,
+                T3.NAME AS NAME_F, T3.SURNAME AS SURNAME_F, T3.URL_ID AS URL_ID_F,
+                T3.PROFILE_FILENAME AS PROFILE_FILENAME_F,T3.PROFILE_PATH AS PROFILE_PATH_F ,T3.SEX AS SEX_F
+                FROM private_message T1
+                LEFT JOIN vw_user_detail T2 ON T1.ID_USER_FROM=T2.ID_USER 
+                LEFT JOIN vw_user_detail T3 ON T1.ID_USER_TO=T3.ID_USER 
+                WHERE (T1.ID_USER_TO=? AND T1.ID_USER_FROM=?) OR (T1.ID_USER_FROM=? AND T1.ID_USER_TO=?)
+                ORDER BY CREATED ASC", $homeUser->id, $withUser->id, $homeUser->id, $withUser->id)->fetchAll();
+        foreach($messages as $message) {
+            $mess = new PrivateMessage();
+            $user = new User();
+            $mess->text = $message->TEXT;
+            $mess->id = $message->ID_PRIVATE_MESSAGE;
+            $mess->created = $message->CREATED;
+            if($homeUser->urlId === $message->URL_ID) {
+                $user->surname = $message->SURNAME;
+                $user->name = $message->NAME;
+                $user->urlId = $message->URL_ID;
+                $user->profileImage = User::createProfilePath($message->PROFILE_PATH , $message->PROFILE_FILENAME, $message->SEX);
+                $mess->fromMe = true;
+            } else {
+                $user->surname = $message->SURNAME_F;
+                $user->name = $message->NAME_F;
+                $user->urlId = $message->URL_ID_F;
+                $user->profileImage = User::createProfilePath($message->PROFILE_PATH_F, $message->PROFILE_FILENAME_F, $message->SEX_F);
+                $mess->fromMe = false;
+            }
             $mess->user = $user;
             $return[] = $mess;
         }

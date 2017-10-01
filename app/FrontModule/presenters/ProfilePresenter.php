@@ -62,6 +62,7 @@ class ProfilePresenter extends BasePresenter
     
     public function renderMessages()
     {
+        $this['topPanel']->setTitle('Zprávy');
         $months = array('Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec');
         $return = array();
         $messages = $this->privateMessageManager->getMessages($this->activeUser);
@@ -88,6 +89,15 @@ class ProfilePresenter extends BasePresenter
         $this->template->messages = $return;
     }
         
+    
+    public function renderConversation($user)
+    {
+        $userTo = $this->userManager->get($user, true);
+        $this['topPanel']->setTitle('Konverzace s ' . $userTo->name . " " . " " . $userTo->surname);
+        $this['privateMessageForm']->setIdUserTo($userTo->id);
+        $this->template->messages = $this->privateMessageManager->getConversation($this->activeUser, $userTo);
+    }
+    
     public function handleAddFriend($idUser)
     {
         $this->userManager->switchUserRelation($this->activeUser->id, $idUser, true);

@@ -25,29 +25,18 @@
                         <i class="material-icons">create</i>Nová zpráva
                     </a>
                 </li>
+                {foreach $privateMessages as $message}
                 <li>
-                    <a href="" class="chat-person unread-mark">
+                    <a href="{plink :Front:Profile:conversation, 'user'=>$message->user->urlId}" class="chat-person unread-mark">
                         <div class="avatar small">
-                            <img src="/images/default-avatar_man.png" alt="">
+                            <img src="{$message->user->profileImage|noescape}" alt="">
                         </div>
                         <div class="label">
-                            Adam Navrátil
+                            {$message->user->name} {$message->user->surname}
                         </div>
                     </a>
                 </li>
-                <li>
-                    <a href="" class="chat-person">
-                        <div class="avatar small">
-                            <img src="/images/default-avatar_man.png" alt="">
-                        </div>
-                        <div class="label">
-                            Milan Řehoř
-                        </div>
-                        <div class="unread-mark">
-                            <div class="circle-mark"></div>
-                        </div>
-                    </a>
-                </li>
+                {/foreach}
             </ul>
 
 
@@ -61,10 +50,10 @@
                 </li>
                 <li><a n:class="$presenter->isLinkCurrent('Homepage:noticeboard') ? active, waves-effect, waves-dark" href="{plink Homepage:noticeboard}" >
                         <i class="material-icons">dashboard</i>Nástěnka
-                </a></li>
+                    </a></li>
                 <li><a n:class="$presenter->isLinkCurrent('Profile:messages') ? active" href="{plink Profile:messages}" >
                         <i class="material-icons">email</i>Zprávy
-                </a></li>
+                    </a></li>
                 <li class="no-padding">
                     <ul class="collapsible collapsible-accordion">
                         <li>
@@ -105,18 +94,13 @@
                 <li class="divider"></li>
                 <h4>Správa účtu</h4>
                 <li><a href="{plink Account:default}" n:class="$presenter->isLinkCurrent('Account:*') ? active">
-                    <i class="material-icons">settings</i>Nastavení
-                </a></li>
+                        <i class="material-icons">settings</i>Nastavení
+                    </a></li>
                 <li><a href="{plink Homepage:logout}">
-                    <i class="material-icons">power_settings_new</i>Odhlásit se
-                </a></li>
-                  
-                
-
+                        <i class="material-icons">power_settings_new</i>Odhlásit se
+                    </a></li>
                 <li class="empty"></li>
-                
             </ul>
-
 
             <div class="left-nav-flex">
                 <a href="#" id="slide-left-button" data-activates="slide-out" class="button-collapse show-on-large slide-out-toggle">
@@ -124,19 +108,19 @@
                 </a>
                 <span class="nav-title truncate">{$title}</span>
             </div>
-            
-            <script>  
-            $(document).ready(function(){
-                $('.dropdown-button').on('click', function() {
-                    $('.dropdown-button').not($(this)).dropdown('close');
+
+            <script>
+                $(document).ready(function () {
+                    $('.dropdown-button').on('click', function () {
+                        $('.dropdown-button').not($(this)).dropdown('close');
+                    });
                 });
-            });
             </script>
             {if !empty($topMenu)}
                 <ul class="content-nav">
                     {foreach $topMenu as $item}
-                    <li {if $item->active}class="active"{/if}><a class="waves-effect waves-light" href="{$item->link}">{$item->name}</a></li>
-                    {/foreach}
+                        <li {if $item->active}class="active"{/if}><a class="waves-effect waves-light" href="{$item->link}">{$item->name}</a></li>
+                        {/foreach}
                 </ul>
             {/if}
             <div class="right-nav-flex">
@@ -172,27 +156,10 @@
                     </ul>
                 </li>
 
-                <li><a class="button-collapse show-on-large slide-out-toggle" id="button-left-slide" href="#" data-edge="right" data-activates="slide-out-right" ><i class="material-icons ">email</i>
+                <li><a class="button-collapse show-on-large slide-out-toggle" id="button-left-slide" href="#" data-edge="right" data-activates="slide-out-right" >
+                    <i class="material-icons ">email</i>
                     {snippet messagesCount}{if $unreadPrivMessages > 0}<span class="nav-badge">{$unreadPrivMessages}</span>{/if}{/snippet}</a>
-                <ul id='message-window' class='dropdown-content main-nav-dropdown'>
-                    <li class="dropdown-header">Zprávy</li>
-                    <li class="divider divider-after"></li>
-                        {foreach $privateMessages as $message}
-                        <li><a href="#!" class="clearfix">
-                                <div class="avatar left">
-                                    <img src="{$message->user->profileImage}" alt="{$message->user->name}">
-                                </div>
-                                <h4>
-                                    {$message->user->name} {$message->user->surname}
-                                    <span class="truncate">{$message->text}</span>
-                                </h4>
-                            </a></li>
-                        {/foreach}
-                    <li class="divider divider-before"></li>
-                    <li class="dropdown-footer"><a href="{plink Profile:messages}">Zobrazit vše</a></li>
-                </ul>
-            </li>
-
+                </li>
             <li><a href="{plink Homepage:search}" class="waves-effect waves-dark"><i class="material-icons">search</i></a></li>
         </ul>
     </div>
@@ -203,15 +170,15 @@
 
 </header>
 <script>
-$(document).ready(function(){
-    $('.side-nav-close').on('click', function() {
-        $('.button-collapse').sideNav('hide');
+    $(document).ready(function () {
+        $('.side-nav-close').on('click', function () {
+            $('.button-collapse').sideNav('hide');
+        });
+
+        $('#button-left-slide').sideNav({
+            edge: 'right'
+        });
     });
-    
-    $('#button-left-slide').sideNav({
-        edge: 'right'
-    });   
-});
 </script>
 
 {control newGroupForm}

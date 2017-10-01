@@ -190,10 +190,7 @@ class GroupPresenter extends BasePresenter
         $usersList->setGroupPermission($this->groupPermission);
         return $usersList;
     }
-    
-    
-
-    
+       
     protected function createComponentSharingForm()
     {
         $form = new \Nette\Application\UI\Form;

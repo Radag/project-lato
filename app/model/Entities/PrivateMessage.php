@@ -19,5 +19,5 @@ class PrivateMessage {
     public $idUserFrom;
     public $idUserTo;
     public $created;
-    
+    public $fromMe;
 }

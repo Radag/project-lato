@@ -1,11 +1,44 @@
 {form form class=>'ajax'}
-    <div class="modal-content">
-        <h3>Soukromá zpráva</h3>
-        {input text class=>'materialize-textarea no-border'}
-    </div>
-    <div class="modal-footer clearfix">
-        <div class="flex-spacer"></div>
-        <div class="form-control">
+    <div class="card message-editor">
+        <div class="card-content">
+            {input text class=>'materialize-textarea'}
+        </div>
+        <div class="card-footer">
+            <ul class="editor-options">
+                <li>
+                    <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit soubor">
+                        <i class="material-icons">attach_file</i>
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Tučné">
+                        <i class="material-icons">format_bold</i>
+                    </a>
+                </li>
+                <li>
+                    <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Kurzíva">
+                        <i class="material-icons">format_italic</i>
+                    </a>
+                </li>
+                <li>
+                    <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Podtržené">
+                        <i class="material-icons">format_underlined</i>
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Nečíslovaný seznam">
+                        <i class="material-icons">format_list_bulleted</i>
+                    </a>
+                </li>
+                <li>
+                    <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Číslovaný seznam">
+                        <i class="material-icons">format_list_numbered</i>
+                    </a>
+                </li>
+            </ul>
+            <div class="flex-spacer"></div>
             <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
             <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" >Potvrdit</button>
         </div>

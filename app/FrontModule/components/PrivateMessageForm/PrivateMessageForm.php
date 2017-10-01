@@ -37,12 +37,12 @@ class PrivateMessageForm extends Control
     {
         $this['form']['idUserTo']->setValue($idUserTo);
     }
-    
+     
     protected function createComponentForm()
     {
         $form = new \Nette\Application\UI\Form;
         $form->addTextArea('text', 'Obsah')
-             ->setAttribute('placeholder', 'Text zprávy')
+             ->setAttribute('placeholder', 'Napište zprávu ..')
              ->setRequired('Prosím napiště text zprávy.');
         $form->addHidden('idUserTo');
         $form->addSubmit('send', 'Vytvořit');
@@ -64,8 +64,9 @@ class PrivateMessageForm extends Control
         $message->text = $values->text;
         $message->idUserFrom = $this->activeUser->id;
         $message->idUserTo = $values->idUserTo;
+        $this['form']['text']->setValue("");
+        $this->presenter->redrawControl('conversation-list');  
         $this->privateMessageManager->insertMessage($message);
         $this->presenter->flashMessage('Zpráva byla odeslána', 'success');
-        
     }
 }

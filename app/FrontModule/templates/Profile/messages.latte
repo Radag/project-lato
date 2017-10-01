@@ -40,7 +40,7 @@
                     </header>
                     <div class="card">
                     {foreach $section->messages as $message}
-                        <div class="message-row unread-mark" data-href="{link messagesDetail, 'user'=>$message->user->urlId }">
+                        <div class="message-row unread-mark" data-href="{link conversation, 'user'=>$message->user->urlId}">
                             <div class="avatar small">
                                 <img src="{$message->user->profileImage}" alt="">
                             </div>
