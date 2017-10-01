@@ -79,10 +79,10 @@ class PrivateMessageManager extends BaseManager
                 $user->profileImage = User::createProfilePath($message->PROFILE_PATH , $message->PROFILE_FILENAME, $message->SEX);
                 $mess->fromMe = true;
             } else {
-                $user->surname = $message->SURNAME_F;
-                $user->name = $message->NAME_F;
-                $user->urlId = $message->URL_ID_F;
-                $user->profileImage = User::createProfilePath($message->PROFILE_PATH_F, $message->PROFILE_FILENAME_F, $message->SEX_F);
+                $user->surname = $message->SURNAME;
+                $user->name = $message->NAME;
+                $user->urlId = $message->URL_ID;
+                $user->profileImage = User::createProfilePath($message->PROFILE_PATH, $message->PROFILE_FILENAME, $message->SEX);
                 $mess->fromMe = false;
             }
             $mess->user = $user;
