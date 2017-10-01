@@ -1863,7 +1863,7 @@ nav .nav-title {
 /* SECTION HEADER */
 
 .section-header  {   
-    padding: 24px;
+    padding: 32px 24px;
     height: 36px;
     display: flex;
     align-items: center;
@@ -2575,6 +2575,11 @@ nav .nav-title {
     margin-bottom: 32px;
     margin-top:0;
     border-radius:0;
+
+    &.card-flat {
+        background-color: rgba(0, 0, 0, .08);
+        box-shadow: none;
+    }
 }
 
 .grid-item {
@@ -3084,6 +3089,16 @@ nav .nav-title {
     padding: 20px 24px;
     display: flex;
     align-items: center;
+
+    &.empty {
+        color: rgba(0, 0, 0, .87);
+        font-weight: 500;
+
+        .avatar {
+            color: @secondary-text-color;
+            background-color: rgba(0, 0, 0, .1);
+        }
+    }
 }
 
 @media only screen and (max-width: 992px) {
@@ -3733,6 +3748,8 @@ nav .nav-title {
 
 /* ----- ASSIGNMENTS ----- */
 
+
+
 .assignment-preview {
     color: rgba(0, 0, 0, .87);
     cursor: default;
@@ -3987,6 +4004,26 @@ nav .nav-title {
 }
 
 /* ----- Noticeboard ----- */
+
+#noticeboard {
+
+    #assignments {
+
+        .empty {
+            display: flex;
+            align-items: center;
+            padding: 20px 24px;
+            color: @secondary-text-color;
+            font-style: italic;
+
+            .avatar {
+                background-color: #39b54a;
+            }
+        }
+    }
+
+}
+
 
 .card-link-big {
     display: flex;

@@ -1,7 +1,7 @@
 {block content}
 {control topPanel}
 
-<section class="main profile">
+<section class="main" id="noticeboard">
     <div class="container">
         <div class="row">
             <div class="col s12">
@@ -22,7 +22,7 @@
     </div>
 
 <div class="container">
-    <div class="row">
+    {*<div class="row">
         <div class="col s12">
             <table id="one-day-schedule" class="card">
                 <tbody>
@@ -54,23 +54,23 @@
                 </tbody>
             </table>
         </div>
-    </div>
-</div>
-
-
-    <div class="container">
-        <div class="row">
-            <div class="col s12">
-                <header class="section-header">
-                    <h3 class="left">Povinnosti</h3>
-                    <div class="flex-spacer"></div>
-                </header>
-            </div>
+    </div>*}
+    <div class="row">
+        <div class="col s12">
+            <header class="section-header">
+                <h3 class="left">Povinnosti</h3>
+                <div class="flex-spacer"></div>
+            </header>
         </div>
     </div>
 
-<div class="container">
-    <div class="row">
+    <div class="row" id="assignments">
+        <div class=" col s12">
+            <div class="card card-flat empty">
+                <div class="avatar"><i class="material-icons">done</i></div>
+                Pro tuto chvíli máte vše splněno
+            </div>
+        </div>
         {snippet actualTasks}
         {foreach $actualTasks as $task}
         <div class="col l6 m12 s12">
@@ -102,9 +102,7 @@
         {/foreach}
         {/snippet}
     </div>
-</div>
 
-    <div class="container">
         <div class="row">
             <div class="col s12">
                 <header class="section-header">
@@ -124,10 +122,22 @@
                 </header>
             </div>
         </div>
-    </div>
 
-<div class="container">
     <div class="row" id="group-cards">
+        <div class="col l4 m6 s12">
+            <a href="#create-group" class="card card-flat empty waves-effect waves-dark modal-trigger">
+                <div class="avatar"><i class="material-icons">create</i></div>
+                Vytvořit skupinu
+            </a>
+        </div>
+
+        <div class="col l4 m6 s12">
+            <a href="#join-group" class="card card-flat empty waves-effect waves-dark modal-trigger">
+                <div class="avatar"><i class="material-icons">exposure_plus_1</i></div>
+                Zapsat se do skupiny
+            </a>
+        </div>
+
         {foreach $groups as $group}
         <div class="col l4 m6 s12">
             <a href="{link Group:default, 'id'=>$group->urlId}" class="card waves-effect waves-light-gray">
