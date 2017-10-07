@@ -3,6 +3,7 @@
 /* PROMĚNNÉ */
 
 @background-highlighted: #f9f9f9;
+@icon-background: rgba(0, 0, 0, .05);
 @secondary-text-color: rgba(0, 0, 0, .5);
 @secondary-color: #26a69a;
 @divider-color: rgba(0, 0, 0, .1);
@@ -1827,6 +1828,7 @@ nav .nav-title {
     margin-left:2px;
     padding:0px;
     background-color:#FF5252;
+    color: #fff;
 }
 
 .main {
@@ -2352,6 +2354,7 @@ nav .nav-title {
             }
 
             .bubble {
+                width: auto;
                 flex-grow: 1;
                 flex-direction: column;
                 background-color: #fff;
@@ -2385,6 +2388,7 @@ nav .nav-title {
 
                 .bubble {
                     margin-right: 24px;
+                    margin-left: 96px;
 
                     &:before {
                         right: -8px;
@@ -2399,6 +2403,7 @@ nav .nav-title {
 
                 .bubble {
                     margin-left: 24px;
+                    margin-right: 96px;
 
                     &:before {
                         left: -8px;
@@ -2582,28 +2587,6 @@ nav .nav-title {
     }
 }
 
-.grid-item {
-    width: calc(50% - 32px);
-    margin-left: 16px;
-    margin-right: 16px;
-}
-
-.grid-item.grid-item-fst {
-    margin-top: 122px;
-}
-
-@media only screen and (max-width: 992px) {
-    .grid-item.grid-item-fst {
-        margin-top: 114px;
-    } 
-}
-
-@media only screen and (max-width: 600px) {
-    .grid-item.grid-item-fst {
-        margin-top: 88px;
-    } 
-}
-
 .flex-row {
     display: flex;
 }
@@ -2731,49 +2714,8 @@ nav .nav-title {
 
 /* ---------- */
 
-/* CREATE POST */
 
-.create-post {
-    width: 100%;
-    padding: 24px;
-    cursor: pointer;
-    align-items: center;
-}
-
-@media only screen and (max-width: 992px) {
-    .create-post {
-        padding: 16px;
-    }
-}
-
-@media only screen and (max-width: 600px) {
-    .create-post {
-        padding: 16px 12px;
-    }
-}
-
-.create-post:hover {
-    box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
-}
-
-.create-post .create-post-label {
-    font-size: 16px;
-    color: rgba(0, 0, 0, .54);
-    line-height: 36px;
-}
-
-@media only screen and (max-width: 600px) {
-    .create-post .avatar {
-        width: 36px;
-        height: 36px;
-    }
-
-    .create-post .create-post-label {
-        font-size: 15px;
-    }
-}
-
-/* ---------- */
+/* ----- CARD CONTENT ----- */
 
 .card .card-content {
     padding: 24px;
@@ -2914,22 +2856,10 @@ nav .nav-title {
 }
 
 .comments-header .comments-count {
-    line-height: 24px;
-    padding: 0 0 0 12px;
+    line-height: 1.5em;
     color: rgba(0, 0, 0, .54);
     font-size: 13px;
-}
-
-@media only screen and (max-width: 600px) {
-    .comments-header .comments-count {
-        cursor: pointer;
-    }
-}
-
-@media only screen and (min-width: 601px) {
-    .comments-header .comments-count span {
-        display: none;
-    }
+    cursor: pointer;
 }
 
 .flex-spacer {
@@ -2968,7 +2898,7 @@ nav .nav-title {
 }
 
 .comment-row .comment-content {
-    width: calc(100% - 52px);
+    width: calc(~'100% - 52px');
     float: left;
 }
 
@@ -3029,31 +2959,7 @@ nav .nav-title {
 }
 
 .comments-footer button {
-    color: rgba(0, 0, 0, .54);
-    margin-left: 6px;
-    height: 36px;
-    width: 36px;
-    line-height: 36px;
-    border-radius: 50%;
-    /*background-color: rgba(0, 0, 0, .08);*/
-}
-
-.comments-footer button:hover,
-.comments-footer button:focus {
-    box-shadow: none;
-    background-color: transparent;
-}
-
-.comments-footer button[type="submit"] {
-    background-color: rgba(0, 0, 0, .06);
-}
-
-.comments-footer button[type="submit"]:hover {
-    background-color: rgba(0, 0, 0, .12);
-}
-
-.comments-footer button i {
-    font-size: 22px;
+    align-self: flex-end;
 }
 
 ::-webkit-input-placeholder {
@@ -3081,22 +2987,117 @@ nav .nav-title {
     font-size:13px;
 }
 
+/* ----- STREAM ----- */
+
+#stream {
+
+    .card {
+        flex-direction: column;
+
+        &#welcome-card {
+
+            ul {
+                padding: 40px 24px;
+                display: flex;
+
+                li {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    width: 33.333%;
+
+                    a {
+                        display: block;
+                    }
+
+                    .icon {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 112px;
+                        height: 112px;
+                        border-radius: 50%;
+                        color: @secondary-text-color;
+                        background-color: @icon-background;
+
+                        i {
+                            font-size: 48px !important;
+                        }
+                    }
+
+                    .label {
+                        padding-top: 20px;
+                        color: rgba(0, 0, 0, .87);
+                        font-weight: 500;
+                    }
+                }
+            }
+        }
+    }
+
+    /* ----- CREATE POST ----- */
+
+    .create-post {
+        width: 100%;
+        padding: 24px;
+        cursor: pointer;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    @media only screen and (max-width: 992px) {
+        .create-post {
+            padding: 16px;
+        }
+    }
+
+    @media only screen and (max-width: 600px) {
+        .create-post {
+            padding: 16px 12px;
+        }
+    }
+
+    .create-post:hover {
+        box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+    }
+
+    .create-post .create-post-label {
+        font-size: 16px;
+        color: rgba(0, 0, 0, .54);
+        line-height: 36px;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .create-post .avatar {
+            width: 36px;
+            height: 36px;
+        }
+
+        .create-post .create-post-label {
+            font-size: 15px;
+        }
+    }
+}
+
 
 
 /* GROUPS */
 
-#group-cards .card {
-    padding: 20px 24px;
-    display: flex;
-    align-items: center;
+#group-cards {
 
-    &.empty {
-        color: rgba(0, 0, 0, .87);
-        font-weight: 500;
+    .card {
+        padding: 20px 24px;
+        display: flex;
+        align-items: center;
 
-        .avatar {
-            color: @secondary-text-color;
-            background-color: rgba(0, 0, 0, .1);
+        &.empty {
+            color: rgba(0, 0, 0, .87);
+            font-weight: 500;
+
+            .avatar {
+                color: @secondary-text-color;
+                background-color: rgba(0, 0, 0, .1);
+            }
         }
     }
 }

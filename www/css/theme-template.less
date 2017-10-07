@@ -22,7 +22,7 @@
     }
 
     & .right-nav-flex > ul > li > a {
-        color: @text-color;
+        color: @right-nav-text-color;
     }
 }
 
@@ -52,6 +52,12 @@
         color: @text-color;
     }
 
+    & .btn-flat {
+        &.colored {
+            color: @primary-color;
+        }
+    }
+
     & input:not([type]):focus:not([readonly]), 
     & input[type=text]:focus:not([readonly]), 
     & input[type=password]:focus:not([readonly]), 
@@ -67,6 +73,13 @@
     & textarea.materialize-textarea:focus:not([readonly]) {
         border-bottom-color: @primary-color;
         box-shadow: 0 1px 0 0 @primary-color;
+    }
+
+    .avatar {
+        &.colored {
+            background-color: @primary-color;
+            color: @text-color;
+        }
     }
 }
 
