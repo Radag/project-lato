@@ -168,27 +168,26 @@ nav.breadcrumbs {
     margin-right: 16px !important;
 }
 
-[type="radio"]+label {
-    color: rgba(0, 0, 0, .87);
-    font-size: 14px !important;
-}
 
-[type="checkbox"]+label {
+[type="checkbox"]:not(:checked)+label,
+[type="radio"]:not(:checked)+label {
     color: rgba(0, 0, 0, .54);
-    line-height: 20px;
     height: auto;
     font-size: 14px;
 }
 
 @media only screen and (max-width: 600px) {
-    [type="checkbox"]+label {
+    [type="checkbox"]:not(:checked)+label,
+    [type="radio"]:not(:checked)+label {
         padding-left: 27px;
     }
 }
 
-[type="checkbox"].filled-in:checked+label {
+[type="checkbox"].filled-in:checked+label,
+[type="radio"].filled-in:checked+label {
     color: rgba(0, 0, 0, .87);
     font-weight: 500;
+    font-size: 14px;
 }
 
 .checkbox-vertical-align {
@@ -539,16 +538,6 @@ nav.breadcrumbs {
 
     .row .col {
         padding: 0 8px !important;
-    }
-
-    .row.masonry-grid {
-        margin: 0;
-    }
-
-    .row.masonry-grid .grid-item {
-        margin-left: 8px;
-        margin-right: 8px;
-        width: calc(100% - 16px);
     }
 }
 
@@ -1338,7 +1327,7 @@ p {
 }
 
 p:first-child {
-    margin-top: 0 !important;
+    margin-top: 0;
 }
 
 p.secondary-par {
@@ -3414,7 +3403,7 @@ nav .nav-title {
 }
 
 .checkbox-form-block .form-row {
-    margin-top: 20px;
+    margin-top: 16px;
 }
 
 .form-row.static {
@@ -3748,6 +3737,21 @@ nav .nav-title {
 
 
 /* ----- ASSIGNMENTS ----- */
+
+#assignments.main {
+
+    .empty {
+        height: calc(~'90vh - 120px');
+        display: flex;
+        align-items: center;
+
+        .message {
+            font-style: italic;
+            text-align: center;
+        }
+    }
+}
+
 
 
 

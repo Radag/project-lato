@@ -39,6 +39,11 @@
         background-color: @primary-color;
     }
 
+    & [type="radio"].filled-in:checked+label:after {
+        background-color: @primary-color;
+        border-color: @primary-color;
+    }
+
     & .switch label input[type=checkbox]:checked+.lever {
         background-color: fade(@primary-color, 38%);
     }
