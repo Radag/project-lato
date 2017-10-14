@@ -98,6 +98,12 @@ class ClassificationManager extends BaseManager
         return $classification;
     }
     
+    public function getLastChange($idUser, $idGroup)
+    {
+        $query = "SELECT IFNULL(LAST_CHANGE, CREATED_WHEN) AS LAST_CHANGE FROM classification WHERE ID_USER=? AND ID_GROUP=?";
+        return $this->database->query($query, $idUser, $idGroup)->fetchField();
+    }
+    
     public function getGroupClassification($idGroupClassification)
     {
         $classificationArray = $this->database->query("SELECT * FROM classification_group WHERE ID_CLASSIFICATION_GROUP=?", $idGroupClassification)->fetch();

@@ -64,7 +64,8 @@ class GroupPresenter extends BasePresenter
         'removeMembers' => false,
         'showStudentsList' => false,
         'editClassification' => false,
-        'showDeleted' => false
+        'showDeleted' => false,
+        'isTeacher' => false
     );
     
     /** @persistent */
@@ -152,7 +153,8 @@ class GroupPresenter extends BasePresenter
             $this->groupPermission['showDeleted'] = true;
             $this->groupPermission['showStudentsList'] = true;
             $this->groupPermission['editClassification'] = true;
-            $this->groupPermission['editAllMessages'] = true;
+            $this->groupPermission['editAllMessages'] = true;              
+            $this->groupPermission['isTeacher'] = true;
         } else {
             $this->groupPermission['leave'] = true;
             $this->groupPermission['editOwnMessages'] = true;
@@ -263,6 +265,9 @@ class GroupPresenter extends BasePresenter
         //pokud se mají ukázat smazané příspěvky
         if($this->groupPermission['showDeleted']) {
             $this->showDeleted = $showDeleted;
+        }
+        if(!$this->groupPermission['isTeacher']) {
+            $this->template->lastClassificationChange = $this->classificationManager->getLastChange($this->activeUser->id, $this->activeGroup->id);
         }
     }
     

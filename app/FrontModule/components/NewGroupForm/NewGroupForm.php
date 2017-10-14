@@ -70,7 +70,7 @@ class NewGroupForm extends Control
         $group->groupType = \App\Model\Entities\Group::TYPE_GROUP;
         $group->shortcut = strtoupper(substr($values['name'], 0, 3));
         $group->mainColor = $values['color'];        
-        $this->groupManager->createGroup($group);
-        $this->presenter->redirect('Homepage:noticeboard');
+        $idGroup = $this->groupManager->createGroup($group);
+        $this->presenter->redirect('Group:default', ['id' => $idGroup]);
     }
 }

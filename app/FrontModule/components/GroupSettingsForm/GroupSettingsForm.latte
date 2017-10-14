@@ -6,10 +6,10 @@
             <div class="card-content">
                 {input name class => 'validate'}
                 <div class="group-color-select">
-                    {foreach $form['color']->items as $key=>$code}
+                    {foreach $form[color]->items as $key => $label}
                         <label n:name="color:$key">
-                            <input n:name="color:$key">
-                            <i class="material-icons {$code}"></i>
+                            <input n:name="color:$key" />
+                            <i class="material-icons" style="background-color: {$label|noescape};"></i>       
                         </label>
                     {/foreach}
                 </div>

@@ -1,43 +1,45 @@
 {block content}
 {control topPanel}
-
-<div class="main container" id="assignments">
-    <div class="row empty">
-        <div class="col s12">
-            <p class="message">Pro tuto chvíli máte vše splněno!</p>
-        </div>
-    </div>
-</div>
-
-
-<div class="main container offset-2">
-    <div class="row">
-    	<div class="col s12">
-            {snippet actualTasks}
-            {foreach $tasks as $task}
-            <div class="card flex-column">
-                <div class="assignment">
-                    {control taskHeader-$task->idTask}
+{if $tasks}  
+    <div class="main container offset-2">
+        <div class="row">
+            <div class="col s12">
+                {snippet actualTasks}
+                {foreach $tasks as $task}
+                <div class="card flex-column">
+                    <div class="assignment">
+                        {control taskHeader-$task->idTask}
+                    </div>
+                    <a href="{plink Group:message 'id'=>$task->group->urlId, 'idMessage'=>$task->idMessage}" class="assignment-preview waves-effect waves-light-gray">
+                        <div class="avatar">
+                            <img src="{$task->message->user->profileImage|noescape}">
+                        </div>
+                        <div class="title">
+                                {$task->message->user->name} {$task->message->user->surname} | {$task->group->name}
+                            <span>
+                                {$task->title}
+                            </span>
+                        </div>
+                    </a>
                 </div>
-                <a href="{plink Group:message 'id'=>$task->group->urlId, 'idMessage'=>$task->idMessage}" class="assignment-preview waves-effect waves-light-gray">
-                    <div class="avatar">
-                        <img src="{$task->message->user->profileImage|noescape}">
-                    </div>
-                    <div class="title">
-                            {$task->message->user->name} {$task->message->user->surname} | {$task->group->name}
-                        <span>
-                            {$task->title}
-                        </span>
-                    </div>
-                </a>
+                {/foreach}
+                {/snippet}
             </div>
-            {/foreach}
-            {/snippet}
         </div>
     </div>
-</div>
-<div id="commit-task-modal" class="modal modal-small">
-    {snippet commitTaskForm}
-        {control commitTaskForm}
-    {/snippet}
-</div>
+    <div id="commit-task-modal" class="modal modal-small">
+        {snippet commitTaskForm}
+            {control commitTaskForm}
+        {/snippet}
+    </div>
+{else}
+    <div class="main container" id="assignments">
+        <div class="row empty">
+            <div class="col s12">
+                <p class="message">Pro tuto chvíli máte vše splněno!</p>
+            </div>
+        </div>
+    </div>
+{/if}    
+
+

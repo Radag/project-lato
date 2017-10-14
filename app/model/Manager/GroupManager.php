@@ -109,7 +109,8 @@ class GroupManager extends BaseManager {
         $urlId = $idGroup . '_' . \Nette\Utils\Strings::webalize($group->name);
         $this->database->query("UPDATE groups SET URL_ID=? WHERE ID_GROUP=?", $urlId, $idGroup);
               
-        $this->database->commit();         
+        $this->database->commit();    
+        return $urlId;
     }
     
     public function getGroup($urlIdGroup)

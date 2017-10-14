@@ -44,12 +44,12 @@
                 </div>
                 <div class="card-footer"></div>
             </div>
-            <div class="card flex-column">
+            <div class="card flex-column"  n:if="!$groupPermission['isTeacher'] && $lastClassificationChange">
                 <div class="card-header">
                     <h3>Známky</h3>
                 </div>
                 <div class="card-content">
-                    <p class="secondary-par">Poslední změna <strong>23. 6. 22:30</strong></p>
+                    <p class="secondary-par">Poslední změna <strong>{$lastClassificationChange->format("j. n. H:m")}</strong></p>
                 </div>
                 <div class="card-footer">
                     <a href="{link :Front:Homepage:classification}" class="btn-flat colored card-bottom">
@@ -57,8 +57,6 @@
                     </a>
                 </div>
             </div>
-
-
             <div class="card flex-column">
                 <div class="card-header">
                     <h3>Filtrovat příspěvky</h3>
