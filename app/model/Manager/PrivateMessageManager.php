@@ -23,7 +23,7 @@ class PrivateMessageManager extends BaseManager
     {
         $return = array();
         $messages = $this->database->query("SELECT T1.TEXT, T1.ID_PRIVATE_MESSAGE, T2.NAME, T2.SURNAME, T1.CREATED, T2.URL_ID,
-                T2.PROFILE_FILENAME,T2.PROFILE_PATH,T2.SEX
+                T2.PROFILE_FILENAME,T2.PROFILE_PATH,T2.SEX, T1.IS_READ
                 FROM private_message T1
                 LEFT JOIN vw_user_detail T2 ON T1.ID_USER_FROM=T2.ID_USER 
                 WHERE T1.ID_USER_TO=?
@@ -47,6 +47,7 @@ class PrivateMessageManager extends BaseManager
             $mess->text = $message->TEXT;
             $mess->id = $message->ID_PRIVATE_MESSAGE;
             $mess->created = $message->CREATED;
+            $mess->read = $message->IS_READ;
             $mess->user = $user;
             $return[] = $mess;
         }
@@ -98,10 +99,9 @@ class PrivateMessageManager extends BaseManager
         return $this->database->query("SELECT COUNT(ID_PRIVATE_MESSAGE) FROM private_message WHERE ID_USER_TO=? AND IS_READ IS NULL", $user->id)->fetchField();
     }
     
-    public function setMessagesRead($idUser)
+    public function setMessagesRead($idUserFrom, $idUserTo)
     {
-        $data = array('IS_READ' => date('Y-m-d H:i:s'));
-        $this->database->query("UPDATE private_message SET ? WHERE ID_USER_TO=? AND IS_READ IS NULL", $data, $idUser);
+        $this->database->query("UPDATE private_message SET IS_READ=NOW() WHERE ID_USER_FROM=? AND ID_USER_TO=? AND IS_READ IS NULL", $idUserFrom, $idUserTo);
     }
     
     public function insertMessage(PrivateMessage $message)

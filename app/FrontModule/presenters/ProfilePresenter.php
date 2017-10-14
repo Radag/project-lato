@@ -95,6 +95,7 @@ class ProfilePresenter extends BasePresenter
         $userTo = $this->userManager->get($user, true);
         $this['topPanel']->setTitle('Konverzace s ' . $userTo->name . " " . " " . $userTo->surname);
         $this['privateMessageForm']->setIdUserTo($userTo->id);
+        $this->privateMessageManager->setMessagesRead($userTo->id, $this->activeUser->id);
         $this->template->messages = $this->privateMessageManager->getConversation($this->activeUser, $userTo);
     }
     

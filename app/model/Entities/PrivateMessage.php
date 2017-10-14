@@ -20,4 +20,5 @@ class PrivateMessage {
     public $idUserTo;
     public $created;
     public $fromMe;
+    public $read;
 }
