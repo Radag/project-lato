@@ -190,6 +190,12 @@ nav.breadcrumbs {
     font-size: 14px;
 }
 
+[type="checkbox"].filled-in:not(:checked)+label:after,
+[type="checkbox"].filled-in:checked+label:after,
+[type="checkbox"].filled-in:checked+label:before {
+    top: 2px;
+}
+
 .checkbox-vertical-align {
     display: flex;
     align-items: center;
@@ -248,17 +254,53 @@ nav.breadcrumbs {
     border-color: rgba(0, 0, 0, .54);
 }
 
-.collapsible.popout {
-    margin: 0 0 32px 0;
-}
-
-.collapsible.popout > li {
+.collapsible {
     box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
     margin: 0;
-}
 
-.collapsible.popout > li.active {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+    .collapsible-header {
+        padding: 20px 24px;
+        display: flex;
+        align-items: center;
+    }
+
+    .collapsible-header.active {
+        border-bottom: 0px solid transparent;
+    }
+
+    .collapsible-body {
+        background-color: #fff;
+        padding: 0;
+    }
+
+    &.popout {
+        margin: 0 0 32px 0;
+
+        .collapsible-header {
+            -webkit-transition:  300ms ease-in-out;
+            -moz-transition:  300ms ease-in-out;
+            -o-transition:  300ms ease-in-out;
+            transition:  300ms ease-in-out;
+        }
+
+        .collapsible-header.active {
+            background-color: #f9f9f9;
+        }
+
+        .collapsible-body {
+            border-color: transparent;
+            border-bottom: none;
+        }
+
+        & > li {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+            margin: 0;
+        }
+
+        & > li.active {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+        }
+    }
 }
 
 .custom-table {
@@ -326,24 +368,12 @@ nav.breadcrumbs {
    font-style: italic;  
 }
 
-.collapsible-header {
-    -webkit-transition:  300ms ease-in-out;
-    -moz-transition:  300ms ease-in-out;
-    -o-transition:  300ms ease-in-out;
-    transition:  300ms ease-in-out;
-}
-
-.collapsible-header.active {
-    border-bottom: 0px solid transparent;
-    background-color: #f9f9f9;
-}
-
 .table-header [type="checkbox"]+label,
 .table-row [type="checkbox"]+label {
     padding-left: 20px;
     margin-right: 24px;
-    height: 20px;
-    line-height: 20px;
+    height: 25px;
+    line-height: 25px;
 }
 
 @media only screen and (max-width: 600px) {
@@ -378,12 +408,6 @@ nav.breadcrumbs {
 .collapsible-body .classification strong {
     color: rgba(0, 0, 0, .87);
     font-weight: 500;
-}
-
-.collapsible-body {
-    background-color: #fff;
-    border-color: transparent;
-    border-bottom: none;
 }
 
 .collapsible-body .classification-table .table-row {
@@ -604,6 +628,10 @@ input[type="password"] {
 
 .card-footer {
     padding: 0 24px 24px 24px;
+
+    .btn-flat {
+        color: @secondary-text-color;
+    }
 }
 
 @media only screen and (max-width: 600px) {
@@ -3068,7 +3096,66 @@ nav .nav-title {
     }
 }
 
+/* ----- STUDENTS ----- */
 
+/* ----- SETTINGS ----- */
+
+/* ----- ABOUT ----- */
+
+#about {
+
+    .collapsible {
+
+        &#admins {
+            .collapsible-header {
+                font-size: 15px;
+                font-weight: 500;
+
+                span {
+                    margin-left: 4px;
+                    font-size: 13px;
+                    color: @secondary-text-color;
+                    font-weight: 400;
+                }
+            }
+        }
+
+        .collapsible-body {
+            padding: 0 24px 24px 24px;
+
+            .line {
+                display: flex;
+                align-items: top;
+                margin-top: 24px;
+                height: 21px;
+
+                &:first-child {
+                    margin-top: 16px;
+                }
+
+                &:last-child {
+                    margin-bottom: 16px;
+                }
+
+                i {
+                    display: block;
+                    line-height: 21px;
+                    width: 36px;
+                    margin-right: 12px;
+                    text-align: center;
+                    color: @secondary-text-color;
+                }
+
+                .label {
+
+                    a {
+                        font-weight: 500;
+                    }
+                }
+            } 
+        }
+    }
+}
 
 /* GROUPS */
 
