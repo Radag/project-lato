@@ -1,13 +1,13 @@
 {if $streamPermission['addMessages'] && !$singleMode}
     {if $isOwner}
-    <a href="#select-post-type-modal" class="card create-post modal-trigger" >
+    <div href="#select-post-type-modal" class="card create-post modal-trigger" >
         <div class="avatar left">
             <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
         </div>
         <div class="create-post-label left">
             Chcete ostatním něco sdělit?
         </div>
-    </a>
+    </div>
     <!-- Modal Structure -->
 
     <div id="select-post-type-modal" class="modal modal-small">
