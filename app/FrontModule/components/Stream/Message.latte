@@ -62,19 +62,22 @@
 </div>
 <div class="card-content">
     <p>{$message->getText()|breaklines}</p>
+
+    {if isset($message->attachments['files']) && !empty($message->attachments['files']) }
+    <ul class="attachments">
+        {foreach $message->attachments['files'] as $file}  
+        <li>
+            <a href="https://cdn.lato.cz/{$file['path']}/{$file['filename']}" target="_blank" class="attached-file">
+                <div class="file-icon {if $file['type'] == 1 }image{elseif $file['type'] == 3}document{elseif$file['type'] == 4}spreadsheet{elseif $file['type'] == 5}presentation{else}unknown{/if}"><i class="material-icons">{if $file['type'] == 1 }image{elseif $file['type'] == 3}description{elseif$file['type'] == 4}equalizer{elseif $file['type'] == 5}slideshow{else}attachment{/if}</i></div>
+                <div class="file-name truncate">{$file['filename']}<span>(typ souboru a přípona)</span></div>   
+            </a>
+        </li>
+        {/foreach}
+    </ul>
+    {/if}
+
 </div>
-{if isset($message->attachments['files']) && !empty($message->attachments['files']) }
-<ul class="attachments">
-    {foreach $message->attachments['files'] as $file}  
-    <li>
-        <a href="https://cdn.lato.cz/{$file['path']}/{$file['filename']}" target="_blank" class="attached-file">
-            <div class="attachment-icon {if $file['type'] == 1 }image{elseif $file['type'] == 3}document{elseif$file['type'] == 4}spreadsheet{elseif $file['type'] == 5}presentation{else}unknown{/if}"><i class="material-icons">{if $file['type'] == 1 }image{elseif $file['type'] == 3}description{elseif$file['type'] == 4}equalizer{elseif $file['type'] == 5}slideshow{else}attachment{/if}</i></div>
-            <div class="attachment-label truncate">{$file['filename']}</div>   
-        </a>
-    </li>
-    {/foreach}
-</ul>
-{/if}
+
 {if isset($message->attachments['media']) && !empty($message->attachments['media']) }
 <div class="media-container">
     {foreach $message->attachments['media'] as $media}
