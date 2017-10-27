@@ -81,7 +81,9 @@
 {if isset($message->attachments['media']) && !empty($message->attachments['media']) }
 <div class="media-container">
     {foreach $message->attachments['media'] as $media}
-    <div class="{if $iterator->first}img-full-size{else}img-half-size{/if}" style="background-image: url('https://cdn.lato.cz/{$media['path']|noescape}/{$media['filename']|noescape}');"></div>
+    <div class="{if $iterator->first}img-full-size{else}img-half-size{/if}" style="background-image: url('https://cdn.lato.cz/{$media['path']|noescape}/{$media['filename']|noescape}');">
+        <div class="media-count">+3</div>
+    </div>
     {/foreach}
 </div>
 {/if}

@@ -2820,9 +2820,25 @@ nav .nav-title {
     margin-bottom: 56px;
 }
 
-.card .media-container {
+.media-container {
+    position: relative;
     width: 100%;
     margin-bottom: 12px;
+
+    .media-count {
+        position: absolute;
+        right: 0;
+        top: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 168px;
+        background-color: rgba(0, 0, 0, .5);
+        font-size: 56px;
+        font-weight: 300;
+        color: #fff;
+    }
 }
 
 @media only screen and (max-width: 992px) {
