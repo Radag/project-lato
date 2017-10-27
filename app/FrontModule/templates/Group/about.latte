@@ -1,87 +1,182 @@
 {includeblock '_blocks.latte'}
 {block content}
 {control topPanel}
-<div class="container main" id="about">
-    <div class="row">
+<div class="container main settings" id="about">
+    <div class="row about-header">
         <div class="col s12">
-            <div class="card flex-column settings">
+            <div class="card flex-column title">
                 <div class="card-content">
-                    <h4>Informace o skupině</h4>
-                    <div class="form-row static">
-                        <i class="material-icons icon-label">label</i>
-                        <div class="input-flex">
-                            <strong>{$activeGroup->name} 
-                                {if !empty($activeGroup->subgroup)}| Skupina {$activeGroup->subgroup}{/if}
-                            </strong>
-                        </div>
-                    </div>
-
-
-                    <div class="form-row static">
-                        <i class="material-icons icon-label">explicit</i>
-                        <div class="input-flex">
-                            {$activeGroup->shortcut}
-                        </div>
-                    </div>
-
-                    <div class="form-row static">
-                        <i class="material-icons icon-label">description</i>
-                        <div class="input-flex">
-                            {if !empty($activeGroup->description)}{$activeGroup->description}
-                            {else}<p class="secondary-par">Vyučující neuvádí žádné bližší informace o skupině.</p>
-
-                            {/if}
-                        </div>
-                    </div>
-                    <div class="form-row static">
-                        <i class="material-icons icon-label">location_on</i>
-                        <div class="input-flex">
-                            {$activeGroup->room}
-                        </div>
-                    </div>
+                    <h2>{$activeGroup->name}</h2>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col l6 m12">
-            <ul class="collapsible" id="admins" data-collapsible="accordion">
-                <li>
-                    <div class="collapsible-header">
-                        <div class="avatar small">
-                            <img src="/images/default-avatar_man.png">
-                        </div>
-                        Petr Šavelka<span>(učitel)</span>
-                    </div>
-                    <div class="collapsible-body">
-                        <div class="line">
-                            <i class="material-icons"></i>
-                            <div class="label">Zakladatel skupiny</div>
-                        </div>
-                        <div class="line">
-                            <i class="material-icons"></i>
-                            <div class="label">Učitel</div>
-                        </div>
-                        <div class="line">
-                            <i class="material-icons"></i>
-                            <div class="label">Místnost 420</div>
-                        </div>
-                        <div class="line">
-                            <i class="material-icons"></i>
-                            <div class="label"><a href="">Zobrazit profil</a></div>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="collapsible-header"><i class="material-icons">place</i>Second</div>
-                    <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-                </li>
-                <li>
-                    <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
-                    <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-                </li>
-              </ul>
+        <div class="col s12 edit-btn">
+            <button class="btn waves-effect waves-light" type="submit" name="send" >Upravit informace</button>
         </div>
+    </div>
+    <div class="row">
+        <div class="col s12 l6">
+            <div class="card flex-column">
+                <div class="card-header">
+                    <h2>Informace o skupině</h2>
+                </div>
+                <div class="card-content">
+                    <p class="secondary-par">Základní informace o skupině</p>
+                    <div class="form-row-block">
+                        {if !empty($activeGroup->subgroup)}
+                         <div class="form-row static">
+                            <i class="material-icons icon-label">group</i>
+                            <div class="input-flex filled">
+                                {$activeGroup->subgroup}     
+                            </div>
+                        </div>
+                        {/if}
+
+                        <div class="form-row static">
+                            <i class="material-icons icon-label">explicit</i>
+                            <div class="input-flex filled">
+                                {$activeGroup->shortcut}
+                            </div>
+                        </div>
+
+                        <div class="form-row static">
+                            <i class="material-icons icon-label">location_on</i>
+                            {if !empty($activeGroup->room)}
+                                <div class="input-flex filled">{$activeGroup->room}</div>    
+                            {else}
+                                <div class="input-flex unfilled">Místo pro výuku není určeno</div>
+                            {/if}
+                        </div>
+
+                        <div class="form-row static">
+                            <i class="material-icons icon-label">description</i>
+                            {if !empty($activeGroup->description)}
+                                <div class="input-flex filled">{$activeGroup->description}</div>
+                            {else}
+                                <div class="input-flex unfilled">Vyučující neuvádí žádné bližší informace o skupině.</div>
+                            {/if}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card flex-column">
+                <div class="card-header">
+                    <h2>Stream</h2>
+                </div>
+                <div class="card-content">
+                    <p class="secondary-par">
+                        Povolené akce na streamu
+                    </p>
+                    <div class="form-row-block">
+                        <div class="form-row static">
+                            <i class="material-icons icon-label">check</i>
+                            <div class="input-flex filled">
+                                Studenti mohou upravovat své příspěvky
+                            </div>
+                        </div>
+
+                        <div class="form-row static">
+                            <i class="material-icons icon-label">check</i>
+                            <div class="input-flex filled">
+                                Studenti mohou smazat své příspěvky
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="card flex-column">
+                <div class="card-header">
+                    <h2>Sdílení</h2>
+                </div>
+                <div class="card-content">
+                    <p class="secondary-par">
+                        Studenti se mohou zapisovat pomocí kódu <strong>DFASEQ</strong>.
+                    </p>
+                </div>
+                <div class="card-footer offset">
+                    <div class="btn-flat card-bottom">Přidat studenta</div>
+                </div>
+            </div>
+        </div>
+        <div class="col m12 l6">
+            <div class="card flex-column">
+                <div class="card-header">
+                    <h2>Kalendář</h2>
+                </div>
+                <div class="card-content">
+                    <p class="secondary-par">Výuka probíhá v následujících termínech</p>
+                </div>
+            </div>
+
+            <div class="card flex-column">
+                <div class="card-header">
+                    <h2>Známky</h2>
+                </div>
+                <div class="card-content">
+                    <p class="secondary-par">Známky jsou rozděleny do následujících období</p>
+                    <div class="form-row-block">
+                        <div class="form-row static">
+                            <i class="material-icons icon-label">label</i>
+                            <a href="" class="input-flex filled">
+                                První pololetí<span>(uzavřeno 29. 5.)</span>
+                            </a>
+                        </div>
+
+                        <div class="form-row static">
+                            <i class="material-icons icon-label">label</i>
+                            <a href="" class="input-flex filled">
+                                Druhé pololetí
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="card flex-column settings">
+                <div class="card-header">
+                    <h2>Správa skupiny</h2>
+                </div>
+                <div class="card-content">
+                    <p class="secondary-par">O správné fungování této skupiny se starají</p>
+                    <ul class="custom-collection group-admins">
+                        <li class="collection-item">    
+                            <a href="{plink Profile:default 'id'=>$activeGroup->owner->urlId}" class="item">
+                                <img src="{$activeGroup->owner->profileImage}" class="user-img">
+                                <div class="label">
+                                    <span class="title truncate">
+                                        {$activeGroup->owner->name} {$activeGroup->owner->surname}
+                                    </span>
+                                    <span class="subtitle truncate">
+                                        Učitel
+                                    </span>
+                                </div>    
+                            </a>   
+                        </li>
+                        <li class="divider"></li>
+                        <li class="collection-item">    
+                            <a href="{plink Profile:default 'id'=>$activeGroup->owner->urlId}" class="item">
+                                <img src="{$activeGroup->owner->profileImage}" class="user-img">
+                                <div class="label">
+                                    <span class="title truncate">
+                                        {$activeGroup->owner->name} {$activeGroup->owner->surname}
+                                    </span>
+                                    <span class="subtitle truncate">
+                                        Konzultant
+                                    </span>
+                                </div>
+                            </a> 
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
     </div>
 </div>
 

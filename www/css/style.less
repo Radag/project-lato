@@ -7,6 +7,7 @@
 @secondary-text-color: rgba(0, 0, 0, .5);
 @secondary-color: #26a69a;
 @divider-color: rgba(0, 0, 0, .1);
+@hyperlink-color: #2979FF;
 
 /* MATERIALIZE */
 
@@ -23,6 +24,10 @@ a {
     -moz-transition: color 300ms ease-in-out;
     -o-transition: color 300ms ease-in-out;
     transition: color 300ms ease-in-out;
+}
+
+.divider {
+    background-color: @divider-color;
 }
 
 .no-margin {
@@ -641,6 +646,10 @@ input[type=search]:not(.browser-default) {
 
 .card-footer {
     padding: 0 24px 24px 24px;
+
+    &.card-footer {
+        padding-top: 16px;
+    }
 
     .btn-flat {
         color: @secondary-text-color;
@@ -3520,6 +3529,10 @@ nav .nav-title {
     margin: 16px 0 8px 0;
 }
 
+.form-row-block {
+    margin: 24px 0 16px 0;
+}
+
 .form-row {
     display: flex;
     align-items: center;
@@ -3538,11 +3551,21 @@ nav .nav-title {
 }
 
 .checkbox-form-block .form-row {
-    margin-top: 16px;
+    margin-top: 20px;
 }
 
 .form-row.static {
     margin-top: 8px;
+}
+
+.form-row .filled {
+    color: rgba(0, 0, 0, .87);
+    font-weight: 500;
+}
+
+.form-row .unfilled {   
+    color: @secondary-text-color;
+    font-style: italic;
 }
 
 .form-row.chips-block {
@@ -3587,6 +3610,25 @@ nav .nav-title {
 }
 
 /* ----- SETTINGS (GROUP) -----*/
+
+#about {
+
+    .title {
+
+        h2 {
+            margin: 8px 0;
+            font-size: 20px;
+            font-weight: 500;
+        }
+    }
+
+    .edit-btn {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 32px;
+    }
+}
+
 
 .main.settings {
     padding-bottom: 52px;
@@ -3642,7 +3684,7 @@ nav .nav-title {
     left: 0;
     width: 100%;
     padding: 0;
-    z-index: 1000;
+    z-index: 500;
 }
 
 .submit-settings .card {
@@ -3654,13 +3696,25 @@ nav .nav-title {
     display: flex;
 }
 
-.form-row .icon-label {
-    width: 36px;
-    margin-right: 12px;
-    font-size: 24px !important;
-    color: rgba(0, 0, 0, .54);
-    line-height: 45px;
-    text-align: center;
+.form-row {
+
+    .icon-label {
+        width: 36px;
+        margin-right: 12px;
+        font-size: 24px !important;
+        color: rgba(0, 0, 0, .54);
+        line-height: 45px;
+        text-align: center;
+    }
+
+    &.static {
+        margin-top: 24px;
+
+        .icon-label {
+            line-height: 21px;
+        }
+
+    }
 }
 
 @media(max-width:600px) {
@@ -3678,7 +3732,16 @@ nav .nav-title {
 
 .form-row .input-flex {
     flex-grow: 1;
-    line-height: 0;
+}
+
+.form-row .input-flex {
+
+    span {
+        margin-left: 8px;
+        font-size: 13px;
+        font-weight: 400;
+        color: @secondary-text-color;
+    }
 }
 
 .form-row .input-flex.thin {

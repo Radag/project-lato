@@ -20,7 +20,7 @@
 <div class="row">
     <div class="col s12 l6">
         <div class="card flex-column settings">
-            <div class="card-header flex-column">
+            <div class="card-header">
                 <h2>Informace o skupině</h2>
             </div>
             <div class="card-content">
@@ -218,7 +218,7 @@
                     </a>
                     <ul id='admin_dropdown_1' class='dropdown-content'>
                         <li><a href="#edit-admin-modal" class="modal-trigger">Upravit oprávnění</a></li>
-                        <li><a href="" class="ajax">Odebrat</a></li>
+                        <li><a href="#remove-admin-modal" class="modal-trigger">Odebrat</a></li>
                     </ul>
                 </li>
                 <li class="divider"></li>
@@ -239,7 +239,7 @@
                     </a>
                     <ul id='admin_dropdown_2' class='dropdown-content'>
                         <li><a href="#edit-admin-modal" class="modal-trigger">Upravit oprávnění</a></li>
-                        <li><a href="" class="ajax">Odebrat</a></li>
+                        <li><a href="#remove-admin-modal" class="modal-trigger">Odebrat</a></li>
                     </ul>   
                 </li>
             </ul>
@@ -304,6 +304,20 @@
         <div class="form-control">
             <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
             <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" >Uložit</button>
+        </div>
+    </div>
+</div>
+
+<div id="remove-admin-modal" class="modal modal-small">
+    <div class="modal-content">
+        <h3>Petr Šavelka</h3>
+        <p>Opravdu si přejete odebrat tohoto učitele ze skupiny?</p>
+    </div>
+    <div class="modal-footer">
+        <div class="flex-spacer"></div>
+        <div class="form-control">
+            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" >Odebrat</button>
         </div>
     </div>
 </div>
