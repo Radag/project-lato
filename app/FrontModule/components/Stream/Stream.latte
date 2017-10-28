@@ -102,6 +102,13 @@
 </script>
 
 <div id="create-post-modal" class="modal">
+    <div class="post-type-selector">
+        <select>
+            <option value="1" selected>Oznámení</option>
+            <option value="2" >Studijní materiál</option>
+            <option value="3" >Povinnost</option>
+        </select>
+    </div>
     {snippet messageForm}
         {control messageForm}
     {/snippet}
