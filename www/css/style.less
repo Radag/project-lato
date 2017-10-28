@@ -920,6 +920,7 @@ input[type=search]:not(.browser-default) {
 
             .profile-navbar {
                 display: flex;
+                align-items: center;
                 background-color: rgba(29, 29, 29, .54);
                 width: 100%;
                 padding: 0;
@@ -930,76 +931,111 @@ input[type=search]:not(.browser-default) {
                         height: 64px;
                     }    
                 }
-            }
+            
 
-            .avatar {
-                display: block;
-                width: 72px;
-                height: 72px;
-                border-radius: 50%;
-                margin: 8px 20px;
-                padding: 4px;
-                background-color: rgba(29, 29, 29, .16);
+                .avatar {
+                    display: block;
+                    width: 72px;
+                    height: 72px;
+                    border-radius: 50%;
+                    margin: 8px 20px;
+                    padding: 4px;
+                    background-color: rgba(29, 29, 29, .16);
 
-                @media only screen and (max-width: 600px) {
-                    & {
-                        width: 48px;
-                        height: 48px;
-                        margin: 8px 8px 8px 16px;
-                    }    
-                }
-            }
-
-            .profile-title {
-                color: rgba(255, 255, 255, 1);
-                font-size: 22px;
-                line-height: 88px;
-                font-weight: 500;
-                flex-grow: 1;
-
-                @media only screen and (max-width: 600px) {
-                    & {
-                        line-height: 64px;
-                        font-size: 18px;
-                    }    
-                }
-            }
-
-            .controls {
-                margin: 0 24px;
-
-                li {
-                    float: left;
-
-                    a {
-                        display: block;
-                        margin: 23px 0 23px 12px;
-                        padding: 0;
-                        width: 42px;
-                        height: 42px;
-                        border-radius: 50%;
-                        text-align: center;
-                        -webkit-transition:  300ms ease-in-out;
-                        -moz-transition:  300ms ease-in-out;
-                        -o-transition:  300ms ease-in-out;
-                        transition:  300ms ease-in-out;
-
-                        &:hover {
-                            background-color: rgba(255, 255, 255, .12);
-                        }
+                    @media only screen and (max-width: 600px) {
+                        & {
+                            width: 48px;
+                            height: 48px;
+                            margin: 8px 8px 8px 16px;
+                        }    
                     }
                 }
 
-                i {
-                    font-size: 24px;
-                    line-height: 42px;
-                    height: 42px;
-                    color: rgba(255, 255, 255, .87);
+                .profile-title {
+                    color: rgba(255, 255, 255, 1);
+                    font-size: 22px;
+                    line-height: 88px;
+                    font-weight: 500;
+                    flex-grow: 1;
+
+                    @media only screen and (max-width: 600px) {
+                        & {
+                            line-height: 64px;
+                            font-size: 18px;
+                        }    
+                    }
+                }
+
+                .controls {
+                    margin: 0 24px;
+
+                    li {
+                        float: left;
+
+                        .btn-icon {
+                            display: block;
+                            margin: 0;
+                            padding: 0;
+                            width: 42px;
+                            height: 42px;
+                            border-radius: 50%;
+                            text-align: center;
+                            -webkit-transition:  300ms ease-in-out;
+                            -moz-transition:  300ms ease-in-out;
+                            -o-transition:  300ms ease-in-out;
+                            transition:  300ms ease-in-out;
+
+                            &:hover {
+                                background-color: rgba(255, 255, 255, .12);
+                            }
+                        }
+                    }
+
+                    i {
+                        font-size: 24px;
+                        line-height: 42px;
+                        height: 42px;
+                        color: rgba(255, 255, 255, .87);
+                    }
                 }
             } 
         }
     }
 } 
+
+#profile {
+
+    .groups {
+        margin: 24px 0;
+
+        li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            font-weight: 500;
+            cursor: poiner;
+
+            .group-shortcut-circle {
+                height: 36px;
+                width: 36px;
+                line-height: 36px;
+                border: none;
+                margin-right: 12px;
+            }
+
+            span {
+                color: @secondary-text-color;
+                font-weight: 400;
+                margin-left: 8px;
+            }
+
+            &.disabled {
+                cursor: default;
+                opacity: .35;
+            }
+        }
+    }
+}
 
 .new-message {
     display: flex !important;
@@ -2236,7 +2272,7 @@ nav .nav-title {
     color: #2979FF;
 }
 
-.side-nav .group-shortcut-circle {
+.group-shortcut-circle {
     width: 36px;
     height: 36px;
     border: 3px solid #fff;

@@ -1,10 +1,10 @@
 {block content}
 {control topPanel}
-<section class="main profile">
-    <div class="container">
+<section class="main" id="profile">
+    <div class="container profile-header">
         <div class="row">
             <div class="col s12">
-                <div class="card profile-header">
+                <div class="card">
                     <div class="profile-cover">                       
                     </div>
                     <div class="profile-navbar">
@@ -12,10 +12,11 @@
                             <img src="{$activeUser->profileImage}" >
                         </div>
                         <div class="profile-title">
-                            {$activeUser->name} {$activeUser->surname}<span>{if $isMe}, můj profil{else}{$relation}{/if}</span>
+                            {$activeUser->name} {$activeUser->surname}
                         </div>
                         {snippet profileMenu}
                         <ul class="controls">
+                            {*
                             {if !$isMe}
                                 {if $isFriend}
                                 <li><a href="{link removeFriend!, 'idUser'=>$activeUser->id}" class="tooltipped waves-effect waves-light ajax" data-position="bottom" data-delay="50" data-tooltip="Odebrat z přátel"><i class="material-icons">person_remove</i></a></li>
@@ -24,20 +25,29 @@
                                 {/if}
                             <li><a href="{link showPrivateMessageForm! 'idUserTo'=>$activeUser->id}" class="ajax show-new-private-message waves-effect waves-light"><i class="material-icons">chat</i></a></li>
                             {/if}
-                            <li><a href="#" class="waves-effect waves-light"><i class="material-icons">more_vert</i></a></li>
+                            *}
+                            <li>
+                                <a class="btn-flat btn-icon dropdown-button waves-effect waves-light" data-activates="profile-options" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                                    <i class="material-icons">more_vert</i>
+                                </a>
+                                <ul id='profile-options' class="dropdown-content">
+                                    <li><a href="" class="waves-effect waves-dark">Ignorovat tohoto uživatele</a></li>
+                                </ul>
+                            </li>
                         </ul>
                         {/snippet}
                     </div>
                 </div>
             </div>
         </div>
-
+    </div>
+    <div class="container">
         <div class="row">
             <div class="col l6 m12 s12">
                 {if !$isMe}
                 <a href="{link showPrivateMessageForm! 'idUserTo'=>$activeUser->id}" class="ajax card new-message show-new-private-message">
-                    <div class="avatar small">
-                        <img src="{$activeUser->profileImage}" alt="some chich">
+                    <div class="avatar">
+                        <img src="{$activeUser->profileImage}">
                     </div>
                     <div class="new-message-label">
                         Poslat soukromou zprávu
@@ -94,28 +104,35 @@
             <div class="col l6 m12 s12">
                 <div class="card flex-column">
                     <div class="card-header">
-                        <h2>Výsledky studia</h2>
+                        <h2>Skupiny</h2>
                     </div>
                     <div class="card-content">
-                        <p class="secondary-par">Uživatel nezveřejňuje své studijní výsledky<p>
+                        <p class="secondary-par">Uživatel je aktivním členem následujících skupin<p>
+                        <ul class="groups">
+                            <li>
+                                <div class="group-shortcut-circle">A</div>
+                                Aplikační software
+                            </li>
+                            <li class="disabled">
+                                <div class="group-shortcut-circle">M</div>
+                                Matematika
+                            </li>
+                            <li>
+                                <div class="group-shortcut-circle">P</div>
+                                Programování <span>(Skupina 2)</span>
+                            </li>
+                            <li class="disabled">
+                                <div class="group-shortcut-circle">M</div>
+                                Matematika
+                            </li>
+                            <li>
+                                <div class="group-shortcut-circle">P</div>
+                                Programování <span>(Skupina 2)</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-                <div class="card flex-column">
-                    <div class="card-header">
-                        <h2>Aktivita</h2>
-                    </div>
-                    <div class="card-content">
-                        <p class="secondary-par">Uživatel nezveřejňuje svoji aktivitu na streamu<p>
-                    </div>
-                </div>
-                <div class="card flex-column">
-                    <div class="card-header">
-                        <h2>Spolužáci</h2>
-                    </div>
-                    <div class="card-content">
-                        <p class="secondary-par">Uživatel nezveřejňuje své známé<p>
-                    </div>
-                </div>
+                
             </div>
         </div>
 
