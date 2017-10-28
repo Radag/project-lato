@@ -111,17 +111,19 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
         } else {
             $userData = $this->database->query("SELECT * FROM vw_user_detail WHERE ID_USER=?", $idUser)->fetch(); 
         }
-
-        $user->id = $userData->ID_USER;
-        $user->surname = $userData->SURNAME;
-        $user->name = $userData->NAME;
-        $user->email = $userData->EMAIL;
-        $user->urlId = $userData->URL_ID;
-        $user->username = $userData->USERNAME;
-        $user->birthday = $userData->BIRTHDAY;
-        $user->profileImage = User::createProfilePath($userData->PROFILE_PATH, $userData->PROFILE_FILENAME, $userData->SEX);
-        
-        return $user;
+        if($userData) {       
+            $user->id = $userData->ID_USER;
+            $user->surname = $userData->SURNAME;
+            $user->name = $userData->NAME;
+            $user->email = $userData->EMAIL;
+            $user->urlId = $userData->URL_ID;
+            $user->username = $userData->USERNAME;
+            $user->birthday = $userData->BIRTHDAY;
+            $user->profileImage = User::createProfilePath($userData->PROFILE_PATH, $userData->PROFILE_FILENAME, $userData->SEX);
+            return $user;
+        } else {
+            return null;
+        }
     }
 
     public function assignProfileImage(\App\Model\Entities\User $user, $file)

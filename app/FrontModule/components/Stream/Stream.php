@@ -107,6 +107,8 @@ class Stream extends PreparedControl
     
     protected $messages = array();
     
+    protected $filter = 'all';
+
     public function __construct(
             UserManager $userManager, 
             MessageManager $messageManager, 
@@ -165,7 +167,7 @@ class Stream extends PreparedControl
         $template = $this->getTemplate();
         if($this->singleMode === null) {
             $this->template->singleMode = false;
-            $this->messages = $this->messageManager->getMessages($this->activeGroup, $this->activeUser, $this->showDeleted);    
+            $this->messages = $this->messageManager->getMessages($this->activeGroup, $this->activeUser, $this->showDeleted, $this->filter);    
         } else {
             $this->template->singleMode = true;
             $message = $this->messageManager->getMessage($this->singleMode, $this->activeUser);
@@ -326,5 +328,10 @@ class Stream extends PreparedControl
     public function setSingleMode($idMessage)
     {
         $this->singleMode = $idMessage;
+    }
+    
+    public function setFilter($filter)
+    {
+        $this->filter = $filter;
     }
 }

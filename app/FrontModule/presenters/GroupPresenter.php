@@ -333,4 +333,10 @@ class GroupPresenter extends BasePresenter
             $this->presenter->redirect('this');
         }
     }
+    
+    public function handleChangeFilter($filter) 
+    {   
+        $this['stream']->setFilter($filter);
+        $this->redrawControl('streamSection');
+    }
 }

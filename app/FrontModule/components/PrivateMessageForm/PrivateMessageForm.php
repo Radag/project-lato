@@ -11,7 +11,7 @@ use \Nette\Application\UI\Form;
 use \Nette\Application\UI\Control;
 use App\Model\Entities\PrivateMessage;
 use App\Model\Manager\PrivateMessageManager;
-
+use App\Model\Manager\UserManager;
 
 
 /**
@@ -24,18 +24,24 @@ class PrivateMessageForm extends Control
         
     protected $privateMessageManager;
     protected $activeUser;
+    protected $userManager;
     
     public function __construct(PrivateMessageManager $privateMessageManager,
-                \App\Model\Entities\User $activeUser)
+                \App\Model\Entities\User $activeUser,
+            UserManager $userManager)
     {
         $this->privateMessageManager = $privateMessageManager;
         $this->activeUser = $activeUser;
-        
+        $this->userManager = $userManager;
     }
 
     public function setIdUserTo($idUserTo) 
     {
-        $this['form']['idUserTo']->setValue($idUserTo);
+        $user = $this->userManager->get($idUserTo);
+        if($user) {
+            $this['form']['idUserTo']->setValue($idUserTo);
+            $this['form']['emailTo']->setValue($user->email);
+        }
     }
      
     protected function createComponentForm()
@@ -44,10 +50,19 @@ class PrivateMessageForm extends Control
         $form->addTextArea('text', 'Obsah')
              ->setAttribute('placeholder', 'Napište zprávu ..')
              ->setRequired('Prosím napiště text zprávy.');
+        $form->addText('emailTo', 'Email uživatele')
+             ->setAttribute('placeholder', 'Email uživatele');
         $form->addHidden('idUserTo');
         $form->addSubmit('send', 'Vytvořit');
 
         $form->onSuccess[] = [$this, 'processForm'];
+        $form->onValidate[] = function($form) {
+            $user = $this->userManager->getUserByMail($form['emailTo']->getValue());
+            if(empty($user)) {
+                $form->addError('Uživatel s tím emailem neexituje');
+            }
+        };
+
         return $form;
     }
     
@@ -61,12 +76,16 @@ class PrivateMessageForm extends Control
     public function processForm(Form $form, $values) 
     {
         $message = new PrivateMessage;
+        $userTo = $this->userManager->getUserByMail($values->emailTo);        
         $message->text = $values->text;
         $message->idUserFrom = $this->activeUser->id;
-        $message->idUserTo = $values->idUserTo;
-        $this['form']['text']->setValue("");
-        $this->presenter->redrawControl('conversation-list');  
+        $message->idUserTo = $userTo->id;
+        $this['form']['text']->setValue("");      
         $this->privateMessageManager->insertMessage($message);
         $this->presenter->flashMessage('Zpráva byla odeslána', 'success');
+        if($this->presenter->isLinkCurrent('Profile:messages')) {
+            $this->presenter->redrawControl('messagesList');
+        }
+        $this->presenter->redrawControl('right-conversation-list');
     }
 }

@@ -1,6 +1,7 @@
 <header class="navbar-fixed main-nav">
     <nav>
         <div class="nav-wrapper">
+            {snippet right-conversation-list}
             <ul id="slide-out-right" class="side-nav">
                 <li class="side-nav-close">
                     <i class="material-icons">keyboard_arrow_left</i>Zavřít panel    
@@ -19,7 +20,7 @@
                 </li>
                 <li class="divider no-margin"></li>
                 <li>
-                    <a href="#" class="new-message waves-effect waves-dark">
+                    <a href="{plink showPrivateMessageForm!}" class="ajax new-message waves-effect waves-dark show-new-private-message">
                         <i class="material-icons">create</i>Nová zpráva
                     </a>
                 </li>
@@ -36,7 +37,7 @@
                     </li>
                 {/foreach}
             </ul>
-
+            {/snippet}
 
             <ul id="slide-out" class="side-nav">
                 <li class="side-nav-close">

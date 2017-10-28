@@ -4,12 +4,11 @@
 
 <div class="container main two-level-nav">
     <div class="row">
-        <div class="col s12 l8" id="stream">
+        {snippet streamSection}
+        <div class="col s12 l8" id="stream" >
             {control stream}
         </div>
-        
- 
-
+        {/snippet}
         <div class="col s12 l4">
             <div class="card flex-column">
                 <div class="card-header">
@@ -65,24 +64,32 @@
                     <p class="secondary-par">Zobrazit pouze následující položky</p>
                     <form class="checkbox-form-block">
                         <div class="form-row">
-                            <input type="radio" class="filled-in" id="opt1" name="stream-filter" checked="checked" />
+                            <input type="radio" value="all" class="filled-in" id="opt1" name="stream-filter" checked="checked" />
                             <label for="opt1">Všechny příspěvky</label>
                         </div>
                         <div class="form-row">
-                            <input type="radio" class="filled-in" id="opt2" name="stream-filter" />
+                            <input type="radio" value="notice" class="filled-in" id="opt2" name="stream-filter" />
                             <label for="opt2">Oznámení</label>
                         </div>
                         <div class="form-row">
-                            <input type="radio" class="filled-in" id="opt3" name="stream-filter" />
+                            <input type="radio" value="material" class="filled-in" id="opt3" name="stream-filter" />
                             <label for="opt3">Studijní materiály</label>
                         </div>
                         <div class="form-row">
-                            <input type="radio" class="filled-in" id="opt4" name="stream-filter" />
+                            <input type="radio" value="task" class="filled-in" id="opt4" name="stream-filter" />
                             <label for="opt4">Povinnosti</label>
                         </div>
                     </form>
+                    <script>
+                        $("form input[name='stream-filter']").on('change', function (event) {
+                            $.nette.ajax({
+                                url: {link changeFilter!},
+                                method: 'POST',
+                                data: {'filter' : $("form input[name='stream-filter']:checked").val()}
+                            });
+                        });
+                    </script>
                 </div>
-                
             </div>
             
             <div class="card flex-column" n:if="$groupPermission['showDeleted']">

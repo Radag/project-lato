@@ -90,7 +90,7 @@ class BasePresenter extends Nette\Application\UI\Presenter
     
     protected function createComponentPrivateMessageForm()
     {
-        return new PrivateMessageForm($this->privateMessageManager, $this->activeUser);
+        return new PrivateMessageForm($this->privateMessageManager, $this->activeUser, $this->userManager);
     }
        
     public function handleShowPrivateMessageForm($idUserTo)

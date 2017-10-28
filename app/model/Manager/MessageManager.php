@@ -97,13 +97,18 @@ class MessageManager extends BaseManager {
         $this->notificationManager->addNotificationType(NotificationManager::TYPE_ADD_COMMENT, $data);
     }
     
-    public function getMessages($group, \App\Model\Entities\User $user, $deleted=false)
+    public function getMessages($group, \App\Model\Entities\User $user, $deleted=false, $filter = 'all')
     {
         $return = array();
         if($deleted) {
             $delete = array(0,1);
         } else {
             $delete = array(0);
+        }
+        if($filter !== 'all') {
+            $filters = array($filter);
+        } else {
+            $filters = array('notice', 'material', 'homework', 'task');
         }
         $messages = $this->database->query("SELECT T1.TEXT, T1.ID_TYPE, T1.ID_MESSAGE, T2.ID_USER, T2.SEX, T2.URL_ID, T2.NAME, T2.SURNAME, T1.CREATED_WHEN,
                         T3.PATH,
@@ -125,8 +130,9 @@ class MessageManager extends BaseManager {
                 LEFT JOIN tasks T5 ON T1.ID_MESSAGE = T5.ID_MESSAGE
                 LEFT JOIN task_commit T6 ON (T6.ID_TASK=T5.ID_TASK AND T6.ID_USER=?)
                 LEFT JOIN (SELECT COUNT(ID_COMMIT) AS COMMIT_COUNT, ID_TASK FROM task_commit GROUP BY ID_TASK) T7 ON T7.ID_TASK=T5.ID_TASK
-                WHERE T1.ID_GROUP=? AND T1.DELETED IN (?)
-                ORDER BY PRIORITY DESC, CREATED_WHEN DESC LIMIT 10", $user->id, $user->id, $group->id, $delete)->fetchAll();
+                LEFT JOIN message_type T8 ON T1.ID_TYPE=T8.ID_TYPE
+                WHERE T1.ID_GROUP=? AND T1.DELETED IN (?) AND T8.CODE IN (?) 
+                ORDER BY PRIORITY DESC, CREATED_WHEN DESC LIMIT 10", $user->id, $user->id, $group->id, $delete, $filters)->fetchAll();
         $now = new \DateTime();
         foreach($messages as $message) {
             $mess = new Message();

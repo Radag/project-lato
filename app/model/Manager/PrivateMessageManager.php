@@ -22,12 +22,20 @@ class PrivateMessageManager extends BaseManager
     public function getMessages($user)
     {
         $return = array();
-        $messages = $this->database->query("SELECT T1.TEXT, T1.ID_PRIVATE_MESSAGE, T2.NAME, T2.SURNAME, T1.CREATED, T2.URL_ID,
-                T2.PROFILE_FILENAME,T2.PROFILE_PATH,T2.SEX, T1.IS_READ
-                FROM private_message T1
-                LEFT JOIN vw_user_detail T2 ON T1.ID_USER_FROM=T2.ID_USER 
-                WHERE T1.ID_USER_TO=?
-                ORDER BY CREATED DESC LIMIT 20", $user->id)->fetchAll();
+        $messages = $this->database->query("SELECT 
+                    A2.TEXT, A2.ID_PRIVATE_MESSAGE, A3.NAME, A3.SURNAME, A2.CREATED, A3.URL_ID,
+               A3.PROFILE_FILENAME,A3.PROFILE_PATH,A3.SEX, A2.IS_READ
+            FROM 
+            (
+            SELECT T1.USER_FROM, MAX(T1.ID_PRIVATE_MESSAGE) AS ID_MESSAGE FROM (
+                    SELECT ID_USER_TO AS USER_FROM, ID_PRIVATE_MESSAGE FROM private_message WHERE ID_USER_FROM=?
+                            UNION 
+                    SELECT ID_USER_FROM AS USER_FROM, ID_PRIVATE_MESSAGE FROM private_message WHERE ID_USER_TO=?
+            ) T1
+            GROUP BY T1.USER_FROM) A1
+            JOIN private_message A2 ON A1.ID_MESSAGE = A2.ID_PRIVATE_MESSAGE
+            JOIN vw_user_detail A3 ON A1.USER_FROM = A3.ID_USER
+            ORDER BY A2.CREATED DESC", $user->id, $user->id)->fetchAll();
         foreach($messages as $message) {
             $mess = new PrivateMessage();
             $user = new User();

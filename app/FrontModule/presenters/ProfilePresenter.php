@@ -66,9 +66,11 @@ class ProfilePresenter extends BasePresenter
         $months = array('Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec');
         $return = array();
         $messages = $this->privateMessageManager->getMessages($this->activeUser);
+        
         foreach($messages as $message) {
             $diff = (new \DateTime())->diff($message->created);
             $diffDays = (integer)$diff->format( "%R%a" );
+            $message->diffDays = $diffDays;
             if($diffDays === 0) {
                 if(!isset($return['today'])) {
                     $return['today'] = (object)array('messages' => array(), 'name' => 'Dnes'); 
