@@ -45,7 +45,9 @@
                 </li>
                 <li class="side-nav-header">
                     <div class="avatar small"><img src="{$activeUser->profileImage}"></div>
-                    <div class="title">{$activeUser->name} {$activeUser->surname}</div>
+                    <div class="title">
+                        <div class="truncate">{$activeUser->name} {$activeUser->surname}</div>
+                    </div>
                 </li>
                 <li><a n:class="$presenter->isLinkCurrent('Homepage:noticeboard') ? active, waves-effect, waves-dark" href="{plink Homepage:noticeboard}" >
                         <i class="material-icons">dashboard</i>Nástěnka

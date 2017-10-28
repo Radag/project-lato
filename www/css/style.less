@@ -892,118 +892,114 @@ input[type=search]:not(.browser-default) {
 
 /* ----- Profil ----- */
 
-@media only screen and (max-width: 992px) {
-    section.profile  .container {
-        width: 100% !important;
-        padding: 0;
-    }
-}
-
 .profile-header {
-    height: 420px;
-    background-image: url("../images/media-picture-large.png") !important;
-    background-size: cover !important;
-    background-position: center !important;
-    display: flex !important;
-    align-items: flex-end;
-    margin-top: -24px !important;
-}
 
-@media only screen and (max-width: 600px) {
-    .profile-header {
-        height: 240px;
+    &.container {
+
+        @media only screen and (max-width: 992px) {
+            & {
+                width: 100% !important;
+                padding: 0;
+            }
+        }
+
+        .card {
+            height: 420px;
+            background-image: url("../images/media-picture-large.png");
+            background-size: cover !important;
+            background-position: center !important;
+            display: flex !important;
+            align-items: flex-end;
+            margin-top: -24px !important;
+
+            @media only screen and (max-width: 600px) {
+                & {
+                    height: 240px;
+                }
+            }
+
+            .profile-navbar {
+                display: flex;
+                background-color: rgba(29, 29, 29, .54);
+                width: 100%;
+                padding: 0;
+                height: 88px;
+
+                @media only screen and (max-width: 600px) {
+                    & {
+                        height: 64px;
+                    }    
+                }
+            }
+
+            .avatar {
+                display: block;
+                width: 72px;
+                height: 72px;
+                border-radius: 50%;
+                margin: 8px 20px;
+                padding: 4px;
+                background-color: rgba(29, 29, 29, .16);
+
+                @media only screen and (max-width: 600px) {
+                    & {
+                        width: 48px;
+                        height: 48px;
+                        margin: 8px 8px 8px 16px;
+                    }    
+                }
+            }
+
+            .profile-title {
+                color: rgba(255, 255, 255, 1);
+                font-size: 22px;
+                line-height: 88px;
+                font-weight: 500;
+                flex-grow: 1;
+
+                @media only screen and (max-width: 600px) {
+                    & {
+                        line-height: 64px;
+                        font-size: 18px;
+                    }    
+                }
+            }
+
+            .controls {
+                margin: 0 24px;
+
+                li {
+                    float: left;
+
+                    a {
+                        display: block;
+                        margin: 23px 0 23px 12px;
+                        padding: 0;
+                        width: 42px;
+                        height: 42px;
+                        border-radius: 50%;
+                        text-align: center;
+                        -webkit-transition:  300ms ease-in-out;
+                        -moz-transition:  300ms ease-in-out;
+                        -o-transition:  300ms ease-in-out;
+                        transition:  300ms ease-in-out;
+
+                        &:hover {
+                            background-color: rgba(255, 255, 255, .12);
+                        }
+                    }
+                }
+
+                i {
+                    font-size: 24px;
+                    line-height: 42px;
+                    height: 42px;
+                    color: rgba(255, 255, 255, .87);
+                }
+            } 
+        }
     }
-}
-
-.profile-header .profile-cover {
-}
-
-.profile-header .profile-navbar {
-    display: flex;
-    background-color: rgba(29, 29, 29, .54);
-    width: 100%;
-    padding: 0;
-    height: 88px;
-}
-
-@media only screen and (max-width: 600px) {
-    .profile-header .profile-navbar {
-        height: 64px;
-    }    
-}
-
-.profile-header .avatar {
-    display: block;
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    margin: 8px 20px;
-    padding: 4px;
-    background-color: rgba(29, 29, 29, .16);
-}
-
-@media only screen and (max-width: 600px) {
-    .profile-header .avatar {
-        width: 48px;
-        height: 48px;
-        margin: 8px 8px 8px 16px;
-    }    
-}
-
-.profile-header .profile-title {
-    color: rgba(255, 255, 255, 1);
-    font-size: 22px;
-    line-height: 88px;
-    font-weight: 500;
-    flex-grow: 1;
-}
-
-@media only screen and (max-width: 600px) {
-    .profile-header .profile-title {
-        line-height: 64px;
-        font-size: 18px;
-    }    
-}
-
-.profile-header .profile-title span {
-    font-size: 18px;
-    font-weight: 400;
-    color: rgba(255, 255, 255, .54);
-    text-transform: none;
-}
-
-.profile-header .controls {
-    margin: 0 24px;
-}
-
-.profile-header .controls li {
-    float: left;    
-}
-
-.profile-header .controls li a {
-    display: block;
-    margin: 23px 0 23px 12px;
-    padding: 0;
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    text-align: center;
-    -webkit-transition:  300ms ease-in-out;
-    -moz-transition:  300ms ease-in-out;
-    -o-transition:  300ms ease-in-out;
-    transition:  300ms ease-in-out;
-}
-
-.profile-header .controls li a:hover {
-    background-color: rgba(255, 255, 255, .12);
-}
-
-.profile-header .controls i {
-    font-size: 24px;
-    line-height: 42px;
-    height: 42px;
-    color: rgba(255, 255, 255, .87);
-}
+} 
 
 .new-message {
     display: flex !important;
@@ -1014,7 +1010,7 @@ input[type=search]:not(.browser-default) {
     color: rgba(0, 0, 0, .54);
     font-size: 16px;
     flex-grow: 1;
-    line-height: 40px;
+    line-height: 42px;
 }
 
 .single-message {
@@ -1528,19 +1524,23 @@ strong {
             align-items: center;
 
             &.unknown {
-                background-color: #878787;
+                background-color: #607d8b;
             }
 
             &.document {
-                background-color: #0091EA;
+                background-color: #2196f3;
             }
 
             &.spreadsheet {
-                background-color: #8BC34A;
+                background-color: #00b852;
             }
 
             &.presentation {
-                background-color: #FFD600;
+                background-color: #ffc107;
+            }
+
+            &.image {
+                background-color: #e91e63;
             }
 
             i {
@@ -2179,6 +2179,7 @@ nav .nav-title {
     box-sizing: content-box;
     border-bottom: 1px solid #efefef;
     margin-bottom: 16px;
+    flex-wrap: nowrap;
 }
 
 @media only screen and (max-width: 600px) {
@@ -2198,6 +2199,7 @@ nav .nav-title {
 }
 
 .side-nav .side-nav-header .title {
+    max-width: calc(~'100% - 68px');
     font-size: 15px;
     font-weight: 500;
     color: rgba(0, 0, 0, .87);
