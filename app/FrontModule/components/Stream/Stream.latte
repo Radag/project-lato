@@ -1,12 +1,19 @@
 {if $streamPermission['addMessages'] && !$singleMode}
     {if $isOwner}
-    <div href="#select-post-type-modal" class="card create-post modal-trigger" >
-        <div class="avatar left">
+    <div class="card create-post" >
+        <div href="#select-post-type-modal" class="avatar modal-trigger">
             <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
         </div>
-        <div class="create-post-label left">
+        <div href="#select-post-type-modal" class="label modal-trigger">
             Chcete ostatním něco sdělit?
         </div>
+        <div class="alternate">
+            <div class="btn-icon"><i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Vložit studijní materiál">school</i></div>
+        </div>
+        <div class="alternate">
+            <div class="btn-icon"><i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Vytvořit povinnost">assignment</i></div>
+        </div>
+        <div href="#select-post-type-modal" class="empty-area modal-trigger"></div>
     </div>
     <!-- Modal Structure -->
 
