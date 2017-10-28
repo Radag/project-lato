@@ -11,9 +11,9 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" n:if="$groupPermission['settings']">
         <div class="col s12 edit-btn">
-            <button class="btn waves-effect waves-light" type="submit" name="send" >Upravit informace</button>
+            <a href="{link settings}" class="btn waves-effect waves-light" type="submit" name="send" >Upravit informace</a>
         </div>
     </div>
     <div class="row">

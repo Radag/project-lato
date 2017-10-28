@@ -1,5 +1,5 @@
 {if $task->message->user->id == $activeUser->id}
-    <div class="time-left">Termín odevzdání {$task->timeLeft|timeDifferceText|noescape}</div>
+    <div class="time-left">Termín odevzdání <strong>{$task->deadline->format("j. n. H:i")}</strong></div>
 {else}
     {if empty($task->commit)}
         <div class="time-left">
@@ -7,8 +7,8 @@
         </div>
     {else}
         <div class="time-left">
-            Odevzdáno {$task->commit->created->format("j. n. v H:i")}
-            {if !empty($task->commit->updated)}(upraven {$task->commit->updated->format("j. n. v H:i")}){/if}
+            Odevzdáno <strong>{$task->commit->created->format("j. n. H:i")}
+            {if !empty($task->commit->updated)}(upraven {$task->commit->updated->format("j. n. H:i")}){/if}</strong>
         </div>
     {/if}
 {/if}

@@ -55,6 +55,7 @@ class TopPanel extends Control
     
     protected $topMenu = array();
     protected $colorScheme = null;
+    protected $backArrow = false;
     
     protected $title = "";
     
@@ -88,6 +89,7 @@ class TopPanel extends Control
         $template->title = $this->title;
         $template->activeGroup = $this->activeGroup;
         $template->activeUser = $this->activeUser;
+        $template->backArrow = $this->backArrow;
         $groups = $this->groupManager->getUserGroups($this->activeUser);
         $subject = array();
         $others = array();
@@ -127,6 +129,11 @@ class TopPanel extends Control
     {
         $this->activeGroup = $activeGroup;
         $this->title = $this->activeGroup->name;
+    }
+    
+    public function activateBackArrow($link)
+    {
+        $this->backArrow = $link;
     }
     
     public function createComponentNewGroupForm()

@@ -121,9 +121,6 @@ class GroupPresenter extends BasePresenter
         } else {
             $this['topPanel']->addToMenu((object)array('name' => 'spolužáci', 'link' => $this->link('classmates'), 'active' => $this->isLinkCurrent('classmates')));
         }
-        if($this->groupPermission['settings']) {
-            $this['topPanel']->addToMenu((object)array('name' => 'nastavení', 'link' => $this->link('settings'), 'active' => $this->isLinkCurrent('settings')));
-        }
         $this['topPanel']->addToMenu((object)array('name' => 'o skupině', 'link' => $this->link('about'), 'active' => $this->isLinkCurrent('about')));    
         $this->template->colorScheme = $this->activeGroup->colorScheme;
         $this->template->activeGroup = $this->activeGroup;
@@ -280,6 +277,7 @@ class GroupPresenter extends BasePresenter
     public function actionMessage($idMessage)
     {       
         $this['stream']->setSingleMode($idMessage);
+        $this['topPanel']->activateBackArrow($this->link('Group:default', array('id'=>$this->id)));
     }
     
     public function actionSettings()

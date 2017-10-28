@@ -2,23 +2,25 @@
 <div class="card-comments {if count($comments) == 0}card-comments-empty{/if}"> 
         {if count($comments) > 0}  
         <div class="comments-header">
-            <div  onclick="latoShowAllComments(this);" class="comments-count">{count($comments)} komenářů</div>
-            
-            {foreach $discutionMembers as $member}
-
-            {* ODSTRANIT CYKLUS *}
-
-            {/foreach}
+            <div  onclick="latoShowAllComments(this);" class="comments-count">
+                {if count($comments) === 1}
+                    {count($comments)} komenář
+                {elseif count($comments) <= 4}
+                    {count($comments)} komenáře
+                {else}
+                    {count($comments)} komenářů
+                {/if}
+            </div>     
         </div>
         <div class="comments-content">
            {foreach $comments as $comm}
                 <div class="comment-row" {if !$iterator->isLast()}style="display: none;"{/if}>
-                <a href="{plink Profile:default 'id'=>$member->urlId}" class="avatar small">
+                <a href="{plink Profile:default 'id'=>$comm->user->urlId}" class="avatar small">
                     <img src="{$comm->user->profileImage}" alt="{$comm->user->name}">
                 </a>
                 <div class="comment-content">
                     <div class="comment-header">
-                        <a href="{plink Profile:default 'id'=>$member->urlId}">{$comm->user->name} {$comm->user->surname}</a>
+                        <a href="{plink Profile:default 'id'=>$comm->user->urlId}">{$comm->user->name} {$comm->user->surname}</a>
                         <div class="flex-spacer"></div>
                         <span>
                         {if $comm->sinceStart->d >= 1}

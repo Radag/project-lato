@@ -111,6 +111,7 @@ class GroupSettingsForm extends Control
     {
         $template = $this->template;
         $template->activeGroup = $this->group;
+        $this->template->sharing = (object)['code' => $this->group->shareByCode, 'link' => $this->group->shareByLink];
         $schedule = $this->groupManager->getSchedule($this->group);
         foreach($schedule as $sch) {
             $scheRet[] = $sch;
@@ -132,6 +133,19 @@ class GroupSettingsForm extends Control
             $this->redrawControl('scheduleAdmin');   
         }
     }
+    
+    public function handleChangeSharing()
+    {
+        $shareByLink = $this->presenter->getRequest()->getPost('shareByLink') !== null ? 1 : 0;
+        $shareByCode = $this->presenter->getRequest()->getPost('shareByCode') !== null ? 1 : 0;
+        $this['form']['shareByLink']->setValue($shareByLink);
+        $this['form']['shareByCode']->setValue($shareByCode);
+        $this->groupManager->switchSharing($this->group, $shareByLink, $shareByCode);
+        $this->group->shareByCode = $shareByCode;
+        $this->group->shareByLink = $shareByLink;
+        $this->redrawControl('shareSection'); 
+        $this->redrawControl('settingForm');
+    }
    
     protected function validateSchedule($scheduleData) {
         $persistData = array();
@@ -140,7 +154,8 @@ class GroupSettingsForm extends Control
             if(!empty($data["TIME_FROM"]) && !empty($data["TIME_TO"])) {
                 $timeFrom = explode(':', $data["TIME_FROM"]);
                 $timeTo = explode(':', $data["TIME_TO"]);
-                if(Validators::isNumericInt($timeFrom[0]) && Validators::isInRange($timeFrom[0], array(0,60))
+                if(count($timeFrom) === 2 && count($timeTo) === 2
+                   && Validators::isNumericInt($timeFrom[0]) && Validators::isInRange($timeFrom[0], array(0,60))
                    && Validators::isNumericInt($timeFrom[1]) && Validators::isInRange($timeFrom[1], array(0,60))
                    && Validators::isNumericInt($timeTo[0]) && Validators::isInRange($timeTo[0], array(0,60))
                    && Validators::isNumericInt($timeTo[1]) && Validators::isInRange($timeTo[1], array(0,60))
@@ -180,7 +195,7 @@ class GroupSettingsForm extends Control
         ];
         
         $this->groupManager->editGroupPrivileges($privileges, $this->group->id);
-        $this->groupManager->switchSharing($this->group, $values['shareByCode'], $values['shareByLink']);
+        $this->groupManager->switchSharing($this->group, $values['shareByLink'], $values['shareByCode']);
         
         //období
         $this->groupManager->addGroupToPeriods($this->group, $values['activePeriods']);
@@ -195,6 +210,6 @@ class GroupSettingsForm extends Control
             $this->presenter->flashMessage('Nastavení uloženo', 'success');
         }
         
-        $this->presenter->redirect('this');
+        $this->presenter->redirect('Group:about', ['id' => $this->presenter->getParameter('id')]);
     }
 }

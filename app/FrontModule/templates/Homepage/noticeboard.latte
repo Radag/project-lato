@@ -65,41 +65,44 @@
     </div>
 
     <div class="row" id="assignments">
-        <div class=" col s12">
-            <div class="card card-flat empty">
-                <div class="avatar"><i class="material-icons">done</i></div>
-                Pro tuto chvíli máte vše splněno
-            </div>
-        </div>
         {snippet actualTasks}
-        {foreach $actualTasks as $task}
-        <div class="col l6 m12 s12">
-            <div class="card flex-column">
-                <div class="assignment">
-                    {control taskHeader-$task->idTask}
+            {if empty($actualTasks)}
+            <div class=" col s12">
+                <div class="card card-flat empty">
+                    <div class="avatar"><i class="material-icons">done</i></div>
+                    Pro tuto chvíli máte vše splněno
                 </div>
-                <a href="{plink Group:message 'id'=>$task->group->urlId, 'idMessage'=>$task->idMessage}" class="assignment-preview">
-                    <div class="card-header">
-                        <div class="avatar">
-                            <img src="{$task->message->user->profileImage|noescape}">
-                        </div>
-                        <h3 class="name truncate">
-                                {$task->message->user->name} {$task->message->user->surname}
-                        </h3>
-                        <span class="card-date">
-                                22. 9.
-                        </span>
-                    </div>
-                    <div class="card-content">
-                        <p class="truncate"><strong>{$task->title} • </strong>Vytvořte podle zadání úlohu do programování a odevzdejte v nejbližším možném termínu.</p>
-                    </div>
-                    <div class="card-footer">
-                        <button class="btn btn-flat" style="color: #ffc900;">{$task->group->name}</button>
-                    </div>
-                </a>
             </div>
-        </div>
-        {/foreach}
+            {else}
+                {foreach $actualTasks as $task}
+                <div class="col l6 m12 s12">
+                    <div class="card flex-column">
+                        <div class="assignment">
+                            {control taskHeader-$task->idTask}
+                        </div>
+                        <a href="{plink Group:message 'id'=>$task->group->urlId, 'idMessage'=>$task->idMessage}" class="assignment-preview">
+                            <div class="card-header">
+                                <div class="avatar">
+                                    <img src="{$task->message->user->profileImage|noescape}">
+                                </div>
+                                <h3 class="name truncate">
+                                        {$task->message->user->name} {$task->message->user->surname}
+                                </h3>
+                                <span class="card-date">
+                                        22. 9.
+                                </span>
+                            </div>
+                            <div class="card-content">
+                                <p class="truncate"><strong>{$task->title} • </strong>Vytvořte podle zadání úlohu do programování a odevzdejte v nejbližším možném termínu.</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-flat" style="color: #ffc900;">{$task->group->name}</button>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                {/foreach}
+            {/if}
         {/snippet}
     </div>
 
@@ -109,6 +112,7 @@
                     <h3 class="left">Skupiny</h3>
                     <div class="flex-spacer"></div>
                     <ul class="right options">
+                        {if !empty($groups)}
                         <li>
                             <a class="btn-flat btn-icon dropdown-button" data-activates="add-group" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
                                 <i class="material-icons">add</i>
@@ -118,6 +122,7 @@
                                 <li><a href="#join-group" class="waves-effect waves-dark modal-trigger">Zapsat se do skupiny</a></li>
                             </ul>
                         </li>
+                        {/if}
                     </ul>
                 </header>
             </div>

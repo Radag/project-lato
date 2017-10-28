@@ -1,8 +1,6 @@
 <header class="navbar-fixed main-nav">
     <nav>
         <div class="nav-wrapper">
-
-
             <ul id="slide-out-right" class="side-nav">
                 <li class="side-nav-close">
                     <i class="material-icons">keyboard_arrow_left</i>Zavřít panel    
@@ -26,16 +24,16 @@
                     </a>
                 </li>
                 {foreach $privateMessages as $message}
-                <li>
-                    <a href="{plink :Front:Profile:conversation, 'user'=>$message->user->urlId}" class="chat-person unread-mark">
-                        <div class="avatar small">
-                            <img src="{$message->user->profileImage|noescape}" alt="">
-                        </div>
-                        <div class="label">
-                            {$message->user->name} {$message->user->surname}
-                        </div>
-                    </a>
-                </li>
+                    <li>
+                        <a href="{plink :Front:Profile:conversation, 'user'=>$message->user->urlId}" class="chat-person unread-mark">
+                            <div class="avatar small">
+                                <img src="{$message->user->profileImage|noescape}" alt="">
+                            </div>
+                            <div class="label">
+                                {$message->user->name} {$message->user->surname}
+                            </div>
+                        </a>
+                    </li>
                 {/foreach}
             </ul>
 
@@ -103,9 +101,15 @@
             </ul>
 
             <div class="left-nav-flex">
-                <a href="#" id="slide-left-button" data-activates="slide-out" class="button-collapse show-on-large slide-out-toggle">
-                    <i class="material-icons">menu</i>
-                </a>
+                {if $backArrow}
+                    <a href="{$backArrow}" id="slide-left-button" class="show-on-large">
+                        <i class="material-icons">keyboard_arrow_left</i>
+                    </a>
+                {else}
+                    <a href="#" id="slide-left-button" data-activates="slide-out" class="button-collapse show-on-large slide-out-toggle">
+                        <i class="material-icons">menu</i>
+                    </a>
+                {/if}
                 <span class="nav-title truncate">{$title}</span>
             </div>
 
@@ -125,49 +129,48 @@
             {/if}
             <div class="right-nav-flex">
                 <ul class="right navbar-nav">
-                    <li><a class="dropdown-button ajax" href="{link notificationRead!}" data-activates="notifications-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false"><i class="material-icons ">notifications</i>
-                        {snippet notificationCount}{if $unreadNotifications > 0}<span class="nav-badge">{$unreadNotifications}</span>{/if}{/snippet}</a>
-                    <ul id='notifications-window' class='dropdown-content main-nav-dropdown'>
-                        <li class="dropdown-header">
-                            <div class="title">Oznámení</div>
-                            <div class="action"><i class="material-icons">done_all</i></div>
-                        </li>
-                        <li class="divider divider-after"></li>
-                            {foreach $notifications as $notification}
-                            <li><a href="{if $notification->idMessage}{plink Group:message 'id'=>$notification->idGroup, 'idMessage'=>$notification->idMessage}{elseif $notification->idGroup}{plink Group:default 'id'=>$notification->idGroup}{else}{plink Profile:default 'id'=>$notification->participant->urlId}{/if}" class="clearfix">
-                                    <div class="avatar small left">
-                                        <img src="{$notification->participant->profileImage}" alt="{$notification->participant->name}">
-                                    </div>
-                                    <h4>
-                                        {if $notification->participant->urlId}
-                                            {if $notification->participant->name}
-                                                {$notification->participant->name} {$notification->participant->surname}
+                    <li>
+                        <a class="dropdown-button ajax" href="{link notificationRead!}" data-activates="notifications-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false"><i class="material-icons ">notifications</i>
+                            {snippet notificationCount}{if $unreadNotifications > 0}<span class="nav-badge">{$unreadNotifications}</span>{/if}{/snippet}</a>
+                        <ul id='notifications-window' class='dropdown-content main-nav-dropdown'>
+                            <li class="dropdown-header">
+                                <div class="title">Oznámení</div>
+                                <div class="action"><i class="material-icons">done_all</i></div>
+                            </li>
+                            <li class="divider divider-after"></li>
+                                {foreach $notifications as $notification}
+                                <li><a href="{if $notification->idMessage}{plink Group:message 'id'=>$notification->idGroup, 'idMessage'=>$notification->idMessage}{elseif $notification->idGroup}{plink Group:default 'id'=>$notification->idGroup}{else}{plink Profile:default 'id'=>$notification->participant->urlId}{/if}" class="clearfix">
+                                        <div class="avatar small left">
+                                            <img src="{$notification->participant->profileImage}" alt="{$notification->participant->name}">
+                                        </div>
+                                        <h4>
+                                            {if $notification->participant->urlId}
+                                                {if $notification->participant->name}
+                                                    {$notification->participant->name} {$notification->participant->surname}
+                                                {else}
+                                                    {$notification->participant->username}
+                                                {/if}
                                             {else}
-                                                {$notification->participant->username}
+                                                {$notification->title}
                                             {/if}
-                                        {else}
-                                            {$notification->title}
-                                        {/if}
-                                        <span class="truncate">{$notification->text}</span>
-                                    </h4>
-                                </a></li>
-                            {/foreach}
-                        <li class="dropdown-footer"><a href="{plink Homepage:notifications}">Zobrazit vše</a></li>
-                    </ul>
-                </li>
+                                            <span class="truncate">{$notification->text}</span>
+                                        </h4>
+                                    </a></li>
+                                {/foreach}
+                            <li class="dropdown-footer"><a href="{plink Homepage:notifications}">Zobrazit vše</a></li>
+                        </ul>
+                    </li>
 
-                <li><a class="button-collapse show-on-large slide-out-toggle" id="button-left-slide" href="#" data-edge="right" data-activates="slide-out-right" >
-                    <i class="material-icons ">email</i>
+                    <li><a class="button-collapse show-on-large slide-out-toggle" id="button-left-slide" href="#" data-edge="right" data-activates="slide-out-right" >
+                        <i class="material-icons ">email</i>
                     {snippet messagesCount}{if $unreadPrivMessages > 0}<span class="nav-badge">{$unreadPrivMessages}</span>{/if}{/snippet}</a>
                 </li>
-            <li><a href="{plink Homepage:search}" class="waves-effect waves-dark"><i class="material-icons">search</i></a></li>
-        </ul>
-    </div>
-</div>
-<div class="progress loading-data" id="main-progress-loader"><div class="indeterminate"></div></div>
-</nav>
-
-
+                <li><a href="{plink Homepage:search}" class="waves-effect waves-dark"><i class="material-icons">search</i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="progress loading-data" id="main-progress-loader"><div class="indeterminate"></div></div>
+    </nav>
 </header>
 <script>
     $(document).ready(function () {
