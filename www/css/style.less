@@ -53,15 +53,60 @@ a {
     color: #fff;
     font-weight: 500;
     font-size: 18px;
-}
 
-@media only screen and (max-width: 600px) {
-    .avatar {
+    img {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+    }
+
+    @media only screen and (max-width: 600px) {
+        & {
+            height: 36px;
+            width: 36px;
+            margin-right: 8px;
+
+            img {
+                height: 36px;
+                width: 36px;
+            }
+        }
+    }
+
+    &.tiny {
+        height: 24px;
+        width: 24px;
+        font-size: 14px;
+
+        img {
+            height: 24px;
+            width: 24px;
+        }
+    }
+
+    &.small {
         height: 36px;
         width: 36px;
-        margin-right: 8px;
+        font-size: 16px;
+
+        img {
+            height: 36px;
+            width: 36px;
+        }
+    }
+
+    &.large {
+        height: 48px;
+        width: 48px;
+
+        img {
+            height: 48px;
+            width: 48px;
+        }
     }
 }
+
+
 
 .user-img {
     display: block;
@@ -76,27 +121,6 @@ a {
     .user-img {
         margin-right: 12px;
     }
-}
-
-.avatar img {
-    width: 100%;
-    border-radius: 50%;
-}
-
-.avatar.tiny {
-    height: 32px;
-    width: 32px;
-    font-size: 14px;
-}
-.avatar.small {
-    height: 36px;
-    width: 36px;
-    font-size: 16px;
-}
-
-.avatar.large {
-    height: 48px;
-    width: 48px;
 }
 
 nav.breadcrumbs {
@@ -309,43 +333,43 @@ nav.breadcrumbs {
             box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
         }
     }
+
+    .table-row {
+        display: flex;
+        padding: 20px 24px;
+        align-items: center;
+        min-height: 1em;
+        line-height: 1em;
+        border-bottom: 1px solid #eaeaea;
+        flex-wrap: wrap;
+
+        @media only screen and (max-width: 992px) {
+            & {
+                padding: 20px 16px;
+
+                .avatar {
+                    width: 32px;
+                    height: 32px;
+                }
+            }            
+        }
+
+        @media only screen and (max-width: 600px) {
+            & {
+                padding: 20px 12px;
+
+                .avatar {
+                    display: none;
+                }
+            }
+        }
+    }
 }
 
 .custom-table {
     box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
     background-color: #fff;
     margin: 0;
-}
-
-.table-row {
-    display: flex;
-    padding: 20px 24px;
-    align-items: center;
-    min-height: 1em;
-    line-height: 1em;
-    border-bottom: 1px solid #eaeaea;
-    flex-wrap: wrap;
-}
-
-@media only screen and (max-width: 992px) {
-    .table-row {
-        padding: 20px 16px;
-    }
-
-    .table-row .avatar {
-        width: 32px;
-        height: 32px;
-    }
-}
-
-@media only screen and (max-width: 600px) {
-    .table-row {
-        padding: 20px 12px;
-    }
-
-    .table-row .avatar {
-        display: none;
-    }
 }
 
 .card-footer.highlighted,
@@ -537,6 +561,10 @@ nav.breadcrumbs {
 .switch-row p {
     flex-grow: 1;
     margin: 0 !important;
+}
+
+.switch label .lever {
+    margin: 0;
 }
 
 .switch label input[type=checkbox]:checked+.lever:after {
@@ -1070,11 +1098,11 @@ input[type=search]:not(.browser-default) {
 
 .message-modal-users {
     display: flex;
-}
-
-.message-modal-users .avatar {
-    margin-left: 12px;
-    margin-right: 0;
+    margin-top: 20px;
+    
+    .avatar {
+        margin-right: 8px;
+    }
 }
 
 .clearfix:before,
@@ -1445,12 +1473,6 @@ strong {
 }
 
 @media only screen and (max-width: 600px) {
-    .modal-header {
-        height: 42px;
-    }
-}
-
-@media only screen and (max-width: 600px) {
     .modal .user-img {
         margin-right: 12px;
     }
@@ -1485,13 +1507,25 @@ strong {
     max-height: 80%;
 
     .post-type-selector {
-        padding: 12px 24px;
+        padding: 16px 24px;
         background-color: @background-highlighted;
+
+        @media only screen and (max-width: 600px) {
+            & {
+                padding: 12px 16px;
+            }
+        }
 
         .select-wrapper {
             max-width: 160px;
             border-bottom: 0;
             height: 32px;
+
+            @media only screen and (max-width: 600px) {
+                & {
+                    max-width: 100%;
+                }
+            }
 
             input {
                 height: 32px;
@@ -3208,10 +3242,33 @@ nav .nav-title {
         flex-direction: row;
         align-items: center; 
 
+        &:hover {
+            box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+        }
+
         .avatar {
             padding: 24px 12px 24px 24px;
             margin: 0;
             box-sizing: content-box;
+
+            @media only screen and (max-width: 992px) {
+                & {
+                    padding: 20px 12px 20px 16px;
+                }
+            }
+
+            @media only screen and (max-width: 600px) {
+                & {
+                    padding: 16px 8px 16px 12px;
+                    width: 36px;
+                    height: 36px;
+
+                    img {
+                        height: 36px;
+                        width: 36px;
+                    }
+                }
+            }
         }
 
         .label {
@@ -3220,10 +3277,36 @@ nav .nav-title {
             color: rgba(0, 0, 0, .54);
             line-height: 42px;
             padding: 24px 0;
+
+            @media only screen and (max-width: 992px) {
+                & {
+                    padding: 20px 0;
+                }
+            }
+
+            @media only screen and (max-width: 600px) {
+                & {
+                    font-size: 15px;
+                    line-height: 36px;
+                    padding: 16px 0;
+                }
+            }
         }
 
         .alternate {
             padding: 27px 6px;
+
+            @media only screen and (max-width: 992px) {
+                & {
+                    padding: 23px 6px;
+                }
+            }
+
+            @media only screen and (max-width: 600px) {
+                & {
+                    padding: 16px 4px;
+                }
+            }
 
             .btn-icon {
                 background-color: @icon-background;
@@ -3238,35 +3321,20 @@ nav .nav-title {
         .empty-area {
             height: 90px;
             width: 18px;
-        }
-    }
 
-    @media only screen and (max-width: 992px) {
-        .create-post {
-            padding: 16px;
-        }
-    }
+            @media only screen and (max-width: 992px) {
+                & {
+                    height: 82px;
+                    width: 10px;
+                }
+            }
 
-    @media only screen and (max-width: 600px) {
-        .create-post {
-            padding: 16px 12px;
-        }
-    }
-
-    .create-post:hover {
-        box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
-    }
-
-
-
-    @media only screen and (max-width: 600px) {
-        .create-post .avatar {
-            width: 36px;
-            height: 36px;
-        }
-
-        .create-post .create-post-label {
-            font-size: 15px;
+            @media only screen and (max-width: 600px) {
+                & {
+                    height: 68px;
+                    width: 8px;
+                }
+            }
         }
     }
 }
@@ -4399,6 +4467,20 @@ nav .nav-title {
 
 #search-page {
     margin-top: 56px;
+
+    #search-field {
+
+        margin-bottom: 24px;
+        
+        .card-content {
+            padding: 16px 24px;
+
+            i {
+                width: 24px;
+                margin-right: 16px;
+            }
+        }
+    }
 }
 
 @media only screen and (max-width: 992px) {
@@ -4408,12 +4490,28 @@ nav .nav-title {
 }
 
 #search-value {
-    font-size: 17px;
+    font-size: 16px;
+
+    &::-webkit-input-placeholder {
+        font-size: 16px;
+    }
+
+    &:-moz-placeholder { /* Firefox 18- */
+        font-size: 16px;
+    }
+
+    &::-moz-placeholder {  /* Firefox 19+ */
+        font-size: 16px;
+    }
+
+    &:-ms-input-placeholder {  
+        font-size: 16px;
+    }
 }
 
 @media only screen and (max-width: 600px) {
     #search-value {
-        font-size: 15px;
+        font-size: 16px;
     }
 }
 
@@ -4427,8 +4525,10 @@ nav .nav-title {
 
 #search-results .card {
     padding: 20px 24px;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     align-items: center;
+    background: @icon-background;
+    box-shadow: none;
 }
 
 @media only screen and (max-width: 992px) {

@@ -43,7 +43,7 @@ class UserClassificationForm extends Control
     {
         $form = new Form;
         $form->addText('name', 'Název hodnocení')
-             ->setAttribute('placeholder', 'název hodnocení')
+             ->setAttribute('placeholder', 'Název hodnocení')
              ->setRequired('Prosím napiště téma hodnocení.');
         $form->addText('grade', 'Hodnocení')
              ->setAttribute('placeholder', 'známka')

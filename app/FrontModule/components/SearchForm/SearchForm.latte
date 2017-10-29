@@ -1,11 +1,16 @@
-<div id="search-page" class="container offset-3">
-    <div class="row">
-        <div class="col s12">
-            {form form class=>'ajax'}
-                <div class="form-row">
-                    <i class="material-icons icon-label">search</i>
-                    <div class="input-flex">
-                        {input text id=>'search-value', class=>'validate'}
+<section class="main" id="search-page">
+    <div class="container offset-3">
+        <div class="row">
+            <div class="col s12">
+                {form form class=>'ajax'}
+                <div class="card" id="search-field">
+                    <div class="card-content">
+                        <div class="form-row no-margin">
+                            <i class="material-icons icon-label">search</i>
+                            <div class="input-flex">
+                                {input text id=>'search-value', class=>'no-border'}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-row">
@@ -13,48 +18,55 @@
                     <button class="btn white" type="submit" id="search-button">Vyhledat</button>
                     <div class="flex-spacer"></div>
                 </div>
-            {/form}
-            {snippet searchResults}
-            {if !empty($results)}
-            <div id="search-results">              
-                {foreach $results->users as $foundUser}
-                <a href="{plink Profile:default 'id'=>$foundUser->urlId}" class="card waves-effect waves-light-gray">
-                    <div class="avatar">
-                        <img src="{$foundUser->profileImage}">
-                    </div>
-                    <div class="title">
-                        {$foundUser->name} {$foundUser->surname}
-                        <span>Student</span>
-                    </div>
-                    <div class="flex-spacer"></div>
-                    <button type="button" data-link="{plink showPrivateMessageForm! 'idUserTo'=>$foundUser->id}" class="show-new-private-message btn-flat waves-effect waves-light send-message"><i class="material-icons">email</i></button>
-                </a>
-                {/foreach}
-                {foreach $results->groups as $group}
-                <a href="{plink Group:default, 'id'=>$group->urlId}" class="card waves-effect waves-light-gray">
-                    <div class="avatar">
-                        <div class="group-shortcut-circle" style="background-color: {$group->mainColor|noescape}" >{$group->shortcut|substr:0,1}</div>
-                    </div>
-                    <div class="title">
-                        {$group->name}
-                        <span>Skupina</span>
-                    </div>
-                    <div class="flex-spacer"></div>
-                </a>
-                {/foreach}
-                <script>  
-                    $(function () {
-                        $(".send-message").on('click', function(e) {
-                           e.preventDefault(); 
-                            $.nette.ajax({
-                                url: $(this).data('link')
-                            }, this, e);
-                        });
-                    });
-                </script> 
+                {/form}
             </div>
-            {/if}
-            {/snippet}
-        </div>       
+        </div>
     </div>
-</div>
+    <div class="container offset-3">
+        <div class="row">
+            <div class="col s12">
+                {snippet searchResults}
+                {if !empty($results)}
+                <div id="search-results">              
+                    {foreach $results->users as $foundUser}
+                    <a href="{plink Profile:default 'id'=>$foundUser->urlId}" class="card waves-effect waves-light-gray">
+                        <div class="avatar">
+                            <img src="{$foundUser->profileImage}">
+                        </div>
+                        <div class="title">
+                            {$foundUser->name} {$foundUser->surname}
+                            <span>Student</span>
+                        </div>
+                        <div class="flex-spacer"></div>
+                        {*<button type="button" data-link="{plink showPrivateMessageForm! 'idUserTo'=>$foundUser->id}" class="show-new-private-message btn-flat waves-effect waves-light send-message"><i class="material-icons">email</i></button>*}
+                    </a>
+                    {/foreach}
+                    {foreach $results->groups as $group}
+                    <a href="{plink Group:default, 'id'=>$group->urlId}" class="card waves-effect waves-light-gray">
+                        <div class="avatar">
+                            <div class="group-shortcut-circle" style="background-color: {$group->mainColor|noescape}" >{$group->shortcut|substr:0,1}</div>
+                        </div>
+                        <div class="title">
+                            {$group->name}
+                            <span>Skupina</span>
+                        </div>
+                        <div class="flex-spacer"></div>
+                    </a>
+                    {/foreach}
+                    <script>  
+                        $(function () {
+                            $(".send-message").on('click', function(e) {
+                               e.preventDefault(); 
+                                $.nette.ajax({
+                                    url: $(this).data('link')
+                                }, this, e);
+                            });
+                        });
+                    </script> 
+                </div>
+                {/if}
+                {/snippet}
+            </div>       
+        </div>
+    </div>
+</section>
