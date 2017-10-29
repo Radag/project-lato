@@ -16,6 +16,7 @@ $(function() {
         }
     });
     
+    
     latoShowUpFlashMessages();
 
     latoAddAfterStartMethod({
@@ -26,6 +27,34 @@ $(function() {
         doneFunction: function(data, beforeParam) {
             if(data.invalidForm === undefined || !data.invalidForm) {
                 beforeParam.closeModal();
+            }
+        }
+    });
+        
+    $.nette.ext('hideAjaxSubmitPopup', {
+        start: function (jqXHR, settings) {              
+            if(settings.nette !== undefined && $(settings.nette.ui).hasClass('hide-popup-ajax-submit')) { 
+                showLoader();
+                $popup = $(settings.nette.ui).closest('.popup.modal');
+                jqXHR.done(function( data, textStatus, jqXHR ) {
+                    hideLoader()
+                    if(data.invalidForm === undefined || !data.invalidForm) {
+                        $popup.trigger('hide');
+                    }
+                });
+            }
+            if(settings.nette !== undefined && $(settings.nette.ui).hasClass('show-full-loader')) { 
+                showLoader();
+            }
+            if(settings.nette !== undefined && $(settings.nette.ui).data('show-popup-after')) {
+                showLoader();
+                $popup = $($(settings.nette.ui).data('show-popup-after'));
+                jqXHR.done(function( data, textStatus, jqXHR ) {
+                    hideLoader()
+                    if(data.invalidForm === undefined || !data.invalidForm) {
+                        $popup.trigger('show');
+                    }
+                });
             }
         }
     });

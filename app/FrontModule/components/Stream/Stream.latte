@@ -1,5 +1,20 @@
 {if $streamPermission['addMessages'] && !$singleMode}
-    {if $isOwner}
+    <button id="show-create-post-modal" class="card create-post" >
+        <div class="avatar">
+            <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
+        </div>
+        <div class="label">
+            Chcete ostatním něco sdělit?
+        </div>
+        <div class="alternate">
+            <div class="btn-icon"><i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Vložit studijní materiál">school</i></div>
+        </div>
+        <div class="alternate">
+            <div class="btn-icon"><i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Vytvořit povinnost">assignment</i></div>
+        </div>
+        <div class="empty-area"></div>
+    </button>
+    {*if $isOwner}
     <div class="card create-post" >
         <div href="#select-post-type-modal" class="avatar modal-trigger">
             <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
@@ -49,12 +64,17 @@
             Chcete ostatním něco sdělit?
         </div>
     </a>
-    {/if}
+    {/if*}
 {/if}
 
 <!-- Modal Structure -->
 
 <script>  
+    $("#show-create-post-modal").on('click', function(e) {
+        $('#create-post-modal').modal('open');
+    });
+    
+    
     latoAddAfterStartMethod({
         submitClass: 'scroll-to-message',
         beginFunction: function() {},
@@ -102,24 +122,18 @@
 </script>
 
 <div id="create-post-modal" class="modal">
-    <div class="post-type-selector">
-        <select>
-            <option value="1" selected>Oznámení</option>
-            <option value="2" >Studijní materiál</option>
-            <option value="3" >Povinnost</option>
-        </select>
-    </div>
     {snippet messageForm}
         {control messageForm}
     {/snippet}
 </div>
+    
 {snippet messages}
-{foreach $messages as $message}  
-<div class="card {*grid-item*} flex-column {if $singleMode}single-message{else}{if $iterator->isFirst() && $streamPermission['addMessages']}grid-item-fst{/if}{/if}" id="message-box-num_{$message->id}"> 
-    {includeblock 'Message.latte'}
-    {control commentForm-$message->id}
-</div>
-{/foreach}
+    {foreach $messages as $message}  
+    <div class="card {*grid-item*} flex-column {if $singleMode}single-message{else}{if $iterator->isFirst() && $streamPermission['addMessages']}grid-item-fst{/if}{/if}" id="message-box-num_{$message->id}"> 
+        {includeblock 'Message.latte'}
+        {control commentForm-$message->id}
+    </div>
+    {/foreach}
 {/snippet}
 
 
@@ -160,21 +174,6 @@
     </div>
 </div>
 
-
-{*<div class="card empty-card flex-column">
-    <div class="card-header">
-        <div class="user-img">
-        </div>
-    </div>
-    <div class="card-content">
-        <div class="empty-line" style="width: 80%;"></div>
-        <div class="empty-line" style="width: 90%;"></div>
-        <div class="empty-line" style="width: 30%;"></div>
-
-
-    </div>
-    <div class="comments-footer"></div>
-</div>*}
 <script>  
     $(document).ready(function() {   
         $('.modal-trigger-create-message').modal({

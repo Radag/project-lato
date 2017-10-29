@@ -17,6 +17,7 @@ use App\Model\Manager\ClassificationManager;
 use App\FrontModule\Components\Group\IUsersListFactory;
 use App\Model\Entities\Group;
 use App\FrontModule\Components\Stream\ICommitTaskFormFactory;
+use App\FrontModule\Components\Group\IStudentsFactory;
 
 class GroupPresenter extends BasePresenter
 {    
@@ -43,6 +44,9 @@ class GroupPresenter extends BasePresenter
     
     /** @var  IUsersListFactory  */
     protected $usersListFactory;
+    
+    /** @var IStudentsFactory @inject */
+    protected $studentsFactory;
     
     /** @var  ICommitTaskFormFactory */
     public $commitTaskFormFactory;
@@ -84,7 +88,8 @@ class GroupPresenter extends BasePresenter
             IGroupSettingsFormFactory $groupSettings,
             ClassificationManager $classificationManager,
             IUsersListFactory $userListFactory,
-            ICommitTaskFormFactory $commitTaskFormFactory
+            ICommitTaskFormFactory $commitTaskFormFactory,
+            IStudentsFactory $studentsFactory
             )
     {
         $this->userManager = $userManager;
@@ -99,6 +104,7 @@ class GroupPresenter extends BasePresenter
         $this->classificationManager = $classificationManager;
         $this->usersListFactory = $userListFactory;
         $this->commitTaskFormFactory = $commitTaskFormFactory;
+        $this->studentsFactory = $studentsFactory;
     }
     
     protected function startup()
@@ -187,6 +193,12 @@ class GroupPresenter extends BasePresenter
         $usersList->setGroup($this->activeGroup);
         $usersList->setUser($this->activeUser);
         $usersList->setGroupPermission($this->groupPermission);
+        return $usersList;
+    }
+    
+    public function createComponentStudents()
+    {
+        $usersList = $this->studentsFactory->create();
         return $usersList;
     }
        
