@@ -29,7 +29,7 @@
                 {if !empty($results)}
                 <div id="search-results">              
                     {foreach $results->users as $foundUser}
-                    <a href="{plink Profile:default 'id'=>$foundUser->urlId}" class="card waves-effect waves-light-gray">
+                    <a href="{plink Profile:default 'id'=>$foundUser->urlId}" class="card card-flat waves-effect waves-light-gray">
                         <div class="avatar">
                             <img src="{$foundUser->profileImage}">
                         </div>

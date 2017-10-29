@@ -617,6 +617,16 @@ nav.breadcrumbs {
     }
 }
 
+.equal-cols {
+    display: flex;
+    align-items: stretch;
+
+    .col {
+        display: flex;
+        align-items: stretch;
+    }
+}
+
 .paper-shadow {
 	box-shadow: 0 1px 3px  rgba(0, 0, 0, .2); 
 }
@@ -776,7 +786,6 @@ input[type=search]:not(.browser-default) {
 
 .btn.white:not(:disabled) {
     color: rgba(0, 0, 0, .87);
-    box-shadow: none;
 }
 
 .btn.gray {
@@ -785,7 +794,7 @@ input[type=search]:not(.browser-default) {
 }
 
 .btn.no-shadow.white {
-    border: 1px solid #f1f1f1;
+    box-shadow: none;
 }
 
 .btn.disabled {
@@ -969,11 +978,21 @@ input[type=search]:not(.browser-default) {
                     padding: 4px;
                     background-color: rgba(29, 29, 29, .16);
 
+                    img {
+                        height: 64px;
+                        width: 64px;
+                    }
+
                     @media only screen and (max-width: 600px) {
                         & {
                             width: 48px;
                             height: 48px;
                             margin: 8px 8px 8px 16px;
+
+                            img {
+                                height: 40px;
+                                width: 40px;
+                            }
                         }    
                     }
                 }
@@ -3343,6 +3362,32 @@ nav .nav-title {
 
 /* ----- SETTINGS ----- */
 
+#account-settings {
+
+    #account-images {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 24px;
+        background-image: url("../images/media-picture-large.png");
+        background-position: center;
+        background-size: cover;
+
+        img {
+            margin-top: 24px;
+            margin-bottom: 36px;
+            height: 176px;
+            width: 176px;
+            border-radius: 50%;
+            border: 8px solid rgba(0, 0, 0, .2);
+        }
+
+        .btn {
+            margin-bottom: 16px;
+        }
+    }
+}
+
 /* ----- ABOUT ----- */
 
 #about {
@@ -3829,7 +3874,8 @@ nav .nav-title {
 }
 
 
-.main.settings {
+.main.settings,
+.main#account-settings {
     padding-bottom: 52px;
 }
 
@@ -4527,8 +4573,6 @@ nav .nav-title {
     padding: 20px 24px;
     margin-bottom: 16px;
     align-items: center;
-    background: @icon-background;
-    box-shadow: none;
 }
 
 @media only screen and (max-width: 992px) {

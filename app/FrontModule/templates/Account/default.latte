@@ -1,43 +1,102 @@
 {block content}
 {control topPanel}
-<section class="main">
+<section class="main" id="account-settings">
     <div class="container">
-        <div class="row">
+        <div class="row equal-cols">
             <div class="col s12 l4">
-                <div class="card clearfix simple">
-                    <form style="width: 100%; height: 100%; cursor:pointer;" id="profileImageDropzone">
-                        <div class="dz-message" data-dz-message>
-                            {if $userAccount->profileImage}
-                                <img width="100" height="100" src="{$userAccount->profileImage}">
-                            {else}
-                                <span>Nahrát fotku</span>
-                            {/if}
-                        </div> 
-                    </form>
+                <div class="card" id="account-images">
+                    <img src="{$userAccount->profileImage}">
+                    <button class="waves-effect waves-gray btn white">Změnit profilový obrázek</button>
+                    <button class="waves-effect waves-gray btn white">Změnit pozadí</button>
                 </div>
-                <a href="{plink Account:default}" class="card clearfix simple waves-effect waves-dark">
-                    <i class="material-icons">account_circle</i>
-                    <div class="label">Nastavit osobní údaje</div>
-                </a>
-                <a href="{plink Account:sharing}" class="card clearfix simple waves-effect waves-dark">
-                    <i class="material-icons">share</i>
-                    <div class="label">Nastavit sdílení</div>
-                </a>
-
-                <a href="{plink Account:notification}" class="card clearfix simple waves-effect waves-dark">
-                    <i class="material-icons">notifications</i>
-                    <div class="label">Nastavit oznámení</div>
-                </a>
             </div>
-            {snippet profileSettings}               
-                {if $presenter->isLinkCurrent('Account:default')}
-                    {control personalSettings}
-                {elseif $presenter->isLinkCurrent('Account:notification')}
-                    {control notificationSettings}
-                {elseif $presenter->isLinkCurrent('Account:sharing')}
-                    {control sharingSettings}
-                {/if}
-            {/snippet}
+            <div class="col s12 l8">
+                <div class="card flex-column">
+                    <div class="card-header">
+                        <h2>Osobní údaje</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="secondary-par">Uvedené osobní údaje se také zobrazí na Vašem veřejném profilu</p>
+                        <div class="form-row">
+                            <input type="text" placeholder="Jméno">
+                        </div>
+                        <div class="form-row">
+                            <input type="text" placeholder="Příjmení">
+                        </div>
+                        <div class="form-row">
+                            <input type="text" placeholder="E-mailová adresa">
+                        </div>
+                        <div class="form-row">
+                            <input type="text" placeholder="Datum">
+                        </div>
+                    </div>
+                </div>    
+
+
+
+
+
+                {* {snippet profileSettings}               
+                    {if $presenter->isLinkCurrent('Account:default')}
+                        {control personalSettings}
+                    {elseif $presenter->isLinkCurrent('Account:notification')}
+                        {control notificationSettings}
+                    {elseif $presenter->isLinkCurrent('Account:sharing')}
+                        {control sharingSettings}
+                    {/if}
+                {/snippet} *}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 l6">
+                <div class="card flex-column">
+                    <div class="card-header">
+                        <h2>Studium</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="secondary-par">Aktuálně jsem studentem</p>
+                    </div>
+                </div>
+                <div class="card flex-column">
+                    <div class="card-header">
+                        <h2>Oznámení</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="secondary-par">Chci být upozorněn na tyto události</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col s12 l6">
+                <div class="card flex-column">
+                    <div class="card-header">
+                        <h2>Moje skupiny</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="secondary-par">Skupiny, které spravuji</p>
+                        <p class="secondary-par">Skupiny, v nichž jsem členem</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="submit-settings">
+        <div class="container">
+            <div class="row">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="flex-spacer"></div>
+                            <div class="form-control">
+                                <a class="modal-action modal-close waves-effect waves-light btn-flat" >Zrušit</a>
+                                <button class="btn waves-effect waves-light btn-confirm" type="submit" name="send" >Uložit</button>
+                            </div>
+                            <div class="flex-spacer"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
