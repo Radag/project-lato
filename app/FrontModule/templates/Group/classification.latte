@@ -67,7 +67,7 @@
                         <div class="flex-spacer"></div>
                         <div class="table-field"><a class="material-icons">comment</a></div>
                         <div class="grade table-field">{input grade$member->id class=>'no-border'}</div>
-                        <div class="table-row-input">
+                        <div class="table-row-input" style="display: none;">
                             {input notice$member->id class=>'materialize-textarea no-border'}
                         </div>
                     </div>
@@ -79,13 +79,32 @@
                         </div>  
                         <div class="form-control">
                             <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-                            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-classification">Zapsat vše</button>
+                            
                         </div>
                     </div>
                 </li>
             </ul>
             {/form}
 
+        </div>
+    </div>
+</div>
+
+<div class="submit-settings">
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="flex-spacer"></div>
+                        <div class="form-control">
+                            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-classification">Uložit</button>
+                        </div>
+                        <div class="flex-spacer"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

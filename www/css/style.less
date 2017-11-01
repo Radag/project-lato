@@ -254,10 +254,6 @@ nav.breadcrumbs {
     text-overflow: ellipsis;
 }
 
-.table-header {
-    padding-bottom: 20px !important;
-}
-
 .table-header .btn-icon {
     margin-right: 24px;
     color: rgba(0, 0, 0, .54);
@@ -269,11 +265,8 @@ nav.breadcrumbs {
 }
 
 .table-header {
-    flex-grow: 1;
-    margin-top: 32px;
     text-transform: uppercase;
     color: rgba(0, 0, 0, .54);
-    display: flex;
     font-size: 13px;
     font-weight: 500;
 }
@@ -294,10 +287,22 @@ nav.breadcrumbs {
         padding: 20px 24px;
         display: flex;
         align-items: center;
-    }
 
-    .collapsible-header.active {
-        border-bottom: 0px solid transparent;
+        &.active {
+            border-bottom: 0px solid transparent;
+        }
+
+        @media only screen and (max-width: 992px) {
+            & {
+                padding: 20px 16px;
+            }
+        }
+
+        @media only screen and (max-width: 600px) {
+            & {
+                padding: 20px 12px;
+            }
+        }
     }
 
     .collapsible-body {
@@ -333,43 +338,99 @@ nav.breadcrumbs {
             box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
         }
     }
+}
 
-    .table-row {
-        display: flex;
-        padding: 20px 24px;
-        align-items: center;
-        min-height: 1em;
-        line-height: 1em;
-        border-bottom: 1px solid #eaeaea;
-        flex-wrap: wrap;
+.table-row {
+    display: flex;
+    padding: 20px 24px;
+    align-items: center;
+    min-height: 1em;
+    line-height: 1em;
+    border-bottom: 1px solid #eaeaea;
+    flex-wrap: wrap;
 
-        @media only screen and (max-width: 992px) {
-            & {
-                padding: 20px 16px;
+    @media only screen and (max-width: 992px) {
+        & {
+            padding: 20px 16px;
 
-                .avatar {
-                    width: 32px;
-                    height: 32px;
-                }
-            }            
-        }
+            .avatar {
+                width: 32px;
+                height: 32px;
+            }
+        }            
+    }
 
-        @media only screen and (max-width: 600px) {
-            & {
-                padding: 20px 12px;
+    @media only screen and (max-width: 600px) {
+        & {
+            padding: 20px 12px;
 
-                .avatar {
-                    display: none;
-                }
+            .avatar {
+                display: none;
             }
         }
     }
 }
 
+    .notice.table-field {
+
+    }
+
+    .grade {
+        display: flex;
+        justify-content: flex-end;
+
+        .select-wrapper {
+            width: 64px;
+            background-color: @background-highlighted;
+            border-radius: 2px;
+
+            input.select-dropdown {
+                height: 36px;
+            }
+
+            .caret {
+                display: none;
+            }
+
+            .select-dropdown {
+                text-align: center;
+                font-size: 15px;
+                font-weight: 500;
+                border-bottom: none;
+            }
+
+            .dropdown-content {
+                min-width: 64px;
+                width: 64px !important;
+
+                li {
+                    text-align: center;
+                }
+            }
+        }
+    }
+
+
 .custom-table {
     box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
     background-color: #fff;
-    margin: 0;
+    margin: 0 0 32px 0;
+
+    @media only screen and (max-width: 992px) {
+        & {
+            margin-bottom: 16px;
+        }
+    }
+
+    @media only screen and (max-width: 600px) {
+        & {
+            margin-bottom: 8px;
+        }
+    }
+
+    li:last-child .table-row {
+        border-bottom: none;
+    }
 }
 
 .card-footer.highlighted,
@@ -380,7 +441,7 @@ nav.breadcrumbs {
 .table-header .table-field,
 .table-row .table-field {
     margin-left: 32px;
-    min-width: 15%;
+    min-width: 20%;
     text-align: right;
 }
 
@@ -2048,9 +2109,51 @@ nav .nav-title {
 
 /* SECTION HEADER */
 
+.page-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 32px;
+
+    @media only screen and (max-width: 600px) { 
+        & {
+            margin-bottom: 24px;
+        }
+    }
+
+    .btn {
+        margin-right: 16px;
+    }
+
+    .btn-icon {
+        width:36px;
+        padding:0;
+        border-radius:50%;
+        color: rgba(0, 0, 0, .54);
+        background-color: rgba(0, 0, 0, .0); 
+        -webkit-transition:  300ms ease-in-out;
+        -moz-transition:  300ms ease-in-out;
+        -o-transition:  300ms ease-in-out;
+        transition:  300ms ease-in-out;
+
+        &:hover {
+            background-color: rgba(0, 0, 0, .08);  
+            color: rgba(0, 0, 0, .87); 
+        }
+    }
+
+    .options {
+        display: flex;
+        margin: 0;
+
+        & > li {
+            margin-right: 6px;
+        }
+    }    
+}
+
 .section-header  {   
-    padding: 32px 24px;
-    height: 36px;
+    padding: 16px 24px;
+    height: 68px;
     display: flex;
     align-items: center;
 
@@ -2061,14 +2164,15 @@ nav .nav-title {
 
 @media only screen and (max-width: 992px) { 
     .section-header {
-        padding: 0 12px;
-        margin-bottom: 8px;
+        padding: 8px 16px;
+        height: 52px;
     }
 }
 
 @media only screen and (max-width: 600px) { 
     .section-header {
-        margin-bottom: 4px;
+        padding: 4px 12px;
+        height: 44px;
         margin-top: 4px;
     }
 }
@@ -2078,7 +2182,7 @@ nav .nav-title {
 }
 
 .section-header h3 {
-    font-weight: 400;
+    font-weight: 500;
     margin: 0;
     font-size: 13px;
     line-height: 1em;
@@ -2106,26 +2210,7 @@ nav .nav-title {
     }
 }
 
-.section-header .btn {
-    margin-right: 16px;
-}
 
-.section-header .btn-icon {
-    width:36px;
-    padding:0;
-    border-radius:50%;
-    color: rgba(0, 0, 0, .54);
-    background-color: rgba(0, 0, 0, .0); 
-    -webkit-transition:  300ms ease-in-out;
-    -moz-transition:  300ms ease-in-out;
-    -o-transition:  300ms ease-in-out;
-    transition:  300ms ease-in-out;
-}
-
-.section-header .btn-icon:hover {
-    background-color: rgba(0, 0, 0, .08);  
-    color: rgba(0, 0, 0, .87); 
-}
 
 /* ---------- */
 
@@ -2432,7 +2517,7 @@ nav .nav-title {
         height: 36px;
         padding: 0 8px;
         width: 100%;
-        max-width: 420px;
+        max-width: 480px;
 
         i {
             margin: 0 12px 0 4px !important;
@@ -3259,7 +3344,7 @@ nav .nav-title {
 
     #no-more-posts {
         width: 100%;
-        margin-top: 56px;
+        margin-top: 40px;
         margin-bottom: 24px;
         text-align: center;
         color: @secondary-text-color;
@@ -3408,61 +3493,6 @@ nav .nav-title {
 }
 
 /* ----- ABOUT ----- */
-
-#about {
-
-    .collapsible {
-
-        &#admins {
-            .collapsible-header {
-                font-size: 15px;
-                font-weight: 500;
-
-                span {
-                    margin-left: 4px;
-                    font-size: 13px;
-                    color: @secondary-text-color;
-                    font-weight: 400;
-                }
-            }
-        }
-
-        .collapsible-body {
-            padding: 0 24px 24px 24px;
-
-            .line {
-                display: flex;
-                align-items: top;
-                margin-top: 24px;
-                height: 21px;
-
-                &:first-child {
-                    margin-top: 16px;
-                }
-
-                &:last-child {
-                    margin-bottom: 16px;
-                }
-
-                i {
-                    display: block;
-                    line-height: 21px;
-                    width: 36px;
-                    margin-right: 12px;
-                    text-align: center;
-                    color: @secondary-text-color;
-                }
-
-                .label {
-
-                    a {
-                        font-weight: 500;
-                    }
-                }
-            } 
-        }
-    }
-}
 
 /* GROUPS */
 
@@ -3900,7 +3930,7 @@ nav .nav-title {
 
 @media only screen and (max-width: 600px) {
     .main.settings {
-        padding-bottom: 68px;
+        padding-bottom: 38px;
     }
 }
 
