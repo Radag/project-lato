@@ -682,6 +682,12 @@ nav.breadcrumbs {
     display: flex;
     align-items: stretch;
 
+    @media only screen and (max-width: 992px) {
+        & {
+            display: block;
+        }
+    }
+
     .col {
         display: flex;
         align-items: stretch;
@@ -754,9 +760,9 @@ input[type=search]:not(.browser-default) {
     }
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 992px) {
     .card-footer {
-        padding: 0 16px 16px 16px;
+        padding: 0 16px 20px 16px;
     }
 }
 
@@ -2086,7 +2092,7 @@ nav .nav-title {
     }
 
     .two-level-nav {
-        margin-top: 64px;
+        margin-top: 58px;
     }
 }
 
@@ -3817,7 +3823,7 @@ nav .nav-title {
     }
 
     & > li {
-        margin: 24px 0;
+        margin: 32px 0;
         display: flex;
     
         &:first-child {
