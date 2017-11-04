@@ -19,15 +19,20 @@ $(function() {
     
     latoShowUpFlashMessages();
 
+    /*
+     * Obecná funckce pro skrytí modalu po správném odeslání
+     */
     latoAddAfterStartMethod({
         submitClass: 'hide-modal-ajax-submit',
         beginFunction: function(settings) {
+            $('#full-screen-loader-modal').modal('open');
             return $(settings.nette.ui).closest('div.modal');
         },
         doneFunction: function(data, beforeParam) {
             if(data.invalidForm === undefined || !data.invalidForm) {
-                beforeParam.closeModal();
+                beforeParam.modal('close');
             }
+            $('#full-screen-loader-modal').modal('close');
         }
     });
         

@@ -8,11 +8,9 @@
 namespace App\FrontModule\Components\Stream\MessageForm\NoticeForm;
 
 use \Nette\Application\UI\Form;
-use App\Model\Manager\MessageManager;
-use App\Model\Manager\UserManager;
-use App\Model\Manager\FileManager;
+use App\Model\Entities\Task;
 use App\FrontModule\Components\Stream\MessageForm\MessageForm;
-
+use App\Model\Entities\Message;
 
 /**
  * Description of SignInForm
@@ -24,7 +22,21 @@ class NoticeForm extends MessageForm
     protected function createComponentForm()
     {
         $form = parent::getFormTemplate();
-        $form->addHidden('messageType', self::TYPE_NOTICE);
+        $form->addText('title', 'Název')
+             ->setAttribute('placeholder', 'Název (nepovinné)');
+        $form->addHidden('messageType', Message::TYPE_NOTICE);
+        $form->addText('date', 'Datum', null, 12)
+             ->setAttribute('type', 'date')
+             ->setAttribute('placeholder', date('d. m. Y'))
+             ->addConditionOn($form['messageType'], Form::EQUAL, Message::TYPE_TASK)
+                 ->setRequired('Vložte datum')
+                 ->addRule(Form::PATTERN, 'Datum musí být ve formátu 15. 10. 2011', '([0-9]{2})\. ([0-9]{2})\. ([0-9]{4})');
+        $form->addText('time', 'Čas', null, 5)
+             ->setAttribute('placeholder', date('H:i'))
+             ->addConditionOn($form['messageType'], Form::EQUAL, Message::TYPE_TASK)
+                 ->setRequired('Vložte čas')
+                 ->addRule(Form::PATTERN, 'Čas musí být ve formátu 12:45', '([0-9]{2})\:([0-9]{2})');
+        $form->addCheckbox('online', "Odevzdat online");
         $form->addHidden('attachments');
         $form->addSubmit('send', 'Publikovat');
         if($this->defaultMessage !== null) {
@@ -52,7 +64,7 @@ class NoticeForm extends MessageForm
         $message->setText($values['text']);
         $message->setUser($this->activeUser);
         $message->idGroup = $this->stream->getActiveGroup()->id;
-        $message->idType = self::TYPE_NOTICE;
+        $message->type = $values['messageType'];
         
         if(!empty($values['idMessage'])) {
             //TODO - kontrola oprávnění
@@ -62,12 +74,29 @@ class NoticeForm extends MessageForm
         $attachments = explode('_', $values['attachments']);
 
         $idMessage = $this->messageManager->createMessage($message, $attachments);
+        
+        if($values->messageType === Message::TYPE_TASK) {
+            $task = new Task();
+            $task->idMessage = $idMessage;
+            $task->online = false;
+            $task->title = $values->title;
+
+            $deadline = $date = \DateTime::createFromFormat('d. m. Y H:i', $values->date . " " . $values->time);
+            $task->deadline = $deadline;
+
+            $this->taskManager->createTask($task);  
+        }
+
         $this->presenter->flashMessage('Zpráva uložena', 'success');
         $this->presenter->payload->idMessage = $idMessage;
-        $form['text']->setValue("");
-        $form['attachments']->setValue("");
+        $form->setValues(['messageType' => Message::TYPE_NOTICE], true);
         $this->stream->redrawControl('messages');
         $this->redrawControl('messageForm');
         
+    }
+    
+    public function handleResetForm() {
+        $this['form']->setValues([], true);
+        $this->redrawControl('messageForm');
     }
 }

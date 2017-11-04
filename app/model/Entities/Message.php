@@ -13,10 +13,9 @@ namespace App\Model\Entities;
  */
 class Message {
     
-    const TYPE_NOTICE = 1;
-    const TYPE_MATERIAL = 2;
-    const TYPE_TASK = 3;
-    const TYPE_HOMEWORK = 4;
+    const TYPE_NOTICE = 'notice';
+    const TYPE_MATERIALS = 'material';
+    const TYPE_TASK = 'task';
     
     public $id = null;
     public $text = null;
@@ -27,7 +26,7 @@ class Message {
     public $followed = null;
     public $priority = null;
     public $deleted = null;
-    public $idType = null;
+    public $type = null;
     public $task;
     
     function getId() {

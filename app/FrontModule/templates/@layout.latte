@@ -96,11 +96,26 @@
         {/snippet}
         
         {block scripts}
+        
+        <div id="full-screen-loader-modal" class="modal">
+            <div class="preloader-wrapper big active">
+                <div class="spinner-layer spinner-blue-only">
+                  <div class="circle-clipper left">
+                    <div class="circle"></div>
+                  </div><div class="gap-patch">
+                    <div class="circle"></div>
+                  </div><div class="circle-clipper right">
+                    <div class="circle"></div>
+                  </div>
+                </div>
+            </div>
+        </div>
 	<script>  
             $(function () {
                 $.nette.init();
                 // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
                 $('.modal').modal();
+                $('#full-screen-loader-modal').modal({ dismissible: false, startingTop: '50%', endingTop: '50%' });   
                 $.get( {link getUserList!} , function(data) {
                     $('#userSearch').autocomplete({
                         data: JSON.parse(data.users)
