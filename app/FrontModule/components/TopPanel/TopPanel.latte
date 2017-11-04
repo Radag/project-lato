@@ -2,7 +2,7 @@
     <nav>
         <div class="nav-wrapper">
             {snippet right-conversation-list}
-            <ul id="slide-out-right" class="side-nav">
+            <ul id="slide-out-messages" class="side-nav slide-out-right">
                 <li class="side-nav-close">
                     <i class="material-icons">keyboard_arrow_left</i>Zavřít panel    
                 </li>
@@ -27,11 +27,12 @@
                 {foreach $privateMessages as $message}
                     <li>
                         <a href="{plink :Front:Profile:conversation, 'user'=>$message->user->urlId}" class="chat-person unread-mark">
-                            <div class="avatar small">
+                            <div class="avatar">
                                 <img src="{$message->user->profileImage|noescape}" alt="">
                             </div>
                             <div class="label">
                                 {$message->user->name} {$message->user->surname}
+                                <span class="truncate">Zpráva</span>
                             </div>
                         </a>
                     </li>
@@ -164,7 +165,7 @@
                         </ul>
                     </li>
 
-                    <li><a class="button-collapse show-on-large slide-out-toggle" id="button-left-slide" href="#" data-edge="right" data-activates="slide-out-right" >
+                    <li><a class="button-collapse show-on-large slide-out-toggle" id="button-left-slide" href="#" data-edge="right" data-activates="slide-out-messages" >
                         <i class="material-icons ">email</i>
                     {snippet messagesCount}{if $unreadPrivMessages > 0}<span class="nav-badge">{$unreadPrivMessages}</span>{/if}{/snippet}</a>
                 </li>
