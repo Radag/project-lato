@@ -2,10 +2,10 @@
 {includeblock '../MessageForm.latte'}
 {form form}
 <div class="post-type-selector">
-    <select>
-        <option value="1" selected>Oznámení</option>
-        <option value="2" >Studijní materiál</option>
-        <option value="3" >Povinnost</option>
+    <select id="change-message-type-select">
+        <option value="notice" selected>Oznámení</option>
+        <option value="material" >Studijní materiál</option>
+        <option value="task" >Povinnost</option>
     </select>
 </div>
 <div class="modal-content">
@@ -15,8 +15,21 @@
         </div>
         <h4>{$activeUser->name} {$activeUser->surname}</h4>
     </div>
+    <div class="form-row hide mes-title-row">
+        {input title}
+    </div>
     <div class="form-row">
-    {input text class => 'materialize-textarea'}
+        {input text class => 'materialize-textarea'}
+    </div>
+    <div class="form-row term-picker hide mes-date-row">
+        <span class="label right-16">Datum (termín)</span>
+        {input date class => 'datepicker right-16'}
+        {input time}
+    </div>
+    <div class="form-row hide mes-online-row">
+        <div class="submit-control checkbox-vertical-align">
+            {input online: class => 'filled-in black'}{label online:}{/label}
+        </div>
     </div>
     {include attachmentBlock}
 </div>
@@ -42,7 +55,7 @@
         </ul>
     </div>
     <div class="form-control">
-        <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat" >Zrušit</button>
+        <button data-reset-link="{link resetForm!}" type="button" class="reset-message-button modal-action modal-close waves-effect waves-light btn-flat" >Zrušit</button>
         <button id="message-submit-button" class="btn waves-effect waves-light hide-modal-ajax-submit scroll-to-message" type="submit" name="send" >{$submitButtonName}</button>
     </div>
 </div>
@@ -50,6 +63,24 @@
     $(document).ready(function() {
         $(".modal-close").on("click", function(e){
             $('#create-post-modal').modal('close');
+        });
+        latoLoadDatePicker();
+        $("#change-message-type-select").on('change', function(e){
+            if($(this).val() === 'notice') {
+                $(".mes-title-row, .mes-date-row, .mes-online-row").addClass('hide');
+            } else if($(this).val() === 'material') {
+                $(".mes-date-row, .mes-online-row").addClass('hide');
+                $(".mes-title-row").removeClass('hide');
+            } else if($(this).val() === 'task') {
+                $(".mes-title-row, .mes-date-row, .mes-online-row").removeClass('hide');
+            }
+            $("input[name='messageType']").val($(this).val());
+        });
+        
+        $(".reset-message-button").on('click', function(e) {
+            $.nette.ajax({
+                url: $(this).data('reset-link')
+            });
         });
     });
 </script>

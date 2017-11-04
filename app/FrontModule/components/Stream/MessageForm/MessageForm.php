@@ -13,7 +13,7 @@ use App\Model\Manager\MessageManager;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\FileManager;
 use App\Model\Entities\Message;
-
+use App\Model\Manager\TaskManager;
 
 /**
  * Description of SignInForm
@@ -22,10 +22,6 @@ use App\Model\Entities\Message;
  */
 abstract class MessageForm extends Control
 {
-    const TYPE_NOTICE = 1;
-    const TYPE_MATERIALS = 2;
-    const TYPE_TASK = 3;
-    const TYPE_HOMEWORK = 4;
     
     /**
      * @var MessageManager $messageManager
@@ -52,16 +48,26 @@ abstract class MessageForm extends Control
      */
     protected $defaultMessage = null;
     
+    /**
+     * @var TaskManager $taskManager
+    */
+    protected $taskManager;
+    
      /**
      * @var \App\Model\Entities\User $activeUser
      */
     protected $activeUser;
     
-    public function __construct(UserManager $userManager, MessageManager $messageManager, FileManager $fileManager)
+    public function __construct(UserManager $userManager,
+            MessageManager $messageManager, 
+            FileManager $fileManager,
+            TaskManager $taskManager
+            )
     {
         $this->userManager = $userManager;
         $this->messageManager = $messageManager;
         $this->fileManager = $fileManager;
+        $this->taskManager = $taskManager;
     }
     
     public function setActiveUser(\App\Model\Entities\User $user)
@@ -84,6 +90,12 @@ abstract class MessageForm extends Control
         $form->addHidden('idMessage');      
 
         $form->onSuccess[] = [$this, 'processForm'];
+          
+        $form->onValidate[] = function($form) {
+            if(!in_array($form['messageType']->getValue(), [Message::TYPE_MATERIALS, Message::TYPE_NOTICE, Message::TYPE_TASK])) {
+                $form->addError('Takový typ nelze zadat.');
+            }
+        };
         
         $form->onError[] = function(Form $form) {
             $this->presenter->payload->invalidForm = true;

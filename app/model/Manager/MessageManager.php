@@ -57,7 +57,7 @@ class MessageManager extends BaseManager {
                     'TEXT' => $message->getText(),
                     'ID_USER' => $message->user->id,
                     'ID_GROUP' => $message->idGroup,
-                    'ID_TYPE' => $message->idType,
+                    'TYPE' => $message->type,
                     'CREATED_BY' => $this->user->id,
             ));
             $message->id = $this->database->query("SELECT MAX(ID_MESSAGE) FROM message")->fetchField(); 
@@ -110,7 +110,7 @@ class MessageManager extends BaseManager {
         } else {
             $filters = array('notice', 'material', 'homework', 'task');
         }
-        $messages = $this->database->query("SELECT T1.TEXT, T1.ID_TYPE, T1.ID_MESSAGE, T2.ID_USER, T2.SEX, T2.URL_ID, T2.NAME, T2.SURNAME, T1.CREATED_WHEN,
+        $messages = $this->database->query("SELECT T1.TEXT, T1.TYPE, T1.ID_MESSAGE, T2.ID_USER, T2.SEX, T2.URL_ID, T2.NAME, T2.SURNAME, T1.CREATED_WHEN,
                         T3.PATH,
                         T3.FILENAME,
                         T1.PRIORITY,
@@ -130,8 +130,7 @@ class MessageManager extends BaseManager {
                 LEFT JOIN tasks T5 ON T1.ID_MESSAGE = T5.ID_MESSAGE
                 LEFT JOIN task_commit T6 ON (T6.ID_TASK=T5.ID_TASK AND T6.ID_USER=?)
                 LEFT JOIN (SELECT COUNT(ID_COMMIT) AS COMMIT_COUNT, ID_TASK FROM task_commit GROUP BY ID_TASK) T7 ON T7.ID_TASK=T5.ID_TASK
-                LEFT JOIN message_type T8 ON T1.ID_TYPE=T8.ID_TYPE
-                WHERE T1.ID_GROUP=? AND T1.DELETED IN (?) AND T8.CODE IN (?) 
+                WHERE T1.ID_GROUP=? AND T1.DELETED IN (?) AND T1.TYPE IN (?) 
                 ORDER BY PRIORITY DESC, CREATED_WHEN DESC LIMIT 10", $user->id, $user->id, $group->id, $delete, $filters)->fetchAll();
         $now = new \DateTime();
         foreach($messages as $message) {
@@ -150,9 +149,10 @@ class MessageManager extends BaseManager {
             $mess->followed = $message->IS_FOLLOWED;
             $mess->priority = $message->PRIORITY;
             $mess->deleted = $message->DELETED;
-            $mess->idType = $message->ID_TYPE;
+            $mess->type = $message->TYPE;
             $mess->attachments = $this->getAttachments($message->ID_MESSAGE);
-            if($message->ID_TYPE == Message::TYPE_HOMEWORK) {
+            if($message->TYPE == Message::TYPE_TASK) {
+                
                 $mess->task = new \App\Model\Entities\Task();
                 if(!empty($message->ID_TASK)) {
                     $mess->task->idTask = $message->ID_TASK;
@@ -169,7 +169,6 @@ class MessageManager extends BaseManager {
                     }
                 }
             }
-            
             $return[] = $mess;
         }
         
@@ -183,7 +182,7 @@ class MessageManager extends BaseManager {
                         T3.FILENAME,
                         T2.URL_ID,
                         T2.SEX,
-                        T1.ID_TYPE,
+                        T1.TYPE,
                         T4.ID_TASK,
                         T4.DEADLINE,
                         T4.ONLINE,
@@ -199,7 +198,6 @@ class MessageManager extends BaseManager {
                 LEFT JOIN task_commit T6 ON (T6.ID_TASK=T4.ID_TASK AND T6.ID_USER=?)
                 LEFT JOIN (SELECT COUNT(ID_COMMIT) AS COMMIT_COUNT, ID_TASK FROM task_commit GROUP BY ID_TASK) T7 ON T7.ID_TASK=T4.ID_TASK    
                 WHERE T1.ID_MESSAGE=? AND T1.DELETED=0", $user->id, $idMessage)->fetch();
-        
         $mess = new Message();
         $user = new User();
         $user->surname = $message->SURNAME;
@@ -212,10 +210,10 @@ class MessageManager extends BaseManager {
         $mess->id = $message->ID_MESSAGE;
         $mess->created = $message->CREATED_WHEN;
         $mess->user = $user;
-        $mess->idType = $message->ID_TYPE;
+        $mess->type = $message->TYPE;
         $mess->attachments = $this->getAttachments($message->ID_MESSAGE);
         $now = new \DateTime();
-        if($message->ID_TYPE == Message::TYPE_HOMEWORK) {
+        if($message->TYPE == Message::TYPE_TASK) {
             $mess->task = new \App\Model\Entities\Task();
             $mess->task->idTask = $message->ID_TASK;
             $mess->task->title = $message->TASK_NAME;

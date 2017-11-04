@@ -23,6 +23,7 @@ use App\Model\Manager\ClassificationManager;
 use App\Model\Manager\GroupManager;
 use App\Model\Entities\ClassificationGroup;
 use App\FrontModule\Components\TaskHeader\ITaskHeader;
+use App\Model\Entities\Message;
 
 /**
  * Description of SignInForm
@@ -82,7 +83,7 @@ class Stream extends PreparedControl
      */
     protected $activeUser;
     
-    protected $messageType = 1;
+    protected $messageType = Message::TYPE_NOTICE;
     
     /** @var  INoticeFormFactory @inject */
     protected $noticeFormFactory;
@@ -173,7 +174,6 @@ class Stream extends PreparedControl
             $message = $this->messageManager->getMessage($this->singleMode, $this->activeUser);
             $this->messages = array($message);
         }
-        
         $template->activeUser = $this->activeUser;  
         $template->activeGroup = $this->activeGroup;  
         $template->isOwner = ($this->activeUser->id === $this->activeGroup->owner->id) ? true : false;
@@ -213,35 +213,16 @@ class Stream extends PreparedControl
     public function handleEditMessage($idMessage)
     {
         $message = $this->messageManager->getMessage($idMessage, $this->activeUser);
-        $this->messageType = $message->idType;
+        $this->messageType = $message->type;
         $this['messageForm']->setDefaults($message);
         $this->redrawControl('messageForm');
     }
     
     public function createComponentMessageForm()
     {
-        $type = $this->presenter->getRequest()->getPost('messageType');
-        if(isset($type) && $type !== NULL) {
-            $this->messageType = $this->presenter->getRequest()->getPost('messageType');
-        }
-       
-        switch ($this->messageType) {
-            case MessageForm::TYPE_NOTICE :
-                $form = $this->noticeFormFactory->create();
-                break;
-            case MessageForm::TYPE_MATERIALS :
-                $form = $this->materialsFormFactory->create();
-                break;
-            case MessageForm::TYPE_TASK :
-                $form = $this->taskFormFactory->create();
-                break;
-            case MessageForm::TYPE_HOMEWORK :
-                $form = $this->homeworkFormFactory->create();
-                break;
-        }
+        $form = $this->noticeFormFactory->create();
         $form->setActiveUser($this->activeUser);
         $form->setStream($this);
-        
         return $form;
     }
 

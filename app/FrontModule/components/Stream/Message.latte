@@ -1,4 +1,4 @@
-{if $message->idType === 4}
+{if $message->type === 'task'}
 <div class="assignment">
     {var $tt=>$message->task}
     {control taskHeader-$tt->idTask}
