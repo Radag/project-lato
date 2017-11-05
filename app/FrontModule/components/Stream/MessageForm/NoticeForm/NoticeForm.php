@@ -28,11 +28,14 @@ class NoticeForm extends MessageForm
         $form->addText('date', 'Datum', null, 12)
              ->setAttribute('type', 'date')
              ->setAttribute('placeholder', date('d. m. Y'))
+             ->setValue(date("Y-m-d"))
              ->addConditionOn($form['messageType'], Form::EQUAL, Message::TYPE_TASK)
                  ->setRequired('Vložte datum')
-                 ->addRule(Form::PATTERN, 'Datum musí být ve formátu 15. 10. 2011', '([0-9]{2})\. ([0-9]{2})\. ([0-9]{4})');
+                 ->addRule(Form::PATTERN, 'Datum musí být ve formátu 2011-10-15', '([0-9]{4})\-([0-9]{2})\-([0-9]{2})');
         $form->addText('time', 'Čas', null, 5)
              ->setAttribute('placeholder', date('H:i'))
+             ->setAttribute('type', 'time')
+             ->setValue(date('H:i'))
              ->addConditionOn($form['messageType'], Form::EQUAL, Message::TYPE_TASK)
                  ->setRequired('Vložte čas')
                  ->addRule(Form::PATTERN, 'Čas musí být ve formátu 12:45', '([0-9]{2})\:([0-9]{2})');
@@ -80,8 +83,7 @@ class NoticeForm extends MessageForm
             $task->idMessage = $idMessage;
             $task->online = false;
             $task->title = $values->title;
-
-            $deadline = $date = \DateTime::createFromFormat('d. m. Y H:i', $values->date . " " . $values->time);
+            $deadline = $date = \DateTime::createFromFormat('Y-m-d H:i', $values->date . " " . $values->time);
             $task->deadline = $deadline;
 
             $this->taskManager->createTask($task);  
@@ -89,14 +91,17 @@ class NoticeForm extends MessageForm
 
         $this->presenter->flashMessage('Zpráva uložena', 'success');
         $this->presenter->payload->idMessage = $idMessage;
-        $form->setValues(['messageType' => Message::TYPE_NOTICE], true);
-        $this->stream->redrawControl('messages');
+        $this->handleResetForm();
         $this->redrawControl('messageForm');
         
     }
     
     public function handleResetForm() {
-        $this['form']->setValues([], true);
-        $this->redrawControl('messageForm');
+        $this['form']->setValues([
+            'messageType' => Message::TYPE_NOTICE,
+            'time' => date("H:i"),
+            'date' => date("Y-m-d")
+         ], true);
+        $this->stream->redrawControl('messages');
     }
 }

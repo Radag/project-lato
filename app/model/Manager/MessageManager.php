@@ -233,16 +233,20 @@ class MessageManager extends BaseManager {
     
     public function getAttachments($idMessage) {
         $return = array('media' => array(), 'files' => array());
-        $attachments = $this->database->query("SELECT T2.ID_FILE, T2.ID_TYPE, T2.PATH, T2.FILENAME FROM message_attachment T1
+        $attachments = $this->database->query("SELECT T2.ID_FILE, T2.TYPE, T2.EXTENSION, T2.MIME, T2.PATH, T2.FILENAME FROM message_attachment T1
             LEFT JOIN file_list T2 ON T1.ID_FILE=T2.ID_FILE WHERE T1.ID_MESSAGE=?", $idMessage)->fetchAll();    
         foreach($attachments as $attach) {
-            if($attach->ID_TYPE == 1) {
-                $return['media'][$attach->ID_FILE]['type'] = $attach->ID_TYPE;
+            if($attach->TYPE == 'image') {
+                $return['media'][$attach->ID_FILE]['type'] = $attach->TYPE;
+                $return['media'][$attach->ID_FILE]['extension'] = $attach->EXTENSION;
                 $return['media'][$attach->ID_FILE]['path'] = $attach->PATH;
+                $return['media'][$attach->ID_FILE]['mime'] = $attach->MIME;
                 $return['media'][$attach->ID_FILE]['filename'] = $attach->FILENAME;   
                 $return['media'][$attach->ID_FILE]['id_file'] = $attach->ID_FILE;   
             } else {
-                $return['files'][$attach->ID_FILE]['type'] = $attach->ID_TYPE;
+                $return['files'][$attach->ID_FILE]['type'] = $attach->TYPE;
+                $return['files'][$attach->ID_FILE]['extension'] = $attach->EXTENSION;;
+                $return['files'][$attach->ID_FILE]['mime'] = $attach->MIME;
                 $return['files'][$attach->ID_FILE]['path'] = $attach->PATH;
                 $return['files'][$attach->ID_FILE]['filename'] = $attach->FILENAME; 
                 $return['files'][$attach->ID_FILE]['id_file'] = $attach->ID_FILE;  

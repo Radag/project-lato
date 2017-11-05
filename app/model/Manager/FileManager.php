@@ -11,12 +11,70 @@ use Nette;
 class FileManager extends BaseManager
 {
     
-    const FILE_TYPE_IMAGE = 1;
-    const FILE_TYPE_OTHER = 2;
-    const FILE_TYPE_WORD = 3;
-    const FILE_TYPE_EXCEL = 4;
-    const FILE_TYPE_POWERPOINT = 5;
-    const FILE_TYPE_PDF = 6;
+    const FILE_TYPE_IMAGE = [
+        'code' => 'image',
+        'types' => [
+            'image/svg+xml',
+            'image/png',
+            'image/jpeg',
+            'image/bmp',
+            'image/x-windows-bmp',
+            'image/gif',
+            'image/jpeg',
+            'image/pjpeg',
+            'image/jpeg',
+            'image/pjpeg',
+            'image/jpeg',
+            'image/pjpeg',
+            'image/png',
+            'image/tiff',
+            'image/x-tiff',
+            'image/tiff',
+            'image/x-tiff',
+            'image/gdraw'
+        ]
+    ];
+    const FILE_TYPE_SPREADSHEET = [
+        'code' => 'spreadsheet',
+        'types' => [
+            'application/vnd.ms-excel',
+            'application/vnd.oasis.opendocument.spreadsheet',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        ]
+    ];
+    const FILE_TYPE_PRESENTASION = [
+        'code' => 'presentation',
+        'types' => [
+            'application/vnd.ms-powerpoint',
+            'application/vnd.oasis.opendocument.presentation',
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+            'application/vnd.google-apps.presentation',
+            'application/mspowerpoint',
+            'application/mspowerpoint',
+            'application/powerpoint',
+            'application/x-mspowerpoint'
+        ]
+    ];
+    const FILE_TYPE_DOCUMENT = [
+        'code' => 'document',
+        'types' => [
+            'application/msword',
+            'application/vnd.oasis.opendocument.text',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/pdf',
+            'application/rtf',
+            'application/x-rtf',
+            'text/richtext',
+            'application/x-tex',
+            'text/plain',
+            'application/wks', 
+            'application/x-wks',
+            'application/wordperfect',
+            'application/x-wpwin',
+            'application/vnd.google-apps.document'
+        ]
+    ];
+    const FILE_TYPE_OTHER = 'other';
     
     const USER_DIRECTORY = '/var/www/cdn/users/';
 
@@ -50,25 +108,23 @@ class FileManager extends BaseManager
         $timestamp = $date->getTimestamp();
 
         if (ftp_put($connId, '/var/www/cdn/' . $path . '/' . $timestamp . '_' . $file->getSanitizedName(), $file->getTemporaryFile(), FTP_BINARY)) {
-            if($file->isImage()) {
-                $newFile['ID_TYPE'] = self::FILE_TYPE_IMAGE;
+            if(in_array($file->getContentType(), self::FILE_TYPE_DOCUMENT['types'])) {
+                $newFile['TYPE'] = self::FILE_TYPE_DOCUMENT['code'];
+            } elseif (in_array($file->getContentType(), self::FILE_TYPE_SPREADSHEET['types'])) {
+                $newFile['TYPE'] = self::FILE_TYPE_SPREADSHEET['code'];
+            } elseif (in_array($file->getContentType(), self::FILE_TYPE_PRESENTASION['types'])) {
+                $newFile['TYPE'] = self::FILE_TYPE_PRESENTASION['code'];
+            } elseif (in_array($file->getContentType(), self::FILE_TYPE_IMAGE['types'])) {
+                $newFile['TYPE'] = self::FILE_TYPE_IMAGE['code'];
             } else {
-                if($file->getContentType() == 'application/msword' || $file->getContentType() == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-                    $newFile['ID_TYPE'] = self::FILE_TYPE_WORD;
-                } elseif ($file->getContentType() == 'application/vnd.ms-excel' || $file->getContentType() == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
-                    $newFile['ID_TYPE'] = self::FILE_TYPE_EXCEL;
-                } elseif ($file->getContentType() == 'application/vnd.ms-powerpoint' || $file->getContentType() == 'application/vnd.openxmlformats-officedocument.presentationml.presentation') {
-                    $newFile['ID_TYPE'] = self::FILE_TYPE_POWERPOINT;
-                } elseif ($file->getContentType() == 'application/pdf') {
-                    $newFile['ID_TYPE'] = self::FILE_TYPE_PDF;
-                } else {
-                    $newFile['ID_TYPE'] = self::FILE_TYPE_OTHER;
-                }                
+                $newFile['TYPE'] = self::FILE_TYPE_OTHER;
             }
             $newFile['PATH'] = $path;
+            $newFile['MIME'] = $file->getContentType();
             $newFile['FILENAME'] = $timestamp . '_' . $file->getSanitizedName();
+            $newFile['EXTENSION'] = pathinfo($file->getSanitizedName(), PATHINFO_EXTENSION);
             $return['idFile'] = $this->saveNewFile($newFile);
-            $return['type'] = $newFile['ID_TYPE'];
+            $return['type'] = $newFile['TYPE'];
             $return['fileName'] = $file->getName();
             $return['type'] = $file->getContentType();
             $return['fullPath'] = 'https://cdn.lato.cz/' . $path . '/' . $newFile['FILENAME'];
@@ -96,8 +152,10 @@ class FileManager extends BaseManager
     {
         $this->database->beginTransaction();
         $this->database->table('file_list')->insert(array(
-            'ID_TYPE' => $file['ID_TYPE'],
+            'TYPE' => $file['TYPE'],
+            'EXTENSION' => $file['EXTENSION'],
             'PATH' => $file['PATH'],
+            'MIME' => $file['MIME'],
             'FILENAME' => $file['FILENAME']
         ));
         $idFile = $this->database->query('SELECT MAX(ID_FILE) FROM file_list')->fetchField();

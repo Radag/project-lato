@@ -68,8 +68,12 @@
         {foreach $message->attachments['files'] as $file}  
         <li>
             <a href="https://cdn.lato.cz/{$file['path']}/{$file['filename']}" target="_blank" class="attached-file">
-                <div class="file-icon {if $file['type'] == 1 }image{elseif $file['type'] == 3}document{elseif$file['type'] == 4}spreadsheet{elseif $file['type'] == 5}presentation{else}unknown{/if}"><i class="material-icons">{if $file['type'] == 1 }image{elseif $file['type'] == 3}description{elseif$file['type'] == 4}equalizer{elseif $file['type'] == 5}slideshow{else}attachment{/if}</i></div>
-                <div class="file-name truncate">{$file['filename']}<span>(typ souboru a přípona)</span></div>   
+                <div class="file-icon {if $file['type'] == 'image'}image{elseif $file['type'] == 'document'}document{elseif$file['type'] == 'spreadsheet'}spreadsheet{elseif $file['type'] == 'presentation'}{else}unknown{/if}">
+                    <i class="material-icons">
+                        {if $file['type'] == 'image'}image{elseif $file['type'] == 'document'}description{elseif$file['type'] == 'spreadsheet'}equalizer{elseif $file['type'] == 'presentation'}slideshow{else}attachment{/if}
+                    </i>
+                </div>
+                <div class="file-name truncate">{$file['filename']}<span>({$file['type']} {$file['extension']})</span></div>   
             </a>
         </li>
         {/foreach}
