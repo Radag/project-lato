@@ -20,7 +20,7 @@
                 <ul class="content-nav">
                     {foreach $topMenu as $item}
                         <li {if $item->active}class="active"{/if}><a class="waves-effect waves-light" href="{$item->link}">{$item->name}</a></li>
-                        {/foreach}
+                    {/foreach}
                 </ul>
             {/if}
             <div class="right-nav-flex">
@@ -66,9 +66,33 @@
         <i class="material-icons">keyboard_arrow_left</i>Zavřít panel    
     </li>
     <li class="side-nav-header">
-        <a href="#" class="title">Upozornění</a>
+        <a href="#" class="title">Oznámení</a>
         <div class="flex-spacer"></div>
+        <a class="btn-flat btn-icon waves-effect waves-dark tooltipped" data-position="bottom" data-delay="50" data-tooltip="Označit vše jako přečtené">
+            <i class="material-icons">done_all</i>
+        </a>
     </li>
+    {foreach $notifications as $notification} 
+    <li><a href="{if $notification->idMessage}{plink Group:message 'id'=>$notification->idGroup, 'idMessage'=>$notification->idMessage}{elseif $notification->idGroup}{plink Group:default 'id'=>$notification->idGroup}{else}{plink Profile:default 'id'=>$notification->participant->urlId}{/if}" class="clearfix"> 
+        <div class="avatar"> 
+            <img src="{$notification->participant->profileImage}" alt="{$notification->participant->name}"> 
+        </div> 
+        <div class="label">
+            <div class="title truncate"> 
+                {if $notification->participant->urlId} 
+                {if $notification->participant->name} 
+                {$notification->participant->name} {$notification->participant->surname} 
+                {else} 
+                {$notification->participant->username}
+                {/if} 
+                {else} 
+                {$notification->title} 
+                {/if} 
+            </div>
+            <p class="truncate">{$notification->text}</p> 
+        </div> 
+    </a></li> 
+    {/foreach} 
 </ul>
 {/snippet}
 {/block}
@@ -83,6 +107,9 @@
     <li class="side-nav-header">
         <a href="{plink Profile:messages}" class="title">Zprávy</a>
         <div class="flex-spacer"></div>
+        <a class="btn-flat btn-icon waves-effect waves-dark tooltipped" data-position="bottom" data-delay="50" data-tooltip="Označit vše jako přečtené">
+            <i class="material-icons">done_all</i>
+        </a>
     </li>
     <li>
         <div class="search-field">
@@ -101,14 +128,12 @@
     {foreach $privateMessages as $message}
         <li>
             <a href="{plink :Front:Profile:conversation, 'user'=>$message->user->urlId}" class="chat-person unread-mark">
-                <div class="avatar small">
-                    <div class="avatar">
-                        <img src="{$message->user->profileImage|noescape}" alt="">
-                    </div>
+                <div class="avatar">
+                    <img src="{$message->user->profileImage|noescape}" alt="">
                 </div>
                 <div class="label">
-                    {$message->user->name} {$message->user->surname}
-                    <span class="truncate">Zpráva</span>
+                    <div class="title truncate">{$message->user->name} {$message->user->surname}</div>
+                    <p class="truncate">Zpráva</p>
                 </div>
             </a>
         </li>
