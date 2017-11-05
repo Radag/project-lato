@@ -1,108 +1,9 @@
 <header class="navbar-fixed main-nav">
     <nav>
         <div class="nav-wrapper">
-            {snippet right-conversation-list}
-            <ul id="slide-out-right" class="side-nav">
-                <li class="side-nav-close">
-                    <i class="material-icons">keyboard_arrow_left</i>Zavřít panel    
-                </li>
-                <li class="side-nav-header">
-                    <a href="{plink Profile:messages}" class="title">Zprávy</a>
-                    <div class="flex-spacer"></div>
-                </li>
-                <li>
-                    <div class="search-field">
-                        <i class="material-icons">search</i>
-                        <div class="input-wrapper">
-                            <input type="text" placeholder="Hledat" class="no-border">
-                        </div>
-                    </div>
-                </li>
-                <li class="divider no-margin"></li>
-                <li>
-                    <a href="{plink showPrivateMessageForm!}" class="ajax new-message waves-effect waves-dark show-new-private-message">
-                        <i class="material-icons">create</i>Nová zpráva
-                    </a>
-                </li>
-                {foreach $privateMessages as $message}
-                    <li>
-                        <a href="{plink :Front:Profile:conversation, 'user'=>$message->user->urlId}" class="chat-person unread-mark">
-                            <div class="avatar small">
-                                <img src="{$message->user->profileImage|noescape}" alt="">
-                            </div>
-                            <div class="label">
-                                {$message->user->name} {$message->user->surname}
-                            </div>
-                        </a>
-                    </li>
-                {/foreach}
-            </ul>
-            {/snippet}
-
-            <ul id="slide-out" class="side-nav">
-                <li class="side-nav-close">
-                    <i class="material-icons">keyboard_arrow_left</i>Zavřít panel    
-                </li>
-                <li class="side-nav-header">
-                    <div class="avatar small"><img src="{$activeUser->profileImage}"></div>
-                    <div class="title">
-                        <div class="truncate">{$activeUser->name} {$activeUser->surname}</div>
-                    </div>
-                </li>
-                <li><a n:class="$presenter->isLinkCurrent('Homepage:noticeboard') ? active, waves-effect, waves-dark" href="{plink Homepage:noticeboard}" >
-                        <i class="material-icons">dashboard</i>Nástěnka
-                    </a></li>
-                <li><a n:class="$presenter->isLinkCurrent('Profile:messages') ? active" href="{plink Profile:messages}" >
-                        <i class="material-icons">email</i>Zprávy
-                    </a></li>
-                <li class="no-padding">
-                    <ul class="collapsible collapsible-accordion">
-                        <li>
-                            <a n:class="($presenter->isLinkCurrent('Group:default') ? active), collapsible-header, waves-effect, waves-dark">
-                                <i class="material-icons">people</i>Skupiny
-                                <div class="flex-spacer"></div>
-                                <i class="material-icons show-more">expand_more</i>
-                            </a>
-                            <div class="collapsible-body">
-                                <ul>
-                                    {foreach $groups as $group}
-                                        <li><a n:class="$presenter->isLinkCurrent('Group:default', array('id'=>$group->urlId)) ? active" href="{plink Group:default 'id'=>$group->urlId}">
-                                                <div class="group-shortcut-circle" style="background-color: {$group->mainColor|noescape}" >{$group->shortcut|substr:0,1}</div>{$group->name}
-                                            </a></li>
-                                        {/foreach}
-                                    <li><a href="#create-group" class="waves-effect waves-dark modal-trigger">
-                                            <i class="material-icons">create</i>Vytvořit skupinu
-                                        </a></li>
-                                    <li><a href="#join-group" class="waves-effect waves-dark modal-trigger">
-                                            <i class="material-icons">exposure_plus_1</i>Zapsat se do skupiny
-                                        </a></li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-                <li><a n:class="$presenter->isLinkCurrent('Homepage:tasks') ? active, waves-effect, waves-dark" href="{plink Homepage:tasks}" >
-                        <i class="material-icons">library_books</i>Povinnosti
-                    </a></li>
-                <li><a n:class="$presenter->isLinkCurrent('Homepage:timetable') ? active, waves-effect, waves-dark" href="{plink Homepage:timetable}" >
-                        <i class="material-icons">insert_invitation</i>Rozvrh
-                    </a></li>
-                <li><a n:class="$presenter->isLinkCurrent('Homepage:classification') ? active, waves-effect, waves-dark" href="{plink :Front:Homepage:classification}" >
-                        <i class="material-icons">star</i>Klasifikace
-                    </a></li>
-
-
-                <li class="divider"></li>
-                <h4>Správa účtu</h4>
-                <li><a href="{plink Account:default}" n:class="$presenter->isLinkCurrent('Account:*') ? active">
-                        <i class="material-icons">settings</i>Nastavení
-                    </a></li>
-                <li><a href="{plink Homepage:logout}">
-                        <i class="material-icons">power_settings_new</i>Odhlásit se
-                    </a></li>
-                <li class="empty"></li>
-            </ul>
-
+            {include mainMenu}
+            {include conversationColumn}
+            {include notificationColumn}
             <div class="left-nav-flex">
                 {if $backArrow}
                     <a href="{$backArrow}" id="slide-left-button" class="show-on-large">
@@ -115,14 +16,6 @@
                 {/if}
                 <span class="nav-title truncate">{$title}</span>
             </div>
-
-            <script>
-                $(document).ready(function () {
-                    $('.dropdown-button').on('click', function () {
-                        $('.dropdown-button').not($(this)).dropdown('close');
-                    });
-                });
-            </script>
             {if !empty($topMenu)}
                 <ul class="content-nav">
                     {foreach $topMenu as $item}
@@ -133,42 +26,18 @@
             <div class="right-nav-flex">
                 <ul class="right navbar-nav">
                     <li>
-                        <a class="dropdown-button ajax" href="{link notificationRead!}" data-activates="notifications-window" data-beloworigin="true" data-alignment="right" data-constraintwidth="false"><i class="material-icons ">notifications</i>
-                            {snippet notificationCount}{if $unreadNotifications > 0}<span class="nav-badge">{$unreadNotifications}</span>{/if}{/snippet}</a>
-                        <ul id='notifications-window' class='dropdown-content main-nav-dropdown'>
-                            <li class="dropdown-header">
-                                <div class="title">Oznámení</div>
-                                <div class="action"><i class="material-icons">done_all</i></div>
-                            </li>
-                            <li class="divider divider-after"></li>
-                                {foreach $notifications as $notification}
-                                <li><a href="{if $notification->idMessage}{plink Group:message 'id'=>$notification->idGroup, 'idMessage'=>$notification->idMessage}{elseif $notification->idGroup}{plink Group:default 'id'=>$notification->idGroup}{else}{plink Profile:default 'id'=>$notification->participant->urlId}{/if}" class="clearfix">
-                                        <div class="avatar small left">
-                                            <img src="{$notification->participant->profileImage}" alt="{$notification->participant->name}">
-                                        </div>
-                                        <h4>
-                                            {if $notification->participant->urlId}
-                                                {if $notification->participant->name}
-                                                    {$notification->participant->name} {$notification->participant->surname}
-                                                {else}
-                                                    {$notification->participant->username}
-                                                {/if}
-                                            {else}
-                                                {$notification->title}
-                                            {/if}
-                                            <span class="truncate">{$notification->text}</span>
-                                        </h4>
-                                    </a></li>
-                                {/foreach}
-                            <li class="dropdown-footer"><a href="{plink Homepage:notifications}">Zobrazit vše</a></li>
-                        </ul>
+                        <a class="button-collapse show-on-large slide-out-toggle" href="#" id="button-notification-slide" data-edge="right" data-activates="slide-out-notification" >
+                            <i class="material-icons ">notifications</i>
+                            {snippet notificationCount}{if $unreadNotifications > 0}<span class="nav-badge">{$unreadNotifications}</span>{/if}{/snippet}
+                        </a>
                     </li>
-
-                    <li><a class="button-collapse show-on-large slide-out-toggle" id="button-left-slide" href="#" data-edge="right" data-activates="slide-out-right" >
-                        <i class="material-icons ">email</i>
-                    {snippet messagesCount}{if $unreadPrivMessages > 0}<span class="nav-badge">{$unreadPrivMessages}</span>{/if}{/snippet}</a>
-                </li>
-                <li><a href="{plink Homepage:search}" class="waves-effect waves-dark"><i class="material-icons">search</i></a></li>
+                    <li>
+                        <a class="button-collapse show-on-large slide-out-toggle" id="button-conversation-slide" href="#" data-edge="right" data-activates="slide-out-conversation" >
+                            <i class="material-icons ">email</i>
+                            {snippet messagesCount}{if $unreadPrivMessages > 0}<span class="nav-badge">{$unreadPrivMessages}</span>{/if}{/snippet}
+                        </a>
+                    </li>
+                    <li><a href="{plink Homepage:search}" class="waves-effect waves-dark"><i class="material-icons">search</i></a></li>
                 </ul>
             </div>
         </div>
@@ -181,11 +50,147 @@
             $('.button-collapse').sideNav('hide');
         });
 
-        $('#button-left-slide').sideNav({
+        $('#button-notification-slide, #button-conversation-slide').sideNav({
             edge: 'right'
+        });
+        $('.dropdown-button').on('click', function () {
+            $('.dropdown-button').not($(this)).dropdown('close');
         });
     });
 </script>
+
+{block notificationColumn}
+{snippet right-notification-list}
+<ul id="slide-out-notification" class="side-nav">
+    <li class="side-nav-close">
+        <i class="material-icons">keyboard_arrow_left</i>Zavřít panel    
+    </li>
+    <li class="side-nav-header">
+        <a href="#" class="title">Upozornění</a>
+        <div class="flex-spacer"></div>
+    </li>
+</ul>
+{/snippet}
+{/block}
+
+
+{block conversationColumn}
+{snippet right-conversation-list}
+<ul id="slide-out-conversation" class="side-nav">
+    <li class="side-nav-close">
+        <i class="material-icons">keyboard_arrow_left</i>Zavřít panel    
+    </li>
+    <li class="side-nav-header">
+        <a href="{plink Profile:messages}" class="title">Zprávy</a>
+        <div class="flex-spacer"></div>
+    </li>
+    <li>
+        <div class="search-field">
+            <i class="material-icons">search</i>
+            <div class="input-wrapper">
+                <input type="text" placeholder="Hledat" class="no-border">
+            </div>
+        </div>
+    </li>
+    <li class="divider no-margin"></li>
+    <li>
+        <a href="{plink showPrivateMessageForm!}" class="ajax new-message waves-effect waves-dark show-new-private-message">
+            <i class="material-icons">create</i>Nová zpráva
+        </a>
+    </li>
+    {foreach $privateMessages as $message}
+        <li>
+            <a href="{plink :Front:Profile:conversation, 'user'=>$message->user->urlId}" class="chat-person unread-mark">
+                <div class="avatar small">
+                    <img src="{$message->user->profileImage|noescape}" alt="">
+                </div>
+                <div class="label">
+                    {$message->user->name} {$message->user->surname}
+                </div>
+            </a>
+        </li>
+    {/foreach}
+</ul>
+{/snippet}
+{/block}
+
+{block mainMenu}
+<ul id="slide-out" class="side-nav">
+    <li class="side-nav-close">
+        <i class="material-icons">keyboard_arrow_left</i>Zavřít panel    
+    </li>
+    <li class="side-nav-header">
+        <div class="avatar small"><img src="{$activeUser->profileImage}"></div>
+        <div class="title">
+            <div class="truncate">{$activeUser->name} {$activeUser->surname}</div>
+        </div>
+    </li>
+    <li><a n:class="$presenter->isLinkCurrent('Homepage:noticeboard') ? active, waves-effect, waves-dark" href="{plink Homepage:noticeboard}" >
+            <i class="material-icons">dashboard</i>Nástěnka
+        </a>
+    </li>
+    <li>
+        <a n:class="$presenter->isLinkCurrent('Profile:messages') ? active" href="{plink Profile:messages}" >
+            <i class="material-icons">email</i>Zprávy
+        </a>
+    </li>
+    <li class="no-padding">
+        <ul class="collapsible collapsible-accordion">
+            <li>
+                <a n:class="($presenter->isLinkCurrent('Group:default') ? active), collapsible-header, waves-effect, waves-dark">
+                    <i class="material-icons">people</i>Skupiny
+                    <div class="flex-spacer"></div>
+                    <i class="material-icons show-more">expand_more</i>
+                </a>
+                <div class="collapsible-body">
+                    <ul>
+                        {foreach $groups as $group}
+                            <li>
+                                <a n:class="$presenter->isLinkCurrent('Group:default', array('id'=>$group->urlId)) ? active" href="{plink Group:default 'id'=>$group->urlId}">
+                                    <div class="group-shortcut-circle" style="background-color: {$group->mainColor|noescape}" >{$group->shortcut|substr:0,1}</div>{$group->name}
+                                </a>
+                            </li>
+                            {/foreach}
+                        <li>
+                            <a href="#create-group" class="waves-effect waves-dark modal-trigger">
+                                <i class="material-icons">create</i>Vytvořit skupinu
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#join-group" class="waves-effect waves-dark modal-trigger">
+                                <i class="material-icons">exposure_plus_1</i>Zapsat se do skupiny
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </li>
+    <li><a n:class="$presenter->isLinkCurrent('Homepage:tasks') ? active, waves-effect, waves-dark" href="{plink Homepage:tasks}" >
+            <i class="material-icons">library_books</i>Povinnosti
+        </a></li>
+    <li>
+        <a n:class="$presenter->isLinkCurrent('Homepage:timetable') ? active, waves-effect, waves-dark" href="{plink Homepage:timetable}" >
+            <i class="material-icons">insert_invitation</i>Rozvrh
+        </a>
+    </li>
+    <li>
+        <a n:class="$presenter->isLinkCurrent('Homepage:classification') ? active, waves-effect, waves-dark" href="{plink :Front:Homepage:classification}" >
+            <i class="material-icons">star</i>Klasifikace
+        </a>
+    </li>
+    <li class="divider"></li>
+    <h4>Správa účtu</h4>
+    <li><a href="{plink Account:default}" n:class="$presenter->isLinkCurrent('Account:*') ? active">
+            <i class="material-icons">settings</i>Nastavení
+        </a></li>
+    <li><a href="{plink Homepage:logout}">
+            <i class="material-icons">power_settings_new</i>Odhlásit se
+        </a></li>
+    <li class="empty"></li>
+</ul>
+{/block}
+
 
 {control newGroupForm}
 {control joinGroupForm}
