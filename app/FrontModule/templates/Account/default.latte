@@ -3,14 +3,14 @@
 <section class="main" id="account-settings">
     <div class="container">
         <div class="row equal-cols">
-            <div class="col s12 l4">
+            <div class="col m12 l4">
                 <div class="card" id="account-images">
                     <img src="{$userAccount->profileImage}">
                     <button class="waves-effect waves-light btn">Změnit profilový obrázek</button>
                     <button class="waves-effect waves-light btn">Změnit pozadí</button>
                 </div>
             </div>
-            <div class="col s12 l8">
+            <div class="col m12 l8">
                 <div class="card flex-column">
                     <div class="card-header">
                         <h2>Osobní údaje</h2>
@@ -221,10 +221,6 @@
 </section>
 
 <script>
-    $(document).ready(function() {
-        $('select').material_select();
-    });
-
     $('.datepicker').pickadate({
         selectMonths: true, // Creates a dropdown to control month
         selectYears: 15 // Creates a dropdown of 15 years to control year
@@ -239,7 +235,6 @@
             var image = JSON.parse(file.xhr.response);
             $("#profileImageDropzone .dz-message").html('<img src="' + image.image + '">');
         });
-
     });
 
 </script>

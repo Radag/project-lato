@@ -682,6 +682,12 @@ nav.breadcrumbs {
     display: flex;
     align-items: stretch;
 
+    @media only screen and (max-width: 992px) {
+        & {
+            display: block;
+        }
+    }
+
     .col {
         display: flex;
         align-items: stretch;
@@ -754,9 +760,9 @@ input[type=search]:not(.browser-default) {
     }
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 992px) {
     .card-footer {
-        padding: 0 16px 16px 16px;
+        padding: 0 16px 20px 16px;
     }
 }
 
@@ -2086,7 +2092,7 @@ nav .nav-title {
     }
 
     .two-level-nav {
-        margin-top: 64px;
+        margin-top: 58px;
     }
 }
 
@@ -2314,6 +2320,8 @@ nav .nav-title {
 /* ------------- */
 
 /* ----- SIDEBAR NAVIGATION ----- */
+
+
 
 .side-nav li {
     display: flex;
@@ -2729,14 +2737,14 @@ nav .nav-title {
     }
 }
 
-.side-nav.right-aligned {
+.slide-out-right {
 
     .side-nav-header {
-        background-color: #2196f3;
+        background-color: @background-highlighted;
         border: 0;
-        height: 112px;
+        height: 70px;
         padding: 16px;
-        align-items: flex-end;
+        align-items: center;
         box-sizing: border-box;
         margin: 0;
     }
@@ -2751,39 +2759,33 @@ nav .nav-title {
         line-height: 36px;
         flex-grow: 0;
     }
-
+ 
     .title:hover {
         background-color: transparent;
     }
 
     .new-message {
-        height: 56px;
         display: flex;
         align-items: center;
-        color: @secondary-text-color;
-        margin-bottom: 16px;
+        color: rgba(0, 0, 0, .87);
         font-weight: 500;
 
-        i {
+        i.material-icons {
             dislay: block;
-            width: 32px !important;
-            height: 32px;
+            width: 36px !important;
+            height: 36px;
             line-height: 32px;
             border-radius: 50%;
             margin-right: 16px;
+            background: @icon-background;
         }
-
-        &:hover {
-            background-color: transparent;
-        }
-
     }
 
     .search-field {
         width: 100%;
         display: flex;
         align-items: center;
-        height: 56px;
+        height: 64px;
         padding: 0 16px;
 
         i {
@@ -2808,25 +2810,35 @@ nav .nav-title {
         }
     }
 
-    .chat-person {
-        display: flex;
-        align-items: center;
-        padding: 8px 16px;
+    li {
 
-        .avatar {
-            margin-right: 16px;
-            height: 32px;
-            width: 32px;
+        & > a {
+            height: 74px;
+            line-height: 21px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+
+            span {
+                font-weight: 400;
+                color: @secondary-text-color;
+                font-size: 13px;
+            }
+
+            .avatar {
+                height: 36px;
+                width: 36px;
+                margin-right: 16px;
+
+                img {
+                    height: 36px;
+                    width: 36px;
+                }
+            }
         }
 
-        .label {
-            flex-grow: 1;
-            font-weight: 400;
-        }
-
-        &.unread-mark {
+        .unread-mark {
             background-color: @background-highlighted;
-            border-left: 2px solid @secondary-color;
         }
     }
 }
@@ -3817,7 +3829,7 @@ nav .nav-title {
     }
 
     & > li {
-        margin: 24px 0;
+        margin: 32px 0;
         display: flex;
     
         &:first-child {
@@ -3883,14 +3895,6 @@ nav .nav-title {
         color: #FF5252;
         font-weight: 700;    
     }
-
-    &.group-admins {
-
-        .divider {
-            margin: 0 -24px 0 58px;
-        }
-    }
-
 }
 
 .form-block {
@@ -3908,6 +3912,11 @@ nav .nav-title {
 
     &:first-child {
         margin-top: 0;
+    }
+
+    &.mes-online-row {
+        margin-top: 24px;
+        height: 45px;
     }
 }
 
@@ -3957,7 +3966,7 @@ nav .nav-title {
 }
 
 .form-row .label {
-    font-weight: 500;
+    color: @secondary-text-color;
     line-height: 1.5em;
 }
 
@@ -4764,13 +4773,5 @@ nav .nav-title {
     }
 }
 
-#full-screen-loader-modal {
-    width: 90px;
-    overflow: hidden;
-    text-align: center;
-    height: 90px;
-    padding-top: 12px;
-    border-radius: 45px;   
-}
 
 
