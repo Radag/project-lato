@@ -123,47 +123,6 @@ a {
     }
 }
 
-nav.breadcrumbs {
-    display: flex;
-    align-items: center;
-    background-color: transparent;
-    box-shadow: none;
-}
-
-.breadcrumb,
-.breadcrumb:before {
-    font-size: 14px;
-    line-height: 1em;
-}
-
-.breadcrumb a {
-    color: rgba(0, 0, 0, .54);
-}
-
-.breadcrumb a:hover {
-    color: rgba(0, 0, 0, .87);
-}
-
-.breadcrumb:before {
-    color: rgba(0, 0, 0, .25);
-}
-
-.breadcrumb:last-child {
-    color: rgba(0, 0, 0, .87);
-    font-weight: 500;
-}
-
-.back-to-dashboard {
-    width: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: -6px;
-}
-
-.lato-logo {
-}
-
 .lato-logo.medium {
     height: 48px;
     width: 48px;
@@ -199,7 +158,7 @@ nav.breadcrumbs {
 
 [type="checkbox"]:not(:checked)+label,
 [type="radio"]:not(:checked)+label {
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     height: auto;
     font-size: 14px;
 }
@@ -256,7 +215,7 @@ nav.breadcrumbs {
 
 .table-header .btn-icon {
     margin-right: 24px;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     height: 36px;
 }
 
@@ -266,13 +225,13 @@ nav.breadcrumbs {
 
 .table-header {
     text-transform: uppercase;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     font-size: 13px;
     font-weight: 500;
 }
 
 .table-header [type="checkbox"].filled-in:not(:checked)+label:after {
-    border-color: rgba(0, 0, 0, .54);
+    border-color: @secondary-text-color;
 }
 
 .collapsible {
@@ -447,7 +406,7 @@ nav.breadcrumbs {
 
 .table-row .table-field a {
     cursor: pointer;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
 }
 
 .table-row .table-field input {
@@ -492,7 +451,7 @@ nav.breadcrumbs {
 
 .table-row .classification,
 .collapsible-body .classification {
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     font-size: 16px;
     font-weight: 400;
 }
@@ -529,7 +488,7 @@ nav.breadcrumbs {
     width: 20px;
     text-align: center;
     margin-right: 24px;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
 }
 
 @media only screen and (max-width: 600px) {
@@ -558,7 +517,7 @@ nav.breadcrumbs {
 
 @media only screen and (max-width: 600px) {
     .collapsible-body .classification-table .table-row .date {
-        color: rgba(0, 0, 0, .54);
+        color: @secondary-text-color;
         font-size: 12px;
         margin: 0;
         text-align: left;
@@ -583,7 +542,7 @@ nav.breadcrumbs {
 }
 
 .collapsible-body-footer ul li i {
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
 }
 
 .classification-chips {
@@ -594,13 +553,13 @@ nav.breadcrumbs {
 .classification-chips .chip {
     display: flex;
     align-items: center;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
 }
 
 .classification-chips .chip .material-icons {
     font-size: 16px !important;
     margin-left: 12px;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     height: 24px;
     line-height: 24px;
     width: 24px;
@@ -741,7 +700,7 @@ input[type=search]:not(.browser-default) {
     margin: 0;
     height: 45px;
     font-size: 14px;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     display: flex;
     align-items: center;
     width: 100%;
@@ -805,7 +764,7 @@ input[type=search]:not(.browser-default) {
 }
 
 .card-header .material-icons {
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
 }
 
 .btn-icon.small {
@@ -900,7 +859,7 @@ input[type=search]:not(.browser-default) {
     justify-content: center;
     width: 36px;
     height: 36px;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
 }
 
 .btn-icon {
@@ -973,7 +932,7 @@ input[type=search]:not(.browser-default) {
 }
 
 .card .list .row .label {
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     margin-bottom: 16px;
 }
 
@@ -1159,7 +1118,7 @@ input[type=search]:not(.browser-default) {
 }
 
 .new-message-label {
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     font-size: 16px;
     flex-grow: 1;
     line-height: 42px;
@@ -1478,7 +1437,7 @@ ul.dropdown-content.main-nav-dropdown {
 }
 
 .select-wrapper.with-remove .select-dropdown li:last-child span {
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
 }
 
 /* ----- NESTYLOVANÝ SELECT ----- */
@@ -1512,7 +1471,7 @@ select.browser-default {
 /* KOALA CSS */
 
 p {
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     line-height: 1.6em;
     margin-top: 16px;
     word-break: break-word;
@@ -1529,7 +1488,7 @@ p:first-child {
 }
 
 p.secondary-par {
-    color: rgba(0, 0, 0, .54) !important;
+    color: @secondary-text-color !important;
 }
 
 strong {
@@ -1732,7 +1691,7 @@ strong {
                 margin-left: 4px;
                 font-size: 13px;
                 font-weight: 400;
-                color: rgba(0, 0, 0, .54);
+                color: @secondary-text-color;
             }
         }
 
@@ -1741,7 +1700,7 @@ strong {
 
             i {
                 font-size: 18px !important;
-                color: rgba(0, 0, 0, .54);
+                color: @secondary-text-color;
             }
         }
 
@@ -1840,7 +1799,7 @@ strong {
 
 #select-post-type a {
     display: flex;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
 }
 
 #select-post-type a:hover {
@@ -1886,7 +1845,7 @@ strong {
 .attachments li .remove-attachment i {
     font-size: 20px;
     line-height: 24px;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     -webkit-transition: color 300ms ease-in-out;
     -moz-transition: color 300ms ease-in-out;
     -o-transition: color 300ms ease-in-out;
@@ -1914,7 +1873,7 @@ strong {
 
 #create-post-modal .modal-footer .attachments-nav ul li i {
     line-height: 36px;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     font-size: 24px !important;
 }
 
@@ -1969,7 +1928,7 @@ strong {
 .modal .modal-footer .modal-footer-note a {
     display: flex;
     align-items: center;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
 }
 
 .modal .modal-footer .modal-footer-note a.colored {
@@ -2134,7 +2093,7 @@ nav .nav-title {
         width:36px;
         padding:0;
         border-radius:50%;
-        color: rgba(0, 0, 0, .54);
+        color: @secondary-text-color;
         background-color: rgba(0, 0, 0, .0); 
         -webkit-transition:  300ms ease-in-out;
         -moz-transition:  300ms ease-in-out;
@@ -2192,7 +2151,7 @@ nav .nav-title {
     margin: 0;
     font-size: 13px;
     line-height: 1em;
-    color: rgba(0, 0, 0, .54);   
+    color: @secondary-text-color;   
     text-transform: uppercase;
 }
 
@@ -2252,7 +2211,7 @@ nav .nav-title {
 }
 
 .dropdown-content .dropdown-header .action i {
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     line-height: 36px;
     display: block;
     cursor: pointer;
@@ -2275,7 +2234,7 @@ nav .nav-title {
 }
 
 .dropdown-content .dropdown-footer a {
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     font-weight: 400;
     font-size: 12px;
     display: inline;
@@ -2313,7 +2272,7 @@ nav .nav-title {
 .main-nav-dropdown span {
     display:block;
     font-size:13px;
-    color:rgba(0, 0, 0, .54);
+    color:@secondary-text-color;
     font-weight:400;
 }
 
@@ -2337,7 +2296,7 @@ nav .nav-title {
 }
 
 .side-nav li i.material-icons {
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     text-align: center;
     width: 36px !important;
     margin-right: 32px;
@@ -2434,7 +2393,7 @@ nav .nav-title {
     height: 36px;
     border: 3px solid #fff;
     border-radius: 50%;
-    background-color: rgba(0, 0, 0, .54);
+    background-color: @secondary-text-color;
     text-align: center;
     margin: 0;
     margin-right: 32px;
@@ -2447,7 +2406,7 @@ nav .nav-title {
     float: right;
     font-size: 17px !important;
     margin: 0;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
 }
 
 
@@ -2466,7 +2425,7 @@ nav .nav-title {
     padding: 0 16px;
     align-items: center;
     font-weight: 400 !important;
-    color: rgba(0, 0, 0, .54) !important;
+    color: @secondary-text-color !important;
     -webkit-transition: color 300ms ease-in-out;
     -moz-transition: color 300ms ease-in-out;
     -o-transition: color 300ms ease-in-out;
@@ -2485,7 +2444,7 @@ nav .nav-title {
 
 
 .side-nav .collapsible-body li a i {
-    color: rgba(0, 0, 0, .54) !important;
+    color: @secondary-text-color !important;
 }
 
 .side-nav .divider {
@@ -2495,7 +2454,7 @@ nav .nav-title {
 
 .side-nav h4 {
     font-size: 13px;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     line-height: 1em;
     margin: 0;
     padding: 8px 16px 16px 16px;
@@ -2896,12 +2855,12 @@ nav .nav-title {
 
 .card.simple .label {
     flex-grow: 1;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     line-height: 24px;
 }
 
 .card.simple .material-icons {
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     margin-right: 16px;
 }
 
@@ -2957,14 +2916,14 @@ nav .nav-title {
 .card-header .card-date {
     font-size:13px;
     line-height:18px;
-    color:rgba(0, 0, 0, .54);
+    color:@secondary-text-color;
     font-weight:400;
     display:block;
     margin-right: 12px;
 }
 
 .card-header .card-options {
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     line-height: 36px;
     padding: 0;
     width: 36px;
@@ -3136,7 +3095,7 @@ nav .nav-title {
 
 .comments-header .show-comments.item .material-icons {
     line-height: 1em;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
 }
 
 @media only screen and (max-width: 600px) {
@@ -3154,7 +3113,7 @@ nav .nav-title {
 
 .comments-header .comments-count {
     line-height: 1.5em;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     font-size: 13px;
     cursor: pointer;
 }
@@ -3261,43 +3220,43 @@ nav .nav-title {
 
 ::-webkit-input-placeholder {
     font-size: 14px;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
 }
 
 :-moz-placeholder { /* Firefox 18- */
    font-size: 14px;
-   color: rgba(0, 0, 0, .54);  
+   color: @secondary-text-color;  
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
    font-size: 14px;
-   color: rgba(0, 0, 0, .54);  
+   color: @secondary-text-color;  
 }
 
 :-ms-input-placeholder {  
    font-size: 14px;
-   color: rgba(0, 0, 0, .54);  
+   color: @secondary-text-color;  
 }
 
 .modal {
     ::-webkit-input-placeholder {
         font-size: 15px;
-        color: rgba(0, 0, 0, .54);
+        color: @secondary-text-color;
     }
 
     :-moz-placeholder { /* Firefox 18- */
        font-size: 15px;
-       color: rgba(0, 0, 0, .54);  
+       color: @secondary-text-color;  
     }
 
     ::-moz-placeholder {  /* Firefox 19+ */
        font-size: 15px;
-       color: rgba(0, 0, 0, .54);  
+       color: @secondary-text-color;  
     }
 
     :-ms-input-placeholder {  
        font-size: 15px;
-       color: rgba(0, 0, 0, .54);  
+       color: @secondary-text-color;  
     }
 }
 
@@ -3410,7 +3369,7 @@ nav .nav-title {
         .label {
             flex-grow: 1;
             font-size: 16px;
-            color: rgba(0, 0, 0, .54);
+            color: @secondary-text-color;
             line-height: 42px;
             padding: 24px 0;
 
@@ -3623,7 +3582,7 @@ nav .nav-title {
 
 #group-cards .card .title span {
     display: block;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     font-weight: 400;
     font-size: 13px;
 }
@@ -3676,7 +3635,7 @@ nav .nav-title {
     display: block;
     font-weight:400;
     font-size:13px;
-    color:rgba(0, 0, 0, .54);
+    color:@secondary-text-color;
     line-height:13px;
 }
 
@@ -3684,7 +3643,7 @@ nav .nav-title {
     padding:24px;
     font-size:14px;
     line-height:14px;
-    color:rgba(0, 0, 0, .54);
+    color:@secondary-text-color;
 }
 
 @media(max-width:1220px) {
@@ -3731,7 +3690,7 @@ nav .nav-title {
 }
 
 .modal p {
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
 }
 
 .group-color-select {
@@ -3878,12 +3837,12 @@ nav .nav-title {
 
 
     li a .material-icons {
-        color: rgba(0, 0, 0, .54);
+        color: @secondary-text-color;
         font-size: 18px !important
     }
 
     .remaining-time {
-        color: rgba(0, 0, 0, .54);
+        color: @secondary-text-color;
     }
 
     .btn-icon {
@@ -4097,7 +4056,7 @@ nav .nav-title {
         width: 36px;
         margin-right: 12px;
         font-size: 24px !important;
-        color: rgba(0, 0, 0, .54);
+        color: @secondary-text-color;
         line-height: 45px;
         text-align: center;
     }
@@ -4146,7 +4105,7 @@ nav .nav-title {
 
 .form-row .notice {
     margin-left: 16px;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
 }
 
 .add-line {
@@ -4169,7 +4128,7 @@ nav .nav-title {
 #layout-footer {
     text-align: center;
     padding: 36px;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     font-size: 13px;
 }
 
@@ -4256,7 +4215,7 @@ nav .nav-title {
     font-size: 35px;
     line-height: 1em;
     font-weight: 300;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
 }
 
 .schedule-row .day-title .name {
@@ -4270,7 +4229,7 @@ nav .nav-title {
 #one-day-schedule .day-title .name {
     margin-top: 12px;
     font-size: 13px;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
 }
 
 .schedule-row .day-title-spacer {
@@ -4306,13 +4265,13 @@ nav .nav-title {
 
 .schedule-row .item .room {
     display: block;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     font-size: 13px;
     line-height: 18px;
 }
 
 .schedule-row.schedule-header .item {
-    color: rgba(0, 0, 0, .54) !important;
+    color: @secondary-text-color !important;
     font-weight: 500;
     font-size: 12px;
 }
@@ -4355,7 +4314,7 @@ nav .nav-title {
     width: 100%;
     display: flex;
     align-items: center;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
 }
 
 .assignment .remaining-time {
@@ -4405,7 +4364,7 @@ nav .nav-title {
 .assignment .submit-count .undone {
     width: 64px;
     justify-content: center;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     display: flex;
     align-items: center;
 }
@@ -4427,7 +4386,7 @@ nav .nav-title {
     -moz-transition: background-color 300ms ease-in-out;
     -o-transition: background-color 300ms ease-in-out;
     transition: background-color 300ms ease-in-out;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -4463,7 +4422,7 @@ nav .nav-title {
 }
 
 .assignments-footer a {
-    color: rgba(0, 0, 0, .54);   
+    color: @secondary-text-color;   
 }
 
 .assignments-footer a:hover {
@@ -4509,7 +4468,7 @@ nav .nav-title {
 }
 
 .notification-description {
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     margin-top: 6px;
 }
 
@@ -4571,12 +4530,12 @@ nav .nav-title {
 
 .classification-properties .minified-label span {
     font-weight: 400;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     font-size: 14px;
 }
 
 .classification-properties .minified-icon {
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     padding: 24px;
     display: block;
 }
@@ -4633,7 +4592,7 @@ nav .nav-title {
     justify-content: center;
     font-size: 17px;
     font-weight: 300;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
 }
 
 .card-link-big .icon .circle.border-blue {
@@ -4748,7 +4707,7 @@ nav .nav-title {
 
 #search-results .card .title span {
     font-size: 13px;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
     font-weight: 400;
 }
 
@@ -4761,7 +4720,7 @@ nav .nav-title {
 
 #search-results .card .send-message i {
     line-height: 42px;
-    color: rgba(0, 0, 0, .54);
+    color: @secondary-text-color;
 }
 
 @media only screen and (max-width: 992px) {
