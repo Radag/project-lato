@@ -61,7 +61,7 @@
 
 {block notificationColumn}
 {snippet right-notification-list}
-<ul id="slide-out-notification" class="side-nav">
+<ul id="slide-out-notification" class="side-nav slide-out-right">
     <li class="side-nav-close">
         <i class="material-icons">keyboard_arrow_left</i>Zavřít panel    
     </li>
@@ -76,7 +76,7 @@
 
 {block conversationColumn}
 {snippet right-conversation-list}
-<ul id="slide-out-conversation" class="side-nav">
+<ul id="slide-out-conversation" class="side-nav slide-out-right">
     <li class="side-nav-close">
         <i class="material-icons">keyboard_arrow_left</i>Zavřít panel    
     </li>
@@ -102,10 +102,13 @@
         <li>
             <a href="{plink :Front:Profile:conversation, 'user'=>$message->user->urlId}" class="chat-person unread-mark">
                 <div class="avatar small">
-                    <img src="{$message->user->profileImage|noescape}" alt="">
+                    <div class="avatar">
+                        <img src="{$message->user->profileImage|noescape}" alt="">
+                    </div>
                 </div>
                 <div class="label">
                     {$message->user->name} {$message->user->surname}
+                    <span class="truncate">Zpráva</span>
                 </div>
             </a>
         </li>
