@@ -1,7 +1,33 @@
 {block content}
 {control topPanel}
+<section class="main">
+    <div class="container offset-2">
+        <div class="row">
+            <div class="col s12">
+                <header class="page-header">
+                    <button class="btn white no-shadow dropdown-button" id="user-action-button" data-beloworigin="true" data-activates="tasks-dropdown">
+                        Aktivní povinnosti
+                    </button>
+                    <ul id='tasks-dropdown' class='dropdown-content'>
+                        <li><a href="">Aktivní povinnosti</a></li>        
+                        <li><a href="">Uzavřené povinnosti</a></li>
+                    </ul>
+                    <div class="flex-spacer"></div>
+                </header>  
+            </div>
+        </div>
+    </div>
+
 {if $tasks}  
-    <div class="main container offset-2">
+
+    <div class="container offset-2">
+        <div class="row">
+            <div class="col s12">
+                <header class="section-header">
+                    <h3 class="left">Na tento týden</h3>
+                </header>
+            </div>
+        </div>
         <div class="row">
             <div class="col s12">
                 {snippet actualTasks}
@@ -11,19 +37,40 @@
                         {control taskHeader-$task->idTask}
                     </div>
                     <a href="{plink Group:message 'id'=>$task->group->urlId, 'idMessage'=>$task->idMessage}" class="assignment-preview waves-effect waves-light-gray">
-                        <div class="avatar">
-                            <img src="{$task->message->user->profileImage|noescape}">
-                        </div>
-                        <div class="title">
-                                {$task->message->user->name} {$task->message->user->surname} | {$task->group->name}
-                            <span>
-                                {$task->title}
+                        <div class="card-header">
+                            <div class="avatar">
+                                <img src="{$task->message->user->profileImage|noescape}">
+                            </div>
+                            <h3 class="name truncate">{$task->message->user->name} {$task->message->user->surname}</h3>
+                            <span class="card-date">
+                                22. 9.
                             </span>
+                        </div>
+                        <div class="card-content">
+                            <p class="truncate"><strong>{$task->title}</strong>Vytvořte podle zadání úlohu do programování a odevzdejte v nejbližším možném termínu.</p>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-flat" style="color: #ffc900;">{$task->group->name}</button>
                         </div>
                     </a>
                 </div>
                 {/foreach}
                 {/snippet}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <header class="section-header">
+                    <h3 class="left">Na příští týden</h3>
+                </header>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12">
+                <header class="section-header">
+                    <h3 class="left">Za déle než týden</h3>
+                </header>
             </div>
         </div>
     </div>
@@ -41,5 +88,7 @@
         </div>
     </div>
 {/if}    
+
+</section>
 
 

@@ -2,46 +2,54 @@
 {block content}
 {control topPanel}
 
-<div class="container main two-level-nav">
+<div class="container main two-level-nav" id="group">
     <div class="row">
         {snippet streamSection}
         <div class="col s12 l8" id="stream" >
             {control stream}
         </div>
         {/snippet}
-        <div class="col s12 l4">
-            <div class="card flex-column">
+        <div class="col s12 l4" id="stream-cards">
+            <div class="card flex-column" id="assignment-card">
                 <div class="card-header">
                     <h3>Povinnosti</h3>
                 </div>
+                {if !empty($actualTasks)}
                 <div class="card-content">
-                    {if !empty($actualTasks)}
                     <ul class="custom-collection" n:if="!empty($actualTasks)">
                         {foreach $actualTasks as $task}
                         <li>
-                            <a href="{plink Group:message 'id'=>$task->group->urlId, 'idMessage'=>$task->idMessage}" class="item">
-                                <div class="subtitle truncate">{$task->title}</div>
-                                <div class="flex-spacer"></div>
+                            <a href="{plink Group:message 'id'=>$task->group->urlId, 'idMessage'=>$task->idMessage}" class="truncate">
+                                <p class="remaining-time">Odevzdat
                                 {if $task->timeLeft->y > 0}
-                                    <div class="remaining-time">{$task->timeLeft->format('%y let')}</div>
+                                    {$task->timeLeft->format('%y let')}
                                 {elseif $task->timeLeft->m > 0}
-                                    <div class="remaining-time">{$task->timeLeft->format('%m měsíců')}</div>
+                                    {$task->timeLeft->format('%m měsíců')}
                                 {elseif $task->timeLeft->d > 0}
-                                    <div class="remaining-time">{$task->timeLeft->format('%d dní')}</div>
+                                    {$task->timeLeft->format('%d dní')}
                                 {elseif $task->timeLeft->h > 0}
-                                    <div class="remaining-time important">{$task->timeLeft->format('%h hodin')}</div>
+                                    {$task->timeLeft->format('%h hodin')}
                                 {elseif $task->timeLeft->i > 0}
-                                    <div class="remaining-time important">{$task->timeLeft->format('%i minut')}</div>
-                                {/if}       
+                                    {$task->timeLeft->format('%i minut')}
+                                {/if}  
+                                </p>
+                                <p class="secondary-par truncate">{$task->title}</p>     
                             </a>
                         </li>
                         {/foreach}
                     </ul>
-                    {else}
-                    <p class="secondary-par">V tuto chvíli nemáte v předmětu zvěřejněny žádné povinnosti</p>  
-                    {/if}
                 </div>
-                <div class="card-footer"></div>
+                <div class="card-footer">
+                    <a href="" class="btn-flat card-bottom">
+                        Zobrazit další
+                    </a>
+                </div>
+                {else}
+                <div class="card-content">
+                    <p class="secondary-par">V tuto chvíli nemáte v předmětu zvěřejněny žádné povinnosti</p> 
+                </div> 
+                <div class="card-footer card-bottom"></div>
+                {/if}     
             </div>
             <div class="card flex-column"  n:if="!$groupPermission['isTeacher'] && $lastClassificationChange">
                 <div class="card-header">

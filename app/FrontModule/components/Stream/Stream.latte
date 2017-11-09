@@ -1,19 +1,24 @@
 {if $streamPermission['addMessages'] && !$singleMode}
-    <button id="show-create-post-modal" class="card create-post" >
-        <div class="avatar">
-            <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
+    <div class="card create-post">
+        <div id="show-create-post-modal" class="create-announcement">
+            <div class="avatar">
+                <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
+            </div>
+            <div class="label">
+                Chcete ostatním něco sdělit?
+            </div>
         </div>
-        <div class="label">
-            Chcete ostatním něco sdělit?
-        </div>
-        <div class="alternate">
-            <div class="btn-icon"><i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Vložit studijní materiál">school</i></div>
-        </div>
-        <div class="alternate">
-            <div class="btn-icon"><i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Vytvořit povinnost">assignment</i></div>
-        </div>
-        <div class="empty-area"></div>
-    </button>
+        <ul class="alternate">
+            <li>
+                <i class="material-icons study-material-icon" data-position="bottom" data-delay="50" data-tooltip="Vložit studijní materiál">school</i>
+                <div class="label">Studijní materiál</div>
+            </li>
+            <li>
+                <i class="material-icons assignment-icon" data-position="bottom" data-delay="50" data-tooltip="Vytvořit povinnost">assignment</i>
+                <div class="label">Povinnost</div>
+            </li>
+        </ul>
+    </div>
 {/if}
 
 <!-- Modal Structure -->

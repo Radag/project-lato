@@ -3,7 +3,7 @@
 {else}
     {if empty($task->commit)}
         <div class="time-left">
-            Uzavřeno {$task->timeLeft|timeDifferceText|noescape}
+            Uzavřeno <strong>{$task->timeLeft|timeDifferceText|noescape}</strong>
         </div>
     {else}
         <div class="time-left">

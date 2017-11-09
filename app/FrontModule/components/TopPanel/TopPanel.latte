@@ -7,7 +7,7 @@
             <div class="left-nav-flex">
                 {if $backArrow}
                     <a href="{$backArrow}" id="slide-left-button" class="show-on-large">
-                        <i class="material-icons">keyboard_arrow_left</i>
+                        <i class="material-icons">arrow_back</i>
                     </a>
                 {else}
                     <a href="#" id="slide-left-button" data-activates="slide-out" class="button-collapse show-on-large slide-out-toggle">
@@ -121,7 +121,7 @@
     </li>
     <li class="divider no-margin"></li>
     <li>
-        <a href="{plink showPrivateMessageForm!}" class="ajax new-message waves-effect waves-dark show-new-private-message">
+        <a href="#new-message" class="modal-trigger">
             <i class="material-icons">create</i>Nová zpráva
         </a>
     </li>
@@ -218,6 +218,36 @@
     <li class="empty"></li>
 </ul>
 {/block}
+
+<div id="new-message" class="modal modal-small">
+    <div class="modal-content">
+        <h3>Přidat studenta</h3>
+        <div class="form-row">
+            <input name="userName" type="text" {*id="userSearch"*} class="validate" placeholder="Jméno nebo e-mail studenta">
+        </div>
+        <ul class="custom-collection prompter">
+            <li>
+                <a href="" class="item">
+                    <div class="avatar small">
+                        <img src="/images/default-avatar_man.png">
+                    </div>
+                    <div class="label">
+                        <span class="title truncate">Petr Šavelka</span>
+                    </div>
+                </a>
+            </li>
+            <li class="rest-of-all">36 dalších návrhů</li>
+        </ul>
+    </div>
+    <div class="modal-footer">
+        <div class="flex-spacer"></div>
+        <div class="form-control">
+            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" >Potvrdit</button>
+        </div>
+    </div>
+</div>
+
 
 
 {control newGroupForm}

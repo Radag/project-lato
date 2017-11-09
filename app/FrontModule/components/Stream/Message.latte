@@ -16,7 +16,7 @@
     <span class="card-date">{$message->getCreated()|date:"j. n."}</span>
     {if $isOwner}
     <a class="btn-flat btn-icon dropdown-button card-options waves-effect waves-dark" data-activates="message_dropdown_{$message->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
-        <i class="material-icons">more_vert</i>
+        <i class="material-icons">more_horiz</i>
     </a>
     <ul id='message_dropdown_{$message->id}' class='dropdown-content'>
         {if $streamPermission['topAllMessages'] || ($activeUser->id === $message->user->id && $streamPermission['topOwnMessages'])}
