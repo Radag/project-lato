@@ -2,97 +2,58 @@
 
 namespace App\FrontModule\Presenters;
 
-use App\Model\Manager\UserManager;
-use App\Model\Manager\MessageManager;
-use App\Model\Manager\GroupManager;
+use App\FrontModule\Components\Account\IAccountSettings;
+use \App\Model\Manager\UserManager;
 use App\Model\Manager\PrivateMessageManager;
 use App\Model\Manager\NotificationManager;
-use App\FrontModule\Components\TopPanel\TopPanel;
-use App\Model\Manager\FileManager;
-use App\Model\Manager\ClassroomManager;
-use App\FrontModule\Components\Account\PersonalSettings\PersonalSettings;
-use App\FrontModule\Components\Account\NotificationSettings\NotificationSettings;
-use App\FrontModule\Components\Account\SharingSettings\SharingSettings;
+use App\FrontModule\Components\Stream\ICommitTaskFormFactory;
+use App\Model\Manager\GroupManager;
 
 class AccountPresenter extends BasePresenter
 {
-
+    
+    /** @var Nette\Database\Context */
+    private $database;
+    
+    /** @var IAccountSettings @inject */
+    protected $accountSettings;
+        
+    /** @var UserManager  */
     protected $userManager;
-    protected $messageManager;
+       
+    /** @var GroupManager  */
     protected $groupManager;
-    protected $privateMessageManager;
+    
+    /** @var NotificationManager  */
     protected $notificationManager;
-    protected $fileManager;
-    protected $classroomManager;
-        
     
-    public function __construct(UserManager $userManager, 
-            MessageManager $messageManager, 
-            GroupManager $groupManager,
-            PrivateMessageManager $privateMessageManager,
-            NotificationManager $notificationManager,
-            ClassroomManager $classroomManager,
-            FileManager $fileManager)
+    public function __construct(\Nette\Database\Context $database, 
+        UserManager $userManager,
+        PrivateMessageManager $privateMessageManager,
+        ICommitTaskFormFactory $commitTaskFormFactory,
+        GroupManager $groupManager,
+        NotificationManager $notificationManager,
+        IAccountSettings $accountSettings
+    )
     {
+        $this->database = $database;
         $this->userManager = $userManager;
-        $this->messageManager = $messageManager;
-        $this->groupManager = $groupManager;
         $this->privateMessageManager = $privateMessageManager;
+        $this->commitTaskFormFactory = $commitTaskFormFactory;
+        $this->groupManager = $groupManager;
         $this->notificationManager = $notificationManager;
-        $this->fileManager = $fileManager;       
-        $this->classroomManager = $classroomManager;
+        $this->accountSettings = $accountSettings;
     }
-    
-    protected function startup()
-    {
-        parent::startup();
-        $this->template->userAccount = $this->activeUser;
-    }
-        
+     
     public function actionDefault()
     {
-        $this['topPanel']->setTitle('Osobní nastavení');
+        $this['topPanel']->setTitle('Nastavení');
         $this->setView('default');
     }
-    
-    public function actionSharing()
+
+    public function createComponentAccountSettings()
     {
-        $this['topPanel']->setTitle('Nastavení sdílení');
-        $this->setView('default');
-    }
+        return $this->accountSettings->create();
+    } 
     
-    public function actionNotification()
-    {
-        $this['topPanel']->setTitle('Nastavení oznámení');
-        $this->setView('default');
-    }
-    
-    
-    public function createComponentNotificationSettings($id)
-    {
-        return new NotificationSettings($this->activeUser, $this->notificationManager);
-    }
-    
-    public function createComponentPersonalSettings($id)
-    {
-        return new PersonalSettings($this->userManager, $this->activeUser);
-    }
-    
-    public function createComponentSharingSettings($id)
-    {
-        return new SharingSettings($this->activeUser);
-    }
-    
-    
-    public function handleUploadProfileImage()
-    {
-        $files = $this->getRequest()->getFiles();
-        $path = 'users/' . $this->activeUser->urlId . '/profile';
-        $file = $this->fileManager->uploadFile($files['file'], $path);
-        if($file) {
-            $this->userManager->assignProfileImage($this->activeUser, $file);
-        }
-        $this->payload->image = $this->userManager->get($this->user->id)->profileImage;
-        $this->sendPayload();
-    }
 }

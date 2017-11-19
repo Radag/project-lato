@@ -21,6 +21,7 @@ class User {
     public $email = null;
     public $profileImage = null;   
     public $birthday = null;
+    public $emailNotification = null;
 
     private $classification = null;
     

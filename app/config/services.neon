@@ -14,6 +14,7 @@ services:
     classificationManager: App\Model\Manager\ClassificationManager
     mailManager: App\Mail\MailManager
     searchManager: App\Model\Manager\SearchManager
+    schoolManager: App\Model\Manager\SchoolManager
 
     streamFactory: App\FrontModule\Components\Stream\IStreamFactory
     noticeFormFactory: App\FrontModule\Components\Stream\MessageForm\NoticeForm\INoticeFormFactory 
@@ -25,4 +26,5 @@ services:
     commitTaskForm: App\FrontModule\Components\Stream\ICommitTaskFormFactory
     taskHeader: App\FrontModule\Components\TaskHeader\ITaskHeader
     students: App\FrontModule\Components\Group\IStudentsFactory
+    accountSettings: App\FrontModule\Components\Account\IAccountSettings
     

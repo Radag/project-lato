@@ -1,0 +1,256 @@
+<section class="main" id="account-settings">
+{form form}
+    <div class="container">
+        <div class="row equal-cols">
+            <div class="col m12 l4">
+                <div class="card" id="account-images">
+                    <img src="{$userAccount->profileImage}">
+                    <button class="waves-effect waves-light btn">Změnit profilový obrázek</button>
+                    <button class="waves-effect waves-light btn">Změnit pozadí</button>
+                </div>
+            </div>
+            <div class="col m12 l8">
+                <div class="card flex-column">
+                    <div class="card-header">
+                        <h2>Osobní údaje</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="secondary-par">Uvedené osobní údaje se také zobrazí na Vašem veřejném profilu</p>
+                        <div class="form-row">
+                            {input name}
+                        </div>
+                        <div class="form-row">
+                            {input surname}
+                        </div>
+                        <div class="form-row">
+                            {input email}
+                        </div>
+                        <div class="form-row">
+                            {input birthday}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 l6">
+                <div class="card flex-column" id="education">
+                    <div class="card-header">
+                        <h2>Studium</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="secondary-par">Kde právě studujete?</p>
+                        <div class="form-row">
+                            {input school}
+                        </div>
+                        <div class="form-row">
+                            {input class}
+                        </div>
+                    </div>
+                </div>
+                <div class="card flex-column">
+                    <div class="card-header">
+                        <h2>Oznámení</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="form-row">
+                            <p class="secondary-par">Vybraná oznámení chci zasílat také e-mailem</p>
+                            <div class="switch">
+                                <label>
+                                    {input emailNotification:}
+                                    <span class="lever"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="checkbox-form-block">
+                            {foreach $notifications as $notification}
+                            <div class="form-row">
+                                <div class="submit-control checkbox-vertical-align">
+                                    {input notification_$notification->ID_TYPE: class => 'filled-in box'}
+                                    {label notification_$notification->ID_TYPE:}{/label}
+                                </div>
+                            </div>
+                            {/foreach}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col s12 l6">
+                <div class="card flex-column">
+                    <div class="card-header">
+                        <h2>Moje skupiny</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="secondary-par"><strong>Skupiny, které spravuji</strong></p>
+                        <ul class="groups bottom-margin">
+                            {var something=true}
+                            {foreach $groups as $group}
+                                {if $group->relation == 'OWNER'}
+                                {var something=false}
+                                <li class="group-list" data-action="delete" data-group-id="{$group->id}">
+                                    <div class="group-shortcut-circle" style="background: {$group->mainColor|noescape};">{$group->shortcut}</div>
+                                    <div class="label">{$group->name} {*<span>(g2)</span>*}</div>
+                                    <a class="btn-flat btn-icon dropdown-button waves-effect waves-dark" data-activates="group{$group->id}-options" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                                        <i class="material-icons">more_horiz</i>
+                                    </a>
+                                    <ul id='group{$group->id}-options' class="dropdown-content">
+                                        <li><a href="" class="delete-group-button waves-effect waves-dark">Smazat skupinu</a></li>
+                                    </ul>
+                                </li>
+                                <li class="remove-group" style="display: none" data-group-id="{$group->id}">
+                                    <i class="material-icons">delete</i>
+                                    <div class="label">{$group->name}</div>
+                                    <a href="" class="btn-flat cancel-delete-btn">zrušit</a>
+                                </li>
+                                {/if}
+                            {/foreach} 
+                            {if $something}
+                                <li>
+                                   Nejste členem žádné skupiny
+                                </li>
+                            {/if}
+                        </ul>
+                        <p class="secondary-par"><strong>Skupiny, v nichž jsem členem</strong></p>
+                        <ul class="groups">
+                            {var something=true}
+                            {foreach $groups as $group}
+                                {if $group->relation !== 'OWNER'}
+                                {var something=false}
+                                <li class="group-list" data-action="leave" data-group-id="{$group->id}">
+                                    <div class="group-shortcut-circle" style="background: {$group->mainColor|noescape};">{$group->shortcut}</div>
+                                    <div class="label">{$group->name} {*<span>(g2)</span>*}</div>
+                                    <a class="btn-flat btn-icon dropdown-button waves-effect waves-dark" data-activates="group{$group->id}-options" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                                        <i class="material-icons">more_horiz</i>
+                                    </a>
+                                    <ul id='group{$group->id}-options' class="dropdown-content">
+                                        <li><a href="" class="delete-group-button waves-effect waves-dark">Opustit skupinu</a></li>
+                                    </ul>
+                                </li>
+                                <li class="remove-group" style="display: none" data-group-id="{$group->id}">
+                                    <i class="material-icons">delete</i>
+                                    <div class="label">{$group->name}</div>
+                                    <a href="" class="btn-flat cancel-delete-btn">zrušit</a>
+                                </li>
+                                {/if}
+                            {/foreach}
+                            {if $something}
+                                <li>
+                                   Nejste členem žádné skupiny
+                                </li>
+                            {/if}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="group-delete-confirm-modal" class="modal modal-small">
+                <div class="modal-content">
+                    <h3>Opravdu chcete skupinu smazat ?</h3>
+                </div>
+                <div class="modal-footer">
+                    <div class="flex-spacer"></div>
+                    <div class="form-control">
+                        <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">ne</button>
+                        <button type="button" onClick="confirmDelete()" class="waves-effect modal-close waves-light btn btn-confirm" >Ano</button>
+                    </div>
+                </div>
+            </div>
+            <div id="group-leave-confirm-modal" class="modal modal-small">
+                <div class="modal-content">
+                    <h3>Opravdu chcete skupinu opustit ?</h3>
+                </div>
+                <div class="modal-footer">
+                    <div class="flex-spacer"></div>
+                    <div class="form-control">
+                        <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Ne</button>
+                        <button type="button" onClick="confirmDelete()" class="waves-effect waves-light btn modal-close btn-confirm" >Ano</button>
+                    </div>
+                </div>
+            </div>
+            <script>
+                $('#group-delete-confirm-modal').modal();
+                $('#group-leave-confirm-modal').modal();
+                var removeGroup = [];
+                $(".delete-group-button").on('click', function(event) {
+                    event.preventDefault();
+                    if($(this).closest('li.group-list').data('action') === 'delete') {
+                        $('#group-delete-confirm-modal').data('group-id', $(this).closest('li.group-list').data('group-id'));
+                        $('#group-delete-confirm-modal').modal('open');
+                    } else {
+                        $('#group-leave-confirm-modal').data('group-id', $(this).closest('li.group-list').data('group-id'));
+                        $('#group-leave-confirm-modal').modal('open');
+                    }
+                });
+                function confirmDelete() {
+                    var id = $('#group-delete-confirm-modal').data('group-id');
+                    $('li.group-list[data-group-id="' + id + '"]').closest('li.group-list').next('li.remove-group').show();
+                    var index = removeGroup.indexOf(id);
+                    if(index === -1) {
+                        removeGroup.push(id);
+                    }
+                    $("input[name='deleteGroups']").val(JSON.stringify(removeGroup));
+                }
+                
+                $(".cancel-delete-btn").on('click', function(event) {
+                    event.preventDefault();
+                    $(this).closest('li.remove-group').hide();
+                    var index = removeGroup.indexOf($(this).closest('li.remove-group').data('group-id'));
+                    removeGroup.splice(index, 1);
+                    $("input[name='deleteGroups']").val(JSON.stringify(removeGroup));
+                });
+                var form_modified = false;
+                $('form').on('keyup change paste', 'input, select, textarea', function(){
+                    form_modified = true;
+                });
+                $('#account-settings form').on('submit', function(event) {
+                    form_modified = false;
+                });
+                
+                window.onbeforeunload = function(){
+                    if(form_modified) {
+                        return 'Máte neuložené změny. Opravdu chcete stránku opustit ?';
+                    }
+                };
+               
+            </script>
+        </div>
+    </div>
+    <div class="submit-settings">
+        <div class="container">
+            <div class="row">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="flex-spacer"></div>
+                            <div class="form-control">
+                                <a href="{plink :Front:Homepage:noticeboard}" class="modal-action modal-close waves-effect waves-light btn-flat" >Zrušit</a>
+                                <button class="btn waves-effect waves-light btn-confirm" id="account-submit-button" type="submit" name="send" >Uložit</button>
+                            </div>
+                            <div class="flex-spacer"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{/form}
+</section>
+
+<script>
+    $('.datepicker').pickadate({
+        selectMonths: true, // Creates a dropdown to control month
+        selectYears: 15 // Creates a dropdown of 15 years to control year
+    });
+
+    $(function () {
+        var profileImage = new Dropzone("#profileImageDropzone", {
+            url: {link uploadProfileImage!},
+            previewTemplate: '<div id="preview-template" style="display: none;"></div>'
+        });
+        profileImage.on("complete", function (file) {
+            var image = JSON.parse(file.xhr.response);
+            $("#profileImageDropzone .dz-message").html('<img src="' + image.image + '">');
+        });
+    });
+</script>

@@ -34,6 +34,7 @@ class Group {
     //teacher a owner jsou ti stejný - skupina má zatím pouze jednoho učitele
     public $teacher = null;
     public $owner = null;
+    public $relation = null;
     
     public $description = null;
     public $room = null;

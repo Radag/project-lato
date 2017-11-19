@@ -70,10 +70,10 @@ class GroupManager extends BaseManager {
     {
         $return = array();
         if($subjects) {
-            $yourGroups = $this->database->query("SELECT ID_GROUP, MAIN_COLOR, NAME, SHORTCUT, GROUP_TYPE, URL_ID FROM 
+            $yourGroups = $this->database->query("SELECT ID_GROUP, MAIN_COLOR, NAME, SHORTCUT, GROUP_TYPE, URL_ID, RELATION_NAME FROM 
                 vw_user_groups_detail WHERE ID_USER=? AND ARCHIVED=0 AND GROUP_TYPE=1 ORDER BY NAME ASC", $user->id)->fetchAll();   
         } else {
-            $yourGroups = $this->database->query("SELECT ID_GROUP, MAIN_COLOR, NAME, SHORTCUT, GROUP_TYPE, URL_ID FROM 
+            $yourGroups = $this->database->query("SELECT ID_GROUP, MAIN_COLOR, NAME, SHORTCUT, GROUP_TYPE, URL_ID, RELATION_NAME FROM 
                 vw_user_groups_detail WHERE ID_USER=? AND ARCHIVED=0 ORDER BY NAME ASC", $user->id)->fetchAll(); 
         }
 
@@ -87,6 +87,7 @@ class GroupManager extends BaseManager {
                 $group->groupType = $s->GROUP_TYPE;
                 $group->mainColor = $s->MAIN_COLOR;
                 $group->urlId = $s->URL_ID;
+                $group->relation = $s->RELATION_NAME;
                 $return[$s->ID_GROUP] = $group;
             }
         }

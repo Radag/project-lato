@@ -119,6 +119,7 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
             $user->urlId = $userData->URL_ID;
             $user->username = $userData->USERNAME;
             $user->birthday = $userData->BIRTHDAY;
+            $user->emailNotification =  $userData->EMAIL_NOTIFICATION;
             $user->profileImage = User::createProfilePath($userData->PROFILE_PATH, $userData->PROFILE_FILENAME, $userData->SEX);
             return $user;
         } else {
@@ -133,7 +134,7 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
 
     public function updateUser($values, $user)
     {
-        $this->database->query("UPDATE user SET NAME=?, SURNAME=?, EMAIL=?, BIRTHDAY=? WHERE ID_USER=?", $values['name'], $values['surname'], $values['email'], $values['birthday'], $user->id);
+        $this->database->query("UPDATE user SET NAME=?, EMAIL_NOTIFICATION=?, SURNAME=?, EMAIL=?, BIRTHDAY=? WHERE ID_USER=?", $values['name'], $values['emailNotification'], $values['surname'], $values['email'], $values['birthday'], $user->id);
     }
 
     public function getUsersList() {

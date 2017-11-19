@@ -16,6 +16,7 @@ use App\Model\Manager\NotificationManager;
 use App\FrontModule\Components\PrivateMessageForm\PrivateMessageForm;
 use App\FrontModule\Components\Stream\ICommitTaskFormFactory;
 use App\Helpers\HelpersList;
+use App\Model\Manager\GroupManager;
 
 /**
  * Description of BasePresenter
@@ -34,33 +35,37 @@ class BasePresenter extends Nette\Application\UI\Presenter
      */
     public $activeUser;
     
-    /**
-     * @var ICommitTaskFormFactory
-     */
+    /** @var ICommitTaskFormFactory */
     public $commitTaskFormFactory;
     
-    /**
-     * @var UserManager 
-     */
+    /** @var UserManager  */
     protected $userManager;
+       
+    /** @var GroupManager  */
+    protected $groupManager;
+    
+    /** @var NotificationManager  */
+    protected $notificationManager;
     
     protected $privateMessageManager;
-    protected $notificationManager;
     
     /** @persistent */
     public $activePeriod = 1;
     
-    
-    public function __construct(Nette\Database\Context $database, 
+    public function __construct(\Nette\Database\Context $database, 
             UserManager $userManager,
             PrivateMessageManager $privateMessageManager,
-            ICommitTaskFormFactory $commitTaskFormFactory
-            )
+            ICommitTaskFormFactory $commitTaskFormFactory,
+            GroupManager $groupManager,
+            NotificationManager $notificationManager
+    )
     {
         $this->database = $database;
         $this->userManager = $userManager;
         $this->privateMessageManager = $privateMessageManager;
         $this->commitTaskFormFactory = $commitTaskFormFactory;
+        $this->groupManager = $groupManager;
+        $this->notificationManager = $notificationManager;
     }
     
     protected function startup()
