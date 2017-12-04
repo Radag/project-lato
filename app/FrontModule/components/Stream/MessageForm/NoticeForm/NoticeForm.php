@@ -93,6 +93,8 @@ class NoticeForm extends MessageForm
         $this->presenter->payload->idMessage = $idMessage;
         $this->handleResetForm();
         $this->redrawControl('messageForm');
+        $this->presenter->invalidStream();
+       
         
     }
     

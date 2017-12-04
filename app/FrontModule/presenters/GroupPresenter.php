@@ -351,4 +351,10 @@ class GroupPresenter extends BasePresenter
         $this['stream']->setFilter($filter);
         $this->redrawControl('streamSection');
     }
+    
+    public function invalidStream() 
+    {
+        $this->template->actualTasks = $this->taskManager->getClosestTask(array($this->activeGroup->id => $this->activeGroup));
+        $this->redrawControl('task-section');
+    }
 }

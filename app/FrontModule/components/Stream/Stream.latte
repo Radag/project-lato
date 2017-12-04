@@ -9,11 +9,11 @@
             </div>
         </div>
         <ul class="alternate">
-            <li>
+            <li id="show-create-post-modal-material">
                 <i class="material-icons study-material-icon" data-position="bottom" data-delay="50" data-tooltip="Vložit studijní materiál">school</i>
                 <div class="label">Studijní materiál</div>
             </li>
-            <li>
+            <li id="show-create-post-modal-task">
                 <i class="material-icons assignment-icon" data-position="bottom" data-delay="50" data-tooltip="Vytvořit povinnost">assignment</i>
                 <div class="label">Povinnost</div>
             </li>
@@ -26,6 +26,21 @@
 <script>  
     $('#create-post-modal').modal();
     $("#show-create-post-modal").on('click', function(e) {
+        $("#change-message-type-select").val('notice');
+        $("#change-message-type-select").material_select();
+        $("#change-message-type-select").change();
+        $('#create-post-modal').modal('open');
+    });
+    $("#show-create-post-modal-material").on('click', function(e) {
+        $("#change-message-type-select").val('material');
+        $("#change-message-type-select").material_select();
+        $("#change-message-type-select").change();
+        $('#create-post-modal').modal('open');
+    });
+    $("#show-create-post-modal-task").on('click', function(e) {
+        $("#change-message-type-select").val('task');
+        $("#change-message-type-select").material_select();
+        $("#change-message-type-select").change();
         $('#create-post-modal').modal('open');
     });
     

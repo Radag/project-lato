@@ -1,14 +1,14 @@
-{if $task->message->user->id == $activeUser->id}
-    <div class="time-left">Termín odevzdání <strong>{$task->deadline->format("j. n. H:i")}</strong></div>
-{else}
-    {if empty($task->commit)}
-        <div class="time-left">
-            Uzavřeno <strong>{$task->timeLeft|timeDifferceText|noescape}</strong>
-        </div>
-    {else}
+{if $task->message->user->id == $activeUser->id}   
+    {if $task->commit }
         <div class="time-left">
             Odevzdáno <strong>{$task->commit->created->format("j. n. H:i")}
             {if !empty($task->commit->updated)}(upraven {$task->commit->updated->format("j. n. H:i")}){/if}</strong>
+        </div>
+    {elseif $task->timeLeft->invert === 0}   
+         <div class="time-left">Termín odevzdání <strong>{$task->deadline->format("j. n. H:i")}</strong></div> 
+    {else}
+        <div class="time-left">
+            Uzavřeno <strong>{$task->timeLeft|timeDifferceText|noescape}</strong>
         </div>
     {/if}
 {/if}

@@ -55,6 +55,7 @@ class TaskManager extends BaseManager
                             T1.NAME,
                             T1.ID_MESSAGE,
                             T1.DEADLINE,
+                            T2.TEXT,
                             T2.ID_GROUP,
                             T3.ID_USER,
                             T3.NAME AS USER_NAME,
@@ -78,6 +79,7 @@ class TaskManager extends BaseManager
             foreach($tasks as $task) {
                 $taskObject  = new Task();
                 $taskObject->message = new \App\Model\Entities\Message();
+                $taskObject->message->text = $task->TEXT;
                 $taskObject->message->user = new \App\Model\Entities\User();
                 $taskObject->message->user->id = $task->ID_USER;
                 $taskObject->message->user->name = $task->USER_NAME;

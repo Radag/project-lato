@@ -118,11 +118,20 @@ class HomepagePresenter extends BasePresenter
         $this->template->activeUser = $this->activeUser;
     }
     
-    public function actionTasks()
+    public function actionTasks($group)
     {
         $this['topPanel']->setTitle('Povinnosti');
         $groups = $this->groupManager->getUserGroups($this->activeUser);
-        $this->tasks = $this->taskManager->getClosestTask($groups);
+        if($group) {
+            foreach($groups as $gr) {
+                if($gr->urlId === $group) {
+                    $selectGroups[$gr->id] = $gr;
+                }
+            }
+        } else {
+            $selectGroups = $groups;
+        }
+        $this->tasks = $this->taskManager->getClosestTask($selectGroups);
         $this->template->tasks = $this->tasks;
         $this->template->activeUser = $this->activeUser; 
     }

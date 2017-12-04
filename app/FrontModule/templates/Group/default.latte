@@ -11,6 +11,7 @@
         {/snippet}
         <div class="col s12 l4" id="stream-cards">
             <div class="card flex-column" id="assignment-card">
+                {snippet task-section}
                 <div class="card-header">
                     <h3>Povinnosti</h3>
                 </div>
@@ -20,27 +21,15 @@
                         {foreach $actualTasks as $task}
                         <li>
                             <a href="{plink Group:message 'id'=>$task->group->urlId, 'idMessage'=>$task->idMessage}" class="truncate">
-                                <p class="remaining-time">Odevzdat
-                                {if $task->timeLeft->y > 0}
-                                    {$task->timeLeft->format('%y let')}
-                                {elseif $task->timeLeft->m > 0}
-                                    {$task->timeLeft->format('%m měsíců')}
-                                {elseif $task->timeLeft->d > 0}
-                                    {$task->timeLeft->format('%d dní')}
-                                {elseif $task->timeLeft->h > 0}
-                                    {$task->timeLeft->format('%h hodin')}
-                                {elseif $task->timeLeft->i > 0}
-                                    {$task->timeLeft->format('%i minut')}
-                                {/if}  
-                                </p>
-                                <p class="secondary-par truncate">{$task->title}</p>     
+                                <p class="remaining-time">Odevzdat do {$task->deadline->format('j. n. H:m')}</p>
+                                <p class="secondary-par truncate">{$task->title} {if $task->message->text}- {$task->message->text}{/if}</p>     
                             </a>
                         </li>
                         {/foreach}
                     </ul>
                 </div>
                 <div class="card-footer">
-                    <a href="" class="btn-flat card-bottom">
+                    <a href="{plink Homepage:tasks 'group'=>$task->group->urlId}" class="btn-flat card-bottom">
                         Zobrazit další
                     </a>
                 </div>
@@ -49,7 +38,8 @@
                     <p class="secondary-par">V tuto chvíli nemáte v předmětu zvěřejněny žádné povinnosti</p> 
                 </div> 
                 <div class="card-footer card-bottom"></div>
-                {/if}     
+                {/if}
+                {/snippet}
             </div>
             <div class="card flex-column"  n:if="!$groupPermission['isTeacher'] && $lastClassificationChange">
                 <div class="card-header">
