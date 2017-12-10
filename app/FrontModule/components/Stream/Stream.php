@@ -261,7 +261,7 @@ class Stream extends PreparedControl
     
     public function handleDeleteMessage($idMessage) 
     {   
-        $message = $this->messageManager->getMessage($idMessage);
+        $message = $this->messageManager->getMessage($idMessage, $this->activeUser);
         if($message->user->id === $this->activeUser->id || $this->activeUser->id === $this->activeGroup->owner->id) {
             $this->messageManager->deleteMessage($message);
             $this->presenter->flashMessage('Zpráva byla smazána.');
@@ -282,7 +282,7 @@ class Stream extends PreparedControl
     
     public function handleTopMessage($idMessage, $enable = true) 
     {
-        $message = $this->messageManager->getMessage($idMessage);
+        $message = $this->messageManager->getMessage($idMessage, $this->activeUser);
         if($this->activeGroup->owner->id === $this->activeUser->id) {
             $this->messageManager->topMessage($message, $enable);
             if($enable) {
@@ -296,7 +296,7 @@ class Stream extends PreparedControl
     
     public function handleFollowMessage($idMessage, $enable = true) 
     {
-        $message = $this->messageManager->getMessage($idMessage);
+        $message = $this->messageManager->getMessage($idMessage, $this->activeUser);
         $this->messageManager->followMessage($message, $this->activeUser, $enable);
         if($enable) {
             $this->presenter->flashMessage('Zpráva byla zařazena do sledovaných');

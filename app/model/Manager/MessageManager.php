@@ -113,7 +113,7 @@ class MessageManager extends BaseManager {
         $messages = $this->database->query("SELECT T1.TEXT, T1.TYPE, T1.ID_MESSAGE, T2.ID_USER, T2.SEX, T2.URL_ID, T2.NAME, T2.SURNAME, T1.CREATED_WHEN,
                         T3.PATH,
                         T3.FILENAME,
-                        T1.PRIORITY,
+                        T1.TOP,
                         T4.ACTIVE AS IS_FOLLOWED,
                         T1.DELETED,
                         T5.ID_TASK,
@@ -131,7 +131,7 @@ class MessageManager extends BaseManager {
                 LEFT JOIN task_commit T6 ON (T6.ID_TASK=T5.ID_TASK AND T6.ID_USER=?)
                 LEFT JOIN (SELECT COUNT(ID_COMMIT) AS COMMIT_COUNT, ID_TASK FROM task_commit GROUP BY ID_TASK) T7 ON T7.ID_TASK=T5.ID_TASK
                 WHERE T1.ID_GROUP=? AND T1.DELETED IN (?) AND T1.TYPE IN (?) 
-                ORDER BY PRIORITY DESC, CREATED_WHEN DESC LIMIT 10", $user->id, $user->id, $group->id, $delete, $filters)->fetchAll();
+                ORDER BY IFNULL(T1.TOP, T1.CREATED_WHEN) DESC", $user->id, $user->id, $group->id, $delete, $filters)->fetchAll();
         $now = new \DateTime();
         foreach($messages as $message) {
             $mess = new Message();
@@ -147,7 +147,7 @@ class MessageManager extends BaseManager {
             $mess->created = $message->CREATED_WHEN;
             $mess->user = $user;
             $mess->followed = $message->IS_FOLLOWED;
-            $mess->priority = $message->PRIORITY;
+            $mess->top = $message->TOP;
             $mess->deleted = $message->DELETED;
             $mess->type = $message->TYPE;
             $mess->attachments = $this->getAttachments($message->ID_MESSAGE);
@@ -227,6 +227,8 @@ class MessageManager extends BaseManager {
                 $commit->updated = $message->COMMIT_UPDATED;
                 $mess->task->commit = $commit;
             }
+        } else {
+            
         }
         return $mess;
     }
@@ -320,11 +322,11 @@ class MessageManager extends BaseManager {
     public function topMessage(Message $message, $enable = true)
     {
         if($enable) {
-            $data = array('PRIORITY' => 1);
+            $this->database->query("UPDATE message SET TOP=NOW() WHERE ID_MESSAGE=?", $message->id);
         } else {
-            $data = array('PRIORITY' => 0);
+            $this->database->query("UPDATE message SET TOP=NULL WHERE ID_MESSAGE=?", $message->id);
         }
-        $this->database->query("UPDATE message SET ? WHERE ID_MESSAGE=?", $data, $message->id);
+        
     }
     
     public function followMessage(Message $message,User $user, $enable = true)

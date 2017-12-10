@@ -1,11 +1,11 @@
 {snippet messageForm}
 {includeblock '../MessageForm.latte'}
 {form form}
-<div class="post-type-selector">
+<div class="post-type-selector"> 
     <select id="change-message-type-select">
-        <option value="notice" selected>Oznámení</option>
-        <option value="material" >Studijní materiál</option>
-        <option value="task" >Povinnost</option>
+        <option value="notice" {if empty($defaultMessage) || $defaultMessage->type === 'notice'}selected{/if}>Oznámení</option>
+        <option value="material" {if !empty($defaultMessage) && $defaultMessage->type === 'material'}selected{/if}>Studijní materiál</option>
+        <option value="task" {if !empty($defaultMessage) && $defaultMessage->type === 'task'}selected{/if}>Povinnost</option>
     </select>
 </div>
 <div class="modal-content">
@@ -60,21 +60,26 @@
     </div>
 </div>
 <script>  
+    function loadInputsByType() {
+        if($("#change-message-type-select").val() === 'notice') {
+            $(".mes-title-row, .mes-date-row, .mes-online-row").addClass('hide');
+        } else if($("#change-message-type-select").val() === 'material') {
+            $(".mes-date-row, .mes-online-row").addClass('hide');
+            $(".mes-title-row").removeClass('hide');
+        } else if($("#change-message-type-select").val() === 'task') {
+            $(".mes-title-row, .mes-date-row, .mes-online-row").removeClass('hide');
+        }
+        $("input[name='messageType']").val($("#change-message-type-select").val());
+    }
+    
     $(document).ready(function() {
+        loadInputsByType();
         $(".modal-close").on("click", function(e){
             $('#create-post-modal').modal('close');
         });
         latoLoadDatePicker();
         $("#change-message-type-select").on('change', function(e){
-            if($(this).val() === 'notice') {
-                $(".mes-title-row, .mes-date-row, .mes-online-row").addClass('hide');
-            } else if($(this).val() === 'material') {
-                $(".mes-date-row, .mes-online-row").addClass('hide');
-                $(".mes-title-row").removeClass('hide');
-            } else if($(this).val() === 'task') {
-                $(".mes-title-row, .mes-date-row, .mes-online-row").removeClass('hide');
-            }
-            $("input[name='messageType']").val($(this).val());
+           loadInputsByType();
         });
         
         $(".reset-message-button").on('click', function(e) {

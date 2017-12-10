@@ -45,8 +45,18 @@ class NoticeForm extends MessageForm
         if($this->defaultMessage !== null) {
             $form->setDefaults(array(
                 'text' => $this->defaultMessage->text,
-                'idMessage', $this->defaultMessage->id
+                'idMessage' => $this->defaultMessage->id,
+                'messageType' => $this->defaultMessage->type
             ));
+            \Tracy\Debugger::barDump($this->defaultMessage);
+            if($this->defaultMessage->task) {
+                $form->setDefaults(array(
+                    'title' => $this->defaultMessage->task->title,
+                    'date' => $this->defaultMessage->task->deadline->format('Y-m-d'),
+                    'time' => $this->defaultMessage->task->deadline->format('H:i'),
+                    'online' => $this->defaultMessage->task->online
+                )); 
+            }
         }
         
         return $form;
@@ -58,6 +68,7 @@ class NoticeForm extends MessageForm
         $template = $this->template;
         $template->setFile(__DIR__ . '/NoticeForm.latte');
         $template->activeUser = $this->activeUser;
+        $template->defaultMessage = $this->defaultMessage;
         $template->render();
     }
     

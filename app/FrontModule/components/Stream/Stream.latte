@@ -92,6 +92,30 @@
         {control commentForm-$message->id}
     </div>
     {/foreach}
+    <script>
+        $(document).ready(function() {   
+            $('.copy-message-link').on('click', function(e) {
+                e.preventDefault();
+                $("#link-cache-input").show();
+                $("#link-cache-input").val($(this).data('link'));
+                $("#link-cache-input").select();
+                document.execCommand("Copy");
+                $("#link-cache-input").hide();
+            });
+            $('#message-delete-confirm-modal').modal();
+            $(".delete-message-button").on('click', function(event) {
+                event.preventDefault();
+                $('#message-delete-confirm-modal').data('delete-link', $(this).data('link'));
+                $('#message-delete-confirm-modal').modal('open');
+
+            });
+        });
+        function confirmDelete() {
+            $.nette.ajax({
+                url: $('#message-delete-confirm-modal').data('delete-link')
+            });
+        }   
+    </script>
 {/snippet}
 
 
@@ -156,9 +180,10 @@
 <div id="no-more-posts">
 Více už toho není
 </div>
+<input type="text" style="display: none;" id="link-cache-input">
 
 <script>  
-    $(document).ready(function() {   
+    $(document).ready(function() {           
         $('.modal-trigger-create-message').modal({
             ready: function() { 
                 var notHide = false;
@@ -205,6 +230,18 @@ Více už toho není
               {$group->name}: {$group->id}{if !$iterator->isLast()},{/if}
               {/foreach}
             }
-        });      
-    });
+        });               
+    }); 
 </script>
+ <div id="message-delete-confirm-modal" class="modal modal-small">
+    <div class="modal-content">
+        <h3>Opravdu chcete zprávu smazat ?</h3>
+    </div>
+    <div class="modal-footer">
+        <div class="flex-spacer"></div>
+        <div class="form-control">
+            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">ne</button>
+            <button type="button" onClick="confirmDelete()" class="waves-effect modal-close waves-light btn btn-confirm" >Ano</button>
+        </div>
+    </div>
+</div>
