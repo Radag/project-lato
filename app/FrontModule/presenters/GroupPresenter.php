@@ -112,7 +112,7 @@ class GroupPresenter extends BasePresenter
         parent::startup();
         $id = $this->getParameter('id');
         if(isset($id)) {
-            $this->activeGroup = $this->groupManager->getGroup($id);
+            $this->activeGroup = $this->groupManager->getUserGroup($id, $this->activeUser);
         } else {
             $this->redirect(':Front:Homepage:noticeboard');
         }

@@ -48,6 +48,7 @@ class Group {
     public $classification = null;
     
     public $statistics = null;
+    public $userJoin = null;
     
     
     private $mapFields = array(

@@ -62,7 +62,6 @@
 </div>
 <div class="card-content">
     <p>{$message->getText()|breaklines}</p>
-
     {if isset($message->attachments['files']) && !empty($message->attachments['files']) }
     <ul class="attachments">
         {foreach $message->attachments['files'] as $file}  
@@ -85,9 +84,15 @@
 {if isset($message->attachments['media']) && !empty($message->attachments['media']) }
 <div class="media-container">
     {foreach $message->attachments['media'] as $media}
-    <div class="{if $iterator->first}img-full-size{else}img-half-size{/if}" style="background-image: url('https://cdn.lato.cz/{$media['path']|noescape}/{$media['filename']|noescape}');">
-        <div class="media-count">+3</div>
-    </div>
+        {if $iterator->first}
+        <a class="img-full-size" href="https://cdn.lato.cz/{$media['path']|noescape}/{$media['filename']|noescape}" data-lightbox="message-gallery-{$message->id}" style="background-image: url('https://cdn.lato.cz/{$media['path']|noescape}/{$media['filename']|noescape}');">
+            {if count($message->attachments['media']) > 1}
+                <div class="media-count">+{count($message->attachments['media'])-1}</div>
+            {/if}
+        </a>
+        {else}
+            <a href="https://cdn.lato.cz/{$media['path']|noescape}/{$media['filename']|noescape}" data-lightbox="message-gallery-{$message->id}" class="hide"></a>
+        {/if}
     {/foreach}
 </div>
 {/if}

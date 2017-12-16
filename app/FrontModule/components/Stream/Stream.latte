@@ -118,14 +118,13 @@
     </script>
 {/snippet}
 
-
 {* UVÍTACÍ KARTA PRO UČITELE *}
-
+{if count($messages) == 0 && !$isOwner}
 <div class="card" id="welcome-card">
     <div class="card-header">
         <h3 class="name">Vítejte ve skupině</h3>
         <div class="flex-spacer"></div>
-        <div class="card-date">7. 10.</div>
+        <div class="card-date">{$activeGroup->userJoin->format("j. n.")}</div>
     </div>
     <div class="card-content">
         <p>Zde bude umístěn obsah, který zveřejní vyučující.</p>
@@ -134,15 +133,15 @@
         <a href="{plink Group:about}" class="btn gray no-shadow">Informace o skupině</a>
     </div>
 </div>
-
+{/if}
 
 {* UVÍTACÍ KARTA PRO UČITELE *}
-
+{if count($messages) == 0 && $isOwner}
 <div class="card" id="welcome-card">
     <div class="card-header">
         <h3 class="name">Vítejte v nové skupině</h3>
         <div class="flex-spacer"></div>
-        <div class="card-date">7. 10.</div>
+        <div class="card-date">{$activeGroup->userJoin->format("j. n.")}</div>
     </div>
     <div class="card-content">
         <p>Vytvořili jsme pro Vás novou skupinu. Zde bude umístěn obsah, který zveřejníte studentům.</p>
@@ -177,7 +176,8 @@
         <a href="{plink Group:users}" class="btn gray no-shadow">Přidat studenty</a>
     </div>
 </div>
-<div id="no-more-posts">
+{/if}
+<div n:if="count($messages) > 0" id="no-more-posts">
 Více už toho není
 </div>
 <input type="text" style="display: none;" id="link-cache-input">

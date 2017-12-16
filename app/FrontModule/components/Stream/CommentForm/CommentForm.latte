@@ -57,7 +57,7 @@
     </div>
     <script>
         $(document).ready(function(){
-            $(".card-comments .textarea-wrapper textarea").off('keydown').on('keydown', function(){
+            $(".card-comments .textarea-wrapper textarea").off('keyup').on('keyup', function(){
                 if($(this).val().length > 0) {
                     $(this).parents(".comments-footer").find("button").show();
                 } else {
