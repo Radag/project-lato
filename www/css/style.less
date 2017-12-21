@@ -816,7 +816,7 @@ input[type=search]:not(.browser-default) {
 
 .btn.gray {
     color: rgba(0, 0, 0, .87) !important;
-    background-color: #f1f1f1 !important;
+    background-color: rgba(0, 0, 0, .06) !important;
 }
 
 .btn.no-shadow.white {
@@ -1493,6 +1493,10 @@ p.secondary-par {
 
 strong {
     color: rgba(0, 0, 0, .87);
+}
+
+.italic {
+    font-style: italic;
 }
 
 /* --------- */
@@ -3057,11 +3061,11 @@ nav .nav-title {
 }
 
 .card-comments-empty {
-    margin-top: 12px;
+    margin-top: 24px;
 }
 
 .comments-header {
-    padding: 12px 24px 24px 24px;
+    padding: 24px 24px 24px 24px;
     display: flex;
     align-items: center;
 }
@@ -3313,6 +3317,9 @@ nav .nav-title {
 
         &#welcome-card {
 
+            background-color: rgba(0, 0, 0, .03);
+            box-shadow: none;
+
             .card-footer {
                 padding-top: 48px;
             }
@@ -3424,7 +3431,7 @@ nav .nav-title {
 
         .alternate {
             display: flex;
-            padding: 20px 24px;
+            padding: 24px;
             margin: 0;
 
             @media only screen and (max-width: 992px) {
@@ -3442,7 +3449,7 @@ nav .nav-title {
             li {
                 display: flex;
                 align-items: center;
-                margin-right: 40px;
+                margin-right: 24px;
                 cursor: pointer;
 
                 .material-icons {
@@ -3451,18 +3458,12 @@ nav .nav-title {
                     height: 24px;
                     margin-right: 8px;
                     text-align: center;
-
-                    &.study-material-icon {
-                        color: #fac10e;
-                    }
-
-                    &.assignment-icon {
-                        color: #3f94d4;
-                    }
+                    color: @secondary-text-color;
                 }
 
                 .label {
                     font-weight: 500;
+                    color: @secondary-text-color;
                 }
             }
         }
@@ -3870,11 +3871,21 @@ nav .nav-title {
     
     &.prompter {
 
+        margin: 20px 0;
+
         & > li {
-            margin: 24px 0;
+            margin: 0 -12px;
+
+            & > a {
+                padding: 12px;
+
+                &.active {
+                    background-color: @background-highlighted;
+                }
+            }
 
             &.rest-of-all {
-                margin-top: 32px;
+                margin: 20px 0 32px 0;
                 font-size: 13px;
                 color: @hyperlink-color;
                 cursor: pointer;
@@ -4360,11 +4371,14 @@ nav .nav-title {
     display: flex;
     align-items: center;
     color: @secondary-text-color;
+
+    .time-left {
+        flex-grow: 1;
+    }
 }
 
 .assignment .remaining-time {
-    font-weight: 500;
-    color: rgba(0, 0, 0, .87);
+    display: inline;
 }
 
 @media(max-width:992px) {

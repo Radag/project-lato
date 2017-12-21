@@ -1,14 +1,17 @@
 {if $task->message->user->id == $activeUser->id}   
     {if $task->commit }
         <div class="time-left">
-            Odevzdáno <strong>{$task->commit->created->format("j. n. H:i")}
-            {if !empty($task->commit->updated)}(upraven {$task->commit->updated->format("j. n. H:i")}){/if}</strong>
+            Odevzdáno: {$task->commit->created->format("j. n. H:i")}
+            {if !empty($task->commit->updated)}(upraven {$task->commit->updated->format("j. n. H:i")}){/if}
         </div>
     {elseif $task->timeLeft->invert === 0}   
-         <div class="time-left">Termín odevzdání <strong>{$task->deadline->format("j. n. H:i")}</strong></div> 
+         <div class="time-left">Termín odevzdání: {$task->deadline->format("j. n. H:i")}</div> 
     {else}
         <div class="time-left">
-            Uzavřeno <strong>{$task->timeLeft|timeDifferceText|noescape}</strong>
+            Uzavřeno: {$task->deadline->format("j. n. H:i")}
         </div>
     {/if}
+    <button class="btn gray no-shadow" id="submit-task">
+        Odevzdat
+    </button>
 {/if}
