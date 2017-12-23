@@ -111,8 +111,7 @@ class MessageManager extends BaseManager {
             $filters = array('notice', 'material', 'homework', 'task');
         }
         $messages = $this->database->query("SELECT T1.TEXT, T1.TYPE, T1.ID_MESSAGE, T2.ID_USER, T2.SEX, T2.URL_ID, T2.NAME, T2.SURNAME, T1.CREATED_WHEN,
-                        T3.PATH,
-                        T3.FILENAME,
+                        T2.PROFILE_IMAGE,
                         T1.TOP,
                         T4.ACTIVE AS IS_FOLLOWED,
                         T1.DELETED,
@@ -125,7 +124,6 @@ class MessageManager extends BaseManager {
                         T7.COMMIT_COUNT
                 FROM message T1 
                 LEFT JOIN user T2 ON T1.ID_USER=T2.ID_USER 
-                LEFT JOIN file_list T3 ON T3.ID_FILE=T2.PROFILE_IMAGE
                 LEFT JOIN message_following T4 ON (T1.ID_MESSAGE = T4.ID_MESSAGE AND T4.ID_USER=? AND T4.ACTIVE=1)
                 LEFT JOIN tasks T5 ON T1.ID_MESSAGE = T5.ID_MESSAGE
                 LEFT JOIN task_commit T6 ON (T6.ID_TASK=T5.ID_TASK AND T6.ID_USER=?)
@@ -140,7 +138,7 @@ class MessageManager extends BaseManager {
             $user->name = $message->NAME;
             $user->id = $message->ID_USER;
             $user->urlId = $message->URL_ID;
-            $user->profileImage = User::createProfilePath($message->PATH, $message->FILENAME, $message->SEX);
+            $user->profileImage = User::createProfilePath($message->PROFILE_IMAGE, $message->SEX);
             
             $mess->text = $message->TEXT;
             $mess->id = $message->ID_MESSAGE;
@@ -178,8 +176,7 @@ class MessageManager extends BaseManager {
     public function getMessage($idMessage, $user)
     {
         $message = $this->database->query("SELECT T1.TEXT, T1.ID_MESSAGE, T2.ID_USER, T2.NAME, T2.SURNAME, T1.CREATED_WHEN,
-                        T3.PATH,
-                        T3.FILENAME,
+                        T2.PROFILE_IMAGE,
                         T2.URL_ID,
                         T2.SEX,
                         T1.TYPE,
@@ -193,7 +190,6 @@ class MessageManager extends BaseManager {
                         T7.COMMIT_COUNT
                 FROM message T1 
                 LEFT JOIN user T2 ON T1.ID_USER=T2.ID_USER 
-                LEFT JOIN file_list T3 ON T3.ID_FILE=T2.PROFILE_IMAGE
                 LEFT JOIN tasks T4 ON T1.ID_MESSAGE = T4.ID_MESSAGE
                 LEFT JOIN task_commit T6 ON (T6.ID_TASK=T4.ID_TASK AND T6.ID_USER=?)
                 LEFT JOIN (SELECT COUNT(ID_COMMIT) AS COMMIT_COUNT, ID_TASK FROM task_commit GROUP BY ID_TASK) T7 ON T7.ID_TASK=T4.ID_TASK    
@@ -204,7 +200,7 @@ class MessageManager extends BaseManager {
         $user->name = $message->NAME;
         $user->id = $message->ID_USER;
         $user->urlId = $message->URL_ID;
-        $user->profileImage = User::createProfilePath($message->PATH, $message->FILENAME, $message->SEX);
+        $user->profileImage = User::createProfilePath($message->PROFILE_IMAGE, $message->SEX);
 
         $mess->text = $message->TEXT;
         $mess->id = $message->ID_MESSAGE;

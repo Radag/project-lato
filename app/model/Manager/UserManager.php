@@ -107,9 +107,9 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
     {
         $user = new User;
         if($urlId) {
-            $userData = $this->database->query("SELECT * FROM vw_user_detail WHERE URL_ID=?", $idUser)->fetch();  
+            $userData = $this->database->query("SELECT * FROM user WHERE URL_ID=?", $idUser)->fetch();  
         } else {
-            $userData = $this->database->query("SELECT * FROM vw_user_detail WHERE ID_USER=?", $idUser)->fetch(); 
+            $userData = $this->database->query("SELECT * FROM user WHERE ID_USER=?", $idUser)->fetch(); 
         }
         if($userData) {       
             $user->id = $userData->ID_USER;
@@ -120,7 +120,8 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
             $user->username = $userData->USERNAME;
             $user->birthday = $userData->BIRTHDAY;
             $user->emailNotification =  $userData->EMAIL_NOTIFICATION;
-            $user->profileImage = User::createProfilePath($userData->PROFILE_PATH, $userData->PROFILE_FILENAME, $userData->SEX);
+            $user->profileImage = User::createProfilePath($userData->PROFILE_IMAGE, $userData->SEX);
+            $user->backgroundImage = $userData->BACKGROUND_IMAGE;
             return $user;
         } else {
             return null;
@@ -129,7 +130,12 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
 
     public function assignProfileImage(\App\Model\Entities\User $user, $file)
     {
-        $this->database->query("UPDATE user SET PROFILE_IMAGE=? WHERE ID_USER=?", $file['idFile'], $user->id);
+        $this->database->query("UPDATE user SET PROFILE_IMAGE=? WHERE ID_USER=?", $file['fullPath'], $user->id);
+    }
+    
+    public function assignBackgroundImage(\App\Model\Entities\User $user, $file)
+    {
+        $this->database->query("UPDATE user SET BACKGROUND_IMAGE=? WHERE ID_USER=?", $file['fullPath'], $user->id);
     }
 
     public function updateUser($values, $user)
@@ -139,9 +145,9 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
 
     public function getUsersList() {
         $return = array();
-        $users =  $this->database->query("SELECT * FROM vw_user_detail")->fetchAll();
+        $users =  $this->database->query("SELECT * FROM user")->fetchAll();
         foreach($users as $user) {
-            $return[$user->USERNAME] = 'https://cdn.lato.cz/' . $user->PROFILE_PATH . '/' . $user->PROFILE_FILENAME;
+            $return[$user->USERNAME] =  User::createProfilePath($user->PROFILE_IMAGE, $user->SEX);
         }
         return $return;
     }

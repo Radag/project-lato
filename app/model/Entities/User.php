@@ -22,6 +22,7 @@ class User {
     public $profileImage = null;   
     public $birthday = null;
     public $emailNotification = null;
+    public $backgroundImage = null;
 
     private $classification = null;
     
@@ -33,10 +34,10 @@ class User {
         return $this->classification;
     }
     
-    public static function createProfilePath($path, $file, $sex = null)
+    public static function createProfilePath($path, $sex = null)
     {
         if($path) {
-            $profileImage = "https://cdn.lato.cz/" . $path . "/" . $file;
+            $profileImage = $path;
         } else {
             if(empty($sex) || $sex == 'M') {
                 $profileImage = '/images/default-avatar_man.png';

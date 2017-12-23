@@ -24,7 +24,7 @@ class PrivateMessageManager extends BaseManager
         $return = array();
         $messages = $this->database->query("SELECT 
                     A2.TEXT, A2.ID_PRIVATE_MESSAGE, A3.NAME, A3.SURNAME, A2.CREATED, A3.URL_ID,
-               A3.PROFILE_FILENAME,A3.PROFILE_PATH,A3.SEX, A2.IS_READ
+               A3.PROFILE_IMAGE, A3.SEX, A2.IS_READ
             FROM 
             (
             SELECT T1.USER_FROM, MAX(T1.ID_PRIVATE_MESSAGE) AS ID_MESSAGE FROM (
@@ -34,7 +34,7 @@ class PrivateMessageManager extends BaseManager
             ) T1
             GROUP BY T1.USER_FROM) A1
             JOIN private_message A2 ON A1.ID_MESSAGE = A2.ID_PRIVATE_MESSAGE
-            JOIN vw_user_detail A3 ON A1.USER_FROM = A3.ID_USER
+            JOIN user A3 ON A1.USER_FROM = A3.ID_USER
             ORDER BY A2.CREATED DESC", $user->id, $user->id)->fetchAll();
         foreach($messages as $message) {
             $mess = new PrivateMessage();
@@ -42,16 +42,7 @@ class PrivateMessageManager extends BaseManager
             $user->surname = $message->SURNAME;
             $user->name = $message->NAME;
             $user->urlId = $message->URL_ID;
-            if($message->PROFILE_FILENAME) {
-                $user->profileImage = "https://cdn.lato.cz/" . $message->PROFILE_PATH . "/" . $message->PROFILE_FILENAME;
-            } else {
-                if($message->SEX == 'M') {
-                    $user->profileImage = '/images/default-avatar_man.png';
-                } else {
-                    $user->profileImage = '/images/default-avatar_woman.png';
-                }
-            }
-            
+            $user->profileImage = User::createProfilePath($message->PROFILE_IMAGE, $message->SEX);            
             $mess->text = $message->TEXT;
             $mess->id = $message->ID_PRIVATE_MESSAGE;
             $mess->created = $message->CREATED;

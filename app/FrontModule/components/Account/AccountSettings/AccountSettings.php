@@ -12,6 +12,7 @@ use App\Model\Entities\User;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\SchoolManager;
 use App\Model\Manager\GroupManager;
+use App\Model\Manager\FileManager;
 
 /**
  * Description of SignInForm
@@ -32,6 +33,9 @@ class AccountSettings extends \App\Components\BaseComponent
     /** @var GroupManager $groupManager */
     public $groupManager;
     
+    /** @var FileManager $fileManager */
+    public $fileManager;
+    
     /**
      * @var NotificationManager $notificationManager
      */
@@ -44,13 +48,15 @@ class AccountSettings extends \App\Components\BaseComponent
         NotificationManager $notificationManager,
         UserManager $userManager,
         SchoolManager $schoolManager,
-        GroupManager $groupManager
+        GroupManager $groupManager,
+        FileManager $fileManager    
     )
     {
         $this->userManager = $userManager;
         $this->notificationManager = $notificationManager;
         $this->schoolManager = $schoolManager;
         $this->groupManager = $groupManager;
+        $this->fileManager = $fileManager;
     }
     
     public function render() {
@@ -122,7 +128,7 @@ class AccountSettings extends \App\Components\BaseComponent
             
             $delete = json_decode($values['deleteGroups']);
             $groups = $this->groupManager->getUserGroups($this->presenter->activeUser);
-            if($groups) {
+            if($groups && $delete) {
               foreach($delete as $idGroup) {
                     if($groups[$idGroup]->relation === 'OWNER') {
                         $this->groupManager->archiveGroup($idGroup);
@@ -137,15 +143,27 @@ class AccountSettings extends \App\Components\BaseComponent
         return $form;        
     }
     
-     public function handleUploadProfileImage()
+    public function handleUploadProfileImage()
     {
-        $files = $this->getRequest()->getFiles();
-        $path = 'users/' . $this->activeUser->urlId . '/profile';
+        $files = $this->presenter->getRequest()->getFiles();
+        $path = 'users/' . $this->presenter->activeUser->urlId . '/profile';
         $file = $this->fileManager->uploadFile($files['file'], $path);
         if($file) {
-            $this->userManager->assignProfileImage($this->activeUser, $file);
+            $this->userManager->assignProfileImage($this->presenter->activeUser, $file);
         }
-        $this->payload->image = $this->userManager->get($this->user->id)->profileImage;
-        $this->sendPayload();
+        $this->presenter->payload->image = $this->userManager->get($this->presenter->activeUser->id)->profileImage;
+        $this->presenter->sendPayload();
+    }
+    
+    public function handleUploadBackgroundImage()
+    {
+        $files = $this->presenter->getRequest()->getFiles();
+        $path = 'users/' . $this->presenter->activeUser->urlId . '/profile';
+        $file = $this->fileManager->uploadFile($files['file'], $path);
+        if($file) {
+            $this->userManager->assignBackgroundImage($this->presenter->activeUser, $file);
+        }
+        $this->presenter->payload->image = $this->userManager->get($this->presenter->activeUser->id)->backgroundImage;
+        $this->presenter->sendPayload();
     }
 }

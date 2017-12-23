@@ -3,10 +3,10 @@
     <div class="container">
         <div class="row equal-cols">
             <div class="col m12 l4">
-                <div class="card" id="account-images">
-                    <img src="{$userAccount->profileImage}">
-                    <button class="waves-effect waves-light btn">Změnit profilový obrázek</button>
-                    <button class="waves-effect waves-light btn">Změnit pozadí</button>
+                <div class="card" id="account-images" {if $userAccount->backgroundImage}style="background-image: url('{$userAccount->backgroundImage|noescape}');"{/if}>
+                    <img id="user-profile-image" src="{$userAccount->profileImage|noescape}">
+                    <button id="profile-image-button" type="button" class="waves-effect waves-light btn">Změnit profilový obrázek</button>
+                    <button id="background-image-button" type="button" class="waves-effect waves-light btn">Změnit pozadí</button>
                 </div>
             </div>
             <div class="col m12 l8">
@@ -243,14 +243,23 @@
         selectYears: 15 // Creates a dropdown of 15 years to control year
     });
 
-    $(function () {
-        var profileImage = new Dropzone("#profileImageDropzone", {
+    $(function () {              
+        var profileImage = new Dropzone("#profile-image-button", {
             url: {link uploadProfileImage!},
             previewTemplate: '<div id="preview-template" style="display: none;"></div>'
         });
         profileImage.on("complete", function (file) {
             var image = JSON.parse(file.xhr.response);
-            $("#profileImageDropzone .dz-message").html('<img src="' + image.image + '">');
+            $("#user-profile-image").attr('src', image.image);
+        });
+        
+        var backgroundImage = new Dropzone("#background-image-button", {
+            url: {link uploadBackgroundImage!},
+            previewTemplate: '<div id="preview-template" style="display: none;"></div>'
+        });
+        backgroundImage.on("complete", function (file) {
+            var image = JSON.parse(file.xhr.response);
+            $("#account-images").css('background-image',  'url(' + image.image + ')' );
         });
     });
 </script>
