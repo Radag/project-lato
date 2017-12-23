@@ -17,7 +17,7 @@ use App\Model\Manager\TaskManager;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\NotificationManager;
 use App\Model\Manager\PrivateMessageManager;
-
+use App\FrontModule\Components\Group\AddUserForm;
 
 /**
  * Description of JoinGroupForm
@@ -336,4 +336,11 @@ class UsersList extends Control
         
         return $form;
     }
+    
+    public function createComponentAddUserForm()
+    {
+        $component = new AddUserForm($this->userManager, $this->groupManager, $this->activeGroup);
+        return $component;
+    }
+    
 }

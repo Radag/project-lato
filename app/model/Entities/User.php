@@ -26,6 +26,13 @@ class User {
 
     private $classification = null;
     
+    public function __construct($data = null)
+    {
+        if($data) {
+            $this->bindUser($data);
+        }
+    }
+    
     public function getClassification() {
         if($this->classification === null) {
             $this->classification = (object)['items' => array(), 'averageGrade' => null, 'lastDate' => null];
@@ -36,7 +43,7 @@ class User {
     
     public static function createProfilePath($path, $sex = null)
     {
-        if($path) {
+        if(!empty($path)) {
             $profileImage = $path;
         } else {
             if(empty($sex) || $sex == 'M') {
@@ -73,5 +80,23 @@ class User {
         $this->email = $email;
     }
 
+    public function bindUser($data)
+    {
+        isset($data->ID_USER) ? $this->id = $data->ID_USER : true;
+        isset($data->SURNAME) ? $this->surname = $data->SURNAME : true;
+        isset($data->NAME) ? $this->name = $data->NAME : true;
+        isset($data->EMAIL) ? $this->email = $data->EMAIL : true;
+        isset($data->URL_ID) ? $this->urlId = $data->URL_ID : true;
+        isset($data->USERNAME) ? $this->username = $data->USERNAME : true;
+        isset($data->BIRTHDAY) ? $this->birthday = $data->BIRTHDAY : true;
+        isset($data->EMAIL_NOTIFICATION) ?  $this->emailNotification = $data->EMAIL_NOTIFICATION : true;
+        if(isset($data->PROFILE_IMAGE)) {
+            $this->profileImage = self::createProfilePath($data->PROFILE_IMAGE, $data->SEX);
+        } else {
+            $this->profileImage = self::createProfilePath('', $data->SEX);
+        }
+        
+        isset($data->BACKGROUND_IMAGE) ? $this->backgroundImage = $data->BACKGROUND_IMAGE : true;
+    }
 
 }

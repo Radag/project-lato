@@ -20,7 +20,7 @@ use App\Model\Manager\GroupManager;
  *
  * @author Radaq
  */
-class UserClassificationForm extends Control
+class UserClassificationForm extends \App\Components\BaseComponent
 {
         
     protected $classificationManager;
@@ -37,11 +37,10 @@ class UserClassificationForm extends Control
         $this->activeGroup = $activeGroup;
         
     }
-
     
     protected function createComponentForm()
     {
-        $form = new Form;
+        $form = $this->getForm();
         $form->addText('name', 'Název hodnocení')
              ->setAttribute('placeholder', 'Název hodnocení')
              ->setRequired('Prosím napiště téma hodnocení.');
@@ -68,13 +67,6 @@ class UserClassificationForm extends Control
             }
         }
         $this->template->classificationUsers = $classificationUsers;
-    }
-    
-    public function render()
-    {
-        $template = $this->template;
-        $template->setFile(__DIR__ . '/UserClassificationForm.latte');
-        $template->render();
     }
     
     public function processForm(Form $form, $values) 

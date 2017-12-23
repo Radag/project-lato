@@ -14,13 +14,19 @@ class BaseManager extends Nette\Object
 
     /** @var Nette\Database\Context */
     protected $database;
+    
+    /** @var \Dibi\Connection  */
+    protected $db;
 
-    public function __construct(Nette\Database\Context $database,
-                    Nette\Security\User $user
+    public function __construct(
+        Nette\Database\Context $database,
+        Nette\Security\User $user,
+        \Dibi\Connection $db
     )
     {
-            $this->database = $database;
-            $this->user = $user;
+        $this->database = $database;
+        $this->user = $user;
+        $this->db = $db;
     }
 
   

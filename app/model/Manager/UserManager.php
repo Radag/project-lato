@@ -16,12 +16,17 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
     /** @var Nette\Database\Context */
     private $database;
 
-
-    public function __construct(Nette\Database\Context $database)
+    /** @var \Dibi\Connection  */
+    protected $db;
+    
+    public function __construct(
+        Nette\Database\Context $database, 
+        \Dibi\Connection $db
+    )
     {
-            $this->database = $database;
+        $this->database = $database;
+        $this->db = $db;
     }
-
 
     /**
      * Performs an authentication.
@@ -202,6 +207,15 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
         return $secret;
     }
     
+    public function searchGroupUser($term)
+    {
+        $return = [];
+        $users = $this->db->fetchAll("SELECT * FROM user WHERE email LIKE %~like~ OR CONCAT(name, surname) LIKE %~like~", $term, $term);
+        foreach($users as $user) {
+            $return[] = new User($user);
+        }
+        return $return;
+    }
 }
 
 

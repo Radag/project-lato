@@ -1,0 +1,68 @@
+{form form}
+    <div class="modal-content">
+        <h3>Přidat studenta</h3>
+        <div class="form-row">
+            {input userName class=>'validate add-user-form'}
+        </div>
+        {snippet users-list}
+        <ul class="custom-collection prompter" n:if="!empty($userList)">
+            {foreach $userList as $userItem}
+                <li {if $iterator->counter > 4}class="hide"{/if}>
+                    <a href="#" data-user-id="{$userItem->id}" class="add-user-item item">
+                        <div class="avatar small">
+                            <img src="{$userItem->profileImage|noescape}">
+                        </div>
+                        <div class="label">
+                            <span class="title truncate">{$userItem->name} {$userItem->surname}</span>
+                        </div>
+                    </a>
+                </li>
+            {/foreach}
+            {if count($userList) > 4}
+                <li class="rest-of-all">{count($userList) - 4} dalších návrhů</li>
+            {/if}
+            
+        </ul>
+         <script>
+            $(function () {
+                $(".add-user-item").on('click', function(e) {
+                    e.preventDefault();
+                    $(".add-user-item").removeClass('active');
+                    $(this).addClass('active');
+                    $("input[name='user_id']").val($(this).data('user-id'));
+                    $(".submit-message-form").prop('disabled', false);
+                });
+                $(".rest-of-all").on('click', function(e) {
+                    $(".add-user-item").parent('li').removeClass('hide');
+                    $(".rest-of-all").addClass('hide');
+                });
+            });
+        </script>
+        {/snippet}
+        {if $activeGroup->shareByCode == 1}
+            <p>Studenti se mohou také zapisovat pomocí kódu <strong>{$activeGroup->interCode}</strong>.</p>
+        {/if}
+    </div>
+    <div class="modal-footer">
+        <div class="flex-spacer"></div>
+        <div class="form-control">
+            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" disabled>Přidat</button>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $(".add-user-form").on("keyup", function(e) {
+                if($(this).val().length > 2) {
+                    $.nette.ajax({
+                        url: {link searchUsers!},
+                        method: 'GET',
+                        data: {
+                            'term': $(this).val()
+                        }
+                    });
+                }
+            });            
+        });
+    </script>
+{/form}

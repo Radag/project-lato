@@ -1,28 +1,36 @@
-# WARNING: it is CRITICAL that this file & directory are NOT accessible directly via a web browser!
-# https://nette.org/security-warning
-
 parameters:
 
-
 php:
-	date.timezone: Europe/Prague
+    date.timezone: UTC
+    default_charset: 'UTF-8'
 
 
 application:
-	errorPresenter: Error
-	mapping:
-		*: App\*Module\Presenters\*Presenter
-
+    errorPresenter: Error
+    mapping:
+        *: App\*Module\Presenters\*Presenter
 
 session:
-	expiration: 14 days
+    expiration: 14 days
 
 
 services:
-	router: App\RouterFactory::createSecuredRouter
+    router: App\RouterFactory::createSecuredRouter
 
 
 database:
-	dsn: 'mysql:host=89.221.211.158;dbname=koala'
-	user: 'koala_user'
-	password: '6JdEvQmcSBrbq4Mz'
+    dsn: 'mysql:host=89.221.211.158;dbname=koala'
+    user: 'koala_user'
+    password: '6JdEvQmcSBrbq4Mz'
+
+dibi:
+    driver: 'mysqli'
+    host: '89.221.211.158'
+    username: 'koala_user'
+    password: '6JdEvQmcSBrbq4Mz'
+    database: 'koala'
+    charset: "utf8mb4"
+    lazy: true
+
+extensions:
+    dibi: Dibi\Bridges\Nette\DibiExtension22

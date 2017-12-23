@@ -94,13 +94,15 @@
                     <div class="card-header">
                         <h2>Sdílení</h2>
                     </div>
+                    {if $activeGroup->shareByCode == 1}
                     <div class="card-content">
                         <p class="secondary-par">
-                            Studenti se mohou zapisovat pomocí kódu <strong>DFASEQ</strong>.
+                            Studenti se mohou zapisovat pomocí kódu <strong>{$activeGroup->interCode}</strong>.
                         </p>
                     </div>
+                    {/if}
                     <div class="card-footer offset">
-                        <div class="btn-flat card-bottom">Přidat studenta</div>
+                        <button class="btn-flat card-bottom modal-trigger" href="#add-user-to-group">Přidat studenta</button>
                     </div>
                 </div>
             </div>
@@ -180,4 +182,3 @@
         </div>
     </div>
 </section>
-

@@ -46,7 +46,7 @@
                         <div class="table-field">Hodnocení</div>
                     </div>
                     <script>
-                        $(document).ready(function () {
+                         $(function () {
                             $("#select-all").on("change", function (e) {
                                 if ($(this).prop('checked')) {
                                     $(".user-checkbox").prop('checked', true);
@@ -305,54 +305,6 @@
     </form>
     {/snippet}
 </div>
- <div id="add-user-to-group" class="modal modal-small">
-    <form action="{link addToGroup!}" method="post">
-        <div class="modal-content">
-            <h3>Přidat studenta</h3>
-            <div class="form-row">
-                <input name="userName" type="text" {*id="userSearch"*} class="validate" placeholder="Jméno nebo e-mail studenta">
-            </div>
-            <ul class="custom-collection prompter">
-                <li>
-                    <a href="" class="item active">
-                        <div class="avatar small">
-                            <img src="/images/default-avatar_man.png">
-                        </div>
-                        <div class="label">
-                            <span class="title truncate">Petr Šavelka</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="" class="item">
-                        <div class="avatar small">
-                            <img src="/images/default-avatar_man.png">
-                        </div>
-                        <div class="label">
-                            <span class="title truncate">Martin Novák</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="" class="item">
-                        <div class="avatar small">
-                            <img src="/images/default-avatar_man.png">
-                        </div>
-                        <div class="label">
-                            <span class="title truncate">Adam Dolejš</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="rest-of-all">36 dalších návrhů</li>
-            </ul>
-            <p>Studenti se mohou také zapisovat pomocí kódu <strong>A3EEF6</strong>.</p>            
-        </div>
-        <div class="modal-footer">
-            <div class="flex-spacer"></div>
-            <div class="form-control">
-                <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-                <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" disabled>Přidat</button>
-            </div>
-        </div>
-    </form>
+<div id="add-user-to-group" class="modal modal-small">
+    {control addUserForm}
 </div> 

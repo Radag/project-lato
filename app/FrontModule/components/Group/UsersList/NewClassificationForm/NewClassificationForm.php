@@ -20,7 +20,7 @@ use App\Model\Manager\GroupManager;
  *
  * @author Radaq
  */
-class NewClassificationForm extends Control
+class NewClassificationForm extends \App\Components\BaseComponent
 {
         
     protected $classificationManager;
@@ -41,7 +41,7 @@ class NewClassificationForm extends Control
     
     protected function createComponentForm()
     {
-        $form = new \Nette\Application\UI\Form;
+        $form = $this->getForm();
         $form->addText('name', 'Hodnocení')
              ->setAttribute('placeholder', 'název hodnocení')
              ->setRequired('Prosím napiště téma hodnocení.');
@@ -49,13 +49,6 @@ class NewClassificationForm extends Control
 
         $form->onSuccess[] = [$this, 'processForm'];
         return $form;
-    }
-    
-    public function render()
-    {
-        $template = $this->template;
-        $template->setFile(__DIR__ . '/NewClassificationForm.latte');
-        $template->render();
     }
     
     public function processForm(Form $form, $values) 
