@@ -65,9 +65,10 @@ class AddUserForm extends \App\Components\BaseComponent
 
     public function processForm(Form $form, $values) 
     {
-        
-        $this->presenter->flashMessage('Uživatel byl přidán', 'success');
-        $this->presenter->redirect(':Front:Group:users');
-        
+        if($values->user_id) {
+            $this->groupManager->addUserToGroup($this->activeGroup, $values->user_id, GroupManager::RELATION_STUDENT);
+            $this->presenter->flashMessage('Uživatel byl přidán', 'success');
+            $this->presenter->redirect(':Front:Group:users');
+        }        
     }
 }

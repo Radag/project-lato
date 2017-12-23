@@ -210,7 +210,7 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
     public function searchGroupUser($term)
     {
         $return = [];
-        $users = $this->db->fetchAll("SELECT * FROM user WHERE email LIKE %~like~ OR CONCAT(name, surname) LIKE %~like~", $term, $term);
+        $users = $this->db->fetchAll("SELECT * FROM user WHERE email LIKE %~like~ OR CONCAT(name, ' ', surname) LIKE %~like~", $term, $term);
         foreach($users as $user) {
             $return[] = new User($user);
         }

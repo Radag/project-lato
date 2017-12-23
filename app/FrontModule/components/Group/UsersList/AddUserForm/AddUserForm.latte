@@ -5,9 +5,20 @@
             {input userName class=>'validate add-user-form'}
         </div>
         {snippet users-list}
+        <div class="preloader-wrapper small active hide users-autocomplete-loader" style="margin-top: 20px; margin-left: 120px;">
+            <div class="spinner-layer spinner-green-only">
+                  <div class="circle-clipper left" >
+                    <div class="circle"></div>
+                  </div><div class="gap-patch">
+                    <div class="circle"></div>
+                  </div><div class="circle-clipper right">
+                    <div class="circle"></div>
+                  </div>
+            </div>
+        </div>
         <ul class="custom-collection prompter" n:if="!empty($userList)">
             {foreach $userList as $userItem}
-                <li {if $iterator->counter > 4}class="hide"{/if}>
+                <li {if $iterator->counter > 3}class="hide"{/if}>
                     <a href="#" data-user-id="{$userItem->id}" class="add-user-item item">
                         <div class="avatar small">
                             <img src="{$userItem->profileImage|noescape}">
@@ -18,8 +29,8 @@
                     </a>
                 </li>
             {/foreach}
-            {if count($userList) > 4}
-                <li class="rest-of-all">{count($userList) - 4} dalších návrhů</li>
+            {if count($userList) > 3}
+                <li class="rest-of-all">{count($userList) - 3} dalších návrhů</li>
             {/if}
             
         </ul>
@@ -59,9 +70,13 @@
                         method: 'GET',
                         data: {
                             'term': $(this).val()
+                        },
+                        complete: function(data) {
+                            $(".users-autocomplete-loader").addClass('hide');
                         }
                     });
                 }
+                $(".users-autocomplete-loader").removeClass('hide');
             });            
         });
     </script>
