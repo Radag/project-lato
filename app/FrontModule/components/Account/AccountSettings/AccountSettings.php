@@ -13,6 +13,7 @@ use App\Model\Manager\UserManager;
 use App\Model\Manager\SchoolManager;
 use App\Model\Manager\GroupManager;
 use App\Model\Manager\FileManager;
+use Nette\Utils\Image;
 
 /**
  * Description of SignInForm
@@ -137,7 +138,7 @@ class AccountSettings extends \App\Components\BaseComponent
                     }
                 }  
             }
-            $this->flashMessage('Nastavení notifikací uloženo', 'success');
+            $this->presenter->flashMessage('Nastavení notifikací uloženo', 'success');
             $this->redirect('this');
         };
         return $form;        
@@ -146,24 +147,34 @@ class AccountSettings extends \App\Components\BaseComponent
     public function handleUploadProfileImage()
     {
         $files = $this->presenter->getRequest()->getFiles();
-        $path = 'users/' . $this->presenter->activeUser->urlId . '/profile';
-        $file = $this->fileManager->uploadFile($files['file'], $path);
-        if($file) {
-            $this->userManager->assignProfileImage($this->presenter->activeUser, $file);
-        }
-        $this->presenter->payload->image = $this->userManager->get($this->presenter->activeUser->id)->profileImage;
-        $this->presenter->sendPayload();
+        $image = Image::fromFile($files['file']);
+        if($image->width < 176 ||  $image->height < 176) {
+            $this->presenter->flashMessage('Obrázek musí mít větší rozměry než 176 x 176', 'error');
+        } else {
+            $path = 'users/' . $this->presenter->activeUser->urlId . '/profile';
+            $file = $this->fileManager->saveFile($files['file'], $path);
+            if($file) {
+                $this->userManager->assignProfileImage($this->presenter->activeUser, $file);
+            }
+            $this->presenter->payload->image = $this->userManager->get($this->presenter->activeUser->id)->profileImage;
+            $this->presenter->sendPayload();
+        }   
     }
     
     public function handleUploadBackgroundImage()
     {
         $files = $this->presenter->getRequest()->getFiles();
-        $path = 'users/' . $this->presenter->activeUser->urlId . '/profile';
-        $file = $this->fileManager->uploadFile($files['file'], $path);
-        if($file) {
-            $this->userManager->assignBackgroundImage($this->presenter->activeUser, $file);
+        $image = Image::fromFile($files['file']);
+        if($image->width < 1156 ||  $image->height < 420) {
+            $this->presenter->flashMessage('Obrázek musí mít větší rozměry než 1156 x 420', 'error');
+        } else {
+            $path = 'users/' . $this->presenter->activeUser->urlId . '/profile';
+            $file = $this->fileManager->saveFile($files['file'], $path);
+            if($file) {
+                $this->userManager->assignBackgroundImage($this->presenter->activeUser, $file);
+            }
+            $this->presenter->payload->image = $this->userManager->get($this->presenter->activeUser->id)->backgroundImage;
+            $this->presenter->sendPayload();
         }
-        $this->presenter->payload->image = $this->userManager->get($this->presenter->activeUser->id)->backgroundImage;
-        $this->presenter->sendPayload();
     }
 }

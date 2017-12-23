@@ -94,6 +94,25 @@ class FileManager extends BaseManager
         return true;
     }
 
+    public function saveFile($file, $path) 
+    {
+        $connId = $this->getFtpConnection();
+        $createdDirecories = ftp_nlist($connId , self::USER_DIRECTORY . $this->user->getIdentity()->data['URL_ID']);
+        if(empty($createdDirecories)) {
+            $this->createUserDirectories($connId);
+        }
+        $date = new \DateTime();
+        $timestamp = $date->getTimestamp();
+        if (ftp_put($connId, '/var/www/cdn/' . $path . '/' . $timestamp . '_' . $file->getSanitizedName(), $file->getTemporaryFile(), FTP_BINARY)) {
+            $return['fileName'] = $file->getName();
+            $return['type'] = $file->getContentType();
+            $return['fullPath'] = 'https://cdn.lato.cz/' . $path . '/' .  $timestamp . '_' . $file->getSanitizedName();
+            return $return; 
+        } else {
+            return false;
+        }
+    }
+    
     public function uploadFile(Nette\Http\FileUpload $file, $path)
     {
         $connId = $this->getFtpConnection();
