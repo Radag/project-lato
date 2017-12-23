@@ -8,7 +8,6 @@
 namespace App\PublicModule\Components\Authetication\SignInForm;
 
 use \Nette\Application\UI\Form;
-use \Nette\Application\UI\Control;
 use App\Model\Manager\UserManager;
 
 
@@ -18,7 +17,7 @@ use App\Model\Manager\UserManager;
  *
  * @author Radaq
  */
-class SignInForm extends Control
+class SignInForm extends \App\Components\BaseComponent
 {
     
     /**
@@ -27,6 +26,9 @@ class SignInForm extends Control
      */
     private $userManager;
     
+    /** @persistent */
+    public $userEmail = '';
+    
     public function __construct(UserManager $userManager)
     {
         $this->userManager = $userManager;
@@ -34,10 +36,12 @@ class SignInForm extends Control
     
     protected function createComponentForm()
     {
-        $form = new \Nette\Application\UI\Form;
+        $form = $this->getForm();
+
         $form->addEmail('email', 'Email:')
-                ->setAttribute('placeholder', 'E-mail')
-            ->setRequired('Prosím vyplňte váš přihlašovací email');
+             ->setAttribute('placeholder', 'E-mail')
+             ->setRequired('Prosím vyplňte váš přihlašovací email')
+             ->setDefaultValue($this->userEmail);
 
         $form->addPassword('password', 'Heslo:')
               ->setAttribute('placeholder', 'Heslo')
@@ -49,14 +53,7 @@ class SignInForm extends Control
 
         $form->onSuccess[] = [$this, 'processForm'];
         return $form;
-    }
-    
-    public function render()
-    {
-        $template = $this->template;
-        $template->setFile(__DIR__ . '/SignInForm.latte');
-        $template->render();
-    }
+    }  
     
     public function processForm(Form $form, $values) 
     {
@@ -65,8 +62,9 @@ class SignInForm extends Control
             $this->getPresenter()->user->login($values->email, $values->password);
             $this->presenter->flashMessage('Přihlášen', 'success');
         } catch (\Exception $ex) {
+            $this->userEmail = $values->email;
             $this->presenter->flashMessage($ex->getMessage(), 'error');
-            $this->presenter->redirect(':Public:Homepage:default');  
+            $this->presenter->redirect('this');  
         }
         
         if($this->presenter->session->hasSection('redirect')) {    

@@ -13,6 +13,7 @@ use Nette\Mail\Message;
 use Nette\Mail\SendmailMailer;
 use App\Model\Manager\PublicActionManager;
 use App\Model\Manager\UserManager;
+use \Mailgun\Mailgun;
 
 /**
  * Description of MailManager
@@ -79,6 +80,7 @@ class MailManager
     
     public function sendMail($mailData)
     { 
+        /*
         $mail = new Message;
         $mail->setFrom($mailData->from)
             ->addTo($mailData->to)
@@ -87,6 +89,17 @@ class MailManager
         
         $mailer = new SendmailMailer;
         $mailer->send($mail);
+        */
+        
+        $key = 'key-926f0ed9318d18c1ee7f13f844623db5';//$this->presenter->context->getParameters()['mailgun']['key'];
+        $domain = 'lato.cz';//$this->presenter->context->getParameters()['mailgun']['domain'];
+        $mg = Mailgun::create($key);
+        $mg->messages()->send($domain, [
+          'from'    => $mailData->from,
+          'to'      => $mailData->to,
+          'subject' => $mailData->subject,
+          'html'    => $mailData->body
+        ]);
     }
     
 }
