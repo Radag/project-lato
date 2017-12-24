@@ -3,6 +3,7 @@
 /* PROMĚNNÉ */
 
 @background-highlighted: #f9f9f9;
+@card-flat: rgba(0, 0, 0, .05);
 @icon-background: rgba(0, 0, 0, .05);
 @secondary-text-color: rgba(0, 0, 0, .5);
 @secondary-color: #26a69a;
@@ -1186,13 +1187,13 @@ input[type=search]:not(.browser-default) {
 
 @media only screen and (max-width: 992px) {
     .container {
-        padding:0 16px;
+        padding: 0 16px;
     }
 }
 
 @media only screen and (max-width: 600px) {
     .container {
-        padding:0 8px;
+        padding: 0 8px;
     }
 }
 
@@ -2089,6 +2090,12 @@ nav .nav-title {
         }
     }
 
+    h1 {
+        font-size: 22px;
+        color: @secondary-text-color;
+        margin: 8px 24px 0 24px;
+    }
+
     .btn {
         margin-right: 16px;
     }
@@ -2847,7 +2854,7 @@ nav .nav-title {
     border-radius:0;
 
     &.card-flat {
-        background-color: rgba(0, 0, 0, .08);
+        background-color: @card-flat;
         box-shadow: none;
     }
 
@@ -3072,13 +3079,13 @@ nav .nav-title {
 
 @media only screen and (max-width: 992px) {
     .comments-header {
-        padding: 12px 16px 16px 16px;
+        padding: 16px;
     }
 }
 
 @media only screen and (max-width: 600px) {
     .comments-header {
-        padding: 12px;
+        padding: 16px 12px;
     }
 }
 
@@ -3202,6 +3209,7 @@ nav .nav-title {
 .comments-footer {
     background-color:#f9f9f9;
     padding: 20px 24px;
+    cursor: text;
 }
 
 .comments-footer form {
@@ -3316,9 +3324,6 @@ nav .nav-title {
         flex-direction: column;
 
         &#welcome-card {
-
-            background-color: rgba(0, 0, 0, .03);
-            box-shadow: none;
 
             .card-footer {
                 padding-top: 48px;
@@ -4574,10 +4579,6 @@ nav .nav-title {
 .classification-properties {
     align-items: center;
     cursor: pointer;
-}
-
-.classification-properties:hover {
-    box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
 }
 
 .classification-properties .minified-label {

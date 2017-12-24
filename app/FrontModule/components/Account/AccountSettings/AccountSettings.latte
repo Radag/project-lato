@@ -90,7 +90,7 @@
                                 {if $group->relation == 'OWNER'}
                                 {var something=false}
                                 <li class="group-list" data-action="delete" data-group-id="{$group->id}">
-                                    <div class="group-shortcut-circle" style="background: {$group->mainColor|noescape};">{$group->shortcut}</div>
+                                    <div class="group-shortcut-circle" style="background: {$group->mainColor|noescape};">{$group->shortcut|substr:0,1}</div>
                                     <div class="label">{$group->name} {*<span>(g2)</span>*}</div>
                                     <a class="btn-flat btn-icon dropdown-button waves-effect waves-dark" data-activates="group{$group->id}-options" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
                                         <i class="material-icons">more_horiz</i>
@@ -119,7 +119,7 @@
                                 {if $group->relation !== 'OWNER'}
                                 {var something=false}
                                 <li class="group-list" data-action="leave" data-group-id="{$group->id}">
-                                    <div class="group-shortcut-circle" style="background: {$group->mainColor|noescape};">{$group->shortcut}</div>
+                                    <div class="group-shortcut-circle" style="background: {$group->mainColor|noescape};">{$group->shortcut|substr:0,1}</div>
                                     <div class="label">{$group->name} {*<span>(g2)</span>*}</div>
                                     <a class="btn-flat btn-icon dropdown-button waves-effect waves-dark" data-activates="group{$group->id}-options" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
                                         <i class="material-icons">more_horiz</i>
