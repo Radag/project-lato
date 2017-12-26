@@ -4,7 +4,6 @@ namespace App\Model\Manager;
 
 use Nette;
 
-
 /**
  * Users management.
  */
@@ -155,9 +154,7 @@ class FileManager extends BaseManager
 
     protected function getFtpConnection()
     {
-        $conn_id = ftp_connect('89.221.211.158') or die("Couldn't connect to '185.8.238.199'");
-        $login_result = ftp_login($conn_id, 'cdn', 'N0yeA4e');
-        return $conn_id;
+        return $this->ftpSender->getConnection();
     }
 
     protected function createUserDirectories($connId)

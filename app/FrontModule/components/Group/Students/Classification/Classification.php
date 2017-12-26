@@ -19,12 +19,8 @@ use App\Model\Manager\NotificationManager;
 use App\Model\Manager\PrivateMessageManager;
 use App\FrontModule\Components\Group\AddUserForm;
 
-/**
- * Description of JoinGroupForm
- *
- * @author Radaq
- */
-class UsersList extends Control
+
+class Classification extends \App\Components\BaseComponent
 {
        
     /** @var GroupManager */

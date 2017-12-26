@@ -7,8 +7,6 @@
 
 namespace App\FrontModule\Components\Group;
 
-use App\FrontModule\Components\Group\Students;
-
 /**
  *
  * @author Radaq

@@ -3,7 +3,6 @@
 namespace App\FrontModule\Presenters;
 
 use App\Model\Manager\UserManager;
-use App\FrontModule\Components\Stream\Stream;
 use App\Model\Manager\MessageManager;
 use App\Model\Manager\GroupManager;
 use App\Model\Manager\PrivateMessageManager;
@@ -13,11 +12,10 @@ use App\FrontModule\Components\Stream\IStreamFactory;
 use App\FrontModule\Components\GroupSettingsForm\IGroupSettingsFormFactory;
 use App\FrontModule\Components\Stream\CommentForm\CommentForm;
 use App\Model\Manager\TaskManager;
-use App\Model\Manager\ClassificationManager;
-use App\FrontModule\Components\Group\IUsersListFactory;
 use App\Model\Entities\Group;
 use App\FrontModule\Components\Stream\ICommitTaskFormFactory;
 use App\FrontModule\Components\Group\IStudentsFactory;
+use App\Model\Manager\ClassificationManager;
 
 class GroupPresenter extends BasePresenter
 {    
@@ -42,8 +40,6 @@ class GroupPresenter extends BasePresenter
     /** @var  IStreamFactory  */
     protected $streamFactory;
     
-    /** @var  IUsersListFactory  */
-    protected $usersListFactory;
     
     /** @var IStudentsFactory @inject */
     protected $studentsFactory;
@@ -87,7 +83,6 @@ class GroupPresenter extends BasePresenter
             TaskManager $taskManager,
             IGroupSettingsFormFactory $groupSettings,
             ClassificationManager $classificationManager,
-            IUsersListFactory $userListFactory,
             ICommitTaskFormFactory $commitTaskFormFactory,
             IStudentsFactory $studentsFactory
             )
@@ -102,7 +97,6 @@ class GroupPresenter extends BasePresenter
         $this->streamFactory = $streamFactory;
         $this->groupSettings = $groupSettings;
         $this->classificationManager = $classificationManager;
-        $this->usersListFactory = $userListFactory;
         $this->commitTaskFormFactory = $commitTaskFormFactory;
         $this->studentsFactory = $studentsFactory;
     }
@@ -187,36 +181,13 @@ class GroupPresenter extends BasePresenter
     }
     
     
-    public function createComponentUsersList()
+    public function createComponentStudents()
     {
-        $usersList = $this->usersListFactory->create();
+        $usersList = $this->studentsFactory->create();
         $usersList->setGroup($this->activeGroup);
         $usersList->setUser($this->activeUser);
         $usersList->setGroupPermission($this->groupPermission);
         return $usersList;
-    }
-    
-    public function createComponentStudents()
-    {
-        $usersList = $this->studentsFactory->create();
-        return $usersList;
-    }
-       
-    protected function createComponentSharingForm()
-    {
-        $form = new \Nette\Application\UI\Form;
-
-        $form->addCheckbox('shareByCode','Zapnout sdílení kódem', array(1,0))
-             ->setDefaultValue($this->activeGroup->shareByCode);
-        $form->addCheckbox('shareByLink','Zapnout sdílení linkem', array(1,0))
-             ->setDefaultValue($this->activeGroup->shareByLink);
-
-        $form->onSuccess[] = function($form, $values) {
-            $this->groupManager->switchSharing($this->activeGroup, $values['shareByLink'], $values['shareByCode']);
-            $this->flashMessage('Sdílení nastaveno');
-            $this->redirect('this');
-        };
-        return $form;        
     }
     
     protected function createComponentStreamSettingsForm()

@@ -18,19 +18,7 @@ services:
     router: App\RouterFactory::createSecuredRouter
 
 
-database:
-    dsn: 'mysql:host=89.221.211.158;dbname=koala'
-    user: 'koala_user'
-    password: '6JdEvQmcSBrbq4Mz'
-
-dibi:
-    driver: 'mysqli'
-    host: '89.221.211.158'
-    username: 'koala_user'
-    password: '6JdEvQmcSBrbq4Mz'
-    database: 'koala'
-    charset: "utf8mb4"
-    lazy: true
-
 extensions:
     dibi: Dibi\Bridges\Nette\DibiExtension22
+    mailgun: App\Di\MailgunExt
+    ftp: App\Di\FtpExt
