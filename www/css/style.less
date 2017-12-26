@@ -2,9 +2,9 @@
 
 /* PROMĚNNÉ */
 
-@background-highlighted: #f9f9f9;
+@background-highlighted: rgba(0, 0, 0, .03);
 @card-flat: rgba(0, 0, 0, .05);
-@icon-background: rgba(0, 0, 0, .05);
+@icon-background: rgba(0, 0, 0, .03);
 @secondary-text-color: rgba(0, 0, 0, .5);
 @secondary-color: #26a69a;
 @divider-color: rgba(0, 0, 0, .08);
@@ -1646,19 +1646,20 @@ strong {
             display: flex;
             align-items: center;
             width: 100%;
-            border: 1px solid @divider-color;
-            padding: 16px;
+            padding: 24px 20px;
+            background-color: @icon-background;
         }
 
         .file-icon {
             display:none;
             width: 42px;
-            height: 56px;
+            height: 42px;
             margin-right: 12px;
-            margin: -17px 12px -17px -17px;
+            border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
+            background-color: rgba(0, 0, 0, .1);
 
             &.unknown {
                 background-color: #607d8b;
@@ -1682,8 +1683,53 @@ strong {
 
             i {
                 color: #fff;
-                font-size: 20px !important;
             }
+        }
+
+        .file-name {
+            display: block;
+            font-weight: 500;
+            color: #fff;
+            margin-right: 12px;
+            color: rgba(0, 0, 0, .87);
+
+            span {
+                display: block;
+                font-size: 13px;
+                font-weight: 400;
+                color: @secondary-text-color;
+            }
+        }
+    }
+
+
+}
+
+.attachments_uploads {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding-top: 16px;
+
+    @media only screen and (max-width: 600px) {
+        & {
+            padding: 0 12px 32px 12px;
+        }
+    }
+
+    li {
+        margin-bottom: 12px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        .attached-file {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            border: 1px solid @divider-color;
+            padding: 16px;
         }
 
         .file-name {
@@ -1713,10 +1759,6 @@ strong {
             margin: 0;
             border-radius: 0;
         }
-    }
-
-    &.attachments_uploads {
-        padding-top: 16px !important;
     }
 }
 
