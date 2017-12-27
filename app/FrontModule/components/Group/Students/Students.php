@@ -26,11 +26,12 @@ class Students extends \App\Components\BaseComponent
         $this->studentsList = $studentsList;
     }
     
-    /** @permanent */
-    public $screen = 'list';
+    /** @persistent */
+    public $classGroupId;
     
-    public function render() {
-        $this->template->screen = $this->screen;
+    public function render() 
+    {
+        $this->template->classGroupId = $this->classGroupId;
         parent::render();
     }
     
@@ -46,8 +47,7 @@ class Students extends \App\Components\BaseComponent
     
     public function showClassification($idGroup)
     {
-        $this['classification']->setGroupId($idGroup);
-        $this->screen = 'classification';
+        $this->classGroupId = $idGroup;
         $this->redrawControl();
     } 
 }

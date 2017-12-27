@@ -35,11 +35,15 @@ class GroupManager extends BaseManager {
     /** @var PublicActionManager @inject */
     protected $publicActionManager;
     
+    /** @var \Dibi\Connection  */
+    protected $db;
+    
     public function __construct(Nette\Database\Context $database,
                     Nette\Security\User $user,
                     UserManager $userManager,
                     PublicActionManager $publicActionManager,
-                    NotificationManager $notificationManager
+                    NotificationManager $notificationManager,
+            \Dibi\Connection $db
     )
     {
             $this->database = $database;
@@ -47,6 +51,7 @@ class GroupManager extends BaseManager {
             $this->userManager = $userManager;
             $this->publicActionManager = $publicActionManager;
             $this->notificationManager = $notificationManager;
+            $this->db = $db;
     }
     
 
@@ -390,36 +395,22 @@ class GroupManager extends BaseManager {
     
     public function getGroupUsers($idGroup, $filterRelation = null)
     {         
+   
         if($filterRelation === null) {
-            $users = $this->database->query("SELECT DISTINCT T1.ID_USER, T2.SEX, T2.NAME, T2.SURNAME, T2.USERNAME, T2.PROFILE_PATH, T2.URL_ID, T2.PROFILE_FILENAME FROM 
+            $users = $this->db->fetchAll("SELECT DISTINCT T1.ID_USER, T2.SEX, T2.NAME, T2.SURNAME, T2.USERNAME, T2.PROFILE_IMAGE, T2.URL_ID FROM 
             (SELECT ID_OWNER AS ID_USER FROM groups WHERE ID_GROUP=? 
             UNION SELECT ID_USER FROM user_group WHERE ID_GROUP=? AND ACTIVE=1) T1
-            LEFT JOIN vw_user_detail T2 ON T1.ID_USER = T2.ID_USER", $idGroup, $idGroup)->fetchAll();
+            LEFT JOIN user T2 ON T1.ID_USER = T2.ID_USER", $idGroup, $idGroup);
         } else {
-            $users = $this->database->query("SELECT DISTINCT T1.ID_USER, T2.SEX, T2.NAME, T2.SURNAME, T2.USERNAME, T2.PROFILE_PATH, T2.URL_ID, T2.PROFILE_FILENAME FROM 
+            $users = $this->db->fetchAll("SELECT DISTINCT T1.ID_USER, T2.SEX, T2.NAME, T2.SURNAME, T2.USERNAME, T2.PROFILE_IMAGE, T2.URL_ID FROM 
             (SELECT ID_USER FROM user_group WHERE ID_GROUP=? AND ID_RELATION=? AND ACTIVE=1) T1
-            LEFT JOIN vw_user_detail T2 ON T1.ID_USER = T2.ID_USER", $idGroup, $filterRelation)->fetchAll();
+            LEFT JOIN user T2 ON T1.ID_USER = T2.ID_USER", $idGroup, $filterRelation);
         }
          
  
-         $userArray = array();
+         $userArray = [];
          foreach($users as $us) {
-             $user = new \App\Model\Entities\User;
-             $user->id = $us->ID_USER;
-             $user->surname = $us->SURNAME;
-             $user->name = $us->NAME;
-             $user->username = $us->USERNAME;
-             $user->urlId = $us->URL_ID;
-             if($us->PROFILE_FILENAME) {
-                $user->profileImage = "https://cdn.lato.cz/" . $us->PROFILE_PATH . "/" . $us->PROFILE_FILENAME;
-             } else {
-                if($us->SEX == 'M') {
-                    $user->profileImage = '/images/default-avatar_man.png';
-                } else {
-                    $user->profileImage = '/images/default-avatar_woman.png';
-                }
-             }
-             $userArray[] = $user;
+             $userArray[] = new User($us);
              
          }
          return $userArray;
