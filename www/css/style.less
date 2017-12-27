@@ -7,7 +7,7 @@
 @icon-background: rgba(0, 0, 0, .03);
 @secondary-text-color: rgba(0, 0, 0, .5);
 @secondary-color: #26a69a;
-@divider-color: rgba(0, 0, 0, .08);
+@line-color: rgba(0, 0, 0, .1);
 @hyperlink-color: #2979FF;
 
 /* MATERIALIZE */
@@ -28,7 +28,7 @@ a {
 }
 
 .divider {
-    background-color: @divider-color;
+    background-color: @line-color;
 }
 
 .no-margin {
@@ -200,7 +200,7 @@ a {
     background-color: rgba(77, 182, 172, .25);
 }
 
-.indeterminate {
+.progress .indeterminate {
     background-color: rgba(0, 171, 157, 1);
 }
 
@@ -681,7 +681,7 @@ input[type=datetime-local]:not(.browser-default),
 input[type=tel]:not(.browser-default),
 input[type=number]:not(.browser-default),
 input[type=search]:not(.browser-default) {
-	border-bottom: 1px solid rgba(0, 0, 0, .12);
+	border-bottom: 1px solid @line-color;
     margin-bottom: 0 !important;
     height: 45px;
     font-size: 14px;
@@ -697,7 +697,7 @@ input[type=search]:not(.browser-default) {
 
 .upload-file-input {
     display: block;
-    border-bottom: 1px solid rgba(0, 0, 0, .12);
+    border-bottom: 1px solid @line-color;
     margin: 0;
     height: 45px;
     font-size: 14px;
@@ -1448,7 +1448,7 @@ ul.dropdown-content.main-nav-dropdown {
     background: #fff;
     overflow: hidden;
     height: 45px;
-    border-bottom: 1px solid rgba(0, 0, 0, .12);
+    border-bottom: 1px solid @line-color;
 }
 
 .select-browser-default.full-width {
@@ -1728,7 +1728,7 @@ strong {
             display: flex;
             align-items: center;
             width: 100%;
-            border: 1px solid @divider-color;
+            border: 1px solid @line-color;
             padding: 16px;
         }
 
@@ -1991,7 +1991,7 @@ strong {
 }
 
 textarea.materialize-textarea {
-    border-bottom: 1px solid rgba(0, 0, 0, .12);
+    border-bottom: 1px solid @line-color;
     margin-bottom: 0;
     padding: 12px 0 !important;
     line-height: 1.6em;
@@ -2588,7 +2588,7 @@ nav .nav-title {
         width: 100%;
         padding: 20px 24px;
         cursor: pointer;
-        border-bottom: 1px solid @divider-color;
+        border-bottom: 1px solid @line-color;
 
         &:last-child {
             border-bottom: none;
@@ -3427,7 +3427,7 @@ nav .nav-title {
             display: flex;
             align-items: center;
             padding: 24px;
-            border-bottom: 1px solid @divider-color;
+            border-bottom: 1px solid @line-color;
             cursor: pointer;
 
             &:last-child {
@@ -3694,7 +3694,7 @@ nav .nav-title {
 }
 
 #group-cards .group-users:hover {
-    background-color:rgba(0, 0, 0, .12);
+    background-color:@line-color;
 }
 
 #group-cards .group-founder {
