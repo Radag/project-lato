@@ -26,3 +26,5 @@ services:
     taskHeader: App\FrontModule\Components\TaskHeader\ITaskHeader
     students: App\FrontModule\Components\Group\IStudentsFactory
     accountSettings: App\FrontModule\Components\Account\IAccountSettings
+    studentList: App\FrontModule\Components\Group\IStudentsListFactory
+    classification: App\FrontModule\Components\Group\IClassificationFactory

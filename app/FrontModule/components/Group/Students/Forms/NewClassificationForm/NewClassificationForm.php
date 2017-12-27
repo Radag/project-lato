@@ -59,7 +59,7 @@ class NewClassificationForm extends \App\Components\BaseComponent
         $id = $this->classificationManager->createGroupClassification($classificationGroup);
         
         $this->presenter->flashMessage('Hodnocení vloženo', 'success');
-        $this->presenter->redirect('this', array('do'=> 'usersList-classification' , 'usersList-idGroupClassification' => $id));
+        $this->parent->parent->showClassification($id);
         
     }
 }

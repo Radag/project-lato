@@ -33,9 +33,9 @@ class GroupPresenter extends BasePresenter
     protected $classificationManager;
     
     /** @var \App\Model\Entities\Group */
-    protected $activeGroup = null;
+    public $activeGroup = null;
     
-    protected $groupSettings = null;
+    public $groupSettings = null;
     
     /** @var  IStreamFactory  */
     protected $streamFactory;
@@ -47,7 +47,7 @@ class GroupPresenter extends BasePresenter
     /** @var  ICommitTaskFormFactory */
     public $commitTaskFormFactory;
     
-    protected $groupPermission = array(
+    public $groupPermission = array(
         'archive' => false,
         'leave' => false,
         'settings' => false,
@@ -183,11 +183,7 @@ class GroupPresenter extends BasePresenter
     
     public function createComponentStudents()
     {
-        $usersList = $this->studentsFactory->create();
-        $usersList->setGroup($this->activeGroup);
-        $usersList->setUser($this->activeUser);
-        $usersList->setGroupPermission($this->groupPermission);
-        return $usersList;
+        return $this->studentsFactory->create();
     }
     
     protected function createComponentStreamSettingsForm()

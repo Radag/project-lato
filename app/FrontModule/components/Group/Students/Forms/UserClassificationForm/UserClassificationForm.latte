@@ -17,12 +17,12 @@
             {input name}
         </div>
         <div class="form-row">
-            <input type="text" placeholder="Datum">
-        </div>
-        {*<div class="form-row">
-            {input grade}
+            {input date}
         </div>
         <div class="form-row">
+            {input grade}
+        </div>
+        {*<div class="form-row">
             {input notice class=>'materialize-textarea'}
         </div>*}
     </div>
@@ -33,4 +33,9 @@
             <button type="submit" class="waves-effect waves-light btn btn-confirm">Potvrdit</button>
         </div>
     </div>
+    <script>
+    $(function() {
+        $('select').material_select();
+    });
+</script>
 {/form}

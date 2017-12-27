@@ -22,37 +22,45 @@ class ClassificationManager extends BaseManager
     public function createClassification(Classification $classification)
     {
         $insert = false;
-        $this->database->beginTransaction();
+        $this->db->begin();
         if($classification->idClassificationGroup !== null) {
-            $idClassification = $this->database->query("SELECT ID_CLASSIFICATION FROM classification WHERE ID_CLASSIFICATION_GROUP=? AND ID_USER=?", $classification->idClassificationGroup, $classification->user->id)->fetchField();
+            $idClassification = $this->db->fetchSingle("SELECT ID_CLASSIFICATION FROM classification WHERE ID_CLASSIFICATION_GROUP=? AND ID_USER=?", $classification->idClassificationGroup, $classification->user->id);
             if($idClassification) {
-                $data = array('NOTICE' => $classification->notice, 'GRADE' => $classification->grade, 'LAST_CHANGE' => new \DateTime());
-                $this->database->query("UPDATE classification SET ? WHERE ID_CLASSIFICATION=?", $data, $idClassification);
+                $this->db->query("UPDATE classification SET ", [
+                    'NOTICE' => $classification->notice, 
+                    'GRADE' => $classification->grade,
+                    'NAME' => $classification->name,
+                    'CLASSIFICATION_DATE' => $classification->date
+                ], " WHERE ID_CLASSIFICATION=?" ,$idClassification);
             } else {
                 $insert = true;
             }   
         } else if($classification->idClassification !== null) {
-            $data = array('NOTICE' => $classification->notice, 'GRADE' => $classification->grade, 'LAST_CHANGE' => new \DateTime());
-            $this->database->query("UPDATE classification SET ? WHERE ID_CLASSIFICATION=?", $data, $classification->idClassification);       
+            $this->db->query("UPDATE classification SET ", [
+                'NOTICE' => $classification->notice, 
+                'GRADE' => $classification->grade,
+                'NAME' => $classification->name,
+                'CLASSIFICATION_DATE' => $classification->date
+            ], " WHERE ID_CLASSIFICATION=?", $classification->idClassification);       
         } else {
             $insert = true;
         }
         
         if($insert) {
-            $this->database->table('classification')->insert(array(
+            $this->db->query('INSERT INTO classification', [
                 'ID_USER' => $classification->user->id,
                 'ID_GROUP' => $classification->group->id,
                 'NAME' => $classification->name,
                 'ID_CLASSIFICATION_GROUP' => $classification->idClassificationGroup,
                 'NOTICE' => $classification->notice,
-                'CREATED_WHEN' => new \DateTime(),
                 'CREATED_BY' => $this->user->id,
                 'GRADE' => $classification->grade,
-                'ID_PERIOD' => $classification->idPeriod
-            ));   
+                'ID_PERIOD' => $classification->idPeriod,
+                'CLASSIFICATION_DATE' => $classification->date 
+            ]);  
         }
              
-        $this->database->commit();
+        $this->db->commit();
     }
     
     public function getUserClassification($idUser, $idGroup)

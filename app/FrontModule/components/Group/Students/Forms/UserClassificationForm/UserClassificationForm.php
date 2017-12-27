@@ -27,6 +27,7 @@ class UserClassificationForm extends \App\Components\BaseComponent
     protected $groupManager;
     protected $activeGroup;
 
+    protected $grades = ['1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '—' => '—', 'N' => 'N'];
 
     public function __construct(ClassificationManager $classificationManager,
             GroupManager $groupManager,
@@ -44,13 +45,18 @@ class UserClassificationForm extends \App\Components\BaseComponent
         $form->addText('name', 'Název hodnocení')
              ->setAttribute('placeholder', 'Název hodnocení')
              ->setRequired('Prosím napiště téma hodnocení.');
-        $form->addText('grade', 'Hodnocení')
-             ->setAttribute('placeholder', 'známka')
-             ->addConditionOn($form['grade'], Form::FILLED)
-                 ->addRule(Form::NUMERIC, 'Hodnocení musí být číslo větší než 0.')
-                 ->addRule(Form::MIN, 'Hodnocení musí být číslo větší než 0.', 0);
+        $form->addText('date', 'Datum')
+             ->setAttribute('placeholder', 'Datum')
+             ->setAttribute('type', 'date')
+             ->setAttribute('placeholder', date('d. m. Y'))
+             ->setValue(date("Y-m-d"));
+        $form->addSelect('grade', 'Známka', $this->grades)
+             ->setRequired();
+        /*
         $form->addTextArea('notice', 'Poznámka')
              ->setAttribute('placeholder', 'poznámka');
+         * 
+         */
         $form->addHidden('idClassification');
         $form->addSubmit('send', 'Vytvořit');
 
@@ -76,10 +82,10 @@ class UserClassificationForm extends \App\Components\BaseComponent
         $classification->group = $this->activeGroup;
         $classification->name = $values->name;
         $classification->grade = $values->grade;
-        $classification->notice = $values->notice;
+        //$classification->notice = $values->notice;
         $classification->idClassification = empty($values->idClassification) ? null : $values->idClassification;
         $classification->idPeriod = $this->presenter->activePeriod;
-        
+        $classification->date = \DateTime::createFromFormat('Y-m-d', $values->date);
         $users = $this->presenter->getRequest()->getPost('users');
         foreach($users as $idUser) {
             $classification->user->id = $idUser;
