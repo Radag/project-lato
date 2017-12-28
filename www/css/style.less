@@ -456,6 +456,18 @@ a {
     text-align: right;
 }
 
+.table-row .table-field.assignment-status {
+    width: 96px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+
+    &.submitted {
+        color: #4caf50;
+    }
+}
+
 .table-row .table-field a {
     cursor: pointer;
     color: @secondary-text-color;
@@ -1676,6 +1688,7 @@ strong {
 }
 
 .attachments {
+    width: 100%;
     display: flex;
     flex-direction: column;
     margin: 0;
@@ -1711,9 +1724,9 @@ strong {
 
 
         .file-icon {
-            display:none;
-            width: 42px;
-            height: 42px;
+            display: none;
+            width: 36px;
+            height: 36px;
             margin-right: 12px;
             border-radius: 50%;
             display: flex;
@@ -1750,12 +1763,14 @@ strong {
 
             i {
                 color: #fff;
+                font-size: 20px !important;
             }
         }
 
         .file-name {
             display: block;
             font-weight: 500;
+            line-height: 1.6em;
             color: #fff;
             color: rgba(0, 0, 0, .87);
             width: calc(~'100% - 54px');
@@ -4763,6 +4778,36 @@ nav .nav-title {
 .table-row-input textarea {
     line-height: 1.5em;
     min-height: 1.5em !important;
+}
+
+.classification-update-table {
+
+    .collapsible-body {
+
+        .table-row {
+            padding: 24px;
+
+            textarea {
+                padding-top: 0 !important;
+            }
+
+            .attachments {
+
+                .attached-file {
+                    padding: 20px 16px;
+
+                    .file-icon {
+                        width: 36px;
+                        height: 36px;
+                    }
+
+                    .file-name {
+                        line-height: 1.6em;
+                    }
+                }
+            }
+        }
+    }
 }
 
 /* ----- Noticeboard ----- */

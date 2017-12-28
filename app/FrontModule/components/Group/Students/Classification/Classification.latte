@@ -40,6 +40,47 @@
                     <div class="notice table-field"></div>
                     <div class="table-field">Hodnocení</div>
                 </div>
+
+
+
+                <ul class="collapsible popout classification-update-table" data-collapsible="expandable">
+                    {foreach $members as $member}                    
+                    <li>
+                        <div class="collapsible-header table-row">
+                            <div class="avatar small">
+                                <img src="{$member->profileImage}">
+                            </div>
+                            <div class="title">
+                                <span>{$member->surname}</span>, {$member->name}
+                            </div>
+                            <div class="flex-spacer"></div>
+                            <div class="table-field assignment-status submitted">Odevzdáno pozdě</div>
+                            <div class="grade table-field">
+                                {input grade$member->id class=>'no-border'}
+                            </div>
+                        </div>
+                        <div class="collapsible-body">
+                            <div class="table-row">
+                                <textarea id="textarea1" class="materialize-textarea" placeholder="Vložit poznámku k hodnocení ..."></textarea>
+                                <ul class="attachments">  
+                                    <li>
+                                        <a href="" target="_blank" class="attached-file">
+                                            <div class="file-icon spreadsheet">
+                                                <i class="material-icons">
+                                                    equalizer
+                                                </i>
+                                            </div>
+                                            <div class="file-name truncate">Název souboru<span>(dokument, .doc) – Nahráno 22. 6. 22:30</span></div>   
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    {/foreach}
+                </ul>
+
+
                 <ul class="custom-table">
                     {foreach $members as $member}
                     <li>
@@ -113,6 +154,11 @@
   $(document).ready(function() {
     $('select').material_select();
 });
+
+  $(document).ready(function(){
+    $('.collapsible').collapsible();
+  });
+     
 </script>
 
 <div id="edit-classification-modal" class="modal modal-small">
