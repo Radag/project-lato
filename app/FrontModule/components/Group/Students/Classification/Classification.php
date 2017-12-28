@@ -25,8 +25,6 @@ class Classification extends \App\Components\BaseComponent
     private $groupManager;
     
     
-    private $classificationGroupId = null;
-    
     protected $grades = ['1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '—' => '—', 'N' => 'N'];
     
     public function __construct(
@@ -44,7 +42,7 @@ class Classification extends \App\Components\BaseComponent
     {
         $this->template->permission = $this->presenter->groupPermission;
         $this->template->activeUser = $this->presenter->activeUser;
-        $classificationGroup = $this->classificationManager->getGroupClassification($this->classificationGroupId);
+        $classificationGroup = $this->classificationManager->getGroupClassification($this->parent->classGroupId);
         $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, \App\Model\Entities\Group::RELATION_STUDENT);
         if(!empty($classificationGroup->task)) {
             foreach($members as $member) {
@@ -54,7 +52,7 @@ class Classification extends \App\Components\BaseComponent
         
         $this->template->classificationGroup = $classificationGroup;
         $this['form']->setDefaults(array(
-            'idGroupClassification' => $this->classificationGroupId
+            'idGroupClassification' => $this->parent->classGroupId
         ));
         
         foreach($classificationGroup->classifications as $classification) {
@@ -75,9 +73,9 @@ class Classification extends \App\Components\BaseComponent
     }
     
     protected function createComponentForm()
-    {
-        $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id);
+    {   
         $form = $this->getForm();
+        $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, 2);    
         foreach($members as $member) {
             $form->addSelect('grade' . $member->id, 'Známka', $this->grades);
             $form->addTextArea('notice' . $member->id, 'Poznámka')
@@ -87,9 +85,8 @@ class Classification extends \App\Components\BaseComponent
         $form->addSubmit('send', 'Uložit');
 
         $form->onSuccess[] = function(\Nette\Application\UI\Form $form) {
-            $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id);
+            $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, 2);
             $values = $form->getValues(true);
-            \Tracy\Debugger::barDump('ff');
             foreach($members as $member) {
                 $classification = new \App\Model\Entities\Classification();
                 $classification->grade = $values['grade' . $member->id];
@@ -98,10 +95,10 @@ class Classification extends \App\Components\BaseComponent
                 $classification->group = $this->presenter->activeGroup;
                 $classification->user = $member;
                 $classification->idPeriod = $this->presenter->activePeriod;
-                \Tracy\Debugger::barDump($classification);
                 $this->classificationManager->createClassification($classification);
             }
-            //$this->redirect('this');
+            $this->presenter->flashMessage('Uloženo', 'success');
+            $this->parent->redirect('this', ['classGroupId' => null]);
         };
         
         return $form;
@@ -147,10 +144,5 @@ class Classification extends \App\Components\BaseComponent
             $this->presenter->redirect('this');
         };
         return $form;
-    }
-    
-    public function setGroupId($groupId)
-    {
-        $this->classificationGroupId = $groupId;
     }
 }

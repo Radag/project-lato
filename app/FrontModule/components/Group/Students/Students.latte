@@ -1,7 +1,7 @@
 {snippet screens}
-{if $screen === 'list'}
-    {control studentsList}
-{elseif $screen === 'classification'}
-    {control classification}
-{/if}
+    {if $classGroupId}
+        {control classification}
+    {else}
+        {control studentsList}
+    {/if}
 {/snippet}
