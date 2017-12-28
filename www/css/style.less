@@ -65,7 +65,7 @@ a {
         & {
             height: 36px;
             width: 36px;
-            margin-right: 8px;
+            margin-right: 12px;
 
             img {
                 height: 36px;
@@ -802,7 +802,7 @@ input[type=search]:not(.browser-default) {
 @media only screen and (max-width: 600px) {
     
     .card-header {
-        padding: 16px 12px 0 12px;
+        padding: 20px 12px 0 12px;
     }
 
     .card-header.separated {
@@ -1679,11 +1679,11 @@ strong {
     display: flex;
     flex-direction: column;
     margin: 0;
-    padding-top: 24px !important;
+    padding: 24px 0 0 0;
 
     @media only screen and (max-width: 600px) {
         & {
-            padding: 0 12px 32px 12px;
+            padding: 20px 0 0 0;
         }
     }
 
@@ -1700,7 +1700,15 @@ strong {
             width: 100%;
             padding: 24px 16px;
             background-color: @icon-background;
+
+            @media only screen and (max-width: 600px) {
+                & {
+                    padding: 20px 12px;
+                }
+            }
         }
+
+
 
         .file-icon {
             display:none;
@@ -1712,6 +1720,13 @@ strong {
             justify-content: center;
             align-items: center;
             background-color: rgba(0, 0, 0, .1);
+
+            @media only screen and (max-width: 600px) {
+                & {
+                    height: 36px;
+                    width: 36px;
+                }
+            }
 
             &.unknown {
                 background-color: #607d8b;
@@ -1742,8 +1757,14 @@ strong {
             display: block;
             font-weight: 500;
             color: #fff;
-            margin-right: 12px;
             color: rgba(0, 0, 0, .87);
+            width: calc(~'100% - 54px');
+
+            @media only screen and (max-width: 600px) {
+                & {
+                    width: calc(~'100% - 48px');
+                }
+            }
 
             span {
                 display: block;
@@ -2116,9 +2137,9 @@ nav .nav-title {
 }
 
 @media only screen and (max-width: 600px) { 
-    .nav-title {
+    nav .nav-title {
         font-size: 16px;
-        padding-left: 12px;
+        padding: 0 12px;
     }
 }
 
@@ -2160,7 +2181,7 @@ nav .nav-title {
     }
 
     .two-level-nav {
-        margin-top: 56px;
+        margin-top: 64px;
     }
 
 }
@@ -2242,7 +2263,7 @@ nav .nav-title {
 @media only screen and (max-width: 600px) { 
     .section-header {
         padding: 4px 12px;
-        height: 44px;
+        height: 52px;
         margin-top: 4px;
     }
 }
@@ -2974,7 +2995,7 @@ nav .nav-title {
 
 @media only screen and (max-width: 600px) {
     .card {
-        margin-bottom: 8px;
+        margin-bottom: 16px;
     }
 }
 
@@ -3090,6 +3111,8 @@ nav .nav-title {
 .card .card-content {
     padding: 24px;
     width: 100%;
+
+    
 }
 
 .card.grid-item .card-content {
@@ -3104,7 +3127,7 @@ nav .nav-title {
 
 @media only screen and (max-width: 600px) {
     .card .card-content {
-        padding: 16px 12px;
+        padding: 20px 12px;
     }
 }
 
@@ -3115,7 +3138,7 @@ nav .nav-title {
 .media-container {
     position: relative;
     width: 100%;
-    margin-bottom: 12px;
+    margin-bottom: -24px;
 
     .media-count {
         position: absolute;
@@ -3135,13 +3158,13 @@ nav .nav-title {
 
 @media only screen and (max-width: 992px) {
     .card .media-container {
-        margin-bottom: 4px;
+        margin-bottom: -24px;
     }
 }
 
 @media only screen and (max-width: 600px) {
     .card .media-container {
-        margin-bottom: 0;
+        margin-bottom: -24px;
     }
 }
 
@@ -3179,7 +3202,7 @@ nav .nav-title {
 
 @media only screen and (max-width: 600px) {
     .comments-header {
-        padding: 16px 12px;
+        padding: 20px 12px;
     }
 }
 
@@ -3241,14 +3264,14 @@ nav .nav-title {
 .comments-content {
     border-bottom:1px solid rgba(0, 0, 0, .1);
     background-color:#f9f9f9;
-    padding: 8px 0;
+    padding: 10px 0;
     display: flex;
     flex-direction: column;
 }
 
 @media only screen and (max-width: 600px) {
     .comments-content {
-        padding: 8px 0;
+        padding: 10px 0;
     }
 }
 
@@ -3265,7 +3288,7 @@ nav .nav-title {
 
 @media only screen and (max-width: 600px) {
     .comment-row {
-        padding: 8px 12px;
+        padding: 10px 12px;
     }
 }
 
@@ -3292,6 +3315,12 @@ nav .nav-title {
 .comment-row .comment-header span {
     font-size: 13px;
     color: @secondary-text-color;
+
+    @media only screen and (max-width: 600px) {
+        & {
+            font-size: 12px;
+        }
+    }
 } 
 
 .comment-row .comment-content .comment-text {
@@ -3302,7 +3331,7 @@ nav .nav-title {
 
 .comments-footer {
     background-color:#f9f9f9;
-    padding: 20px 24px;
+    padding: 24px 24px;
     cursor: text;
 }
 
@@ -3312,7 +3341,7 @@ nav .nav-title {
 
 @media only screen and (max-width: 600px) {
     .comments-footer {
-        padding: 16px 12px;
+        padding: 20px 12px;
     }
 }
 
@@ -3464,8 +3493,7 @@ nav .nav-title {
 
     #no-more-posts {
         width: 100%;
-        margin-top: 40px;
-        margin-bottom: 24px;
+        margin: 32px 0;
         text-align: center;
         color: @secondary-text-color;
         font-size: 13px;
@@ -3488,13 +3516,13 @@ nav .nav-title {
 
             @media only screen and (max-width: 992px) {
                 & {
-                    padding: 16px;
+                    padding: 20px 16px;
                 }
             }
 
             @media only screen and (max-width: 600px) {
                 & {
-                    padding: 16px 12px;
+                    padding: 20px 12px;
                 }
             }
             
@@ -3535,7 +3563,7 @@ nav .nav-title {
 
             @media only screen and (max-width: 992px) {
                 & {
-                    padding: 16px;
+                    padding: 20px 16px;
                 }
             }
 
@@ -3551,13 +3579,27 @@ nav .nav-title {
                 margin-right: 24px;
                 cursor: pointer;
 
+                @media only screen and (max-width: 600px) {
+                    & {
+                        font-size: 13px;
+                    }
+                }
+
                 .material-icons {
                     display: block;
                     width: 36px;
                     height: 24px;
+                    line-height: 24px;
                     margin-right: 8px;
                     text-align: center;
                     color: @secondary-text-color;
+
+                    @media only screen and (max-width: 600px) {
+                        & {
+                            width: 30px;
+                            font-size: 20px !important;
+                        }
+                    }
                 }
 
                 .label {
@@ -3688,6 +3730,12 @@ nav .nav-title {
         padding: 20px 24px;
         display: flex;
         align-items: center;
+
+        @media only screen and (max-width: 600px) {
+            & {
+                margin-bottom: 8px;
+            }
+        }
 
         &.empty {
             color: rgba(0, 0, 0, .87);
@@ -4478,6 +4526,12 @@ nav .nav-title {
 
     .time-left {
         flex-grow: 1;
+
+        @media only screen and (max-width: 600px) {
+            & {
+                font-size: 13px;
+            }
+        }
     }
 }
 
