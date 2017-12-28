@@ -21,7 +21,8 @@ services:
     homeworkFormFactory: App\FrontModule\Components\Stream\MessageForm\HomeworkForm\IHomeworkFormFactory 
     materialsFormFactory: App\FrontModule\Components\Stream\MessageForm\MaterialsForm\IMaterialsFormFactory
     taskFormFactory: App\FrontModule\Components\Stream\MessageForm\TaskForm\ITaskFormFactory  
-    groupSettingForm: App\FrontModule\Components\GroupSettingsForm\IGroupSettingsFormFactory  
+    groupSettingForm: App\FrontModule\Components\Group\About\IGroupSettingsFormFactory
+    groupAbout: App\FrontModule\Components\Group\About\IAboutGroupFactory  
     commitTaskForm: App\FrontModule\Components\Stream\ICommitTaskFormFactory
     taskHeader: App\FrontModule\Components\TaskHeader\ITaskHeader
     students: App\FrontModule\Components\Group\IStudentsFactory

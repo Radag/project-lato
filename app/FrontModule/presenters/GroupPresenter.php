@@ -9,7 +9,8 @@ use App\Model\Manager\PrivateMessageManager;
 use App\Model\Manager\NotificationManager;
 use App\Model\Manager\FileManager;
 use App\FrontModule\Components\Stream\IStreamFactory;
-use App\FrontModule\Components\GroupSettingsForm\IGroupSettingsFormFactory;
+use App\FrontModule\Components\Group\About\IGroupSettingsFormFactory;
+use App\FrontModule\Components\Group\About\IAboutGroupFactory;
 use App\FrontModule\Components\Stream\CommentForm\CommentForm;
 use App\Model\Manager\TaskManager;
 use App\Model\Entities\Group;
@@ -40,12 +41,14 @@ class GroupPresenter extends BasePresenter
     /** @var  IStreamFactory  */
     protected $streamFactory;
     
-    
     /** @var IStudentsFactory @inject */
     protected $studentsFactory;
     
     /** @var  ICommitTaskFormFactory */
     public $commitTaskFormFactory;
+    
+    /** @var IAboutGroupFactory */
+    public $aboutGroup;
     
     public $groupPermission = array(
         'archive' => false,
@@ -84,7 +87,8 @@ class GroupPresenter extends BasePresenter
             IGroupSettingsFormFactory $groupSettings,
             ClassificationManager $classificationManager,
             ICommitTaskFormFactory $commitTaskFormFactory,
-            IStudentsFactory $studentsFactory
+            IStudentsFactory $studentsFactory,
+            IAboutGroupFactory $aboutGroup
             )
     {
         $this->userManager = $userManager;
@@ -99,6 +103,7 @@ class GroupPresenter extends BasePresenter
         $this->classificationManager = $classificationManager;
         $this->commitTaskFormFactory = $commitTaskFormFactory;
         $this->studentsFactory = $studentsFactory;
+        $this->aboutGroup = $aboutGroup;
     }
     
     protected function startup()
@@ -121,7 +126,7 @@ class GroupPresenter extends BasePresenter
         } else {
             $this['topPanel']->addToMenu((object)array('name' => 'spolužáci', 'link' => $this->link('classmates'), 'active' => $this->isLinkCurrent('classmates')));
         }
-        $this['topPanel']->addToMenu((object)array('name' => 'o skupině', 'link' => $this->link('about'), 'active' => $this->isLinkCurrent('about')));    
+        $this['topPanel']->addToMenu((object)array('name' => 'o skupině', 'link' => $this->link('about'), 'active' => ($this->isLinkCurrent('about') || $this->isLinkCurrent('settings'))));    
         $this->template->colorScheme = $this->activeGroup->colorScheme;
         $this->template->activeGroup = $this->activeGroup;
         $this->template->activeUser = $this->activeUser;
@@ -207,6 +212,12 @@ class GroupPresenter extends BasePresenter
         return $form;
     }
     
+    public function createComponentAboutGroup()
+    {
+        return $this->aboutGroup->create();
+    }
+    
+    
     public function handleRedrawNews()
     {
         $this['stream']->redrawControl('messages');
@@ -290,29 +301,7 @@ class GroupPresenter extends BasePresenter
            $this->flashMessage("Skupina archivována");
            $this->redirect(':Front:Homepage:noticeboard');
     }
-    
-   public function handleFollowMessage($idMessage, $enable = true) 
-    {
-        $message = $this->messageManager->getMessage($idMessage);
-        $this->messageManager->followMessage($message, $this->activeUser, $enable);
-        if($enable) {
-            $this->presenter->flashMessage('Zpráva byla zařazena do sledovaných');
-        } else {
-            $this->presenter->flashMessage('Zpráva byla vyřazena ze sledovaných');
-        }
-        $this->presenter->redirect('this');
-    }
-
-    public function handleDeleteMessage($idMessage) 
-    {   
-        $message = $this->messageManager->getMessage($idMessage);
-        if($message->user->id === $this->activeUser->id || $this->activeUser->id === $this->activeGroup->owner->id) {
-            $this->messageManager->deleteMessage($message);
-            $this->presenter->flashMessage('Zpráva byla smazána.');
-            $this->presenter->redirect('this');
-        }
-    }
-    
+  
     public function handleChangeFilter($filter) 
     {   
         $this['stream']->setFilter($filter);
