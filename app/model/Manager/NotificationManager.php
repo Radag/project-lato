@@ -19,7 +19,20 @@ use App\Model\Manager\GroupManager;
  */
 class NotificationManager extends BaseManager
 {   
-
+    /*
+    //přidání zprávy do skupiny
+    const TYPE_ADD_GROUP_MSG = 'new_group_message';
+    //přidání komentáře do skupiny
+    const TYPE_ADD_COMMENT = 'new_group_comment';
+    //nový člen ve skupině
+    const TYPE_NEW_GROUP_MEMBER = 'new_group_member';
+    //byl vyhozem ze skupiny
+    const TYPE_REMOVE_FROM_GROUP = 'group_member_removed';
+    //byl přidán do skupiny
+    const TYPE_ADD_ADD_TO_GROUP = 'member_added_to_group';
+    */
+    
+    
     //přidání zprávy do skupiny
     const TYPE_ADD_GROUP_MSG = 1;
     //přidání komentáře do skupiny
@@ -37,17 +50,17 @@ class NotificationManager extends BaseManager
         $messages = $this->database->query("SELECT T1.TEXT, T1.TITLE, T1.ID_NOTIFICATION,
                     T2.NAME AS PART_NAME,
                     T2.SURNAME AS PART_SURNAME,
-                    T2.PROFILE_PATH AS PART_PROFILE_PATH,
-                    T2.PROFILE_FILENAME AS PART_PROFILE_FILENAME,
+                    T2.PROFILE_IMAGE AS PART_PROFILE_IMAGEH,
                     T2.USERNAME AS PART_USERNAME,
+                    T2.SEX AS PART_SEX,
                     T2.URL_ID AS PART_URL_ID,
                     T3.URL_ID AS GROUP_URL_ID,
                     T1.ID_MESSAGE
                 FROM notification T1 
-                LEFT JOIN vw_user_detail T2 ON T1.ID_PARTICIPANT = T2.ID_USER
+                LEFT JOIN user T2 ON T1.ID_PARTICIPANT = T2.ID_USER
                 LEFT JOIN groups T3 ON T1.ID_GROUP = T3.ID_GROUP
                 WHERE T1.ID_USER=?
-                ORDER BY CREATED DESC LIMIT 5", $user->id)->fetchAll();
+                ORDER BY T1.CREATED DESC LIMIT 5", $user->id)->fetchAll();
         foreach($messages as $message) {
             $participant = new \App\Model\Entities\User;
             $participant->name = $message->PART_NAME;
@@ -55,10 +68,7 @@ class NotificationManager extends BaseManager
             $participant->username = $message->PART_NAME;
             $participant->profileImage = $message->PART_USERNAME;
             $participant->urlId = $message->PART_URL_ID;
-            
-            if($message->PART_PROFILE_PATH) {
-                $participant->profileImage = "https://cdn.lato.cz/" . $message->PART_PROFILE_PATH . "/" . $message->PART_PROFILE_FILENAME;
-             }
+            $participant->profileImage = \App\Model\Entities\User::createProfilePath($message->PART_PROFILE_IMAGEH, $message->PART_SEX );
             
             $mess = new Notification();
             $mess->title = $message->TITLE;

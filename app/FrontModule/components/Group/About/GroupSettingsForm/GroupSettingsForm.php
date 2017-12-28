@@ -5,7 +5,7 @@
  * and open the template in the editor.
  */
 
-namespace App\FrontModule\Components\GroupSettingsForm;
+namespace App\FrontModule\Components\Group\About;
 
 use \Nette\Application\UI\Form;
 use \Nette\Application\UI\Control;
@@ -21,7 +21,7 @@ use Nette\Utils\Validators;
  *
  * @author Radaq
  */
-class GroupSettingsForm extends Control
+class GroupSettingsForm extends \App\Components\BaseComponent
 {
         
     protected $groupManager;
@@ -121,8 +121,7 @@ class GroupSettingsForm extends Control
         }
         
         $template->schedule = $scheRet;
-        $template->setFile(__DIR__ . '/GroupSettingsForm.latte');
-        $template->render();
+        parent::render();
     }
     
     public function handleAddScheduleRow()

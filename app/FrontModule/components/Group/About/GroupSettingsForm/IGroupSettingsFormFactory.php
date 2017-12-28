@@ -5,14 +5,10 @@
  * and open the template in the editor.
  */
 
-namespace App\FrontModule\Components\GroupSettingsForm;
+namespace App\FrontModule\Components\Group\About;
 
 
-/**
- * Description of SignInForm
- *
- * @author Radaq
- */
+
 interface IGroupSettingsFormFactory
 {
     /**
