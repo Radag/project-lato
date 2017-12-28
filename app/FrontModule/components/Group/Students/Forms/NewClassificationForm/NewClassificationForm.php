@@ -43,7 +43,7 @@ class NewClassificationForm extends \App\Components\BaseComponent
     {
         $form = $this->getForm();
         $form->addText('name', 'Hodnocení')
-             ->setAttribute('placeholder', 'název hodnocení')
+             ->setAttribute('placeholder', 'Název')
              ->setRequired('Prosím napiště téma hodnocení.');
         $form->addSubmit('send', 'Vytvořit');
 

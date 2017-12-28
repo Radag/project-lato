@@ -1,36 +1,33 @@
 {form form}
     <div class="modal-content">
-        <div class="modal-header flex-column">
-            <h3>Přidat známku</h3>
-            <div class="message-modal-users">
-                {ifset $classificationUsers}
-                {foreach $classificationUsers as $classUser}
-                <div class="avatar tiny">
-                    <img src="{$classUser->profileImage}" alt="{if !empty($classUser->name)}{$classUser->name} {$classUser->surname}{/if}">
-                    <input type="hidden" value="{$classUser->id}" name="users[]">
-                </div>
-                {/foreach}
-                {/ifset}
-            </div>            
+        <h3>Přidat známku</h3> 
+        {ifset $classificationUsers}
+        <p>Přidat známku těmto studentům</p>
+        <div class="message-modal-users">
+            
+            {foreach $classificationUsers as $classUser}
+            <div class="avatar tiny tooltipped" data-position="bottom" data-delay="50" data-tooltip="{if !empty($classUser->name)}{$classUser->name} {$classUser->surname}{/if}">
+                <img src="{$classUser->profileImage}" alt="{if !empty($classUser->name)}{$classUser->name} {$classUser->surname}{/if}">
+                <input type="hidden" value="{$classUser->id}" name="users[]">
+            </div>
+            {/foreach}
         </div>
+        {/ifset}           
         <div class="form-row">
             {input name}
         </div>
         <div class="form-row">
             {input date}
         </div>
-        <div class="form-row">
-            {input grade}
-        </div>
         {*<div class="form-row">
-            {input notice class=>'materialize-textarea'}
+            {input grade}
         </div>*}
     </div>
     <div class="modal-footer clearfix">
         <div class="flex-spacer"></div>
         <div class="form-control">
             <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-            <button type="submit" class="waves-effect waves-light btn btn-confirm">Potvrdit</button>
+            <button type="submit" class="waves-effect waves-light btn btn-confirm">Pokračovat</button>
         </div>
     </div>
     <script>

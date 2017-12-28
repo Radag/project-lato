@@ -75,13 +75,13 @@ a {
     }
 
     &.tiny {
-        height: 24px;
-        width: 24px;
+        height: 32px;
+        width: 32px;
         font-size: 14px;
 
         img {
-            height: 24px;
-            width: 24px;
+            height: 32px;
+            width: 32px;
         }
     }
 
@@ -392,6 +392,57 @@ a {
         border-bottom: none;
     }
 }
+
+.form-row.grade-row {
+    height: 46px;
+
+    .label {
+        flex-grow: 1;  
+    }
+
+    .grade-fake-select {
+        width: 64px;
+        height: 36px;
+        line-height: 36px;
+        font-size: 15px;
+        font-weight: 500;
+        text-align: center;
+        border-radius: 2px;
+        cursor: pointer;
+        background-color: @icon-background;
+    }
+}
+
+.grade-fake-dropdown {
+    width: 64px;
+    margin-top: -41px;
+    margin-bottom: 5px;
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    &.closed {
+        display: none;
+    }
+
+    li {
+        background-color: #fff;
+        height: 42px;
+        line-height: 42px;
+        flex-grow: 1;
+        cursor: pointer;
+        text-align: center;
+        width: 100%;
+
+        .active,
+        &:hover {
+            background-color: #eee;
+        }
+    }
+}
+
+
 
 .card-footer.highlighted,
 .table-control {
@@ -1147,6 +1198,7 @@ input[type=search]:not(.browser-default) {
 .message-modal-users {
     display: flex;
     margin-top: 20px;
+    margin-bottom: 24px;
     
     .avatar {
         margin-right: 8px;
