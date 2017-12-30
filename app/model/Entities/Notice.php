@@ -11,7 +11,7 @@ namespace App\Model\Entities;
  *
  * @author Radaq
  */
-class Notice {
+class Notice extends AbstractEntity {
     
     public $id = null;
     public $text = null;

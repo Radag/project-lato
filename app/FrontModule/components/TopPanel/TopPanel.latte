@@ -79,7 +79,7 @@
         </div> 
         <div class="label">
             <div class="title truncate"> 
-                {if $notification->participant->urlId} 
+                {if $notification->participant->slug} 
                 {if $notification->participant->name} 
                 {$notification->participant->name} {$notification->participant->surname} 
                 {else} 
@@ -127,7 +127,7 @@
     </li>
     {foreach $privateMessages as $message}
         <li>
-            <a href="{plink :Front:Profile:conversation, 'user'=>$message->user->urlId}" class="chat-person unread-mark">
+            <a href="{plink :Front:Profile:conversation, 'user'=>$message->user->slug}" class="chat-person unread-mark">
                 <div class="avatar">
                     <img src="{$message->user->profileImage|noescape}" alt="">
                 </div>
@@ -174,7 +174,7 @@
                     <ul>
                         {foreach $groups as $group}
                             <li>
-                                <a n:class="$presenter->isLinkCurrent('Group:default', array('id'=>$group->urlId)) ? active" href="{plink Group:default 'id'=>$group->urlId}">
+                                <a n:class="$presenter->isLinkCurrent('Group:default', array('id'=>$group->slug)) ? active" href="{plink Group:default 'id'=>$group->slug}">
                                     <div class="group-shortcut-circle" style="background-color: {$group->mainColor|noescape}" >{$group->shortcut|substr:0,1}</div>{$group->name}
                                 </a>
                             </li>

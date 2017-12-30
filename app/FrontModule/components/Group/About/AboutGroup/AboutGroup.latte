@@ -9,7 +9,7 @@
                 </div>
             </div>
         </div>
-        <div class="row" n:if="$groupPermission['settings']">
+        <div class="row">
             <div class="col s12 edit-btn">
                 <a href="{plink Group:settings}" class="btn no-shadow waves-effect waves-light" type="submit" name="send" >Upravit informace</a>
             </div>
@@ -91,10 +91,20 @@
                     <div class="card-header">
                         <h2>Sdílení</h2>
                     </div>
-                    {if $activeGroup->shareByCode == 1}
+                    {if $activeGroup->shareByCode == 1 || $activeGroup->shareByLink == 1}
                     <div class="card-content">
                         <p class="secondary-par">
-                            Studenti se mohou zapisovat pomocí kódu <strong>{$activeGroup->interCode}</strong>.
+                            Studenti se mohou zapisovat pomocí 
+                            {if $activeGroup->shareByCode == 1}
+                                kódu <strong>{$activeGroup->interCode}</strong>
+                            {/if}
+                            {if $activeGroup->shareByLink == 1}
+                                <br>
+                                {if $activeGroup->shareByCode == 1}
+                                    nebo
+                                {/if}
+                                odkazu <a href="{plink //:Public:Action:default, id => $activeGroup->publicCode}">{plink //:Public:Action:default, id => $activeGroup->publicCode}</a>
+                            {/if}
                         </p>
                     </div>
                     {/if}
@@ -120,20 +130,14 @@
                     <div class="card-content">
                         <p class="secondary-par">Známky jsou rozděleny do následujících období</p>
                         <div class="form-row-block">
-                            <div class="form-row static">
-                                <i class="material-icons icon-label">label</i>
-                                <a href="" class="input-flex filled">
-                                    První pololetí<span>(uzavřeno 29. 5.)</span>
-                                </a>
-                            </div>
-
-                            <div class="form-row static">
-                                <i class="material-icons icon-label">label</i>
-                                <a href="" class="input-flex filled">
-                                    Druhé pololetí
-                                </a>
-                            </div>
-
+                            {foreach $periods as $period}
+                                <div class="form-row static">
+                                    <i class="material-icons icon-label">label</i>
+                                    <a href="#" class="input-flex filled">
+                                        {$period->name}{if $period->deactivated_when}<span>(uzavřeno {$period->deactivated_when->format("j. n.")})</span>{/if}
+                                    </a>
+                                </div>
+                            {/foreach}
                         </div>
                     </div>
                 </div>
@@ -146,7 +150,7 @@
                         <p class="secondary-par">O správné fungování této skupiny se starají</p>
                         <ul class="custom-collection group-admins">
                             <li class="collection-item">    
-                                <a href="{plink Profile:default 'id'=>$activeGroup->owner->urlId}" class="item">
+                                <a href="{plink Profile:default 'id'=>$activeGroup->owner->slug}" class="item">
                                     <img src="{$activeGroup->owner->profileImage}" class="user-img">
                                     <div class="label">
                                         <span class="title truncate">
@@ -158,24 +162,10 @@
                                     </div>    
                                 </a>   
                             </li>
-                            <li class="collection-item">    
-                                <a href="{plink Profile:default 'id'=>$activeGroup->owner->urlId}" class="item">
-                                    <img src="{$activeGroup->owner->profileImage}" class="user-img">
-                                    <div class="label">
-                                        <span class="title truncate">
-                                            {$activeGroup->owner->name} {$activeGroup->owner->surname}
-                                        </span>
-                                        <span class="subtitle truncate">
-                                            Konzultant
-                                        </span>
-                                    </div>
-                                </a> 
-                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
-            
         </div>
     </div>
 </section>

@@ -44,16 +44,17 @@ class MailManager
         $latte = new \Latte\Engine;
         $hashCode = $this->publicActionManager->addNewAction(PublicActionManager::ACTION_MAIL_VALIDATION);
         $params = [
-            'link' => $presenter->link('//:Public:Action:default', array('id' => $hashCode, 'idUser'=>$idUser, 'email'=>base64_encode($values->email)))
+            'link' => $presenter->link('//:Public:Action:default', array('id' => $hashCode->code, 'idUser'=>$idUser, 'email'=>base64_encode($values->email)))
         ];
+        
         $body = $latte->renderToString(__DIR__ . '/templates/registrationMail.latte', $params);
         
-        $mailData = (object)array(
-            'from' => 'info@lato.cz',
+        $mailData = (object)[
+            'from' => 'Lato <info@lato.cz>',
             'to' => $values->email,
-            'subject' => 'Potvrzení registrace',
+            'subject' => 'Vítejte v systému Lato',
             'body' => $body,
-        );
+        ];
         $this->sendMail($mailData);
        
     }
@@ -71,12 +72,12 @@ class MailManager
             ];
             $body = $latte->renderToString(__DIR__ . '/templates/lostPasswordMail.latte', $params);
 
-            $mailData = (object)array(
-                'from' => 'info@lato.cz',
+            $mailData = (object)[
+                'from' => 'Lato <info@lato.cz>',
                 'to' => $email,
                 'subject' => 'Žádost o reset hesla',
                 'body' => $body,
-            );
+            ];
             $this->sendMail($mailData);
         }
     }

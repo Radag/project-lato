@@ -11,7 +11,7 @@ namespace App\Model\Entities;
  *
  * @author Radaq
  */
-class TaskCommit {
+class TaskCommit extends AbstractEntity {
     public $idTask = null;
     public $idCommit = null;
     public $comment = null;

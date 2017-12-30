@@ -43,10 +43,10 @@ class Classification extends \App\Components\BaseComponent
         $this->template->permission = $this->presenter->groupPermission;
         $this->template->activeUser = $this->presenter->activeUser;
         $classificationGroup = $this->classificationManager->getGroupClassification($this->parent->classGroupId);
-        $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, \App\Model\Entities\Group::RELATION_STUDENT);
+        $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, GroupManager::RELATION_STUDENT);
         if(!empty($classificationGroup->task)) {
             foreach($members as $member) {
-                $classificationGroup->task->commitArray[$member->id] = $this->taskManager->getCommitByUser($classificationGroup->task->idTask, $member->id);
+                $classificationGroup->task->commitArray[$member->id] = $this->taskManager->getCommitByUser($classificationGroup->task->id, $member->id);
             }
         }
         
@@ -75,7 +75,7 @@ class Classification extends \App\Components\BaseComponent
     protected function createComponentForm()
     {   
         $form = $this->getForm();
-        $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, 2);    
+        $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, GroupManager::RELATION_STUDENT);    
         foreach($members as $member) {
             $form->addSelect('grade' . $member->id, 'Známka', $this->grades);
             $form->addTextArea('notice' . $member->id, 'Poznámka')
@@ -85,7 +85,7 @@ class Classification extends \App\Components\BaseComponent
         $form->addSubmit('send', 'Uložit');
 
         $form->onSuccess[] = function(\Nette\Application\UI\Form $form) {
-            $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, 2);
+            $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, GroupManager::RELATION_STUDENT);
             $values = $form->getValues(true);
             foreach($members as $member) {
                 $classification = new \App\Model\Entities\Classification();

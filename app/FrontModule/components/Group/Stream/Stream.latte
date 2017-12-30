@@ -1,191 +1,42 @@
-{if $streamPermission['addMessages'] && !$singleMode}
-    <div class="card create-post">
-        <div id="show-create-post-modal" class="create-announcement">
-            <div class="avatar">
-                <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
+<div class="container main two-level-nav" id="group">
+    <div class="row">
+            <div class="col s12 l8" id="stream" >
+                {if $groupPermission['createMessages'] && !$singleMode}
+                    <div class="card create-post">
+                        <div id="show-create-post-modal" class="create-announcement">
+                            <div class="avatar">
+                                <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
+                            </div>
+                            <div class="label">
+                                Chcete ostatním něco sdělit?
+                            </div>
+                        </div>
+                        <ul class="alternate">
+                            <li id="show-create-post-modal-material">
+                                <i class="material-icons" data-position="bottom" data-delay="50" data-tooltip="Vložit studijní materiál">school</i>
+                                <div class="label">Studijní materiál</div>
+                            </li>
+                            <li id="show-create-post-modal-task">
+                                <i class="material-icons" data-position="bottom" data-delay="50" data-tooltip="Vytvořit povinnost">assignment</i>
+                                <div class="label">Povinnost</div>
+                            </li>
+                        </ul>
+                    </div>
+                {elseif !$singleMode}
+                    <div class="card card-flat create-post-disabled">
+                        <div class="card-content">Studentům není umožněno vytvářet příspěvky</div>
+                     </div>
+                {/if}
+                {snippet streamSection}
+                    {control messagesColumn}
+                {/snippet}
             </div>
-            <div class="label">
-                Chcete ostatním něco sdělit?
-            </div>
-        </div>
-        <ul class="alternate">
-            <li id="show-create-post-modal-material">
-                <i class="material-icons" data-position="bottom" data-delay="50" data-tooltip="Vložit studijní materiál">school</i>
-                <div class="label">Studijní materiál</div>
-            </li>
-            <li id="show-create-post-modal-task">
-                <i class="material-icons" data-position="bottom" data-delay="50" data-tooltip="Vytvořit povinnost">assignment</i>
-                <div class="label">Povinnost</div>
-            </li>
-        </ul>
+        {if !$singleMode}
+            {control rightColumn}
+        {/if}
     </div>
-{else}
-    <div class="card card-flat create-post-disabled">
-        <div class="card-content">Studentům není umožněno vytvářet příspěvky</div>
-        
-
-    </div>
-{/if}
-
-<!-- Modal Structure -->
-
-<script>  
-    $('#create-post-modal').modal();
-    $("#show-create-post-modal").on('click', function(e) {
-        $("#change-message-type-select").val('notice');
-        $("#change-message-type-select").material_select();
-        $("#change-message-type-select").change();
-        $('#create-post-modal').modal('open');
-    });
-    $("#show-create-post-modal-material").on('click', function(e) {
-        $("#change-message-type-select").val('material');
-        $("#change-message-type-select").material_select();
-        $("#change-message-type-select").change();
-        $('#create-post-modal').modal('open');
-    });
-    $("#show-create-post-modal-task").on('click', function(e) {
-        $("#change-message-type-select").val('task');
-        $("#change-message-type-select").material_select();
-        $("#change-message-type-select").change();
-        $('#create-post-modal').modal('open');
-    });
-    
-    latoAddAfterStartMethod({
-        submitClass: 'scroll-to-message',
-        beginFunction: function() {},
-        doneFunction: function(data, beforeParam) {
-            if(data.invalidForm === undefined || !data.invalidForm) {    
-                latoReloadMessageWall();
-                /*$('html, body').animate({
-                    scrollTop: $('#message-box-num_' + data.idMessage).offset().top
-                }, 700);*/
-            }
-        }
-    });
-    
-    latoAddAfterStartMethod({
-        submitClass: 'refresh-wall-messages',
-        beginFunction: function() {},
-        doneFunction: function(data, beforeParam) {
-            if(data.invalidForm === undefined || !data.invalidForm) {    
-                latoReloadMessageWall();
-            }
-        }
-    });
-
-
-    latoAddAfterStartMethod({
-        submitClass: 'edit-message-button',
-        beginFunction: function() { },
-        doneFunction: function(data, beforeParam) {
-            if(data.invalidForm === undefined || !data.invalidForm) {
-                $('#create-post-modal').modal('open');
-            }
-        }
-    });
-</script>
-
-<div id="create-post-modal" class="modal">
-    {snippet messageForm}
-        {control messageForm}
-    {/snippet}
 </div>
     
-{snippet messages}
-    {foreach $messages as $message}  
-    <div class="card {*grid-item*} flex-column {if $singleMode}single-message{else}{if $iterator->isFirst() && $streamPermission['addMessages']}grid-item-fst{/if}{/if}" id="message-box-num_{$message->id}"> 
-        {includeblock 'Message.latte'}
-        {control commentForm-$message->id}
-    </div>
-    {/foreach}
-    <script>
-        $(document).ready(function() {   
-            $('.copy-message-link').on('click', function(e) {
-                e.preventDefault();
-                $("#link-cache-input").show();
-                $("#link-cache-input").val($(this).data('link'));
-                $("#link-cache-input").select();
-                document.execCommand("Copy");
-                $("#link-cache-input").hide();
-            });
-            $('#message-delete-confirm-modal').modal();
-            $(".delete-message-button").on('click', function(event) {
-                event.preventDefault();
-                $('#message-delete-confirm-modal').data('delete-link', $(this).data('link'));
-                $('#message-delete-confirm-modal').modal('open');
-
-            });
-        });
-        function confirmDelete() {
-            $.nette.ajax({
-                url: $('#message-delete-confirm-modal').data('delete-link')
-            });
-        }   
-    </script>
-{/snippet}
-
-{* UVÍTACÍ KARTA PRO UČITELE *}
-{if count($messages) == 0 && !$isOwner}
-<div class="card card-flat" id="welcome-card">
-    <div class="card-header">
-        <h3 class="name">Vítejte ve skupině</h3>
-        <div class="flex-spacer"></div>
-    </div>
-    <div class="card-content">
-        <p>Zde bude umístěn obsah, který zveřejní vyučující.</p>
-    </div>
-    <div class="card-footer">
-        <a href="{plink Group:about}" class="btn gray no-shadow">Informace o skupině</a>
-    </div>
-</div>
-{/if}
-
-{* UVÍTACÍ KARTA PRO UČITELE *}
-{if count($messages) == 0 && $isOwner}
-<div class="card card-flat" id="welcome-card">
-    <div class="card-header">
-        <h3 class="name">Vítejte v nové skupině</h3>
-        <div class="flex-spacer"></div>
-    </div>
-    <div class="card-content">
-        <p>Vytvořili jsme pro Vás novou skupinu. Zde bude umístěn obsah, který zveřejníte studentům.</p>
-        {*<ul>
-            <li>
-                <a href="{plink Group:users}" class="icon waves-effect waves-dark">
-                    <i class="material-icons">person_add</i>
-                </a>
-                <a href="{plink Group:users}" class="label">
-                    Přidat studenty
-                </a>
-            </li>
-            <li>
-                <a href="{plink Group:settings}" class="icon waves-effect waves-dark">
-                    <i class="material-icons">info</i>
-                </a>
-                <a href="{plink Group:settings}" class="label">
-                    Doplnit informace
-                </a>
-            </li>
-            <li>
-                <a href="#select-post-type-modal" class="icon waves-effect waves-dark modal-trigger">
-                    <i class="material-icons">view_stream</i>
-                </a>
-                <a href="#select-post-type-modal" class="label modal-trigger">
-                    Vytvořit oznámení
-                </a>
-            </li>
-        </ul>*}
-    </div>
-    <div class="card-footer">
-        <a href="{plink Group:users}" class="btn gray no-shadow">Přidat studenty</a>
-    </div>
-</div>
-{/if}
-<div n:if="count($messages) > 0" id="no-more-posts">
-Více už toho není
-</div>
-<input type="text" style="display: none;" id="link-cache-input">
-
 <script>  
     $(document).ready(function() {           
         $('.modal-trigger-create-message').modal({
@@ -228,13 +79,51 @@ Více už toho není
                 });
             }
         });
-        $('input.autocomplete').autocomplete({
-            data: {
-              {foreach $userGroups as $group}
-              {$group->name}: {$group->id}{if !$iterator->isLast()},{/if}
-              {/foreach}
-            }
-        });               
+        $('#create-post-modal').modal();
+        $("#show-create-post-modal").on('click', function(e) {
+            $("#change-message-type-select").val('notice');
+            $("#change-message-type-select").material_select();
+            $("#change-message-type-select").change();
+            $('#create-post-modal').modal('open');
+        });
+        $("#show-create-post-modal-material").on('click', function(e) {
+            $("#change-message-type-select").val('material');
+            $("#change-message-type-select").material_select();
+            $("#change-message-type-select").change();
+            $('#create-post-modal').modal('open');
+        });
+        $("#show-create-post-modal-task").on('click', function(e) {
+            $("#change-message-type-select").val('task');
+            $("#change-message-type-select").material_select();
+            $("#change-message-type-select").change();
+            $('#create-post-modal').modal('open');
+        });
+        
+        if(!$.nette.ext('messageAjax')) {
+            $.nette.ext('messageAjax', {
+                start: function (jqXHR, settings) {
+                    if(settings.nette !== undefined && $(settings.nette.ui).hasClass('scroll-to-message')) { 
+                        jqXHR.done(function( data, textStatus, jqXHR ) {
+                            if(data.invalidForm === undefined || !data.invalidForm) {    
+                                latoReloadMessageWall();
+                                /*$('html, body').animate({
+                                    scrollTop: $('#message-box-num_' + data.idMessage).offset().top
+                                }, 700);*/
+                            }
+                        });
+                    }
+                    if(settings.nette !== undefined && $(settings.nette.ui).hasClass('edit-message-button')) { 
+                        jqXHR.done(function( data, textStatus, jqXHR ) {
+                            if(data.invalidForm === undefined || !data.invalidForm) {    
+                                if(data.invalidForm === undefined || !data.invalidForm) {
+                                    $('#create-post-modal').modal('open');
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
     }); 
 </script>
  <div id="message-delete-confirm-modal" class="modal modal-small">
@@ -248,4 +137,9 @@ Více už toho není
             <button type="button" onClick="confirmDelete()" class="waves-effect modal-close waves-light btn btn-confirm" >Ano</button>
         </div>
     </div>
+</div>
+<div id="create-post-modal" class="modal">
+    {snippet messageForm}
+        {control messageForm}
+    {/snippet}
 </div>

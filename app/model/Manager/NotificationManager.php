@@ -8,9 +8,7 @@
 
 namespace App\Model\Manager;
 
-use Nette;
 use App\Model\Entities\Notification;
-use App\Model\Manager\GroupManager;
 
 /**
  * Description of MessageManager
@@ -47,36 +45,33 @@ class NotificationManager extends BaseManager
     public function getNotifications($user)
     {
         $return = array();
-        $messages = $this->database->query("SELECT T1.TEXT, T1.TITLE, T1.ID_NOTIFICATION,
-                    T2.NAME AS PART_NAME,
-                    T2.SURNAME AS PART_SURNAME,
-                    T2.PROFILE_IMAGE AS PART_PROFILE_IMAGEH,
-                    T2.USERNAME AS PART_USERNAME,
-                    T2.SEX AS PART_SEX,
-                    T2.URL_ID AS PART_URL_ID,
-                    T3.URL_ID AS GROUP_URL_ID,
-                    T1.ID_MESSAGE
+        $messages = $this->db->fetchAll("SELECT 
+                    T1.id AS not_id,
+                    T1.text AS not_text,
+                    T1.title AS not_title,
+                    T2.id,
+                    T2.name,
+                    T2.surname,
+                    T2.profile_image,
+                    T2.username,
+                    T2.sex,
+                    T2.slug,
+                    T3.slug AS group_slug,
+                    T1.message_id
                 FROM notification T1 
-                LEFT JOIN user T2 ON T1.ID_PARTICIPANT = T2.ID_USER
-                LEFT JOIN groups T3 ON T1.ID_GROUP = T3.ID_GROUP
-                WHERE T1.ID_USER=?
-                ORDER BY T1.CREATED DESC LIMIT 5", $user->id)->fetchAll();
+                LEFT JOIN user T2 ON T1.participant_id = T2.id
+                LEFT JOIN `group` T3 ON T1.group_id = T3.id
+                WHERE T1.user_id=?
+                ORDER BY T1.created_when DESC LIMIT 5", $user->id);
         foreach($messages as $message) {
-            $participant = new \App\Model\Entities\User;
-            $participant->name = $message->PART_NAME;
-            $participant->surname = $message->PART_SURNAME;
-            $participant->username = $message->PART_NAME;
-            $participant->profileImage = $message->PART_USERNAME;
-            $participant->urlId = $message->PART_URL_ID;
-            $participant->profileImage = \App\Model\Entities\User::createProfilePath($message->PART_PROFILE_IMAGEH, $message->PART_SEX );
-            
+            $participant = new \App\Model\Entities\User($message);
             $mess = new Notification();
-            $mess->title = $message->TITLE;
-            $mess->text = $message->TEXT;
-            $mess->id = $message->ID_NOTIFICATION;
+            $mess->title = $message->not_title;
+            $mess->text = $message->not_text;
+            $mess->id = $message->not_id;
             $mess->participant = $participant;
-            $mess->idGroup = $message->GROUP_URL_ID;
-            $mess->idMessage = $message->ID_MESSAGE;
+            $mess->idGroup = $message->group_slug;
+            $mess->idMessage = $message->message_id;
             $return[] = $mess;
         }
         
@@ -85,7 +80,7 @@ class NotificationManager extends BaseManager
     
     public function getUnreadNumber($user)
     {
-        return $this->database->query("SELECT COUNT(ID_NOTIFICATION) FROM notification WHERE ID_USER=? AND IS_READ IS NULL", $user->id)->fetchField();
+        return $this->db->fetchSingle("SELECT COUNT(id) FROM notification WHERE user_id=? AND is_read IS NULL", $user->id);
     }
     
     public function addNotification(Notification $notification)

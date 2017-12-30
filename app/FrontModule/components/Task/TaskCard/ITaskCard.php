@@ -1,21 +1,22 @@
 <?php
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-namespace App\Model\Entities;
+
+namespace App\FrontModule\Components\TaskHeader;
+
+
 /**
- * Description of User
  *
  * @author Radaq
  */
-class Classroom extends AbstractEntity{
-
-
-    public $id = null;
-    public $className = null;
-    public $school = null;
-    public $classGrade = null;
+interface ITaskCard
+{
+    /**
+     * @return TaskCard 
+    */
+    public function create();
+    
 }

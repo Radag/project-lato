@@ -11,10 +11,9 @@ namespace App\Model\Entities;
  *
  * @author Radaq
  */
-class User {
+class User extends AbstractEntity {
 
     public $id = null;
-    public $urlId = null;
     public $name = null;
     public $surname = null;
     public $username = null;
@@ -23,14 +22,27 @@ class User {
     public $birthday = null;
     public $emailNotification = null;
     public $backgroundImage = null;
-
-    private $classification = null;
+    public $slug;
+    public $classification = null;
+    public $sex = null;
+    
+    protected $mapFields = [
+        'id' => 'id',
+        'surname' => 'surname',
+        'name' => 'name',
+        'email' => 'email',
+        'slug' => 'slug',
+        'username' => 'username',
+        'birthday' => 'birthday',
+        'email_notification' => 'emailNotification',
+        'background_image' => 'backgroundImage',
+        'sex' => 'sex'
+    ];
     
     public function __construct($data = null)
     {
-        if($data) {
-            $this->bindUser($data);
-        }
+        $this->bindData($data);
+        $this->bindUser($data);
     }
     
     public function getClassification() {
@@ -56,47 +68,12 @@ class User {
     }
     
     
-    function getId() {
-        return $this->id;
-    }
-
-    function getName() {
-        return $this->name;
-    }
-
-    function getEmail() {
-        return $this->email;
-    }
-
-    function setId($id) {
-        $this->id = $id;
-    }
-
-    function setName($name) {
-        $this->name = $name;
-    }
-
-    function setEmail($email) {
-        $this->email = $email;
-    }
-
     public function bindUser($data)
     {
-        isset($data->ID_USER) ? $this->id = $data->ID_USER : true;
-        isset($data->SURNAME) ? $this->surname = $data->SURNAME : true;
-        isset($data->NAME) ? $this->name = $data->NAME : true;
-        isset($data->EMAIL) ? $this->email = $data->EMAIL : true;
-        isset($data->URL_ID) ? $this->urlId = $data->URL_ID : true;
-        isset($data->USERNAME) ? $this->username = $data->USERNAME : true;
-        isset($data->BIRTHDAY) ? $this->birthday = $data->BIRTHDAY : true;
-        isset($data->EMAIL_NOTIFICATION) ?  $this->emailNotification = $data->EMAIL_NOTIFICATION : true;
-        if(isset($data->PROFILE_IMAGE)) {
-            $this->profileImage = self::createProfilePath($data->PROFILE_IMAGE, $data->SEX);
-        } else {
-            $this->profileImage = self::createProfilePath('', $data->SEX);
+        if(isset($data->profile_image)) {
+            $this->profileImage = self::createProfilePath($data->profile_image, $data->sex);
+        } elseif($data){
+            $this->profileImage = self::createProfilePath('', $data->sex);
         }
-        
-        isset($data->BACKGROUND_IMAGE) ? $this->backgroundImage = $data->BACKGROUND_IMAGE : true;
     }
-
 }

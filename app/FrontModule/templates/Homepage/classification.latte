@@ -1,21 +1,10 @@
 {block content}
 {control topPanel}
-
 <section class="main">
     <div class="container offset-1">
         <div class="row">
             <div class="col s12">
                 <header class="page-header">
-                    <button  class="btn white no-shadow dropdown-button" data-beloworigin="true" data-activates='season-dropdown'>
-                        {foreach $schoolPeriods as $period}
-                            {if $activePeriod == $period->ID_PERIOD}{$period->NAME}{/if}
-                        {/foreach}
-                    </button>
-                    <ul id='season-dropdown' class='dropdown-content'>
-                        {foreach $schoolPeriods as $period}
-                            <li><a href="{link changePeriod! idPeriod=>$period->ID_PERIOD}">{$period->NAME}</a></li>
-                        {/foreach}
-                    </ul>
                     <ul class="left options">
                         <li>
                             <a type="button" class="btn-flat btn-icon" data-status="close" id="button-open-all-cards">
@@ -28,7 +17,6 @@
             </div>
         </div>
     </div>
-
     <div class="container offset-1">
         <div class="row">
             <div class="col s12">
@@ -42,57 +30,57 @@
 
                     <ul class="collapsible popout" data-collapsible="expandable">
                         {foreach $myClassification as $group}
-                        <li>
-                            <div class="{if $group->statistics['count_grade'] !== 0}collapsible-header{/if} table-row">
-                                <div class="avatar small" style="background-color: {$group->mainColor|noescape};">{$group->shortcut|substr:0,1}</div>
-                                <div class="title">
-                                    {$group->name}
-                                </div>
-                                <div class="flex-spacer"></div>
-                                <div class="table-field">{ifset $group->statistics['last_change']}{$group->statistics['last_change']->format("j. n. v H:i")}{/ifset}</div>
-                                <div class="classification table-field">
-                                    {if $group->statistics['count_grade'] !== 0}
-                                        <strong>{$group->statistics['avg_grade']}</strong> ({$group->statistics['count_grade']})</div>
-                                    {else}
+                            <li>
+                                <div class="{if $group->statistics['count_grade'] !== 0}collapsible-header{/if} table-row">
+                                    <div class="avatar small" style="background-color: {$group->mainColor|noescape};">{$group->shortcut|substr:0,1}</div>
+                                    <div class="title">
+                                        {$group->name}
+                                    </div>
+                                    <div class="flex-spacer"></div>
+                                    <div class="table-field">{ifset $group->statistics['last_change']}{$group->statistics['last_change']->format("j. n. v H:i")}{/ifset}</div>
+                                    <div class="classification table-field">
+                                        {if $group->statistics['count_grade'] !== 0}
+                                            <strong>{$group->statistics['avg_grade']}</strong> ({$group->statistics['count_grade']})</div>
+                                        {else}
                                         –
                                     {/if}
-                            </div>
-                            {if $group->statistics['count_grade'] !== 0}
-                            <div class="collapsible-body">
-                                <div class="classification-table">
-                                    {foreach $group->classification as $classification}
-                                    <div class="table-row">
-                                        <a class="title truncate">{ifset $classification->name}{$classification->name}{/ifset}</a>
-                                        <div class="flex-spacer">{ifset $classification->notice}{$classification->notice}{/ifset}</div>
-                                        <div class="table-field">{ifset $classification->lastChange}{$classification->lastChange->format("j. n. v H:i")}{/ifset}</div>
-                                        <div class="classification table-field">
-                                            <strong>{ifset $classification->grade}{$classification->grade}{/ifset}</strong>
-                                        </div>
-                                    </div>
-                                    {/foreach}
                                 </div>
+                                {if $group->statistics['count_grade'] !== 0}
+                                    <div class="collapsible-body">
+                                        <div class="classification-table">
+                                            {foreach $group->classification as $classification}
+                                                <div class="table-row">
+                                                    <a class="title truncate">{ifset $classification->name}{$classification->name}{/ifset}</a>
+                                                    <div class="flex-spacer">{ifset $classification->notice}{$classification->notice}{/ifset}</div>
+                                                    <div class="table-field">{ifset $classification->lastChange}{$classification->lastChange->format("j. n. v H:i")}{/ifset}</div>
+                                                    <div class="classification table-field">
+                                                        <strong>{ifset $classification->grade}{$classification->grade}{/ifset}</strong>
+                                                    </div>
+                                                </div>
+                                            {/foreach}
+                                        </div>
 
-                            </div>
-                            {/if}
-                        </li>
+                                    </div>
+                                {/if}
+                            </li>
                         {/foreach}
                     </ul>
                 </form>
                 <script>
-                    $(document).ready(function () {
-                        $("#button-open-all-cards").on("click", function() {
-                            if($(this).data('status') == 'close') {
+                    $(function() {
+                        $("#button-open-all-cards").on("click", function () {
+                            if ($(this).data('status') == 'close') {
                                 $(".collapsible-header").addClass("active");
-                                $(".collapsible").collapsible({ accordion: false }); 
+                                $(".collapsible").collapsible({ accordion: false });
                                 $(this).data('status', 'open');
                             } else {
-                                $(".collapsible-header").removeClass(function(){
+                                $(".collapsible-header").removeClass(function () {
                                     return "active";
                                 });
                                 $(".collapsible").collapsible({ accordion: true });
                                 $(".collapsible").collapsible({ accordion: false });
-                                 $(this).data('status', 'close');
-                            }                          
+                                $(this).data('status', 'close');
+                            }
                         });
                     });
                 </script>

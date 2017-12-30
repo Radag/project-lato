@@ -7,8 +7,6 @@
 
 namespace App\FrontModule\Components\Group;
 
-use \Nette\Application\UI\Form;
-use \Nette\Application\UI\Control;
 use App\Model\Manager\GroupManager;
 use App\FrontModule\Components\NewClassificationForm\NewClassificationForm;
 use App\FrontModule\Components\NewClassificationForm\UserClassificationForm;
@@ -43,13 +41,14 @@ class StudentsList extends \App\Components\BaseComponent
     
     
     
-    public function __construct(GroupManager $groupManager,
-                                ClassificationManager $classificationManager,
-                                TaskManager $taskManager,
-                                UserManager $userManager,
-                                NotificationManager $notificationManager,
-                                PrivateMessageManager $privateMessageManager
-            )
+    public function __construct(
+        GroupManager $groupManager,
+        ClassificationManager $classificationManager,
+        TaskManager $taskManager,
+        UserManager $userManager,
+        NotificationManager $notificationManager,
+        PrivateMessageManager $privateMessageManager
+    )
     {
         $this->groupManager = $groupManager;
         $this->classificationManager = $classificationManager;
@@ -61,7 +60,7 @@ class StudentsList extends \App\Components\BaseComponent
 
     public function render()
     {
-        $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, \App\Model\Entities\Group::RELATION_STUDENT);
+        $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, GroupManager::RELATION_STUDENT);
         foreach($members as $member) {
             $member->getClassification()->items = $this->classificationManager->getUserClassification($member->id, $this->presenter->activeGroup->id);
             $averageGrade = 0;
@@ -184,9 +183,7 @@ class StudentsList extends \App\Components\BaseComponent
     
     public function handleEditUserClassificationForm($idClassification) 
     {
-        if(!$this->presenter->groupPermission['editClassification']) {
-            $this->redirect(':Front:Homepage:noticeboard');
-        }
+       
         $classification = $this->classificationManager->getClassification($idClassification);
         $this['userClassificationForm']['form']->setDefaults(array(
             'name' => $classification->name,
@@ -202,18 +199,14 @@ class StudentsList extends \App\Components\BaseComponent
     
     public function createComponentAddClassificationForm()
     {
-        if(!$this->presenter->groupPermission['editClassification']) {
-            $this->redirect(':Front:Homepage:noticeboard');
-        }
+        
         $component = new NewClassificationForm($this->classificationManager, $this->groupManager, $this->presenter->activeGroup);
         return $component;
     }
     
     public function createComponentUserClassificationForm()
     {
-        if(!$this->presenter->groupPermission['editClassification']) {
-            $this->redirect(':Front:Homepage:noticeboard');
-        }
+        
         $component = new UserClassificationForm($this->classificationManager, $this->groupManager, $this->presenter->activeGroup);
         return $component;
     }

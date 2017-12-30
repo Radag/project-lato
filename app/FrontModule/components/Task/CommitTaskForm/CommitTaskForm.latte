@@ -1,3 +1,4 @@
+{snippet commitTaskForm}
 {form form class=>'ajax'}
     <div class="modal-content">
         <h3>Odevzdat úkol</h3>
@@ -51,7 +52,16 @@
         </a>
     </li>
 </div>
-<script> 
+<script>
+    $("#commit-task-modal").modal();
+    $(".submit-class-button").off().on('click', function(e) {
+        $.nette.ajax({
+            url: $(this).data('link'),
+            method: 'GET'
+        }).done(function (msg) {
+            $("#commit-task-modal").modal('open');
+        });
+    });
     latoAddAfterStartMethod({
         submitClass: 'open-commit-task',
         beginFunction: function() {},
@@ -79,10 +89,12 @@
     }
     
     $(function() {
+        
         var taskCommitContent = new Dropzone("#taskCommitDropzone", { 
             url: {link uploadAttachment!},
             previewTemplate: '<div id="preview-template" style="display: none;"></div>'
         });
+        
         
         taskCommitContent.on("addedfile", function(file) {
             var id = Math.random().toString(36).substr(2, 10);
@@ -150,3 +162,4 @@
         });
     });
 </script>
+{/snippet}

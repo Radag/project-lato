@@ -1,3 +1,99 @@
+{snippet messageForm}
+    {form form}
+    <div class="post-type-selector"> 
+        <select id="change-message-type-select">
+            <option value="notice" {if empty($defaultMessage) || $defaultMessage->type === 'notice'}selected{/if}>Oznámení</option>
+            <option value="material" {if !empty($defaultMessage) && $defaultMessage->type === 'material'}selected{/if}>Studijní materiál</option>
+            <option value="task" {if !empty($defaultMessage) && $defaultMessage->type === 'task'}selected{/if}>Povinnost</option>
+        </select>
+    </div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="avatar">
+                <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
+            </div>
+            <h4>{$activeUser->name} {$activeUser->surname}</h4>
+        </div>
+        <div class="form-row hide mes-title-row">
+            {input title}
+        </div>
+        <div class="form-row">
+            {input text class => 'materialize-textarea'}
+        </div>
+        <div class="form-row term-picker hide mes-date-row">
+            <span class="label right-16">Datum (termín)</span>
+            {input date class => 'right-16'}
+            {input time}
+        </div>
+        <div class="form-row hide mes-online-row">
+            <div class="submit-control checkbox-vertical-align">
+                {input online: class => 'filled-in black'}{label online:}{/label}
+            </div>
+        </div>
+        {include attachmentBlock}
+    </div>
+    <div class="modal-footer">
+        <div class="attachments-nav">
+            {input attachments id => 'attachmentsIds'}
+            <ul>
+                <li>
+                    <a href="javascript:addNewAttachment()" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit soubor">
+                        <i class="material-icons">attach_file</i>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:addNewAttachment()" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit video z YouTube">
+                        <i class="material-icons">video_library</i>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:addNewAttachment()" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit hypertextový odkaz">
+                        <i class="material-icons">insert_link</i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="form-control">
+            <button data-reset-link="{link resetForm!}" type="button" class="reset-message-button modal-action modal-close waves-effect waves-light btn-flat" >Zrušit</button>
+            <button id="message-submit-button" class="btn waves-effect waves-light hide-modal-ajax-submit scroll-to-message" type="submit" name="send" >{$submitButtonName}</button>
+        </div>
+    </div>
+    <script>  
+        function loadInputsByType() {
+            if($("#change-message-type-select").val() === 'notice') {
+                $(".mes-title-row, .mes-date-row, .mes-online-row").addClass('hide');
+            } else if($("#change-message-type-select").val() === 'material') {
+                $(".mes-date-row, .mes-online-row").addClass('hide');
+                $(".mes-title-row").removeClass('hide');
+            } else if($("#change-message-type-select").val() === 'task') {
+                $(".mes-title-row, .mes-date-row, .mes-online-row").removeClass('hide');
+            }
+            $("input[name='messageType']").val($("#change-message-type-select").val());
+        }
+
+        $(document).ready(function() {
+            loadInputsByType();
+            $(".modal-close").on("click", function(e){
+                $('#create-post-modal').modal('close');
+            });
+            latoLoadDatePicker();
+            $("#change-message-type-select").on('change', function(e){
+               loadInputsByType();
+            });
+
+            $(".reset-message-button").on('click', function(e) {
+                $.nette.ajax({
+                    url: $(this).data('reset-link')
+                });
+            });
+        });
+    </script>
+    {include uploadBlock}
+    {/form}
+{/snippet}
+{include attachmentTemplate}
+
+
 {define uploadBlock}
 <div id="messageContentDropzone" style="display: none; text-align: center; padding-top: 15%; font-size: 18px; border: 0 !important; position: absolute; background-color: white; opacity: 0.94; width: 100%; height: 100%; top:0px; left:0px; z-index:999; ">
     Přesuňte soubor prosím zde
@@ -45,6 +141,7 @@
                         }
                     });
                 } else {
+                    
                     //TODO - zastavit upload
                 }
             });
@@ -68,6 +165,7 @@
         });
         
         messageContent.on("complete", function(file) {
+            
             uploadsFiles[file.classId] = true;
             var allDone = true;
             for(var i in uploadsFiles) {
@@ -80,38 +178,44 @@
             }
             var uploadedFile = JSON.parse(file.xhr.response);
             var attachTemplate = $("." + file.classId);
-            attachTemplate.find(".progress").hide();
-            attachTemplate.find(".file-name").html(uploadedFile.file.fileName + " <span>" + uploadedFile.file.type + "</span>");
-            switch(uploadedFile.file.type) {
-                case 1:
-                attachTemplate.find(".attachment-icon").addClass('image');
-                attachTemplate.find(".attachment-icon .material-icons").text('image');
-                break;
-                case 3:
-                attachTemplate.find(".attachment-icon").addClass('document');
-                attachTemplate.find(".attachment-icon .material-icons").text('insert_drive_file');
-                break;
-                case 4:
-                attachTemplate.find(".attachment-icon").addClass('spreadsheet');
-                attachTemplate.find(".attachment-icon .material-icons").text('equalizer');
-                break;
-                case 5:
-                attachTemplate.find(".attachment-icon").addClass('presentation');
-                attachTemplate.find(".attachment-icon .material-icons").text('videocam');
-                break;
-                case 6:
-                attachTemplate.find(".attachment-icon").addClass('presentation');
-                attachTemplate.find(".attachment-icon .material-icons").text('description');
-                break;
-                default:
-                attachTemplate.find(".attachment-icon").addClass('unknown');
-                attachTemplate.find(".attachment-icon .material-icons").text('help_outline');
+            if(uploadedFile.error) {
+                attachTemplate.remove();
+                $("#flashMessagesWrapper").append("<div class='flash'>" + uploadedFile.message + "</div>");
+                latoShowUpFlashMessages();
+            } else {
+                attachTemplate.find(".progress").hide();
+                attachTemplate.find(".file-name").html(uploadedFile.file.fileName + " <span>" + uploadedFile.file.type + "</span>");
+                switch(uploadedFile.file.type) {
+                    case 1:
+                    attachTemplate.find(".attachment-icon").addClass('image');
+                    attachTemplate.find(".attachment-icon .material-icons").text('image');
+                    break;
+                    case 3:
+                    attachTemplate.find(".attachment-icon").addClass('document');
+                    attachTemplate.find(".attachment-icon .material-icons").text('insert_drive_file');
+                    break;
+                    case 4:
+                    attachTemplate.find(".attachment-icon").addClass('spreadsheet');
+                    attachTemplate.find(".attachment-icon .material-icons").text('equalizer');
+                    break;
+                    case 5:
+                    attachTemplate.find(".attachment-icon").addClass('presentation');
+                    attachTemplate.find(".attachment-icon .material-icons").text('videocam');
+                    break;
+                    case 6:
+                    attachTemplate.find(".attachment-icon").addClass('presentation');
+                    attachTemplate.find(".attachment-icon .material-icons").text('description');
+                    break;
+                    default:
+                    attachTemplate.find(".attachment-icon").addClass('unknown');
+                    attachTemplate.find(".attachment-icon .material-icons").text('help_outline');
+                }
+
+                attachTemplate.find(".attached-file a").attr('href', uploadedFile.file.fullPath);
+                $(".attachments_uploads").append(attachTemplate);
+                file.remoteIdFile = uploadedFile.file.idFile;
+                $("#attachmentsIds").val($("#attachmentsIds").val() + "_" + uploadedFile.file.idFile);
             }
-            
-            attachTemplate.find(".attached-file a").attr('href', uploadedFile.file.fullPath);
-            $(".attachments_uploads").append(attachTemplate);
-            file.remoteIdFile = uploadedFile.file.idFile;
-            $("#attachmentsIds").val($("#attachmentsIds").val() + "_" + uploadedFile.file.idFile);
         });
     });
 </script>

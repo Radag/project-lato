@@ -1,13 +1,12 @@
 services:
-    authorizator: App\Model\Manager\UserManager  
-    messageManager: App\Model\Manager\MessageManager 
-    groupManager: App\Model\Manager\GroupManager 
-    privateMessageManager: App\Model\Manager\PrivateMessageManager
+    - App\Model\Manager\UserManager  
+    - App\Model\Manager\MessageManager 
+    - App\Model\Manager\GroupManager 
+    - App\Model\Manager\PrivateMessageManager
     notificationManager: App\Model\Manager\NotificationManager
     fileManager: App\Model\Manager\FileManager
     publicActionManager: App\Model\Manager\PublicActionManager
     classroomManager: App\Model\Manager\ClassroomManager
-    materialManager: App\Model\Manager\MaterialManager
     taskManager: App\Model\Manager\TaskManager
     schedulelManager: App\Model\Manager\SchedulelManager
     noticeManager: App\Model\Manager\NoticeManager
@@ -16,11 +15,7 @@ services:
     searchManager: App\Model\Manager\SearchManager
     schoolManager: App\Model\Manager\SchoolManager
 
-    streamFactory: App\FrontModule\Components\Stream\IStreamFactory
-    noticeFormFactory: App\FrontModule\Components\Stream\MessageForm\NoticeForm\INoticeFormFactory 
-    homeworkFormFactory: App\FrontModule\Components\Stream\MessageForm\HomeworkForm\IHomeworkFormFactory 
-    materialsFormFactory: App\FrontModule\Components\Stream\MessageForm\MaterialsForm\IMaterialsFormFactory
-    taskFormFactory: App\FrontModule\Components\Stream\MessageForm\TaskForm\ITaskFormFactory  
+    - App\FrontModule\Components\Stream\IStreamFactory
     groupSettingForm: App\FrontModule\Components\Group\About\IGroupSettingsFormFactory
     groupAbout: App\FrontModule\Components\Group\About\IAboutGroupFactory  
     commitTaskForm: App\FrontModule\Components\Stream\ICommitTaskFormFactory
@@ -29,3 +24,9 @@ services:
     accountSettings: App\FrontModule\Components\Account\IAccountSettings
     studentList: App\FrontModule\Components\Group\IStudentsListFactory
     classification: App\FrontModule\Components\Group\IClassificationFactory
+    - App\FrontModule\Components\Stream\IMessagesColumnFactory
+    - App\FrontModule\Components\Stream\IRightColumnFactory
+    - App\FrontModule\Components\PrivateMessageForm\IPrivateMessageFormFactory
+    - App\FrontModule\Components\TopPanel\ITopPanelFactory
+    - App\FrontModule\Components\Stream\MessageForm\IMessageFormFactory
+    - App\FrontModule\Components\Stream\ICommentFormFactory

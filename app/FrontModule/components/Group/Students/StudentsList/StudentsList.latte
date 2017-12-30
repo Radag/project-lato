@@ -176,7 +176,7 @@
                                     {ifset $member->getClassification()->items}
                                     {foreach $member->getClassification()->items as $classification}
                                     <div class="table-row">
-                                        <a n:if="$permission['editClassification']"  href="{if $classification->idClassificationGroup}
+                                        <a  href="{if $classification->idClassificationGroup}
                                            {link editGroupClassification! 'idGroupClassification'=>$classification->idClassificationGroup}
                                            {else}{link editUserClassificationForm! 'idClassification'=>$classification->idClassification}{/if}" class="{if !$classification->idClassificationGroup}ajax add-user-classification{/if} material-icons edit">edit</a>
                                         <div class="info">
@@ -217,13 +217,13 @@
 </section>
 
 <!-- MODALS -->
-<div n:if="$permission['editClassification']" id="new-classification-modal" class="modal modal-small">
+<div id="new-classification-modal" class="modal modal-small">
     {snippet addClassificationForm}
         {control addClassificationForm}
     {/snippet}
 </div>
 
-<div n:if="$permission['editClassification']" id="user-classification-modal" class="modal modal-small">
+<div id="user-classification-modal" class="modal modal-small">
     {snippet userClassificationForm}
         {control userClassificationForm}
     {/snippet}

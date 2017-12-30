@@ -2,68 +2,43 @@
 
 namespace App\FrontModule\Presenters;
 
-use App\Model\Manager\UserManager;
 use App\Model\Manager\GroupManager;
-use App\Model\Manager\PrivateMessageManager;
-use App\Model\Manager\NotificationManager;
 use App\Model\Manager\SchedulelManager;
-use App\Model\Manager\TaskManager;
-use App\Model\Manager\NoticeManager;
-use App\Model\Manager\ClassificationManager;
-use App\FrontModule\Components\TaskHeader\ITaskHeader;
-use App\FrontModule\Components\NewNoticeForm\NewNoticeForm;
-use App\FrontModule\Components\Stream\ICommitTaskFormFactory;
 use App\FrontModule\Components\SearchForm;
+use App\Model\Manager\TaskManager;
 use App\Model\Manager\SearchManager;
+use App\FrontModule\Components\TaskHeader\ITaskHeader;
+use App\FrontModule\Components\Stream\ICommitTaskFormFactory;
+use App\FrontModule\Components\Task\TaskCard;
+use App\Model\Manager\ClassificationManager;
 
 class HomepagePresenter extends BasePresenter
 {
-    protected $groupManager;
-    protected $userManager;
-    protected $privateMessageManager;
-    protected $notificationManager;
-    protected $scheduleManger;
-    protected $taskManager;
-    protected $noticeManager;
-    protected $classificationManager;
-    protected $taskHeaderFactory;
-    protected $searchManager;
+    /** @var GroupManager @inject */
+    public $groupManager;
+    
+    /** @var SchedulelManager @inject */
+    public $scheduleManger;
+    
+    /** @var SearchManager @inject */
+    public $searchManager;
+    
+    /** @var TaskManager @inject */
+    public $taskManager;
+    
+    /** @var ClassificationManager @inject */
+    public $classificationManager;
+        
+    /** @var ITaskHeader @inject */
+    public $taskHeaderFactory;
+    
+    /** @var ICommitTaskFormFactory @inject */
+    public $commitTaskForm; 
+        
     protected $days = array('Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota', 'Neděle');
     
     protected $tasks = array();
-    /**
-     * @var ICommitTaskFormFactory
-     */
-    public $commitTaskFormFactory;
-    
 
-    public function __construct(
-        UserManager $userManager,
-        GroupManager $groupManager,
-        PrivateMessageManager $privateMessageManager,
-        NotificationManager $notificationManager,
-        SchedulelManager $scheduleManger,
-        TaskManager $taskManager,
-        NoticeManager $noticeManager,
-        ClassificationManager $classificationManager,
-        ITaskHeader $taskHeader,
-        ICommitTaskFormFactory $commitTaskFormFactory,
-        SearchManager $searchManager
-    )
-    {
-        $this->userManager = $userManager;
-        $this->groupManager = $groupManager;
-        $this->privateMessageManager = $privateMessageManager;
-        $this->notificationManager = $notificationManager;
-        $this->scheduleManger = $scheduleManger;
-        $this->taskManager = $taskManager;
-        $this->noticeManager = $noticeManager;
-        $this->classificationManager = $classificationManager;
-        $this->taskHeaderFactory = $taskHeader;
-        $this->commitTaskFormFactory = $commitTaskFormFactory;
-        $this->searchManager = $searchManager;
-    }
-    
     public function actionDefault()
     {
         if($this->user->isLoggedIn()) {
@@ -74,10 +49,7 @@ class HomepagePresenter extends BasePresenter
     public function actionClassification()
     {
         $this['topPanel']->setTitle('Klasifikace');
-        $this->template->schoolPeriods = $this->classificationManager->getSchoolPeriods();
-        $this->template->activePeriod = $this->activePeriod;
-        $myClassification = $this->classificationManager->getMyClassification($this->activeUser, $this->activePeriod);
-        $this->template->myClassification = $myClassification;
+        $this->template->myClassification = $this->classificationManager->getMyClassification($this->activeUser);;
     }
     
     public function actionLogout()
@@ -91,8 +63,6 @@ class HomepagePresenter extends BasePresenter
         $this['topPanel']->setTitle('Nástěnka');
         
         $groups = $this->groupManager->getUserGroups($this->activeUser);
-        
-        $this->template->groups = $this->groupManager->getGroups($this->activeUser);
         $todaySchedule = $this->scheduleManger->getTodaySchedule($groups);
         
         $maxHour = 0;
@@ -110,11 +80,11 @@ class HomepagePresenter extends BasePresenter
         $this->template->maxHour = $maxHour;
         $this->template->minHour = $minHour;
         $this->template->todaySchedule = $todaySchedule;
-        
+        $this->template->groups = $groups;
         $this->template->days = $this->days;
         $this->tasks = $this->taskManager->getClosestTask($groups);
         $this->template->actualTasks = $this->tasks;
-        $this->template->actualNotices = $this->noticeManager->getNotices($this->activeUser, 3);
+        //$this->template->actualNotices = $this->noticeManager->getNotices($this->activeUser, 3);
         $this->template->activeUser = $this->activeUser;
     }
     
@@ -140,9 +110,16 @@ class HomepagePresenter extends BasePresenter
     {
         return new \Nette\Application\UI\Multiplier(function ($idTask) {
             $taskHeader = $this->taskHeaderFactory->create();
-            $taskHeader->setTask($this->tasks[$idTask]);
+            $task = $this->taskManager->getTask($idTask, $this->presenter->activeUser);
+            $taskHeader->setTask($task);
+            $taskHeader->setCommitTaskForm($this['commitTaskForm']);
             return $taskHeader;
         });
+    }
+    
+    public function createComponentCommitTaskForm()
+    {
+        return $this->commitTaskForm->create();
     }
     
     public function actionNotices()
@@ -175,26 +152,19 @@ class HomepagePresenter extends BasePresenter
         $this->template->schedule = $schedule;
         $this->template->days = $this->days;
         
-    }
-       
-    protected function createComponentNoticeForm()
+    }    
+        
+    protected function createComponentTaskCard()
     {
-        return new NewNoticeForm($this->noticeManager, $this->activeUser);
-    }
+        return new TaskCard();
+    }  
     
     public function redrawTasks() {
         $groups = $this->groupManager->getUserGroups($this->activeUser);
         $this->tasks = $this->taskManager->getClosestTask($groups);
         $this->redrawControl('actualTasks');
     }
-    
-    protected function createComponentCommitTaskForm()
-    {
-        $form = $this->commitTaskFormFactory->create();                
-        $form->setActiveUser($this->presenter->activeUser);
-        return $form;
-    }
-    
+        
     protected function createComponentSearchForm()
     {
         $form = new SearchForm($this->searchManager); 

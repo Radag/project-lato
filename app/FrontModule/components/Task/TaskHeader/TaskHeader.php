@@ -7,60 +7,43 @@
 
 namespace App\FrontModule\Components\TaskHeader;
 
-use App\Components\PreparedControl;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\GroupManager;
 use App\Model\Manager\TaskManager;
 use App\Model\Manager\ClassificationManager;
+use App\FrontModule\Components\Stream\ICommitTaskFormFactory;
 
 /**
  * Description of SignInForm
  *
  * @author Radaq
  */
-class TaskHeader extends PreparedControl
+class TaskHeader extends \App\Components\BaseComponent
 {
     
-    /**
-     * @var UserManager $userManager
-     */
+    /** @var UserManager */
     protected $userManager;
     
-    /**
-     * @var GroupManager $groupManager
-     */
-    protected $groupManager;
-     
+    /** @var GroupManager  */
+    protected $groupManager;  
     
-    /**
-     * @var TaskManager $taskManager
-     */
+    /** @var TaskManager */
     protected $taskManager;
     
-    /**
-     * @var ClassificationManager $classificationManager
-     */
+    /** @var ClassificationManager */
     protected $classificationManager; 
-    
-    /**
-     * @var \App\Model\Entities\Group $activeGroup
-     */
-    protected $activeGroup = null;
-    
-    /**
-     * @var \App\Model\Entities\User $activeUser
-     */
-    protected $activeUser;
-    
-    /**
-     * @var \App\Model\Entities\Task $task
-     */
+         
+    /** @var \App\Model\Entities\Task */
     protected $task;
     
-    public function __construct(UserManager $userManager,
-            GroupManager $groupManager,
-            TaskManager $taskManager,
-            ClassificationManager $classificationManager)
+    protected $commitTaskForm;
+    
+    public function __construct(
+        UserManager $userManager,
+        GroupManager $groupManager,
+        TaskManager $taskManager,
+        ClassificationManager $classificationManager
+    )
     {
         $this->userManager = $userManager;
         $this->groupManager = $groupManager;
@@ -73,15 +56,22 @@ class TaskHeader extends PreparedControl
         $this->task = $task;
     }
     
-  
-    public function render()
+    public function setCommitTaskForm($form)
     {
-        $this->template->activeUser = $this->presenter->activeUser;
-        $this->template->task = $this->task;
-        $this->template->setFile(__DIR__ . '/TaskHeader.latte');
-        $this->template->render();
+        $this->commitTaskForm = $form;
     }
     
+    public function render()
+    {
+        if(isset($this->presenter->activeGroup)) {
+             $this->template->isOwner = $this->presenter->activeGroup->relation === 'owner' ? true : false;
+        } else {
+            $this->template->isOwner = true;
+        }
+        
+        $this->template->task = $this->task;
+        parent::render();
+    }
     
     public function handleSetTaskCommit($idTask)
     {
@@ -104,11 +94,12 @@ class TaskHeader extends PreparedControl
         $this->presenter->redirect(':Front:Group:users', array('do'=> 'usersList-classification' ,'id' => $task->message->group->urlId , 'usersList-idGroupClassification' => $idGroupClassification)); 
     }
     
-    
-    public function handleEditTaskCommit($idCommit)
+    public function handleEditTaskCommit()
     {
-        $commit = $this->taskManager->getCommit($idCommit);
-        $this->presenter['commitTaskForm']->setDefault($commit);
-        $this->presenter->redrawControl('commitTaskForm');
+        $this->commitTaskForm->setTask($this->task);
+        //\Tracy\Debugger::barDump($this->task);
+        //$commit = $this->taskManager->getCommit($idCommit);
+        //$this->presenter['commitTaskForm']->setDefault($commit);
+        //$this->presenter->redrawControl('commitTaskForm');
     }
 }

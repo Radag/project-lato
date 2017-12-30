@@ -22,6 +22,7 @@ $(function() {
     /*
      * Obecná funckce pro skrytí modalu po správném odeslání
      */
+    /*
     latoAddAfterStartMethod({
         submitClass: 'hide-modal-ajax-submit',
         beginFunction: function(settings) {
@@ -35,22 +36,22 @@ $(function() {
             $('#full-screen-loader-modal').modal('close');
         }
     });
-        
+    */
+    
+
     $.nette.ext('hideAjaxSubmitPopup', {
-        start: function (jqXHR, settings) {              
-            if(settings.nette !== undefined && $(settings.nette.ui).hasClass('hide-popup-ajax-submit')) { 
-                showLoader();
-                $popup = $(settings.nette.ui).closest('.popup.modal');
+        start: function (jqXHR, settings) {
+            if(settings.nette !== undefined && $(settings.nette.ui).hasClass('hide-modal-ajax-submit')) { 
+                $('#full-screen-loader-modal').modal('open');
+                var modal = $(settings.nette.ui).closest('div.modal');
                 jqXHR.done(function( data, textStatus, jqXHR ) {
-                    hideLoader()
+                    $('#full-screen-loader-modal').modal('close');     
                     if(data.invalidForm === undefined || !data.invalidForm) {
-                        $popup.trigger('hide');
+                        modal.modal('close');
                     }
                 });
             }
-            if(settings.nette !== undefined && $(settings.nette.ui).hasClass('show-full-loader')) { 
-                showLoader();
-            }
+            /*
             if(settings.nette !== undefined && $(settings.nette.ui).data('show-popup-after')) {
                 showLoader();
                 $popup = $($(settings.nette.ui).data('show-popup-after'));
@@ -61,9 +62,11 @@ $(function() {
                     }
                 });
             }
+            */
         }
     });
-
+ 
+    /*  
     $.nette.ext('afterStartAjax', {
         start: function (jqXHR, settings) {
             var doneFunction = [];
@@ -82,6 +85,7 @@ $(function() {
             }
         }
     });
+    */
 });
 
 function latoReloadMessageWall()

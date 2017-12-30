@@ -24,16 +24,16 @@ class PublicActionManager extends BaseManager
     
     
     public function getGroupSharingAction($hashCode) {
-        $action = $this->database->query("SELECT 
-                T1.ACTION_TYPE,
-                T2.ID_ACTION,
-                T2.ID_GROUP,
-                T3.NAME,
-                T3.URL_ID
+        $action = $this->db->fetch("SELECT 
+                T1.action_type,
+                T2.action_id,
+                T2.group_id,
+                T3.name,
+                T3.slug
         FROM public_actions T1
-        LEFT JOIN group_sharing T2 ON T1.ID_ACTION=T2.ID_ACTION
-        LEFT JOIN groups T3 ON T3.ID_GROUP=T2.ID_GROUP
-        WHERE T1.HASH_CODE=? AND T1.ACTIVE=1 AND T2.SHARE_BY_LINK=1", $hashCode)->fetch();
+        LEFT JOIN group_sharing T2 ON T1.id=T2.action_id
+        LEFT JOIN `group` T3 ON T3.id=T2.group_id
+        WHERE T1.hash_code=? AND T1.active=1 AND T2.share_by_link=1", $hashCode);
         
         return $action;
     }
@@ -50,12 +50,20 @@ class PublicActionManager extends BaseManager
     
     public function addNewAction($actionType) 
     {
-        $hashCode = substr(md5(openssl_random_pseudo_bytes(20)),-8);
-        $this->database->table('public_actions')->insert(array(
-            'HASH_CODE' => $hashCode,
-            'ACTION_TYPE' => $actionType,
-            'ACTIVE' => 1
-        ));
-        return $hashCode;
+        $codePass = true;
+        while($codePass) {
+            $code = substr(md5(openssl_random_pseudo_bytes(20)),-8);
+            $exist = $this->db->fetchSingle("SELECT id FROM `public_actions` WHERE hash_code=?", $code);
+            if(!$exist) {
+                $codePass = false;
+            }
+        }
+        
+        $this->db->query("INSERT INTO public_actions", [
+            'hash_code' => $code,
+            'action_type' => $actionType
+        ]);
+
+        return (object)['code' => $code, 'id' => $this->db->getInsertId()];
     }
 }

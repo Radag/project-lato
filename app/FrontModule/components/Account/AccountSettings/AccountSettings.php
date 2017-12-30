@@ -62,16 +62,16 @@ class AccountSettings extends \App\Components\BaseComponent
     
     public function render() {
         $this->template->userAccount = $this->presenter->activeUser;
-        $this->notificationTypes = $this->notificationManager->getNotificationTypes();
-        $this->template->notifications = $this->notificationTypes;
+        //$this->notificationTypes = $this->notificationManager->getNotificationTypes();
+        //$this->template->notifications = $this->notificationTypes;
         $this->template->groups = $this->groupManager->getUserGroups($this->presenter->activeUser);
         parent::render();
     }
     
     protected function createComponentForm()
     {
-        $this->notificationTypes = $this->notificationManager->getNotificationTypes();
-        $this->notificationSettings = $this->notificationManager->getNotificationSettings($this->presenter->activeUser);
+       // $this->notificationTypes = $this->notificationManager->getNotificationTypes();
+        //$this->notificationSettings = $this->notificationManager->getNotificationSettings($this->presenter->activeUser);
         $userSchool = $this->schoolManager->getSchool($this->presenter->activeUser);
         
         $form = $this->getForm();
@@ -91,33 +91,42 @@ class AccountSettings extends \App\Components\BaseComponent
         $form->addText('birthday')
              ->setRequired('Zadejte datum narození')
              ->setAttribute('type', 'date')
-             ->setAttribute("placeholder","Datum narození")
-             ->setDefaultValue($this->presenter->activeUser->birthday->format('Y-m-d'));
+             ->setAttribute("placeholder","Datum narození");
+        
+        if($this->presenter->activeUser->birthday) {
+            $form['birthday']->setDefaultValue($this->presenter->activeUser->birthday->format('Y-m-d'));
+        }
+            
         $form->addText('school')
-             ->setAttribute("placeholder", "Název školy (nepovinné)")
-             ->setDefaultValue($userSchool->SCHOOL);
+             ->setAttribute("placeholder", "Název školy (nepovinné)");
         $form->addText('class')
-             ->setAttribute("placeholder", "Třída (nepovinné)")
-             ->setDefaultValue($userSchool->CLASS);
+             ->setAttribute("placeholder", "Třída (nepovinné)");
+        
+        if($userSchool) {
+            $form['school']->setDefaultValue($userSchool->school);
+            $form['class']->setDefaultValue($userSchool->class);
+        }
         $form->addHidden('deleteGroups');
         
         $form->addCheckbox('emailNotification')
              ->setDefaultValue($this->presenter->activeUser->emailNotification);
         
-        foreach($this->notificationTypes as  $type) {
-            $form->addCheckbox('notification_' . $type->ID_TYPE, $type->NAME);
-        }
-        
-        foreach($this->notificationSettings as  $setting) {
-            $form['notification_' . $setting->ID_TYPE]->setValue($setting->SHOW_NOTIFICATION);
-        }
+//        foreach($this->notificationTypes as  $type) {
+//            $form->addCheckbox('notification_' . $type->ID_TYPE, $type->NAME);
+//        }
+//        
+//        foreach($this->notificationSettings as  $setting) {
+//            $form['notification_' . $setting->ID_TYPE]->setValue($setting->SHOW_NOTIFICATION);
+//        }
         
         $form->addSubmit('submit', 'Odeslat');
         $form->onSuccess[] = function($form, $values) {
             $values->birthday = \DateTime::createFromFormat('Y-m-d', $values->birthday);
             $this->userManager->updateUser($values, $this->presenter->activeUser );
             
-            $this->schoolManager->insertSchool($values['school'], $values['class'], $this->presenter->activeUser);
+            if(!empty($values['school'])) {
+                $this->schoolManager->insertSchool($values['school'], $values['class'], $this->presenter->activeUser);
+            }
             
             foreach($values as $key=>$val) {
                 $a = explode('_', $key);
@@ -151,7 +160,7 @@ class AccountSettings extends \App\Components\BaseComponent
         if($image->width < 176 ||  $image->height < 176) {
             $this->presenter->flashMessage('Obrázek musí mít větší rozměry než 176 x 176', 'error');
         } else {
-            $path = 'users/' . $this->presenter->activeUser->urlId . '/profile';
+            $path = 'users/' . $this->presenter->activeUser->slug . '/profile';
             $file = $this->fileManager->saveFile($files['file'], $path);
             if($file) {
                 $this->userManager->assignProfileImage($this->presenter->activeUser, $file);
@@ -168,7 +177,7 @@ class AccountSettings extends \App\Components\BaseComponent
         if($image->width < 1156 ||  $image->height < 420) {
             $this->presenter->flashMessage('Obrázek musí mít větší rozměry než 1156 x 420', 'error');
         } else {
-            $path = 'users/' . $this->presenter->activeUser->urlId . '/profile';
+            $path = 'users/' . $this->presenter->activeUser->slug . '/profile';
             $file = $this->fileManager->saveFile($files['file'], $path);
             if($file) {
                 $this->userManager->assignBackgroundImage($this->presenter->activeUser, $file);

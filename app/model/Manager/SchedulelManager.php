@@ -20,6 +20,7 @@ class SchedulelManager extends BaseManager
     
     public function getTodaySchedule($groups) 
     {
+        return [];
         if(!empty($groups)) {
             $schedule = $this->database->query("SELECT 
                         T1.TIME_FROM,

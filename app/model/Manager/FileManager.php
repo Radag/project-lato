@@ -96,7 +96,7 @@ class FileManager extends BaseManager
     public function saveFile($file, $path) 
     {
         $connId = $this->getFtpConnection();
-        $createdDirecories = ftp_nlist($connId , self::USER_DIRECTORY . $this->user->getIdentity()->data['URL_ID']);
+        $createdDirecories = ftp_nlist($connId , self::USER_DIRECTORY . $this->user->getIdentity()->data['slug']);
         if(empty($createdDirecories)) {
             $this->createUserDirectories($connId);
         }
@@ -139,6 +139,7 @@ class FileManager extends BaseManager
             }
             $newFile['PATH'] = $path;
             $newFile['MIME'] = $file->getContentType();
+            $newFile['SIZE'] = $file->getSize();
             $newFile['FILENAME'] = $timestamp . '_' . $file->getSanitizedName();
             $newFile['EXTENSION'] = pathinfo($file->getSanitizedName(), PATHINFO_EXTENSION);
             $return['idFile'] = $this->saveNewFile($newFile);
@@ -159,29 +160,28 @@ class FileManager extends BaseManager
 
     protected function createUserDirectories($connId)
     {
-        ftp_mkdir($connId, self::USER_DIRECTORY . $this->user->getIdentity()->data['URL_ID']);
-        ftp_mkdir($connId, self::USER_DIRECTORY . $this->user->getIdentity()->data['URL_ID'] . '/profile');
-        ftp_mkdir($connId, self::USER_DIRECTORY . $this->user->getIdentity()->data['URL_ID'] . '/files');
+        ftp_mkdir($connId, self::USER_DIRECTORY . $this->user->getIdentity()->data['slug']);
+        ftp_mkdir($connId, self::USER_DIRECTORY . $this->user->getIdentity()->data['slug'] . '/profile');
+        ftp_mkdir($connId, self::USER_DIRECTORY . $this->user->getIdentity()->data['slug'] . '/files');
     }
 
     protected function saveNewFile($file)
     {
-        $this->database->beginTransaction();
-        $this->database->table('file_list')->insert(array(
-            'TYPE' => $file['TYPE'],
-            'EXTENSION' => $file['EXTENSION'],
-            'PATH' => $file['PATH'],
-            'MIME' => $file['MIME'],
-            'FILENAME' => $file['FILENAME']
-        ));
-        $idFile = $this->database->query('SELECT MAX(ID_FILE) FROM file_list')->fetchField();
-        $this->database->commit();
-        return $idFile;
+        $this->db->query("INSERT INTO file_list", [
+            'type' => $file['TYPE'],
+            'extension' => $file['EXTENSION'],
+            'path' => $file['PATH'],
+            'mime' => $file['MIME'],
+            'size' => $file['SIZE'],
+            'created_by' => $this->user->id,
+            'filename' => $file['FILENAME']
+        ]);
+        return $this->db->getInsertId();
     }
     
     protected function deleteFile($idFile)
     {
-        $this->database->query('DELETE FROM file_list WHERE ID_FILE=?', $idFile);
+        $this->db->query('DELETE FROM file_list WHERE id=?', $idFile);
     }
 }
 

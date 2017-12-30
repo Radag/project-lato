@@ -5,7 +5,7 @@
  * and open the template in the editor.
  */
 
-namespace App\FrontModule\Components\Stream\CommentForm;
+namespace App\FrontModule\Components\Stream;
 
 use \Nette\Application\UI\Form;
 use \Nette\Application\UI\Control;
@@ -13,52 +13,27 @@ use App\Model\Manager\MessageManager;
 use App\Model\Manager\UserManager;
 
 
-
-/**
- * Description of SignInForm
- *
- * @author Radaq
- */
-class CommentForm extends Control
+class CommentForm extends \App\Components\BaseComponent
 {
-    
-    private $idMessage = 0;
-    
-    /**
-     * @var \App\Model\Entities\User $activeUser
-     */
-    protected $activeUser;
-
-    /**
-     * @var MessageManager $messageManager
-     */
+    /** @var MessageManager */
     protected $messageManager;
     
-    /**
-     * @var UserManager $userManager
-     */
-    private $userManager;
+    /** @var UserManager */
+    protected $userManager;
+ 
+    protected $idMessage = 0;
     
-    
-    
-    public function __construct(MessageManager $messageManager, UserManager $userManager, \App\Model\Entities\User $activeUser)
+    protected $comments = [];
+      
+    public function __construct(MessageManager $messageManager, UserManager $userManager)
     {
         $this->messageManager = $messageManager;
-        $this->userManager = $userManager;
-        $this->activeUser = $activeUser;
-        
+        $this->userManager = $userManager; 
     }
-    
-
-    public function setMessage($id)
-    {
-        $this->idMessage = $id;
-    }
-    
     
     protected function createComponentForm()
     {
-        $form = new \Nette\Application\UI\Form;
+        $form = $this->getForm();
         $form->getElementPrototype()->class('ajax');
         $form->addTextArea('text', 'Zpráva')
                 ->setAttribute('placeholder', 'Napište komentář ...')
@@ -71,28 +46,49 @@ class CommentForm extends Control
         return $form;
     }
     
-    public function render()
-    {
-        $template = $this->template;
-        $template->setFile(__DIR__ . '/CommentForm.latte');
-        $template->comments = $this->messageManager->getComments($this->idMessage);
-        $template->discutionMembers = $this->messageManager->getDicscutionMembers($this->idMessage);
-        $template->activeUser = $this->activeUser;
-        
-        $template->id = $this->idMessage;
-        $template->render();
-    }
-    
     public function processForm(Form $form, $values) 
     {
         $comment = new \App\Model\Entities\Comment();
-        $comment->text = trim($values['text']);
-        $comment->user = $this->activeUser;
-        $comment->idMessage = $values['idMessage'];
+        $comment->text = trim($values->text);
+        $comment->user = $this->presenter->activeUser;
+        $comment->idMessage = $values->idMessage;
         
         $this->messageManager->createComment($comment);
         
         $this['form']['text']->setValue('');
+        $this->comments = $this->messageManager->getMessageComments($values->idMessage);
         $this->redrawControl('comments');
     }
+    
+    public function render()
+    {
+        $this->template->comments = $this->comments;
+        $this->template->discutionMembers = $this->getDicscutionMembers();
+        $this->template->activeUser = $this->presenter->activeUser;
+        $this->template->id = $this->idMessage;
+        parent::render();
+    }
+    
+    public function setMessage($id)
+    {
+        $this->idMessage = $id;
+    }
+    
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
+    }
+    
+    public function getDicscutionMembers() 
+    {
+        $membr = [];   ; 
+        foreach($this->comments as $c) {
+            $id = (int)$c->user->id;
+            if(!array_key_exists($id, $membr)) {
+                $membr[$id] = $c->user;
+            }
+        }
+        return $membr;
+    }
+
 }

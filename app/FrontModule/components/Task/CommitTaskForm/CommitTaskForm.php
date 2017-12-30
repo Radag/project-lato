@@ -17,43 +17,20 @@ use \Nette\Application\UI\Control;
 use App\Model\Entities\TaskCommit;
 
 
-/**
- * Description of CommitTaskForm
- *
- * @author Radaq
- */
-class CommitTaskForm extends Control
+class CommitTaskForm extends \App\Components\BaseComponent
 {
-     /**
-     * @var MessageManager $messageManager
-     */
+     /** @var MessageManager */
     protected $messageManager;
     
-    /**
-     * @var UserManager $userManager
-     */
+    /** @var UserManager */
     protected $userManager;
     
-    /**
-     * @var \App\FrontModule\Components\Stream\Stream $stream 
-     */
-    protected $stream;
-    
-    /**
-     * @var FileManager $fileManager
-     */
+    /** @var FileManager */
     protected $fileManager;
     
-    /**
-     * @var TaskManager $taskManager
-     */
+    /** @var TaskManager */
     protected $taskManager;
-    
-     /**
-     * @var \App\Model\Entities\User $activeUser
-     */
-    protected $activeUser;
-    
+      
     public function __construct(UserManager $userManager,
             MessageManager $messageManager, 
             FileManager $fileManager,
@@ -66,10 +43,9 @@ class CommitTaskForm extends Control
         $this->taskManager = $taskManager;
     }
     
-    
     protected function createComponentForm()
     {
-        $form = new Form;
+        $form = $this->getForm();
         $form->addTextarea('comment', 'Komentář')
              ->setAttribute('placeholder', 'Komentář k úkolu');
         
@@ -78,15 +54,7 @@ class CommitTaskForm extends Control
         $form->addHidden('idCommit');
         $form->addSubmit('send', 'Odevzdat');
         
-        $form->onSuccess[] = [$this, 'processForm'];
-        
-        $form->onError[] = function(Form $form) {
-            $this->presenter->payload->invalidForm = true;
-            foreach($form->getErrors() as $error) {
-                $this->presenter->flashMessage($error, 'error');
-            }            
-        };
-        
+        $form->onSuccess[] = [$this, 'processForm'];  
         return $form;
     }
     
@@ -98,31 +66,29 @@ class CommitTaskForm extends Control
         ));
         $this->template->attachments = $commit->files;
     }
-            
-    
-    public function setTaskId($idTask)
+             
+    public function setTask($task)
     {
-        $this['form']->setValues(array('idTask' => $idTask));
-    }
-    
-    public function render()
-    {
-        $template = $this->template;
-        $template->setFile(__DIR__ . '/CommitTaskForm.latte');
-        $template->render();
+        $this['form']->setValues([
+            'idTask' => $task->id
+        ]);
+        if($task->commit) {
+            $this->setDefault($task->commit);
+        }
+        $this->redrawControl('commitTaskForm');
     }
     
     public function processForm(Form $form, $values) 
     {
-        if(!empty($values['idCommit']) && !$this->taskManager->isUserCommit($values['idCommit'], $this->activeUser)) {
+        if(!empty($values['idCommit']) && !$this->taskManager->isUserCommit($values['idCommit'], $this->presenter->activeUser)) {
             throw new \Exception('Není vlastník');
         }
         
         $taskCommit = new \App\Model\Entities\TaskCommit();
-        $taskCommit->comment = $values['comment'];
-        $taskCommit->user = $this->activeUser;
-        $taskCommit->idTask = $values['idTask'];
-        $taskCommit->idCommit = $values['idCommit'];
+        $taskCommit->comment = $values->comment;
+        $taskCommit->user = $this->presenter->activeUser;
+        $taskCommit->idTask = $values->idTask;
+        $taskCommit->idCommit = $values->idCommit;
         
         $attachments = explode('_', $values['attachments']);    
         $idTaskCommit = $this->taskManager->createTaskCommit($taskCommit, $attachments);
@@ -132,16 +98,10 @@ class CommitTaskForm extends Control
         $this->presenter->redrawTasks();
     }
     
-    
-    public function setActiveUser(\App\Model\Entities\User $user)
-    {
-        $this->activeUser = $user;
-    }
-    
     public function handleUploadAttachment()
     {
         $file = $this->getPresenter()->request->getFiles();
-        $path = 'users/' . $this->activeUser->urlId . '/files';
+        $path = 'users/' . $this->presenter->activeUser->slug . '/files';
         
         $uploadedFile = $this->fileManager->uploadFile($file['file'], $path);
         $this->getPresenter()->payload->file = $uploadedFile;

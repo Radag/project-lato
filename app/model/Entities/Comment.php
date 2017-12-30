@@ -11,7 +11,7 @@ namespace App\Model\Entities;
  *
  * @author Radaq
  */
-class Comment {
+class Comment extends AbstractEntity {
     
     public $id = null;
     public $idMessage = null;

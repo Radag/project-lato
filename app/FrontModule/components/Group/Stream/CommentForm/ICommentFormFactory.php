@@ -5,18 +5,13 @@
  * and open the template in the editor.
  */
 
-namespace App\FrontModule\Components\Stream\MessageForm\NoticeForm;
+namespace App\FrontModule\Components\Stream;
 
 
-/**
- *
- * @author Radaq
- */
-interface INoticeFormFactory
+interface ICommentFormFactory
 {
     /**
-     * @return NoticeForm
-     */
+    * @return CommentForm 
+    */
     public function create();
-    
 }

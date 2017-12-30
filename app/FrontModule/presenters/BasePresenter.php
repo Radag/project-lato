@@ -10,11 +10,10 @@ namespace App\FrontModule\Presenters;
 
 use Nette;
 use \App\Model\Manager\UserManager;
-use App\FrontModule\Components\TopPanel\TopPanel;
+use App\FrontModule\Components\TopPanel\ITopPanelFactory;
 use App\Model\Manager\PrivateMessageManager;
 use App\Model\Manager\NotificationManager;
-use App\FrontModule\Components\PrivateMessageForm\PrivateMessageForm;
-use App\FrontModule\Components\Stream\ICommitTaskFormFactory;
+use App\FrontModule\Components\PrivateMessageForm\IPrivateMessageFormFactory;
 use App\Helpers\HelpersList;
 use App\Model\Manager\GroupManager;
 
@@ -24,49 +23,27 @@ use App\Model\Manager\GroupManager;
  * @author Radaq
  */
 class BasePresenter extends Nette\Application\UI\Presenter
-{
-    /** @var Nette\Database\Context */
-    private $database;
-
-    /**
-     * Aktivní uživatel, pod kterým se zobrazuje celý frontend
-     *  
-     * @var \App\Model\Entities\User
-     */
-    public $activeUser;
-    
-    /** @var ICommitTaskFormFactory */
-    public $commitTaskFormFactory;
-    
-    /** @var UserManager  */
-    protected $userManager;
+{    
+    /** @var UserManager @inject */
+    public $userManager;
        
-    /** @var GroupManager  */
-    protected $groupManager;
+    /** @var GroupManager @inject */
+    public $groupManager;
     
-    /** @var NotificationManager  */
-    protected $notificationManager;
+    /** @var NotificationManager @inject */
+    public $notificationManager;
+   
+    /** @var PrivateMessageManager @inject */
+    public $privateMessageManager;
     
-    protected $privateMessageManager;
+    /** @var IPrivateMessageFormFactory @inject */
+    public $privateMessageForm;
     
-    /** @persistent */
-    public $activePeriod = 1;
+    /** @var ITopPanelFactory @inject */
+    public $topPanel;
     
-    public function __construct(\Nette\Database\Context $database, 
-            UserManager $userManager,
-            PrivateMessageManager $privateMessageManager,
-            ICommitTaskFormFactory $commitTaskFormFactory,
-            GroupManager $groupManager,
-            NotificationManager $notificationManager
-    )
-    {
-        $this->database = $database;
-        $this->userManager = $userManager;
-        $this->privateMessageManager = $privateMessageManager;
-        $this->commitTaskFormFactory = $commitTaskFormFactory;
-        $this->groupManager = $groupManager;
-        $this->notificationManager = $notificationManager;
-    }
+    /** @var \App\Model\Entities\User */
+    public $activeUser;
     
     protected function startup()
     {
@@ -86,16 +63,20 @@ class BasePresenter extends Nette\Application\UI\Presenter
     protected function setActiveUser()
     {
         $this->activeUser = $this->userManager->get($this->user->id);
+        if($this->activeUser === null) {
+            $this->user->logout();
+            $this->redirect(':Public:Homepage:default');
+        }
     }
     
     protected function createComponentTopPanel()
     {
-        return new TopPanel($this->userManager, $this->groupManager, $this->privateMessageManager, $this->notificationManager, $this->activeUser);
+        return $this->topPanel->create();
     }
     
     protected function createComponentPrivateMessageForm()
     {
-        return new PrivateMessageForm($this->privateMessageManager, $this->activeUser, $this->userManager);
+        return $this->privateMessageForm->create();
     }
        
     public function handleShowPrivateMessageForm($idUserTo)

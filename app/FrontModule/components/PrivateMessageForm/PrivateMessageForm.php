@@ -13,25 +13,19 @@ use App\Model\Entities\PrivateMessage;
 use App\Model\Manager\PrivateMessageManager;
 use App\Model\Manager\UserManager;
 
-
-/**
- * Description of SignInForm
- *
- * @author Radaq
- */
 class PrivateMessageForm extends Control
 {
-        
+    /** @var PrivateMessageManager */
     protected $privateMessageManager;
-    protected $activeUser;
+    
+    /** @var UserManager */
     protected $userManager;
     
-    public function __construct(PrivateMessageManager $privateMessageManager,
-                \App\Model\Entities\User $activeUser,
-            UserManager $userManager)
+    public function __construct(
+        PrivateMessageManager $privateMessageManager,
+        UserManager $userManager)
     {
         $this->privateMessageManager = $privateMessageManager;
-        $this->activeUser = $activeUser;
         $this->userManager = $userManager;
     }
 
@@ -78,7 +72,7 @@ class PrivateMessageForm extends Control
         $message = new PrivateMessage;
         $userTo = $this->userManager->getUserByMail($values->emailTo);        
         $message->text = $values->text;
-        $message->idUserFrom = $this->activeUser->id;
+        $message->idUserFrom = $this->presenter->activeUser->id;
         $message->idUserTo = $userTo->id;
         $this['form']['text']->setValue("");      
         $this->privateMessageManager->insertMessage($message);

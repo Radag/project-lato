@@ -11,17 +11,10 @@ namespace App\Model\Entities;
  *
  * @author Radaq
  */
-class Group {
-
-    const TYPE_SUBJECT = 1;
-    const TYPE_GROUP = 2;
-    
-    const RELATION_TEACHER = 1;
-    const RELATION_STUDENT = 2;
-    const RELATION_OWNER = 3;
+class Group extends AbstractEntity {
     
     public $id = null;
-    public $urlId = null;
+    public $slug = null;
     public $name = null;
     public $email = null;
     public $shortcut = null;
@@ -51,24 +44,14 @@ class Group {
     public $userJoin = null;
     
     
-    private $mapFields = array(
-        'ID_GROUP' => 'id',
-        'NAME' => 'name',
-        'SHORTCUT' => 'shortcut',
+    protected $mapFields = [
+        'id' => 'id',
+        'name' => 'name',
+        'shortcut' => 'shortcut',
         'MAIN_COLOR' => 'mainColor',
         'STUDENTS' => 'numberOfStudents',
         'NEW_MESSAGE' => 'newMessages',
         'URL_ID' => 'urlId'
-    );
-    
-    
-    public function __construct($data = null) {
-        if(!empty($data) && is_object($data)) {
-            foreach($data as $key=>$value) {
-                if(isset($this->mapFields[$key])) {
-                    $this->{$this->mapFields[$key]} = $value;
-                }
-            }   
-        }
-    }
+    ];
+
 }

@@ -67,7 +67,6 @@ class NewGroupForm extends Control
         $group = new \App\Model\Entities\Group;
         $group->name = trim($values['name']);
         $group->owner = $owner;
-        $group->groupType = \App\Model\Entities\Group::TYPE_GROUP;
         $group->shortcut = strtoupper(substr($values['name'], 0, 3));
         $group->mainColor = $values['color'];        
         $idGroup = $this->groupManager->createGroup($group);

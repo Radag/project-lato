@@ -5,17 +5,13 @@
  * and open the template in the editor.
  */
 
-namespace App\FrontModule\Components\Stream\MessageForm\TaskForm;
+namespace App\FrontModule\Components\TopPanel;
 
 
-/**
- *
- * @author Radaq
- */
-interface ITaskFormFactory
+interface ITopPanelFactory
 {
     /**
-     * @return TaskForm 
+     * @return TopPanel 
     */
     public function create();
     

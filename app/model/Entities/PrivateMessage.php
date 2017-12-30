@@ -13,7 +13,7 @@ namespace App\Model\Entities;
  *
  * @author Radaq
  */
-class PrivateMessage {
+class PrivateMessage extends AbstractEntity {
     public $id;
     public $text;
     public $idUserFrom;

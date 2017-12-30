@@ -11,7 +11,7 @@ namespace App\Model\Entities;
  *
  * @author Radaq
  */
-class ClassificationGroup {
+class ClassificationGroup extends AbstractEntity{
     public $idClassificationGroup = null;
     public $group = null;
     public $name = null;

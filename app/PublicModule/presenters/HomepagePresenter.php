@@ -120,6 +120,7 @@ class HomepagePresenter extends BasePresenter
             
         } catch (\Exception $ex) {
             $this->flashMessage($ex->getMessage(), 'error');
+            return false;
         }
         
         $this->user->login($values->email, $pass);

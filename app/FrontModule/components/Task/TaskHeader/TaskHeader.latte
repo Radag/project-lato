@@ -1,4 +1,4 @@
-{if $task->message->user->id == $activeUser->id}   
+{if $isOwner}
     {if $task->commit }
         <div class="time-left">
             Odevzdáno: {$task->commit->created->format("j. n. H:i")}
@@ -11,7 +11,7 @@
             Uzavřeno: {$task->deadline->format("j. n. H:i")}
         </div>
     {/if}
-    <button class="btn gray no-shadow" id="submit-task">
+    <button type="button" data-link="{link editTaskCommit}" class="btn gray no-shadow submit-class-button">
         Odevzdat
     </button>
 {/if}

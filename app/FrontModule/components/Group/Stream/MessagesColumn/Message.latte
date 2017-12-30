@@ -1,42 +1,36 @@
-{if $message->type === 'task'}
+{if $message->type === 'task' && $message->task && $message->task->online}
 <div class="assignment">
     {var $tt=>$message->task}
-    {control taskHeader-$tt->idTask}
+    {control taskHeader-$tt->id}
 </div>
 {/if}  
 <div class="card-header">
     {if $message->priority == 1}<div class="topped"></div>{/if}
     {if $message->deleted == 1}<div class="deleted"></div>{/if}
-    <a href="{plink Profile:default 'id'=>$message->user->urlId}" class="avatar">
+    <a href="{plink Profile:default 'id'=>$message->user->slug}" class="avatar">
         <img src="{$message->user->profileImage}" alt="{$message->user->name}">
     </a>
     <h3 class="name truncate">
-        <a href="{plink Profile:default 'id'=>$message->user->urlId}">{$message->user->name} {$message->user->surname}</a>
+        <a href="{plink Profile:default 'id'=>$message->user->slug}">{$message->user->name} {$message->user->surname}</a>
     </h3>
-    <span class="card-date">{$message->getCreated()|date:"j. n."}</span>
-    {if $isOwner}
+    <span class="card-date">{$message->created|date:"j. n."}</span>
+ 
     <a class="btn-flat btn-icon dropdown-button card-options waves-effect waves-dark" data-activates="message_dropdown_{$message->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
         <i class="material-icons">more_horiz</i>
     </a>
     <ul id='message_dropdown_{$message->id}' class='dropdown-content'>
-        {if $streamPermission['topAllMessages'] || ($activeUser->id === $message->user->id && $streamPermission['topOwnMessages'])}
         {if !$message->top}
-        <li><a href="{link topMessage! idMessage=>$message->id}" class="ajax">Přesunout nahoru</a></li>
+            <li><a href="{link topMessage! idMessage=>$message->id}" class="ajax">Přesunout nahoru</a></li>
         {else}
-        <li><a href="{link topMessage! idMessage=>$message->id, enable=>false}" class="ajax">Zrušit přesunutí</a></li>
-        {/if}
+            <li><a href="{link topMessage! idMessage=>$message->id, enable=>false}" class="ajax">Zrušit přesunutí</a></li>
         {/if}
         {*<li><a href="#share-post_{$message->id}" class="modal-trigger">Znovu použít příspěvek</a></li>*}
-        <li><a href="#" data-link="{plink //Group:message 'id'=>$activeGroup->urlId, 'idMessage'=>$message->id}" class="copy-message-link">Kopírovat odkaz</a></li>
-        {if $streamPermission['removeAllMessages'] || ($activeUser->id === $message->user->id && $streamPermission['removeOwnMessages'])}
+        <li><a href="#" data-link="{plink //Group:message 'id'=>$activeGroup->slug, 'idMessage'=>$message->id}" class="copy-message-link">Kopírovat odkaz</a></li>
         <li class="divider"></li>
         <li><a href="#" data-link="{link deleteMessage! idMessage=>$message->id}" class="delete-message-button refresh-wall-messages">Smazat</a></li>
-        {/if}
-        {if $streamPermission['editAllMessages'] || ($activeUser->id === $message->user->id && $streamPermission['editOwnMessages'])}
         <li><a href="{link editMessage! idMessage=>$message->id}" class="ajax edit-message-button">Upravit zprávu</a></li>
-        {/if}
     </ul>
-    {/if}
+    {*
     <div id="share-post_{$message->id}" class="modal modal-small">
         <div class="modal-content">
             <form method="post" action="{link shareMessage! idMessage=>$message->id}">
@@ -49,6 +43,7 @@
                     <option value="3">Option 3</option>
                 </select>
             </div>
+            </form>
         </div>
         <div class="modal-footer">
             <div class="flex-spacer"></div>
@@ -58,10 +53,16 @@
             </div>
         </div>
     </div>
-    </form>
+    *}
 </div>
 <div class="card-content">
-    <p>{$message->getText()|breaklines}</p>
+    {if $message->title}
+        <div class="message-title">{$message->title}</div>
+    {/if}
+    {if $message->task && $message->task->title}
+        <div class="message-title">{$message->task->title}</div>
+    {/if}
+    <p>{$message->text|breaklines}</p>
     {if isset($message->attachments['files']) && !empty($message->attachments['files']) }
     <ul class="attachments">
         {foreach $message->attachments['files'] as $file}  

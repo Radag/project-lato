@@ -5,18 +5,14 @@
  * and open the template in the editor.
  */
 
-namespace App\FrontModule\Components\Stream\MessageForm\MaterialsForm;
+namespace App\FrontModule\Components\Stream;
 
 
-/**
- *
- * @author Radaq
- */
-interface IMaterialsFormFactory
+
+interface IMessagesColumnFactory
 {
     /**
-     * @return MaterialsForm
-     */
+    * @return MessagesColumn 
+    */
     public function create();
-    
 }

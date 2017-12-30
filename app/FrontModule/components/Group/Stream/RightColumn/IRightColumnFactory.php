@@ -5,18 +5,14 @@
  * and open the template in the editor.
  */
 
-namespace App\FrontModule\Components\Stream\MessageForm\HomeworkForm;
+namespace App\FrontModule\Components\Stream;
 
 
-/**
- *
- * @author Radaq
- */
-interface IHomeworkFormFactory
+
+interface IRightColumnFactory
 {
     /**
-     * @return HomeworkForm
-     */
+    * @return RightColumn 
+    */
     public function create();
-    
 }

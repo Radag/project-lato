@@ -59,7 +59,7 @@ class ClassroomManager extends BaseManager
     
     public function getClasses(User $user)
     {
-         $classes = $this->database->query("SELECT * FROM vw_user_schools WHERE ID_USER=?", $user->id)->fetchAll();
+         $classes = $this->db->query("SELECT * FROM vw_user_schools WHERE ID_USER=?", $user->id)->fetchAll();
         
          $return = array();
          foreach($classes as $class) {

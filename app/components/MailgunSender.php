@@ -23,7 +23,7 @@ class MailgunSender
     
     public function sendMail($mailData)
     {
-        $mg = Mailgun::create($this->config['key']);
+        $mg = Mailgun::create($this->config['key']);    
         $mg->messages()->send($this->config['domain'], [
           'from'    => $mailData->from,
           'to'      => $mailData->to,

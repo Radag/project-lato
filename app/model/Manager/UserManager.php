@@ -13,152 +13,105 @@ use App\Model\Entities\User;
 class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
 {
 
-    /** @var Nette\Database\Context */
-    private $database;
-
     /** @var \Dibi\Connection  */
     protected $db;
     
     public function __construct(
-        Nette\Database\Context $database, 
         \Dibi\Connection $db
     )
     {
-        $this->database = $database;
         $this->db = $db;
     }
 
-    /**
-     * Performs an authentication.
-     * @return Nette\Security\Identity
-     * @throws Nette\Security\AuthenticationException
-     */
     public function authenticate(array $credentials)
     {
-            list($email, $password) = $credentials;
+        list($email, $password) = $credentials;
+        $row = $this->db->fetch("SELECT * FROM user WHERE email=?", $email);
+        if (!$row) {
+            throw new Nette\Security\AuthenticationException('Špatné uživatelské jméno nebo heslo.', self::IDENTITY_NOT_FOUND);
+        } elseif (!Passwords::verify($password, $row->password)) {
+            throw new Nette\Security\AuthenticationException('Špatné uživatelské jméno nebo heslo.', self::INVALID_CREDENTIAL);
+        } elseif (Passwords::needsRehash($row->password)) {
+            $this->db->query("UPDATE user ", ['password' => Passwords::hash($password)], "WHERE id=?", $row->id);
+        }
+        $this->setLastLogin($row->id);
 
-
-            $row = $this->database->table('user')->where('EMAIL', $email)->fetch();
-            if (!$row) {
-                    throw new Nette\Security\AuthenticationException('Špatné uživatelské jméno nebo heslo.', self::IDENTITY_NOT_FOUND);
-
-            } elseif (!Passwords::verify($password, $row['PASSWORD'])) {
-                    throw new Nette\Security\AuthenticationException('Špatné uživatelské jméno nebo heslo.', self::INVALID_CREDENTIAL);
-
-            } elseif (Passwords::needsRehash($row['PASSWORD'])) {
-                    $row->update(array(
-                            'PASSWORD' => Passwords::hash($password),
-                    ));
-            }
-            $this->setLastLogin($row['ID_USER']);
-            
-            $arr = $row->toArray();
-            unset($arr['PASSWORD']);
-            return new Nette\Security\Identity($row['ID_USER'], 'admin', $arr);
+        $arr = $row->toArray();
+        unset($arr['password']);
+        return new Nette\Security\Identity($row->id, 'user', $arr);
     }
 
     public function setLastLogin($idUser)
     {
-        $data = array('LAST_LOGIN' => new \DateTime, 'LAST_LOGIN_IP' => $_SERVER['REMOTE_ADDR']);
-        $this->database->query("UPDATE user SET ? WHERE ID_USER=?", $data, $idUser);
-
+        $this->db->query("UPDATE user SET last_login=NOW(), last_login_ip=? WHERE id=?",  $_SERVER['REMOTE_ADDR'], $idUser);
     }
 
-    /**
-     * Adds new user.
-     * @param  string
-     * @param  string
-     * @return void
-     * @throws DuplicateNameException
-     */
     public function add($values)
     {
-            try {
-                $this->database->beginTransaction();
+        try {
+            $this->db->begin();
+            $this->db->query("INSERT INTO user", [
+                'email' => $values->email,
+                'name' => $values->name,
+                'surname' => $values->surname,
+                'password' => Passwords::hash($values->password1),
+                'register_ip' => $_SERVER['REMOTE_ADDR']
+            ]);
+ 
+            $idUser = $this->db->getInsertId();
 
-                $this->database->table('user')->insert(array(
-                        'EMAIL' => $values->email,
-                        'NAME' => $values->name,
-                        'SURNAME' => $values->surname,
-                        'PASSWORD' => Passwords::hash($values->password1),
-                        'REGISTER_IP' => $_SERVER['REMOTE_ADDR']
-                ));
-                $idUser = $this->database->query('SELECT MAX(ID_USER) FROM user')->fetchField();
-
-                $urlId = $idUser . '_' . Nette\Utils\Strings::webalize($values->name . '_' . $values->surname);
-                $this->database->query("UPDATE user SET URL_ID=? WHERE ID_USER=?", $urlId, $idUser);
-
-                $this->database->commit();
-
-                return $idUser;
-            } catch (Nette\Database\UniqueConstraintViolationException $e) {
-                    throw new DuplicateNameException;
-            }
-
-
+            $slug = $idUser . '_' . Nette\Utils\Strings::webalize($values->name . '_' . $values->surname);
+            $this->db->query("UPDATE user SET ", ['slug' => $slug], "WHERE id=?", $idUser);
+            $this->db->commit();
+            return $idUser;
+        } catch (Nette\Database\UniqueConstraintViolationException $e) {
+            throw new DuplicateNameException;
+        }
     }
     
     public function updatePassword(User $user, $password) 
     {
-        $this->database->query("UPDATE user SET PASSWORD=? WHERE ID_USER=?", Passwords::hash($password), $user->id);
+        $this->db->query("UPDATE user", ['password' =>  Passwords::hash($password)], "WHERE id=?", $user->id);
     }
 
-    /**
-     * 
-     * @param int $idUser
-     * @return User
-     */
-    public function get($idUser, $urlId = false)
+    public function get($idUser, $slug = false)
     {
-        $user = new User;
-        if($urlId) {
-            $userData = $this->database->query("SELECT * FROM user WHERE URL_ID=?", $idUser)->fetch();  
+        
+        if($slug) {
+            $userData = $this->db->fetch("SELECT * FROM user WHERE slug=?", $idUser);  
         } else {
-            $userData = $this->database->query("SELECT * FROM user WHERE ID_USER=?", $idUser)->fetch(); 
+            $userData = $this->db->fetch("SELECT * FROM user WHERE id=?", $idUser); 
         }
         if($userData) {       
-            $user->id = $userData->ID_USER;
-            $user->surname = $userData->SURNAME;
-            $user->name = $userData->NAME;
-            $user->email = $userData->EMAIL;
-            $user->urlId = $userData->URL_ID;
-            $user->username = $userData->USERNAME;
-            $user->birthday = $userData->BIRTHDAY;
-            $user->emailNotification =  $userData->EMAIL_NOTIFICATION;
-            $user->profileImage = User::createProfilePath($userData->PROFILE_IMAGE, $userData->SEX);
-            $user->backgroundImage = $userData->BACKGROUND_IMAGE;
-            return $user;
+            return new User($userData);
         } else {
             return null;
         }
     }
 
-    public function assignProfileImage(\App\Model\Entities\User $user, $file)
+    public function assignProfileImage(User $user, $file)
     {
-        $this->database->query("UPDATE user SET PROFILE_IMAGE=? WHERE ID_USER=?", $file['fullPath'], $user->id);
+        $this->db->query("UPDATE user SET", ['profile_image' => $file['fullPath']], "WHERE id=?", $user->id);
     }
     
-    public function assignBackgroundImage(\App\Model\Entities\User $user, $file)
+    public function assignBackgroundImage(User $user, $file)
     {
-        $this->database->query("UPDATE user SET BACKGROUND_IMAGE=? WHERE ID_USER=?", $file['fullPath'], $user->id);
+        $this->db->query("UPDATE user SET", ['background_image' => $file['fullPath']], "WHERE id=?", $user->id);
     }
 
     public function updateUser($values, $user)
     {
-        $this->database->query("UPDATE user SET NAME=?, EMAIL_NOTIFICATION=?, SURNAME=?, EMAIL=?, BIRTHDAY=? WHERE ID_USER=?", $values['name'], $values['emailNotification'], $values['surname'], $values['email'], $values['birthday'], $user->id);
-    }
-
-    public function getUsersList() {
-        $return = array();
-        $users =  $this->database->query("SELECT * FROM user")->fetchAll();
-        foreach($users as $user) {
-            $return[$user->USERNAME] =  User::createProfilePath($user->PROFILE_IMAGE, $user->SEX);
-        }
-        return $return;
+        $this->db->query("UPDATE user SET", [
+            'name' => $values['name'],
+            'email_notification' => $values['emailNotification'],
+            'surname' => $values['surname'],
+            'email' => $values['email'],
+            'birthday' => $values['birthday']
+        ], "WHERE id=?", $user->id);
     }
 
     public function getByName($name) {
-        return $this->database->query("SELECT ID_USER FROM vw_user_detail WHERE USERNAME=?", $name)->fetchField();
+        return $this->db->query("SELECT ID_USER FROM vw_user_detail WHERE USERNAME=?", $name)->fetchField();
     }
 
     public function switchUserRelation($idUser, $idRelated, $add) {
@@ -182,7 +135,7 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
 
     public function verifyEmail(User $user, $email) 
     {
-        $this->database->query("UPDATE user SET EMAIL_VERIFY=1 WHERE ID_USER=? AND EMAIL=?", $user->id, $email);
+        $this->db->query("UPDATE user SET email_verify=1 WHERE id=? AND email=?", $user->id, $email);
     }
 
     public function getUserByMail($email, $secret = null) 

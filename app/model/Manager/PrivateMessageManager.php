@@ -8,7 +8,6 @@
 
 namespace App\Model\Manager;
 
-use Nette;
 use App\Model\Entities\PrivateMessage;
 use App\Model\Entities\User;
 
@@ -22,32 +21,27 @@ class PrivateMessageManager extends BaseManager
     public function getMessages($user)
     {
         $return = array();
-        $messages = $this->database->query("SELECT 
-                    A2.TEXT, A2.ID_PRIVATE_MESSAGE, A3.NAME, A3.SURNAME, A2.CREATED, A3.URL_ID,
-               A3.PROFILE_IMAGE, A3.SEX, A2.IS_READ
+        $messages = $this->db->fetchAll("SELECT 
+          		A2.text, A2.id AS mess_id, A3.name, A3.surname, A2.created_when, A3.slug,
+               A3.profile_image, A3.sex, A2.is_read
             FROM 
             (
-            SELECT T1.USER_FROM, MAX(T1.ID_PRIVATE_MESSAGE) AS ID_MESSAGE FROM (
-                    SELECT ID_USER_TO AS USER_FROM, ID_PRIVATE_MESSAGE FROM private_message WHERE ID_USER_FROM=?
+            SELECT T1.user_from, MAX(T1.id) AS message_id FROM (
+                    SELECT user_to_id AS user_from, id FROM private_message WHERE user_from_id=?
                             UNION 
-                    SELECT ID_USER_FROM AS USER_FROM, ID_PRIVATE_MESSAGE FROM private_message WHERE ID_USER_TO=?
+                    SELECT user_from_id AS user_from, id FROM private_message WHERE user_to_id=?
             ) T1
-            GROUP BY T1.USER_FROM) A1
-            JOIN private_message A2 ON A1.ID_MESSAGE = A2.ID_PRIVATE_MESSAGE
-            JOIN user A3 ON A1.USER_FROM = A3.ID_USER
-            ORDER BY A2.CREATED DESC", $user->id, $user->id)->fetchAll();
+            GROUP BY T1.user_from) A1
+            JOIN private_message A2 ON A1.message_id = A2.id
+            JOIN user A3 ON A1.user_from = A3.id
+            ORDER BY A2.created_when DESC", $user->id, $user->id);
         foreach($messages as $message) {
             $mess = new PrivateMessage();
-            $user = new User();
-            $user->surname = $message->SURNAME;
-            $user->name = $message->NAME;
-            $user->urlId = $message->URL_ID;
-            $user->profileImage = User::createProfilePath($message->PROFILE_IMAGE, $message->SEX);            
-            $mess->text = $message->TEXT;
-            $mess->id = $message->ID_PRIVATE_MESSAGE;
-            $mess->created = $message->CREATED;
-            $mess->read = $message->IS_READ;
-            $mess->user = $user;
+            $mess->text = $message->text;
+            $mess->id = $message->mess_id;
+            $mess->created = $message->created_when;
+            $mess->read = $message->is_read;
+            $mess->user = new User($message);  ;
             $return[] = $mess;
         }
         
@@ -95,22 +89,22 @@ class PrivateMessageManager extends BaseManager
     
     public function getUnreadNumber($user)
     {
-        return $this->database->query("SELECT COUNT(ID_PRIVATE_MESSAGE) FROM private_message WHERE ID_USER_TO=? AND IS_READ IS NULL", $user->id)->fetchField();
+        return $this->db->fetchSingle("SELECT COUNT(id) FROM private_message WHERE user_to_id=? AND is_read IS NULL", $user->id);
     }
     
     public function setMessagesRead($idUserFrom, $idUserTo)
     {
-        $this->database->query("UPDATE private_message SET IS_READ=NOW() WHERE ID_USER_FROM=? AND ID_USER_TO=? AND IS_READ IS NULL", $idUserFrom, $idUserTo);
+        $this->db->query("UPDATE private_message SET is_read=NOW() WHERE user_from_id=? AND user_to_id=? AND is_read IS NULL", $idUserFrom, $idUserTo);
     }
     
     public function insertMessage(PrivateMessage $message)
     {
-        $this->database->table('private_message')->insert(array(
-                    'TEXT' => $message->text,
-                    'ID_USER_FROM' => $message->idUserFrom,
-                    'ID_USER_TO' => $message->idUserTo,
-                    'CREATED_BY' => $this->user->id
-            ));
+        $this->db->query("INSERT INTO private_message", [
+            'text' => $message->text,
+            'user_from_id' => $message->idUserFrom,
+            'user_to_id' => $message->idUserTo,
+            'created_by' => $this->user->id
+        ]);
     }
       
     

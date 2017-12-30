@@ -2,45 +2,13 @@
 
 namespace App\FrontModule\Presenters;
 
-use App\Model\Manager\UserManager;
-use App\Model\Manager\MessageManager;
-use App\Model\Manager\GroupManager;
-use App\Model\Manager\PrivateMessageManager;
-use App\Model\Manager\NotificationManager;
-use App\FrontModule\Components\TopPanel\TopPanel;
-use App\Model\Manager\FileManager;
 use App\Model\Manager\ClassroomManager;
 
 class ProfilePresenter extends BasePresenter
 {
-
-    protected $userManager;
-    protected $messageManager;
-    protected $groupManager;
-    protected $privateMessageManager;
-    protected $notificationManager;
-    protected $fileManager;
-    protected $classroomManager;
+    /** @var ClassroomManager @inject */
+    public $classroomManager;
         
-    
-    public function __construct(UserManager $userManager, 
-            MessageManager $messageManager, 
-            GroupManager $groupManager,
-            PrivateMessageManager $privateMessageManager,
-            NotificationManager $notificationManager,
-            ClassroomManager $classroomManager,
-            FileManager $fileManager)
-    {
-        $this->userManager = $userManager;
-        $this->messageManager = $messageManager;
-        $this->groupManager = $groupManager;
-        $this->privateMessageManager = $privateMessageManager;
-        $this->notificationManager = $notificationManager;
-        $this->fileManager = $fileManager;       
-        $this->classroomManager = $classroomManager;
-    }
-
-    
     public function renderDefault($id = null)
     {
         $this['topPanel']->setTitle('Profil');

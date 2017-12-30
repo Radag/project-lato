@@ -1,7 +1,0 @@
-{define groupMenu}
-<ul id='stream-options-window' class='dropdown-content'>
-    <li n:if="$groupPermission['settings']"><a href="{link Group:settings 'id' => $activeGroup->urlId}">Nastavení skupiny</a></li>
-    <li n:if="$groupPermission['leave']"><a href="{link leaveGroup!, 'idGroup'=>$activeGroup->id}">Opustit skupinu</a></li>
-    <li n:if="$groupPermission['archive']"><a href="{link archiveGroup!, 'idGroup'=>$activeGroup->id}">Archivovat skupinu</a></li>
-</ul>
-{/define}

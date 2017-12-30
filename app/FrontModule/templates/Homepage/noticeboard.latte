@@ -77,28 +77,12 @@
                 {foreach $actualTasks as $task}
                 <div class="col l6 m12 s12">
                     <div class="card flex-column">
+                        {if $task->online}
                         <div class="assignment">
-                            {control taskHeader-$task->idTask}
+                            {control taskHeader-$task->id}
                         </div>
-                        <a href="{plink Group:message 'id'=>$task->group->urlId, 'idMessage'=>$task->idMessage}" class="assignment-preview">
-                            <div class="card-header">
-                                <div class="avatar">
-                                    <img src="{$task->message->user->profileImage|noescape}">
-                                </div>
-                                <h3 class="name truncate">
-                                        {$task->message->user->name} {$task->message->user->surname}
-                                </h3>
-                                <span class="card-date">
-                                        22. 9.
-                                </span>
-                            </div>
-                            <div class="card-content">
-                                <p class="truncate"><strong>{$task->title} • </strong>Vytvořte podle zadání úlohu do programování a odevzdejte v nejbližším možném termínu.</p>
-                            </div>
-                            <div class="card-footer">
-                                <button class="btn btn-flat" style="color: #ffc900;">{$task->group->name}</button>
-                            </div>
-                        </a>
+                        {/if}
+                        {control taskCard $task}
                     </div>
                 </div>
                 {/foreach}
@@ -145,13 +129,13 @@
 
         {foreach $groups as $group}
         <div class="col l4 m6 s12">
-            <a href="{link Group:default, 'id'=>$group->urlId}" class="card waves-effect waves-light-gray">
+            <a href="{link Group:default, 'id'=>$group->slug}" class="card waves-effect waves-light-gray">
 
                 <div class="avatar" style="background-color:{$group->mainColor|noescape};">{$group->shortcut|substr:0,1}</div>
                 <div class="title">
                     {$group->name}
                     <span>
-                        {$group->owner->name} {$group->owner->surname}
+                        {*$group->owner->name} {$group->owner->surname*}
                     </span>
                 </div>
 

@@ -59,24 +59,19 @@ class TopPanel extends Control
     
     protected $title = "";
     
-    public function __construct(UserManager $userManager,
-            GroupManager $groupManager, 
-            PrivateMessageManager $privateMessageManager,
-            NotificationManager $notificationManager,
-            \App\Model\Entities\User $activeUser)
+    public function __construct(
+        UserManager $userManager,
+        GroupManager $groupManager, 
+        PrivateMessageManager $privateMessageManager,
+        NotificationManager $notificationManager
+    )
     {
         $this->userManager = $userManager;
         $this->groupManager = $groupManager;
         $this->privateMessageManager = $privateMessageManager;
         $this->notificationManager = $notificationManager;
-        $this->activeUser = $activeUser;
     }
-    
-    protected function create()
-    {
-        
-    }
-    
+
     public function addToMenu($item)
     {
         $this->topMenu[] = $item;
@@ -87,10 +82,13 @@ class TopPanel extends Control
         $template = $this->template;
         $template->topMenu = $this->topMenu;
         $template->title = $this->title;
-        $template->activeGroup = $this->activeGroup;
-        $template->activeUser = $this->activeUser;
+        if(isset($this->presenter->activeGroup)) {
+            $template->activeGroup = $this->presenter->activeGroup;
+        }
+        
+        $template->activeUser = $this->presenter->activeUser;
         $template->backArrow = $this->backArrow;
-        $groups = $this->groupManager->getUserGroups($this->activeUser);
+        $groups = $this->groupManager->getUserGroups($this->presenter->activeUser);
         $subject = array();
         $others = array();
         foreach($groups as $group) {
@@ -100,10 +98,10 @@ class TopPanel extends Control
                 $others[] = $group;
             }
         }
-        $template->notifications = $this->notificationManager->getNotifications($this->activeUser);
-        $template->unreadNotifications = $this->notificationManager->getUnreadNumber($this->activeUser);
-        $template->unreadPrivMessages = $this->privateMessageManager->getUnreadNumber($this->activeUser);
-        $template->privateMessages = $this->privateMessageManager->getMessages($this->activeUser);
+        $template->notifications = $this->notificationManager->getNotifications($this->presenter->activeUser);
+        $template->unreadNotifications = $this->notificationManager->getUnreadNumber($this->presenter->activeUser);
+        $template->unreadPrivMessages = $this->privateMessageManager->getUnreadNumber($this->presenter->activeUser);
+        $template->privateMessages = $this->privateMessageManager->getMessages($this->presenter->activeUser);
         $template->subjects = $subject;
         $template->groups = $others;
         $template->colorScheme = $this->colorScheme;

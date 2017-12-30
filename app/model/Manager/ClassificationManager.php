@@ -65,23 +65,23 @@ class ClassificationManager extends BaseManager
     
     public function getUserClassification($idUser, $idGroup)
     {
-        $classificationsArray = array();
+        $classificationsArray = [];
         $query = "SELECT * FROM vw_classification
-                  WHERE (ID_USER=? OR ID_USER IS NULL) AND ID_GROUP = ?
-                  AND (CLG NOT IN (SELECT ID_CLASSIFICATION_GROUP FROM classification WHERE ID_USER=? AND ID_GROUP = ? AND ID_CLASSIFICATION_GROUP IS NOT NULL)
-                  OR CLG IS NULL)";
+                  WHERE (user_id=? OR user_id IS NULL) AND group_id = ?
+                  AND (clg NOT IN (SELECT classification_group_id FROM classification WHERE user_id=? AND group_id = ? AND classification_group_id IS NOT NULL)
+                  OR clg IS NULL)";
         
         
-        $classifications = $this->database->query($query, $idUser, $idGroup, $idUser, $idGroup)->fetchAll();
+        $classifications = $this->db->fetchAll($query, $idUser, $idGroup, $idUser, $idGroup);
         foreach($classifications as $class) {
             $classification = new Classification;
-            $classification->idClassificationGroup = $class->ID_CLASSIFICATION_GROUP;
-            $classification->idClassification = $class->ID_CLASSIFICATION;
-            $classification->name = $class->NAME;
-            $classification->user = $class->ID_USER;
-            $classification->group = $class->ID_GROUP;
-            $classification->grade = $class->GRADE;
-            $classification->classificationDate = $class->CLASSIFICATION_DATE;
+            $classification->idClassificationGroup = $class->classification_group_id;
+            $classification->idClassification = $class->id;
+            $classification->name = $class->name;
+            $classification->user = $class->user_id;
+            $classification->group = $class->group_id;
+            $classification->grade = $class->grade;
+            $classification->classificationDate = $class->classification_date;
             $classificationsArray[] = $classification;
         }
         
@@ -108,29 +108,29 @@ class ClassificationManager extends BaseManager
     
     public function getLastChange($idUser, $idGroup)
     {
-        $query = "SELECT IFNULL(LAST_CHANGE, CREATED_WHEN) AS LAST_CHANGE FROM classification WHERE ID_USER=? AND ID_GROUP=?";
-        return $this->database->query($query, $idUser, $idGroup)->fetchField();
+        $query = "SELECT IFNULL(last_change, created_when) AS last_change FROM classification WHERE user_id=? AND group_id=?";
+        return $this->db->fetchSingle($query, $idUser, $idGroup);
     }
     
     public function getGroupClassification($idGroupClassification)
     {
-        $classificationArray = $this->database->query("SELECT * FROM classification_group WHERE ID_CLASSIFICATION_GROUP=?", $idGroupClassification)->fetch();
+        $classificationArray = $this->db->fetch("SELECT * FROM classification_group WHERE id=?", $idGroupClassification);
         $classificationGroup = new ClassificationGroup();
-        $classificationGroup->idClassificationGroup = $classificationArray->ID_CLASSIFICATION_GROUP;
-        $classificationGroup->name = $classificationArray->NAME;
-        $classificationGroup->classificationDate = $classificationArray->CLASSIFICATION_DATE;
-        if(!empty($classificationArray->ID_TASK)) {
+        $classificationGroup->idClassificationGroup = $classificationArray->id;
+        $classificationGroup->name = $classificationArray->name;
+        $classificationGroup->classificationDate = $classificationArray->classification_date;
+        if(!empty($classificationArray->task_id)) {
             $classificationGroup->task = new \App\Model\Entities\Task();
-            $classificationGroup->task->idTask = $classificationArray->ID_TASK;
+            $classificationGroup->task->id = $classificationArray->task_id;
         }
         
         
-        $classifications = $this->database->query("SELECT * FROM classification WHERE ID_CLASSIFICATION_GROUP=?", $idGroupClassification)->fetchAll();
+        $classifications = $this->database->query("SELECT * FROM classification WHERE classification_group_id=?", $idGroupClassification)->fetchAll();
         foreach($classifications as $classification) {
             $classObject = new Classification();
-            $classObject->grade = $classification->GRADE;
-            $classObject->notice = $classification->NOTICE;
-            $classObject->user = $classification->ID_USER;
+            $classObject->grade = $classification->grade;
+            $classObject->notice = $classification->notice;
+            $classObject->user = $classification->user_id;
             $classificationGroup->classifications[] = $classObject;
         }
         
@@ -139,16 +139,13 @@ class ClassificationManager extends BaseManager
     
     public function createGroupClassification(ClassificationGroup $groupClassification)
     {
-        $values = array(
-                'ID_GROUP' => $groupClassification->group->id,
-                'NAME' => $groupClassification->name,
-                'ID_TASK' => isset($groupClassification->task) ? $groupClassification->task->idTask : null
-                );
-                
-        
-        $this->database->table('classification_group')->insert($values);
-        
-        return $this->database->query("SELECT MAX(ID_CLASSIFICATION_GROUP) FROM classification_group")->fetchField();
+        $this->db->query("INSERT INTO classification_group", [
+            'group_id' => $groupClassification->group->id,
+            'name' => $groupClassification->name,
+            'task_id' => isset($groupClassification->task) ? $groupClassification->task->idTask : null
+        ]);
+
+        return $this->db->getInsertId();
     }
     
     public function updateClassificationGroup($values)
@@ -163,49 +160,52 @@ class ClassificationManager extends BaseManager
         return $this->database->query("SELECT * FROM school_period")->fetchAll();
     }
     
-    public function getMyClassification(\App\Model\Entities\User $user, $period)
+    public function getMyClassification(\App\Model\Entities\User $user)
     {
-        $classifications = $this->database->query(
-              "SELECT 
-                    T1.*,
-                    T3.GRADE,
-                    T3.ID_CLASSIFICATION,
-                    T3.NOTICE AS GRADE_NOTICE,
-                    IF(T3.ID_CLASSIFICATION_GROUP IS NULL, T3.NAME, T4.NAME) AS GRADE_NAME,
-                    IF(T3.LAST_CHANGE IS NULL, T3.CREATED_WHEN, T3.LAST_CHANGE) AS GRADE_LAST_CHANGE
-                FROM 
-                    vw_user_groups_detail T1 
-                    LEFT JOIN group_period T2 ON T1.ID_GROUP=T2.ID_GROUP 
-                    LEFT JOIN classification T3 ON (T3.ID_GROUP = T1.ID_GROUP AND T1.ID_USER=T3.ID_USER AND T3.ID_PERIOD=?)
-                    LEFT JOIN classification_group T4 ON T4.ID_CLASSIFICATION_GROUP=T3.ID_CLASSIFICATION_GROUP
-                WHERE (T2.ID_PERIOD=? OR T2.ID_PERIOD IS NULL) AND T1.ID_USER=? AND T1.ID_RELATION=2",
-              $period, $period , $user->id)->fetchAll();
+        $query = "SELECT
+                        T1.id,
+                        T1.grade,
+                        T1.notice,
+                        T1.classification_date,
+                        T1.name AS grade_name,
+                        T2.id AS group_id,
+                        T2.name AS group_name,
+                        T4.main_color,
+                        T2.shortcut,
+                        T4.code AS group_color_code
+                FROM vw_classification T1
+                LEFT JOIN `group` T2 ON T1.group_id=T2.id
+                LEFT JOIN group_scheme T4 ON T2.group_scheme_id = T4.id
+                LEFT JOIN group_period T3 ON T1.period_id=T3.id
+                WHERE T3.active=1 AND T1.user_id=?";
+        $classifications = $this->db->fetchAll($query, $user->id);
         
         $return = array();
         foreach($classifications as $class) {
-            if(!isset($return[$class->ID_GROUP])) {
+            if(!isset($return[$class->group_id])) {
                 $group = new \App\Model\Entities\Group();
-                $group->name = $class->NAME;
-                $group->mainColor = $class->MAIN_COLOR;
-                $group->shortcut = $class->SHORTCUT;
-                $group->statistics = array('last_change' => null, 'avg_grade' => 0, 'count_grade' => 0);
-                $group->classification = array();
-                $return[$class->ID_GROUP] = $group;
+                $group->name = $class->group_name;
+                $group->mainColor = $class->main_color;
+                $group->shortcut = $class->shortcut;
+                $group->colorScheme = $class->group_color_code;
+                $group->statistics = ['last_change' => null, 'avg_grade' => 0, 'count_grade' => 0];
+                $group->classification = [];
+                $return[$class->group_id] = $group;
             }
-            if(!empty($class->ID_CLASSIFICATION)) {
+            if(!empty($class->id)) {
                 $classObject = new Classification();
-                $classObject->grade = $class->GRADE;
-                $classObject->notice = $class->GRADE_NOTICE;
-                $classObject->name = $class->GRADE_NAME;
-                $classObject->lastChange = $class->GRADE_LAST_CHANGE;    
-                $return[$class->ID_GROUP]->classification[] = $classObject;
-                if($return[$class->ID_GROUP]->statistics['last_change'] === null ||
-                   $class->GRADE_LAST_CHANGE > $return[$class->ID_GROUP]->statistics['last_change']
+                $classObject->grade = $class->grade;
+                $classObject->notice = $class->notice;
+                $classObject->name = $class->grade_name;
+                $classObject->lastChange = $class->classification_date;    
+                $return[$class->id]->classification[] = $classObject;
+                if($return[$class->id]->statistics['last_change'] === null ||
+                   $class->classification_date > $return[$class->id]->statistics['last_change']
                 ) {
-                    $return[$class->ID_GROUP]->statistics['last_change'] = $class->GRADE_LAST_CHANGE;
+                    $return[$class->id]->statistics['last_change'] = $class->classification_date;
                 }
-                $return[$class->ID_GROUP]->statistics['avg_grade'] += $class->GRADE;
-                $return[$class->ID_GROUP]->statistics['count_grade']++;
+                $return[$class->id]->statistics['avg_grade'] += (int)$class->grade;
+                $return[$class->id]->statistics['count_grade']++;
             }
         }
         

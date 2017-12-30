@@ -11,8 +11,8 @@ namespace App\Model\Entities;
  *
  * @author Radaq
  */
-class Task {
-    public $idTask = null;
+class Task extends AbstractEntity {
+    public $id = null;
     public $idClassificationGroup = null;
     public $title = null;
     public $idMessage = null;

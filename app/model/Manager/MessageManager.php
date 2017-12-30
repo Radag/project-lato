@@ -28,17 +28,21 @@ class MessageManager extends BaseManager {
     /** @var GroupManager @inject */
     private $groupManager;
     
+    /** @var \Dibi\Connection  */
+    protected $db;
     
     public function __construct(Nette\Database\Context $database,
                     Nette\Security\User $user,
             NotificationManager $notificationManager,
-            GroupManager $groupManager
+            GroupManager $groupManager,
+             \Dibi\Connection $db
     )
     {
             $this->database = $database;
             $this->user = $user;
             $this->notificationManager = $notificationManager;
             $this->groupManager = $groupManager;
+            $this->db = $db;
     }
     
     public function cloneMessage(Message $message, \App\Model\Entities\Group $toGroup) 
@@ -50,277 +54,338 @@ class MessageManager extends BaseManager {
     
     public function createMessage(Message $message, $attachments)
     {
-        $this->database->beginTransaction();
-        $sendNotification = true;
+        $this->db->begin();
         if(empty($message->id)) {
-            $this->database->table('message')->insert(array(
-                    'TEXT' => $message->getText(),
-                    'ID_USER' => $message->user->id,
-                    'ID_GROUP' => $message->idGroup,
-                    'TYPE' => $message->type,
-                    'CREATED_BY' => $this->user->id,
-            ));
-            $message->id = $this->database->query("SELECT MAX(ID_MESSAGE) FROM message")->fetchField(); 
+            $this->db->query("INSERT INTO message", [
+                'text' => $message->text,
+                'user_id' => $message->user->id,
+                'group_id' => $message->idGroup,
+                'type' => $message->type,
+                'created_by' => $this->user->id,
+            ]);
+            $message->id = $this->db->getInsertId();
         } else {
-            $data = array(
-                'TEXT' => $message->text,
-                'LAST_CHANGE' => new \DateTime
-            );
-            $this->database->query("UPDATE message SET ? WHERE ID_MESSAGE=?", $data, $message->id);
-            $sendNotification = false;
+            $this->db->query("UPDATE message SET ",[
+                'text' => $message->text
+            ] ,"WHERE id=?", $message->id);
         }
         
         foreach($attachments as $idAttach) {
             $this->addAttachment($idAttach, $message->id);
         }
-        //notifikace
-        if($sendNotification) {
-            $data['message'] = $message;
-            $data['groupUsers'] = $this->groupManager->getGroupUsers($message->idGroup);
-            $this->notificationManager->addNotificationType(NotificationManager::TYPE_ADD_GROUP_MSG, $data);
-        }
 
-        $this->database->commit();
-        
+        $this->db->commit();
         return $message->id;
     }
     
     public function createComment(Comment $comment)
     {
-        $this->database->table('comment')->insert(array(
-                'TEXT' => $comment->text,
-                'ID_USER' => $comment->user->id,
-                'ID_MESSAGE' => $comment->idMessage,
-                'CREATED_BY' => $this->user->id
-            ));
-        $data['comment'] = $comment;
-        $this->notificationManager->addNotificationType(NotificationManager::TYPE_ADD_COMMENT, $data);
+        $this->db->query("INSERT INTO comment", [
+            'text' => $comment->text,
+            'user_id' => $comment->user->id,
+            'message_id' => $comment->idMessage,
+            'created_by' => $this->user->id
+        ]);
     }
     
     public function getMessages($group, \App\Model\Entities\User $user, $deleted=false, $filter = 'all')
     {
-        $return = array();
+        $return = [];
         if($deleted) {
-            $delete = array(0,1);
+            $delete = [0,1];
         } else {
-            $delete = array(0);
+            $delete = [0];
         }
         if($filter !== 'all') {
-            $filters = array($filter);
+            $filters = [$filter];
         } else {
-            $filters = array('notice', 'material', 'homework', 'task');
+            $filters = ['notice', 'material', 'homework', 'task'];
         }
-        $messages = $this->database->query("SELECT T1.TEXT, T1.TYPE, T1.ID_MESSAGE, T2.ID_USER, T2.SEX, T2.URL_ID, T2.NAME, T2.SURNAME, T1.CREATED_WHEN,
-                        T2.PROFILE_IMAGE,
-                        T1.TOP,
-                        T4.ACTIVE AS IS_FOLLOWED,
-                        T1.DELETED,
-                        T5.ID_TASK,
-                        T5.DEADLINE,
-                        T5.NAME AS TASK_NAME,
-                        T6.ID_COMMIT,
-                        T6.CREATED_WHEN AS COMMIT_CREATED,
-                        T6.UPDATED_WHEN AS COMMIT_UPDATED,
-                        T7.COMMIT_COUNT
+
+        $messages = $this->db->fetchAll("SELECT T1.text, T1.type, T1.id, T2.id AS user_id, T2.sex, T2.slug, T2.name, T2.surname, T1.created_when,
+                        T2.profile_image,
+                        T1.top,
+                        T1.deleted,
+                        T5.id AS task_id,
+                        T5.deadline,
+                        T5.name AS task_name,
+                        T5.online,
+                        T6.id AS commit_id,
+                        T6.created_when AS commit_created,
+                        T6.updated_when AS commit_updated,
+                        T7.commit_count,
+                        T8.title
                 FROM message T1 
-                LEFT JOIN user T2 ON T1.ID_USER=T2.ID_USER 
-                LEFT JOIN message_following T4 ON (T1.ID_MESSAGE = T4.ID_MESSAGE AND T4.ID_USER=? AND T4.ACTIVE=1)
-                LEFT JOIN tasks T5 ON T1.ID_MESSAGE = T5.ID_MESSAGE
-                LEFT JOIN task_commit T6 ON (T6.ID_TASK=T5.ID_TASK AND T6.ID_USER=?)
-                LEFT JOIN (SELECT COUNT(ID_COMMIT) AS COMMIT_COUNT, ID_TASK FROM task_commit GROUP BY ID_TASK) T7 ON T7.ID_TASK=T5.ID_TASK
-                WHERE T1.ID_GROUP=? AND T1.DELETED IN (?) AND T1.TYPE IN (?) 
-                ORDER BY IFNULL(T1.TOP, T1.CREATED_WHEN) DESC", $user->id, $user->id, $group->id, $delete, $filters)->fetchAll();
+                LEFT JOIN user T2 ON T1.user_id=T2.id 
+                LEFT JOIN task T5 ON T1.id = T5.message_id
+                LEFT JOIN task_commit T6 ON (T5.id=T6.task_id AND T6.user_id=?)
+                LEFT JOIN (SELECT COUNT(id) AS commit_count, task_id FROM task_commit GROUP BY task_id) T7 ON T7.task_id=T5.id
+                LEFT JOIN message_material T8 ON T1.id=T8.message_id
+                WHERE T1.group_id=? AND T1.deleted IN (?) AND T1.type IN (?) 
+                ORDER BY IFNULL(T1.top, T1.created_when) DESC", $user->id, $group->id, $delete, $filters);
         $now = new \DateTime();
+        
+        $attachmentsData = $this->db->fetchAll("SELECT 
+                    T1.id, T3.id AS file_id, T3.extension, T3.mime, T3.type, T3.path, T3.filename
+                FROM message T1 
+                JOIN message_attachment T2 ON T1.id=T2.message_id
+                JOIN file_list T3 ON T2.file_id=T3.id
+                WHERE T1.group_id=? AND T1.deleted IN (?) AND T1.type IN (?)", $group->id, $delete, $filters);
+        $attachments = $this->getAttachments($attachmentsData);;
+       
         foreach($messages as $message) {
             $mess = new Message();
             $user = new User();
-            $user->surname = $message->SURNAME;
-            $user->name = $message->NAME;
-            $user->id = $message->ID_USER;
-            $user->urlId = $message->URL_ID;
-            $user->profileImage = User::createProfilePath($message->PROFILE_IMAGE, $message->SEX);
+            $user->surname = $message->surname;
+            $user->name = $message->name;
+            $user->id = $message->user_id;
+            $user->slug = $message->slug;
+            $user->profileImage = User::createProfilePath($message->profile_image, $message->sex);
             
-            $mess->text = $message->TEXT;
-            $mess->id = $message->ID_MESSAGE;
-            $mess->created = $message->CREATED_WHEN;
+            $mess->text = $message->text;
+            $mess->id = $message->id;
+            $mess->created = $message->created_when;
             $mess->user = $user;
-            $mess->followed = $message->IS_FOLLOWED;
-            $mess->top = $message->TOP;
-            $mess->deleted = $message->DELETED;
-            $mess->type = $message->TYPE;
-            $mess->attachments = $this->getAttachments($message->ID_MESSAGE);
-            if($message->TYPE == Message::TYPE_TASK) {
-                
-                $mess->task = new \App\Model\Entities\Task();
-                if(!empty($message->ID_TASK)) {
-                    $mess->task->idTask = $message->ID_TASK;
-                    $mess->task->title = $message->TASK_NAME;
-                    $mess->task->deadline = $message->DEADLINE;
-                    $mess->task->timeLeft = $now->diff($message->DEADLINE);
-                    $mess->task->commitCount = $message->COMMIT_COUNT;
-                    if(!empty($message->ID_COMMIT)) {
+            $mess->top = $message->top;
+            $mess->deleted = $message->deleted;
+            $mess->type = $message->type;
+            if(isset($attachments[$mess->id])) {
+                $mess->attachments = $attachments[$mess->id];
+            } else {
+                $mess->attachments = null;
+            }
+            
+            if($message->type == Message::TYPE_TASK) {
+                if(!empty($message->task_id)) {
+                    $mess->task = new \App\Model\Entities\Task();
+                    $mess->task->id = $message->task_id;
+                    $mess->task->title = $message->task_name;
+                    $mess->task->deadline = $message->deadline;
+                    $mess->task->online = $message->online;
+                    $mess->task->timeLeft = $now->diff($message->deadline);
+                    $mess->task->commitCount = $message->commit_count;
+                    if(!empty($message->commit_id)) {
                         $commit = new \App\Model\Entities\TaskCommit();
-                        $commit->idCommit = $message->ID_COMMIT;
-                        $commit->created = $message->COMMIT_CREATED;
-                        $commit->updated = $message->COMMIT_UPDATED;
+                        $commit->idCommit = $message->commit_id;
+                        $commit->created = $message->commit_created;
+                        $commit->updated = $message->commit_updated;
                         $mess->task->commit = $commit;
                     }
                 }
             }
+            if($message->type == Message::TYPE_MATERIALS) {
+                $mess->title = $message->title;
+            }
             $return[] = $mess;
         }
         
+        $comments = $this->getComments($group->id, $delete, $filters);
+        return ['messages' => $return, 'comments' => $comments];
+    }
+    
+    public function getAttachments($attachments) {
+        $return = [];
+        if($attachments) {
+            foreach($attachments as $attach) {
+                if(!isset($return[$attach->id])) {
+                    $return[$attach->id] = ['media' => [], 'files' => []];  
+                }
+                if($attach->type == 'image') {
+                    $return[$attach->id]['media'][$attach->file_id]['type'] = $attach->type;
+                    $return[$attach->id]['media'][$attach->file_id]['extension'] = $attach->extension;
+                    $return[$attach->id]['media'][$attach->file_id]['path'] = $attach->path;
+                    $return[$attach->id]['media'][$attach->file_id]['mime'] = $attach->mime;
+                    $return[$attach->id]['media'][$attach->file_id]['filename'] = $attach->filename;   
+                    $return[$attach->id]['media'][$attach->file_id]['id_file'] = $attach->file_id;   
+                } else {
+                    $return[$attach->id]['files'][$attach->file_id]['type'] = $attach->type;
+                    $return[$attach->id]['files'][$attach->file_id]['extension'] = $attach->extension;;
+                    $return[$attach->id]['files'][$attach->file_id]['mime'] = $attach->mime;
+                    $return[$attach->id]['files'][$attach->file_id]['path'] = $attach->path;
+                    $return[$attach->id]['files'][$attach->file_id]['filename'] = $attach->filename; 
+                    $return[$attach->id]['files'][$attach->file_id]['id_file'] = $attach->file_id;  
+                }
+            }
+        }
+        return $return;
+    }
+    
+    public function getComments($groupId, $delete, $filtres)
+    {
+        $return = [];
+        $commentsData = $this->db->fetchAll("SELECT 
+                    T1.id AS message_id,
+                    T2.id,
+                    T2.text, 
+                    T2.created_when, 
+                    T3.name AS user_name, 
+                    T3.id AS user_id,
+                    T3.profile_image,
+                    T3.sex,
+                    T3.slug,
+                    T3.surname AS user_surname
+                FROM message T1 
+                JOIN comment T2 ON T1.id=T2.message_id
+                JOIN user T3 ON T2.user_id=T3.id
+                WHERE T1.group_id=? AND T1.deleted IN (?) AND T1.type IN (?) ORDER BY T2.created_when ASC", $groupId, $delete, $filtres);
+        
+        if($commentsData) {
+            foreach($commentsData as $comment) {
+                $comm = new Comment();
+                $user = new User();
+                $user->surname = $comment->user_surname;
+                $user->name = $comment->user_name;  
+                $user->id = $comment->user_id;
+                $user->slug = $comment->slug;
+                $user->profileImage = User::createProfilePath($comment->profile_image, $comment->sex);
+
+                $comm->text = $comment->text;
+                $comm->id = $comment->id;
+                $comm->created = $comment->created_when;
+                $comm->sinceStart = $comment->created_when->diff(new \DateTime());
+                $comm->user = $user;
+                $return[$comment->message_id][] = $comm;
+            }
+        }
+
         return $return;
     }
         
+    
+    public function getMessageComments($messageId)
+    {
+
+        $commentsData = $this->db->fetchAll("SELECT 
+                    T2.id,
+                    T2.text, 
+                    T2.created_when, 
+                    T3.name AS user_name, 
+                    T3.id AS user_id,
+                    T3.profile_image,
+                    T3.sex,
+                    T3.slug,
+                    T3.surname AS user_surname
+                FROM comment T2
+                JOIN user T3 ON T2.user_id=T3.id
+                WHERE T2.message_id=? ORDER BY T2.created_when ASC", $messageId);
+        
+        if($commentsData) {
+            foreach($commentsData as $comment) {
+                $comm = new Comment();
+                $user = new User();
+                $user->surname = $comment->user_surname;
+                $user->name = $comment->user_name;  
+                $user->id = $comment->user_id;
+                $user->slug = $comment->slug;
+                $user->profileImage = User::createProfilePath($comment->profile_image, $comment->sex);
+
+                $comm->text = $comment->text;
+                $comm->id = $comment->id;
+                $comm->created = $comment->created_when;
+                $comm->sinceStart = $comment->created_when->diff(new \DateTime());
+                $comm->user = $user;
+                $return[] = $comm;
+            }
+        }
+
+        return $return;
+    }
+    
     public function getMessage($idMessage, $user)
     {
-        $message = $this->database->query("SELECT T1.TEXT, T1.ID_MESSAGE, T2.ID_USER, T2.NAME, T2.SURNAME, T1.CREATED_WHEN,
-                        T2.PROFILE_IMAGE,
-                        T2.URL_ID,
-                        T2.SEX,
-                        T1.TYPE,
-                        T4.ID_TASK,
-                        T4.DEADLINE,
-                        T4.ONLINE,
-                        T4.NAME AS TASK_NAME,
-                        T6.ID_COMMIT,
-                        T6.CREATED_WHEN AS COMMIT_CREATED,
-                        T6.UPDATED_WHEN AS COMMIT_UPDATED,
-                        T7.COMMIT_COUNT
+          $message = $this->db->fetch("SELECT T1.text, T1.type, T1.id, T2.id AS user_id, T2.sex, T2.slug, T2.name, T2.surname, T1.created_when,
+                        T2.profile_image,
+                        T1.top,
+                        T1.deleted,
+                        T5.id AS task_id,
+                        T5.deadline,
+                        T5.name AS task_name,
+                        T6.id AS commit_id,
+                        T6.created_when AS commit_created,
+                        T6.updated_when AS commit_updated,
+                        T7.commit_count,
+                        T8.title,
+                        T5.online
                 FROM message T1 
-                LEFT JOIN user T2 ON T1.ID_USER=T2.ID_USER 
-                LEFT JOIN tasks T4 ON T1.ID_MESSAGE = T4.ID_MESSAGE
-                LEFT JOIN task_commit T6 ON (T6.ID_TASK=T4.ID_TASK AND T6.ID_USER=?)
-                LEFT JOIN (SELECT COUNT(ID_COMMIT) AS COMMIT_COUNT, ID_TASK FROM task_commit GROUP BY ID_TASK) T7 ON T7.ID_TASK=T4.ID_TASK    
-                WHERE T1.ID_MESSAGE=? AND T1.DELETED=0", $user->id, $idMessage)->fetch();
+                LEFT JOIN user T2 ON T1.user_id=T2.id 
+                LEFT JOIN task T5 ON T1.id = T5.message_id
+                LEFT JOIN task_commit T6 ON (T5.id=T6.task_id AND T6.user_id=?)
+                LEFT JOIN (SELECT COUNT(id) AS commit_count, task_id FROM task_commit GROUP BY task_id) T7 ON T7.task_id=T5.id
+                LEFT JOIN message_material T8 ON T1.id=T8.message_id
+                WHERE T1.id=?", $user->id, $idMessage);
+        $now = new \DateTime();
+        
+        $attachmentsData = $this->db->fetchAll("SELECT 
+                    T1.id, T3.id AS file_id, T3.extension, T3.mime, T3.type, T3.path, T3.filename
+                FROM message T1 
+                JOIN message_attachment T2 ON T1.id=T2.message_id
+                JOIN file_list T3 ON T2.file_id=T3.id
+                WHERE T1.id=?", $idMessage);
+        $attachments = $this->getAttachments($attachmentsData);;
+       
         $mess = new Message();
         $user = new User();
-        $user->surname = $message->SURNAME;
-        $user->name = $message->NAME;
-        $user->id = $message->ID_USER;
-        $user->urlId = $message->URL_ID;
-        $user->profileImage = User::createProfilePath($message->PROFILE_IMAGE, $message->SEX);
+        $user->surname = $message->surname;
+        $user->name = $message->name;
+        $user->id = $message->user_id;
+        $user->slug = $message->slug;
+        $user->profileImage = User::createProfilePath($message->profile_image, $message->sex);
 
-        $mess->text = $message->TEXT;
-        $mess->id = $message->ID_MESSAGE;
-        $mess->created = $message->CREATED_WHEN;
+        $mess->text = $message->text;
+        $mess->id = $message->id;
+        $mess->created = $message->created_when;
         $mess->user = $user;
-        $mess->type = $message->TYPE;
-        $mess->attachments = $this->getAttachments($message->ID_MESSAGE);
-        $now = new \DateTime();
-        if($message->TYPE == Message::TYPE_TASK) {
-            $mess->task = new \App\Model\Entities\Task();
-            $mess->task->idTask = $message->ID_TASK;
-            $mess->task->title = $message->TASK_NAME;
-            $mess->task->deadline = $message->DEADLINE;
-            $mess->task->online = $message->ONLINE;
-            $mess->task->timeLeft = $now->diff($message->DEADLINE);
-            if(!empty($message->ID_COMMIT)) {
-                $commit = new \App\Model\Entities\TaskCommit();
-                $commit->idCommit = $message->ID_COMMIT;
-                $commit->created = $message->COMMIT_CREATED;
-                $commit->updated = $message->COMMIT_UPDATED;
-                $mess->task->commit = $commit;
-            }
+        $mess->top = $message->top;
+        $mess->deleted = $message->deleted;
+        $mess->type = $message->type;
+        if(isset($attachments[$mess->id])) {
+            $mess->attachments = $attachments[$mess->id];
         } else {
-            
+            $mess->attachments = null;
+        }
+
+        if($message->type == Message::TYPE_TASK) {
+            if(!empty($message->task_id)) {
+                $mess->task = new \App\Model\Entities\Task();
+                $mess->task->id = $message->task_id;
+                $mess->task->title = $message->task_name;
+                $mess->task->deadline = $message->deadline;
+                $mess->task->online = $message->online;
+                $mess->task->timeLeft = $now->diff($message->deadline);
+                $mess->task->commitCount = $message->commit_count;
+                if(!empty($message->commit_id)) {
+                    $commit = new \App\Model\Entities\TaskCommit();
+                    $commit->idCommit = $message->commit_id;
+                    $commit->created = $message->commit_created;
+                    $commit->updated = $message->commit_updated;
+                    $mess->task->commit = $commit;
+                }
+            }
+        }
+        if($message->type == Message::TYPE_MATERIALS) {
+            $mess->title = $message->title;
         }
         return $mess;
-    }
-    
-    public function getAttachments($idMessage) {
-        $return = array('media' => array(), 'files' => array());
-        $attachments = $this->database->query("SELECT T2.ID_FILE, T2.TYPE, T2.EXTENSION, T2.MIME, T2.PATH, T2.FILENAME FROM message_attachment T1
-            LEFT JOIN file_list T2 ON T1.ID_FILE=T2.ID_FILE WHERE T1.ID_MESSAGE=?", $idMessage)->fetchAll();    
-        foreach($attachments as $attach) {
-            if($attach->TYPE == 'image') {
-                $return['media'][$attach->ID_FILE]['type'] = $attach->TYPE;
-                $return['media'][$attach->ID_FILE]['extension'] = $attach->EXTENSION;
-                $return['media'][$attach->ID_FILE]['path'] = $attach->PATH;
-                $return['media'][$attach->ID_FILE]['mime'] = $attach->MIME;
-                $return['media'][$attach->ID_FILE]['filename'] = $attach->FILENAME;   
-                $return['media'][$attach->ID_FILE]['id_file'] = $attach->ID_FILE;   
-            } else {
-                $return['files'][$attach->ID_FILE]['type'] = $attach->TYPE;
-                $return['files'][$attach->ID_FILE]['extension'] = $attach->EXTENSION;;
-                $return['files'][$attach->ID_FILE]['mime'] = $attach->MIME;
-                $return['files'][$attach->ID_FILE]['path'] = $attach->PATH;
-                $return['files'][$attach->ID_FILE]['filename'] = $attach->FILENAME; 
-                $return['files'][$attach->ID_FILE]['id_file'] = $attach->ID_FILE;  
-            }
-        }
+
+    }    
         
-        return $return;
-    }
-    
-    public function getDicscutionMembers($idMessage) 
-    {
-        $membr = array();   
-        $comm  = $this->getComments($idMessage); 
-        foreach($comm as $c) {
-            $id = (int)$c->user->id;
-            if(!array_key_exists($id, $membr)) {
-                $membr[$id] = $c->user;
-            }
-        }
-        return $membr;
-    }
-    
-    
-    public function getComments($idMessage)
-    {
-        $return = array();
-        $messages = $this->database->query("SELECT T1.ID_COMMENT, T1.TEXT, T1.CREATED_WHEN, T2.NAME AS USER_NAME, 
-                    T3.PATH,
-                    T2.ID_USER,
-                    T3.FILENAME,
-                    T2.SEX,
-                    T2.URL_ID,
-                    T2.SURNAME AS USER_SURNAME FROM comment T1
-                    LEFT JOIN user T2 ON T1.ID_USER=T2.ID_USER
-                    LEFT JOIN file_list T3 ON T3.ID_FILE=T2.PROFILE_IMAGE
-                    WHERE ID_MESSAGE=?", $idMessage)->fetchAll();
-        foreach($messages as $comment) {
-            $comm = new Comment();
-            $user = new User();
-            $user->surname = $comment->USER_SURNAME;
-            $user->name = $comment->USER_NAME;  
-            $user->id = $comment->ID_USER;
-            $user->urlId = $comment->URL_ID;
-            $user->profileImage = User::createProfilePath($comment->PATH, $comment->FILENAME, $comment->SEX);
-            
-            $comm->text = $comment->TEXT;
-            $comm->id = $comment->ID_COMMENT;
-            $comm->created = $comment->CREATED_WHEN;
-            $now = new \DateTime();
-            
-            $comm->sinceStart = $comment->CREATED_WHEN->diff($now);
-            $comm->user = $user;
-            $return[] = $comm;
-        }
-        
-        return $return;
-    }
-    
     public function newMessages($date)
     {
         $count = $this->database->query("SELECT COUNT(*) FROM message WHERE CREATED_WHEN>=?", $date)->fetch();
         return current($count);
     }
     
-    public function deleteMessage(Message $message)
+    public function deleteMessage($idMessage)
     {
-        $data = array('DELETED' => 1);
-        $this->database->query("UPDATE message SET ? WHERE ID_MESSAGE=?", $data, $message->id);
+        $this->db->query("UPDATE message SET deleted=1 WHERE id=?", $idMessage);
     }
     
-    public function topMessage(Message $message, $enable = true)
+    public function topMessage($idMessage, $enable = true)
     {
         if($enable) {
-            $this->database->query("UPDATE message SET TOP=NOW() WHERE ID_MESSAGE=?", $message->id);
+            $this->db->query("UPDATE message SET top=NOW() WHERE id=?", $idMessage);
         } else {
-            $this->database->query("UPDATE message SET TOP=NULL WHERE ID_MESSAGE=?", $message->id);
+            $this->db->query("UPDATE message SET top=NULL WHERE id=?", $idMessage);
         }
         
     }
@@ -355,12 +420,28 @@ class MessageManager extends BaseManager {
     //            $message->
     //            $this->createMessage($message);
             } else {
-
-                $this->database->table('message_attachment')->insert(array(
-                    'ID_MESSAGE' => $idMessage,
-                    'ID_FILE' => $idFile
-                ));
+                $this->db->query("INSERT INTO message_attachment", [
+                    'message_id' => $idMessage,
+                    'file_id' => $idFile
+                ]);
             }
         }
+    }
+    
+    public function createMaterial(Message $message)
+    {
+        $material = $this->db->fetch("SELECT * FROM message_material WHERE message_id=?", $message->id);
+        if($material) {
+            $this->db->query("UPDATE message_material SET", [
+                'title' => $message->title,
+                'message_id' => $message->id
+            ], "WHERE id=?", $material->id);
+        } else {
+            $this->db->query("INSERT INTO message_material", [
+                'title' => $message->title,
+                'message_id' => $message->id
+            ]);
+        }
+               
     }
 }

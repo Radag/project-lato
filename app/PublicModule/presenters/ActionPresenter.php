@@ -53,10 +53,10 @@ class ActionPresenter extends BasePresenter
     {
         $action = $this->publicActionManager->getGroupSharingAction($id);
         if($this->user->isLoggedIn()) {
-            if($this->groupManager->isUserInGroup($this->user->id, $action->ID_GROUP)) {
+            if($this->groupManager->isUserInGroup($this->user->id, $action->group_id)) {
                 $this->template->isInGroup = true;
                 $this->flashMessage('Již jste členem této skupiny.');
-                $this->redirect(':Front:Group:default', array('id'=>$action->URL_ID));
+                $this->redirect(':Front:Group:default', array('id'=>$action->slug));
             } else {
                 $this->template->isInGroup = false;
                 $this->template->action = $action;
@@ -144,12 +144,13 @@ class ActionPresenter extends BasePresenter
     public function handleAddToGroup($id)
     {
         $action = $this->publicActionManager->getGroupSharingAction($id);
-        if(!empty($action) && $action->ACTION_TYPE === PublicActionManager::ACTION_ADD_TO_GROUP) {
+        if(!empty($action) && $action->action_type === PublicActionManager::ACTION_ADD_TO_GROUP) {
             if($this->user->isLoggedIn()) {
                 $group = new \App\Model\Entities\Group($action);
-                $this->groupManager->addUserToGroup($group, $this->user->id, \App\Model\Entities\Group::RELATION_STUDENT);
+                $group->id = $action->group_id;
+                $this->groupManager->addUserToGroup($group, $this->user->id, GroupManager::RELATION_STUDENT, 1);
                 $this->flashMessage('Byl jste přidán do skupiny.');
-                $this->redirect(':Front:Group:default', array('id'=>$action->URL_ID));
+                $this->redirect(':Front:Group:default', ['id'=>$action->slug]);
             } else {
                 $redirectSection = $this->getSession()->getSection('redirect');
                 $redirectSection->params = $this->getParameters();

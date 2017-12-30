@@ -8,7 +8,6 @@
 namespace App\FrontModule\Components\Group\About;
 
 use \Nette\Application\UI\Form;
-use \Nette\Application\UI\Control;
 use App\Model\Manager\GroupManager;
 use App\Model\Manager\ClassificationManager;
 use App\Model\Entities\Group;
@@ -26,7 +25,6 @@ class GroupSettingsForm extends \App\Components\BaseComponent
         
     protected $groupManager;
     protected $classificationManager;
-    protected $group;
     protected $scheduleTermsNum = 1;
     
     public function __construct(
@@ -38,37 +36,31 @@ class GroupSettingsForm extends \App\Components\BaseComponent
         $this->classificationManager = $classificationManager;
     }
     
-    public function setGroup(Group $group)
-    {
-        $this->group = $group;
-        
-    }
-
     protected function createComponentForm()
     {
 
         $colors = $this->groupManager->getColorsSchemes();
-        $form = new \Nette\Application\UI\Form;
+        $form = $this->getForm();
         $form->addText('name', 'Název skupiny', null, 255)
              ->setAttribute('placeholder', 'Název skupiny')
-             ->setDefaultValue($this->group->name)
+             ->setDefaultValue($this->presenter->activeGroup->name)
              ->setRequired('Nápis musí být vyplněn');
         $form->addRadioList('color','Barevné schéma', $colors)
-             ->setDefaultValue($this->group->colorSchemeId);
+             ->setDefaultValue($this->presenter->activeGroup->colorSchemeId);
         $form->addText('shortcut', 'Zkratka', null, 3)
-             ->setDefaultValue($this->group->shortcut);
+             ->setDefaultValue($this->presenter->activeGroup->shortcut);
         $form->addText('subgroup', 'Název podskupiny', null, 100)
-             ->setDefaultValue($this->group->subgroup)
+             ->setDefaultValue($this->presenter->activeGroup->subgroup)
              ->setAttribute('placeholder', 'Název podskupiny (nepovinné)');
         $form->addTextArea('description', 'Popis skupiny')
-             ->setDefaultValue($this->group->description)
+             ->setDefaultValue($this->presenter->activeGroup->description)
              ->setAttribute('placeholder', 'Popis skupiny (nepovinné)');
         $form->addText('room', 'Místnost', null, 100)
-             ->setDefaultValue($this->group->room)
+             ->setDefaultValue($this->presenter->activeGroup->room)
              ->setAttribute('placeholder', 'Místnost (nepovinné)');
         
         //oprávnění
-        $privileges = $this->groupManager->getPrivileges($this->group->id);
+        $privileges = $this->groupManager->getPrivileges($this->presenter->activeGroup->id);
         $form->addCheckbox('PR_DELETE_OWN_MSG', 'Uživatelé mohou smazat své příspěvky')
              ->setDefaultValue($privileges->PR_DELETE_OWN_MSG);
         $form->addCheckbox('PR_CREATE_MSG', 'Uživatelé mohou vytvářet oznámení')
@@ -80,47 +72,44 @@ class GroupSettingsForm extends \App\Components\BaseComponent
         
         //sdílení
         $form->addCheckbox('shareByLink','Povolit sdílení pomocí odkazu', array(1,0))
-             ->setDefaultValue($this->group->shareByLink);
+             ->setDefaultValue($this->presenter->activeGroup->shareByLink);
         $form->addCheckbox('shareByCode','Povolit sdílení pomocí kódu', array(1,0))
-             ->setDefaultValue($this->group->shareByCode);
+             ->setDefaultValue($this->presenter->activeGroup->shareByCode);
         
-        $periods = $this->classificationManager->getSchoolPeriods();
-        $perriodArray = array();
-        foreach($periods as $period) {
-            $perriodArray[$period->ID_PERIOD] = $period->NAME . " " . $period->YEAR;
+        $groupPeriods = $this->groupManager->getGroupPeriods($this->presenter->activeGroup);
+
+        $periodItems = [];
+        $activePeriod = null;
+        foreach($groupPeriods as $period) {
+            $periodItems[$period->id] = $period->name;
+            if($period->active == 1) {
+                $activePeriod = $period;
+            }
         }
         
-        $activePeriods = $this->groupManager->getGroupPeriods($this->group);
-        
-        $form->addCheckboxList('activePeriods', 'Je aktivní v obdobích', $perriodArray)
-             ->setDefaultValue(array_keys($activePeriods));
+        $form->addRadioList('periods', 'Je aktivní v obdobích', $periodItems)
+             ->setDefaultValue($activePeriod->id);
         
         $form->addSubmit('send', 'Uložit nastavení');
 
         $form->onSuccess[] = [$this, 'processForm'];
         
-        $form->onError[] = function(Form $form) {
-            foreach($form->getErrors() as $error) {
-                $this->presenter->flashMessage($error, 'error');
-            }            
-        };
         return $form;
     }
     
     public function render()
     {
-        $template = $this->template;
-        $template->activeGroup = $this->group;
-        $this->template->sharing = (object)['code' => $this->group->shareByCode, 'link' => $this->group->shareByLink];
-        $schedule = $this->groupManager->getSchedule($this->group);
+        $this->template->activeGroup = $this->presenter->activeGroup;
+        $this->template->sharing = (object)['code' => $this->presenter->activeGroup->shareByCode, 'link' => $this->presenter->activeGroup->shareByLink];
+        $schedule = $this->groupManager->getSchedule($this->presenter->activeGroup);
         foreach($schedule as $sch) {
             $scheRet[] = $sch;
         }
         for($i=0; $i<$this->scheduleTermsNum; $i++) {
             $scheRet[] = array();
         }
-        
-        $template->schedule = $scheRet;
+        $this->template->form = $this["form"];
+        $this->template->schedule = $scheRet;
         parent::render();
     }
     
@@ -139,9 +128,9 @@ class GroupSettingsForm extends \App\Components\BaseComponent
         $shareByCode = $this->presenter->getRequest()->getPost('shareByCode') !== null ? 1 : 0;
         $this['form']['shareByLink']->setValue($shareByLink);
         $this['form']['shareByCode']->setValue($shareByCode);
-        $this->groupManager->switchSharing($this->group, $shareByLink, $shareByCode);
-        $this->group->shareByCode = $shareByCode;
-        $this->group->shareByLink = $shareByLink;
+        $this->groupManager->switchSharing($this->presenter->activeGroup, $shareByLink, $shareByCode);
+        $this->presenter->activeGroup->shareByCode = $shareByCode;
+        $this->presenter->activeGroup->shareByLink = $shareByLink;
         $this->redrawControl('shareSection'); 
         $this->redrawControl('settingForm');
     }
@@ -169,40 +158,37 @@ class GroupSettingsForm extends \App\Components\BaseComponent
         if($error) {
             $this->presenter->flashMessage($error, 'error');
         } else {
-            $this->groupManager->insertSchedule($persistData, $this->group); 
+            //$this->groupManager->insertSchedule($persistData, $this->group); 
         }
         return $error;
     }
     
     public function processForm(Form $form, $values) 
     {
-        $this->group->name = trim($values['name']);
-        $this->group->description = $values['description'];
-        $this->group->room = $values['room'];
-        $this->group->colorSchemeId = $values['color'];
-        $this->group->subgroup = $values['subgroup'];
-        $this->group->shortcut = $values['shortcut'];
-        $this->group->room = $values['room'];
+        $group = $this->presenter->activeGroup;
+        $group->name = trim($values->name);
+        $group->description = $values->description;
+        $group->room = $values->room;
+        $group->colorSchemeId = $values->color;
+        $group->subgroup = $values->subgroup;
+        $group->shortcut = $values->shortcut;
+        $group->room = $values->room;
                
-        $this->groupManager->editGroup($this->group);
+        $this->groupManager->editGroup($group);
+        $this->groupManager->setActivePeriod($group, $values->periods);
+        
         //sdílení
-        $privileges = [
-            'PR_DELETE_OWN_MSG' => $values['PR_DELETE_OWN_MSG'],
-            'PR_CREATE_MSG' => $values['PR_CREATE_MSG'],
-            'PR_EDIT_OWN_MSG' => $values['PR_EDIT_OWN_MSG'],
-            'PR_SHARE_MSG' => $values['PR_SHARE_MSG']
-        ];
+//        $privileges = [
+//            'PR_DELETE_OWN_MSG' => $values['PR_DELETE_OWN_MSG'],
+//            'PR_CREATE_MSG' => $values['PR_CREATE_MSG'],
+//            'PR_EDIT_OWN_MSG' => $values['PR_EDIT_OWN_MSG'],
+//            'PR_SHARE_MSG' => $values['PR_SHARE_MSG']
+//        ];
         
-        $this->groupManager->editGroupPrivileges($privileges, $this->group->id);
-        $this->groupManager->switchSharing($this->group, $values['shareByLink'], $values['shareByCode']);
-        
-        //období
-        $this->groupManager->addGroupToPeriods($this->group, $values['activePeriods']);
-        
-        
+        //$this->groupManager->editGroupPrivileges($privileges, $this->group->id);
+        //$this->groupManager->switchSharing($group, $values->shareByLink, $values->shareByCode);
         
         //rozvrh
-        
         $scheduleData = $this->presenter->getRequest()->getPost('schedule');
         $error = $this->validateSchedule($scheduleData);
         if(!$error) {
@@ -210,5 +196,25 @@ class GroupSettingsForm extends \App\Components\BaseComponent
         }
         
         $this->presenter->redirect('Group:about', ['id' => $this->presenter->getParameter('id')]);
+    }
+    
+    public function createComponentNewPeriod() 
+    {
+        $form = $this->getForm();
+        $form->addText('name', 'Název období', null, 255)
+             ->setAttribute('placeholder', 'Název období')
+             ->setRequired('Musíte zadat jméno');
+        $form->addSubmit('send', 'Uložit nastavení');
+
+        $form->onSuccess[] = function($form, $values) {
+            $this->groupManager->addGroupPeriod($this->presenter->activeGroup, $values->name);
+            $form->setValues([], true);
+            
+            $this->redrawControl('settingForm');
+            $this->redrawControl('periodSettings');
+            $this->redrawControl('periodForm');
+        };
+        
+        return $form;
     }
 }

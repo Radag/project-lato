@@ -28,27 +28,29 @@ from (((`user` `T1` left join `school_class_user` `T4` on((`T4`.`ID_USER` = `T1`
 
 CREATE OR REPLACE VIEW vw_classification AS
 SELECT 
-   T1.ID_CLASSIFICATION,
-   T1.ID_CLASSIFICATION_GROUP,
-   NULL AS CLG,
-   T1.ID_USER,
-   T1.ID_GROUP,
-   IF(T1.ID_CLASSIFICATION_GROUP IS NULL, T1.NAME, T2.NAME) AS NAME,
-   T1.GRADE,
-   IF(T1.CLASSIFICATION_DATE IS NULL, T1.CREATED_WHEN, T1.CLASSIFICATION_DATE) AS CLASSIFICATION_DATE
+   T1.id,
+   T1.classification_group_id,
+   NULL AS clg,
+   T1.user_id,
+   T1.group_id,
+   IF(T1.classification_group_id IS NULL, T1.name, T2.name) AS name,
+   T1.grade,
+   IF(T1.classification_date IS NULL, T1.created_when, T1.classification_date) AS classification_date,
+   T1.period_id,
+   T1.notice
 FROM classification T1
-LEFT JOIN classification_group T2 on T1.ID_CLASSIFICATION_GROUP=T2.ID_CLASSIFICATION_GROUP
+LEFT JOIN classification_group T2 on T1.classification_group_id=T2.id
 UNION all
 SELECT 
    NULL,
-   T2.ID_CLASSIFICATION_GROUP,
-   T2.ID_CLASSIFICATION_GROUP AS CLG,
+   T2.id,
+   T2.id AS clg,
    NULL,
-   T2.ID_GROUP,
-   T2.NAME,
+   T2.group_id,
+   T2.name,
    NULL,
-   IF(T2.CLASSIFICATION_DATE IS NULL, T2.CREATED_WHEN, T2.CLASSIFICATION_DATE) AS CLASSIFICATION_DATE
+   IF(T2.classification_date IS NULL, T2.created_when, T2.classification_date) AS classification_date,
+   T1.period_id,
+	T1.notice
 FROM classification T1
-RIGHT JOIN classification_group T2 on T1.ID_CLASSIFICATION_GROUP=T2.ID_CLASSIFICATION_GROUP;
-
-
+RIGHT JOIN classification_group T2 on T1.classification_group_id=T2.id;

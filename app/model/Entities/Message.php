@@ -11,7 +11,7 @@ namespace App\Model\Entities;
  *
  * @author Radaq
  */
-class Message {
+class Message extends AbstractEntity {
     
     const TYPE_NOTICE = 'notice';
     const TYPE_MATERIALS = 'material';
@@ -29,37 +29,7 @@ class Message {
     public $type = null;
     public $task;
     public $top = null;
+    public $title = null;
     
-    function getId() {
-        return $this->id;
-    }
-
-    function getText() {
-        return $this->text;
-    }
-
-    function getUser() {
-        return $this->user;
-    }
-
-    function setId($id) {
-        $this->id = $id;
-    }
-
-    function setText($text) {
-        $this->text = $text;
-    }
-
-    function setUser($user) {
-        $this->user = $user;
-    }
-
-    function getCreated() {
-        return $this->created;
-    }
-
-    function setCreated($created) {
-        $this->created = $created;
-    }
 
 }
