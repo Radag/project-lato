@@ -85,7 +85,7 @@ class GroupPresenter extends BasePresenter
     
     public function actionClassmates()
     {       
-        $members = $this->groupManager->getGroupUsers($this->activeGroup->id, \App\Model\Entities\Group::RELATION_STUDENT);
+        $members = $this->groupManager->getGroupUsers($this->activeGroup->id, GroupManager::RELATION_STUDENT);
         $this->template->groupMembers = $members;
     }
     
