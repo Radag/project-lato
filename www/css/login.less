@@ -164,19 +164,19 @@ input[type=search]:not(.browser-default) {
 }
 
 ::-webkit-input-placeholder {
-   color: rgba(0, 0, 0, .54);
+   color: rgba(0, 0, 0, .5);
 }
 
 :-moz-placeholder { /* Firefox 18- */
-   color: rgba(0, 0, 0, .54);  
+   color: rgba(0, 0, 0, .5);  
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
-   color: rgba(0, 0, 0, .54);  
+   color: rgba(0, 0, 0, .5);  
 }
 
 :-ms-input-placeholder {  
-   color: rgba(0, 0, 0, .54);  
+   color: rgba(0, 0, 0, .5);  
 }
 
 @media only screen and (max-width: 992px) {
@@ -191,22 +191,22 @@ input[type=search]:not(.browser-default) {
 
     ::-webkit-input-placeholder {
         font-size: 15px;
-        color: rgba(0, 0, 0, .54);
+        color: rgba(0, 0, 0, .5);
     }
 
     :-moz-placeholder { /* Firefox 18- */
         font-size: 15px;
-        color: rgba(0, 0, 0, .54);  
+        color: rgba(0, 0, 0, .5);  
     }
 
     ::-moz-placeholder {  /* Firefox 19+ */
         font-size: 15px;
-        color: rgba(0, 0, 0, .54);  
+        color: rgba(0, 0, 0, .5);  
     }
 
     :-ms-input-placeholder {  
         font-size: 15px;
-        color: rgba(0, 0, 0, .54);  
+        color: rgba(0, 0, 0, .5);  
     }
 }
 
@@ -215,11 +215,27 @@ input[type=search]:not(.browser-default) {
     align-items: center;
     margin-top: 16px;
     min-height: 32px;
+
+    &.input-field {
+        margin-top: 24px;
+
+        label {
+            color: rgba(0, 0, 0, .5);
+            -webkit-transition: color 300ms ease-in-out;
+            -moz-transition: color 300ms ease-in-out;
+            -o-transition: color 300ms ease-in-out;
+            transition: color 300ms ease-in-out;
+
+            &.active {
+                color: rgba(0, 0, 0, .25);
+            }
+        }
+    }
 }
 
 .form-controls {
     display: flex;
-    margin-top: 24px;
+    margin-top: 32px;
 }
 
 @media only screen and (max-width: 600px) {
@@ -242,7 +258,7 @@ input[type=search]:not(.browser-default) {
 }
 
 .remember-me label {
-    color: rgba(0, 0, 0, .54);
+    color: rgba(0, 0, 0, .5);
     line-height: 20px;
 }
 
