@@ -39,12 +39,10 @@ class SignInForm extends \App\Components\BaseComponent
         $form = $this->getForm();
 
         $form->addEmail('email', 'Email:')
-             ->setAttribute('placeholder', 'E-mail')
              ->setRequired('Prosím vyplňte váš přihlašovací email')
              ->setDefaultValue($this->userEmail);
 
         $form->addPassword('password', 'Heslo:')
-              ->setAttribute('placeholder', 'Heslo')
             ->setRequired('Prosím vyplňte své heslo.');
 
         $form->addCheckbox('remember');
