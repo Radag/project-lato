@@ -1,12 +1,6 @@
 {block content}
-
-        <div class="card">
-            <div class="card-header">
-                <h1>Přihlášení</h1>
-            </div>
-            <div class="card-content">
-                {control signInForm}
-            </div>
-            <a href="{link Homepage:register}" class="card-footer">Registrace</a>
-        </div>	
+{control signInForm}
+<div class="modal-footer">
+	<a href="{link Homepage:register}">Registrace</a>
+</div>
 
