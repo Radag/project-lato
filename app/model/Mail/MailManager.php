@@ -68,7 +68,7 @@ class MailManager
             $hashCode = $this->publicActionManager->addNewAction(PublicActionManager::ACTION_LOST_PASS);
             $secret = $this->userManager->generateSecret($user->id);
             $params = [
-                'link' => $presenter->link('//:Public:Action:default', array('id' => $hashCode, 'secret' => $secret, 'email' => base64_encode($email)))
+                'link' => $presenter->link('//:Public:Action:default', ['id' => $hashCode->code, 'secret' => $secret, 'email' => base64_encode($email)])
             ];
             $body = $latte->renderToString(__DIR__ . '/templates/lostPasswordMail.latte', $params);
 

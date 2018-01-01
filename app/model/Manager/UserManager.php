@@ -141,9 +141,9 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
     public function getUserByMail($email, $secret = null) 
     {
         if($secret !== null) {
-            $idUser = $this->database->query("SELECT ID_USER FROM vw_user_detail WHERE EMAIL=? AND SECRET=?", $email, $secret)->fetchField();
+            $idUser = $this->db->fetchSingle("SELECT id FROM user WHERE email=? AND secret=?", $email, $secret);
         } else {
-            $idUser = $this->database->query("SELECT ID_USER FROM vw_user_detail WHERE EMAIL=?", $email)->fetchField();
+            $idUser = $this->db->fetchSingle("SELECT id FROM user WHERE email=?", $email);
         }
         
         if($idUser) {
@@ -156,7 +156,7 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
     public function generateSecret($idUser) 
     {
         $secret = mb_strtoupper(substr(md5(openssl_random_pseudo_bytes(40)),-30));
-        $this->database->query("UPDATE user SET SECRET=? WHERE ID_USER=?", $secret, $idUser);
+        $this->db->query("UPDATE user SET secret=? WHERE id=?", $secret, $idUser);
         return $secret;
     }
     

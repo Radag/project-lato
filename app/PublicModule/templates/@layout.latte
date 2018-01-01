@@ -55,31 +55,64 @@
             </div>
         </div>
     </header>
-    <section id="about">
-        <div class="container">
-            <h2>We care ...</h2>
-        </div>
-    </section>
+    {include content}
+   
     <footer id="page-footer">
         <div class="copy"><strong>lato.cz</strong> | © 2018</div>
         <div id="logo"></div>
-
     </footer>
 
 
-<div id="login-modal" class="modal">
-    {include content}
-</div>
-	{block scripts}
-	<script>  
-            $(function () {
-                $.nette.init();
-                $('.modal').modal();
+    <div id="login-modal" class="modal">
+        <div id="login-form-section">
+            {control signInForm}
+            <div class="modal-footer">
+                <a href="#" class="switch-login-form-register">Registrace</a>
+            </div>
+        </div>
+        <div id="register-form-section" class="hide">
+            {control registerForm}
+            <div class="modal-footer">
+                <a href="" class="switch-login-form-login">Přihlášení</a>
+            </div>
+        </div>
+       <div id="lost-form-section" class="hide">
+            {control lostPasswordForm}
+            <div class="modal-footer">
+                <a href="" class="switch-login-form-login">Přihlášení</a>
+            </div>
+        </div>
+    </div>
+    
+    {block scripts}
+    <script>  
+        $(function () {
+            $.nette.init();
+            $('.modal').modal();
+            
+            $(".switch-login-form-login").on('click', function(e){
+                e.preventDefault();
+                $("#login-form-section").removeClass('hide');
+                $("#register-form-section").addClass('hide');
+                $("#lost-form-section").addClass('hide');
             });
-            $('.button-collapse').sideNav({
-                menuWidth: 300, // Default is 240
-            });  
-        </script>
-        {/block}
+            $(".switch-login-form-register").on('click', function(e){
+                e.preventDefault();
+                $("#login-form-section").addClass('hide');
+                $("#register-form-section").removeClass('hide');
+                $("#lost-form-section").addClass('hide');
+            });
+            $(".switch-login-form-lost").on('click', function(e){
+                e.preventDefault();
+                $("#login-form-section").addClass('hide');
+                $("#register-form-section").addClass('hide');
+                $("#lost-form-section").removeClass('hide');
+            });
+        });
+        $('.button-collapse').sideNav({
+            menuWidth: 300, // Default is 240
+        });  
+    </script>
+    {/block}
 </body>
 </html>
