@@ -1,25 +1,24 @@
 {form form}
 {snippet sign-in-form}
-<div class="row">
-    <div class="col s12 form-row input-field">
+<div class="modal-content">
+    <h2>Přihlášení</h2>
+    <div class="form-row input-field">
         {input email}
         {label email}E-mail{/label}
     </div>
-    <div class="col s12 form-row input-field">
+    <div class="form-row input-field">
         {input password}
         {label password}Heslo{/label}
     </div>
-</div>
-<div class="form-controls">
-    <p class="remember-me">
-        {input remember: class=>'filled-in'}
-        {label remember:}Neodhlašovat{/label}
-    </p>
-    <div class="flex-spacer"></div>
-    <button class="btn waves-effect waves-light" type="submit" >Přihlásit</button>
-</div>
-<div class="col s12 bottom-link">
-    <a href="{plink :Public:Homepage:lostPassword}">Zapomněli jste heslo?</a>
+    <div class="form-controls">
+        <p class="remember-me">
+            {input remember: class=>'filled-in'}
+            {label remember:}Neodhlašovat{/label}
+        </p>
+        <div class="flex-spacer"></div>
+        <button class="btn waves-effect waves-light" type="submit" >Přihlásit</button>
+    </div>
+    <a href="{plink :Public:Homepage:lostPassword}" class="bottom-link">Zapomněli jste heslo?</a>
 </div>
 {/snippet}
 {/form}

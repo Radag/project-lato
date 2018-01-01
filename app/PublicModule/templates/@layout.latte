@@ -21,22 +21,55 @@
     <title>{ifset title}{include title|striptags} | {/ifset}Lato</title>
 </head>
 <body>
+    <header class="navbar-fixed main-nav">
+        <nav>
+            <div class="nav-wrapper">
+                <div id="logo"></div>
+                <div class="flex-spacer"></div>
+                <ul id="right-nav" class="hide-on-small-and-down">
+                    <li><a href="sass.html">Registrace</a></li>
+                    <li><a href="badges.html">O projektu</a></li>
+                    <li><a href="collapsible.html">Kontakt</a></li>
+                    <li><button href="#login-modal" class="btn waves-effect waves-light modal-trigger">Přihlásit</button></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+
 	<div id="flashMessagesWrapper" style="display:none;">
         <div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
     </div>
-    <div class="main">
+    <header id="page-header">
         <div class="container">
-        <div id="page-header">
-            <div id="logo"></div>
-           <p>Sociální síť pro základní a střední školy</p>
+            <div class="header-content">
+                <h1>Sociální síť pro studenty a učitele</h1>
+                <h2>Děláme ze školy lepší místo</h2>
+                <button href="#login-modal" class="btn waves-effect waves-light modal-trigger">Přihlásit</button> 
+            </div>
+            <div class="scroll-icon">
+                <div class="mouse-outline">
+                    <div class="wheel">
+                    </div>
+                </div>
+            </div>
         </div>
-	    {include content}
-        <div id="page-footer">
-        <p>Lato.cz @ 2016</p>
+    </header>
+    <section id="about">
+        <div class="container">
+            <h2>We care ...</h2>
         </div>
-        </div>
-    </div>
+    </section>
+    <footer id="page-footer">
+        <div class="copy"><strong>lato.cz</strong> | © 2018</div>
+        <div id="logo"></div>
 
+    </footer>
+
+
+<div id="login-modal" class="modal">
+    {include content}
+</div>
 	{block scripts}
 	<script>  
             $(function () {
