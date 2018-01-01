@@ -24,7 +24,6 @@ class Classification extends \App\Components\BaseComponent
     /** @var GroupManager */
     private $groupManager;
     
-    
     protected $grades = ['1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '—' => '—', 'N' => 'N'];
     
     public function __construct(
@@ -42,6 +41,13 @@ class Classification extends \App\Components\BaseComponent
     {
         $this->template->permission = $this->presenter->groupPermission;
         $this->template->activeUser = $this->presenter->activeUser;
+        
+        if($this->parent->classGroupId !== true) {
+            
+        } else {
+            
+        }
+        
         $classificationGroup = $this->classificationManager->getGroupClassification($this->parent->classGroupId);
         $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, GroupManager::RELATION_STUDENT);
         if(!empty($classificationGroup->task)) {
@@ -52,7 +58,7 @@ class Classification extends \App\Components\BaseComponent
         
         $this->template->classificationGroup = $classificationGroup;
         $this['form']->setDefaults(array(
-            'idGroupClassification' => $this->parent->classGroupId
+            'id' => $this->parent->classGroupId
         ));
         
         foreach($classificationGroup->classifications as $classification) {
@@ -81,7 +87,9 @@ class Classification extends \App\Components\BaseComponent
             $form->addTextArea('notice' . $member->id, 'Poznámka')
                  ->setAttribute('placeholder', 'Poznámka');
         }
-        $form->addHidden('idGroupClassification');
+        $form->addHidden('date');
+        $form->addHidden('name');
+        $form->addHidden('id');
         $form->addSubmit('send', 'Uložit');
 
         $form->onSuccess[] = function(\Nette\Application\UI\Form $form) {
@@ -91,10 +99,10 @@ class Classification extends \App\Components\BaseComponent
                 $classification = new \App\Model\Entities\Classification();
                 $classification->grade = $values['grade' . $member->id];
                 $classification->notice = $values['notice' . $member->id];
-                $classification->idClassificationGroup = $values['idGroupClassification'];
+                $classification->idClassificationGroup = $values->id;
                 $classification->group = $this->presenter->activeGroup;
                 $classification->user = $member;
-                $classification->idPeriod = $this->presenter->activePeriod;
+                $classification->idPeriod = $this->presenter->activeGroup->activePeriodId;
                 $this->classificationManager->createClassification($classification);
             }
             $this->presenter->flashMessage('Uloženo', 'success');

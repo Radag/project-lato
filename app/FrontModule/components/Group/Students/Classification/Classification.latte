@@ -33,16 +33,12 @@
         </div>
         <div class="row">
             <div class="col s12">
-               
                 <div class="section-header table-header">   
                     <div class="title">Student</div>
                     <div class="flex-spacer"></div>
                     <div class="notice table-field"></div>
                     <div class="table-field">Hodnocení</div>
                 </div>
-
-
-
                 <ul class="collapsible popout classification-update-table" data-collapsible="expandable">
                     {foreach $members as $member}                    
                     <li>
@@ -79,8 +75,6 @@
                     </li>
                     {/foreach}
                 </ul>
-
-
                 <ul class="custom-table">
                     {foreach $members as $member}
                     <li>
@@ -125,7 +119,6 @@
                         </div>
                     </li>
                     {/foreach}
-                    
                 </ul>   
             </div>
         </div>
@@ -149,20 +142,7 @@
         </div>
     </div>
 </div>
-{/form}
-<script>
-  $(document).ready(function() {
-    $('select').material_select();
-});
-
-  $(document).ready(function(){
-    $('.collapsible').collapsible();
-  });
-     
-</script>
-
 <div id="edit-classification-modal" class="modal modal-small">
-    {form editClassGroupForm}
     <div class="modal-content">
         <h3>Vlastnosti známky</h3>
         <div class="form-row">
@@ -176,8 +156,14 @@
         <div class="flex-spacer"></div>
         <div class="form-control">
             <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-classification" >Potvrdit</button>
+            <button type="button" class="waves-effect waves-light btn btn-confirm submit-classification" >Potvrdit</button>
         </div>
     </div>
-    {/form}
 </div>
+{/form}
+<script>
+    $(document).ready(function() {
+        $('select').material_select();
+        $('.collapsible').collapsible();    
+    });
+</script>

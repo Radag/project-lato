@@ -24,39 +24,39 @@ class ClassificationManager extends BaseManager
         $insert = false;
         $this->db->begin();
         if($classification->idClassificationGroup !== null) {
-            $idClassification = $this->db->fetchSingle("SELECT ID_CLASSIFICATION FROM classification WHERE ID_CLASSIFICATION_GROUP=? AND ID_USER=?", $classification->idClassificationGroup, $classification->user->id);
+            $idClassification = $this->db->fetchSingle("SELECT id FROM classification WHERE classification_group_id=? AND user_id=?", $classification->idClassificationGroup, $classification->user->id);
             if($idClassification) {
                 $this->db->query("UPDATE classification SET ", [
-                    'NOTICE' => $classification->notice, 
-                    'GRADE' => $classification->grade,
-                    'NAME' => $classification->name,
-                    'CLASSIFICATION_DATE' => $classification->date
-                ], " WHERE ID_CLASSIFICATION=?" ,$idClassification);
+                    'notice' => $classification->notice, 
+                    'grade' => $classification->grade,
+                    'name' => $classification->name,
+                    'classification_date' => $classification->date
+                ], " WHERE id=?" ,$idClassification);
             } else {
                 $insert = true;
             }   
         } else if($classification->idClassification !== null) {
             $this->db->query("UPDATE classification SET ", [
-                'NOTICE' => $classification->notice, 
-                'GRADE' => $classification->grade,
-                'NAME' => $classification->name,
-                'CLASSIFICATION_DATE' => $classification->date
-            ], " WHERE ID_CLASSIFICATION=?", $classification->idClassification);       
+                'notice' => $classification->notice, 
+                'grade' => $classification->grade,
+                'name' => $classification->name,
+                'classification_date' => $classification->date
+            ], " WHERE id=?", $classification->idClassification);       
         } else {
             $insert = true;
         }
         
         if($insert) {
             $this->db->query('INSERT INTO classification', [
-                'ID_USER' => $classification->user->id,
-                'ID_GROUP' => $classification->group->id,
-                'NAME' => $classification->name,
-                'ID_CLASSIFICATION_GROUP' => $classification->idClassificationGroup,
-                'NOTICE' => $classification->notice,
-                'CREATED_BY' => $this->user->id,
-                'GRADE' => $classification->grade,
-                'ID_PERIOD' => $classification->idPeriod,
-                'CLASSIFICATION_DATE' => $classification->date 
+                'user_id' => $classification->user->id,
+                'group_id' => $classification->group->id,
+                'name' => $classification->name,
+                'classification_group_id' => $classification->idClassificationGroup,
+                'notice' => $classification->notice,
+                'created_by' => $this->user->id,
+                'grade' => $classification->grade,
+                'period_id' => $classification->idPeriod,
+                'classification_date' => $classification->date 
             ]);  
         }
              

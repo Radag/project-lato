@@ -1,4 +1,4 @@
-{form form}
+{form form id=>"form-user-classification"}
     <div class="modal-content">
         <h3>Přidat známku</h3> 
         {ifset $classificationUsers}
@@ -27,12 +27,19 @@
         <div class="flex-spacer"></div>
         <div class="form-control">
             <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-            <button type="submit" class="waves-effect waves-light btn btn-confirm" disabled>Pokračovat</button>
+            <button type="submit" class="submit-button waves-effect waves-light btn btn-confirm" disabled>Pokračovat</button>
         </div>
     </div>
     <script>
     $(function() {
         $('select').material_select();
+        $("#form-user-classification input[name='name']").on("keyup", function(e) {
+           if($(this).val() === "") {
+               $("#form-user-classification .submit-button").prop('disabled', true);
+           } else {
+               $("#form-user-classification .submit-button").prop('disabled', false);
+           }
+        });
     });
 </script>
 {/form}

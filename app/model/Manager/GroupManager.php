@@ -228,7 +228,9 @@ class GroupManager extends BaseManager {
                T5.sex AS owner_sex,
                T6.share_by_link,
                T6.share_by_code,
-               T7.hash_code AS public_code
+               T7.hash_code AS public_code,
+               T8.id AS period_id,
+               T8.name AS period_name
             FROM `group` T1
             JOIN group_user T2 ON (T1.id = T2.group_id AND T2.user_id=?)
             JOIN group_scheme T3 ON (T1.group_scheme_id = T3.id)
@@ -236,6 +238,7 @@ class GroupManager extends BaseManager {
             JOIN user T5 ON T4.user_id=T5.id
             LEFT JOIN group_sharing T6 ON T6.group_id=T1.id
             LEFT JOIN public_actions T7 ON (T7.id = T6.action_id AND T7.active=1)
+            LEFT JOIN group_period T8 ON (T8.group_id = T1.id AND T8.active=1)
             WHERE T1.slug=? AND T2.active=1", $user->id, $groupSlug);
         if($group) {
             $owner = new User();
@@ -261,6 +264,8 @@ class GroupManager extends BaseManager {
             $groupModel->shareByLink = $group->share_by_link;
             $groupModel->interCode = $group->code;
             $groupModel->publicCode = $group->public_code;
+            $groupModel->activePeriodId = $group->period_id;
+            $groupModel->activePeriodName = $group->period_name;
             return $groupModel;   
         } else {
             return null;
@@ -406,7 +411,7 @@ class GroupManager extends BaseManager {
             LEFT JOIN user T2 ON T1.ID_USER = T2.ID_USER", $idGroup, $idGroup);
         } else {
             $users = $this->db->fetchAll("SELECT
-                    T2.sex, T2.name, T2.surname, T2.username, T2.profile_image, T2.slug 
+                    T2.id, T2.sex, T2.name, T2.surname, T2.username, T2.profile_image, T2.slug 
                 FROM group_user T1
                 JOIN user T2 ON T1.user_id = T2.id
                 WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type=?", $idGroup, $filterRelation);

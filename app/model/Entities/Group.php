@@ -43,6 +43,9 @@ class Group extends AbstractEntity {
     public $statistics = null;
     public $userJoin = null;
     
+    public $activePeriodId = null;
+    public $activePeriodName = null;
+    
     
     protected $mapFields = [
         'id' => 'id',

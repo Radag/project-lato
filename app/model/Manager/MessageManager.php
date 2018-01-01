@@ -254,7 +254,6 @@ class MessageManager extends BaseManager {
     
     public function getMessageComments($messageId)
     {
-
         $commentsData = $this->db->fetchAll("SELECT 
                     T2.id,
                     T2.text, 
@@ -269,6 +268,7 @@ class MessageManager extends BaseManager {
                 JOIN user T3 ON T2.user_id=T3.id
                 WHERE T2.message_id=? ORDER BY T2.created_when ASC", $messageId);
         
+        $return = [];
         if($commentsData) {
             foreach($commentsData as $comment) {
                 $comm = new Comment();
