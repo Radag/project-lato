@@ -36,7 +36,7 @@
         
         .indeterminate,
         .determinate {
-            background-color: @primary-color;
+            background-color: @accent-color;
         }
     }
 }
@@ -50,7 +50,7 @@
     
         .indeterminate,
         .determinate {
-            background-color: @primary-color;
+            background-color: @accent-color;
         }
     }
 
@@ -60,26 +60,26 @@
     }
 
     & [type="checkbox"].filled-in:checked+label:after {
-        border-color: @primary-color;
-        background-color: @primary-color;
+        border-color: @accent-color;
+        background-color: @accent-color;
     }
 
     & [type="radio"].filled-in:checked+label:after {
-        background-color: @primary-color;
-        border-color: @primary-color;
+        background-color: @accent-color;
+        border-color: @accent-color;
     }
 
     & .switch label input[type=checkbox]:checked+.lever {
-        background-color: fade(@primary-color, 38%);
+        background-color: fade(@accent-color, 38%);
     }
 
     & .switch label input[type=checkbox]:checked+.lever:after {
-        background-color: @primary-color;
+        background-color: @accent-color;
     }
 
     & .btn {
-        background-color: @primary-color;
-        color: @text-color;
+        background-color: @accent-color;
+        color: #fff;
     }
 
     & input:not([type]):focus:not([readonly]), 
@@ -95,8 +95,8 @@
     & input[type=number]:focus:not([readonly]), 
     & input[type=search]:focus:not([readonly]), 
     & textarea.materialize-textarea:focus:not([readonly]) {
-        border-bottom-color: @primary-color;
-        box-shadow: 0 1px 0 0 @primary-color;
+        border-bottom-color: @accent-color;
+        box-shadow: 0 1px 0 0 @accent-color;
     }
 
     .avatar {
@@ -104,6 +104,10 @@
             background-color: @primary-color;
             color: @text-color;
         }
+    }
+
+    .create-post .alternate li .material-icons {
+        color: @accent-color;
     }
 }
 
