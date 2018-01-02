@@ -2421,13 +2421,14 @@ nav .nav-title {
 
 /* ----- SIDEBAR NAVIGATION ----- */
 
+.side-nav {
 
+}
 
 .side-nav li {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    flex-grow: 1;
     padding: 0;
 }
 
@@ -2607,6 +2608,33 @@ nav .nav-title {
 
 .side-nav .empty {
     height: 40px;
+}
+
+.side-nav {
+    li.side-nav-footer {
+        line-height: 21px;
+        font-size: 13px;
+        padding: 0 16px;
+        color: rgba(0, 0, 0, .38);
+
+        a {
+            padding: 0;
+            font-weight: 400;
+            color: rgba(0, 0, 0, .38);
+            font-size: 13px;
+            line-height: 21px;
+            height: 21px;
+
+            &:hover {
+                background-color: transparent;
+            }
+        }
+
+        strong {
+            color: rgba(0, 0, 0, .38);
+            margin-left: 3px;
+        }
+    }
 }
 
 /* ---------- */
@@ -3545,7 +3573,6 @@ nav .nav-title {
             display: flex;
             align-items: center;
             padding: 24px;
-            border-bottom: 1px solid @line-color;
             cursor: pointer;
 
             &:last-child {
@@ -3598,6 +3625,7 @@ nav .nav-title {
             display: flex;
             padding: 24px;
             margin: 0;
+            background-color: @background-highlighted;
 
             @media only screen and (max-width: 992px) {
                 & {
@@ -3630,7 +3658,6 @@ nav .nav-title {
                     line-height: 24px;
                     margin-right: 8px;
                     text-align: center;
-                    color: @secondary-text-color;
 
                     @media only screen and (max-width: 600px) {
                         & {
@@ -3642,7 +3669,7 @@ nav .nav-title {
 
                 .label {
                     font-weight: 500;
-                    color: @secondary-text-color;
+                    color: rgba(0, 0, 0, .87);
                 }
             }
         }
