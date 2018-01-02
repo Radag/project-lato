@@ -55,12 +55,10 @@ class MessageForm extends \App\Components\BaseComponent
         $form = $this->getForm();
         $form->getElementPrototype()->class('ajax');
         $form->addTextArea('text', 'Zpráva')
-                ->setAttribute('placeholder', 'Sem napište Vaši zprávu ...')
             ->setRequired('Napište zprávu');
         $form->addHidden('idMessage');
         
-        $form->addText('title', 'Název')
-             ->setAttribute('placeholder', 'Název (nepovinné)');
+        $form->addText('title', 'Název');
         $form->addHidden('messageType', Message::TYPE_NOTICE);
         $form->addText('date', 'Datum', null, 12)
              ->setAttribute('type', 'date')

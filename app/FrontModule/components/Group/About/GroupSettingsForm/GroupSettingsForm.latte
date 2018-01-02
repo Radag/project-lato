@@ -27,29 +27,21 @@
                         </div>
                         <div class="card-content">
                             <p class="secondary-par">Základní informace o skupině</p>
-                            <div class="form-row">
-                                <i class="material-icons icon-label">group</i>
-                                <div class="input-flex">
-                                    {input subgroup class => 'validate'}
-                                </div>
+                            <div class="form-row input-field">
+                                {input subgroup class => 'validate'}
+                                {label subgroup}Název podskupiny{/label}
                             </div>
-                            <div class="form-row">
-                                <i class="material-icons icon-label">explicit</i>
-                                <div class="input-flex">
-                                    {input shortcut class => 'validate'}
-                                </div>
+                            <div class="form-row input-field">
+                                {input shortcut class => 'validate'}
+                                {label shortcut}Zkratka skupiny{/label}
                             </div>
-                            <div class="form-row flex-top">
-                                <i class="material-icons icon-label">description</i>
-                                <div class="input-flex">
-                                    {input description class => 'materialize-textarea'}
-                                </div>
+                            <div class="form-row flex-top input-field">
+                                {input description class => 'materialize-textarea'}
+                                {label description}Popis skupiny{/label}
                             </div>
-                            <div class="form-row">
-                                <i class="material-icons icon-label">location_on</i>
-                                <div class="input-flex">
-                                    {input room}
-                                </div>
+                            <div class="form-row input-field">
+                                {input room}
+                                {label subgroup}Místnost{/label}
                             </div>
                         </div>
                     </div>

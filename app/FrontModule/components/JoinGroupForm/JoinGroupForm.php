@@ -35,7 +35,6 @@ class JoinGroupForm extends Control
        
         $form = new \Nette\Application\UI\Form;
         $form->addText('code', 'Kód skupiny')
-             ->setAttribute('placeholder', 'Kód skupiny')
              ->setRequired('Vložte kód skupiny.');        
         
         $form->addSubmit('send', 'Zapsat se');

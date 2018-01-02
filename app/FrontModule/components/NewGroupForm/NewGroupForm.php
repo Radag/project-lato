@@ -40,7 +40,6 @@ class NewGroupForm extends Control
         $colors = $this->groupManager->getColorsSchemes();
         $form = new \Nette\Application\UI\Form;
         $form->addText('name', 'Název skupiny')
-             ->setAttribute('placeholder', 'Název skupiny')
              ->setRequired('Prosím vyplňte název skupiny.');
         $form->addRadioList('color','Barevné schéma', $colors)
              ->setDefaultValue(1);

@@ -44,20 +44,17 @@ class GroupSettingsForm extends \App\Components\BaseComponent
         $form->addText('name', 'Název skupiny', null, 255)
              ->setAttribute('placeholder', 'Název skupiny')
              ->setDefaultValue($this->presenter->activeGroup->name)
-             ->setRequired('Nápis musí být vyplněn');
+             ->setRequired('Název musí být vyplněn');
         $form->addRadioList('color','Barevné schéma', $colors)
              ->setDefaultValue($this->presenter->activeGroup->colorSchemeId);
         $form->addText('shortcut', 'Zkratka', null, 3)
              ->setDefaultValue($this->presenter->activeGroup->shortcut);
         $form->addText('subgroup', 'Název podskupiny', null, 100)
-             ->setDefaultValue($this->presenter->activeGroup->subgroup)
-             ->setAttribute('placeholder', 'Název podskupiny (nepovinné)');
+             ->setDefaultValue($this->presenter->activeGroup->subgroup);
         $form->addTextArea('description', 'Popis skupiny')
-             ->setDefaultValue($this->presenter->activeGroup->description)
-             ->setAttribute('placeholder', 'Popis skupiny (nepovinné)');
+             ->setDefaultValue($this->presenter->activeGroup->description);
         $form->addText('room', 'Místnost', null, 100)
-             ->setDefaultValue($this->presenter->activeGroup->room)
-             ->setAttribute('placeholder', 'Místnost (nepovinné)');
+             ->setDefaultValue($this->presenter->activeGroup->room);
         
         //oprávnění
         $privileges = $this->groupManager->getPrivileges($this->presenter->activeGroup->id);

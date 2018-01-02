@@ -78,29 +78,23 @@ class AccountSettings extends \App\Components\BaseComponent
         
         $form->addText('name')
              ->setRequired('Zadejte prosím svoje jméno')
-             ->setAttribute("placeholder","Jméno")
              ->setDefaultValue($this->presenter->activeUser->name);
         $form->addText('surname')
              ->setRequired('Zadejte prosím svoje příjmení')
-             ->setAttribute("placeholder","Příjmení")
              ->setDefaultValue($this->presenter->activeUser->surname);
         $form->addText('email')
              ->setRequired('Zadejte svůj email')
-             ->setAttribute("placeholder","Emailová adresa")
              ->setDefaultValue($this->presenter->activeUser->email);
         $form->addText('birthday')
              ->setRequired('Zadejte datum narození')
-             ->setAttribute('type', 'date')
-             ->setAttribute("placeholder","Datum narození");
+             ->setAttribute('type', 'date');
         
         if($this->presenter->activeUser->birthday) {
             $form['birthday']->setDefaultValue($this->presenter->activeUser->birthday->format('Y-m-d'));
         }
             
-        $form->addText('school')
-             ->setAttribute("placeholder", "Název školy (nepovinné)");
-        $form->addText('class')
-             ->setAttribute("placeholder", "Třída (nepovinné)");
+        $form->addText('school');
+        $form->addText('class');
         
         if($userSchool) {
             $form['school']->setDefaultValue($userSchool->school);

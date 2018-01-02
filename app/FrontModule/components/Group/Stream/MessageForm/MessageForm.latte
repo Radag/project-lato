@@ -14,11 +14,13 @@
             </div>
             <h4>{$activeUser->name} {$activeUser->surname}</h4>
         </div>
-        <div class="form-row hide mes-title-row">
+        <div class="form-row hide mes-title-row input-field">
             {input title}
+            {label title}Název (nepovinné){/label}
         </div>
-        <div class="form-row">
+        <div class="form-row input-field">
             {input text class => 'materialize-textarea'}
+            {label text}Sem napište Vaši zprávu ...{/label}
         </div>
         <div class="form-row term-picker hide mes-date-row">
             <span class="label right-16">Datum (termín)</span>
