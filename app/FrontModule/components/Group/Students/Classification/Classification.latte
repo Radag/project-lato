@@ -39,6 +39,7 @@
                     <div class="notice table-field"></div>
                     <div class="table-field">Hodnocení</div>
                 </div>
+                {*
                 <ul class="collapsible popout classification-update-table" data-collapsible="expandable">
                     {foreach $members as $member}                    
                     <li>
@@ -75,6 +76,7 @@
                     </li>
                     {/foreach}
                 </ul>
+                *}
                 <ul class="custom-table">
                     {foreach $members as $member}
                     <li>
@@ -86,7 +88,7 @@
                                 {if !empty($member->name)}<span>{$member->surname}</span>, {$member->name}{/if}  
                             </div>
                             <div class="flex-spacer"></div>
-                            <div class="notice table-field"><a class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Vložit komentář">comment</a></div>
+                            <div class="notice table-field"><a href="" class="material-icons tooltipped add-notice-button" data-position="bottom" data-delay="50" data-tooltip="Vložit komentář">comment</a></div>
                             <div class="grade table-field">
                                 {input grade$member->id class=>'no-border'}
                             </div>
@@ -113,7 +115,7 @@
                                     <div class="table-row-input">Neodevzdáno</div>
                                 {/ifset}
                             {/if}
-                            <div class="table-row-input" style="display: none;">
+                            <div class="table-row-input notice-row {if $form['notice' . $member->id]->getValue() === ""}hide{/if}" >
                                 {input notice$member->id class=>'materialize-textarea no-border'}
                             </div>
                         </div>
@@ -164,6 +166,11 @@
 <script>
     $(document).ready(function() {
         $('select').material_select();
-        $('.collapsible').collapsible();    
+        $('.collapsible').collapsible();
+        
+        $(".add-notice-button").on('click', function(e) {
+            e.preventDefault();
+            $(this).parents('.table-row').find('.notice-row').removeClass('hide');
+        });
     });
 </script>

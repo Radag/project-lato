@@ -45,8 +45,11 @@ class Students extends \App\Components\BaseComponent
         return $this->studentsList->create();
     }
     
-    public function showClassification($idGroup)
+    public function showClassification($idGroup, $classificationGroup = null)
     {
+        if($classificationGroup) {
+            $this['classification']->setClassification($classificationGroup);
+        }
         $this->classGroupId = $idGroup;
         $this->redrawControl();
     } 

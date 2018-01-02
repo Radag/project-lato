@@ -50,13 +50,6 @@ class UserClassificationForm extends \App\Components\BaseComponent
              ->setAttribute('type', 'date')
              ->setAttribute('placeholder', date('d. m. Y'))
              ->setValue(date("Y-m-d"));
-//        $form->addSelect('grade', 'Známka', $this->grades)
-//             ->setRequired();
-        /*
-        $form->addTextArea('notice', 'Poznámka')
-             ->setAttribute('placeholder', 'poznámka');
-         * 
-         */
         $form->addHidden('idClassification');
         $form->addSubmit('send', 'Vytvořit');
 
@@ -77,23 +70,18 @@ class UserClassificationForm extends \App\Components\BaseComponent
     
     public function processForm(Form $form, $values) 
     {
-        $classification = new \App\Model\Entities\Classification();
-        $classification->user = new \App\Model\Entities\User();
-        $classification->group = $this->activeGroup;
-        $classification->name = $values->name;
-        //$classification->grade = $values->grade;
-        //$classification->notice = $values->notice;
-        $classification->idClassification = empty($values->idClassification) ? null : $values->idClassification;
-        $classification->idPeriod = $this->presenter->activeGroup->activePeriodId;
-        $classification->date = \DateTime::createFromFormat('Y-m-d', $values->date);
+        $classificationGroup = new \App\Model\Entities\ClassificationGroup();
+        $classificationGroup->name = $values->name;
+        $classificationGroup->idPeriod = $this->presenter->activeGroup->activePeriodId;
+        $classificationGroup->classificationDate = \DateTime::createFromFormat('Y-m-d', $values->date);
         $users = $this->presenter->getRequest()->getPost('users');
         foreach($users as $idUser) {
+            $classification = new Classification;
+            $classification->user = new \App\Model\Entities\User();
             $classification->user->id = $idUser;
-            //$this->classificationManager->createClassification($classification);
+            $classificationGroup->classifications[] = $classification;
         }
-
-        //$this->presenter->flashMessage('Hodnocení vloženo', 'success');
-        $this->parent->redirect('editGroupClassification!', ['idGroupClassification'=> true]);
+        $this->parent->parent->showClassification('new', $classificationGroup);
         
     }
 }
