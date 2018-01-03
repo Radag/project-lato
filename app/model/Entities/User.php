@@ -28,6 +28,7 @@ class User extends AbstractEntity {
     
     protected $mapFields = [
         'id' => 'id',
+        'user_id' => 'id',
         'surname' => 'surname',
         'name' => 'name',
         'email' => 'email',
@@ -71,9 +72,14 @@ class User extends AbstractEntity {
     public function bindUser($data)
     {
         if(isset($data->profile_image)) {
-            $this->profileImage = self::createProfilePath($data->profile_image, $data->sex);
+            $this->profileImage = self::createProfilePath($data->profile_image);
         } elseif($data){
-            $this->profileImage = self::createProfilePath('', $data->sex);
+            if(isset($data->sex)) {
+                $sex = $data->sex;
+            } else {
+                $sex = null;
+            }
+            $this->profileImage = self::createProfilePath('', $sex);
         }
     }
 }

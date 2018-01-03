@@ -24,7 +24,7 @@ class ClassificationManager extends BaseManager
         $insert = false;
         $this->db->begin();
         if($classification->idClassificationGroup !== null) {
-            $idClassification = $this->db->fetchSingle("SELECT id FROM classification WHERE classification_group_id=? AND user_id=?", $classification->idClassificationGroup, $classification->user->id);
+            $idClassification = $this->db->fetchSingle("SELECT id FROM classification WHERE classification_group_id=? AND user_id=?", $classification->idClassificationGroup, $classification->idUser);
             if($idClassification) {
                 $this->db->query("UPDATE classification SET ", [
                     'notice' => $classification->notice, 
@@ -48,7 +48,7 @@ class ClassificationManager extends BaseManager
         
         if($insert) {
             $this->db->query('INSERT INTO classification', [
-                'user_id' => $classification->user->id,
+                'user_id' => $classification->idUser,
                 'group_id' => $classification->group->id,
                 'name' => $classification->name,
                 'classification_group_id' => $classification->idClassificationGroup,
@@ -95,7 +95,7 @@ class ClassificationManager extends BaseManager
 
         $classification = new Classification;
         $classification->idClassificationGroup = $class->ID_CLASSIFICATION_GROUP;
-        $classification->idClassification = $class->ID_CLASSIFICATION;
+        $classification->id = $class->ID_CLASSIFICATION;
         $classification->name = $class->NAME;
         $classification->user = new \App\Model\Entities\User();
         $classification->user->id = $class->ID_USER;
@@ -116,7 +116,7 @@ class ClassificationManager extends BaseManager
     {
         $classificationArray = $this->db->fetch("SELECT * FROM classification_group WHERE id=?", $idGroupClassification);
         $classificationGroup = new ClassificationGroup();
-        $classificationGroup->idClassificationGroup = $classificationArray->id;
+        $classificationGroup->id = $classificationArray->id;
         $classificationGroup->name = $classificationArray->name;
         $classificationGroup->classificationDate = $classificationArray->classification_date;
         if(!empty($classificationArray->task_id)) {
@@ -130,7 +130,7 @@ class ClassificationManager extends BaseManager
             $classObject = new Classification();
             $classObject->grade = $classification->grade;
             $classObject->notice = $classification->notice;
-            $classObject->user = $classification->user_id;
+            $classObject->user = new \App\Model\Entities\User($classification);
             $classificationGroup->classifications[] = $classObject;
         }
         
@@ -142,7 +142,8 @@ class ClassificationManager extends BaseManager
         $this->db->query("INSERT INTO classification_group", [
             'group_id' => $groupClassification->group->id,
             'name' => $groupClassification->name,
-            'task_id' => isset($groupClassification->task) ? $groupClassification->task->idTask : null
+            'task_id' => isset($groupClassification->task) ? $groupClassification->task->idTask : null,
+            'period_id' => $groupClassification->idPerion
         ]);
 
         return $this->db->getInsertId();

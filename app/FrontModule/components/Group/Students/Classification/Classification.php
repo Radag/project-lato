@@ -10,6 +10,7 @@ namespace App\FrontModule\Components\Group;
 use App\Model\Manager\ClassificationManager;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\GroupManager;
+use App\Model\Entities\ClassificationGroup;
 
 
 class Classification extends \App\Components\BaseComponent
@@ -26,6 +27,9 @@ class Classification extends \App\Components\BaseComponent
     
     protected $grades = ['1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '—' => '—', 'N' => 'N'];
     
+    /** @var ClassificationGroup */
+    protected $classificationGroup = null;
+    
     public function __construct(
         ClassificationManager $classificationManager,
         UserManager $userManager,
@@ -37,51 +41,77 @@ class Classification extends \App\Components\BaseComponent
         $this->groupManager = $groupManager;
     } 
     
+    public function setClassification(ClassificationGroup $classificationGroup)
+    {
+        $this->classificationGroup = $classificationGroup;
+    }
+    
     public function render()
     {
         $this->template->permission = $this->presenter->groupPermission;
         $this->template->activeUser = $this->presenter->activeUser;
-        
-        if($this->parent->classGroupId !== true) {
-            
-        } else {
-            
-        }
-        
-        $classificationGroup = $this->classificationManager->getGroupClassification($this->parent->classGroupId);
-        $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, GroupManager::RELATION_STUDENT);
-        if(!empty($classificationGroup->task)) {
-            foreach($members as $member) {
-                $classificationGroup->task->commitArray[$member->id] = $this->taskManager->getCommitByUser($classificationGroup->task->id, $member->id);
+        $students = [];
+        if($this->parent->classGroupId !== 'new') {
+            $this->classificationGroup = $this->classificationManager->getGroupClassification($this->parent->classGroupId);
+            foreach($this->classificationGroup->classifications as $cla) {
+                $students[] = $cla->user->id;
             }
-        }
-        
-        $this->template->classificationGroup = $classificationGroup;
-        $this['form']->setDefaults(array(
-            'id' => $this->parent->classGroupId
-        ));
-        
-        foreach($classificationGroup->classifications as $classification) {
+            $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, GroupManager::RELATION_STUDENT, $students);
+            if(!empty($this->classificationGroup->task)) {
+                foreach($members as $member) {
+                    $this->classificationGroup->task->commitArray[$member->id] = $this->taskManager->getCommitByUser($this->classificationGroup->task->id, $member->id);
+                }
+            } 
             $this['form']->setDefaults(array(
-                'grade' . $classification->user => $classification->grade,
-                'notice' . $classification->user => $classification->notice
-            )); 
+                'id' => $this->parent->classGroupId
+            ));
+        } else {
+            $students = [];
+            foreach($this->classificationGroup->classifications as $cla) {
+                $students[] = $cla->user->id;
+            }
+          
+            $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, GroupManager::RELATION_STUDENT, $students);
         }
+        
+        foreach($this->classificationGroup->classifications as $classification) {
+            $this['form']->setValues([
+                'grade' . $classification->user->id => $classification->grade,
+                'notice' . $classification->user->id => $classification->notice,
+                'members' => implode(',', $students)
+            ]); 
+        }
+        
+        $this['form']->setDefaults(array(
+            'name' => $this->classificationGroup->name,
+            'id' => $this->classificationGroup->id,
+            'date' => $this->classificationGroup->classificationDate ? $this->classificationGroup->classificationDate->format('Y-m-d') : null
+        ));
         
         $this['editClassGroupForm']->setDefaults(array(
-            'name' => $classificationGroup->name,
-            'date' => $classificationGroup->classificationDate,
-            'id' => $classificationGroup->idClassificationGroup
+            'name' => $this->classificationGroup->name,
+            'date' => $this->classificationGroup->classificationDate ? $this->classificationGroup->classificationDate->format('Y-m-d') : null,
+            'id' => $this->classificationGroup->id
         ));
         
+        $this->template->classificationGroup = $this->classificationGroup;        
         $this->template->members = $members;
         parent::render();
     }
     
     protected function createComponentForm()
     {   
+        $students = [];
+        if($this->classificationGroup) {
+            foreach($this->classificationGroup->classifications as $cla) {
+                $students[] = $cla->user->id;
+            } 
+        } else {
+            $students = explode(',', $this->presenter->getHttpRequest()->getPost('members'));
+        }
+        
         $form = $this->getForm();
-        $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, GroupManager::RELATION_STUDENT);    
+        $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, GroupManager::RELATION_STUDENT, $students);    
         foreach($members as $member) {
             $form->addSelect('grade' . $member->id, 'Známka', $this->grades);
             $form->addTextArea('notice' . $member->id, 'Poznámka')
@@ -90,23 +120,44 @@ class Classification extends \App\Components\BaseComponent
         $form->addHidden('date');
         $form->addHidden('name');
         $form->addHidden('id');
+        $form->addHidden('members');
         $form->addSubmit('send', 'Uložit');
 
-        $form->onSuccess[] = function(\Nette\Application\UI\Form $form) {
-            $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, GroupManager::RELATION_STUDENT);
-            $values = $form->getValues(true);
-            foreach($members as $member) {
+        $form->onSuccess[] = function(\Nette\Application\UI\Form $form, $values) {
+            if(empty($values->id)) {
+                $classifiationGroup = new ClassificationGroup();
+                $classifiationGroup->name = $values->name;
+                $classifiationGroup->date = $values->date;
+                $classifiationGroup->group = $this->presenter->activeGroup;                
+                $classifiationGroup->idPerion = $this->presenter->activeGroup->activePeriodId;
+                $classGroupId = $this->classificationManager->createGroupClassification($classifiationGroup);
+            } else {
+                $classGroupId = $values->id;
+            }
+            
+            $vals = [];
+            foreach($values as $key=>$val) {
+                if(strpos($key, 'grade') === 0) {
+                    $vals[substr($key, 5)]['grade'] = $val;
+                }
+                
+                if(strpos($key, 'notice') === 0) {
+                    $vals[substr($key, 6)]['notice'] = $val;
+                }
+            }
+            foreach($vals as $idUser=>$val) {
                 $classification = new \App\Model\Entities\Classification();
-                $classification->grade = $values['grade' . $member->id];
-                $classification->notice = $values['notice' . $member->id];
-                $classification->idClassificationGroup = $values->id;
+                $classification->grade = $val['grade'];
+                $classification->notice = $val['notice'];
+                $classification->idClassificationGroup = $classGroupId;
                 $classification->group = $this->presenter->activeGroup;
-                $classification->user = $member;
+                $classification->idUser = $idUser;
                 $classification->idPeriod = $this->presenter->activeGroup->activePeriodId;
                 $this->classificationManager->createClassification($classification);
             }
+            
             $this->presenter->flashMessage('Uloženo', 'success');
-            $this->parent->redirect('this', ['classGroupId' => null]);
+            $this->parent->showClassification(null);
         };
         
         return $form;
