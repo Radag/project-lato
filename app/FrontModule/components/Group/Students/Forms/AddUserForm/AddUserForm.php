@@ -40,8 +40,7 @@ class AddUserForm extends \App\Components\BaseComponent
     protected function createComponentForm()
     {
         $form = $this->getForm();
-        $form->addText('userName', 'Název hodnocení')
-             ->setAttribute('placeholder', 'Jméno nebo e-mail studenta');
+        $form->addText('userName', 'Název hodnocení');
         $form->addHidden('user_id');
         $form->addSubmit('send', 'Vytvořit');
 

@@ -1,19 +1,22 @@
 {form form}
     <div class="modal-content">
         <h3>Přidat studenta</h3>
-        <div class="form-row">
+        <div class="form-row input-field">
             {input userName class=>'validate add-user-form'}
+            {label userName}Jméno nebo e-mail studenta{/label}
         </div>
-        {snippet users-list}
-        <div class="preloader-wrapper small active hide users-autocomplete-loader" style="margin-top: 20px; margin-left: 120px;">
-            <div class="spinner-layer spinner-green-only">
-                  <div class="circle-clipper left" >
-                    <div class="circle"></div>
-                  </div><div class="gap-patch">
-                    <div class="circle"></div>
-                  </div><div class="circle-clipper right">
-                    <div class="circle"></div>
-                  </div>
+        {snippet users-list }
+        <div class="prompter-loading">
+            <div class="preloader-wrapper small active hide users-autocomplete-loader" style="margin: 48px 0 24px 0;">
+                <div class="spinner-layer spinner-green-only">
+                      <div class="circle-clipper left" >
+                        <div class="circle"></div>
+                      </div><div class="gap-patch">
+                        <div class="circle"></div>
+                      </div><div class="circle-clipper right">
+                        <div class="circle"></div>
+                      </div>
+                </div>
             </div>
         </div>
         <ul class="custom-collection prompter" n:if="!empty($userList)">

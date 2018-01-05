@@ -33,7 +33,7 @@
                     </li>
                     <li>
                         <a class="button-collapse show-on-large slide-out-toggle" id="button-conversation-slide" href="#" data-edge="right" data-activates="slide-out-conversation" >
-                            <i class="material-icons ">email</i>
+                            <i class="material-icons ">chat_bubble</i>
                             {snippet messagesCount}{if $unreadPrivMessages > 0}<span class="nav-badge">{$unreadPrivMessages}</span>{/if}{/snippet}
                         </a>
                     </li>
@@ -105,7 +105,7 @@
         <i class="material-icons">keyboard_arrow_left</i>Zavřít panel    
     </li>
     <li class="side-nav-header">
-        <a href="{plink Profile:messages}" class="title">Zprávy</a>
+        <a href="{plink Profile:messages}" class="title">Konverzace</a>
         <div class="flex-spacer"></div>
         <a class="btn-flat btn-icon waves-effect waves-dark tooltipped" data-position="bottom" data-delay="50" data-tooltip="Označit vše jako přečtené">
             <i class="material-icons">done_all</i>
@@ -159,7 +159,7 @@
     </li>
     <li>
         <a n:class="$presenter->isLinkCurrent('Profile:messages') ? active" href="{plink Profile:messages}" >
-            <i class="material-icons">email</i>Zprávy
+            <i class="material-icons">chat_bubble</i>Konverzace
         </a>
     </li>
     <li>

@@ -9,12 +9,16 @@
                     <a href="{link showPrivateMessageForm!}" class="ajax btn white no-shadow show-new-private-message" >
                         Nová zpráva
                     </a>
+                    {* DOČASNĚ SKRYTO
+
                     <div class="search-field">
                         <i class="material-icons">search</i>
                         <div class="input-wrapper">
                             <input type="text" placeholder="Hledat" class="no-border">
                         </div>
                     </div>
+
+                    *}
                     <div class="flex-spacer"></div>
                     <ul class="left options">
                         <li>
@@ -34,6 +38,10 @@
                         </li>
                     </ul>
                 </header>
+                <div class="no-messages-block">
+                    <i class="material-icons">inbox</i>
+                    <h2>Nemáte žádné aktivní konverzace</h2>
+                </div>
                 {foreach $messages as $section}
                     <header class="section-header title-header">
                         <h3 class="left">{$section->name}</h3>
