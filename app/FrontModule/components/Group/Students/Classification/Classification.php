@@ -114,8 +114,7 @@ class Classification extends \App\Components\BaseComponent
         $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, GroupManager::RELATION_STUDENT, $students);    
         foreach($members as $member) {
             $form->addSelect('grade' . $member->id, 'Známka', $this->grades);
-            $form->addTextArea('notice' . $member->id, 'Poznámka')
-                 ->setAttribute('placeholder', 'Poznámka');
+            $form->addTextArea('notice' . $member->id, 'Poznámka');
         }
         $form->addHidden('date');
         $form->addHidden('name');
