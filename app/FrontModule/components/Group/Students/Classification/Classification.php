@@ -107,11 +107,15 @@ class Classification extends \App\Components\BaseComponent
                 $students[] = $cla->user->id;
             } 
         } else {
-            $students = explode(',', $this->presenter->getHttpRequest()->getPost('members'));
+            if(empty($this->presenter->getHttpRequest()->getPost('members'))) {
+                $students = null;
+            } else {
+                $students = explode(',', $this->presenter->getHttpRequest()->getPost('members'));
+            }
         }
         
         $form = $this->getForm();
-        $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, GroupManager::RELATION_STUDENT, $students);    
+        $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, GroupManager::RELATION_STUDENT, $students);   
         foreach($members as $member) {
             $form->addSelect('grade' . $member->id, 'Známka', $this->grades);
             $form->addTextArea('notice' . $member->id, 'Poznámka');
@@ -160,32 +164,7 @@ class Classification extends \App\Components\BaseComponent
         };
         
         return $form;
-    }
-    
-    
-    public function handleAddClassificationToUsers($confirmed = false) 
-    {
-        $users = $this->presenter->getRequest()->getPost('users');
-        if(!$confirmed) {
-            $classificationUsers = array();
-            foreach($users as $idUser) {
-                $classificationUsers[] = $this->userManager->get($idUser);
-            }
-            $this['userClassificationForm']->setUsers($classificationUsers);
-            $this->redrawControl('userClassificationForm');
-        } else {
-            foreach($users as $idUser) {
-                $message = new \App\Model\Entities\PrivateMessage();
-                $message->text = $this->presenter->getRequest()->getPost('text');
-                $message->idUserFrom = $this->presenter->activeUser->id;
-                $message->idUserTo = $idUser;
-                $this->privateMessageManager->insertMessage($message);
-            }
-            $this->flashMessage('Zpáva byla odeslána.', 'success');
-            $this->redirect('this');
-        }
-    }
-       
+    }       
         
     public function createComponentEditClassGroupForm()
     {

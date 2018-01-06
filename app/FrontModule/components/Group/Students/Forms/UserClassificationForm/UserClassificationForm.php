@@ -55,14 +55,8 @@ class UserClassificationForm extends \App\Components\BaseComponent
     }
         
     public function setUsers($users) 
-    {
-        $classificationUsers = array();
-        if(is_array($users)) {
-            foreach($users as $user) {
-                $classificationUsers[] = $user;
-            }
-        }
-        $this->template->classificationUsers = $classificationUsers;
+    {       
+        $this->template->classificationUsers = $users;
     }
     
     public function processForm(Form $form, $values) 
@@ -72,11 +66,13 @@ class UserClassificationForm extends \App\Components\BaseComponent
         $classificationGroup->idPeriod = $this->presenter->activeGroup->activePeriodId;
         $classificationGroup->classificationDate = \DateTime::createFromFormat('Y-m-d', $values->date);
         $users = $this->presenter->getRequest()->getPost('users');
-        foreach($users as $idUser) {
-            $classification = new Classification;
-            $classification->user = new \App\Model\Entities\User();
-            $classification->user->id = $idUser;
-            $classificationGroup->classifications[] = $classification;
+        if(is_array($users)) {
+           foreach($users as $idUser) {
+                $classification = new Classification;
+                $classification->user = new \App\Model\Entities\User();
+                $classification->user->id = $idUser;
+                $classificationGroup->classifications[] = $classification;
+            } 
         }
         $this->parent->parent->showClassification('new', $classificationGroup);
         

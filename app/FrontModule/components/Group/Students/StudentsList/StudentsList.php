@@ -61,8 +61,9 @@ class StudentsList extends \App\Components\BaseComponent
     public function render()
     {
         $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, GroupManager::RELATION_STUDENT);
+        $classifications = $this->classificationManager->getGroupPeriodClassification($this->presenter->activeGroup);
         foreach($members as $member) {
-            $member->getClassification()->items = $this->classificationManager->getUserClassification($member->id, $this->presenter->activeGroup->id);
+            $member->getClassification()->items = isset($classifications[$member->id]) ? $classifications[$member->id] : [];
             $averageGrade = 0;
             $items = 0;
             foreach($member->getClassification()->items as $class) {
@@ -114,9 +115,13 @@ class StudentsList extends \App\Components\BaseComponent
     {
         $users = $this->presenter->getRequest()->getPost('users');
         if(!$confirmed) {
-            $classificationUsers = array();
-            foreach($users as $idUser) {
-                $classificationUsers[] = $this->userManager->get($idUser);
+            if(is_array($users)) {
+               $classificationUsers = array();
+                foreach($users as $idUser) {
+                    $classificationUsers[] = $this->userManager->get($idUser);
+                }
+            } else {
+                $classificationUsers = null;
             }
             $this['userClassificationForm']->setUsers($classificationUsers);
             $this->redrawControl('userClassificationForm');
@@ -189,7 +194,7 @@ class StudentsList extends \App\Components\BaseComponent
             'name' => $classification->name,
             'grade' => $classification->grade,
             'notice' => $classification->notice,
-            'idClassification' => $classification->idClassification
+            'idClassification' => $classification->id
         ));
         
         $this['userClassificationForm']->setUsers(array($classification->user));

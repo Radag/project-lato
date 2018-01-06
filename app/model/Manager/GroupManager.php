@@ -417,6 +417,7 @@ class GroupManager extends BaseManager {
                 JOIN user T2 ON T1.user_id = T2.id
                 WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type=? AND T1.user_id IN (?)", $idGroup, $filterRelation, $filterIds);
             } else {
+                
                  $users = $this->db->fetchAll("SELECT
                     T2.id, T2.sex, T2.name, T2.surname, T2.username, T2.profile_image, T2.slug 
                 FROM group_user T1

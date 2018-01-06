@@ -8,7 +8,6 @@
 
 namespace App\Model\Manager;
 
-use Nette;
 use App\Model\Entities\Classification;
 use App\Model\Entities\ClassificationGroup;
 
@@ -90,18 +89,18 @@ class ClassificationManager extends BaseManager
     
     public function getClassification($idClassification)
     {
-        $query = "SELECT * FROM classification WHERE ID_CLASSIFICATION=?";
+        $query = "SELECT * FROM classification WHERE id=?";
         $class = $this->database->query($query, $idClassification)->fetch();
 
         $classification = new Classification;
-        $classification->idClassificationGroup = $class->ID_CLASSIFICATION_GROUP;
-        $classification->id = $class->ID_CLASSIFICATION;
-        $classification->name = $class->NAME;
+        $classification->idClassificationGroup = $class->classification_group_id;
+        $classification->id = $class->id;
+        $classification->name = $class->name;
         $classification->user = new \App\Model\Entities\User();
-        $classification->user->id = $class->ID_USER;
-        $classification->group = $class->ID_GROUP;
-        $classification->grade = $class->GRADE;
-        $classification->notice = $class->NOTICE;
+        $classification->user->id = $class->user_id;
+        $classification->group = $class->group_id;
+        $classification->grade = $class->grade;
+        $classification->notice = $class->notice;
         
         return $classification;
     }
@@ -110,6 +109,22 @@ class ClassificationManager extends BaseManager
     {
         $query = "SELECT IFNULL(last_change, created_when) AS last_change FROM classification WHERE user_id=? AND group_id=?";
         return $this->db->fetchSingle($query, $idUser, $idGroup);
+    }
+    
+    public function getGroupPeriodClassification(\App\Model\Entities\Group $group)
+    {
+        $return = [];
+        $classifications = $this->db->fetchAll("SELECT * FROM vw_classification WHERE group_id=? AND period_id=?", $group->id, $group->activePeriodId);
+        foreach($classifications as $class) {
+            $classObject = new Classification;
+            $classObject->classificationDate = $class->classification_date;
+            $classObject->grade = $class->grade;
+            $classObject->id = $class->id;
+            $classObject->name = $class->name;
+            $classObject->idClassificationGroup = $class->classification_group_id;
+            $return[$class->user_id][] = $classObject;
+        }
+        return $return;
     }
     
     public function getGroupClassification($idGroupClassification)
