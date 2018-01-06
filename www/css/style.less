@@ -904,6 +904,7 @@ input[type=search]:not(.browser-default) {
 
 .btn, 
 .btn-flat {
+    font-size: 14px;
     font-weight: 500;
 }
 
@@ -1224,12 +1225,7 @@ input[type=search]:not(.browser-default) {
 
 .message-modal-users {
     display: flex;
-    margin-top: 20px;
-    margin-bottom: 24px;
-    
-    .avatar {
-        margin-right: 8px;
-    }
+    margin: 24px 0 32px 0;
 }
 
 .clearfix:before,
@@ -2762,12 +2758,12 @@ nav .nav-title {
     }
 }
 
-.no-messages-block {
-    //  height: calc(~'100vh - 202px');
+.no-messages-block,
+.no-classification-block {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 25vh;
+    margin-top: 20vh;
 
     i.material-icons {
         font-size: 128px !important;
@@ -2912,7 +2908,6 @@ nav .nav-title {
         padding: 16px;
         align-items: center;
         box-sizing: border-box;
-        margin: 0;
 
         & > .title {
             color: rgba(0, 0, 0, .87);
@@ -4850,7 +4845,16 @@ nav .nav-title {
     margin: auto;
 }
 
+.chip {
+
+    i.material-icons {
+        font-size: 16px !important;
+    }
+}
+
 /* ----- Classification ----- */
+
+
 
 .classification-properties {
     align-items: center;

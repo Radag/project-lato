@@ -43,12 +43,9 @@ class UserClassificationForm extends \App\Components\BaseComponent
     {
         $form = $this->getForm();
         $form->addText('name', 'Název hodnocení')
-             ->setAttribute('placeholder', 'Název hodnocení')
              ->setRequired('Prosím napiště téma hodnocení.');
         $form->addText('date', 'Datum')
-             ->setAttribute('placeholder', 'Datum')
              ->setAttribute('type', 'date')
-             ->setAttribute('placeholder', date('d. m. Y'))
              ->setValue(date("Y-m-d"));
         $form->addHidden('idClassification');
         $form->addSubmit('send', 'Vytvořit');

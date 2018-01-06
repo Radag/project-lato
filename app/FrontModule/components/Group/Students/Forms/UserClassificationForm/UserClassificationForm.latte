@@ -6,22 +6,25 @@
         <div class="message-modal-users">
             
             {foreach $classificationUsers as $classUser}
-            <div class="avatar tiny tooltipped" data-position="bottom" data-delay="50" data-tooltip="{if !empty($classUser->name)}{$classUser->name} {$classUser->surname}{/if}">
+            <div class="chip">
+                {if !empty($classUser->name)}{$classUser->name|substr:0,1}. {$classUser->surname}{/if}
+                <i class="close material-icons">close</i>
+            </div>
+            {*<div class="avatar tiny tooltipped" data-position="bottom" data-delay="50" data-tooltip="{if !empty($classUser->name)}{$classUser->name} {$classUser->surname}{/if}">
                 <img src="{$classUser->profileImage}" alt="{if !empty($classUser->name)}{$classUser->name} {$classUser->surname}{/if}">
                 <input type="hidden" value="{$classUser->id}" name="users[]">
-            </div>
+            </div>*}
             {/foreach}
         </div>
         {/ifset}           
-        <div class="form-row">
+        <div class="form-row input-field">
             {input name}
+            {label name}Název hodnocení{/label}
         </div>
-        <div class="form-row">
+        <div class="form-row input-field">
             {input date}
+            {label date}Datum{/label}
         </div>
-        {*<div class="form-row">
-            {input grade}
-        </div>*}
     </div>
     <div class="modal-footer clearfix">
         <div class="flex-spacer"></div>

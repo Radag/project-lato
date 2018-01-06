@@ -177,7 +177,7 @@
 
 
                                     {* {if !empty($member->getClassification()->lastDate)}{$member->getClassification()->lastDate->format("j. n. Y")}{else}--{/if} *}</div>
-                                <div class="classification table-field"><strong>{$member->getClassification()->averageGrade ?: '–'}&nbsp;</strong>({count($member->getClassification()->items)})</div>
+                                <div class="classification table-field">({count($member->getClassification()->items)})&nbsp;<strong>{$member->getClassification()->averageGrade ?: '–'}</strong></div>
                             </div>
                             <div class="collapsible-body">
                                 <div class="classification-table">
