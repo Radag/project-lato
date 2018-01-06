@@ -90,6 +90,13 @@ nav {
         display: flex;
         flex-direction: column;
 
+        @media only screen and (max-width: 600px) {
+            & {
+                padding: 0 24px;
+            }
+
+        }
+
         .header-content {
             display: flex;
             flex-grow: 1;
@@ -100,16 +107,20 @@ nav {
 
             h1 {
                 font-size: 36px;
+                line-height: 1.5em;
                 font-weight: 500;
                 color: @secondary-text-color;
                 margin: 0;
+                text-align: center;
             }
 
             h2 {
                 font-size: 20px;
+                line-height: 1.5em;
                 font-weight: 400;
                 color: @secondary-text-color;
                 margin: 40px 0 0 0;
+                text-align: center;
             }
 
             .btn {
