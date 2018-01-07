@@ -1162,25 +1162,27 @@ input[type=search]:not(.browser-default) {
         margin: 24px 0;
 
         li {
-            display: flex;
-            align-items: center;
-            margin-bottom: 16px;
-            font-weight: 400;
-            cursor: poiner;
 
-            .group-shortcut-circle {
-                height: 36px;
-                width: 36px;
-                line-height: 36px;
-                border: none;
-                margin-right: 12px;
-            }
+            a {
+                display: flex;
+                align-items: center;
+                margin-bottom: 16px;
+                color: rgba(0, 0, 0, .87);
 
-            span {
-                color: @secondary-text-color;
-                font-weight: 400;
-                margin-left: 4px;
-                font-size: 13px;
+                .group-shortcut-circle {
+                    height: 36px;
+                    width: 36px;
+                    line-height: 36px;
+                    border: none;
+                    margin-right: 16px;
+                }
+
+                span {
+                    color: @secondary-text-color;
+                    font-weight: 400;
+                    margin-left: 4px;
+                    font-size: 13px;
+                }
             }
 
             &.disabled {
@@ -1563,7 +1565,7 @@ p:first-child {
     margin-top: 0;
 }
 
-p.secondary-par {
+.secondary-par {
     color: @secondary-text-color !important;
 }
 
@@ -3772,7 +3774,7 @@ nav .nav-title {
                 width: 36px;
                 line-height: 36px;
                 border: none;
-                margin-right: 12px;
+                margin-right: 16px;
             }
 
             .label {
