@@ -45,16 +45,17 @@ class Group extends AbstractEntity {
     
     public $activePeriodId = null;
     public $activePeriodName = null;
+    public $isMy = null;
     
     
     protected $mapFields = [
         'id' => 'id',
         'name' => 'name',
         'shortcut' => 'shortcut',
-        'MAIN_COLOR' => 'mainColor',
-        'STUDENTS' => 'numberOfStudents',
-        'NEW_MESSAGE' => 'newMessages',
-        'URL_ID' => 'urlId'
+        'colorScheme' => 'scheme_code',
+        'mainColor' => 'main_color',
+        'slug' => 'slug',
+        'isMy' => 'is_my'
     ];
 
 }

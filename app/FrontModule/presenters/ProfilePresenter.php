@@ -3,29 +3,37 @@
 namespace App\FrontModule\Presenters;
 
 use App\Model\Manager\ClassroomManager;
+use App\Model\Manager\GroupManager;
 
 class ProfilePresenter extends BasePresenter
 {
     /** @var ClassroomManager @inject */
     public $classroomManager;
+    
+    /** @var GroupManager @inject */
+    public $groupManager;
         
     public function renderDefault($id = null)
     {
         $this['topPanel']->setTitle('Profil');
         $this->template->activeUser = $this->activeUser;
         $myClasses = $this->classroomManager->getClasses($this->activeUser);
-        if($id === null) {          
+        if($id === null) {  
             $this->template->profileUser = $this->activeUser;
             $this->template->isMe = true;
             $this->template->schools = $myClasses;
+            $profileId = $this->activeUser->id;
         } else {
             $profileUser = $this->userManager->get($id, true);
+            $profileId = $profileUser->id;
             $this->template->activeUser = $profileUser; 
             $this->template->isMe = false;
             $this->template->schools = $this->classroomManager->getClasses($profileUser);
-            $this->template->relation = $this->classroomManager->getRelation($profileUser, $myClasses);
-            $this->template->isFriend = $this->userManager->isFriend($this->activeUser->id, $profileUser->id);
+            //$this->template->relation = $this->classroomManager->getRelation($profileUser, $myClasses);
+            //$this->template->isFriend = $this->userManager->isFriend($this->activeUser->id, $profileUser->id);
         }
+        $this->template->groups = $this->groupManager->getProfileUserGroups($profileId, $this->activeUser->id);
+        \Tracy\Debugger::barDump($this->template->groups);
     }
     
     public function renderMessages()
