@@ -81,11 +81,11 @@ class FileManager extends BaseManager
     public function removeFile($idFile)
     {
         $this->database->beginTransaction();
-        $file = $this->database->query('SELECT PATH, FILENAME FROM file_list WHERE ID_FILE=?', $idFile)->fetch();
+        $file = $this->database->query('SELECT path, filename FROM file_list WHERE id=?', $idFile)->fetch();
         if($file) {
             $connId = $this->getFtpConnection();
-            if(ftp_size($connId , '/var/www/cdn/' . $file['PATH'] . '/' . $file['FILENAME']) !== -1) {
-                ftp_delete($connId, '/var/www/cdn/' . $file['PATH'] . '/' . $file['FILENAME']);
+            if(ftp_size($connId , '/var/www/cdn/' . $file['path'] . '/' . $file['filename']) !== -1) {
+                ftp_delete($connId, '/var/www/cdn/' . $file['path'] . '/' . $file['filename']);
             }
             $this->deleteFile($idFile);
         }
@@ -117,7 +117,7 @@ class FileManager extends BaseManager
         $connId = $this->getFtpConnection();
 
         
-        $createdDirecories = ftp_nlist($connId , self::USER_DIRECTORY . $this->user->getIdentity()->data['URL_ID']);
+        $createdDirecories = ftp_nlist($connId , self::USER_DIRECTORY . $this->user->getIdentity()->data['slug']);
         if(empty($createdDirecories)) {
             $this->createUserDirectories($connId);
         }

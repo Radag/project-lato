@@ -33,7 +33,6 @@ class ProfilePresenter extends BasePresenter
             //$this->template->isFriend = $this->userManager->isFriend($this->activeUser->id, $profileUser->id);
         }
         $this->template->groups = $this->groupManager->getProfileUserGroups($profileId, $this->activeUser->id);
-        \Tracy\Debugger::barDump($this->template->groups);
     }
     
     public function renderMessages()

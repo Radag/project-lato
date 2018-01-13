@@ -2,9 +2,9 @@
     {form form}
     <div class="post-type-selector"> 
         <select id="change-message-type-select">
-            <option value="notice" {if empty($defaultMessage) || $defaultMessage->type === 'notice'}selected{/if}>Oznámení</option>
-            <option value="material" {if !empty($defaultMessage) && $defaultMessage->type === 'material'}selected{/if}>Studijní materiál</option>
-            <option value="task" {if !empty($defaultMessage) && $defaultMessage->type === 'task'}selected{/if}>Povinnost</option>
+            <option value="notice" {if $form['messageType']->getValue() === 'notice'}selected{/if}>Oznámení</option>
+            <option value="material" {if $form['messageType']->getValue() === 'material'}selected{/if}>Studijní materiál</option>
+            <option value="task" {if $form['messageType']->getValue() === 'task'}selected{/if}>Povinnost</option>
         </select>
     </div>
     <div class="modal-content">
@@ -219,6 +219,23 @@
                 $("#attachmentsIds").val($("#attachmentsIds").val() + "_" + uploadedFile.file.idFile);
             }
         });
+        
+        if(!$.nette.ext('deleteAttachmentButton')) {
+            $.nette.ext('deleteAttachmentButton', {
+                start: function (jqXHR, settings) {
+                    if(settings.nette !== undefined && $(settings.nette.ui).hasClass('remove-attachment')) { 
+                        $('#full-screen-loader-modal').modal('open');
+                        jqXHR.done(function( data, textStatus, jqXHR ) {
+                            $('#full-screen-loader-modal').modal('close');     
+                            if(data.invalidForm === undefined || !data.invalidForm) {
+                                $(settings.nette.ui).parents('.attached-file').remove();
+                            }
+                        });
+                    } 
+                }
+            });
+        }
+        
     });
 </script>
 {/define}

@@ -50,7 +50,7 @@ class GroupPresenter extends BasePresenter
         $id = $this->getParameter('id');
         if(isset($id)) {
             $this->activeGroup = $this->groupManager->getUserGroup($id, $this->activeUser);
-        } 
+        }        
         if(empty($id) || empty($this->activeGroup)){
             $this->redirect(':Front:Homepage:noticeboard');
         }

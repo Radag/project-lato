@@ -52,10 +52,10 @@ class Group extends AbstractEntity {
         'id' => 'id',
         'name' => 'name',
         'shortcut' => 'shortcut',
-        'colorScheme' => 'scheme_code',
-        'mainColor' => 'main_color',
+        'scheme_code' => 'colorScheme',
+        'main_color' => 'mainColor',
         'slug' => 'slug',
-        'isMy' => 'is_my'
+        'is_my' => 'isMy'
     ];
 
 }

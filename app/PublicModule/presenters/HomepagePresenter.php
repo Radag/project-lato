@@ -45,11 +45,14 @@ class HomepagePresenter extends BasePresenter
     {
         return new LostPasswordForm($this->userManager, $this->mailManager);
     }
-       
-    public function actionDefault()
+    
+    protected function startup()
     {
         if($this->user->isLoggedIn()) {
-            $this->redirect(':Front:Homepage:noticeboard');  
+            $this->template->isLogged = true;
+        } else {
+            $this->template->isLogged = false;
         }
-    }    
+        parent::startup();
+    }     
 }

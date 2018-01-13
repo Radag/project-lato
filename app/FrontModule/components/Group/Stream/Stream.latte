@@ -81,22 +81,32 @@
         });
         $('#create-post-modal').modal();
         $("#show-create-post-modal").on('click', function(e) {
-            $("#change-message-type-select").val('notice');
-            $("#change-message-type-select").material_select();
-            $("#change-message-type-select").change();
-            $('#create-post-modal').modal('open');
+            $.nette.ajax({
+                url: {link resetForm! type=>'notice'},
+                success: function() {
+                    /*$("#change-message-type-select").val('notice');
+                    $("#change-message-type-select").material_select();
+                    $("#change-message-type-select").change();*/
+                    $('#create-post-modal').modal('open');
+                }
+            });
+            
         });
         $("#show-create-post-modal-material").on('click', function(e) {
-            $("#change-message-type-select").val('material');
-            $("#change-message-type-select").material_select();
-            $("#change-message-type-select").change();
-            $('#create-post-modal').modal('open');
+            $.nette.ajax({
+                url: {link resetForm! type=>'material'},
+                success: function() {
+                    $('#create-post-modal').modal('open');
+                }
+            });
         });
         $("#show-create-post-modal-task").on('click', function(e) {
-            $("#change-message-type-select").val('task');
-            $("#change-message-type-select").material_select();
-            $("#change-message-type-select").change();
-            $('#create-post-modal').modal('open');
+            $.nette.ajax({
+                url: {link resetForm! type=>'task'},
+                success: function() {
+                    $('#create-post-modal').modal('open');
+                }
+            });        
         });
         
         if(!$.nette.ext('messageAjax')) {

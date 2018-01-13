@@ -480,18 +480,18 @@ class GroupManager extends BaseManager {
     {
         $return = [];
         $groups = $this->db->fetchAll("SELECT 
-                T2.id, T2.name, T2.shortcut, T3.code AS scheme_code, T2.slug, T4.id AS is_my FROM
+                T2.id, T2.name, T2.shortcut, T3.code AS scheme_code, T3.main_color ,T2.slug, T4.id AS is_my FROM
             group_user T1
             LEFT JOIN `group` T2 ON T1.group_id=T2.id
             LEFT JOIN group_scheme T3 ON T3.id=T2.group_scheme_id
             LEFT JOIN group_user T4 ON (T1.group_id=T4.group_id AND T4.user_id=?)
             WHERE T1.user_id=? AND T2.archived=0", $profileId, $guestId);
+        
         foreach($groups as $group) {
             $groupObject = new Group($group);
             $groupObject->isMy = empty($group->is_my) ? false : true;
             $return[] = $groupObject;
         }
-        
         return $return;
     }
            

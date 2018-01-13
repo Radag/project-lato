@@ -38,11 +38,14 @@ class NewGroupForm extends Control
     protected function createComponentForm()
     {
         $colors = $this->groupManager->getColorsSchemes();
+        foreach ($colors as $key=>$sub) {
+            
+        }
         $form = new \Nette\Application\UI\Form;
         $form->addText('name', 'Název skupiny')
              ->setRequired('Prosím vyplňte název skupiny.');
         $form->addRadioList('color','Barevné schéma', $colors)
-             ->setDefaultValue(1);
+             ->setDefaultValue($key);
         
         
         $form->addSubmit('send', 'Vytvořit');

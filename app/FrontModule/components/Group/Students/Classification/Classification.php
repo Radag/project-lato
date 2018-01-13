@@ -164,7 +164,12 @@ class Classification extends \App\Components\BaseComponent
         };
         
         return $form;
-    }       
+    }
+    
+    public function handleBack()
+    {
+        $this->parent->showClassification(null);
+    }
         
     public function createComponentEditClassGroupForm()
     {

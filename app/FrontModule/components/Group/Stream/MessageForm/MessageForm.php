@@ -144,9 +144,9 @@ class MessageForm extends \App\Components\BaseComponent
         $this->parent->redrawControl('streamSection');
     }
     
-    public function handleResetForm() {
+    public function handleResetForm($type = Message::TYPE_NOTICE) {
         $this['form']->setValues([
-            'messageType' => Message::TYPE_NOTICE,
+            'messageType' => $type,
             'time' => date("H:i"),
             'date' => date("Y-m-d")
          ], true);

@@ -80,4 +80,10 @@ class Stream extends \App\Components\BaseComponent
         $this->singleMode = $idMessage;
         $this['messagesColumn']->setSingleMode($idMessage);
     }
+    
+    public function handleResetForm($type)
+    {
+        $this['messageForm']->handleResetForm($type);
+        $this->redrawControl('messageForm');
+    }
 }
