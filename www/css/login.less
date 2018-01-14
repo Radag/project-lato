@@ -2,7 +2,9 @@
 
 // PROMĚNNÉ
 
-@background-highlited: #f8f8f8;
+
+@accent-color: #ffc107;
+@background-highlighted: #f8f8f8;
 @line-color: rgba(0, 0, 0, .1);
 @secondary-text-color: rgba(0, 0, 0, .5);
 
@@ -13,6 +15,10 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-size: 14px;
+
+    * {
+        line-height: 1.6em;
+    }
 }
 
 a {
@@ -23,8 +29,35 @@ a {
     transition: color 300ms ease-in-out;
 }
 
+h2 {
+    text-align: center;
+    font-weight: 500;
+    color: @secondary-text-color;
+    font-size: 32px;
+    text-align: center;
+    margin: 0;    
+}
+
+p {
+    color: @secondary-text-color;
+    text-align: center;
+    font-size: 18px;
+    margin: 32px 0;
+}
+
 .flex-spacer {
     flex-grow: 1;
+}
+
+
+.container {
+    width:100%;
+    max-width:1220px;
+    padding:0 32px;
+
+    &.offset-2 {
+        max-width: 820px;
+    }
 }
 
 nav {
@@ -79,7 +112,7 @@ nav {
 }
 
 #page-header {
-    background-color: @background-highlited;
+    background-color: @background-highlighted;
     margin-top: -64px;
     height: 100vh;
     min-height: 620px;
@@ -106,7 +139,7 @@ nav {
             padding-top: 70px;
 
             h1 {
-                font-size: 36px;
+                font-size: 40px;
                 line-height: 1.5em;
                 font-weight: 500;
                 color: @secondary-text-color;
@@ -243,10 +276,15 @@ nav {
     }
 }
 
-.container {
-    width:100%;
-    max-width:1220px;
-    padding:0 32px;
+#features {
+    padding: 96px 0 128px 0;
+    background-color: @background-highlighted;
+}
+
+#contact {
+    padding: 96px 0 128px 0;
+
+    .contact-form {}
 }
 
 @media only screen and (max-width: 600px) {
@@ -271,7 +309,7 @@ nav {
 }
 
 #page-footer {
-    background-color: @background-highlited;
+    background-color: @background-highlighted;
     padding: 48px 24px;
     display: flex;
     justify-content: center;
@@ -324,7 +362,7 @@ input[type=search]:not(.browser-default) {
     border-bottom: 1px solid @line-color;
     margin-bottom: 0;
     height: 45px;
-    font-size: 15px;
+    font-size: 16px;
 }
 
 ::-webkit-input-placeholder {
@@ -382,22 +420,55 @@ input[type=search]:not(.browser-default) {
 .form-row {
     display: flex;
     align-items: center;
+    justify-content: center;
     margin-top: 16px;
     min-height: 32px;
 
     &.input-field {
-        margin-top: 24px;
+        margin-top: 40px;
 
         label {
             color: rgba(0, 0, 0, .5);
+            left: 0;
+            font-size: 16px;
 
             &.active {
                 color: rgba(0, 0, 0, .25);
             }
-        }
+        }  
+    }
+
+    .btn {
+        font-size: 16px;
+        height: 42px;
+        line-height: 42px;
+        background-color: #ffc107;
+        font-weight: 500;
     }
 }
 
+textarea.materialize-textarea {
+    border-bottom: 1px solid rgba(0, 0, 0, .12);
+    min-height: 6rem;
+    font-size: 16px;
+}
+
+input:not([type]):focus:not([readonly]), 
+input[type=text]:focus:not([readonly]), 
+input[type=password]:focus:not([readonly]), 
+input[type=email]:focus:not([readonly]), 
+input[type=url]:focus:not([readonly]), 
+input[type=time]:focus:not([readonly]), 
+input[type=date]:focus:not([readonly]), 
+input[type=datetime]:focus:not([readonly]), 
+input[type=datetime-local]:focus:not([readonly]), 
+input[type=tel]:focus:not([readonly]), 
+input[type=number]:focus:not([readonly]), 
+input[type=search]:focus:not([readonly]), 
+textarea.materialize-textarea:focus:not([readonly]) {
+     border-bottom-color: @accent-color !important;
+     box-shadow: 0 1px 0 0 @accent-color !important;
+}
 
 
 .form-controls {
