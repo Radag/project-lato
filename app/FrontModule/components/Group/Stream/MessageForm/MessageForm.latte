@@ -123,7 +123,7 @@
         });
         var uploadsFiles = {};
         
-        messageContent.on("addedfile", function(file) {
+        messageContent.on("addedfile", function(file) {              
             var id = Math.random().toString(36).substr(2, 10);
             var attachTemplate = $("#attachmentTemplate li").clone();
             attachTemplate.addClass(id);
@@ -143,8 +143,8 @@
                         }
                     });
                 } else {
-                    
-                    //TODO - zastavit upload
+                    messageContent.removeFile(file);
+                    attachTemplate.remove();
                 }
             });
         });
@@ -160,7 +160,7 @@
                 }
             }
         });
-        
+         
         messageContent.on("uploadprogress", function(file) {
             uploadsFiles[file.classId] = false;
             $("." + file.classId).find('.determinate').css('width', file.upload.progress + '%');
