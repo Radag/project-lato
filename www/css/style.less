@@ -1227,7 +1227,18 @@ input[type=search]:not(.browser-default) {
 
 .message-modal-users {
     display: flex;
+    flex-wrap: wrap;
     margin: 24px 0 32px 0;
+    cursor: default !important;
+
+    .chip {
+        display: block;
+    }
+
+    .input {
+        display: none;
+        cursor: default;
+    }
 }
 
 .clearfix:before,
@@ -3759,7 +3770,7 @@ nav .nav-title {
         margin: 24px 0;
 
         &.bottom-margin {
-            margin-bottom: 40px;
+            margin-bottom: 48px;
         }
 
         & > li {

@@ -5,8 +5,11 @@
         <p>Přidat známku těmto studentům</p>
         {foreach $classificationUsers as $classUser}
             <input class="added-users-list" type="hidden" data-name="{if !empty($classUser->name)}{$classUser->name|substr:0,1}. {$classUser->surname}{/if}" value="{$classUser->id}" name="users[]">
-        {/foreach}
-        <div class="message-modal-users"></div>
+        {/foreach}  
+        <div class="message-modal-users no-border">
+             
+
+        </div>
         {/if}       
         <div class="form-row input-field">
             {input name}
