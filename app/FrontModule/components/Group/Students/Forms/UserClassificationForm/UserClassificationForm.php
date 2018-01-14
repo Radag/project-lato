@@ -74,7 +74,7 @@ class UserClassificationForm extends \App\Components\BaseComponent
                 $classificationGroup->classifications[] = $classification;
             } 
         }
-        $this->parent->parent->showClassification('new', $classificationGroup);
+        $this->parent->parent->showClassification('new', $classificationGroup, true);
         
     }
 }

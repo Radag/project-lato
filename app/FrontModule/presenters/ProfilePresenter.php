@@ -12,6 +12,9 @@ class ProfilePresenter extends BasePresenter
     
     /** @var GroupManager @inject */
     public $groupManager;
+    
+    /** @persistent */
+    public $messagesFilter = null;
         
     public function renderDefault($id = null)
     {
@@ -37,9 +40,9 @@ class ProfilePresenter extends BasePresenter
     
     public function renderMessages()
     {
-        $this['topPanel']->setTitle('Zprávy');
-        $months = array('Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec');
-        $return = array();
+        $this['topPanel']->setTitle('Konverzace');
+        $months = ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec'];
+        $return = [];
         $messages = $this->privateMessageManager->getMessages($this->activeUser);
         
         foreach($messages as $message) {
@@ -63,6 +66,7 @@ class ProfilePresenter extends BasePresenter
                 $return[$message->created->format("n")]->messages[] = $message;
             }
         }
+        $this->template->filter = $this->messagesFilter;
         $this->template->messages = $return;
     }
         
@@ -88,5 +92,11 @@ class ProfilePresenter extends BasePresenter
         $this->userManager->switchUserRelation($this->activeUser->id, $idUser, false);
         $this->flashMessage('Uživatel byl odebrán z přátel');
         $this->redrawControl('profileMenu');
+    }
+    
+    public function handleFilterMessages($filter = null)
+    {
+        $this->messagesFilter = $filter;
+        $this->redrawControl("messagesList");
     }
 }

@@ -26,8 +26,7 @@ class Students extends \App\Components\BaseComponent
         $this->studentsList = $studentsList;
     }
     
-    /** @persistent */
-    public $classGroupId;
+    public $classGroupId = null;
     
     public function render() 
     {
@@ -45,12 +44,16 @@ class Students extends \App\Components\BaseComponent
         return $this->studentsList->create();
     }
     
-    public function showClassification($idGroup, $classificationGroup = null)
+    public function showClassification($idGroup, $classificationGroup = null, $redraw = null)
     {
         if($classificationGroup) {
             $this['classification']->setClassification($classificationGroup);
         }
         $this->classGroupId = $idGroup;
-        $this->redrawControl();
+        if($redraw !== null && $redraw) {
+            $this->redrawControl();
+        } elseif($redraw !== null) {
+            $this->redirect('this');
+        } 
     } 
 }

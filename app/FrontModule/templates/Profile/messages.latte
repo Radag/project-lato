@@ -22,18 +22,18 @@
                     <div class="flex-spacer"></div>
                     <ul class="left options">
                         <li>
-                            <a type="button" class="btn-flat btn-icon">
+                            <button type="button" class="btn-flat btn-icon {if empty($messages)}disabled{/if}" {if empty($messages)}disabled{/if}>
                                 <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Označit vše jako přečtené">done_all</i>
-                            </a>
+                            </button>
                         </li>
                         <li>
-                            <a type="button" class="btn-flat btn-icon dropdown-button waves-effect waves-dark" data-activates="messages_filter" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                            <button type="button" class="btn-flat btn-icon dropdown-button waves-effect waves-dark" data-activates="messages_filter" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
                                 <i class="material-icons">filter_list</i>
-                            </a>                           
+                            </button>                           
                             <ul id='messages_filter' class='dropdown-content'>
-                                <li><a href="">Všechny konverzace</a></li>
-                                <li><a href="">Nepřečtené konverzace</a></li>
-                                <li><a href="">Ignorované konverzace</a></li>
+                                <li><a class="ajax" href="{link filterMessages!}">Všechny konverzace</a></li>
+                                <li><a class="ajax" href="{link filterMessages! 'filter' => 'unread'}">Nepřečtené konverzace</a></li>
+                                <li><a class="ajax" href="{link filterMessages! 'filter' => 'ignored'}">Ignorované konverzace</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -44,10 +44,18 @@
     <div class="container offset-1">
         <div class="row">
             <div class="col s12">
-                <div class="no-messages-block">
-                    <i class="material-icons">inbox</i>
-                    <h2>Nemáte žádné aktivní konverzace</h2>
-                </div>
+                {if empty($messages)}
+                    <div class="no-messages-block">
+                        <i class="material-icons">inbox</i>
+                        {if $filter == 'unread'}
+                            <h2>Nemáte žádné nepřečtené konverzace</h2>
+                        {elseif $filter == 'ignored'}
+                            <h2>Neignorujete žádné konverzace</h2>
+                        {else}
+                            <h2>Nemáte žádné aktivní konverzace</h2>
+                        {/if}
+                    </div>
+                {/if}
                 {foreach $messages as $section}
                     <header class="section-header title-header">
                         <h3 class="left">{$section->name}</h3>

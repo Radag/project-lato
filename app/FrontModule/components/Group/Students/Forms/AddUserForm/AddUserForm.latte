@@ -19,7 +19,7 @@
                 </div>
             </div>
         </div>
-        <ul class="custom-collection prompter" n:if="!empty($userList)">
+        <ul class="loaded-user-list custom-collection prompter" n:if="isset($userList)">
             {foreach $userList as $userItem}
                 <li {if $iterator->counter > 3}class="hide"{/if}>
                     <a href="#" data-user-id="{$userItem->id}" class="add-user-item item">
@@ -35,9 +35,11 @@
             {if count($userList) > 3}
                 <li class="rest-of-all">{count($userList) - 3} dalších návrhů</li>
             {/if}
-            
+            {if count($userList) <= 0}
+                <li class="rest-of-all">Nic nenalezeno</li>
+            {/if}
         </ul>
-         <script>
+        <script>
             $(function () {
                 $(".add-user-item").on('click', function(e) {
                     e.preventDefault();
@@ -68,18 +70,22 @@
         $(function () {
             $(".add-user-form").on("keyup", function(e) {
                 if($(this).val().length > 2) {
+                    $(".loaded-user-list").hide();
+                    $(".users-autocomplete-loader").removeClass('hide');
                     $.nette.ajax({
                         url: {link searchUsers!},
                         method: 'GET',
                         data: {
                             'term': $(this).val()
                         },
-                        complete: function(data) {
+                        success: function(data) {
                             $(".users-autocomplete-loader").addClass('hide');
+                        },
+                        error: function(data) {
+                            //$(".users-autocomplete-loader").addClass('hide');
                         }
                     });
                 }
-                $(".users-autocomplete-loader").removeClass('hide');
             });            
         });
     </script>

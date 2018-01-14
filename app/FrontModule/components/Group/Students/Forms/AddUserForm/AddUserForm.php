@@ -57,7 +57,10 @@ class AddUserForm extends \App\Components\BaseComponent
     public function handleSearchUsers()
     {
         $term = $this->presenter->getParameter('term');
-        $userList = $this->userManager->searchGroupUser($term);
+        $userList = $this->userManager->searchGroupUser($term, [$this->presenter->activeUser->id]);
+        if(empty($userList)) {
+            $userList = [];
+        }
         $this->template->userList = $userList;
         $this->redrawControl('users-list');
     }
@@ -65,8 +68,12 @@ class AddUserForm extends \App\Components\BaseComponent
     public function processForm(Form $form, $values) 
     {
         if($values->user_id) {
-            $this->groupManager->addUserToGroup($this->activeGroup, $values->user_id, GroupManager::RELATION_STUDENT);
-            $this->presenter->flashMessage('Uživatel byl přidán', 'success');
+            $added = $this->groupManager->addUserToGroup($this->activeGroup, $values->user_id, GroupManager::RELATION_STUDENT);
+            if($added) {
+                $this->presenter->flashMessage('Uživatel byl přidán', 'success');
+            } else {
+                $this->presenter->flashMessage('Uživatel je již členem skupiny', 'warning');
+            }
             $this->presenter->redirect(':Front:Group:users');
         }        
     }

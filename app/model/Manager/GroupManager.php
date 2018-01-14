@@ -88,23 +88,27 @@ class GroupManager extends BaseManager {
     
     public function addUserToGroup(Group $group, $userId, $relation, $fromLink = 0)
     {
+        $added = true;
         $this->db->begin();
-        $row = $this->db->fetch("SELECT * FROM group_user WHERE user_id=? AND group_id=?", $userId, $group->id);
-        
+        $row = $this->db->fetch("SELECT * FROM group_user WHERE user_id=? AND group_id=?", $userId, $group->id); 
         if(empty($row)) {
             $this->db->query("INSERT INTO group_user", [
                 'user_id' => $userId,
                 'group_id' => $group->id,
                 'relation_type' => $relation,
                 'from_link' => $fromLink
-            ]); 
-        } else {
+            ]);
+        } elseif($row->active == 0) {
             $this->db->query("UPDATE group_user SET", [
                 'active' => 1,
                 'relation_type' => $relation
             ], "WHERE user_id=? AND group_id=?", $userId, $group->id);
+        } else {
+            $added = false;
         }
+        
         $this->db->commit();
+        return $added;
     }
 
     public function setGroupVisited(User $user, $idGroup)

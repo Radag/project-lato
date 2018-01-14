@@ -67,8 +67,8 @@ class StudentsList extends \App\Components\BaseComponent
             $averageGrade = 0;
             $items = 0;
             foreach($member->getClassification()->items as $class) {
-                if($class->grade !== null) {
-                    $averageGrade = $averageGrade + $class->grade;
+                if($class->grade !== null && $class->grade !== '—') {
+                    $averageGrade = $averageGrade + ($class->grade === "N" ? 5 : $class->grade);
                     $items++;
                 }
                 if($member->getClassification()->lastDate === null || $member->getClassification()->lastDate < $class->classificationDate) {

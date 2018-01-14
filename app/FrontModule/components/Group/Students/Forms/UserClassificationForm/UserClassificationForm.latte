@@ -3,21 +3,11 @@
         <h3>Přidat známku</h3> 
         {if isset($classificationUsers) && $classificationUsers}
         <p>Přidat známku těmto studentům</p>
-        <div class="message-modal-users">
-            
-            {foreach $classificationUsers as $classUser}
-            <div class="chip">
-                {if !empty($classUser->name)}{$classUser->name|substr:0,1}. {$classUser->surname}{/if}
-                <i class="close material-icons">close</i>
-            </div>
-            {*<div class="avatar tiny tooltipped" data-position="bottom" data-delay="50" data-tooltip="{if !empty($classUser->name)}{$classUser->name} {$classUser->surname}{/if}">
-                <img src="{$classUser->profileImage}" alt="{if !empty($classUser->name)}{$classUser->name} {$classUser->surname}{/if}">
-                <input type="hidden" value="{$classUser->id}" name="users[]">
-            </div>*}
-            <input type="hidden" value="{$classUser->id}" name="users[]">
-            {/foreach}
-        </div>
-        {/if}           
+        {foreach $classificationUsers as $classUser}
+            <input class="added-users-list" type="hidden" data-name="{if !empty($classUser->name)}{$classUser->name|substr:0,1}. {$classUser->surname}{/if}" value="{$classUser->id}" name="users[]">
+        {/foreach}
+        <div class="message-modal-users"></div>
+        {/if}       
         <div class="form-row input-field">
             {input name}
             {label name}Název hodnocení{/label}
@@ -36,6 +26,15 @@
     </div>
     <script>
     $(function() {
+        var data = [];
+        $(".added-users-list").each(function( index, value ) {
+            data.push({ tag: $(this).data("name"), id: $(this).attr('value') });
+        });
+        
+        $('.message-modal-users').material_chip({ data: data});
+        $('.message-modal-users').on('chip.delete', function(e, chip){
+            $(".added-users-list[value='" + chip.id + "']").remove();
+        });
         $('select').material_select();
         $("#form-user-classification input[name='name']").on("keyup", function(e) {
            if($(this).val() === "") {

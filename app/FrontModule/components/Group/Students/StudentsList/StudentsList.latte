@@ -44,12 +44,23 @@
                         {* <div class="table-field">Hodnocení</div>*}
                     </div>
                     <script>
-                         $(function () {
+                         $(function () {                           
+                            $('.collapsible-header').on('click', function (e) {
+                                if($(e.target).parents(".user-info-options-menu").length) {
+                                    e.stopPropagation();
+                                }
+                            });
+
                             $("#select-all").on("change", function (e) {
                                 if ($(this).prop('checked')) {
                                     $(".user-checkbox").prop('checked', true);
                                 } else {
                                     $(".user-checkbox").prop('checked', false);
+                                }
+                                if($(".user-checkbox:checked").length > 0) {
+                                    $("#user-action-button").prop('disabled', false);
+                                } else {
+                                    $("#user-action-button").prop('disabled', true);
                                 }
                             });
                             
@@ -172,11 +183,16 @@
                                     <span>{$member->surname}</span>, {$member->name}
                                 </div>
                                 <div class="flex-spacer"></div>
-                                <div class="table-field date">
-                                    <a class="btn-flat btn-icon dropdown-button waves-effect waves-dark" data-activates="student-options-dropdown" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                                <div class="table-field date user-info-options-menu">
+                                    <a class="btn-flat btn-icon dropdown-button waves-effect waves-dark" data-activates="user-action-dropdown-{$member->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
                                         <i class="material-icons">more_horiz</i>
                                     </a>
-                                    {* {if !empty($member->getClassification()->lastDate)}{$member->getClassification()->lastDate->format("j. n. Y")}{else}--{/if} *}</div>
+                                    <ul id='user-action-dropdown-{$member->id}' class='dropdown-content'>
+                                        <li><a href="{plink Profile:default 'id'=>$member->slug}" >Profil</a></li>
+                                    </ul>
+                                    
+                                    {* {if !empty($member->getClassification()->lastDate)}{$member->getClassification()->lastDate->format("j. n. Y")}{else}--{/if} *}
+                                </div>
                                 <div class="classification table-field">({count($member->getClassification()->items)})&nbsp;<strong>{$member->getClassification()->averageGrade ?: '–'}</strong></div>
                             </div>
                             <div class="collapsible-body">

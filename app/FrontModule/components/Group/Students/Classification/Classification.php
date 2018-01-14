@@ -66,6 +66,10 @@ class Classification extends \App\Components\BaseComponent
                 'id' => $this->parent->classGroupId
             ));
         } else {
+            if(empty($this->classificationGroup)) {
+                $this->presenter->flashMessage('Není zadaná classicication group');
+                $this->parent->showClassification(null);
+            }
             $students = [];
             foreach($this->classificationGroup->classifications as $cla) {
                 $students[] = $cla->user->id;
@@ -160,7 +164,7 @@ class Classification extends \App\Components\BaseComponent
             }
             
             $this->presenter->flashMessage('Uloženo', 'success');
-            $this->parent->showClassification(null);
+            $this->parent->showClassification(null, null, false);
         };
         
         return $form;
