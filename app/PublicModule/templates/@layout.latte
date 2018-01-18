@@ -27,11 +27,12 @@
                 <div id="logo"></div>
                 <div class="flex-spacer"></div>
                 <ul id="right-nav">
-                    <li class="hide-on-med-and-down" n:if="$isLogged" ><a href="{plink :Front:Homepage:default}">Zpět do systému</a></li>
+                    <li class="hide-on-med-and-down" n:if="$isLogged" ><a href="{plink :Front:Homepage:default}">Pokračovat</a></li>
                     <li class="hide-on-med-and-down" n:if="!$isLogged" ><a href="#login-modal">Přihlásit</a></li>
                     <li class="hide-on-med-and-down"><a href="">O projektu</a></li>
                     <li class="hide-on-med-and-down"><a href="">Kontakt</a></li>
                     <li n:if="!$isLogged"><button href="" class="btn waves-effect waves-light modal-trigger">Registrovat</button></li>
+                    <li n:if="$isLogged"><button href="" class="btn waves-effect waves-light modal-trigger">Odhlásit</button></li>
                 </ul>
             </div>
         </nav>
@@ -49,7 +50,7 @@
                 {if !$isLogged}
                     <button href="#login-modal" class="btn waves-effect waves-light modal-trigger">Přihlásit</button> 
                 {else}
-                    <a class="btn waves-effect waves-light" href="{plink :Front:Homepage:default}">Zpět do systému</a>    
+                    <a class="btn waves-effect waves-light" href="{plink :Front:Homepage:default}">Pokračovat</a>    
                 {/if}
             </div>
             <div class="scroll-icon">
