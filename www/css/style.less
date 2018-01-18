@@ -1,6 +1,6 @@
 /* CSS */
 
-/* PROMĚNNÉ */
+/* VARIABLES */
 
 @background-highlighted: rgba(0, 0, 0, .03);
 @card-flat: rgba(0, 0, 0, .05);
@@ -10,7 +10,9 @@
 @line-color: rgba(0, 0, 0, .1);
 @hyperlink-color: #2979FF;
 
-/* MATERIALIZE */
+
+
+/* ----- MATERIALIZE ----- */
 
 body {
     background-color: #efefef;  
@@ -19,13 +21,26 @@ body {
     font-size:14px;
 }
 
+
+// Layout
+
+
+// Texts
+
 a {
-    color: #2979FF;
+    color: @hyperlink-color;
     -webkit-transition: color 300ms ease-in-out;
     -moz-transition: color 300ms ease-in-out;
     -o-transition: color 300ms ease-in-out;
     transition: color 300ms ease-in-out;
 }
+
+
+// Forms 
+
+
+// Elements
+
 
 .divider {
     background-color: @line-color;
@@ -33,10 +48,6 @@ a {
 
 .no-margin {
     margin: 0 !important;
-}
-
-.material-icons {
-    font-size: 24px !important;
 }
 
 .lean-overlay {
@@ -1491,8 +1502,8 @@ ul.dropdown-content.main-nav-dropdown {
 
 .dropdown-content li > a, .dropdown-content li > span {
     font-size: 14px;
-    color: rgba(0, 0, 0, .87);
-    padding: 10px 24px;
+    color: rgba(0, 0, 0, .87) !important;
+    padding: 12px 24px;
     font-weight: 400;
 }
 
@@ -2210,7 +2221,7 @@ nav .nav-title {
     }
 
     .two-level-nav {
-        margin-top: 58px;
+        margin-top: 66px;
     }
 }
 
@@ -2296,6 +2307,11 @@ nav .nav-title {
     .section-header {
         padding: 8px 16px;
         height: 52px;
+
+        &.table-header {
+            padding: 16px;
+            height: 64px;
+        }
     }
 }
 
@@ -2304,6 +2320,11 @@ nav .nav-title {
         padding: 4px 12px;
         height: 52px;
         margin-top: 4px;
+
+        &.table-header {
+            padding: 4px 12px;
+            height: 64px;
+        }
     }
 }
 
