@@ -38,45 +38,7 @@
                     <div class="flex-spacer"></div>
                     <div class="notice table-field"></div>
                     <div class="table-field">Hodnocení</div>
-                </div>
-                {*
-                <ul class="collapsible popout classification-update-table" data-collapsible="expandable">
-                    {foreach $members as $member}                    
-                    <li>
-                        <div class="collapsible-header table-row">
-                            <div class="avatar small">
-                                <img src="{$member->profileImage}">
-                            </div>
-                            <div class="title">
-                                <span>{$member->surname}</span>, {$member->name}
-                            </div>
-                            <div class="flex-spacer"></div>
-                            <div class="table-field assignment-status submitted">Odevzdáno pozdě</div>
-                            <div class="grade table-field">
-                                {input grade$member->id class=>'no-border'}
-                            </div>
-                        </div>
-                        <div class="collapsible-body">
-                            <div class="table-row">
-                                <textarea id="textarea1" class="materialize-textarea" placeholder="Vložit poznámku k hodnocení ..."></textarea>
-                                <ul class="attachments">  
-                                    <li>
-                                        <a href="" target="_blank" class="attached-file">
-                                            <div class="file-icon spreadsheet">
-                                                <i class="material-icons">
-                                                    equalizer
-                                                </i>
-                                            </div>
-                                            <div class="file-name truncate">Název souboru<span>(dokument, .doc) – Nahráno 22. 6. 22:30</span></div>   
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-                    {/foreach}
-                </ul>
-                *}
+                </div>                
                 <ul class="collapsible popout classification-update-table" data-collapsible="expandable">
                     {foreach $members as $member}
                     <li>
@@ -88,39 +50,36 @@
                                 {if !empty($member->name)}<span>{$member->surname}</span>, {$member->name}{/if}  
                             </div>
                             <div class="flex-spacer"></div>
+                            {if !empty($classificationGroup->task)}
+                                {ifset $classificationGroup->task->commitArray[$member->id]}
+                                    <div class="table-field assignment-status submitted">Odevzdáno pozdě</div>
+                                {else}
+                                    <div class="table-field assignment-status submitted">Neodevzdáno</div>
+                                {/ifset}
+                            {/if}
                             <div class="grade table-field">
                                 {input grade$member->id class=>'no-border'}
                             </div>
                         </div>
                         <div class="collapsible-body">
                             <div class="table-row">
-                                {if !empty($classificationGroup->task)}
-                                    {ifset $classificationGroup->task->commitArray[$member->id]}
-                                    <div class="table-row-input">{$classificationGroup->task->commitArray[$member->id]->comment}</div>
-                                    <div class="table-row-input">
-                                        <ul class="attachments task-attachments-uploads">
-                                            {if !empty($classificationGroup->task->commitArray[$member->id]->files)}
-                                            {foreach $classificationGroup->task->commitArray[$member->id]->files as $attach}
-                                                <li data-file-id="{$attach->idFile}">
-                                                    <a href="{$attach->path|noescape}" target="_blank" class="attached-file" >
-                                                        <div class="attachment-icon small presentation"><i class="material-icons">slideshow</i></div>
-                                                        <div class="attachment-label">
-                                                            <div class="file-name">{$attach->filename}</div>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                            {/foreach}
-                                            {/if}
-                                        </ul>
-                                    </div>
-                                    {else}
-                                        <div class="table-row-input">Neodevzdáno</div>
-                                    {/ifset}
+                                {input notice$member->id class=>'materialize-textarea'}
+                                {if !empty($classificationGroup->task) && isset($classificationGroup->task->commitArray[$member->id])}
+                                <ul class="attachments">
+                                    {foreach $classificationGroup->task->commitArray[$member->id]->files as $attach}
+                                    <li data-file-id="{$attach->idFile}">
+                                        <a href="{$attach->path|noescape}" target="_blank" class="attached-file">
+                                            <div class="file-icon spreadsheet">
+                                                <i class="material-icons">
+                                                    equalizer
+                                                </i>
+                                            </div>
+                                            <div class="file-name truncate">{$attach->filename}span>(dokument, .doc) – Nahráno 22. 6. 22:30</span></div>   
+                                        </a>
+                                    </li>
+                                    {/foreach}
+                                </ul>
                                 {/if}
-                                <div class="form-row input-field">
-                                    {input notice$member->id class=>'materialize-textarea'}
-                                    {label notice$member->id}Poznámka k hodnocení ...{/label}
-                                </div>
                             </div>
                         </div>
                     </li>

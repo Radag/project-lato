@@ -62,6 +62,31 @@ class ClassificationManager extends BaseManager
         $this->db->commit();
     }
     
+    public function updateTaskClassification(\App\Model\Entities\Task $task, \App\Model\Entities\Group $group, $groupManager) 
+    {
+        $exist = $this->db->fetch("SELECT * FROM classification_group WHERE task_id=?", $task->id);
+        if(!$exist && $task->create_classification == 1) {
+            $groupClassification = new ClassificationGroup();
+            $groupClassification->task = $task;
+            $groupClassification->group = $group;
+            $groupClassification->idPerion = $group->activePeriodId;
+            $groupClassification->name = $task->title;
+            $classGroupId = $this->createGroupClassification($groupClassification);
+            $students = $groupManager->getGroupUsers($group->id, GroupManager::RELATION_STUDENT);
+            foreach($students as $student) {
+                $classification = new \App\Model\Entities\Classification();
+                $classification->idClassificationGroup = $classGroupId;
+                $classification->group = $group;
+                $classification->idUser = $student->id;
+                $classification->idPeriod = $group->activePeriodId;
+                $this->createClassification($classification);
+            }
+            
+        } elseif($exist && $task->create_classification == 0) {
+            $this->db->query("DELETE FROM classification_group WHERE id=?", $exist->id);
+        }
+    }
+    
     public function getUserClassification($idUser, $idGroup)
     {
         $classificationsArray = [];
@@ -157,7 +182,7 @@ class ClassificationManager extends BaseManager
         $this->db->query("INSERT INTO classification_group", [
             'group_id' => $groupClassification->group->id,
             'name' => $groupClassification->name,
-            'task_id' => isset($groupClassification->task) ? $groupClassification->task->idTask : null,
+            'task_id' => isset($groupClassification->task) ? $groupClassification->task->id : null,
             'period_id' => $groupClassification->idPerion
         ]);
 

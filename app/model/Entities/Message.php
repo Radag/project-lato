@@ -30,6 +30,7 @@ class Message extends AbstractEntity {
     public $task;
     public $top = null;
     public $title = null;
+    public $create_classification = null;
     
 
 }

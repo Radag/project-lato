@@ -27,7 +27,8 @@ class TaskManager extends BaseManager
             $this->db->query("UPDATE task SET ", [
                 'name' => $task->title,
                 'deadline' => $task->deadline,
-                'online' => $task->online
+                'online' => $task->online,
+                'create_classification' => $task->create_classification
             ], "WHERE id=?", $idTask);    
         } else {
             $this->db->query("INSERT INTO task", [
@@ -35,9 +36,13 @@ class TaskManager extends BaseManager
                 'message_id' => $task->idMessage,
                 'deadline' => $task->deadline,
                 'online' => $task->online,
+                'create_classification' => $task->create_classification
             ]);
+            $idTask = $this->db->getInsertId();
         }      
         $this->db->commit();
+        
+        return $idTask;
     }
     
     public function getClosestTask($groups) 
@@ -180,22 +185,22 @@ class TaskManager extends BaseManager
     public function getCommitByUser($idTask, $idUser) 
     {        
         $return = new TaskCommit();
-        $commit = $this->database->query("SELECT T1.ID_COMMIT, T1.COMMENT, T2.ID_FILE,
-                            T3.PATH,
-                            T3.FILENAME
+        $commit = $this->database->query("SELECT T1.id, T1.comment, T2.file_id,
+                            T3.path,
+                            T3.filename
                         FROM task_commit T1
-                        LEFT JOIN task_commit_attachment T2 ON T1.ID_COMMIT=T2.ID_COMMIT
-                        LEFT JOIN file_list T3 ON T2.ID_FILE=T3.ID_FILE
-                        WHERE T1.ID_TASK = ? AND T1.ID_USER = ?", $idTask, $idUser)->fetchAll();
+                        LEFT JOIN task_commit_attachment T2 ON T1.id=T2.commit_id
+                        LEFT JOIN file_list T3 ON T2.file_id=T3.id
+                        WHERE T1.task_id = ? AND T1.user_id = ?", $idTask, $idUser)->fetchAll();
         if(!$commit) {
             return null;
         }
         
         foreach($commit as $attach) {
-            $return->idCommit = $attach->ID_COMMIT;
-            $return->comment = $attach->COMMENT;
-            if(!empty($attach->ID_FILE)) {
-                $return->files[] = (object)array('idFile' => $attach->ID_FILE, 'path' => 'https://cdn.lato.cz/' . $attach->PATH . '/' . $attach->FILENAME, 'filename' => $attach->FILENAME);
+            $return->idCommit = $attach->id;
+            $return->comment = $attach->comment;
+            if(!empty($attach->file_id)) {
+                $return->files[] = (object)['idFile' => $attach->file_id, 'path' => 'https://cdn.lato.cz/' . $attach->path . '/' . $attach->filename, 'filename' => $attach->filename];
             }
         }
         return $return;

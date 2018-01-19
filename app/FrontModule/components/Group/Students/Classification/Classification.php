@@ -11,7 +11,7 @@ use App\Model\Manager\ClassificationManager;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\GroupManager;
 use App\Model\Entities\ClassificationGroup;
-
+use App\Model\Manager\TaskManager;
 
 class Classification extends \App\Components\BaseComponent
 {
@@ -25,6 +25,9 @@ class Classification extends \App\Components\BaseComponent
     /** @var GroupManager */
     private $groupManager;
     
+    /** @var TaskManager */
+    private $taskManager;
+    
     protected $grades = ['1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '—' => '—', 'N' => 'N'];
     
     /** @var ClassificationGroup */
@@ -33,12 +36,14 @@ class Classification extends \App\Components\BaseComponent
     public function __construct(
         ClassificationManager $classificationManager,
         UserManager $userManager,
-        GroupManager $groupManager
+        GroupManager $groupManager,
+        TaskManager $taskManager
     )
     {
         $this->classificationManager = $classificationManager;
         $this->userManager = $userManager;
         $this->groupManager = $groupManager;
+        $this->taskManager = $taskManager;
     } 
     
     public function setClassification(ClassificationGroup $classificationGroup)
@@ -122,7 +127,8 @@ class Classification extends \App\Components\BaseComponent
         $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, GroupManager::RELATION_STUDENT, $students);   
         foreach($members as $member) {
             $form->addSelect('grade' . $member->id, 'Známka', $this->grades);
-            $form->addTextArea('notice' . $member->id, 'Poznámka');
+            $form->addTextArea('notice' . $member->id, 'Poznámka')
+                 ->setAttribute('placeholder', 'Vložit poznámku k hodnocení ...');
         }
         $form->addHidden('date');
         $form->addHidden('name');

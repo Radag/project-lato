@@ -305,7 +305,8 @@ class MessageManager extends BaseManager {
                         T6.updated_when AS commit_updated,
                         T7.commit_count,
                         T8.title,
-                        T5.online
+                        T5.online,
+                        T5.create_classification
                 FROM message T1 
                 LEFT JOIN user T2 ON T1.user_id=T2.id 
                 LEFT JOIN task T5 ON T1.id = T5.message_id
@@ -353,6 +354,7 @@ class MessageManager extends BaseManager {
                 $mess->task->online = $message->online;
                 $mess->task->timeLeft = $now->diff($message->deadline);
                 $mess->task->commitCount = $message->commit_count;
+                $mess->task->create_classification = $message->create_classification;                
                 if(!empty($message->commit_id)) {
                     $commit = new \App\Model\Entities\TaskCommit();
                     $commit->idCommit = $message->commit_id;

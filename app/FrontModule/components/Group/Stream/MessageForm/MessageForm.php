@@ -8,12 +8,13 @@
 namespace App\FrontModule\Components\Stream\MessageForm;
 
 use \Nette\Application\UI\Form;
-use \Nette\Application\UI\Control;
 use App\Model\Manager\MessageManager;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\FileManager;
 use App\Model\Entities\Message;
 use App\Model\Manager\TaskManager;
+use App\Model\Manager\ClassificationManager;
+use App\Model\Manager\GroupManager;
 
 /**
  * Description of SignInForm
@@ -35,19 +36,29 @@ class MessageForm extends \App\Components\BaseComponent
     /** @var TaskManager $taskManager*/
     protected $taskManager;
     
+    /** @var ClassificationManager **/
+    protected $classificationManager;
+    
+     /** @var GroupManager **/
+    protected $groupManager;
+    
     /** @var Message */
     protected $defaultMessage = null;
     
     public function __construct(UserManager $userManager,
-            MessageManager $messageManager, 
-            FileManager $fileManager,
-            TaskManager $taskManager
-            )
+        MessageManager $messageManager, 
+        FileManager $fileManager,
+        TaskManager $taskManager,
+        ClassificationManager $classificationManager,
+        GroupManager $groupManager
+    )
     {
         $this->userManager = $userManager;
         $this->messageManager = $messageManager;
         $this->fileManager = $fileManager;
         $this->taskManager = $taskManager;
+        $this->classificationManager = $classificationManager;
+        $this->groupManager = $groupManager;
     }
   
     public function createComponentForm()
@@ -75,6 +86,7 @@ class MessageForm extends \App\Components\BaseComponent
                  ->setRequired('Vložte čas')
                  ->addRule(Form::PATTERN, 'Čas musí být ve formátu 12:45', '([0-9]{2})\:([0-9]{2})');
         $form->addCheckbox('online', "Odevzdat online");
+        $form->addCheckbox('create_classification', "Bude na známky");
         $form->addHidden('attachments');
         $form->addSubmit('send', 'Publikovat');
         if($this->defaultMessage !== null) {
@@ -89,7 +101,8 @@ class MessageForm extends \App\Components\BaseComponent
                     'title' => $this->defaultMessage->task->title,
                     'date' => $this->defaultMessage->task->deadline->format('Y-m-d'),
                     'time' => $this->defaultMessage->task->deadline->format('H:i'),
-                    'online' => $this->defaultMessage->task->online
+                    'online' => $this->defaultMessage->task->online,
+                    'create_classification' => $this->defaultMessage->task->create_classification
                 )); 
             }
         }
@@ -129,7 +142,9 @@ class MessageForm extends \App\Components\BaseComponent
             $task->title = $values->title;
             $deadline = $date = \DateTime::createFromFormat('Y-m-d H:i', $values->date . " " . $values->time);
             $task->deadline = $deadline;
-            $this->taskManager->createTask($task);  
+            $task->create_classification = $values->create_classification;
+            $task->id = $this->taskManager->createTask($task);
+            $this->classificationManager->updateTaskClassification($task, $this->presenter->activeGroup, $this->groupManager);
         }
         
         if($values->messageType === Message::TYPE_MATERIALS) {
