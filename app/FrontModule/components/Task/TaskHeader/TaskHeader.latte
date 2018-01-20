@@ -1,4 +1,4 @@
-{if $isOwner}
+
     {if $task->commit }
         <div class="time-left">
             Odevzdáno: {$task->commit->created->format("j. n. H:i")}
@@ -14,4 +14,3 @@
     <button type="button" data-link="{link editTaskCommit}" class="btn gray no-shadow submit-class-button">
         Odevzdat
     </button>
-{/if}

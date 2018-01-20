@@ -74,7 +74,14 @@
                                                     equalizer
                                                 </i>
                                             </div>
-                                            <div class="file-name truncate">{$attach->filename}span>(dokument, .doc) – Nahráno 22. 6. 22:30</span></div>   
+                                            <div class="file-name truncate">
+                                                {$attach->filename} 
+                                                <span>({$attach->mime}, .{$attach->extension}) – Nahráno {$classificationGroup->task->commitArray[$member->id]->created->format("j. n. H:i")}
+                                                    {if $classificationGroup->task->commitArray[$member->id]->updated}
+                                                        (Aktualizováno {$classificationGroup->task->commitArray[$member->id]->updated->format("j. n. H:i")})
+                                                    {/if}
+                                                </span>
+                                            </div>   
                                         </a>
                                     </li>
                                     {/foreach}

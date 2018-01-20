@@ -187,7 +187,11 @@ class TaskManager extends BaseManager
         $return = new TaskCommit();
         $commit = $this->database->query("SELECT T1.id, T1.comment, T2.file_id,
                             T3.path,
-                            T3.filename
+                            T3.filename,
+                            T1.created_when,
+                            T1.updated_when,
+                            T3.mime,
+                            T3.extension
                         FROM task_commit T1
                         LEFT JOIN task_commit_attachment T2 ON T1.id=T2.commit_id
                         LEFT JOIN file_list T3 ON T2.file_id=T3.id
@@ -199,8 +203,10 @@ class TaskManager extends BaseManager
         foreach($commit as $attach) {
             $return->idCommit = $attach->id;
             $return->comment = $attach->comment;
+            $return->created = $attach->created_when;
+            $return->updated = $attach->updated_when;
             if(!empty($attach->file_id)) {
-                $return->files[] = (object)['idFile' => $attach->file_id, 'path' => 'https://cdn.lato.cz/' . $attach->path . '/' . $attach->filename, 'filename' => $attach->filename];
+                $return->files[] = (object)['idFile' => $attach->file_id, 'mime' => $attach->mime,'extension' => $attach->extension, 'path' => 'https://cdn.lato.cz/' . $attach->path . '/' . $attach->filename, 'filename' => $attach->filename];
             }
         }
         return $return;
