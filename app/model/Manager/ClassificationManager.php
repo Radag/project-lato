@@ -220,8 +220,7 @@ class ClassificationManager extends BaseManager
                 LEFT JOIN group_period T3 ON T1.period_id=T3.id
                 WHERE T3.active=1 AND T1.user_id=?";
         $classifications = $this->db->fetchAll($query, $user->id);
-        
-        $return = array();
+        $return = [];
         foreach($classifications as $class) {
             if(!isset($return[$class->group_id])) {
                 $group = new \App\Model\Entities\Group();
@@ -229,9 +228,9 @@ class ClassificationManager extends BaseManager
                 $group->mainColor = $class->main_color;
                 $group->shortcut = $class->shortcut;
                 $group->colorScheme = $class->group_color_code;
-                $group->statistics = ['last_change' => null, 'avg_grade' => 0, 'count_grade' => 0];
+                $group->statistics = (object)['last_change' => null, 'avg_grade' => 0, 'count_grade' => 0];
                 $group->classification = [];
-                $return[$class->group_id] = $group;
+                $return[$class->group_id]['group'] = $group;
             }
             if(!empty($class->id)) {
                 $classObject = new Classification();
@@ -239,20 +238,22 @@ class ClassificationManager extends BaseManager
                 $classObject->notice = $class->notice;
                 $classObject->name = $class->grade_name;
                 $classObject->lastChange = $class->classification_date;    
-                $return[$class->id]->classification[] = $classObject;
-                if($return[$class->id]->statistics['last_change'] === null ||
-                   $class->classification_date > $return[$class->id]->statistics['last_change']
+                $return[$class->group_id]['classification'][] = $classObject;
+                if($return[$class->group_id]['group']->statistics->last_change === null ||
+                   $class->classification_date > $return[$class->group_id]['group']->statistics->last_change
                 ) {
-                    $return[$class->id]->statistics['last_change'] = $class->classification_date;
+                    $return[$class->group_id]['group']->statistics->last_change = $class->classification_date;
                 }
-                $return[$class->id]->statistics['avg_grade'] += (int)$class->grade;
-                $return[$class->id]->statistics['count_grade']++;
+                if($class->grade != '—') {
+                    $grade = $class->grade == 'N' ? 5 : (int)$class->grade;
+                    $return[$class->group_id]['group']->statistics->avg_grade += $grade;
+                    $return[$class->group_id]['group']->statistics->count_grade++;
+                }
             }
         }
-        
         foreach($return as $ret) {
-            if($ret->statistics['count_grade'] > 0) {
-                $ret->statistics['avg_grade'] = round($ret->statistics['avg_grade']/$ret->statistics['count_grade'], 2);
+            if($ret['group']->statistics->count_grade > 0) {
+                $ret['group']->statistics->avg_grade = round($ret['group']->statistics->avg_grade/$ret['group']->statistics->count_grade, 2);
             }
         }
         return $return;
