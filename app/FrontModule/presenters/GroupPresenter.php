@@ -78,11 +78,6 @@ class GroupPresenter extends BasePresenter
         }
     }
     
-    public function actionDefault2()
-    {       
-        $this->groupManager->setGroupVisited($this->activeUser, $this->activeGroup->id);
-    }
-    
     public function actionClassmates()
     {       
         $members = $this->groupManager->getGroupUsers($this->activeGroup->id, GroupManager::RELATION_STUDENT);
