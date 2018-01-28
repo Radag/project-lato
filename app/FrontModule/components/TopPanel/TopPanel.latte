@@ -24,7 +24,7 @@
                 </ul>
             {/if}
             <div class="right-nav-flex">
-                <ul class="right navbar-nav">
+                <ul class="navbar-nav">
                     <li>
                         <a class="button-collapse show-on-large slide-out-toggle" href="#" id="button-notification-slide" data-edge="right" data-activates="slide-out-notification" >
                             <i class="material-icons ">notifications</i>
@@ -231,11 +231,12 @@
 
 <div id="new-message" class="modal modal-small">
     <div class="modal-content">
-        <h3>Přidat studenta</h3>
+        <h3>Nová zpráva</h3>
         <div class="form-row input-field">
             <input name="userName" type="text" {*id="userSearch"*} class="validate">
-            <label for="userName">Jméno nebo e-mail studenta</label>
+            <label for="userName">Jméno nebo e-mail uživatele</label>
         </div>
+        <div class="prompter-loading"></div>
         <ul class="custom-collection prompter">
             <li>
                 <a href="" class="item">
@@ -247,14 +248,14 @@
                     </div>
                 </a>
             </li>
-            <li class="rest-of-all">36 dalších návrhů</li>
+            <li class="rest-of-all">5 dalších návrhů</li>
         </ul>
     </div>
     <div class="modal-footer">
         <div class="flex-spacer"></div>
         <div class="form-control">
             <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" >Potvrdit</button>
+            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" disabled>Potvrdit</button>
         </div>
     </div>
 </div>

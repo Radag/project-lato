@@ -39,7 +39,7 @@
                     <div class="notice table-field"></div>
                     <div class="table-field">Hodnocení</div>
                 </div>                
-                <ul class="collapsible popout classification-update-table" data-collapsible="expandable">
+                <ul class="collapsible popout table-body classification-update-table" data-collapsible="expandable">
                     {foreach $members as $member}
                     <li>
                         <div class="collapsible-header table-row">
@@ -57,7 +57,7 @@
                                     <div class="table-field assignment-status submitted">Neodevzdáno</div>
                                 {/ifset}
                             {/if}
-                            <div class="grade table-field">
+                            <div class="grade-dropdown table-field">
                                 {input grade$member->id class=>'no-border'}
                             </div>
                         </div>

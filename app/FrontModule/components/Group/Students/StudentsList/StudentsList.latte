@@ -40,8 +40,6 @@
                         <input type="checkbox" class="filled-in" id="select-all" />
                         <label for="select-all"></label>   
                         <div class="title">Student</div>
-                        <div class="flex-spacer"></div>
-                        {* <div class="table-field">Hodnocení</div>*}
                     </div>
                     <script>
                          $(function () {                           
@@ -170,7 +168,7 @@
                         });
                     </script>
                     {snippet memberList}
-                    <ul class="collapsible popout" data-collapsible="expandable">
+                    <ul class="collapsible popout table-body" data-collapsible="expandable">
                         {foreach $groupMembers as $member}
                         <li>
                             <div class="collapsible-header table-row">
@@ -183,33 +181,34 @@
                                     <span>{$member->surname}</span>, {$member->name}
                                 </div>
                                 <div class="flex-spacer"></div>
-                                <div class="table-field date user-info-options-menu">
+                                <div class="user-info-options-menu">
                                     <a class="btn-flat btn-icon dropdown-button waves-effect waves-dark" data-activates="user-action-dropdown-{$member->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
                                         <i class="material-icons">more_horiz</i>
                                     </a>
                                     <ul id='user-action-dropdown-{$member->id}' class='dropdown-content'>
-                                        <li><a href="{plink Profile:default 'id'=>$member->slug}" >Profil</a></li>
+                                        <li><a href="{plink Profile:default 'id'=>$member->slug}">Zobrazit profil</a></li>
                                     </ul>
                                     
                                     {* {if !empty($member->getClassification()->lastDate)}{$member->getClassification()->lastDate->format("j. n. Y")}{else}--{/if} *}
                                 </div>
-                                <div class="classification table-field">({count($member->getClassification()->items)})&nbsp;<strong>{$member->getClassification()->averageGrade ?: '–'}</strong></div>
+                                <div class="classification">({count($member->getClassification()->items)})&nbsp;<strong>{$member->getClassification()->averageGrade ?: '–'}</strong></div>
                             </div>
                             <div class="collapsible-body">
                                 <div class="classification-table">
                                     {ifset $member->getClassification()->items}
                                     {foreach $member->getClassification()->items as $classification}
                                     <div class="table-row">
-                                        <div class="info">
-                                            <a  href="{link editGroupClassification! 'idGroupClassification'=>$classification->idClassificationGroup}" class="material-icons edit">edit</a>
+                                        <a  href="{link editGroupClassification! 'idGroupClassification'=>$classification->idClassificationGroup}" class="material-icons edit">edit</a>
+                                        <div class="info truncate">
+                                            
                                             <a href="{link editGroupClassification! 'idGroupClassification'=>$classification->idClassificationGroup}" class="title truncate">{$classification->name}</a>
                                             <div class="flex-spacer"></div>
-                                            <div class="table-field date">{$classification->classificationDate->format("j. n. Y")}</div>
-                                            <div class="classification table-field">
-                                                <strong>{$classification->grade ?: '–'}</strong>
-                                            </div>
+                                        <div class="date">{$classification->classificationDate->format("j. n. Y")}</div>
                                         </div>
-                                        
+
+                                        <div class="classification">
+                                            <strong>{$classification->grade ?: '–'}</strong>
+                                        </div>
                                     </div>
                                     {/foreach}
                                     {/ifset}

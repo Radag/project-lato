@@ -32,7 +32,7 @@
                         <div class="table-field">Hodnocení</div> *}
                     </div>
 
-                    <ul class="collapsible popout" data-collapsible="expandable">
+                    <ul class="collapsible popout table-body" data-collapsible="expandable">
                         {foreach $myClassification as $group}
                             <li>
                                 <div class="{if $group['group']->statistics->count_grade !== 0}collapsible-header{/if} table-row">

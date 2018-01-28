@@ -2,43 +2,55 @@
 
 // HEADER BAR
 
-.main-nav {
-    & > nav {
+.navbar-fixed {
+    nav {
         background-color: @primary-color;
-    }
 
-    & a.slide-out-toggle,
-    & a#slide-left-button {
-        color: @text-color;
-    }
-
-    & .nav-title {
-        color: @text-color;
-    }
-
-    & .content-nav li.active a {
-        color: @text-color;
-    }
-
-    & .content-nav li a {
-        color: @text-color-fade;
-    }
-
-    & .right-nav-flex > ul > li > a {
-        color: @right-nav-text-color;
-    }
-
-    & .progress {
-
-        &.loading-data {
-            background-color: rgba(219, 219, 219, .5);
+        a.slide-out-toggle,
+        a#slide-left-button {
+            color: @text-color;
         }
-        
-        .indeterminate,
-        .determinate {
-            background-color: @accent-color;
+
+        .nav-title {
+            color: @text-color;
         }
-    }
+
+        .content-nav li.active {
+            border-bottom-color: @text-color-fade;
+        }
+
+        .content-nav li.active a {
+            color: @text-color;
+
+            &:hover {
+               color: @text-color; 
+            }
+        }
+
+        .content-nav li a {
+            color: @text-color-fade;
+
+            &:hover {
+               color: @text-color-fade; 
+            }
+        }
+
+        .right-nav-flex > ul > li > a {
+            color: @right-nav-text-color;
+        }
+
+        .progress {
+
+            &.loading-data {
+                background-color: rgba(219, 219, 219, .5);
+            }
+            
+            .indeterminate,
+            .determinate {
+                background-color: @accent-color;
+            }
+        }
+    }    
 }
 
 // FORMS 

@@ -203,6 +203,8 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
     @media only screen and (max-width: 600px) {
         & {
             font-size: 14px;
+            height: 36px;
+            line-height: 36px;
         }
     }
 
@@ -397,6 +399,13 @@ nav {
                 height: 42px;
                 line-height: 42px;
                 display: flex;
+
+                @media only screen and (max-width: 600px) {
+                    & {
+                        height: 36px;
+                        line-height: 36px;
+                    }
+                }
 
                 & > a {
                     color: @secondary-text-color;

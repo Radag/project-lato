@@ -7,10 +7,10 @@
 <div class="card-header">
     {if $message->priority == 1}<div class="topped"></div>{/if}
     {if $message->deleted == 1}<div class="deleted"></div>{/if}
-    <a href="{plink Profile:default 'id'=>$message->user->slug}" class="avatar {if $message->title || (isset($message->task) && $message->task->title)}tiny{/if}">
+    <a href="{plink Profile:default 'id'=>$message->user->slug}" class="avatar">
         <img src="{$message->user->profileImage}" alt="{$message->user->name}">
     </a>
-    <h3 class="name truncate {if isset($message->title) || (isset($message->task) && $message->task->title)}tiny{/if}">
+    <h3 class="name truncate">
         <a href="{plink Profile:default 'id'=>$message->user->slug}">{$message->user->name} {$message->user->surname}</a>
     </h3>
     <span class="card-date">{$message->created|date:"j. n."}</span>
@@ -30,30 +30,6 @@
         <li><a href="#" data-link="{link deleteMessage! idMessage=>$message->id}" class="delete-message-button refresh-wall-messages">Smazat</a></li>
         <li><a href="{link editMessage! idMessage=>$message->id}" class="ajax edit-message-button">Upravit zprávu</a></li>
     </ul>
-    {*
-    <div id="share-post_{$message->id}" class="modal modal-small">
-        <div class="modal-content">
-            <form method="post" action="{link shareMessage! idMessage=>$message->id}">
-            <h3>Znovu použít příspěvek</h3>
-            <div class="form-row">
-                <select class="full-width">
-                    <option value="" disabled selected>Choose your option</option>
-                    <option value="1">Option 1</option>
-                    <option value="2">Option 2</option>
-                    <option value="3">Option 3</option>
-                </select>
-            </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <div class="flex-spacer"></div>
-            <div class="form-control">
-                <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-                <button type="submit" name="send" class="btn btn-confirm waves-effect waves-light hide-modal-ajax-submit" >Použít</button>
-            </div>
-        </div>
-    </div>
-    *}
 </div>
 <div class="card-content">
     {if $message->title}
