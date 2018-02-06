@@ -30,6 +30,25 @@
                 {snippet streamSection}
                     {control messagesColumn}
                 {/snippet}
+
+                <div id="message-delete-confirm-modal" class="modal modal-small">
+                    <div class="modal-content">
+                        <h3>Opravdu chcete zprávu smazat ?</h3>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="flex-spacer"></div>
+                        <div class="form-control">
+                            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">ne</button>
+                            <button type="button" onClick="confirmDelete()" class="waves-effect modal-close waves-light btn btn-confirm" >Ano</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="create-post-modal" class="modal">
+                    {snippet messageForm}
+                        {control messageForm}
+                    {/snippet}
+                </div>
+
             </div>
         {if !$singleMode}
             {control rightColumn}
@@ -136,20 +155,3 @@
         }
     }); 
 </script>
- <div id="message-delete-confirm-modal" class="modal modal-small">
-    <div class="modal-content">
-        <h3>Opravdu chcete zprávu smazat ?</h3>
-    </div>
-    <div class="modal-footer">
-        <div class="flex-spacer"></div>
-        <div class="form-control">
-            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">ne</button>
-            <button type="button" onClick="confirmDelete()" class="waves-effect modal-close waves-light btn btn-confirm" >Ano</button>
-        </div>
-    </div>
-</div>
-<div id="create-post-modal" class="modal">
-    {snippet messageForm}
-        {control messageForm}
-    {/snippet}
-</div>

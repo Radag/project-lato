@@ -232,6 +232,14 @@
 <div id="new-message" class="modal modal-small">
     <div class="modal-content">
         <h3>Nová zpráva</h3>
+        <p>Vyberte uživatele, kteří budou součástí konverzace</p>
+        
+       
+        <div class="message-modal-users no-border chips">
+            <div class="chip">A. Navrátil<i class="material-icons close">close</i></div>  
+            <div class="chip">P. Šavelka<i class="material-icons close">close</i></div>  
+            <div class="chip">H. Šavelková<i class="material-icons close">close</i></div>             
+        </div>
         <div class="form-row input-field">
             <input name="userName" type="text" {*id="userSearch"*} class="validate">
             <label for="userName">Jméno nebo e-mail uživatele</label>
@@ -255,7 +263,7 @@
         <div class="flex-spacer"></div>
         <div class="form-control">
             <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" disabled>Potvrdit</button>
+            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" disabled>Pokračovat</button>
         </div>
     </div>
 </div>
