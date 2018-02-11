@@ -13,13 +13,15 @@ use App\Model\Entities\PrivateMessage;
 use App\Model\Manager\PrivateMessageManager;
 use App\Model\Manager\UserManager;
 
-class PrivateMessageForm extends Control
+class PrivateMessageForm extends \App\Components\BaseComponent
 {
     /** @var PrivateMessageManager */
     protected $privateMessageManager;
     
     /** @var UserManager */
     protected $userManager;
+    
+    protected $showMessageForm = false;
     
     public function __construct(
         PrivateMessageManager $privateMessageManager,
@@ -46,7 +48,7 @@ class PrivateMessageForm extends Control
              ->setRequired('Prosím napiště text zprávy.');
         $form->addText('emailTo', 'Email uživatele')
              ->setAttribute('placeholder', 'Email uživatele');
-        $form->addHidden('idUserTo');
+        $form->addHidden('users');
         $form->addSubmit('send', 'Vytvořit');
 
         $form->onSuccess[] = [$this, 'processForm'];
@@ -60,11 +62,42 @@ class PrivateMessageForm extends Control
         return $form;
     }
     
+    protected function createComponentUsersForm()
+    {
+        $form = new \Nette\Application\UI\Form;
+        $form->addText('user', 'Jméno nebo e-mail uživatele');
+        $form->addHidden('users');
+        $form->addSubmit('send', 'Vytvořit');
+
+        $form->onSuccess[] = [$this, 'processUsersForm'];
+        return $form;
+    }
+    
     public function render()
     {
-        $template = $this->template;
-        $template->setFile(__DIR__ . '/PrivateMessageForm.latte');
-        $template->render();
+        $this->template->showMessageForm = $this->showMessageForm;
+        parent::render();
+    }
+    
+    public function handleSearchUsers()
+    {
+        $term = $this->presenter->getParameter('term');
+        $userList = $this->userManager->searchGroupUser($term, [$this->presenter->activeUser->id]);
+        if(empty($userList)) {
+            $userList = [];
+        }
+        $this->template->userList = $userList;
+        $this->redrawControl('users-list');
+    }
+    
+    public function processUsersForm(Form $form, $values) 
+    {
+        $this->showMessageForm = true;
+        $this['form']->setValues([
+            'users' => $values->users
+        ]);
+        $this->redrawControl();
+        
     }
     
     public function processForm(Form $form, $values) 

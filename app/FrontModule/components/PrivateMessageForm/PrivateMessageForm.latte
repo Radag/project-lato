@@ -1,47 +1,168 @@
-{form form class=>'ajax'}
-    <div class="card message-editor">
-        <div class="card-content">
-            {input emailTo}
-            {input text class=>'materialize-textarea'}
+{snippet messagesForm}
+    {if !$showMessageForm}
+    {form usersForm class=>'ajax'}
+        <div class="modal-content">
+            <h3>Nová zpráva</h3>
+            <p>Vyberte uživatele, kteří budou součástí konverzace</p>       
+            <div class="message-modal-users no-border chips hide"></div>
+            <div class="form-row input-field">
+                {input user class=>'search-user-form'}
+                {label user}{/label}
+            </div>
+            {snippet users-list }
+                <div class="prompter-loading">
+                    <div class="preloader-wrapper small active hide users-autocomplete-loader" style="margin: 48px 0 24px 0;">
+                        <div class="spinner-layer spinner-green-only">
+                              <div class="circle-clipper left" >
+                                <div class="circle"></div>
+                              </div><div class="gap-patch">
+                                <div class="circle"></div>
+                              </div><div class="circle-clipper right">
+                                <div class="circle"></div>
+                              </div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="loaded-user-list custom-collection prompter" n:if="isset($userList)">
+                    {foreach $userList as $userItem}
+                        <li {if $iterator->counter > 3}class="hide"{/if}>
+                            <a href="#" data-user-id="{$userItem->id}" data-user-name="{$userItem->name|substr:0,1}. {$userItem->surname}"class="add-user-item item">
+                                <div class="avatar small">
+                                    <img src="{$userItem->profileImage|noescape}">
+                                </div>
+                                <div class="label">
+                                    <span class="title truncate">{$userItem->name} {$userItem->surname}</span>
+                                </div>
+                            </a>
+                        </li>
+                    {/foreach}
+                    {if count($userList) > 3}
+                        <li class="rest-of-all">{count($userList) - 3} dalších návrhů</li>
+                    {/if}
+                    {if count($userList) <= 0}
+                        <li class="rest-of-all">Nic nenalezeno</li>
+                    {/if}
+                </ul>
+                <script>
+                    $(function() {            
+                        $(".add-user-item").on('click', function(e) {
+                            e.preventDefault();
+                            addNewUser(this);
+
+                        });
+                        $(".rest-of-all").on('click', function(e) {
+                            $(".add-user-item").parent('li').removeClass('hide');
+                            $(".rest-of-all").addClass('hide');
+                        });
+                    });
+                </script>
+            {/snippet}
+            <script>
+                var chipsData = [];
+                var toUsers = [];
+                function addNewUser(ele) {
+                    var exist = false;
+                    for(var i=0; chipsData.length>i; i++) {
+                        if(chipsData[i].id == $(ele).data('user-id'))  {
+                            exist = true;
+                        }
+                    }
+                    if(!exist) {
+                        chipsData.push({ tag: $(ele).data('user-name'), id: $(ele).data('user-id') });
+                        toUsers.push($(ele).data('user-id'));
+                        $("input[name='users']").val(toUsers);
+                        changeSubmitButton();
+                    }
+                    $('.message-modal-users').material_chip({ data: chipsData});
+                }
+
+                function changeSubmitButton() {
+                    if(chipsData.length > 0) {
+                        $(".message-modal-users").removeClass('hide');
+                        $("#private-message-next-submit").prop('disabled', false);
+                    } else {
+                        $(".message-modal-users").addClass('hide');
+                        $("#private-message-next-submit").prop('disabled', true);
+                    }
+                }
+
+                $(function () {
+                    $(".search-user-form").on("keyup", function(e) {
+                        if($(this).val().length > 2) {
+                            $(".loaded-user-list").hide();
+                            $(".users-autocomplete-loader").removeClass('hide');
+                            $.nette.ajax({
+                                url: {link searchUsers!},
+                                method: 'GET',
+                                data: {
+                                    'term': $(this).val()
+                                },
+                                success: function(data) {
+                                    $(".users-autocomplete-loader").addClass('hide');
+                                },
+                                error: function(data) {
+                                    //$(".users-autocomplete-loader").addClass('hide');
+                                }
+                            });
+                        }
+                    });            
+                });
+            </script>
         </div>
-        <div class="card-footer">
-            <ul class="editor-options">
-                <li>
-                    <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit soubor">
-                        <i class="material-icons">attach_file</i>
-                    </a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Tučné">
-                        <i class="material-icons">format_bold</i>
-                    </a>
-                </li>
-                <li>
-                    <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Kurzíva">
-                        <i class="material-icons">format_italic</i>
-                    </a>
-                </li>
-                <li>
-                    <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Podtržené">
-                        <i class="material-icons">format_underlined</i>
-                    </a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Nečíslovaný seznam">
-                        <i class="material-icons">format_list_bulleted</i>
-                    </a>
-                </li>
-                <li>
-                    <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Číslovaný seznam">
-                        <i class="material-icons">format_list_numbered</i>
-                    </a>
-                </li>
-            </ul>
+        <div class="modal-footer">
             <div class="flex-spacer"></div>
-            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" >Potvrdit</button>
+            <div class="form-control">
+                <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                <button type="submit" id="private-message-next-submit" class="waves-effect waves-light btn btn-confirm submit-message-form" disabled>Pokračovat</button>
+            </div>
         </div>
-    </div>
-{/form}
+    {/form}
+    {else}
+    {form form class=>'ajax'}
+        <div class="card message-editor">
+            <div class="card-content">
+                {input text class=>'materialize-textarea'}
+            </div>
+            <div class="card-footer">
+                <ul class="editor-options">
+                    <li>
+                        <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit soubor">
+                            <i class="material-icons">attach_file</i>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Tučné">
+                            <i class="material-icons">format_bold</i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Kurzíva">
+                            <i class="material-icons">format_italic</i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Podtržené">
+                            <i class="material-icons">format_underlined</i>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Nečíslovaný seznam">
+                            <i class="material-icons">format_list_bulleted</i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Číslovaný seznam">
+                            <i class="material-icons">format_list_numbered</i>
+                        </a>
+                    </li>
+                </ul>
+                <div class="flex-spacer"></div>
+                <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" >Potvrdit</button>
+            </div>
+        </div>
+    {/form}
+    {/if}
+{/snippet}
