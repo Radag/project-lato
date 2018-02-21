@@ -132,7 +132,7 @@
     </li>
     {foreach $privateMessages as $message}
         <li>
-            <a href="{plink :Front:Profile:conversation, 'user'=>$message->user->slug}" class="chat-person unread-mark">
+            <a href="{plink :Front:Conversation:default, 'user'=>$message->user->slug}" class="chat-person unread-mark">
                 <div class="avatar">
                     <img src="{$message->user->profileImage|noescape}" alt="">
                 </div>
@@ -163,7 +163,7 @@
         </a>
     </li>
     <li>
-        <a n:class="$presenter->isLinkCurrent('Profile:messages') ? active" href="{plink Profile:messages}" >
+        <a n:class="$presenter->isLinkCurrent('Conversation:list') ? active" href="{plink Conversation:list}" >
             <i class="material-icons">chat_bubble</i>Konverzace
         </a>
     </li>

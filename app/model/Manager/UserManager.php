@@ -75,8 +75,7 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
     }
 
     public function get($idUser, $slug = false)
-    {
-        
+    { 
         if($slug) {
             $userData = $this->db->fetch("SELECT * FROM user WHERE slug=?", $idUser);  
         } else {
@@ -87,6 +86,22 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
         } else {
             return null;
         }
+    }
+    
+    public function getMultiple($ids, $slug = false)
+    { 
+        $return = [];
+        if(!empty($ids)) {
+            if($slug) {
+                $usersData = $this->db->fetchAll("SELECT * FROM user WHERE slug IN (?)", $ids);  
+            } else {
+                $usersData = $this->db->fetchAll("SELECT * FROM user WHERE id IN (?)", $ids);  
+            }
+            foreach($usersData as $user) {
+                $return[] = new User($user);
+            }
+        }        
+        return $return;
     }
 
     public function assignProfileImage(User $user, $file)

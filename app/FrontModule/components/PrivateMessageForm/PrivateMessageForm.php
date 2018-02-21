@@ -21,7 +21,7 @@ class PrivateMessageForm extends \App\Components\BaseComponent
     /** @var UserManager */
     protected $userManager;
     
-    protected $showMessageForm = false;
+    //protected $showMessageForm = false;
     
     public function __construct(
         PrivateMessageManager $privateMessageManager,
@@ -31,6 +31,7 @@ class PrivateMessageForm extends \App\Components\BaseComponent
         $this->userManager = $userManager;
     }
 
+    /*
     public function setIdUserTo($idUserTo) 
     {
         $user = $this->userManager->get($idUserTo);
@@ -39,7 +40,39 @@ class PrivateMessageForm extends \App\Components\BaseComponent
             $this['form']['emailTo']->setValue($user->email);
         }
     }
+     * 
+     */
      
+    protected function createComponentUsersForm()
+    {
+        $form = new \Nette\Application\UI\Form;
+        $form->addText('user', 'Jméno nebo e-mail uživatele');
+        $form->addHidden('users');
+        $form->addSubmit('send', 'Vytvořit');
+
+        $form->onSuccess[] = function(Form $form, $values) {
+            $attenders = $this->userManager->getMultiple(explode(',', $values->users), false);
+            $ids = [];
+            foreach($attenders as $att) {
+                $ids[] = $att->slug;
+            }
+            $this->presenter->redirect(':Front:Conversation:default', ['users' => implode(',', $ids)]);
+        };
+        return $form;
+    }
+    
+    public function handleSearchUsers()
+    {
+        $term = $this->presenter->getParameter('term');
+        $userList = $this->userManager->searchGroupUser($term, [$this->presenter->activeUser->id]);
+        if(empty($userList)) {
+            $userList = [];
+        }
+        $this->template->userList = $userList;
+        $this->redrawControl('users-list');
+    }
+    
+    /*
     protected function createComponentForm()
     {
         $form = new \Nette\Application\UI\Form;
@@ -61,45 +94,24 @@ class PrivateMessageForm extends \App\Components\BaseComponent
 
         return $form;
     }
+     * 
+     */
     
-    protected function createComponentUsersForm()
-    {
-        $form = new \Nette\Application\UI\Form;
-        $form->addText('user', 'Jméno nebo e-mail uživatele');
-        $form->addHidden('users');
-        $form->addSubmit('send', 'Vytvořit');
-
-        $form->onSuccess[] = [$this, 'processUsersForm'];
-        return $form;
-    }
+  
     
+    /*
     public function render()
     {
         $this->template->showMessageForm = $this->showMessageForm;
         parent::render();
     }
+     * 
+     */
     
-    public function handleSearchUsers()
-    {
-        $term = $this->presenter->getParameter('term');
-        $userList = $this->userManager->searchGroupUser($term, [$this->presenter->activeUser->id]);
-        if(empty($userList)) {
-            $userList = [];
-        }
-        $this->template->userList = $userList;
-        $this->redrawControl('users-list');
-    }
     
-    public function processUsersForm(Form $form, $values) 
-    {
-        $this->showMessageForm = true;
-        $this['form']->setValues([
-            'users' => $values->users
-        ]);
-        $this->redrawControl();
-        
-    }
     
+    
+    /*
     public function processForm(Form $form, $values) 
     {
         $message = new PrivateMessage;
@@ -115,4 +127,6 @@ class PrivateMessageForm extends \App\Components\BaseComponent
         }
         $this->presenter->redrawControl('right-conversation-list');
     }
+    *
+    */
 }

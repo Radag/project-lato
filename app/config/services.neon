@@ -14,6 +14,7 @@ services:
     mailManager: App\Mail\MailManager
     searchManager: App\Model\Manager\SearchManager
     schoolManager: App\Model\Manager\SchoolManager
+    conversationManager: App\Model\Manager\ConversationManager
 
     - App\FrontModule\Components\Stream\IStreamFactory
     groupSettingForm: App\FrontModule\Components\Group\About\IGroupSettingsFormFactory

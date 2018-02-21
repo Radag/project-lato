@@ -1,5 +1,5 @@
 {snippet messagesForm}
-    {if !$showMessageForm}
+    {*if !$showMessageForm*}
     {form usersForm class=>'ajax'}
         <div class="modal-content">
             <h3>Nová zpráva</h3>
@@ -117,7 +117,7 @@
             </div>
         </div>
     {/form}
-    {else}
+    {*else}
     {form form class=>'ajax'}
         <div class="card message-editor">
             <div class="card-content">
@@ -164,5 +164,5 @@
             </div>
         </div>
     {/form}
-    {/if}
+    {/if*}
 {/snippet}

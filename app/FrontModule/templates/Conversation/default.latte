@@ -1,0 +1,87 @@
+{block content}
+{control topPanel}
+<section class="main" id="message-detail">
+    <div class="container offset-1">
+        <div class="row">
+            <div class="col s12" n:snippet="conversation-list">
+                <div class="conversation">
+                    {foreach $messages as $message}
+                    <div class="message {if !$message->fromMe}me{else}from{/if}">
+                        <div class="card bubble paper-shadow">
+                            <div class="card-header">
+                                <h3 class="name truncate">
+                                    <a href="{$message->user->slug}">{$message->user->name} {$message->user->surname}</a>
+                                </h3>
+                                <div class="flex-spacer"></div>
+                                <div class="date">{$message->created->format("h:m d.m.Y")}</div>
+                            </div>
+                            <div class="card-content">
+                                <p>{$message->text}</p>
+                            </div>
+                        </div>
+                        <div class="avatar">
+                            <img src="{$message->user->profileImage|noescape}">
+                        </div>
+                    </div>
+                    {/foreach}
+                </div>
+                {form form class=>'ajax'}
+                    <div class="message-modal-users no-border chips">
+                        {foreach $attenders as $attender}
+                            <div class="chip">{$attender->name|substr:0,1}. {$attender->surname}<i class="material-icons close">close</i></div>
+                        {/foreach}
+                    </div>
+                    <div class="card message-editor">
+                        <div class="card-content">
+                            {input text class=>'materialize-textarea'}
+                        </div>
+                        <div class="card-footer">
+                            <ul class="editor-options">
+                                <li>
+                                    <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit soubor">
+                                        <i class="material-icons">attach_file</i>
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Tučné">
+                                        <i class="material-icons">format_bold</i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Kurzíva">
+                                        <i class="material-icons">format_italic</i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Podtržené">
+                                        <i class="material-icons">format_underlined</i>
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Nečíslovaný seznam">
+                                        <i class="material-icons">format_list_bulleted</i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Číslovaný seznam">
+                                        <i class="material-icons">format_list_numbered</i>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="flex-spacer"></div>
+                            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" >Potvrdit</button>
+                        </div>
+                    </div>
+                {/form}
+                <script>
+                    $(document).ready(function () {
+                        $('html,body').animate({ scrollTop: document.body.scrollHeight },"fast");
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</section>

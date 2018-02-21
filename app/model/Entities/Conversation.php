@@ -13,17 +13,17 @@ namespace App\Model\Entities;
  *
  * @author Radaq
  */
-class PrivateMessage extends AbstractEntity {
+class Conversation extends AbstractEntity {
+    
     public $id;
-    public $text;
     public $created;
-    public $fromMe;
-    public $read;
+    public $diffDays;
+    public $read = false;
     public $user;
+    public $text = '';
     
     protected $mapFields = [
-        'id' => 'id',
-        'message' => 'text',
-        'created_when' => 'created'
+        'conv_id' => 'id',
+        'conv_created_when' => 'created'
     ];
 }
