@@ -13,11 +13,6 @@ application:
 session:
     expiration: 14 days
 
-
-services:
-    router: App\RouterFactory::createSecuredRouter
-
-
 extensions:
     dibi: Dibi\Bridges\Nette\DibiExtension22
     mailgun: App\Di\MailgunExt

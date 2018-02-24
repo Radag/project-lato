@@ -35,32 +35,4 @@ class RouterFactory
         
         return $router;
     }
-    
-    /**
-     * @return Nette\Application\IRouter
-     */
-    public static function createSecuredRouter()
-    {
-        
-        $router = new RouteList;
-        
-        $router[] = $adminRouter = new RouteList('Admin');
-	$adminRouter[] = new Route('admin/<presenter>/<action>', 'Homepage:default', Route::SECURED);
-
-	$router[] = $frontRouter = new RouteList('Front');
-        $frontRouter[] = new Route('auth', 'Homepage:noticeboard', Route::SECURED);
-	$frontRouter[] = new Route('auth/group/<id>[/<action>]', 'Group:default', Route::SECURED);
-        $frontRouter[] = new Route('auth/profile/<id>', 'Profile:default', Route::SECURED);
-        $frontRouter[] = new Route('auth/messages', 'Profile:messages', Route::SECURED);
-        $frontRouter[] = new Route('auth/settings', 'Profile:settings', Route::SECURED);
-        $frontRouter[] = new Route('auth/messages/conversation/<user>', 'Profile:conversation', Route::SECURED);
-	$frontRouter[] = new Route('auth/<presenter>/<action>[/<id>]', 'Homepage:default', Route::SECURED);
-        
-        $router[] = $publicRouter = new RouteList('Public');
-        $publicRouter[] = new Route('a/<id>', 'Action:default', Route::SECURED);
-	$publicRouter[] = new Route('<presenter>/<action>[/<id>]', 'Homepage:default', Route::SECURED);
-        
-        return $router;
-    }
-
 }
