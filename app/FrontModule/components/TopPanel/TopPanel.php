@@ -10,47 +10,30 @@ namespace App\FrontModule\Components\TopPanel;
 use \Nette\Application\UI\Control;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\GroupManager;
-use App\Model\Manager\PrivateMessageManager;
+use App\Model\Manager\ConversationManager;
 use App\Model\Manager\NotificationManager;
 use App\FrontModule\Components\NewGroupForm\NewGroupForm;
 use App\FrontModule\Components\NewGroupForm\JoinGroupForm;
 
-/**
- * Description of SignInForm
- *
- * @author Radaq
- */
+
 class TopPanel extends Control
 {
-    
-    /**
-     * @var UserManager $userManager
-     */
+    /** @var UserManager */
     protected $userManager;
     
-    /**
-     * @var GroupManager $groupManager
-     */
+    /** @var GroupManager */
     protected $groupManager;
     
-    /**
-     * @var PrivateMessageManager $privateMessageManager
-     */
-    protected $privateMessageManager;
+    /** @var ConversationManager */
+    protected $conversationManager;
 
-    /**
-     * @var NotificationManager $notificationManager
-     */
+    /** @var NotificationManager */
     protected $notificationManager;
     
-    /**
-     * @var \App\Model\Entities\Group $activeGroup
-     */
+    /** @var \App\Model\Entities\Group */
     protected $activeGroup = null;
     
-    /**
-     * @var \App\Model\Entities\User $activeUser
-     */
+    /** @var \App\Model\Entities\User */
     protected $activeUser;
     
     protected $topMenu = array();
@@ -62,13 +45,13 @@ class TopPanel extends Control
     public function __construct(
         UserManager $userManager,
         GroupManager $groupManager, 
-        PrivateMessageManager $privateMessageManager,
+        ConversationManager $conversationManager,
         NotificationManager $notificationManager
     )
     {
         $this->userManager = $userManager;
         $this->groupManager = $groupManager;
-        $this->privateMessageManager = $privateMessageManager;
+        $this->conversationManager = $conversationManager;
         $this->notificationManager = $notificationManager;
     }
 
@@ -100,8 +83,8 @@ class TopPanel extends Control
         }
         $template->notifications = $this->notificationManager->getNotifications($this->presenter->activeUser);
         $template->unreadNotifications = $this->notificationManager->getUnreadNumber($this->presenter->activeUser);
-        $template->unreadPrivMessages = $this->privateMessageManager->getUnreadNumber($this->presenter->activeUser);
-        $template->privateMessages = $this->privateMessageManager->getMessages($this->presenter->activeUser);
+        $template->unreadPrivMessages = 0;//$this->conversationManager->getUnreadNumber($this->presenter->activeUser);
+        $template->privateMessages = $this->conversationManager->getConversations($this->presenter->activeUser);
         $template->subjects = $subject;
         $template->groups = $others;
         $template->colorScheme = $this->colorScheme;

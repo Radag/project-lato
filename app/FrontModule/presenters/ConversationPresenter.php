@@ -38,7 +38,7 @@ class ConversationPresenter extends BasePresenter
                 $return['yesterday']->messages[] = $message;
             } else {
                 if(!isset($return[$message->created->format("n")])) {
-                    $return[$message->created->format("n")] = (object)array('messages' => array(), 'name' => $months[$message->created->format("n") + 1]); 
+                    $return[$message->created->format("n")] = (object)array('messages' => array(), 'name' => $months[$message->created->format("n") - 1]); 
                 }
                 $return[$message->created->format("n")]->messages[] = $message;
             }
@@ -58,7 +58,7 @@ class ConversationPresenter extends BasePresenter
                 $ids[] = $att->id;
             }
         } else {
-            $conversation = $this->conversationManager->getConversation($id);
+            $conversation = $this->conversationManager->getConversation($id, $this->activeUser);
             $messages = $conversation->messages;
             $this->template->attenders = $conversation->users;
         }

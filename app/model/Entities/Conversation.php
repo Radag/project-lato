@@ -24,6 +24,7 @@ class Conversation extends AbstractEntity {
     
     protected $mapFields = [
         'conv_id' => 'id',
-        'conv_created_when' => 'created'
+        'conv_created_when' => 'created',
+        'message' => 'text'
     ];
 }

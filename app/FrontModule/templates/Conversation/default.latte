@@ -1,6 +1,8 @@
 {block content}
 {control topPanel}
 <section class="main" id="message-detail">
+    {*<script src="/js/trumbowyg/trumbowyg.min.js"></script>
+    <link rel="stylesheet" href="/js/trumbowyg/ui/trumbowyg.min.css">*}
     <div class="container offset-1">
         <div class="row">
             <div class="col s12" n:snippet="conversation-list">
@@ -33,7 +35,7 @@
                     </div>
                     <div class="card message-editor">
                         <div class="card-content">
-                            {input text class=>'materialize-textarea'}
+                            {input text class=>'materialize-textarea', id=>'new-message-area'}
                         </div>
                         <div class="card-footer">
                             <ul class="editor-options">
@@ -74,6 +76,17 @@
                             <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
                             <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" >Potvrdit</button>
                         </div>
+                        <script>
+                            /*
+                            $('#new-message-area').trumbowyg({
+                                btns: [
+                                    ['strong', 'em', 'del'],
+                                    ['unorderedList', 'orderedList']
+                                ],
+                                lang: 'cs'
+                            });
+                            */
+                        </script>
                     </div>
                 {/form}
                 <script>

@@ -44,7 +44,7 @@ class ConversationManager extends BaseManager
         ]);   
     }
     
-    public function getConversation($idConversation)
+    public function getConversation($idConversation, User $user)
     {
         $return = (object)['users' => [], 'messages' => []];
         $attenders = $this->db->fetchAll("SELECT T2.* FROM converastion_attendant T1 JOIN user T2 ON T1.user_id=T2.id WHERE T1.conversation_id=?", $idConversation);
@@ -55,6 +55,9 @@ class ConversationManager extends BaseManager
         foreach($messages as $message) {
             $mes = new PrivateMessage($message);
             $mes->user = $return->users[$message->created_by];
+            if($message->created_by == $user->id) {
+                $mes->fromMe = true;
+            }
             $return->messages[] = $mes;
         }
         return $return;
@@ -63,7 +66,13 @@ class ConversationManager extends BaseManager
     public function getConversations(User $user)
     {
         $return = [];
-        $conversations = $this->db->fetchAll("SELECT T3.*, T1.id AS conv_id, T1.created_when AS conv_created_when FROM conversation T1 JOIN converastion_attendant T2 JOIN user T3 ON T2.user_id=T3.id WHERE T2.user_id=?", $user->id);
+        $sql = "SELECT T3.*, T1.id AS conv_id, IFNULL(T4.created_when, T1.created_when) AS conv_created_when, T4.message
+                FROM conversation T1 
+                JOIN converastion_attendant T2 ON T1.id=T2.conversation_id 
+                JOIN user T3 ON T2.user_id=T3.id 
+                LEFT JOIN conversation_message T4 ON (T4.conversation_id=T1.id AND T4.top=1)
+                WHERE T2.user_id=?";
+        $conversations = $this->db->fetchAll($sql, $user->id);
         foreach($conversations as $conv) {
             $mes = new Conversation($conv);
             $mes->user = new User($conv);
