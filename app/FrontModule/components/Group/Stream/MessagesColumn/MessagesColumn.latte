@@ -1,6 +1,6 @@
  {snippet messages}
     {foreach $messages as $message}  
-    <div class="card {*grid-item*} flex-column {if $singleMode}single-message{else}{if $iterator->isFirst() && $groupPermission['createMessages']}grid-item-fst{/if}{/if}" id="message-box-num_{$message->id}"> 
+    <div class="card flex-column {if $singleMode}single-message{else}{if $iterator->isFirst() && $groupPermission['createMessages']}grid-item-fst{/if}{/if} {if $message->deleted == 1}card-flat{/if}" id="message-box-num_{$message->id}"> 
         {includeblock 'Message.latte'}
         {control commentForm-$message->id}
     </div>

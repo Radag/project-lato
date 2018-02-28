@@ -15,7 +15,7 @@
         <div class="comments-content">
            {foreach $comments as $comm}
                 <div class="comment-row" {if !$iterator->isLast()}style="display: none;"{/if}>
-                <a href="{plink Profile:default 'id'=>$comm->user->slug}" class="avatar small">
+                <a href="{plink Profile:default 'id'=>$comm->user->slug}" class="avatar tiny">
                     <img src="{$comm->user->profileImage}" alt="{$comm->user->name}">
                 </a>
                 <div class="comment-content">
@@ -38,7 +38,7 @@
         {/if}
     <div class="comments-footer clearfix">
         {form form}
-        <div class="avatar small">
+        <div class="avatar tiny">
             <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
         </div>
         <div class="textarea-wrapper">

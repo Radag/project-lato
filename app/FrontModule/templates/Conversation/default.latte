@@ -14,8 +14,7 @@
                                 <h3 class="name truncate">
                                     <a href="{$message->user->slug}">{$message->user->name} {$message->user->surname}</a>
                                 </h3>
-                                <div class="flex-spacer"></div>
-                                <div class="date">{$message->created->format("h:m d.m.Y")}</div>
+                                <div class="date">Doručeno {$message->created->format("h:m d.m.Y")}</div>
                             </div>
                             <div class="card-content">
                                 <p>{$message->text}</p>
@@ -29,6 +28,9 @@
                 </div>
                 {form form class=>'ajax'}
                     <div class="message-modal-users no-border chips">
+                        <div class="chip icon-chip">
+                            <i class="material-icons">person_add</i>
+                        </div>
                         {foreach $attenders as $attender}
                             <div class="chip">{$attender->name|substr:0,1}. {$attender->surname}<i class="material-icons close">close</i></div>
                         {/foreach}

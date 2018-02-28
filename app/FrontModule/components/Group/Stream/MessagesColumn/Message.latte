@@ -1,5 +1,6 @@
 {if $message->type === 'task' && $message->task && $message->task->online}
 <div class="assignment">
+    <i class="material-icons">assignment</i>
     {var $tt=>$message->task}
     {control taskHeader-$tt->id}
 </div>

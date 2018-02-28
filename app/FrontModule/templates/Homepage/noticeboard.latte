@@ -77,11 +77,11 @@
                 {foreach $actualTasks as $task}
                 <div class="col l6 m12 s12">
                     <div class="card flex-column">
-                        {if $task->online}
+                        {* {if $task->online}
                         <div class="assignment">
                             {control taskHeader-$task->id}
                         </div>
-                        {/if}
+                        {/if} *}
                         {control taskCard $task}
                     </div>
                 </div>
