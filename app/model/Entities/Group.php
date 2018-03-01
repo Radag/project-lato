@@ -47,6 +47,8 @@ class Group extends AbstractEntity {
     public $activePeriodName = null;
     public $isMy = null;
     
+    public $showDeleted = false;
+    
     
     protected $mapFields = [
         'id' => 'id',

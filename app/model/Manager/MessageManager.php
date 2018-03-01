@@ -88,10 +88,10 @@ class MessageManager extends BaseManager {
         ]);
     }
     
-    public function getMessages($group, \App\Model\Entities\User $user, $deleted=false, $filter = 'all')
+    public function getMessages(\App\Model\Entities\Group $group, \App\Model\Entities\User $user, $filter = 'all')
     {
         $return = [];
-        if($deleted) {
+        if($group->showDeleted) {
             $delete = [0,1];
         } else {
             $delete = [0];
@@ -176,7 +176,7 @@ class MessageManager extends BaseManager {
             if($message->type == Message::TYPE_MATERIALS) {
                 $mess->title = $message->title;
             }
-            $return[] = $mess;
+            $return[$mess->id] = $mess;
         }
         
         $comments = $this->getComments($group->id, $delete, $filters);
