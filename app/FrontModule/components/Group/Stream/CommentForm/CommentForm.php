@@ -21,7 +21,7 @@ class CommentForm extends \App\Components\BaseComponent
     /** @var UserManager */
     protected $userManager;
  
-    protected $idMessage = 0;
+    protected $message = null;
     
     protected $comments = [];
       
@@ -39,7 +39,7 @@ class CommentForm extends \App\Components\BaseComponent
                 ->setAttribute('placeholder', 'Napište komentář ...')
             ->setRequired('Napište zprávu')
             ->addRule(\Nette\Forms\Form::FILLED, 'Zpráva musí obsahovat text');
-        $form->addHidden('idMessage', $this->idMessage);
+        $form->addHidden('idMessage', $this->message->id);
         $form->addSubmit('send', 'Publikovat');
         //$link = $this->presenter->link('this', array('id'=>$this->getParent()->getParent()->getActiveGroup()->id));
         $form->onSuccess[] = [$this, 'processForm'];
@@ -65,13 +65,14 @@ class CommentForm extends \App\Components\BaseComponent
         $this->template->comments = $this->comments;
         $this->template->discutionMembers = $this->getDicscutionMembers();
         $this->template->activeUser = $this->presenter->activeUser;
-        $this->template->id = $this->idMessage;
+        $this->template->id = $this->message->id;
+        $this->template->showForm = $this->message->deleted == 0;
         parent::render();
     }
     
-    public function setMessage($id)
+    public function setMessage($mesage)
     {
-        $this->idMessage = $id;
+        $this->message = $mesage;
     }
     
     public function setComments($comments)

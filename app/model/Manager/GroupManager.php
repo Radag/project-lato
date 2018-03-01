@@ -217,6 +217,7 @@ class GroupManager extends BaseManager {
                T1.slug,
                T1.name,
                T1.shortcut,
+               T1.show_deleted,
                T1.description,
                T1.room,
                T1.subgroup,
@@ -270,6 +271,10 @@ class GroupManager extends BaseManager {
             $groupModel->publicCode = $group->public_code;
             $groupModel->activePeriodId = $group->period_id;
             $groupModel->activePeriodName = $group->period_name;
+            if($groupModel->relation == 'owner') {
+                $groupModel->showDeleted = $group->show_deleted;
+            }
+            
             return $groupModel;   
         } else {
             return null;
@@ -357,6 +362,12 @@ class GroupManager extends BaseManager {
         $this->database->query("UPDATE groups SET ARCHIVED=1 WHERE ID_GROUP=?", $idGroup);
     }
     
+    public function setDeleted(Group $group, $deleted)
+    {
+        $this->db->query("UPDATE `group` SET", [
+            'show_deleted' => $deleted
+        ], "WHERE id=?", $group->id);
+    }
     
     public function editGroup(Group $group)
     {

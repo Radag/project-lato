@@ -1,0 +1,114 @@
+<section class="main two-level-nav">
+    <div class="container offset-1">
+        <div class="row">
+            <div class="col s12">
+                <header class="page-header">
+                    <button class="btn white no-shadow dropdown-button" id="user-action-button" data-beloworigin="true" data-activates="action-dropdown" disabled="disabled">
+                        Akce
+                    </button>
+                    <ul id='action-dropdown' class='dropdown-content'>      
+                        <li><a href="" id="send-message-user-button" >Poslat soukromou zprávu</a></li>
+                    </ul>
+                    <ul class="left options">
+                        <li>
+                            <a type="button" id="button-open-all-cards" data-status="close" class="btn-flat btn-icon">
+                                <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Otevřít všechny karty">visibility</i>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="flex-spacer"></div>
+                </header>  
+            </div>
+        </div>
+    </div>
+    <div class="container offset-1">
+        <div class="row">
+            <div class="col s12">
+                <form action="#">
+                    <div class="section-header table-header">
+                        <input type="checkbox" class="filled-in" id="select-all" />
+                        <label for="select-all"></label>   
+                        <div class="title">Student</div>
+                    </div>
+                    <script>
+                         $(function () {                           
+                            $('.collapsible-header').on('click', function (e) {
+                                if($(e.target).parents(".user-info-options-menu").length) {
+                                    e.stopPropagation();
+                                }
+                            });
+
+                            $("#select-all").on("change", function (e) {
+                                if ($(this).prop('checked')) {
+                                    $(".user-checkbox").prop('checked', true);
+                                } else {
+                                    $(".user-checkbox").prop('checked', false);
+                                }
+                                if($(".user-checkbox:checked").length > 0) {
+                                    $("#user-action-button").prop('disabled', false);
+                                } else {
+                                    $("#user-action-button").prop('disabled', true);
+                                }
+                            });
+                            
+                            $(".user-checkbox").on("change", function (e) {
+                                if($(".user-checkbox:checked").length > 0) {
+                                    $("#user-action-button").prop('disabled', false);
+                                } else {
+                                    $("#user-action-button").prop('disabled', true);
+                                }
+                            });
+                            
+                            $("#button-open-all-cards").on("click", function() {
+                                if($(this).data('status') == 'close') {
+                                    $(".collapsible-header").addClass("active");
+                                    $(".collapsible").collapsible({ accordion: false }); 
+                                    $(this).data('status', 'open');
+                                } else {
+                                    $(".collapsible-header").removeClass(function(){
+                                        return "active";
+                                    });
+                                    $(".collapsible").collapsible({ accordion: true });
+                                    $(".collapsible").collapsible({ accordion: false });
+                                     $(this).data('status', 'close');
+                                }                          
+                            });
+                            
+                            
+                        });
+                    </script>
+                    {snippet memberList}
+                    <ul class="popout table-body" data-collapsible="expandable">
+                        {foreach $groupMembers as $member}
+                        <li>
+                            <div class="collapsible-header table-row">
+                                <input type="checkbox" class="filled-in user-checkbox" id="user_{$member->id}" data-id="{$member->id}"/>
+                                <label for="user_{$member->id}"></label>
+                                <div class="avatar small">
+                                    <img src="{$member->profileImage}">
+                                </div>
+                                <div class="title">
+                                    <span>{$member->surname}</span>, {$member->name}
+                                </div>
+                                <div class="flex-spacer"></div>
+                                <div class="user-info-options-menu">
+                                    <a class="btn-flat btn-icon dropdown-button waves-effect waves-dark" data-activates="user-action-dropdown-{$member->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                                        <i class="material-icons">more_horiz</i>
+                                    </a>
+                                    <ul id='user-action-dropdown-{$member->id}' class='dropdown-content'>
+                                        <li><a href="{plink Profile:default 'id'=>$member->slug}">Zobrazit profil</a></li>
+                                        <li><a href="{plink Conversation:default 'users'=>$member->slug}">Poslat soukromou zpravu</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        {/foreach}
+                    </ul>
+                    {/snippet}
+                </form>
+            
+                
+            </div>
+        </div>
+    </div>
+</section>

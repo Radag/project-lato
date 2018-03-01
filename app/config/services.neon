@@ -31,3 +31,4 @@ services:
     - App\FrontModule\Components\TopPanel\ITopPanelFactory
     - App\FrontModule\Components\Stream\MessageForm\IMessageFormFactory
     - App\FrontModule\Components\Stream\ICommentFormFactory
+    - App\FrontModule\Components\Group\IClassmatesFactory

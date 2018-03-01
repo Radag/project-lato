@@ -187,6 +187,7 @@
                                     </a>
                                     <ul id='user-action-dropdown-{$member->id}' class='dropdown-content'>
                                         <li><a href="{plink Profile:default 'id'=>$member->slug}">Zobrazit profil</a></li>
+                                        <li><a href="{plink Conversation:default 'users'=>$member->slug}">Poslat soukromou zpravu</a></li>
                                     </ul>
                                     
                                     {* {if !empty($member->getClassification()->lastDate)}{$member->getClassification()->lastDate->format("j. n. Y")}{else}--{/if} *}

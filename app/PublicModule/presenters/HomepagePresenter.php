@@ -49,6 +49,9 @@ class HomepagePresenter extends BasePresenter
     protected function startup()
     {
         if($this->user->isLoggedIn()) {
+            $this->redirect(':Front:Homepage:noticeboard');  
+        }
+        if($this->user->isLoggedIn()) {
             $this->template->isLogged = true;
         } else {
             $this->template->isLogged = false;

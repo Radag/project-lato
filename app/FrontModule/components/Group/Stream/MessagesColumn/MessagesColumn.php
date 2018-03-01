@@ -33,9 +33,7 @@ class MessagesColumn extends \App\Components\BaseComponent
     protected $taskManager;
     
     /** @var ICommitTaskFormFactory */
-    protected $commitTaskForm; 
-    
-    protected $showDeleted = false;
+    protected $commitTaskForm;  
       
     protected $filter = 'all';
     
@@ -66,7 +64,7 @@ class MessagesColumn extends \App\Components\BaseComponent
     public function render() {
         if($this->singleMode === false) {
             $this->template->singleMode = false;
-            $data = $this->messageManager->getMessages($this->presenter->activeGroup, $this->presenter->activeUser, $this->showDeleted, $this->filter);
+            $data = $this->messageManager->getMessages($this->presenter->activeGroup, $this->presenter->activeUser, $this->filter);
             $this->messages = $data['messages'];
             $this->comments = $data['comments'];
         } else {
@@ -108,7 +106,7 @@ class MessagesColumn extends \App\Components\BaseComponent
     {
         return new \Nette\Application\UI\Multiplier(function ($idMessage) {
             $commentForm = $this->commentForm->create();
-            $commentForm->setMessage($idMessage);
+            $commentForm->setMessage($this->messages[$idMessage]);
             if(isset($this->comments[$idMessage])) {
                 $commentForm->setComments($this->comments[$idMessage]);
             }
@@ -171,12 +169,6 @@ class MessagesColumn extends \App\Components\BaseComponent
     public function setFilter($filter)
     {
         $this->filter = $filter;
-        $this->redrawControl();
-    }
-    
-    public function showDeleted($show)
-    {
-        $this->showDeleted = $show;
         $this->redrawControl();
     }
     

@@ -10,6 +10,7 @@ use App\FrontModule\Components\Group\About\IAboutGroupFactory;
 use App\Model\Entities\Group;
 use App\FrontModule\Components\Stream\ICommitTaskFormFactory;
 use App\FrontModule\Components\Group\IStudentsFactory;
+use App\FrontModule\Components\Group\IClassmatesFactory;
 
 class GroupPresenter extends BasePresenter
 {    
@@ -30,6 +31,9 @@ class GroupPresenter extends BasePresenter
     
     /** @var ICommitTaskFormFactory @inject */
     public $commitTaskFormFactory;
+    
+    /** @var IClassmatesFactory @inject */
+    public $classmatesFactory;
     
     /** @var IAboutGroupFactory @inject */
     public $aboutGroup;
@@ -78,11 +82,6 @@ class GroupPresenter extends BasePresenter
         }
     }
     
-    public function actionClassmates()
-    {       
-        $members = $this->groupManager->getGroupUsers($this->activeGroup->id, GroupManager::RELATION_STUDENT);
-        $this->template->groupMembers = $members;
-    }
     
     public function actionMessage($idMessage)
     {       
@@ -109,6 +108,11 @@ class GroupPresenter extends BasePresenter
     public function createComponentAboutGroup()
     {
         return $this->aboutGroup->create();
+    }
+    
+    public function createComponentClassmates()
+    {
+        return $this->classmatesFactory->create();
     }
     
     protected function createComponentStream()

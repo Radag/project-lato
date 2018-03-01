@@ -9,6 +9,7 @@ namespace App\FrontModule\Components\Stream;
 
 use App\Model\Manager\TaskManager;
 use App\Model\Manager\ClassificationManager;
+use App\Model\Manager\GroupManager;
 
 class RightColumn extends \App\Components\BaseComponent
 {
@@ -18,19 +19,23 @@ class RightColumn extends \App\Components\BaseComponent
     /** @var  ClassificationManager @inject */
     protected $classificationManager;
     
-    protected $showDeleted = false;
+    /** @var  GroupManager @inject */
+    protected $groupManager;
     
     public function __construct(
         TaskManager $taskManager,
-        ClassificationManager $classificationManager
+        ClassificationManager $classificationManager,
+        GroupManager $groupManager
     )
     {
         $this->taskManager = $taskManager;
         $this->classificationManager = $classificationManager;
+        $this->groupManager = $groupManager;
     }
         
     
     public function render() {
+        $this->template->relation = $this->presenter->activeGroup->relation;
         $this->template->lastClassificationChange = $this->classificationManager->getLastChange($this->presenter->activeUser->id, $this->presenter->activeGroup->id);
         $this->template->actualTasks = $this->taskManager->getClosestTask(array($this->presenter->activeGroup->id => $this->presenter->activeGroup));
         parent::render();
@@ -47,9 +52,11 @@ class RightColumn extends \App\Components\BaseComponent
 
         $form->setMethod('get');
         $form->addCheckbox('showDeleted','Zobrazit smazané položky', [true, false])
-             ->setDefaultValue($this->showDeleted);
+             ->setDefaultValue($this->presenter->activeGroup->showDeleted);
         $form->onSuccess[] = function($form, $values) {
-            $this->parent['messagesColumn']->showDeleted($values->showDeleted); 
+            $this->groupManager->setDeleted($this->presenter->activeGroup, $values->showDeleted);
+            $this->presenter->activeGroup->showDeleted = $values->showDeleted;
+            $this->parent['messagesColumn']->redrawControl();
         };
         return $form;        
     }
