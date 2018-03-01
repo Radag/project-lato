@@ -180,7 +180,10 @@
                         {foreach $groups as $group}
                             <li>
                                 <a n:class="$presenter->isLinkCurrent('Group:default', array('id'=>$group->slug)) ? active" href="{plink Group:default 'id'=>$group->slug}">
-                                    <div class="group-shortcut-circle" style="background-color: {$group->mainColor|noescape}" >{$group->shortcut|substr:0,1}</div>{$group->name}
+                                    <div class="group-shortcut-circle" style="background-color: {$group->mainColor|noescape}" >{$group->shortcut|substr:0,1}
+                                        <div class="admin-mark" style="background-color: {$group->mainColor|noescape}"></div>
+                                    </div>
+                                    {$group->name}
                                 </a>
                             </li>
                             {/foreach}

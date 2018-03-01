@@ -2323,6 +2323,7 @@ nav .nav-title {
 }
 
 .group-shortcut-circle {
+    position: relative;
     width: 36px;
     height: 36px;
     border: 3px solid #fff;
@@ -2402,6 +2403,13 @@ nav .nav-title {
 }
 
 .side-nav {
+
+
+    .admin-mark {
+        height: 6px;
+        width: 6px;
+    }
+
     li.side-nav-footer {
         margin-top: 32px;
         padding: 0 16px;
@@ -3449,12 +3457,26 @@ nav .nav-title {
 
 /* GROUPS */
 
+.admin-mark {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 8px;
+                width: 8px;
+                border-radius: 50%;
+                box-shadow: 0 0 0 2px #fff;
+            }
+
 #group-cards {
 
     .card {
         padding: 20px 24px;
         display: flex;
         align-items: center;
+
+        .avatar {
+            position: relative;
+        }
 
         @media only screen and (max-width: 600px) {
             & {
