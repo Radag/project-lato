@@ -22,7 +22,7 @@
                             </a>
                         </li>
                         <li>
-                            <a class="btn-flat btn-icon modal-trigger" href="#add-user-to-group">
+                            <a href="#add-users" class="btn-flat btn-icon modal-trigger">
                                 <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přidat studenta">person_add</i>
                             </a>
                         </li>
@@ -331,9 +331,47 @@
     </form>
     {/snippet}
 </div>
+
+<div id="add-users" class="modal modal-small">
+    <div class="modal-content">
+        <h3>Přidat studenty</h3>
+        <div class="checkbox-form-block combined-labels">
+            <div class="form-row">
+                <input type="radio" value="all" class="filled-in" id="opt1" name="stream-filter" checked="checked">
+                <label for="opt1">
+                    <h4>Pozvat studenty</h4>
+                    <p>Pošlete pozvánku svým studentům, aby se připojili k tomuto kurzu a byli aktivními účastníky výuky.</p>
+                </label>
+            </div>
+            <div class="form-row">
+                <input type="radio" value="all" class="filled-in" id="opt2" name="stream-filter" >
+                <label for="opt2">
+                    <h4>Vytvořit studenty</h4>
+                    <p>Vytvořte záznam, ke kterému můžete přidávat známky. Student nebude aktivním účastníkem výuky.</p>
+                </label>
+            </div>
+            <div class="form-row">
+                <input type="radio" value="all" class="filled-in" id="opt3" name="stream-filter">
+                <label for="opt3">
+                    <h4>Importovat studenty z jiné skupiny</h4>
+                    <p>Převeďte studenty z jiné skupiny. Aktivním uživatelům bude zaslána pozvánka, vytvořené záznamy budou převedeny.</p>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="flex-spacer"></div>
+        <div class="form-control">
+            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+            <input type="submit" class="waves-effect waves-light btn btn-confirm" value="Pokračovat">
+        </div>
+    </div>
+</div>
+
 <div id="add-user-to-group" class="modal modal-small">
     {control addUserForm}
 </div>
+
 {*
 <div id="classification-modal" class="modal modal-small">
     {control classification}
