@@ -20,15 +20,19 @@
         <i class="material-icons">more_horiz</i>
     </a>
     <ul id='message_dropdown_{$message->id}' class='dropdown-content'>
-        {if !$message->top}
-            <li><a href="{link topMessage! idMessage=>$message->id}" class="ajax">Přesunout nahoru</a></li>
+        {if $message->deleted == 0}
+            {if !$message->top}
+                <li><a href="{link topMessage! idMessage=>$message->id}" class="ajax">Přesunout nahoru</a></li>
+            {else}
+                <li><a href="{link topMessage! idMessage=>$message->id, enable=>false}" class="ajax">Zrušit přesunutí</a></li>
+            {/if}
+            <li><a href="#" data-link="{plink //Group:message 'id'=>$activeGroup->slug, 'idMessage'=>$message->id}" class="copy-message-link">Kopírovat odkaz</a></li>
+            <li class="divider"></li>
+            <li><a href="#" data-link="{link deleteMessage! idMessage=>$message->id}" class="delete-message-button refresh-wall-messages">Smazat</a></li>
         {else}
-            <li><a href="{link topMessage! idMessage=>$message->id, enable=>false}" class="ajax">Zrušit přesunutí</a></li>
+            <li><a href="{link renewMessage! idMessage=>$message->id}" class="ajax refresh-wall-messages">Obnovit</a></li>
         {/if}
         {*<li><a href="#share-post_{$message->id}" class="modal-trigger">Znovu použít příspěvek</a></li>*}
-        <li><a href="#" data-link="{plink //Group:message 'id'=>$activeGroup->slug, 'idMessage'=>$message->id}" class="copy-message-link">Kopírovat odkaz</a></li>
-        <li class="divider"></li>
-        <li><a href="#" data-link="{link deleteMessage! idMessage=>$message->id}" class="delete-message-button refresh-wall-messages">Smazat</a></li>
         <li><a href="{link editMessage! idMessage=>$message->id}" class="ajax edit-message-button">Upravit zprávu</a></li>
     </ul>
 </div>

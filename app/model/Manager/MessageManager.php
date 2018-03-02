@@ -377,9 +377,10 @@ class MessageManager extends BaseManager {
         return current($count);
     }
     
-    public function deleteMessage($idMessage)
+    public function deleteMessage($idMessage, $state = true)
     {
-        $this->db->query("UPDATE message SET deleted=1 WHERE id=?", $idMessage);
+        $state ? $deleted = 1 : $deleted = 0;
+        $this->db->query("UPDATE message SET deleted=? WHERE id=?", $deleted, $idMessage);
     }
     
     public function topMessage($idMessage, $enable = true)

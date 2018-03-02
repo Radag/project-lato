@@ -177,11 +177,11 @@
                 </a>
                 <div class="collapsible-body">
                     <ul>
-                        {foreach $groups as $group}
+                        {foreach $groups->groups as $group}
                             <li>
                                 <a n:class="$presenter->isLinkCurrent('Group:default', array('id'=>$group->slug)) ? active" href="{plink Group:default 'id'=>$group->slug}">
                                     <div class="group-shortcut-circle" style="background-color: {$group->mainColor|noescape}" >{$group->shortcut|substr:0,1}
-                                        <div class="admin-mark" style="background-color: {$group->mainColor|noescape}"></div>
+                                        {if $groups->differentRelations && $group->relation === 'owner'}<div class="admin-mark" style="background-color: {$group->mainColor|noescape}"></div>{/if}
                                     </div>
                                     {$group->name}
                                 </a>

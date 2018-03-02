@@ -71,22 +71,11 @@ class TopPanel extends Control
         
         $template->activeUser = $this->presenter->activeUser;
         $template->backArrow = $this->backArrow;
-        $groups = $this->groupManager->getUserGroups($this->presenter->activeUser);
-        $subject = array();
-        $others = array();
-        foreach($groups as $group) {
-            if($group->groupType == 1) {
-                $subject[] = $group;
-            } else {
-                $others[] = $group;
-            }
-        }
         $template->notifications = $this->notificationManager->getNotifications($this->presenter->activeUser);
         $template->unreadNotifications = $this->notificationManager->getUnreadNumber($this->presenter->activeUser);
         $template->unreadPrivMessages = 0;//$this->conversationManager->getUnreadNumber($this->presenter->activeUser);
         $template->privateMessages = $this->conversationManager->getConversations($this->presenter->activeUser);
-        $template->subjects = $subject;
-        $template->groups = $others;
+        $template->groups = $this->groupManager->getUserGroups($this->presenter->activeUser);
         $template->colorScheme = $this->colorScheme;
 
         $template->setFile(__DIR__ . '/TopPanel.latte');

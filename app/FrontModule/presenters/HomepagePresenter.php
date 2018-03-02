@@ -63,7 +63,7 @@ class HomepagePresenter extends BasePresenter
         $this['topPanel']->setTitle('Nástěnka');
         
         $groups = $this->groupManager->getUserGroups($this->activeUser);
-        $todaySchedule = $this->scheduleManger->getTodaySchedule($groups);
+        $todaySchedule = $this->scheduleManger->getTodaySchedule($groups->groups);
         
         $maxHour = 0;
         $minHour = 24;
@@ -82,7 +82,7 @@ class HomepagePresenter extends BasePresenter
         $this->template->todaySchedule = $todaySchedule;
         $this->template->groups = $groups;
         $this->template->days = $this->days;
-        $this->tasks = $this->taskManager->getClosestTask($groups);
+        $this->tasks = $this->taskManager->getClosestTask($groups->groups);
         $this->template->actualTasks = $this->tasks;
         //$this->template->actualNotices = $this->noticeManager->getNotices($this->activeUser, 3);
         $this->template->activeUser = $this->activeUser;

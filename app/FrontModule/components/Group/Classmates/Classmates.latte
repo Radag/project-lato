@@ -7,7 +7,7 @@
                         Akce
                     </button>
                     <ul id='action-dropdown' class='dropdown-content'>      
-                        <li><a href="" id="send-message-user-button" >Poslat soukromou zprávu</a></li>
+                        <li><a href="#" data-link="{plink Conversation:default}" id="send-message-user-button" >Poslat soukromou zprávu</a></li>
                     </ul>
                     <ul class="left options">
                         <li>
@@ -57,6 +57,11 @@
                                 } else {
                                     $("#user-action-button").prop('disabled', true);
                                 }
+                                if($(".user-checkbox").length > 0 && $(".user-checkbox:not(:checked)").length == 0) {
+                                    $("#select-all").prop('checked', true);
+                                } else {
+                                    $("#select-all").prop('checked', false);
+                                }
                             });
                             
                             $("#button-open-all-cards").on("click", function() {
@@ -74,7 +79,16 @@
                                 }                          
                             });
                             
-                            
+                            $("#send-message-user-button").on("click", function(event) {
+                                event.preventDefault();
+                                var users = [];
+                                $.each($(".user-checkbox:checked"), function(key, val) {
+                                    users.push($(val).data('slug'));
+                                });
+                                
+                                var url = $(this).data('link') + '?users=' + users.join(',');
+                                window.location.replace(url);
+                            });
                         });
                     </script>
                     {snippet memberList}
@@ -82,7 +96,7 @@
                         {foreach $groupMembers as $member}
                         <li>
                             <div class="collapsible-header table-row">
-                                <input type="checkbox" class="filled-in user-checkbox" id="user_{$member->id}" data-id="{$member->id}"/>
+                                <input type="checkbox" class="filled-in user-checkbox" id="user_{$member->id}" data-id="{$member->id}" data-slug="{$member->slug}"/>
                                 <label for="user_{$member->id}"></label>
                                 <div class="avatar small">
                                     <img src="{$member->profileImage}">

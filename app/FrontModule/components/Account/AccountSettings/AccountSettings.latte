@@ -92,11 +92,13 @@
                         <p class="secondary-par"><strong>Skupiny, které spravuji</strong></p>
                         <ul class="groups bottom-margin">
                             {var something=true}
-                            {foreach $groups as $group}
-                                {if $group->relation == 'OWNER'}
+                            {foreach $groups->groups as $group}
+                                {if $group->relation === 'owner'}
                                 {var something=false}
                                 <li class="group-list" data-action="delete" data-group-id="{$group->id}">
-                                    <div class="group-shortcut-circle" style="background: {$group->mainColor|noescape};">{$group->shortcut|substr:0,1}</div>
+                                    <div class="group-shortcut-circle" style="background: {$group->mainColor|noescape};">{$group->shortcut|substr:0,1}
+                                        <div class="admin-mark" style="background-color: {$group->mainColor|noescape}"></div>
+                                    </div>
                                     <div class="label">{$group->name} {*<span>(g2)</span>*}</div>
                                     <a class="btn-flat btn-icon dropdown-button waves-effect waves-dark" data-activates="group{$group->id}-options" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
                                         <i class="material-icons">more_horiz</i>
@@ -121,8 +123,8 @@
                         <p class="secondary-par"><strong>Skupiny, v nichž jsem členem</strong></p>
                         <ul class="groups">
                             {var something=true}
-                            {foreach $groups as $group}
-                                {if $group->relation !== 'OWNER'}
+                            {foreach $groups->groups as $group}
+                                {if $group->relation !== 'owner'}
                                 {var something=false}
                                 <li class="group-list" data-action="leave" data-group-id="{$group->id}">
                                     <div class="group-shortcut-circle" style="background: {$group->mainColor|noescape};">{$group->shortcut|substr:0,1}</div>

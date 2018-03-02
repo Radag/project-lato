@@ -129,7 +129,7 @@ class GroupManager extends BaseManager {
     
     public function getUserGroups(User $user)
     {
-        $return = [];
+        $return = (object)['groups' => [], 'differentRelations' => false];
         $userGroups = $this->db->fetchAll("SELECT T1.id, T3.main_color, T1.name, T1.shortcut, T1.slug, T2.relation_type 
             FROM `group` T1
             JOIN group_user T2 ON (T1.id=T2.group_id AND T2.user_id=? AND T2.active=1)
@@ -145,9 +145,14 @@ class GroupManager extends BaseManager {
                 $group->mainColor = $s->main_color;
                 $group->slug = $s->slug;
                 $group->relation = $s->relation_type;
-                $return[$s->id] = $group;
+                $return->groups[$s->id] = $group;
             }
+        $relations = [];
         }
+        foreach($return->groups as $group) {
+            $relations[] = $group->relation;
+        }
+        $return->differentRelations = count($relations) > 1;
         return $return;
     }  
     

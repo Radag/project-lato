@@ -12,7 +12,7 @@
                     </button>
                     <ul id='action-dropdown' class='dropdown-content'>
                         <li><a href="{link addClassificationToUsers!}" id="add-user-classification-button" >Přidat známku</a></li>        
-                        <li><a href="{link sendMessageToUsers!}" id="send-message-user-button" >Poslat soukromou zprávu</a></li>
+                        <li><a href="#" data-link="{plink Conversation:default}" id="send-message-user-button" >Poslat soukromou zprávu</a></li>
                         <li><a href="{link deleteUsers!}" id="delete-user-button" >Odebrat ze skupiny</a></li>
                     </ul>
                     <ul class="left options">
@@ -67,6 +67,11 @@
                                     $("#user-action-button").prop('disabled', false);
                                 } else {
                                     $("#user-action-button").prop('disabled', true);
+                                }
+                                if($(".user-checkbox").length > 0 && $(".user-checkbox:not(:checked)").length == 0) {
+                                    $("#select-all").prop('checked', true);
+                                } else {
+                                    $("#select-all").prop('checked', false);
                                 }
                             });
                             
@@ -132,38 +137,11 @@
                                 event.preventDefault();
                                 var users = [];
                                 $.each($(".user-checkbox:checked"), function(key, val) {
-                                    users.push($(val).data('id'));
+                                    users.push($(val).data('slug'));
                                 });
-
-                                $.nette.ajax({
-                                    url: $(this).attr('href'),
-                                    method: 'POST',
-                                    data: {
-                                        'users': users
-                                    },
-                                    complete: function(data) {
-                                        $('#send-message-modal').modal('open');
-                                    }
-                                });
-                            });
-                            
-                            $("#send-message-user-button").on("click", function(event) {
-                                event.preventDefault();
-                                var users = [];
-                                $.each($(".user-checkbox:checked"), function(key, val) {
-                                    users.push($(val).data('id'));
-                                });
-
-                                $.nette.ajax({
-                                    url: $(this).attr('href'),
-                                    method: 'POST',
-                                    data: {
-                                        'users': users
-                                    },
-                                    complete: function(data) {
-                                        $('#send-message-modal').modal('open');
-                                    }
-                                });
+                                
+                                var url = $(this).data('link') + '?users=' + users.join(',');
+                                window.location.replace(url);
                             });
                         });
                     </script>
@@ -172,7 +150,7 @@
                         {foreach $groupMembers as $member}
                         <li>
                             <div class="collapsible-header table-row">
-                                <input type="checkbox" class="filled-in user-checkbox" id="user_{$member->id}" data-id="{$member->id}"/>
+                                <input type="checkbox" class="filled-in user-checkbox" id="user_{$member->id}" data-id="{$member->id}" data-slug="{$member->slug}" />
                                 <label for="user_{$member->id}"></label>
                                 <div class="avatar small">
                                     <img src="{$member->profileImage}">

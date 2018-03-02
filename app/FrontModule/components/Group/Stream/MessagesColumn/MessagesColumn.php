@@ -143,11 +143,18 @@ class MessagesColumn extends \App\Components\BaseComponent
     
     public function handleDeleteMessage($idMessage) 
     {   
-        $this->messageManager->deleteMessage($idMessage);
+        $this->messageManager->deleteMessage($idMessage, true);
         $this->presenter->flashMessage('Zpráva byla smazána.');
         $this->redrawControl();
     }
 
+    public function handleRenewMessage($idMessage) 
+    {   
+        $this->messageManager->deleteMessage($idMessage, false);
+        $this->presenter->flashMessage('Zpráva byla obnovena.');
+        $this->redrawControl();
+    }
+    
     public function handleTopMessage($idMessage, $enable = true) 
     {
         $this->messageManager->topMessage($idMessage, $enable);
