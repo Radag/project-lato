@@ -129,7 +129,7 @@
 
         {foreach $groups as $group}
         <div class="col l4 m6 s12">
-            <a href="{link Group:default, 'id'=>$group->slug}" class="card waves-effect waves-light-gray">
+            <a href="{link Group:default, 'id'=>$group->slug}" class="card">
 
                 <div class="avatar" style="background-color:{$group->mainColor|noescape};">{$group->shortcut|substr:0,1}
                     <div class="admin-mark" style="background-color:{$group->mainColor|noescape};"></div>
@@ -140,30 +140,6 @@
                         {*$group->owner->name} {$group->owner->surname*}
                     </span>
                 </div>
-
-                    <!--<a href="#" class="group-users">
-                        {if $group->numberOfStudents == 0}
-                            Žádní studenti
-                        {elseif $group->numberOfStudents == 1}
-                            Jeden student
-                        {elseif $group->numberOfStudents > 1 && $group->numberOfStudents < 5}
-                            {$group->numberOfStudents} studenti
-                        {else}
-                            {$group->numberOfStudents} studentů
-                        {/if}
-                    </a>-->
-
-                <!-- <div class="group-activity">
-                   {if $group->newMessages == 0}
-                        Žádné nové příspěvky
-                    {elseif $group->newMessages == 1}
-                        Jeden nový příspěvek
-                    {elseif $group->newMessages > 1 && $group->newMessages < 5}
-                        {$group->newMessages} příspěvky
-                    {else}
-                        {$group->newMessages} příspěvků
-                    {/if} 
-                </div>-->
             </a>
         </div>
         {/foreach}

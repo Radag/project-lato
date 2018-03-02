@@ -2853,8 +2853,21 @@ nav .nav-title {
         }
 
         .comments-footer {
+            color: @secondary-text-color;
             background-color: @background-highlighted;
             font-style: italic;
+
+            .comments-locked {
+                display: flex;
+                align-items: center;
+                height: 40px;
+
+                i.material-icons {
+                    text-align: center;
+                    width: 32px;
+                    margin-right: 12px;
+                }
+            }
         }
     }
 

@@ -36,32 +36,37 @@
            {/foreach}
         </div>
         {/if}
-    {if $showForm}
     <div class="comments-footer clearfix">
-        {form form}
-        <div class="avatar tiny">
-            <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
-        </div>
-        <div class="textarea-wrapper">
-            {input text class => 'materialize-textarea no-border'}
-        </div>
-        <button style="display: none;" class="btn waves-effect waves-dark refresh-wall-messages" type="submit" name="action">
-            přidat
-        </button>
-        {/form}
+        {if $showForm}
+            {form form}
+            <div class="avatar tiny">
+                <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
+            </div>
+            <div class="textarea-wrapper">
+                {input text class => 'materialize-textarea no-border'}
+            </div>
+            <button style="display: none;" class="btn waves-effect waves-dark refresh-wall-messages" type="submit" name="action">
+                přidat
+            </button>
+            {/form}
+            <script>
+                $(document).ready(function(){
+                    $(".card-comments .textarea-wrapper textarea").off('keyup').on('keyup', function(){
+                        if($(this).val().length > 0) {
+                            $(this).parents(".comments-footer").find("button").show();
+                        } else {
+                            $(this).parents(".comments-footer").find("button").hide();
+                        }
+                    });
+                });
+            </script>    
+        {else}
+            <div class="comments-locked">
+                <i class="material-icons">lock</i>
+                <p>Smazané příspěvky není možné komentovat.</p>
+            </div>
+        {/if}
     </div>
-    <script>
-        $(document).ready(function(){
-            $(".card-comments .textarea-wrapper textarea").off('keyup').on('keyup', function(){
-                if($(this).val().length > 0) {
-                    $(this).parents(".comments-footer").find("button").show();
-                } else {
-                    $(this).parents(".comments-footer").find("button").hide();
-                }
-            });
-        });
-    </script>
-    {/if}
 </div>
 {/snippet}
 
