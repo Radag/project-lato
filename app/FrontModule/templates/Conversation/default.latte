@@ -27,14 +27,18 @@
                     {/foreach}
                 </div>
                 {form form class=>'ajax'}
+
+                {*
                     <div class="message-modal-users no-border chips">
                         <div class="chip icon-chip">
                             <i class="material-icons">person_add</i>
                         </div>
                         {foreach $attenders as $attender}
-                            <div class="chip">{$attender->name|substr:0,1}. {$attender->surname}<i class="material-icons close">close</i></div>
+                        <div class="chip">{$attender->name|substr:0,1}. {$attender->surname}<i class="material-icons close">close</i></div>
                         {/foreach}
                     </div>
+                    *}
+
                     <div class="card message-editor">
                         <div class="card-content">
                             {input text class=>'materialize-textarea', id=>'new-message-area'}
@@ -73,6 +77,17 @@
                                         <i class="material-icons">format_list_numbered</i>
                                     </a>
                                 </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="#add-users-to-conversation" class="tooltipped modal-trigger" data-position="bottom" data-delay="50" data-tooltip="Přidat diskutující">
+                                        <i class="material-icons">person_add</i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#users-in-conversation" class="tooltipped modal-trigger" data-position="bottom" data-delay="50" data-tooltip="Upravit konverzaci">
+                                        <i class="material-icons">people</i>
+                                    </a>
+                                </li>
                             </ul>
                             <div class="flex-spacer"></div>
                             <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
@@ -90,13 +105,81 @@
                             */
                         </script>
                     </div>
-                {/form}
-                <script>
-                    $(document).ready(function () {
-                        $('html,body').animate({ scrollTop: document.body.scrollHeight },"fast");
-                    });
-                </script>
+                    {/form}
+                    <script>
+                        $(document).ready(function () {
+                            $('html,body').animate({ scrollTop: document.body.scrollHeight },"fast");
+                        });
+                    </script>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+
+        <div id="add-users-to-conversation" class="modal modal-small">
+            <div class="modal-content">
+                <h3>Přidat diskutující</h3>
+                <p>Přidejte do konverzace další uživatele</p>
+                <div class="form-row input-field">
+                    <input type="text" name="user" id="frm-privateMessageForm-usersForm-user" class="search-user-form">
+                    <label for="frm-privateMessageForm-usersForm-user">Jméno nebo e-mail uživatele</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="flex-spacer"></div>
+                <div class="form-control">
+                    <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                    <input type="submit" class="waves-effect waves-light btn btn-confirm disabled" value="Přidat">
+                </div>
+            </div>
+        </div>
+
+        <div id="users-in-conversation" class="modal modal-small">
+            <div class="modal-content">
+                <h3>Upravit konverzaci</h3>
+                <p>Tito uživatelé jsou součástí konverzace</p>
+                <ul class="custom-collection">
+                        <li>
+                            <div class="item">
+                                <div class="avatar small">
+                                    <img src="https://cdn.lato.cz/users/3_petr-savelka/profile/1519691465_413.JPG">
+                                </div>
+                                <a href="profil-uzivatele" class="label">
+                                    <span class="title truncate">Petr Šavelka</span>
+                                </a>
+                                <div class="flex-spacer"></div>
+                                <button class="btn-flat btn-icon dropdown-button waves-effect waves-dark" id="user-action-button" data-beloworigin="true" data-alignment="right" data-activates="remove1">
+                                    <i class="material-icons">more_horiz</i>
+                                </button>
+                                <ul id='remove1' class='dropdown-content'>
+                                    <li><a href="" id="add-user-classification-button" >Odebrat z konverzace</a></li>                                            
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="item">
+                                <div class="avatar small">
+                                    <img src="/images/default-avatar_man.png">
+                                </div>
+                                <a href="profil_uzivatele" class="label">
+                                    <span class="title truncate">Petr Pokusný</span>
+                                </a>
+                                <div class="flex-spacer"></div>
+                                <button class="btn-flat btn-icon dropdown-button waves-effect waves-dark" id="user-action-button" data-beloworigin="true" data-alignment="right" data-activates="remove2">
+                                    <i class="material-icons">more_horiz</i>
+                                </button>
+                                <ul id='remove2' class='dropdown-content'>
+                                    <li><a href="" id="add-user-classification-button" >Odebrat z konverzace</a></li>                                            
+                                </ul>
+                            </div>
+                        </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <div class="flex-spacer"></div>
+                <div class="form-control">
+                    <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zavřít</button>
+                </div>
+            </div>
+        </div>
+    </section>
