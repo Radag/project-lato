@@ -63,8 +63,11 @@ class ConversationPresenter extends BasePresenter
             $this->template->attenders = $conversation->users;
         }
         
-        
-        //$this['topPanel']->setTitle('Konverzace s ' . $userTo->name . " " . " " . $userTo->surname);
+        $attName = [];
+        foreach($this->template->attenders as $att) {
+            $attName[] = $att->name . ' ' . $att->surname;
+        }
+        $this['topPanel']->setTitle('Konverzace s ' . implode(',', $attName));
         $this['form']->setValues([
             'users' => implode(',', $ids),
             'conversation_id' => $id

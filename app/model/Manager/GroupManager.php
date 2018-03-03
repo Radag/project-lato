@@ -422,7 +422,7 @@ class GroupManager extends BaseManager {
         $this->db->commit();          
     }
     
-    public function getGroupUsers($idGroup, $filterRelation = null, $filterIds = null)
+    public function getGroupUsers($idGroup, $filterRelation = null, $filterIds = null, $exludeId = null)
     {         
         if($filterRelation === null) {
             $users = $this->db->fetchAll("SELECT DISTINCT T1.ID_USER, T2.SEX, T2.NAME, T2.SURNAME, T2.USERNAME, T2.PROFILE_IMAGE, T2.URL_ID FROM 
@@ -437,12 +437,20 @@ class GroupManager extends BaseManager {
                 JOIN user T2 ON T1.user_id = T2.id
                 WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type=? AND T1.user_id IN (?)", $idGroup, $filterRelation, $filterIds);
             } else {
-                
-                 $users = $this->db->fetchAll("SELECT
+                if($exludeId) {
+                    $users = $this->db->fetchAll("SELECT
                     T2.id, T2.sex, T2.name, T2.surname, T2.username, T2.profile_image, T2.slug 
-                FROM group_user T1
-                JOIN user T2 ON T1.user_id = T2.id
-                WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type=?", $idGroup, $filterRelation);
+                    FROM group_user T1
+                    JOIN user T2 ON T1.user_id = T2.id
+                    WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type=? AND T1.user_id NOT IN (?)", $idGroup, $filterRelation, $exludeId);
+                } else {
+                    $users = $this->db->fetchAll("SELECT
+                    T2.id, T2.sex, T2.name, T2.surname, T2.username, T2.profile_image, T2.slug 
+                    FROM group_user T1
+                    JOIN user T2 ON T1.user_id = T2.id
+                    WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type=?", $idGroup, $filterRelation);
+                }
+                 
             }
         }
          

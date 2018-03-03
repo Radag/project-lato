@@ -1,8 +1,7 @@
 {block content}
 {control topPanel}
 <section class="main" id="message-detail">
-    {*<script src="/js/trumbowyg/trumbowyg.min.js"></script>
-    <link rel="stylesheet" href="/js/trumbowyg/ui/trumbowyg.min.css">*}
+    <script src="/js/ckeditor/ckeditor.js"></script>
     <div class="container offset-1">
         <div class="row">
             <div class="col s12" n:snippet="conversation-list">
@@ -94,15 +93,16 @@
                             <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" >Potvrdit</button>
                         </div>
                         <script>
-                            /*
-                            $('#new-message-area').trumbowyg({
-                                btns: [
-                                    ['strong', 'em', 'del'],
-                                    ['unorderedList', 'orderedList']
+                            CKEDITOR.replace( 'new-message-area', {
+                                uiColor: '#FFFFFF',
+                                toolbarLocation: 'bottom',
+                                toolbarGroups: [
+                                    {"name":"basicstyles","groups":["basicstyles"]},
+                                    {"name":"paragraph","groups":["list","blocks"]}
                                 ],
-                                lang: 'cs'
+                                removeButtons: 'Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
+                                placeholder: 'some value'
                             });
-                            */
                         </script>
                     </div>
                     {/form}
@@ -111,6 +111,12 @@
                             $('html,body').animate({ scrollTop: document.body.scrollHeight },"fast");
                         });
                     </script>
+                    <style>
+                        #cke_new-message-area {
+                            border: 0px;
+                        }
+                        
+                    </style>
                 </div>
             </div>
         </div>

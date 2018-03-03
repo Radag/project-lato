@@ -66,7 +66,8 @@ class MessageManager extends BaseManager {
             $message->id = $this->db->getInsertId();
         } else {
             $this->db->query("UPDATE message SET ",[
-                'text' => $message->text
+                'text' => $message->text,
+                'type' => $message->type
             ] ,"WHERE id=?", $message->id);
         }
         
