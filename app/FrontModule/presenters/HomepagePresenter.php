@@ -93,8 +93,8 @@ class HomepagePresenter extends BasePresenter
         $this['topPanel']->setTitle('Povinnosti');
         $groups = $this->groupManager->getUserGroups($this->activeUser);
         if($group) {
-            foreach($groups as $gr) {
-                if($gr->urlId === $group) {
+            foreach($groups->groups as $gr) {
+                if($gr->slug === $group) {
                     $selectGroups[$gr->id] = $gr;
                 }
             }
