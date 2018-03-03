@@ -23,7 +23,7 @@ class Classmates extends \App\Components\BaseComponent
     }
     
     public function render() { 
-        $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, GroupManager::RELATION_STUDENT);
+        $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, GroupManager::RELATION_STUDENT, null, [$this->presenter->activeUser->id]);
         $this->template->groupMembers = $members;
         parent::render();
     }
