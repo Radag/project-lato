@@ -94,7 +94,6 @@ class CommitTaskForm extends \App\Components\BaseComponent
         $idTaskCommit = $this->taskManager->createTaskCommit($taskCommit, $attachments);
         
         $this->presenter->flashMessage('Úkol odevzdán', 'success');
-        
         $this->presenter->redrawTasks();
     }
     

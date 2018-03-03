@@ -1919,8 +1919,14 @@ if (Vel) {
 
       Modal._increment++;
       Modal._count++;
-      this.$overlay[0].style.zIndex = 1000 + Modal._increment * 2;
-      this.$el[0].style.zIndex = 1000 + Modal._increment * 2 + 1;
+      if(this.options.zindex) {
+        this.$overlay[0].style.zIndex = options.zindex;
+        this.$el[0].style.zIndex = options.zindex + 1;
+      } else {
+        this.$overlay[0].style.zIndex = 1000 + Modal._increment * 2;
+        this.$el[0].style.zIndex = 1000 + Modal._increment * 2 + 1;
+      }
+      
       this.setupEventHandlers();
     }
 

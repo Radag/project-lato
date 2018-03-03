@@ -142,11 +142,12 @@ class FileManager extends BaseManager
             $newFile['SIZE'] = $file->getSize();
             $newFile['FILENAME'] = $timestamp . '_' . $file->getSanitizedName();
             $newFile['EXTENSION'] = pathinfo($file->getSanitizedName(), PATHINFO_EXTENSION);
+            $newFile['FULLPATH'] = 'https://cdn.lato.cz/' . $path . '/' . $newFile['FILENAME'];
             $return['idFile'] = $this->saveNewFile($newFile);
             $return['type'] = $newFile['TYPE'];
             $return['fileName'] = $file->getName();
             $return['type'] = $file->getContentType();
-            $return['fullPath'] = 'https://cdn.lato.cz/' . $path . '/' . $newFile['FILENAME'];
+            $return['fullPath'] = $newFile['FULLPATH'];
             return $return; 
         } else {
             return false;
@@ -174,7 +175,8 @@ class FileManager extends BaseManager
             'mime' => $file['MIME'],
             'size' => $file['SIZE'],
             'created_by' => $this->user->id,
-            'filename' => $file['FILENAME']
+            'filename' => $file['FILENAME'],
+            'full_path' => $file['FULLPATH']
         ]);
         return $this->db->getInsertId();
     }

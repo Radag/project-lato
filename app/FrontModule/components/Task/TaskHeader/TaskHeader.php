@@ -62,13 +62,7 @@ class TaskHeader extends \App\Components\BaseComponent
     }
     
     public function render()
-    {
-        if(isset($this->presenter->activeGroup)) {
-             $this->template->isOwner = $this->presenter->activeGroup->relation === 'owner' ? true : false;
-        } else {
-            $this->template->isOwner = true;
-        }
-        
+    {     
         $this->template->task = $this->task;
         parent::render();
     }

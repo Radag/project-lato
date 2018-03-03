@@ -129,7 +129,8 @@ class TaskManager extends BaseManager
                         T6.created_when AS commit_created,
                         T6.updated_when AS commit_updated,
                         T6.comment AS commit_comment,
-                        T3.text
+                        T3.text,
+                        T3.created_by
                 FROM task T1 
                 LEFT JOIN classification_group T2 ON T1.id = T2.task_id
                 LEFT JOIN message T3 ON T3.id=T1.message_id
@@ -150,37 +151,26 @@ class TaskManager extends BaseManager
         $taskObject->message->group->urlId = $task->slug;
         $taskObject->message->text = $task->text;
         $taskObject->taskMembers = $task->task_users;
+        $taskObject->isCreator = $user->id == $task->created_by;
         if(!empty($task->commit_id)) {
             $commit = new \App\Model\Entities\TaskCommit();
             $commit->idCommit = $task->commit_id;
             $commit->created = $task->commit_created;
             $commit->updated = $task->commit_updated;
             $commit->comment = $task->commit_comment;
+            $commit->files = [];
+            $files = $this->db->fetchAll("SELECT T1.id, T3.id AS file_id, T3.full_path, T3.type, T3.filename
+                        FROM task_commit T1
+                        LEFT JOIN task_commit_attachment T2 ON T1.id = T2.commit_id
+                        LEFT JOIN file_list T3 ON T2.file_id = T3.id
+                        WHERE T1.id = ?", $commit->idCommit);
+            foreach($files as $file) {
+                $commit->files[] =  (object)['fileId' => $file->file_id, 'path' => $file->full_path, 'filename' => $file->filename, 'type' => $file->type];
+            }
             $taskObject->commit = $commit;
         }
         return $taskObject;
     }
-    
-    public function getCommit($idCommit) 
-    {        
-        $return = new TaskCommit();
-        $commit = $this->database->query("SELECT T1.ID_COMMIT, T1.COMMENT, T2.ID_FILE,
-                            T3.PATH,
-                            T3.FILENAME
-                        FROM task_commit T1
-                        LEFT JOIN task_commit_attachment T2 ON T1.ID_COMMIT=T2.ID_COMMIT
-                        LEFT JOIN file_list T3 ON T2.ID_FILE=T3.ID_FILE
-                        WHERE T1.ID_COMMIT = ?", $idCommit)->fetchAll();
-        foreach($commit as $attach) {
-            $return->idCommit = $attach->ID_COMMIT;
-            $return->comment = $attach->COMMENT;
-            if(!empty($attach->ID_FILE)) {
-                $return->files[] = (object)array('idFile' => $attach->ID_FILE, 'path' => 'https://cdn.lato.cz/' . $attach->PATH . '/' . $attach->FILENAME, 'filename' => $attach->FILENAME);
-            }
-        }
-        return $return;
-    }
-    
     
     public function getCommitByUser($idTask, $idUser) 
     {        
@@ -214,7 +204,7 @@ class TaskManager extends BaseManager
     
     public function isUserCommit($idCommit, \App\Model\Entities\User $user)
     {
-        $id = $this->db->fetchSingle("SELECT id FROM task_commit WHERE id=? AND id=?", $idCommit, $user->id);
+        $id = $this->db->fetchSingle("SELECT id FROM task_commit WHERE id=? AND user_id=?", $idCommit, $user->id);
         return $idCommit == $id;
     }
     

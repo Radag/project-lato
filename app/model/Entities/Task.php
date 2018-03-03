@@ -28,4 +28,6 @@ class Task extends AbstractEntity {
     public $commitArray = array();
     //počet studentů, kteří ukol maji
     public $taskMembers = null;
+    
+    public $isCreator = false;
 }

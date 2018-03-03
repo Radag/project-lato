@@ -24,9 +24,10 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script type="text/javascript" src="/js/dropzone.js"></script>
     <script type="text/javascript" src="/js/core.js"></script>
-    <script type="text/javascript" src="/js/materialize.min.js"></script>
+    <script type="text/javascript" src="/js/materialize.js"></script>
     <script type="text/javascript" src="/js/netteForms.js"></script>
     <script type="text/javascript" src="/js/nette.ajax.js"></script>
+    <script type="text/javascript" src="/js/upload.js"></script>
     <!--Let browser know website is optimized for mobile-->
 
     <script type="text/javascript" src="/js/masonry.pkgd.min.js"></script>
@@ -113,7 +114,7 @@
                 $.nette.init();
                 // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
                 $('.modal').modal();
-                $('#full-screen-loader-modal').modal({ dismissible: false, startingTop: '50%', endingTop: '50%' });   
+                $('#full-screen-loader-modal').modal({ dismissible: false, startingTop: '50%', endingTop: '50%', zindex: 9999});   
                 /*$.get( {link getUserList!} , function(data) {
                     $('#userSearch').autocomplete({
                         data: JSON.parse(data.users)

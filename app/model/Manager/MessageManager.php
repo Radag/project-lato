@@ -135,18 +135,19 @@ class MessageManager extends BaseManager {
         $attachments = $this->getAttachments($attachmentsData);;
        
         foreach($messages as $message) {
+            
             $mess = new Message();
-            $user = new User();
-            $user->surname = $message->surname;
-            $user->name = $message->name;
-            $user->id = $message->user_id;
-            $user->slug = $message->slug;
-            $user->profileImage = User::createProfilePath($message->profile_image, $message->sex);
+            $userObject = new User();
+            $userObject->surname = $message->surname;
+            $userObject->name = $message->name;
+            $userObject->id = $message->user_id;
+            $userObject->slug = $message->slug;
+            $userObject->profileImage = User::createProfilePath($message->profile_image, $message->sex);
             
             $mess->text = $message->text;
             $mess->id = $message->id;
             $mess->created = $message->created_when;
-            $mess->user = $user;
+            $mess->user = $userObject;
             $mess->top = $message->top;
             $mess->deleted = $message->deleted;
             $mess->type = $message->type;
@@ -165,6 +166,8 @@ class MessageManager extends BaseManager {
                     $mess->task->online = $message->online;
                     $mess->task->timeLeft = $now->diff($message->deadline);
                     $mess->task->commitCount = $message->commit_count;
+                    \Tracy\Debugger::barDump($user->id);
+                    $mess->task->isCreator = $user->id == $userObject->id;
                     if(!empty($message->commit_id)) {
                         $commit = new \App\Model\Entities\TaskCommit();
                         $commit->idCommit = $message->commit_id;
