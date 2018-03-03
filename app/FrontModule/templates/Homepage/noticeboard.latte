@@ -75,6 +75,7 @@
             </div>
             {else}
                 {foreach $actualTasks as $task}
+                {if $iterator->counter <= 2}
                 <div class="col l6 m12 s12">
                     <div class="card flex-column">
                         {* {if $task->online}
@@ -85,11 +86,13 @@
                         {control taskCard $task}
                     </div>
                 </div>
+                {/if}
                 {/foreach}
+                <div n:if="count($actualTasks) > 2" class=" col s12 show-more">
+                    <a href="{link :Front:Homepage:tasks}" class="btn white no-shadow">Zobrazit vše ({count($actualTasks) - 2})</a>
+                </div>
             {/if}
-            <div class=" col s12 show-more">
-                <a href="" class="btn white no-shadow">Zobrazit vše (5)</a>
-            </div>
+            
         {/snippet}
     </div>
 

@@ -7,13 +7,13 @@
         {if !empty($actualTasks)}
         <div class="card-content">
                 {foreach $actualTasks as $task}
-                    <a href="{plink Group:message 'id'=>$task->group->slug, 'idMessage'=>$task->idMessage}" class="assignment-stream-item truncate">
+                    <a n:if="$iterator->isFirst()" href="{plink Group:message 'id'=>$task->group->slug, 'idMessage'=>$task->idMessage}" class="assignment-stream-item truncate">
                         <p class="remaining-time">Odevzdat do {$task->deadline->format('j. n. H:m')}</p>
                         <p class="secondary-par truncate">{$task->title} {if $task->title} • {/if} {$task->message->text}</p>     
                     </a>
                 {/foreach}
         </div>
-        <div class="card-footer">
+        <div  n:if="count($actualTasks) > 1" class="card-footer">
             <a href="{plink Homepage:tasks 'group'=>$task->group->slug}" class="btn-flat card-bottom">
                 Zobrazit další
             </a>
