@@ -6,16 +6,12 @@
         </div>
         {if !empty($actualTasks)}
         <div class="card-content">
-            <ul class="custom-collection" n:if="!empty($actualTasks)">
                 {foreach $actualTasks as $task}
-                <li>
-                    <a href="{plink Group:message 'id'=>$task->group->slug, 'idMessage'=>$task->idMessage}" class="truncate">
+                    <a href="{plink Group:message 'id'=>$task->group->slug, 'idMessage'=>$task->idMessage}" class="assignment-stream-item truncate">
                         <p class="remaining-time">Odevzdat do {$task->deadline->format('j. n. H:m')}</p>
-                        <p class="secondary-par truncate">{$task->title} {if $task->message->text}- {$task->message->text}{/if}</p>     
+                        <p class="secondary-par truncate">{$task->title} {if $task->title} • {/if} {$task->message->text}</p>     
                     </a>
-                </li>
                 {/foreach}
-            </ul>
         </div>
         <div class="card-footer">
             <a href="{plink Homepage:tasks 'group'=>$task->group->slug}" class="btn-flat card-bottom">
