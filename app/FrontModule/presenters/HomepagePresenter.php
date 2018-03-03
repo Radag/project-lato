@@ -99,7 +99,7 @@ class HomepagePresenter extends BasePresenter
                 }
             }
         } else {
-            $selectGroups = $groups;
+            $selectGroups = $groups->groups;
         }
         $this->tasks = $this->taskManager->getClosestTask($selectGroups);
         $this->template->tasks = $this->tasks;

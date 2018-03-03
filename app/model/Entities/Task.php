@@ -30,4 +30,6 @@ class Task extends AbstractEntity {
     public $taskMembers = null;
     
     public $isCreator = false;
+    
+    public $createClassification = null;
 }

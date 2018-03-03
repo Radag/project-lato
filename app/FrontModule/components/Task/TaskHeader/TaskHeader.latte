@@ -1,20 +1,26 @@
 {if $task->isCreator}
-    Tady je nějaký obsah pro zadavetele
-{else}
-    {if $task->commit }
+    {if $task->createClassification == 1}
         <div class="time-left">
-            Odevzdáno: {$task->commit->created->format("j. n. H:i")}
-            {if !empty($task->commit->updated)}(upraven {$task->commit->updated->format("j. n. H:i")}){/if}
-        </div>
-    {elseif $task->timeLeft->invert === 0}   
-         <div class="time-left">Termín odevzdání: {$task->deadline->format("j. n. H:i")}</div> 
-    {else}
-        <div class="time-left">
-            Uzavřeno: {$task->deadline->format("j. n. H:i")}
+            <a href="{plink :Front:Group:users do => students-studentsList-editGroupClassification, students-studentsList-idGroupClassification=>$task->idClassificationGroup}" class="btn gray no-shadow">Klasifikace</a>
         </div>
     {/if}
-    <button type="button" data-link="{link editTaskCommit}" class="btn gray no-shadow submit-class-button">
-        Odevzdat
-    </button>
+{else}
+    {if $task->online == 1}
+        {if $task->commit }
+            <div class="time-left">
+                Odevzdáno: {$task->commit->created->format("j. n. H:i")}
+                {if !empty($task->commit->updated)}(upraven {$task->commit->updated->format("j. n. H:i")}){/if}
+            </div>
+        {elseif $task->timeLeft->invert === 0}   
+             <div class="time-left">Termín odevzdání: {$task->deadline->format("j. n. H:i")}</div> 
+        {else}
+            <div class="time-left">
+                Uzavřeno: {$task->deadline->format("j. n. H:i")}
+            </div>
+        {/if}
+        <button type="button" data-link="{link editTaskCommit}" class="btn gray no-shadow submit-class-button">
+            Odevzdat
+        </button>
+    {/if}
 {/if}
 

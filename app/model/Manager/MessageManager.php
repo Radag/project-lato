@@ -115,13 +115,16 @@ class MessageManager extends BaseManager {
                         T6.created_when AS commit_created,
                         T6.updated_when AS commit_updated,
                         T7.commit_count,
-                        T8.title
+                        T8.title,
+                        T5.create_classification,
+                        T9.id AS id_classification_group
                 FROM message T1 
                 LEFT JOIN user T2 ON T1.user_id=T2.id 
                 LEFT JOIN task T5 ON T1.id = T5.message_id
                 LEFT JOIN task_commit T6 ON (T5.id=T6.task_id AND T6.user_id=?)
                 LEFT JOIN (SELECT COUNT(id) AS commit_count, task_id FROM task_commit GROUP BY task_id) T7 ON T7.task_id=T5.id
                 LEFT JOIN message_material T8 ON T1.id=T8.message_id
+                LEFT JOIN classification_group T9 ON T9.task_id = T5.id
                 WHERE T1.group_id=? AND T1.deleted IN (?) AND T1.type IN (?) 
                 ORDER BY IFNULL(T1.top, T1.created_when) DESC", $user->id, $group->id, $delete, $filters);
         $now = new \DateTime();
@@ -151,6 +154,7 @@ class MessageManager extends BaseManager {
             $mess->top = $message->top;
             $mess->deleted = $message->deleted;
             $mess->type = $message->type;
+            $mess->isCreator = $user->id == $userObject->id;
             if(isset($attachments[$mess->id])) {
                 $mess->attachments = $attachments[$mess->id];
             } else {
@@ -166,8 +170,9 @@ class MessageManager extends BaseManager {
                     $mess->task->online = $message->online;
                     $mess->task->timeLeft = $now->diff($message->deadline);
                     $mess->task->commitCount = $message->commit_count;
-                    \Tracy\Debugger::barDump($user->id);
+                    $mess->task->createClassification = $message->create_classification;
                     $mess->task->isCreator = $user->id == $userObject->id;
+                    $mess->task->idClassificationGroup = $message->id_classification_group;
                     if(!empty($message->commit_id)) {
                         $commit = new \App\Model\Entities\TaskCommit();
                         $commit->idCommit = $message->commit_id;

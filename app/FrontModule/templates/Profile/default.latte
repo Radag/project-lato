@@ -108,17 +108,15 @@
                     <div class="card-content">
                         <p class="secondary-par">Uživatel je aktivním členem následujících skupin<p>
                         <ul class="groups">
-                            {foreach $groups->groups as $group}
+                            {foreach $groups as $group}
                             <li {if !$group->isMy}class="disabled"{/if}>
                                 {if !$group->isMy}
                                     <div class="group-shortcut-circle" style="background: {$group->mainColor|noescape};">{$group->shortcut|substr:0,1}
-                                        {if $groups->differentRelations && $group->relation === 'owner'}<div class="admin-mark" style="background-color: {$group->mainColor|noescape}"></div>{/if}
                                     </div>
                                     {$group->name}
                                 {else}
                                     <a href="{link Group:default, 'id'=>$group->slug}">
                                         <div class="group-shortcut-circle" style="background: {$group->mainColor|noescape};">{$group->shortcut|substr:0,1}
-                                            {if $groups->differentRelations && $group->relation === 'owner'}<div class="admin-mark" style="background-color: {$group->mainColor|noescape}"></div>{/if}
                                         </div>
                                         {$group->name}
                                     </a>
