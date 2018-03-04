@@ -1,10 +1,18 @@
  {snippet messages}
-    {foreach $messages as $message}  
-    <div class="card flex-column {if $singleMode}single-message{else}{if $iterator->isFirst() && $groupPermission['createMessages']}grid-item-fst{/if}{/if} {if $message->deleted == 1}card-flat{/if}" id="message-box-num_{$message->id}"> 
-        {includeblock 'Message.latte'}
-        {control commentForm-$message->id}
-    </div>
-    {/foreach}
+    {if  $singleMode}
+        <div class="card flex-column single-message" id="message-box-num_{$singleMessage->id}">
+            {var $message = $singleMessage}
+            {includeblock 'SingleMessage.latte'}
+            {control commentForm-$singleMessage->id}
+        </div>
+    {else}
+        {foreach $messages as $message}  
+        <div class="card flex-column {if $iterator->isFirst() && $groupPermission['createMessages']}grid-item-fst{/if}{if $message->deleted == 1}card-flat{/if}" id="message-box-num_{$message->id}"> 
+            {includeblock 'Message.latte'}
+            {control commentForm-$message->id}
+        </div>
+        {/foreach}
+    {/if}
     <script>
         $(document).ready(function() {   
             $('.copy-message-link').on('click', function(e) {

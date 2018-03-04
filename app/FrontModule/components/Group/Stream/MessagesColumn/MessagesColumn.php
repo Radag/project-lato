@@ -72,6 +72,7 @@ class MessagesColumn extends \App\Components\BaseComponent
             $message = $this->messageManager->getMessage($this->singleMode, $this->presenter->activeUser);
             $this->comments[$this->singleMode] = $this->messageManager->getMessageComments($this->singleMode);
             $this->messages = [$message->id => $message];
+            $this->template->singleMessage = $message;
         }
         $this->template->singleMode = $this->singleMode;
         $this->template->messages = $this->messages;
@@ -106,7 +107,11 @@ class MessagesColumn extends \App\Components\BaseComponent
     {
         return new \Nette\Application\UI\Multiplier(function ($idMessage) {
             $commentForm = $this->commentForm->create();
-            $commentForm->setMessage($this->messages[$idMessage]);
+            if(isset($this->messages[$idMessage])) {
+                $commentForm->setMessage($this->messages[$idMessage]);
+            } else {
+                $commentForm->setMessage($this->messageManager->getMessage($idMessage, $this->presenter->activeUser));
+            }
             if(isset($this->comments[$idMessage])) {
                 $commentForm->setComments($this->comments[$idMessage]);
             }
