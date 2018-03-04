@@ -239,7 +239,13 @@ strong {
         background-color: @line-color;
 
         i.material-icons {
+            width: 36px;
+            height: 36px;
+            line-height: 36px;
+            border-radius: 50%;
+            text-align: center;
             font-size: 20px !important;
+            color: #fff;
         }
 
         i.in-progress {
@@ -4432,6 +4438,49 @@ nav .nav-title {
         flex-grow: 1;
         font-size: 13px;
     }
+}
+
+.assignment-info {
+
+    .card-content {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        display: flex;
+        align-items: center;
+        color: @secondary-text-color;
+
+        i.material-icons {
+            color: @secondary-text-color;
+        }
+    }
+}
+
+.assignment-detail {
+
+    .card-content {
+
+        &.task-header {
+            padding-top: 20px;
+            padding-bottom: 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid @line-color;
+
+            .time-left {
+                flex-grow: 1;
+            }
+        }  
+    }
+
+    .task-content {
+
+        .task-comment {
+            margin-bottom: 8px;
+        }
+    }
+
+    
+
 }
 
 .assignment .remaining-time {
