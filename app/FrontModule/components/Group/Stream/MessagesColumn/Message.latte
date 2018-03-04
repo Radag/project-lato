@@ -1,6 +1,8 @@
 {if $message->type === 'task' && $message->task && $message->task->online}
 <div class="assignment">
-    <i class="material-icons">assignment</i>
+    <div class="avatar status">
+        <i class="material-icons" style="background-color: #00c95a;">done</i>
+    </div>
     {var $tt=>$message->task}
     {control taskHeader-$tt->id}
 </div>

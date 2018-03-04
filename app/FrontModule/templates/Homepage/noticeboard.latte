@@ -20,7 +20,6 @@
             </div>
         </div>
     </div>
-
 <div class="container">
     {*<div class="row">
         <div class="col s12">
@@ -89,7 +88,7 @@
                 {/if}
                 {/foreach}
                 <div n:if="count($actualTasks) > 2" class=" col s12 show-more">
-                    <a href="{link :Front:Homepage:tasks}" class="btn white no-shadow">Zobrazit vše ({count($actualTasks) - 2})</a>
+                    <a href="{link :Front:Homepage:tasks}" class="btn white no-shadow">Zobrazit další ({count($actualTasks) - 2})</a>
                 </div>
             {/if}
             

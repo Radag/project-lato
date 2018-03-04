@@ -364,12 +364,95 @@
 </div>
 
 <div id="create-user-modal" class="modal modal-small">
+    <div class="modal-bar">
+        <a href="#">
+            <i class="material-icons">arrow_back</i>
+            <div class="label">Přidat studenty</div>
+        </a>
+    </div>
     <div class="modal-content">
+        <h3>Vytvořit studenty</h3>
     </div>
 </div>
 
 <div id="import-users-modal" class="modal modal-small">
+<div class="modal-bar">
+        <a href="#">
+            <i class="material-icons">arrow_back</i>
+            <div class="label">Přidat studenty</div>
+        </a>
+    </div>
     <div class="modal-content">
+        <h3>Importovat studenty z jiné skupiny</h3>
+        <p>Vyberte skupinu, ve které se nacházejí Vaši studenti.</p>
+        
+        
+        <ul class="custom-collection group-list">
+            <li>
+                <a href="" class="item">
+                    <div class="avatar tiny" style="background-color: #b000b0;">K</div>
+                    <div class="label">Kurz pletení ponožek</div>
+                </a>
+            </li>
+            <li>
+                <a href="" class="item">
+                    <div class="avatar tiny" style="background-color: #00c95a;">P</div>
+                    <div class="label">Programování</div>
+                </a>
+            </li>
+        </ul>
+        
+
+        {* PO VYBRÁNÍ SKUPINY SE SKRYJE PŘEDCHOZÍ <UL> A NAHRADÍ SE NÁSLEDUJÍCÍM KÓDEM *}
+{*
+        <div class="selected-group">
+            <div class="avatar tiny" style="background-color: #b000b0;">K</div>
+            <div class="label">Kurz pletení ponožek</div>
+            <div class="flex-spacer"></div>
+            <a href="" class="clear">
+                <i class="material-icons">clear</i>
+            </a>
+        </div>
+
+        <p>Vyberte studenty, které chcete přidat.</p>
+        <ul class="custom-collection group-list">
+            <li>
+                <div class="item">
+                    <input type="checkbox" class="filled-in" id="all" />
+                    <label for="all" class="select-all">Vybrat vše</label> 
+                </div>
+            </li>
+            <li>
+                <div href="" class="item">
+                    <input type="checkbox" class="filled-in" id="modal_user_1" />
+                    <label for="modal_user_1"></label>
+
+                    <div class="avatar tiny">
+                        <img src="/images/default-avatar_man.png">
+                    </div>
+                    <div class="label">Petr Šavelka</div>
+                </div>
+            </li>
+            <li>
+                <div href="" class="item">
+                    <input type="checkbox" class="filled-in" id="modal_user_2" />
+                    <label for="modal_user_2"></label>
+                    <div class="avatar tiny">
+                        <img src="/images/default-avatar_man.png">
+                    </div>
+                    <div class="label">Petr Šavelka</div>
+                </div>
+            </li>
+        </ul>
+
+*}
+    </div>
+    <div class="modal-footer">
+        <div class="flex-spacer"></div>
+        <div class="form-control">
+            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" disabled>Přidat</button>
+        </div>
     </div>
 </div>
 
