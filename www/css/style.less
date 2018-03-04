@@ -237,6 +237,29 @@ strong {
 
     &.status {
         background-color: @line-color;
+
+        i.material-icons {
+            font-size: 20px !important;
+        }
+
+        i.in-progress {
+            background-color: rgba(0, 0, 0, .5);
+        }
+
+        i.done {
+            background-color: #39b54a;
+        }
+
+        i.locked, 
+        i.late {
+            background-color: #ffc107;
+        }
+
+        i.failed {
+            background-color: #E91E63;
+        }
+
+
     }
 }
 
@@ -621,7 +644,7 @@ input[type=search]:not(.browser-default) {
             text-transform: uppercase;
 
             &.submitted {
-                color: #4caf50;
+                color: #39b54a;
             }
         }
         
@@ -744,6 +767,7 @@ input[type=search]:not(.browser-default) {
     .grade-dropdown {
         display: flex;
         justify-content: flex-end;
+        margin-left: 32px;
 
         .select-wrapper {
             width: 64px;
@@ -2904,6 +2928,10 @@ nav .nav-title {
         background-color: @card-flat;
         box-shadow: none;
 
+        .media-container {
+            opacity: .5;
+        }
+
         .comments-content {
             background-color: @background-highlighted;
         }
@@ -4383,7 +4411,7 @@ nav .nav-title {
 }
 
 .assignment {
-    border-bottom: 1px solid #f1f1f1;
+    border-bottom: 1px solid @line-color;
     padding: 20px 24px;
     width: 100%;
     display: flex;

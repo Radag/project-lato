@@ -13,8 +13,8 @@
                     </a>
                 {/foreach}
         </div>
-        <div  n:if="count($actualTasks) > 1" class="card-footer">
-            <a href="{plink Homepage:tasks 'group'=>$task->group->slug}" class="btn-flat card-bottom">
+        <div  class="card-footer">
+            <a n:if="count($actualTasks) > 1" href="{plink Homepage:tasks 'group'=>$task->group->slug}" class="btn-flat card-bottom">
                 Zobrazit další
             </a>
         </div>
