@@ -15,13 +15,13 @@ use App\Model\Manager\TaskManager;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\NotificationManager;
 use App\Model\Manager\PrivateMessageManager;
-use App\FrontModule\Components\Group\AddUserForm;
+use App\FrontModule\Components\Group\IAddUserFormFactory;
 
 
 class StudentsList extends \App\Components\BaseComponent
 {
        
-     /** @var GroupManager */
+    /** @var GroupManager */
     private $groupManager;
     
     /** @var UserManager */
@@ -39,6 +39,8 @@ class StudentsList extends \App\Components\BaseComponent
     /** @var PrivateMessageManager */
     private $privateMessageManager;
     
+    /** @var IAddUserFormFactory */
+    private $addUserForm;
     
     
     public function __construct(
@@ -47,7 +49,8 @@ class StudentsList extends \App\Components\BaseComponent
         TaskManager $taskManager,
         UserManager $userManager,
         NotificationManager $notificationManager,
-        PrivateMessageManager $privateMessageManager
+        PrivateMessageManager $privateMessageManager,
+        IAddUserFormFactory $addUserForm
     )
     {
         $this->groupManager = $groupManager;
@@ -56,6 +59,7 @@ class StudentsList extends \App\Components\BaseComponent
         $this->userManager = $userManager;
         $this->notificationManager = $notificationManager;
         $this->privateMessageManager = $privateMessageManager;
+        $this->addUserForm = $addUserForm;
     }
 
     public function render()
@@ -250,8 +254,7 @@ class StudentsList extends \App\Components\BaseComponent
     
     public function createComponentAddUserForm()
     {
-        $component = new AddUserForm($this->userManager, $this->groupManager, $this->presenter->activeGroup);
-        return $component;
+        return $this->addUserForm->create();
     }
     
     public function handleEditGroupClassification($idGroupClassification)

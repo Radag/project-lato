@@ -1,0 +1,105 @@
+<div class="modal-bar">
+    <button type="button" class="back-button">
+        <i class="material-icons">arrow_back</i>
+        <div class="label">Přidat studenty</div>
+    </button>
+</div>
+<div class="modal-content" n:snippet="modal">
+    <h3>Importovat studenty z jiné skupiny</h3>
+    {if empty($selectedGroup)}
+        <p>Vyberte skupinu, ve které se nacházejí Vaši studenti.</p>
+        {if count($adminGroups) > 0}
+        <ul class="custom-collection group-list">
+            {foreach $adminGroups as $group}
+            <li>
+                <a href="{link selectGroup! id=>$group->id}" class="item ajax">
+                    <div class="avatar tiny" style="background-color: {$group->mainColor|noescape};">{$group->shortcut|substr:0,1}</div>
+                    <div class="label">{$group->name}</div>
+                </a>
+            </li>
+            {/foreach}
+        </ul>
+        {else}
+            Nemáte žádné další skupiny.
+        {/if}
+    {else}
+        <div class="selected-group">
+            <div class="avatar tiny" style="background-color: {$selectedGroup->mainColor|noescape};">{$selectedGroup->shortcut|substr:0,1}</div>
+            <div class="label">{$selectedGroup->name}</div>
+            <div class="flex-spacer"></div>
+            <a href="{link selectGroup!}" class="clear ajax">
+                <i class="material-icons">clear</i>
+            </a>
+        </div>
+        {form form id=>"import-form"}
+        <p>Vyberte studenty, které chcete přidat.</p>
+        <ul class="custom-collection group-list">
+            <li>
+                <div class="item">
+                    <input type="checkbox" class="filled-in select-all-checkbox" id="all" />
+                    <label for="all" class="select-all">Vybrat vše</label> 
+                </div>
+            </li>
+            {if count($students) >0}
+                {foreach $students as $student}
+                <li>
+                    <div class="item">
+                        <input type="checkbox" class="filled-in to-check" id="modal_user_{$student->id}" />
+                        <label for="modal_user_{$student->id}"></label>
+                        <div class="avatar tiny">
+                            <img src="{$student->profileImage}">
+                        </div>
+                        <div class="label">{$student->name} {$student->surname}</div>
+                    </div>
+                </li>
+                {/foreach}
+            {else}
+            <li>
+                <div class="item">
+                    Žádní studenti k importu.
+                </div>
+            </li>
+            {/if}
+        </ul>
+        {/form}
+    {/if}
+    <script>
+         $(function () {                           
+            $(".select-all-checkbox").on("change", function (e) {
+                if ($(this).prop('checked')) {
+                    $(this).parents('form').find('input[type="checkbox"].to-check').prop('checked', true);
+                } else {
+                    $(this).parents('form').find('input[type="checkbox"].to-check').prop('checked', false);
+                }
+                if($('input[type="checkbox"].to-check:checked').length > 0) {
+                    $(this).parents('.modal').find("button[type='submit']").prop('disabled', false);
+                } else {
+                    $(this).parents('.modal').find("button[type='submit']").prop('disabled', true);
+                }
+            });
+            $('input[type="checkbox"].to-check').on("change", function (e) {
+                if($('input[type="checkbox"].to-check:checked').length > 0) {
+                    $(this).parents('.modal').find("button[type='submit']").prop('disabled', false);
+                } else {
+                    $(this).parents('.modal').find("button[type='submit']").prop('disabled', true);
+                }
+                if($(this).parents("form").find('input[type="checkbox"].to-check').length > 0 && $(this).parents("form").find('input[type="checkbox"].to-check:not(:checked)').length == 0) {
+                    $(this).parents("form").find(".select-all-checkbox").prop('checked', true);
+                } else {
+                    $(this).parents("form").find(".select-all-checkbox").prop('checked', false);
+                }
+            });
+            $(".submit-import-form").on('click', function(e) {
+               e.preventDefault();
+               $("form#import-form").submit();
+            });
+        });
+    </script>                            
+</div>
+<div class="modal-footer">
+    <div class="flex-spacer"></div>
+    <div class="form-control">
+        <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+        <button type="submit" class="waves-effect waves-light btn btn-confirm submit-import-form" disabled>Přidat</button>
+    </div>
+</div>

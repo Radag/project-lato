@@ -1,80 +1,38 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace App\FrontModule\Components\Group;
 
-use \Nette\Application\UI\Form;
-use App\Model\Manager\UserManager;
-use App\Model\Manager\GroupManager;
+use App\FrontModule\Components\Group\AddUserForm\InviteFormFactory;
+use App\FrontModule\Components\Group\AddUserForm\ImportFormFactory;
 
-
-
-/**
- * Description of SignInForm
- *
- * @author Radaq
- */
 class AddUserForm extends \App\Components\BaseComponent
 {
-        
-    protected $userManager;
-    protected $groupManager;
-    protected $activeGroup;
-
-
-    public function __construct(UserManager $userManager,
-            GroupManager $groupManager,
-            \App\Model\Entities\Group $activeGroup)
-    {
-        $this->groupManager = $groupManager;
-        $this->userManager = $userManager;
-        $this->activeGroup = $activeGroup;
-        
-    }
-
+    /** @var InviteFormFactory */
+    protected $inviteForm;
     
-    protected function createComponentForm()
-    {
-        $form = $this->getForm();
-        $form->addText('userName', 'Název hodnocení');
-        $form->addHidden('user_id');
-        $form->addSubmit('send', 'Vytvořit');
+    /** @var ImportFormFactory */
+    protected $importForm;
 
-        $form->onSuccess[] = [$this, 'processForm'];
-        return $form;
+    public function __construct(
+        InviteFormFactory $inviteForm,
+        ImportFormFactory $importForm
+    )
+    {
+        $this->inviteForm = $inviteForm;
+        $this->importForm= $importForm;
     }
     
-    public function render()
+    public function createComponentInviteUserForm()
     {
-        $this->template->activeGroup = $this->activeGroup;
-        parent::render();
+        return $this->inviteForm->create();
     }
     
-    public function handleSearchUsers()
+    public function createComponentImportUserForm()
     {
-        $term = $this->presenter->getParameter('term');
-        $userList = $this->userManager->searchGroupUser($term, [$this->presenter->activeUser->id]);
-        if(empty($userList)) {
-            $userList = [];
-        }
-        $this->template->userList = $userList;
-        $this->redrawControl('users-list');
+        return $this->importForm->create();
     }
-
-    public function processForm(Form $form, $values) 
+    
+    public function createComponentCreateUserForm()
     {
-        if($values->user_id) {
-            $added = $this->groupManager->addUserToGroup($this->activeGroup, $values->user_id, GroupManager::RELATION_STUDENT);
-            if($added) {
-                $this->presenter->flashMessage('Uživatel byl přidán', 'success');
-            } else {
-                $this->presenter->flashMessage('Uživatel je již členem skupiny', 'warning');
-            }
-            $this->presenter->redirect(':Front:Group:users');
-        }        
+        return new AddUserForm\CreateForm();
     }
 }

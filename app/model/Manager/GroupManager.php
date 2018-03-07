@@ -127,14 +127,15 @@ class GroupManager extends BaseManager {
         return $this->db->fetchPairs("SELECT id, main_color FROM group_scheme");
     }
     
-    public function getUserGroups(User $user)
+    public function getUserGroups(User $user, $filter = null)
     {
         $return = (object)['groups' => [], 'differentRelations' => false];
         $userGroups = $this->db->fetchAll("SELECT T1.id, T3.main_color, T1.name, T1.shortcut, T1.slug, T2.relation_type 
             FROM `group` T1
-            JOIN group_user T2 ON (T1.id=T2.group_id AND T2.user_id=? AND T2.active=1)
-            JOIN group_scheme T3 ON (T1.group_scheme_id=T3.id)
-            ORDER BY T1.name ASC", $user->id);   
+            JOIN group_user T2 ON (T1.id=T2.group_id AND T2.user_id=? AND T2.active=1 " . (!isset($filter->relation) ? "" : "AND T2.relation_type='" . $filter->relation . "'") . ")
+            JOIN group_scheme T3 ON (T1.group_scheme_id=T3.id)" .
+            (isset($filter->skip_ids) ? " WHERE T1.id NOT IN (" . $filter->skip_ids . ")" : "")
+            . "ORDER BY T1.name ASC", $user->id);   
   
         if(!empty($userGroups)) {
             foreach($userGroups as $s) {
@@ -155,67 +156,8 @@ class GroupManager extends BaseManager {
         $return->differentRelations = count($relations) > 1;
         return $return;
     }  
-    
-    public function getGroup($urlIdGroup)
-    {
-        $group = $this->database->query("SELECT 
-                T1.ID_GROUP,
-                T1.URL_ID,
-                T1.NAME,
-                T1.SHORTCUT,
-                T1.DESCRIPTION,
-                T1.ROOM,
-                T1.SUBGROUP,
-                T1.ID_OWNER AS OWNER_ID,
-                T2.URL_ID AS OWNER_URL_ID,
-                T2.NAME AS OWNER_NAME,
-                T2.SURNAME AS OWNER_SURNAME,
-                T2.PROFILE_PATH AS OWNER_PROFILE_PATH,
-                T2.PROFILE_FILENAME AS OWNER_PROFILE_FILENAME,
-                T2.SEX AS OWNER_SEX,
-                T3.MAIN_COLOR,
-                T3.ID_SCHEME,
-                T3.CODE,
-                T4.STUDENTS,
-                T5.SHARE_BY_LINK,
-                T5.SHARE_BY_CODE,
-                T1.CODE AS INTER_CODE,
-                T6.HASH_CODE AS PUBLIC_CODE
-        FROM groups T1
-        LEFT JOIN vw_user_detail T2 ON T1.ID_OWNER=T2.ID_USER
-        LEFT JOIN group_color_scheme T3 ON T1.COLOR_SCHEME=T3.ID_SCHEME
-        LEFT JOIN (SELECT COUNT(ID_USER) AS STUDENTS, ID_GROUP FROM user_group WHERE ACTIVE=1 AND ID_RELATION=2 GROUP BY ID_GROUP) T4 ON T4.ID_GROUP=T1.ID_GROUP
-        LEFT JOIN group_sharing T5 ON T1.ID_GROUP=T5.ID_GROUP
-        LEFT JOIN public_actions T6 ON T5.ID_ACTION=T6.ID_ACTION
-        WHERE T1.URL_ID=?", $urlIdGroup)->fetch();
-        
-        $groupModel = new Group();
-        $teacher = new User();
-        $teacher->surname = $group->OWNER_SURNAME;
-        $teacher->name = $group->OWNER_NAME;
-        $teacher->id = $group->OWNER_ID;
-        $teacher->urlId = $group->OWNER_URL_ID;
-        $teacher->profileImage = User::createProfilePath($group->OWNER_PROFILE_PATH, $group->OWNER_PROFILE_FILENAME, $group->OWNER_SEX);
-        $groupModel->id = $group->ID_GROUP;
-        $groupModel->name = $group->NAME;
-        $groupModel->shortcut = $group->SHORTCUT;
-        $groupModel->mainColor = $group->MAIN_COLOR;
-        $groupModel->numberOfStudents = $group->STUDENTS;
-        $groupModel->owner = $teacher;
-        $groupModel->interCode = $group->INTER_CODE;
-        $groupModel->publicCode = $group->PUBLIC_CODE;
-        $groupModel->shareByLink = $group->SHARE_BY_LINK;
-        $groupModel->shareByCode = $group->SHARE_BY_CODE;
-        $groupModel->urlId = $group->URL_ID;
-        $groupModel->description = $group->DESCRIPTION;
-        $groupModel->room = $group->ROOM;
-        $groupModel->subgroup = $group->SUBGROUP;
-        $groupModel->colorSchemeId = $group->ID_SCHEME;
-        $groupModel->colorScheme = $group->CODE;  
-        return $groupModel;       
-    }
-    
-    public function getUserGroup($groupSlug, User $user)
+
+    public function getUserGroup($groupSlug, User $user, $isId = false)
     {
         $group = $this->db->fetch("SELECT 
                T1.id,
@@ -230,6 +172,7 @@ class GroupManager extends BaseManager {
                T1.code,
                T2.relation_type,
                T3.code AS scheme_code,
+               T3.main_color,
                T5.id AS owner_id,
                T5.name AS owner_name,
                T5.surname AS owner_surname,
@@ -249,7 +192,7 @@ class GroupManager extends BaseManager {
             LEFT JOIN group_sharing T6 ON T6.group_id=T1.id
             LEFT JOIN public_actions T7 ON (T7.id = T6.action_id AND T7.active=1)
             LEFT JOIN group_period T8 ON (T8.group_id = T1.id AND T8.active=1)
-            WHERE T1.slug=? AND T2.active=1", $user->id, $groupSlug);
+            WHERE " . ($isId ? "T1.id=?" : "T1.slug=?") . "AND T2.active=1", $user->id, $groupSlug);
         if($group) {
             $owner = new User();
             $owner->surname = $group->owner_surname;
@@ -269,6 +212,7 @@ class GroupManager extends BaseManager {
             $groupModel->subgroup = $group->subgroup;
             $groupModel->colorSchemeId = $group->group_scheme_id;
             $groupModel->colorScheme = $group->scheme_code;
+            $groupModel->mainColor = $group->main_color;
             $groupModel->relation = $group->relation_type;
             $groupModel->shareByCode = $group->share_by_code;
             $groupModel->shareByLink = $group->share_by_link;
@@ -285,76 +229,6 @@ class GroupManager extends BaseManager {
             return null;
         }
     }
-    
-    public function getPrivileges($idGroup)
-    {
-        return $this->db->fetch("SELECT 
-                T1.id,
-                T1.PR_DELETE_OWN_MSG,
-                T1.PR_CREATE_MSG,
-                T1.PR_EDIT_OWN_MSG,
-                T1.PR_SHARE_MSG
-        FROM `group` T1 WHERE T1.id=?", $idGroup);
-    }
-    
-    
-    /**
-     * 
-     * @param User $user
-     * @return Group
-     
-    public function getGroups(User $user)
-    {
-        $return = array();
-        $userGroups = $this->getUserGroups($user);
-        
-        if(!empty($userGroups)) {
-            $groups = $this->database->query("SELECT 
-                        T1.ID_GROUP,
-                        T1.URL_ID,
-                        T1.NAME,
-                        T1.SHORTCUT,
-                        T2.NAME AS OWNER_NAME,
-                        T2.SURNAME AS OWNER_SURNAME,
-                        T2.ID_USER AS OWNER_ID,
-                        T3.MAIN_COLOR,
-                        T4.STUDENTS,
-                        T5.NEW_MESSAGE,
-                        T6.PATH,
-                        T6.FILENAME
-                FROM groups T1
-                LEFT JOIN user T2 ON T1.ID_OWNER=T2.ID_USER
-                LEFT JOIN group_color_scheme T3 ON T1.COLOR_SCHEME=T3.ID_SCHEME
-                LEFT JOIN (SELECT COUNT(ID_USER) AS STUDENTS, ID_GROUP FROM user_group WHERE ID_RELATION=2 AND ACTIVE=1 GROUP BY ID_GROUP) T4 ON T4.ID_GROUP=T1.ID_GROUP 
-                LEFT JOIN file_list T6 ON T6.ID_FILE=T2.PROFILE_IMAGE
-                LEFT JOIN (
-                    SELECT COUNT(T2.ID_MESSAGE) AS NEW_MESSAGE, T1.ID_GROUP FROM user_group T1
-                    LEFT JOIN message T2 ON (T1.ID_GROUP=T2.ID_GROUP AND T2.CREATED_WHEN>T1.LAST_VISIT)
-                    WHERE T1.ID_USER=? AND T1.ACTIVE=1
-                    GROUP BY T1.ID_GROUP
-                ) T5 ON T5.ID_GROUP=T1.ID_GROUP
-                WHERE T1.ARCHIVED=0 AND T1.GROUP_TYPE=2 AND T1.ID_GROUP IN (" . implode(',', array_keys($userGroups)) . ") ORDER BY T1.NAME ASC", $user->id)->fetchAll();
-            foreach($groups as $group) {
-                $groupModel = new Group();
-                $teacher = new User();
-                $teacher->surname = $group->OWNER_SURNAME;
-                $teacher->name = $group->OWNER_NAME;
-                $teacher->id = $group->OWNER_ID;
-                $teacher->profileImage = "https://cdn.lato.cz/" . $group->PATH . "/" . $group->FILENAME;
-                $groupModel->id = $group->ID_GROUP;
-                $groupModel->name = $group->NAME;
-                $groupModel->shortcut = $group->SHORTCUT;
-                $groupModel->mainColor = $group->MAIN_COLOR;
-                $groupModel->numberOfStudents = $group->STUDENTS;
-                $groupModel->owner = $teacher;
-                $groupModel->newMessages = $group->NEW_MESSAGE;
-                $groupModel->urlId = $group->URL_ID;
-                $return[] = $groupModel;
-            }
-        } 
-        return $return;       
-    }
-    */
     
  
     public function removeUserFromGroup($idGroup, $idUser)
@@ -391,15 +265,6 @@ class GroupManager extends BaseManager {
         $this->database->query("UPDATE groups SET ? WHERE ID_GROUP=?", $privileges, $idGroup);
     }
     
-    public function getGroupByCode($code) 
-    {
-        $group = $this->database->query("SELECT T1.ID_GROUP, T1.URL_ID FROM groups T1 JOIN group_sharing T2 ON T1.ID_GROUP=T2.ID_GROUP WHERE T2.SHARE_BY_CODE=1 AND T1.CODE=?", $code)->fetch();
-        if(empty($group)) {
-            return false;
-        } else {
-            return new Group($group);
-        }
-    }
     
     public function switchSharing(Group $group, $stateByLink, $stateByCode) 
     {

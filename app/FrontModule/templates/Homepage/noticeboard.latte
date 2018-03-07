@@ -118,20 +118,20 @@
         </div>
 
     <div class="row" id="group-cards">
+        {if count($groups) === 0}
         <div class="col l4 m6 s12">
             <a href="#create-group" class="card card-flat empty waves-effect waves-dark modal-trigger">
                 <div class="avatar"><i class="material-icons">create</i></div>
                 Vytvořit skupinu
             </a>
         </div>
-
         <div class="col l4 m6 s12">
             <a href="#join-group" class="card card-flat empty waves-effect waves-dark modal-trigger">
                 <div class="avatar"><i class="material-icons">exposure_plus_1</i></div>
                 Zapsat se do skupiny
             </a>
         </div>
-
+        {/if}
         {foreach $groups->groups as $group}
         <div class="col l4 m6 s12">
             <a href="{link Group:default, 'id'=>$group->slug}" class="card">

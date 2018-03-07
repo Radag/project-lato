@@ -1,98 +1,64 @@
-{form form}
-    <div class="modal-bar">
-        <a href="#">
-            <i class="material-icons">arrow_back</i>
-            <div class="label">Přidat studenty</div>
-        </a>
-    </div>
+<div id="add-users" class="modal modal-small">
     <div class="modal-content">
-        <h3>Pozvat studenty</h3>
-        <div class="form-row input-field">
-            {input userName class=>'validate add-user-form'}
-            {label userName}Jméno nebo e-mail studenta{/label}
-        </div>
-        {snippet users-list }
-        <div class="prompter-loading">
-            <div class="preloader-wrapper small active hide users-autocomplete-loader" style="margin: 48px 0 24px 0;">
-                <div class="spinner-layer spinner-green-only">
-                      <div class="circle-clipper left" >
-                        <div class="circle"></div>
-                      </div><div class="gap-patch">
-                        <div class="circle"></div>
-                      </div><div class="circle-clipper right">
-                        <div class="circle"></div>
-                      </div>
-                </div>
+        <h3>Přidat studenty</h3>
+        <div class="checkbox-form-block combined-labels">
+            <div class="form-row">
+                <input type="radio" value="invite" class="filled-in" id="opt1" name="stream-filter" checked="checked">
+                <label for="opt1">
+                    <h4>Pozvat studenty</h4>
+                    <p>Pošlete pozvánku svým studentům, aby se připojili k tomuto kurzu a byli aktivními účastníky výuky.</p>
+                </label>
+            </div>
+            <div class="form-row">
+                <input type="radio" value="create" class="filled-in" id="opt2" name="stream-filter" >
+                <label for="opt2">
+                    <h4>Vytvořit studenty</h4>
+                    <p>Vytvořte záznam, ke kterému můžete přidávat známky. Student nebude aktivním účastníkem výuky.</p>
+                </label>
+            </div>
+            <div class="form-row">
+                <input type="radio" value="import" class="filled-in" id="opt3" name="stream-filter">
+                <label for="opt3">
+                    <h4>Importovat studenty z jiné skupiny</h4>
+                    <p>Převeďte studenty z jiné skupiny. Aktivním uživatelům bude zaslána pozvánka, vytvořené záznamy budou převedeny.</p>
+                </label>
             </div>
         </div>
-        <ul class="loaded-user-list custom-collection prompter" n:if="isset($userList)">
-            {foreach $userList as $userItem}
-                <li {if $iterator->counter > 3}class="hide"{/if}>
-                    <a href="#" data-user-id="{$userItem->id}" class="add-user-item item">
-                        <div class="avatar small">
-                            <img src="{$userItem->profileImage|noescape}">
-                        </div>
-                        <div class="label">
-                            <span class="title truncate">{$userItem->name} {$userItem->surname}</span>
-                        </div>
-                    </a>
-                </li>
-            {/foreach}
-            {if count($userList) > 3}
-                <li class="rest-of-all">{count($userList) - 3} dalších návrhů</li>
-            {/if}
-            {if count($userList) <= 0}
-                <li class="rest-of-all">Nic nenalezeno</li>
-            {/if}
-        </ul>
-        <script>
-            $(function () {
-                $(".add-user-item").on('click', function(e) {
-                    e.preventDefault();
-                    $(".add-user-item").removeClass('active');
-                    $(this).addClass('active');
-                    $("input[name='user_id']").val($(this).data('user-id'));
-                    $(".submit-message-form").prop('disabled', false);
-                });
-                $(".rest-of-all").on('click', function(e) {
-                    $(".add-user-item").parent('li').removeClass('hide');
-                    $(".rest-of-all").addClass('hide');
-                });
-            });
-        </script>
-        {/snippet}
-        {if $activeGroup->shareByCode == 1}
-            <p>Studenti se mohou také zapisovat pomocí kódu <strong>{$activeGroup->interCode}</strong>.</p>
-        {/if}
     </div>
     <div class="modal-footer">
         <div class="flex-spacer"></div>
         <div class="form-control">
             <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" disabled>Přidat</button>
+            <button type="button" id="add-student-button" class="waves-effect waves-light btn btn-confirm" >Pokračovat</button>
         </div>
     </div>
     <script>
-        $(function () {
-            $(".add-user-form").on("keyup", function(e) {
-                if($(this).val().length > 2) {
-                    $(".loaded-user-list").hide();
-                    $(".users-autocomplete-loader").removeClass('hide');
-                    $.nette.ajax({
-                        url: {link searchUsers!},
-                        method: 'GET',
-                        data: {
-                            'term': $(this).val()
-                        },
-                        success: function(data) {
-                            $(".users-autocomplete-loader").addClass('hide');
-                        },
-                        error: function(data) {
-                            //$(".users-autocomplete-loader").addClass('hide');
-                        }
-                    });
+        $(document).ready(function() {
+            $("#add-student-button").on('click', function(e) {
+                var type = $(".checkbox-form-block input[type='radio']:checked").val();
+                $("#add-users").modal('close');
+                if(type === 'invite') {
+                    $("#invite-to-group").modal('open');
+                } else if(type === 'create') {
+                    $("#create-user-modal").modal('open');
+                } else if(type === 'import') {
+                    $("#import-users-modal").modal('open');
                 }
-            });            
+            });
+
+            $("button.back-button").on('click', function(e) {
+                $("#invite-to-group, #create-user-modal, #import-users-modal").modal('close');
+                $("#add-users").modal('open');
+            });
         });
     </script>
-{/form}
+</div>
+<div id="invite-to-group" class="modal modal-small">
+    {control inviteUserForm}
+</div>
+<div id="import-users-modal" class="modal modal-small">
+    {control importUserForm}
+</div>
+<div id="create-user-modal" class="modal modal-small">
+    {control createUserForm}
+</div>

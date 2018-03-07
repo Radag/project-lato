@@ -32,3 +32,6 @@ services:
     - App\FrontModule\Components\Stream\MessageForm\IMessageFormFactory
     - App\FrontModule\Components\Stream\ICommentFormFactory
     - App\FrontModule\Components\Group\IClassmatesFactory
+    - App\FrontModule\Components\Group\IAddUserFormFactory
+    - App\FrontModule\Components\Group\AddUserForm\InviteFormFactory
+    - App\FrontModule\Components\Group\AddUserForm\ImportFormFactory
