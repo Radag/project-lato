@@ -327,7 +327,16 @@ class GroupManager extends BaseManager {
         return $userArray;
     }
       
-    
+    public function getPrivileges($idGroup)
+    {
+        return $this->db->fetch("SELECT 
+                T1.id,
+                T1.PR_DELETE_OWN_MSG,
+                T1.PR_CREATE_MSG,
+                T1.PR_EDIT_OWN_MSG,
+                T1.PR_SHARE_MSG
+        FROM `group` T1 WHERE T1.id=?", $idGroup);
+    }
     
     public function insertSchedule($schedule, Group $group)
     {
