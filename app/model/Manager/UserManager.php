@@ -26,13 +26,13 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
     public function authenticate(array $credentials)
     {
         list($email, $password) = $credentials;
-        $row = $this->db->fetch("SELECT * FROM user WHERE email=?", $email);
+        $row = $this->db->fetch("SELECT * FROM user_real JOIN user USING (id) WHERE email=?", $email);
         if (!$row) {
             throw new Nette\Security\AuthenticationException('Špatné uživatelské jméno nebo heslo.', self::IDENTITY_NOT_FOUND);
         } elseif (!Passwords::verify($password, $row->password)) {
             throw new Nette\Security\AuthenticationException('Špatné uživatelské jméno nebo heslo.', self::INVALID_CREDENTIAL);
         } elseif (Passwords::needsRehash($row->password)) {
-            $this->db->query("UPDATE user ", ['password' => Passwords::hash($password)], "WHERE id=?", $row->id);
+            $this->db->query("UPDATE user_real ", ['password' => Passwords::hash($password)], "WHERE id=?", $row->id);
         }
         $this->setLastLogin($row->id);
 
@@ -43,7 +43,7 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
 
     public function setLastLogin($idUser)
     {
-        $this->db->query("UPDATE user SET last_login=NOW(), last_login_ip=? WHERE id=?",  $_SERVER['REMOTE_ADDR'], $idUser);
+        $this->db->query("UPDATE user_real SET last_login=NOW(), last_login_ip=? WHERE id=?",  $_SERVER['REMOTE_ADDR'], $idUser);
     }
 
     public function add($values)
@@ -51,15 +51,18 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
         try {
             $this->db->begin();
             $this->db->query("INSERT INTO user", [
-                'email' => $values->email,
                 'name' => $values->name,
-                'surname' => $values->surname,
+                'surname' => $values->surname
+            ]);
+            $idUser = $this->db->getInsertId();
+            
+            $this->db->query("INSERT INTO user_real", [
+                'email' => $values->email,
                 'password' => Passwords::hash($values->password1),
-                'register_ip' => $_SERVER['REMOTE_ADDR']
+                'register_ip' => $_SERVER['REMOTE_ADDR'],
+                'id' => $idUser
             ]);
  
-            $idUser = $this->db->getInsertId();
-
             $slug = $idUser . '_' . Nette\Utils\Strings::webalize($values->name . '_' . $values->surname);
             $this->db->query("UPDATE user SET ", ['slug' => $slug], "WHERE id=?", $idUser);
             $this->db->commit();
@@ -71,15 +74,15 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
     
     public function updatePassword(User $user, $password) 
     {
-        $this->db->query("UPDATE user", ['password' =>  Passwords::hash($password)], "WHERE id=?", $user->id);
+        $this->db->query("UPDATE user_real", ['password' =>  Passwords::hash($password)], "WHERE id=?", $user->id);
     }
 
     public function get($idUser, $slug = false)
     { 
         if($slug) {
-            $userData = $this->db->fetch("SELECT * FROM user WHERE slug=?", $idUser);  
+            $userData = $this->db->fetch("SELECT * FROM user JOIN user_real USING(id) WHERE slug=?", $idUser);  
         } else {
-            $userData = $this->db->fetch("SELECT * FROM user WHERE id=?", $idUser); 
+            $userData = $this->db->fetch("SELECT * FROM user JOIN user_real USING(id) WHERE id=?", $idUser); 
         }
         if($userData) {       
             return new User($userData);
@@ -93,9 +96,9 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
         $return = [];
         if(!empty($ids)) {
             if($slug) {
-                $usersData = $this->db->fetchAll("SELECT * FROM user WHERE slug IN (?)", $ids);  
+                $usersData = $this->db->fetchAll("SELECT * FROM user JOIN user_real USING(id) WHERE slug IN (?)", $ids);  
             } else {
-                $usersData = $this->db->fetchAll("SELECT * FROM user WHERE id IN (?)", $ids);  
+                $usersData = $this->db->fetchAll("SELECT * FROM user user_real WHERE id IN (?)", $ids);  
             }
             foreach($usersData as $user) {
                 $return[] = new User($user);
@@ -106,59 +109,39 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
 
     public function assignProfileImage(User $user, $file)
     {
-        $this->db->query("UPDATE user SET", ['profile_image' => $file['fullPath']], "WHERE id=?", $user->id);
+        $this->db->query("UPDATE user_real SET", ['profile_image' => $file['fullPath']], "WHERE id=?", $user->id);
     }
     
     public function assignBackgroundImage(User $user, $file)
     {
-        $this->db->query("UPDATE user SET", ['background_image' => $file['fullPath']], "WHERE id=?", $user->id);
+        $this->db->query("UPDATE user_real SET", ['background_image' => $file['fullPath']], "WHERE id=?", $user->id);
     }
 
     public function updateUser($values, $user)
     {
         $this->db->query("UPDATE user SET", [
             'name' => $values['name'],
+            'surname' => $values['surname']
+        ], "WHERE id=?", $user->id);
+        
+        $this->db->query("UPDATE user_real SET", [
             'email_notification' => $values['emailNotification'],
-            'surname' => $values['surname'],
             'email' => $values['email'],
             'birthday' => $values['birthday']
         ], "WHERE id=?", $user->id);
     }
 
-    public function getByName($name) {
-        return $this->db->query("SELECT ID_USER FROM vw_user_detail WHERE USERNAME=?", $name)->fetchField();
-    }
-
-    public function switchUserRelation($idUser, $idRelated, $add) {
-        if($add) {
-            $this->database->table('user_relations')->insert(array(
-                'ID_USER' => $idUser,
-                'ID_RELATED_USER' => $idRelated
-            ));
-        } else {
-            $this->database->query("DELETE FROM user_relations WHERE ID_USER=? AND ID_RELATED_USER=?", $idUser, $idRelated);
-        }            
-
-    }
-
-    public function isFriend($idUser, $idRelated) {
-        $relation =  $this->database->query("SELECT TYPE FROM user_relations WHERE ID_USER=? AND ID_RELATED_USER=?", $idUser, $idRelated)->fetchField();
-
-        return $relation == 'FRIEND';
-
-    }
-
     public function verifyEmail(User $user, $email) 
     {
-        $this->db->query("UPDATE user SET email_verify=1 WHERE id=? AND email=?", $user->id, $email);
+        $this->db->query("UPDATE user_real SET email_verify=1 WHERE id=? AND email=?", $user->id, $email);
     }
 
     public function getUserByMail($email, $secret = null) 
     {
         if($secret !== null) {
-            $idUser = $this->db->fetchSingle("SELECT id FROM user WHERE email=? AND secret=?", $email, $secret);
+            $idUser = $this->db->fetchSingle("SELECT id FROM user_real WHERE email=? AND secret=?", $email, $secret);
         } else {
-            $idUser = $this->db->fetchSingle("SELECT id FROM user WHERE email=?", $email);
+            $idUser = $this->db->fetchSingle("SELECT id FROM user_real WHERE email=?", $email);
         }
         
         if($idUser) {
@@ -171,14 +154,14 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
     public function generateSecret($idUser) 
     {
         $secret = mb_strtoupper(substr(md5(openssl_random_pseudo_bytes(40)),-30));
-        $this->db->query("UPDATE user SET secret=? WHERE id=?", $secret, $idUser);
+        $this->db->query("UPDATE user_real SET secret=? WHERE id=?", $secret, $idUser);
         return $secret;
     }
     
     public function searchGroupUser($term, $bannedIds)
     {
         $return = [];
-        $users = $this->db->fetchAll("SELECT * FROM user WHERE email LIKE %~like~ OR CONCAT(name, ' ', surname) LIKE %~like~ AND id NOT IN (?)", $term, $term, $bannedIds);
+        $users = $this->db->fetchAll("SELECT * FROM user JOIN user_real USING(id) WHERE email LIKE %~like~ OR CONCAT(name, ' ', surname) LIKE %~like~ AND id NOT IN (?)", $term, $term, $bannedIds);
         foreach($users as $user) {
             $return[] = new User($user);
         }

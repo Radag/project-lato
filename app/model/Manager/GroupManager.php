@@ -153,7 +153,7 @@ class GroupManager extends BaseManager {
         foreach($return->groups as $group) {
             $relations[] = $group->relation;
         }
-        $return->differentRelations = count($relations) > 1;
+        $return->differentRelations = !empty($relations) && (count($relations) > 1);
         return $return;
     }  
 
@@ -177,7 +177,7 @@ class GroupManager extends BaseManager {
                T5.name AS owner_name,
                T5.surname AS owner_surname,
                T5.slug AS owner_slug,
-               T5.profile_image,
+               T9.profile_image,
                T5.sex AS owner_sex,
                T6.share_by_link,
                T6.share_by_code,
@@ -189,6 +189,7 @@ class GroupManager extends BaseManager {
             JOIN group_scheme T3 ON (T1.group_scheme_id = T3.id)
             LEFT JOIN group_user T4 ON (T4.group_id=T1.id AND T4.relation_type='owner')
             JOIN user T5 ON T4.user_id=T5.id
+            JOIN user_real T9 ON T9.id=T5.id
             LEFT JOIN group_sharing T6 ON T6.group_id=T1.id
             LEFT JOIN public_actions T7 ON (T7.id = T6.action_id AND T7.active=1)
             LEFT JOIN group_period T8 ON (T8.group_id = T1.id AND T8.active=1)
@@ -297,22 +298,25 @@ class GroupManager extends BaseManager {
         } else {
             if($filterIds) {
                  $users = $this->db->fetchAll("SELECT
-                    T2.id, T2.sex, T2.name, T2.surname, T2.username, T2.profile_image, T2.slug 
+                    T2.id, T2.sex, T2.name, T2.surname, T3.profile_image, T2.slug 
                 FROM group_user T1
                 JOIN user T2 ON T1.user_id = T2.id
+                JOIN user_real T3 ON T2.id=T3.id
                 WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type=? AND T1.user_id IN (?)", $idGroup, $filterRelation, $filterIds);
             } else {
                 if($exludeId) {
                     $users = $this->db->fetchAll("SELECT
-                    T2.id, T2.sex, T2.name, T2.surname, T2.username, T2.profile_image, T2.slug 
+                    T2.id, T2.sex, T2.name, T2.surname, T3.profile_image, T2.slug 
                     FROM group_user T1
                     JOIN user T2 ON T1.user_id = T2.id
+                    JOIN user_real T3 ON T2.id=T3.id
                     WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type=? AND T1.user_id NOT IN (?)", $idGroup, $filterRelation, $exludeId);
                 } else {
                     $users = $this->db->fetchAll("SELECT
-                    T2.id, T2.sex, T2.name, T2.surname, T2.username, T2.profile_image, T2.slug 
+                    T2.id, T2.sex, T2.name, T2.surname, T3.profile_image, T2.slug 
                     FROM group_user T1
                     JOIN user T2 ON T1.user_id = T2.id
+                    JOIN user_real T3 ON T2.id=T3.id
                     WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type=?", $idGroup, $filterRelation);
                 }
                  

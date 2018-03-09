@@ -52,14 +52,14 @@ class NotificationManager extends BaseManager
                     T2.id,
                     T2.name,
                     T2.surname,
-                    T2.profile_image,
-                    T2.username,
+                    T4.profile_image,
                     T2.sex,
                     T2.slug,
                     T3.slug AS group_slug,
                     T1.message_id
                 FROM notification T1 
                 LEFT JOIN user T2 ON T1.participant_id = T2.id
+                LEFT JOIN user_real T4 ON T2.id=T4.id
                 LEFT JOIN `group` T3 ON T1.group_id = T3.id
                 WHERE T1.user_id=?
                 ORDER BY T1.created_when DESC LIMIT 5", $user->id);

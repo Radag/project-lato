@@ -104,7 +104,7 @@ class MessageManager extends BaseManager {
         }
 
         $messages = $this->db->fetchAll("SELECT T1.text, T1.type, T1.id, T2.id AS user_id, T2.sex, T2.slug, T2.name, T2.surname, T1.created_when,
-                        T2.profile_image,
+                        T10.profile_image,
                         T1.top,
                         T1.deleted,
                         T5.id AS task_id,
@@ -120,6 +120,7 @@ class MessageManager extends BaseManager {
                         T9.id AS id_classification_group
                 FROM message T1 
                 LEFT JOIN user T2 ON T1.user_id=T2.id 
+                JOIN user_real T10 ON T10.id=T2.id
                 LEFT JOIN task T5 ON T1.id = T5.message_id
                 LEFT JOIN task_commit T6 ON (T5.id=T6.task_id AND T6.user_id=?)
                 LEFT JOIN (SELECT COUNT(id) AS commit_count, task_id FROM task_commit GROUP BY task_id) T7 ON T7.task_id=T5.id
@@ -229,13 +230,14 @@ class MessageManager extends BaseManager {
                     T2.created_when, 
                     T3.name AS user_name, 
                     T3.id AS user_id,
-                    T3.profile_image,
+                    T4.profile_image,
                     T3.sex,
                     T3.slug,
                     T3.surname AS user_surname
                 FROM message T1 
                 JOIN comment T2 ON T1.id=T2.message_id
                 JOIN user T3 ON T2.user_id=T3.id
+                JOIN user_real T4 ON T4.id=T3.id
                 WHERE T1.group_id=? AND T1.deleted IN (?) AND T1.type IN (?) ORDER BY T2.created_when ASC", $groupId, $delete, $filtres);
         
         if($commentsData) {
@@ -269,12 +271,13 @@ class MessageManager extends BaseManager {
                     T2.created_when, 
                     T3.name AS user_name, 
                     T3.id AS user_id,
-                    T3.profile_image,
+                    T4.profile_image,
                     T3.sex,
                     T3.slug,
                     T3.surname AS user_surname
                 FROM comment T2
                 JOIN user T3 ON T2.user_id=T3.id
+                JOIN user_real T4 ON T3.id=T4.id
                 WHERE T2.message_id=? ORDER BY T2.created_when ASC", $messageId);
         
         $return = [];
@@ -303,7 +306,7 @@ class MessageManager extends BaseManager {
     public function getMessage($idMessage, $user)
     {
           $message = $this->db->fetch("SELECT T1.text, T1.type, T1.id, T2.id AS user_id, T2.sex, T2.slug, T2.name, T2.surname, T1.created_when,
-                        T2.profile_image,
+                        T9.profile_image,
                         T1.top,
                         T1.deleted,
                         T5.id AS task_id,
@@ -318,6 +321,7 @@ class MessageManager extends BaseManager {
                         T5.create_classification
                 FROM message T1 
                 LEFT JOIN user T2 ON T1.user_id=T2.id 
+                JOIN user_real T9 ON T9.id=T2.id
                 LEFT JOIN task T5 ON T1.id = T5.message_id
                 LEFT JOIN task_commit T6 ON (T5.id=T6.task_id AND T6.user_id=?)
                 LEFT JOIN (SELECT COUNT(id) AS commit_count, task_id FROM task_commit GROUP BY task_id) T7 ON T7.task_id=T5.id

@@ -61,7 +61,7 @@ class TaskManager extends BaseManager
                             T3.id AS user_id,
                             T3.name AS user_name,
                             T3.surname AS user_surname,
-                            T3.profile_image,
+                            T7.profile_image,
                             T3.sex AS user_sex,
                             T4.commit_count,
                             T5.id AS commit_id,
@@ -72,6 +72,7 @@ class TaskManager extends BaseManager
                     FROM task T1 
                     JOIN message T2 ON (T1.message_id = T2.id AND T2.deleted=0)
                     JOIN user T3 ON (T2.user_id=T3.id)
+                    JOIN user_real T7 ON (T3.id=T7.id)
                     LEFT JOIN (SELECT COUNT(id) AS commit_count, task_id FROM task_commit GROUP BY task_id) T4 ON T4.task_id=T1.id
                     LEFT JOIN task_commit T5 ON T1.id=T5.task_id
                     LEFT JOIN ( SELECT COUNT(*) AS task_users, M.id FROM message M JOIN group_user G ON M.group_id=G.group_id GROUP BY M.id) T6 ON T6.id = T2.id
