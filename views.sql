@@ -24,7 +24,14 @@ select `T1`.`ID_USER` AS `ID_USER`,
 `T3`.`NAME` AS `SCHOOL_NAME`,`T5`.`ID_CLASS` AS `ID_CLASS`,`T5`.`NAME` AS `CLASS_NAME`, `T5`.`GRADE` AS `CLASS_GRADE` 
 from (((`user` `T1` left join `school_class_user` `T4` on((`T4`.`ID_USER` = `T1`.`ID_USER`))) left join `school_class` `T5` on((`T5`.`ID_CLASS` = `T4`.`ID_CLASS`))) left join `school` `T3` on((`T5`.`ID_SCHOOL` = `T3`.`ID_SCHOOL`)))
 
-
+CREATE OR REPLACE VIEW vw_all_users AS
+SELECT
+id, sex, name, surname, profile_image, slug, 0 AS is_fictive
+FROM user JOIN user_real using(id)
+UNION
+SELECT
+id, sex, name, surname, null, slug, 1 AS is_fictive
+FROM user JOIN user_fictive using(id);
 
 CREATE OR REPLACE VIEW vw_classification AS
 SELECT 

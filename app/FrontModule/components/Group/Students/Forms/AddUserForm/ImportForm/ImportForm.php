@@ -3,20 +3,26 @@ namespace App\FrontModule\Components\Group\AddUserForm;
 
 
 use App\Model\Manager\GroupManager;
+use App\Model\Manager\FictiveUserManager;
 
 class ImportForm extends \App\Components\BaseComponent
 {
     
     /** @var GroupManager */
     protected $groupManager;
+    
+    /** @var FictiveUserManager */
+    protected $fictiveUserManager;
         
     protected $selectedGroup = null;
     
     public function __construct(
-        GroupManager $groupManager
+        GroupManager $groupManager,
+        FictiveUserManager $fictiveUserManager
     )
     {
         $this->groupManager = $groupManager;
+        $this->fictiveUserManager = $fictiveUserManager;
     }
    
     
@@ -31,9 +37,22 @@ class ImportForm extends \App\Components\BaseComponent
     {
         $form = $this->getForm();
         $form->addHidden('group_id');
+        $form->addHidden('users');
 
         $form->onSuccess[] = function($form, $values) {
-            
+            $group = $this->groupManager->getUserGroup($values->group_id, $this->presenter->activeUser, true);
+            if(!empty($group)) {
+                $studentsIds = json_decode($values->users);
+                $students = $this->groupManager->getGroupUsers($values->group_id, 'student', $studentsIds);
+                foreach($students as $student) {
+                    $userId = $this->fictiveUserManager->createFictiveUser($student, $group);
+                    $this->groupManager->addUserToGroup($this->presenter->activeGroup, $userId, GroupManager::RELATION_FIC_STUDENT);
+                }
+                $this->presenter->flashMessage('Studenti naimportováni.');      
+            } else {
+                $this->presenter->flashMessage('Nemáte přístup do dané skupiny.');      
+            }
+            $this->redirect('this');
         };
         return $form;
     }

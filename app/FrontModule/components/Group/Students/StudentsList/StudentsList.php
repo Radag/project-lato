@@ -64,7 +64,7 @@ class StudentsList extends \App\Components\BaseComponent
 
     public function render()
     {
-        $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, GroupManager::RELATION_STUDENT);
+        $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, [GroupManager::RELATION_STUDENT, GroupManager::RELATION_FIC_STUDENT]);
         $classifications = $this->classificationManager->getGroupPeriodClassification($this->presenter->activeGroup);
         foreach($members as $member) {
             $member->getClassification()->items = isset($classifications[$member->id]) ? $classifications[$member->id] : [];

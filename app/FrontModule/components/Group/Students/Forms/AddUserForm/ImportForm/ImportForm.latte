@@ -44,7 +44,7 @@
                 {foreach $students as $student}
                 <li>
                     <div class="item">
-                        <input type="checkbox" class="filled-in to-check" id="modal_user_{$student->id}" />
+                        <input type="checkbox" class="filled-in to-check" data-id="{$student->id}" id="modal_user_{$student->id}" />
                         <label for="modal_user_{$student->id}"></label>
                         <div class="avatar tiny">
                             <img src="{$student->profileImage}">
@@ -76,6 +76,7 @@
                 } else {
                     $(this).parents('.modal').find("button[type='submit']").prop('disabled', true);
                 }
+                setSelectedStudents();
             });
             $('input[type="checkbox"].to-check').on("change", function (e) {
                 if($('input[type="checkbox"].to-check:checked').length > 0) {
@@ -88,11 +89,20 @@
                 } else {
                     $(this).parents("form").find(".select-all-checkbox").prop('checked', false);
                 }
+                setSelectedStudents();
             });
             $(".submit-import-form").on('click', function(e) {
                e.preventDefault();
                $("form#import-form").submit();
             });
+            
+            function setSelectedStudents() {
+                var ids = [];
+                $('input[type="checkbox"].to-check:checked').each(function(id, item) {
+                    ids.push($(item).data('id'));
+                });
+                $("input[name='users']").val(JSON.stringify(ids));
+            }
         });
     </script>                            
 </div>

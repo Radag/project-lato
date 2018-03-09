@@ -25,6 +25,7 @@ class GroupManager extends BaseManager {
     const RELATION_OWNER = 'owner';
     const RELATION_TEACHER = 'teacher';
     const RELATION_STUDENT = 'student';
+    const RELATION_FIC_STUDENT = 'fictive-student';
        
     /** @var NotificationManager @inject */
     protected $notificationManager;
@@ -288,39 +289,29 @@ class GroupManager extends BaseManager {
         $this->db->commit();          
     }
     
-    public function getGroupUsers($idGroup, $filterRelation = null, $filterIds = null, $exludeId = null)
+    public function getGroupUsers($idGroup, $filterRelation, $filterIds = null, $exludeId = null)
     {         
-        if($filterRelation === null) {
-            $users = $this->db->fetchAll("SELECT DISTINCT T1.ID_USER, T2.SEX, T2.NAME, T2.SURNAME, T2.USERNAME, T2.PROFILE_IMAGE, T2.URL_ID FROM 
-            (SELECT ID_OWNER AS ID_USER FROM groups WHERE ID_GROUP=? 
-            UNION SELECT ID_USER FROM user_group WHERE ID_GROUP=? AND ACTIVE=1) T1
-            LEFT JOIN user T2 ON T1.ID_USER = T2.ID_USER", $idGroup, $idGroup);
+        if($filterIds) {
+             $users = $this->db->fetchAll("SELECT
+                T2.id, T2.sex, T2.name, T2.surname, T2.profile_image, T2.slug, T2.is_fictive
+            FROM group_user T1
+            JOIN vw_all_users T2 ON T1.user_id = T2.id
+            WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type IN (?) AND T1.user_id IN (?)", $idGroup, $filterRelation, $filterIds);
         } else {
-            if($filterIds) {
-                 $users = $this->db->fetchAll("SELECT
-                    T2.id, T2.sex, T2.name, T2.surname, T3.profile_image, T2.slug 
+            if($exludeId) {
+                $users = $this->db->fetchAll("SELECT
+                T2.id, T2.sex, T2.name, T2.surname, T2.profile_image, T2.slug, T2.is_fictive
                 FROM group_user T1
-                JOIN user T2 ON T1.user_id = T2.id
-                JOIN user_real T3 ON T2.id=T3.id
-                WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type=? AND T1.user_id IN (?)", $idGroup, $filterRelation, $filterIds);
+                JOIN vw_all_users T2 ON T1.user_id = T2.id
+                WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type IN (?) AND T1.user_id NOT IN (?)", $idGroup, $filterRelation, $exludeId);
             } else {
-                if($exludeId) {
-                    $users = $this->db->fetchAll("SELECT
-                    T2.id, T2.sex, T2.name, T2.surname, T3.profile_image, T2.slug 
-                    FROM group_user T1
-                    JOIN user T2 ON T1.user_id = T2.id
-                    JOIN user_real T3 ON T2.id=T3.id
-                    WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type=? AND T1.user_id NOT IN (?)", $idGroup, $filterRelation, $exludeId);
-                } else {
-                    $users = $this->db->fetchAll("SELECT
-                    T2.id, T2.sex, T2.name, T2.surname, T3.profile_image, T2.slug 
-                    FROM group_user T1
-                    JOIN user T2 ON T1.user_id = T2.id
-                    JOIN user_real T3 ON T2.id=T3.id
-                    WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type=?", $idGroup, $filterRelation);
-                }
-                 
+                $users = $this->db->fetchAll("SELECT
+                T2.id, T2.sex, T2.name, T2.surname, T2.profile_image, T2.slug, T2.is_fictive
+                FROM group_user T1
+                JOIN vw_all_users T2 ON T1.user_id = T2.id
+                WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type IN (?)", $idGroup, $filterRelation);
             }
+
         }
          
         $userArray = [];

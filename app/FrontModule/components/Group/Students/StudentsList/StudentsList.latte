@@ -159,7 +159,7 @@
                                     <span>{$member->surname}</span>, {$member->name}
                                 </div>
                                 <div class="flex-spacer"></div>
-                                <div class="user-info-options-menu">
+                                <div n:if="$member->isFictive == 0" class="user-info-options-menu">
                                     <a class="btn-flat btn-icon dropdown-button waves-effect waves-dark" data-activates="user-action-dropdown-{$member->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
                                         <i class="material-icons">more_horiz</i>
                                     </a>

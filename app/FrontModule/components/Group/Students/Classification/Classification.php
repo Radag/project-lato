@@ -61,7 +61,7 @@ class Classification extends \App\Components\BaseComponent
             foreach($this->classificationGroup->classifications as $cla) {
                 $students[] = $cla->user->id;
             }
-            $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, GroupManager::RELATION_STUDENT, $students);
+            $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, [GroupManager::RELATION_STUDENT, GroupManager::RELATION_FIC_STUDENT], $students);
             if(!empty($this->classificationGroup->task)) {
                 foreach($members as $member) {
                     $this->classificationGroup->task->commitArray[$member->id] = $this->taskManager->getCommitByUser($this->classificationGroup->task->id, $member->id);
@@ -80,7 +80,7 @@ class Classification extends \App\Components\BaseComponent
                 $students[] = $cla->user->id;
             }
           
-            $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, GroupManager::RELATION_STUDENT, $students);
+            $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, [GroupManager::RELATION_STUDENT, GroupManager::RELATION_FIC_STUDENT], $students);
         }
         
         foreach($this->classificationGroup->classifications as $classification) {
@@ -124,7 +124,7 @@ class Classification extends \App\Components\BaseComponent
         }
         
         $form = $this->getForm();
-        $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, GroupManager::RELATION_STUDENT, $students);   
+        $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, [GroupManager::RELATION_STUDENT, GroupManager::RELATION_FIC_STUDENT], $students);   
         foreach($members as $member) {
             $form->addSelect('grade' . $member->id, 'Známka', $this->grades);
             $form->addTextArea('notice' . $member->id, 'Poznámka')

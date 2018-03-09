@@ -3,28 +3,29 @@ services:
     - App\Model\Manager\MessageManager 
     - App\Model\Manager\GroupManager 
     - App\Model\Manager\PrivateMessageManager
-    notificationManager: App\Model\Manager\NotificationManager
-    fileManager: App\Model\Manager\FileManager
-    publicActionManager: App\Model\Manager\PublicActionManager
-    classroomManager: App\Model\Manager\ClassroomManager
-    taskManager: App\Model\Manager\TaskManager
-    schedulelManager: App\Model\Manager\SchedulelManager
-    noticeManager: App\Model\Manager\NoticeManager
-    classificationManager: App\Model\Manager\ClassificationManager
-    mailManager: App\Mail\MailManager
-    searchManager: App\Model\Manager\SearchManager
-    schoolManager: App\Model\Manager\SchoolManager
-    conversationManager: App\Model\Manager\ConversationManager
+    - App\Model\Manager\NotificationManager
+    - App\Model\Manager\FileManager
+    - App\Model\Manager\PublicActionManager
+    - App\Model\Manager\ClassroomManager
+    - App\Model\Manager\TaskManager
+    - App\Model\Manager\SchedulelManager
+    - App\Model\Manager\NoticeManager
+    - App\Model\Manager\ClassificationManager
+    - App\Mail\MailManager
+    - App\Model\Manager\SearchManager
+    - App\Model\Manager\SchoolManager
+    - App\Model\Manager\ConversationManager
+    - App\Model\Manager\FictiveUserManager
 
     - App\FrontModule\Components\Stream\IStreamFactory
-    groupSettingForm: App\FrontModule\Components\Group\About\IGroupSettingsFormFactory
-    groupAbout: App\FrontModule\Components\Group\About\IAboutGroupFactory  
-    commitTaskForm: App\FrontModule\Components\Stream\ICommitTaskFormFactory
-    taskHeader: App\FrontModule\Components\TaskHeader\ITaskHeader
-    students: App\FrontModule\Components\Group\IStudentsFactory
-    accountSettings: App\FrontModule\Components\Account\IAccountSettings
-    studentList: App\FrontModule\Components\Group\IStudentsListFactory
-    classification: App\FrontModule\Components\Group\IClassificationFactory
+    - App\FrontModule\Components\Group\About\IGroupSettingsFormFactory
+    - App\FrontModule\Components\Group\About\IAboutGroupFactory  
+    - App\FrontModule\Components\Stream\ICommitTaskFormFactory
+    - App\FrontModule\Components\TaskHeader\ITaskHeader
+    - App\FrontModule\Components\Group\IStudentsFactory
+    - App\FrontModule\Components\Account\IAccountSettings
+    - App\FrontModule\Components\Group\IStudentsListFactory
+    - App\FrontModule\Components\Group\IClassificationFactory
     - App\FrontModule\Components\Stream\IMessagesColumnFactory
     - App\FrontModule\Components\Stream\IRightColumnFactory
     - App\FrontModule\Components\PrivateMessageForm\IPrivateMessageFormFactory
