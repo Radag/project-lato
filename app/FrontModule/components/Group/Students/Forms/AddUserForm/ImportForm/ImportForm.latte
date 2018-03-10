@@ -6,8 +6,8 @@
 </div>
 <div class="modal-content" n:snippet="modal">
     <h3>Importovat studenty z jiné skupiny</h3>
+    <p>Vyberte skupinu, ve které se nacházejí Vaši studenti.</p>
     {if empty($selectedGroup)}
-        <p>Vyberte skupinu, ve které se nacházejí Vaši studenti.</p>
         {if count($adminGroups) > 0}
         <div class="custom-collection-header">
             Skupina
@@ -45,6 +45,7 @@
                     <label for="all" class="select-all">Vybrat vše</label> 
                 </div>
             </li>
+            <li class="divider"></li>
             {if count($students) >0}
                 {foreach $students as $student}
                 <li>

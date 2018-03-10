@@ -908,7 +908,6 @@ input[type=search]:not(.browser-default) {
     }
 
     .modal-bar {
-
         padding: 20px 24px;
         background-color: @background-highlighted;
 
@@ -929,11 +928,9 @@ input[type=search]:not(.browser-default) {
             i.material-icons {
                 margin-right: 12px;
                 height: 36px;
-                width: 36px;
                 line-height: 36px;
                 text-align: center;
-                font-size: 18px !important;
-                background-color: @btn-icon-highlighted;
+                font-size: 24px;
                 border-radius: 50%;
             }
 
@@ -4986,9 +4983,16 @@ nav .nav-title {
 
         & > li {
 
-            .label {
-                font-weight: 500;
-                color: rgba(0, 0, 0, .87);
+            .item {
+
+                .label {
+                    font-weight: 500;
+                    color: rgba(0, 0, 0, .87);
+                }
+            }
+
+            &.divider {
+                margin-bottom: 24px;
             }
         }
     }
