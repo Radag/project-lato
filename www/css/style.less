@@ -181,7 +181,7 @@ strong {
     width: 36px;
     border-radius: 50%;
     margin-right: 12px;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     color: #fff;
 
@@ -211,7 +211,6 @@ strong {
     &.tiny {
         height: 32px;
         width: 32px;
-        font-size: 14px;
 
         img {
             height: 32px;
@@ -222,7 +221,6 @@ strong {
     &.small {
         height: 40px;
         width: 40px;
-        font-size: 16px;
 
         img {
             height: 40px;
@@ -3828,6 +3826,17 @@ nav .nav-title {
     justify-content: center;
 }
 
+.custom-collection-header {
+    font-size: 13px;
+    line-height: 1.2em;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: @secondary-text-color;
+    padding: 20px 0;
+    border-bottom: 1px solid @line-color;
+    margin-bottom: -8px;
+}
+
 .custom-collection {
     margin: 32px 0;
 
@@ -3840,7 +3849,7 @@ nav .nav-title {
     }
 
     & > li {
-        margin: 16px 0;
+        margin: 20px 0;
         display: flex;
 
         &:first-child {
@@ -3880,6 +3889,10 @@ nav .nav-title {
                 i {
                     margin-right: 12px;
                 }
+            }
+
+            .count {
+                color: @secondary-text-color;
             }
         }
     }

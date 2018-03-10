@@ -9,12 +9,17 @@
     {if empty($selectedGroup)}
         <p>Vyberte skupinu, ve které se nacházejí Vaši studenti.</p>
         {if count($adminGroups) > 0}
+        <div class="custom-collection-header">
+            Skupina
+        </div>
         <ul class="custom-collection group-list">
             {foreach $adminGroups as $group}
             <li>
                 <a href="{link selectGroup! id=>$group->id}" class="item ajax">
                     <div class="avatar" style="background-color: {$group->mainColor|noescape};">{$group->shortcut|substr:0,1}</div>
                     <div class="label">{$group->name}</div>
+                    <div class="flex-spacer"></div>
+                    <div class="count"><strong>4</strong> / 20</div>
                 </a>
             </li>
             {/foreach}
