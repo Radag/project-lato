@@ -13,7 +13,7 @@
             {foreach $adminGroups as $group}
             <li>
                 <a href="{link selectGroup! id=>$group->id}" class="item ajax">
-                    <div class="avatar tiny" style="background-color: {$group->mainColor|noescape};">{$group->shortcut|substr:0,1}</div>
+                    <div class="avatar" style="background-color: {$group->mainColor|noescape};">{$group->shortcut|substr:0,1}</div>
                     <div class="label">{$group->name}</div>
                 </a>
             </li>
@@ -24,7 +24,7 @@
         {/if}
     {else}
         <div class="selected-group">
-            <div class="avatar tiny" style="background-color: {$selectedGroup->mainColor|noescape};">{$selectedGroup->shortcut|substr:0,1}</div>
+            <div class="avatar" style="background-color: {$selectedGroup->mainColor|noescape};">{$selectedGroup->shortcut|substr:0,1}</div>
             <div class="label">{$selectedGroup->name}</div>
             <div class="flex-spacer"></div>
             <a href="{link selectGroup!}" class="clear ajax">
@@ -46,7 +46,7 @@
                     <div class="item">
                         <input type="checkbox" class="filled-in to-check" data-id="{$student->id}" id="modal_user_{$student->id}" />
                         <label for="modal_user_{$student->id}"></label>
-                        <div class="avatar tiny">
+                        <div class="avatar">
                             <img src="{$student->profileImage}">
                         </div>
                         <div class="label">{$student->name} {$student->surname}</div>
