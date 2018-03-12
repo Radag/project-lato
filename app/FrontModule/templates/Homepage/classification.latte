@@ -41,7 +41,7 @@
                                         {$group['group']->name}
                                     </div>
                                     <div class="flex-spacer"></div>
-                                    <div class="table-field">{ifset $group['group']->statistics->last_change}{$group['group']->statistics->last_change->format("j. n. \\v H:i")}{/ifset}</div>
+                                    {*<div class="table-field">{ifset $group['group']->statistics->last_change}{$group['group']->statistics->last_change->format("j. n. \\v H:i")}{/ifset}</div>*}
                                     <div class="classification table-field">
                                         {if $group['group']->statistics->count_grade !== 0}
                                             ({$group['group']->statistics->count_grade})&nbsp;<strong>{$group['group']->statistics->avg_grade}</strong></div>
@@ -56,7 +56,7 @@
                                                 <div class="table-row">
                                                     <a class="title truncate">{ifset $classification->name}{$classification->name}{/ifset}</a>
                                                     <div class="flex-spacer">{ifset $classification->notice}{$classification->notice}{/ifset}</div>
-                                                    <div class="table-field">{ifset $classification->lastChange}{$classification->lastChange->format("j. n. \\v H:i")}{/ifset}</div>
+                                                    <div class="table-field middle-column">{ifset $classification->lastChange}{$classification->lastChange->format("j. n. \\v H:i")}{/ifset}</div>
                                                     <div class="classification table-field">
                                                         <strong>{ifset $classification->grade}{$classification->grade}{/ifset}</strong>
                                                     </div>

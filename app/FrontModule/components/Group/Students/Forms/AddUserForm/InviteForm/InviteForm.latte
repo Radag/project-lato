@@ -29,7 +29,7 @@
             {foreach $userList as $userItem}
                 <li {if $iterator->counter > 3}class="hide"{/if}>
                     <a href="#" data-user-id="{$userItem->id}" class="add-user-item item">
-                        <div class="avatar small">
+                        <div class="avatar">
                             <img src="{$userItem->profileImage|noescape}">
                         </div>
                         <div class="label">

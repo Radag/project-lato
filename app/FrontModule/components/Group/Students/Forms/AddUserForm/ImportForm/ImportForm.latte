@@ -38,6 +38,7 @@
         </div>
         {form form id=>"import-form"}
         <p>Vyberte studenty, které chcete přidat.</p>
+        {if count($students) >0}
         <ul class="custom-collection group-list">
             <li>
                 <div class="item">
@@ -46,7 +47,7 @@
                 </div>
             </li>
             <li class="divider"></li>
-            {if count($students) >0}
+            
                 {foreach $students as $student}
                 <li>
                     <div class="item">
@@ -59,14 +60,14 @@
                     </div>
                 </li>
                 {/foreach}
-            {else}
-            <li>
-                <div class="item">
-                    Žádní studenti k importu.
-                </div>
-            </li>
-            {/if}
+            
         </ul>
+        {else}
+        <div class="empty-group">
+            <div class="avatar"><i class="material-icons">group</i></div>
+            Z této skupiny už máte všechny studenty importované
+        </div>
+        {/if}
         {/form}
     {/if}
     <script>

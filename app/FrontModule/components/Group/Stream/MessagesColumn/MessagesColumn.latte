@@ -2,7 +2,7 @@
     {if  $singleMode}
         <div class="card card-flat assignment-info">
             <div class="card-content">
-                <div class="avatar">
+                <div class="avatar small">
                     <i class="material-icons">assignment</i>
                 </div>
                 <div class="time-left">
@@ -12,7 +12,7 @@
         </div>
         <div class="card card-flat assignment-detail">
             <div class="card-content task-header">
-                <div class="avatar status">
+                <div class="avatar small status">
                     <i class="material-icons late">clear</i>
                 </div>
                 <div class="time-left">
@@ -78,7 +78,15 @@
             });
         }   
     </script>
-    {* UVÍTACÍ KARTA PRO UČITELE *}
+
+    {* Kód skupiny *}
+    <div class="card card-flat">
+        <div class="card-content">
+            <p>Studenti se mohou přihlásit do skupiny zadáním kódu <strong>26HH32</strong>.</p>
+        </div>
+    </div>
+
+    {* UVÍTACÍ KARTA PRO STUDENTY *}
     {if count($messages) == 0 && !$isOwner}
     <div class="card card-flat" id="welcome-card">
         <div class="card-header">
@@ -103,35 +111,9 @@
         </div>
         <div class="card-content">
             <p>Vytvořili jsme pro Vás novou skupinu. Zde bude umístěn obsah, který zveřejníte studentům.</p>
-            {*<ul>
-                <li>
-                    <a href="{plink Group:users}" class="icon waves-effect waves-dark">
-                        <i class="material-icons">person_add</i>
-                    </a>
-                    <a href="{plink Group:users}" class="label">
-                        Přidat studenty
-                    </a>
-                </li>
-                <li>
-                    <a href="{plink Group:settings}" class="icon waves-effect waves-dark">
-                        <i class="material-icons">info</i>
-                    </a>
-                    <a href="{plink Group:settings}" class="label">
-                        Doplnit informace
-                    </a>
-                </li>
-                <li>
-                    <a href="#select-post-type-modal" class="icon waves-effect waves-dark modal-trigger">
-                        <i class="material-icons">view_stream</i>
-                    </a>
-                    <a href="#select-post-type-modal" class="label modal-trigger">
-                        Vytvořit oznámení
-                    </a>
-                </li>
-            </ul>*}
         </div>
         <div class="card-footer">
-            <a href="{plink Group:users}" class="btn gray no-shadow">Přidat studenty</a>
+            <a href="{plink Group:users}" class="btn gray no-shadow">Studenti</a>
         </div>
     </div>
     {/if}
