@@ -181,6 +181,7 @@ class MessageManager extends BaseManager {
                 JOIN file_list T3 ON T2.file_id=T3.id
                 WHERE T1.id=?", $idMessage);
         $attachments = $this->getAttachments($attachmentsData);
+        $commitsAttach = [];
         if($message->commit_id) {
             $commitsAttachData = $this->db->fetchAll("SELECT 
                     T1.commit_id as id, T2.id AS file_id, T2.extension, T2.mime, T2.type, T2.full_path, T2.filename

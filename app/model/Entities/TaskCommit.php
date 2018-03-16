@@ -19,4 +19,5 @@ class TaskCommit extends AbstractEntity {
     public $files = array();
     public $created = null;
     public $updated = null;
+    public $isLate = null;
 }

@@ -64,7 +64,11 @@ class Classification extends \App\Components\BaseComponent
             $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, [GroupManager::RELATION_STUDENT, GroupManager::RELATION_FIC_STUDENT], $students);
             if(!empty($this->classificationGroup->task)) {
                 foreach($members as $member) {
-                    $this->classificationGroup->task->commitArray[$member->id] = $this->taskManager->getCommitByUser($this->classificationGroup->task->id, $member->id);
+                    $commit = $this->taskManager->getCommitByUser($this->classificationGroup->task->id, $member->id);
+                    if($commit) {
+                        $commit->isLate = $this->classificationGroup->task->deadline > $commit->created;
+                    }
+                    $this->classificationGroup->task->commitArray[$member->id] = $commit;
                 }
             } 
             $this['form']->setDefaults(array(

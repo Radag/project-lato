@@ -154,7 +154,10 @@ class ClassificationManager extends BaseManager
     
     public function getGroupClassification($idGroupClassification)
     {
-        $classificationArray = $this->db->fetch("SELECT * FROM classification_group WHERE id=?", $idGroupClassification);
+        $sql = "SELECT T1.*, T2.deadline FROM classification_group T1
+                LEFT JOIN task T2 ON T1.task_id=T2.id
+                WHERE T1.id=?";
+        $classificationArray = $this->db->fetch($sql, $idGroupClassification);
         $classificationGroup = new ClassificationGroup();
         $classificationGroup->id = $classificationArray->id;
         $classificationGroup->name = $classificationArray->name;
@@ -162,6 +165,8 @@ class ClassificationManager extends BaseManager
         if(!empty($classificationArray->task_id)) {
             $classificationGroup->task = new \App\Model\Entities\Task();
             $classificationGroup->task->id = $classificationArray->task_id;
+            $classificationGroup->task->deadline = $classificationArray->deadline;
+            $classificationGroup->task->isLate = (new \DateTime() > $classificationArray->deadline);
         }
         
         

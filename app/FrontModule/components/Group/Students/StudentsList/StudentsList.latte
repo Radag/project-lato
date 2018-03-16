@@ -10,7 +10,7 @@
                     <button class="btn white no-shadow dropdown-button" id="user-action-button" data-beloworigin="true" data-activates="action-dropdown" disabled="disabled">
                         Akce
                     </button>
-                    <ul id='action-dropdown' class='dropdown-content'>
+                    <ul id="action-dropdown" class="dropdown-content">
                         <li><a href="{link addClassificationToUsers!}" id="add-user-classification-button" >Přidat známku</a></li>        
                         <li><a href="#" data-link="{plink Conversation:default}" id="send-message-user-button" >Poslat soukromou zprávu</a></li>
                         <li><a href="{link deleteUsers!}" id="delete-user-button" >Odebrat ze skupiny</a></li>
@@ -44,7 +44,7 @@
                     <script>
                          $(function () {                           
                             $('.collapsible-header').on('click', function (e) {
-                                if($(e.target).parents(".user-info-options-menu").length) {
+                                if($(e.target).parents(".dropdown-button").length) {
                                     e.stopPropagation();
                                 }
                             });
@@ -180,7 +180,7 @@
                             </div>
                             <div class="collapsible-body">
                                 <div class="classification-table">
-                                    {ifset $member->getClassification()->items}
+                                    {if isset($member->getClassification()->items) && !empty($member->getClassification()->items)}
                                     {foreach $member->getClassification()->items as $classification}
                                     <div class="table-row">
                                         <a  href="{link editGroupClassification! 'idGroupClassification'=>$classification->idClassificationGroup}" class="material-icons edit">edit</a>
@@ -196,7 +196,9 @@
                                         </div>
                                     </div>
                                     {/foreach}
-                                    {/ifset}
+                                    {else}
+                                        <div class="table-row">Student nemá žádné hodnocení.</div>
+                                    {/if}
                                 </div>
                             </div>
                         </li>

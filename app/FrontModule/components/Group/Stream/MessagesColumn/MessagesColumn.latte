@@ -12,7 +12,11 @@
         {/foreach}
     {/if}
     <script>
-        $(document).ready(function() {   
+        $(document).ready(function() {
+            $(".comments-footer").on('click', function(e) {
+                $(this).find('textarea').focus();
+            });
+            
             $('.copy-message-link').on('click', function(e) {
                 e.preventDefault();
                 $("#link-cache-input").show();

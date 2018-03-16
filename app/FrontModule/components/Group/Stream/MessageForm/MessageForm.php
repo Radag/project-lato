@@ -102,7 +102,7 @@ class MessageForm extends \App\Components\BaseComponent
                     'date' => $this->defaultMessage->task->deadline->format('Y-m-d'),
                     'time' => $this->defaultMessage->task->deadline->format('H:i'),
                     'online' => $this->defaultMessage->task->online,
-                    'create_classification' => $this->defaultMessage->task->create_classification
+                    'create_classification' => $this->defaultMessage->task->createClassification
                 )); 
             }
         }

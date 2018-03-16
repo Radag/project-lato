@@ -68,7 +68,8 @@ class TaskManager extends BaseManager
                             T5.created_when AS commit_created,
                             T5.updated_when AS commit_updated,
                             T6.task_users,
-                            T1.online
+                            T1.online,
+                            T1.create_classification
                     FROM task T1 
                     JOIN message T2 ON (T1.message_id = T2.id AND T2.deleted=0)
                     JOIN user T3 ON (T2.user_id=T3.id)
@@ -98,6 +99,7 @@ class TaskManager extends BaseManager
                 $taskObject->taskMembers = $task->task_users;
                 $taskObject->online = $task->online;
                 $taskObject->id = $task->id;
+                $taskObject->createClassification = $task->create_classification;
                 
                 if(!empty($task->commit_id)) {
                     $taskObject->commit = new \App\Model\Entities\TaskCommit();
@@ -107,10 +109,9 @@ class TaskManager extends BaseManager
                 }
                 $tasksArray[$task->id] = $taskObject;
             }
-            
             return $tasksArray;
         } else {
-            return array();
+            return [];
         }
     }
     
@@ -131,7 +132,8 @@ class TaskManager extends BaseManager
                         T6.updated_when AS commit_updated,
                         T6.comment AS commit_comment,
                         T3.text,
-                        T3.created_by
+                        T3.created_by,
+                        T1.create_classification
                 FROM task T1 
                 LEFT JOIN classification_group T2 ON T1.id = T2.task_id
                 LEFT JOIN message T3 ON T3.id=T1.message_id
@@ -153,6 +155,7 @@ class TaskManager extends BaseManager
         $taskObject->message->text = $task->text;
         $taskObject->taskMembers = $task->task_users;
         $taskObject->isCreator = $user->id == $task->created_by;
+        $taskObject->createClassification = $task->create_classification;
         if(!empty($task->commit_id)) {
             $commit = new \App\Model\Entities\TaskCommit();
             $commit->idCommit = $task->commit_id;
