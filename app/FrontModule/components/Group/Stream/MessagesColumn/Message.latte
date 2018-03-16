@@ -7,7 +7,7 @@
 <div class="card-header">
     {if $message->priority == 1}<div class="topped"></div>{/if}
     {if $message->deleted == 1}<div class="deleted"></div>{/if}
-    <a href="{plink Profile:default 'id'=>$message->user->slug}" class="avatar">
+    <a href="{plink Profile:default 'id'=>$message->user->slug}" class="avatar small">
         <img src="{$message->user->profileImage}" alt="{$message->user->name}">
     </a>
     <h3 class="name truncate">

@@ -165,7 +165,7 @@
                                     <span>{$member->surname}</span>, {$member->name}
                                 </div>
                                 <div class="flex-spacer"></div>
-                                <div n:if="$member->isFictive == 0" class="user-info-options-menu">
+                                <div n:if="$member->isFictive == 0" class="table-field middle-column">
                                     <a class="btn-flat btn-icon dropdown-button waves-effect waves-dark" data-activates="user-action-dropdown-{$member->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
                                         <i class="material-icons">more_horiz</i>
                                     </a>
@@ -176,7 +176,7 @@
                                     
                                     {* {if !empty($member->getClassification()->lastDate)}{$member->getClassification()->lastDate->format("j. n. Y")}{else}--{/if} *}
                                 </div>
-                                <div class="classification">({count($member->getClassification()->items)})&nbsp;<strong>{$member->getClassification()->averageGrade ?: '–'}</strong></div>
+                                <div class="table-field classification">({count($member->getClassification()->items)})&nbsp;<strong>{$member->getClassification()->averageGrade ?: '–'}</strong></div>
                             </div>
                             <div class="collapsible-body">
                                 <div class="classification-table">
@@ -188,7 +188,7 @@
                                             
                                             <a href="{link editGroupClassification! 'idGroupClassification'=>$classification->idClassificationGroup}" class="title truncate">{$classification->name}</a>
                                             <div class="flex-spacer"></div>
-                                        <div class="date">{$classification->classificationDate->format("j. n. Y")}</div>
+                                        <div class="date middle-column">{$classification->classificationDate->format("j. n. Y")}</div>
                                         </div>
 
                                         <div class="classification">

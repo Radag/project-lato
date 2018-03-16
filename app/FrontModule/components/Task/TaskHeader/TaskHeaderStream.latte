@@ -1,39 +1,33 @@
 {if $task->isCreator}
     {if $task->createClassification == 1}
         {if $task->timeLeft->invert === 0 }
-        <div class="avatar status">
-            <i class="material-icons in-progress">assignment</i>
-        </div>
         <div class="time-left">
             Termín odevzdání: {$task->deadline->format("j. n. H:i")}
         </div>
         {else}
-        <div class="avatar status">
+        <div class="avatar small status">
             <i class="material-icons locked">lock</i>
         </div>
         <div class="time-left">
             Uzavřeno: {$task->deadline->format("j. n. H:i")}
         </div>
         {/if}
-        <a href="{plink :Front:Group:users do => students-studentsList-editGroupClassification, students-studentsList-idGroupClassification=>$task->idClassificationGroup}" class="btn gray no-shadow">Otevřít</a>
+        <a href="{plink :Front:Group:users do => students-studentsList-editGroupClassification, students-studentsList-idGroupClassification=>$task->idClassificationGroup}" class="btn gray no-shadow">Oznámkovat</a>
     {/if}
 {else}
     {if $task->online == 1}
         {if $task->commit }
-            <div class="avatar status">
+            <div class="avatar small status">
                 <i class="material-icons done">done</i>
             </div>
             <div class="time-left">
                 Odevzdáno: {$task->commit->created->format("j. n. H:i")}
                 {if !empty($task->commit->updated)}(upraven {$task->commit->updated->format("j. n. H:i")}){/if}
             </div>
-        {elseif $task->timeLeft->invert === 0}
-            <div class="avatar status">
-                <i class="material-icons in-progress"">assignment</i>
-            </div>   
+        {elseif $task->timeLeft->invert === 0}  
             <div class="time-left">Termín odevzdání: {$task->deadline->format("j. n. H:i")}</div> 
         {else}
-            <div class="avatar status">
+            <div class="avatar small status">
                 <i class="material-icons failed">clear</i>
             </div>
             <div class="time-left">

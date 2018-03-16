@@ -52,9 +52,9 @@
                             <div class="flex-spacer"></div>
                             {if !empty($classificationGroup->task)}
                                 {ifset $classificationGroup->task->commitArray[$member->id]}
-                                    <div class="table-field assignment-status submitted">Odevzdáno pozdě</div>
+                                    <div class="table-field assignment-status late-submitted">Odevzdáno pozdě</div>
                                 {else}
-                                    <div class="table-field assignment-status submitted">Neodevzdáno</div>
+                                    <div class="table-field assignment-status not-submitted">Neodevzdáno</div>
                                 {/ifset}
                             {/if}
                             <div class="grade-dropdown table-field">
