@@ -114,6 +114,7 @@ class MessageManager extends BaseManager {
                         T6.id AS commit_id,
                         T6.created_when AS commit_created,
                         T6.updated_when AS commit_updated,
+                        T6.comment AS commit_comment,
                         T7.commit_count,
                         T8.title,
                         T5.create_classification,
@@ -128,69 +129,122 @@ class MessageManager extends BaseManager {
                 LEFT JOIN classification_group T9 ON T9.task_id = T5.id
                 WHERE T1.group_id=? AND T1.deleted IN (?) AND T1.type IN (?) 
                 ORDER BY IFNULL(T1.top, T1.created_when) DESC", $user->id, $group->id, $delete, $filters);
-        $now = new \DateTime();
         
         $attachmentsData = $this->db->fetchAll("SELECT 
-                    T1.id, T3.id AS file_id, T3.extension, T3.mime, T3.type, T3.path, T3.filename
+                    T1.id, T3.id AS file_id, T3.extension, T3.mime, T3.type, T3.full_path, T3.filename
                 FROM message T1 
                 JOIN message_attachment T2 ON T1.id=T2.message_id
                 JOIN file_list T3 ON T2.file_id=T3.id
                 WHERE T1.group_id=? AND T1.deleted IN (?) AND T1.type IN (?)", $group->id, $delete, $filters);
-        $attachments = $this->getAttachments($attachmentsData);;
-       
+        $attachments = $this->getAttachments($attachmentsData);
         foreach($messages as $message) {
-            
-            $mess = new Message();
-            $userObject = new User();
-            $userObject->surname = $message->surname;
-            $userObject->name = $message->name;
-            $userObject->id = $message->user_id;
-            $userObject->slug = $message->slug;
-            $userObject->profileImage = User::createProfilePath($message->profile_image, $message->sex);
-            
-            $mess->text = $message->text;
-            $mess->id = $message->id;
-            $mess->created = $message->created_when;
-            $mess->user = $userObject;
-            $mess->top = $message->top;
-            $mess->deleted = $message->deleted;
-            $mess->type = $message->type;
-            $mess->isCreator = $user->id == $userObject->id;
-            if(isset($attachments[$mess->id])) {
-                $mess->attachments = $attachments[$mess->id];
-            } else {
-                $mess->attachments = null;
-            }
-            
-            if($message->type == Message::TYPE_TASK) {
-                if(!empty($message->task_id)) {
-                    $mess->task = new \App\Model\Entities\Task();
-                    $mess->task->id = $message->task_id;
-                    $mess->task->title = $message->task_name;
-                    $mess->task->deadline = $message->deadline;
-                    $mess->task->online = $message->online;
-                    $mess->task->timeLeft = $now->diff($message->deadline);
-                    $mess->task->commitCount = $message->commit_count;
-                    $mess->task->createClassification = $message->create_classification;
-                    $mess->task->isCreator = $user->id == $userObject->id;
-                    $mess->task->idClassificationGroup = $message->id_classification_group;
-                    if(!empty($message->commit_id)) {
-                        $commit = new \App\Model\Entities\TaskCommit();
-                        $commit->idCommit = $message->commit_id;
-                        $commit->created = $message->commit_created;
-                        $commit->updated = $message->commit_updated;
-                        $mess->task->commit = $commit;
-                    }
-                }
-            }
-            if($message->type == Message::TYPE_MATERIALS) {
-                $mess->title = $message->title;
-            }
+            $mess = $this->convertMesssage($message, $attachments, $user);
             $return[$mess->id] = $mess;
         }
         
         $comments = $this->getComments($group->id, $delete, $filters);
         return ['messages' => $return, 'comments' => $comments];
+    }
+    
+    public function getMessage($idMessage, $user)
+    {
+          $message = $this->db->fetch("SELECT T1.text, T1.type, T1.id, T2.id AS user_id, T2.sex, T2.slug, T2.name, T2.surname, T1.created_when,
+                        T9.profile_image,
+                        T1.top,
+                        T1.deleted,
+                        T5.id AS task_id,
+                        T5.deadline,
+                        T5.name AS task_name,
+                        T6.id AS commit_id,
+                        T6.created_when AS commit_created,
+                        T6.updated_when AS commit_updated,
+                        T6.comment AS commit_comment,
+                        T7.commit_count,
+                        T8.title,
+                        T5.online,
+                        T5.create_classification,
+                        T9.id AS id_classification_group
+                FROM message T1 
+                LEFT JOIN user T2 ON T1.user_id=T2.id 
+                JOIN user_real T9 ON T9.id=T2.id
+                LEFT JOIN task T5 ON T1.id = T5.message_id
+                LEFT JOIN task_commit T6 ON (T5.id=T6.task_id AND T6.user_id=?)
+                LEFT JOIN (SELECT COUNT(id) AS commit_count, task_id FROM task_commit GROUP BY task_id) T7 ON T7.task_id=T5.id
+                LEFT JOIN message_material T8 ON T1.id=T8.message_id
+                LEFT JOIN classification_group T10 ON T10.task_id = T5.id
+                WHERE T1.id=?", $user->id, $idMessage);
+          
+        $attachmentsData = $this->db->fetchAll("SELECT 
+                    T1.id, T3.id AS file_id, T3.extension, T3.mime, T3.type, T3.full_path, T3.filename
+                FROM message T1 
+                JOIN message_attachment T2 ON T1.id=T2.message_id
+                JOIN file_list T3 ON T2.file_id=T3.id
+                WHERE T1.id=?", $idMessage);
+        $attachments = $this->getAttachments($attachmentsData);
+        if($message->commit_id) {
+            $commitsAttachData = $this->db->fetchAll("SELECT 
+                    T1.commit_id as id, T2.id AS file_id, T2.extension, T2.mime, T2.type, T2.full_path, T2.filename
+                FROM task_commit_attachment T1
+                JOIN file_list T2 ON T1.file_id=T2.id
+                WHERE T1.commit_id=?", $message->commit_id);
+            $commitsAttach = $this->getAttachments($commitsAttachData);
+        }
+        
+        return $this->convertMesssage($message, $attachments, $user, $commitsAttach);
+    }
+    
+    protected function convertMesssage($message, $attachments, $user, $commitsAttach = [])
+    {        
+        $now = new \DateTime();
+        $mess = new Message();
+        $userObject = new User();
+        $userObject->surname = $message->surname;
+        $userObject->name = $message->name;
+        $userObject->id = $message->user_id;
+        $userObject->slug = $message->slug;
+        $userObject->profileImage = User::createProfilePath($message->profile_image, $message->sex);
+
+        $mess->text = $message->text;
+        $mess->id = $message->id;
+        $mess->created = $message->created_when;
+        $mess->user = $userObject;
+        $mess->top = $message->top;
+        $mess->deleted = $message->deleted;
+        $mess->type = $message->type;
+        $mess->isCreator = $user->id == $userObject->id;
+        if(isset($attachments[$mess->id])) {
+            $mess->attachments = $attachments[$mess->id];
+        } else {
+            $mess->attachments = null;
+        }
+
+        if($message->type == Message::TYPE_TASK) {
+            if(!empty($message->task_id)) {
+                $mess->task = new \App\Model\Entities\Task();
+                $mess->task->id = $message->task_id;
+                $mess->task->title = $message->task_name;
+                $mess->task->deadline = $message->deadline;
+                $mess->task->online = $message->online;
+                $mess->task->timeLeft = $now->diff($message->deadline);
+                $mess->task->commitCount = $message->commit_count;
+                $mess->task->createClassification = $message->create_classification;
+                $mess->task->isCreator = $user->id == $userObject->id;
+                $mess->task->idClassificationGroup = $message->id_classification_group;
+                if(!empty($message->commit_id)) {
+                    $commit = new \App\Model\Entities\TaskCommit();
+                    $commit->idCommit = $message->commit_id;
+                    $commit->created = $message->commit_created;
+                    $commit->updated = $message->commit_updated;
+                    $commit->comment = $message->commit_comment;
+                    $commit->files = isset($commitsAttach[$commit->idCommit]) ? $commitsAttach[$commit->idCommit] : null;
+                    $mess->task->commit = $commit;
+                }
+            }
+        }
+        if($message->type == Message::TYPE_MATERIALS) {
+            $mess->title = $message->title;
+        }
+        return $mess;
     }
     
     public function getAttachments($attachments) {
@@ -201,19 +255,23 @@ class MessageManager extends BaseManager {
                     $return[$attach->id] = ['media' => [], 'files' => []];  
                 }
                 if($attach->type == 'image') {
-                    $return[$attach->id]['media'][$attach->file_id]['type'] = $attach->type;
-                    $return[$attach->id]['media'][$attach->file_id]['extension'] = $attach->extension;
-                    $return[$attach->id]['media'][$attach->file_id]['path'] = $attach->path;
-                    $return[$attach->id]['media'][$attach->file_id]['mime'] = $attach->mime;
-                    $return[$attach->id]['media'][$attach->file_id]['filename'] = $attach->filename;   
-                    $return[$attach->id]['media'][$attach->file_id]['id_file'] = $attach->file_id;   
+                    $return[$attach->id]['media'][$attach->file_id] = (object)[
+                        'type' => $attach->type,
+                        'extension' => $attach->extension,
+                        'fullPath' => $attach->full_path,
+                        'mime' => $attach->mime,
+                        'filename' => $attach->filename,  
+                        'fileId' => $attach->file_id
+                    ];
                 } else {
-                    $return[$attach->id]['files'][$attach->file_id]['type'] = $attach->type;
-                    $return[$attach->id]['files'][$attach->file_id]['extension'] = $attach->extension;;
-                    $return[$attach->id]['files'][$attach->file_id]['mime'] = $attach->mime;
-                    $return[$attach->id]['files'][$attach->file_id]['path'] = $attach->path;
-                    $return[$attach->id]['files'][$attach->file_id]['filename'] = $attach->filename; 
-                    $return[$attach->id]['files'][$attach->file_id]['id_file'] = $attach->file_id;  
+                    $return[$attach->id]['files'][$attach->file_id] = (object)[
+                        'type' => $attach->type,
+                        'extension' => $attach->extension,
+                        'mime' => $attach->mime,
+                        'fullPath' => $attach->full_path,
+                        'filename' => $attach->filename, 
+                        'fileId' => $attach->file_id
+                    ];
                 }
             }
         }
@@ -301,88 +359,7 @@ class MessageManager extends BaseManager {
         }
 
         return $return;
-    }
-    
-    public function getMessage($idMessage, $user)
-    {
-          $message = $this->db->fetch("SELECT T1.text, T1.type, T1.id, T2.id AS user_id, T2.sex, T2.slug, T2.name, T2.surname, T1.created_when,
-                        T9.profile_image,
-                        T1.top,
-                        T1.deleted,
-                        T5.id AS task_id,
-                        T5.deadline,
-                        T5.name AS task_name,
-                        T6.id AS commit_id,
-                        T6.created_when AS commit_created,
-                        T6.updated_when AS commit_updated,
-                        T7.commit_count,
-                        T8.title,
-                        T5.online,
-                        T5.create_classification
-                FROM message T1 
-                LEFT JOIN user T2 ON T1.user_id=T2.id 
-                JOIN user_real T9 ON T9.id=T2.id
-                LEFT JOIN task T5 ON T1.id = T5.message_id
-                LEFT JOIN task_commit T6 ON (T5.id=T6.task_id AND T6.user_id=?)
-                LEFT JOIN (SELECT COUNT(id) AS commit_count, task_id FROM task_commit GROUP BY task_id) T7 ON T7.task_id=T5.id
-                LEFT JOIN message_material T8 ON T1.id=T8.message_id
-                WHERE T1.id=?", $user->id, $idMessage);
-        $now = new \DateTime();
-        
-        $attachmentsData = $this->db->fetchAll("SELECT 
-                    T1.id, T3.id AS file_id, T3.extension, T3.mime, T3.type, T3.path, T3.filename
-                FROM message T1 
-                JOIN message_attachment T2 ON T1.id=T2.message_id
-                JOIN file_list T3 ON T2.file_id=T3.id
-                WHERE T1.id=?", $idMessage);
-        $attachments = $this->getAttachments($attachmentsData);;
-       
-        $mess = new Message();
-        $user = new User();
-        $user->surname = $message->surname;
-        $user->name = $message->name;
-        $user->id = $message->user_id;
-        $user->slug = $message->slug;
-        $user->profileImage = User::createProfilePath($message->profile_image, $message->sex);
-
-        $mess->text = $message->text;
-        $mess->id = $message->id;
-        $mess->created = $message->created_when;
-        $mess->user = $user;
-        $mess->top = $message->top;
-        $mess->deleted = $message->deleted;
-        $mess->type = $message->type;
-        if(isset($attachments[$mess->id])) {
-            $mess->attachments = $attachments[$mess->id];
-        } else {
-            $mess->attachments = null;
-        }
-
-        if($message->type == Message::TYPE_TASK) {
-            if(!empty($message->task_id)) {
-                $mess->task = new \App\Model\Entities\Task();
-                $mess->task->id = $message->task_id;
-                $mess->task->title = $message->task_name;
-                $mess->task->deadline = $message->deadline;
-                $mess->task->online = $message->online;
-                $mess->task->timeLeft = $now->diff($message->deadline);
-                $mess->task->commitCount = $message->commit_count;
-                $mess->task->create_classification = $message->create_classification;                
-                if(!empty($message->commit_id)) {
-                    $commit = new \App\Model\Entities\TaskCommit();
-                    $commit->idCommit = $message->commit_id;
-                    $commit->created = $message->commit_created;
-                    $commit->updated = $message->commit_updated;
-                    $mess->task->commit = $commit;
-                }
-            }
-        }
-        if($message->type == Message::TYPE_MATERIALS) {
-            $mess->title = $message->title;
-        }
-        return $mess;
-
-    }    
+    }  
         
     public function newMessages($date)
     {

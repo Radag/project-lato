@@ -10,7 +10,8 @@ class FictiveUserManager extends BaseManager
     {
         $this->db->query('INSERT INTO user', [
             'name' => $student->name,
-            'surname' => $student->surname
+            'surname' => $student->surname,
+            'is_fictive' => 1
         ]);
         $userId = $this->db->getInsertId();
         $slug = $userId . '_' . \Nette\Utils\Strings::webalize($student->name . '_' . $student->surname);

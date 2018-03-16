@@ -1,51 +1,8 @@
  {snippet messages}
     {if  $singleMode}
-        <div class="card card-flat assignment-info">
-            <div class="card-content">
-                <div class="avatar">
-                    <i class="material-icons">assignment</i>
-                </div>
-                <div class="time-left">
-                    Termín odevzdání: <strong>2. 3. 20:00</strong>
-                </div>
-            </div>
-        </div>
-        <div class="card card-flat assignment-detail">
-            <div class="card-content task-header">
-                <div class="avatar status">
-                    <i class="material-icons late">clear</i>
-                </div>
-                <div class="time-left">
-                    <strong>Odevzdáno pozdě: 2. 3. 20:00</strong>
-                </div>
-                <a href="" class="btn gray no-shadow">Upravit</a>
-            </div>
-            <div class="card-content task-content">
-                <div class="task-comment">
-                    Tady jsem vložil komentář k úloze.
-                </div>
-
-                <ul class="attachments_uploads" >
-                    <li>
-                        <div class="attached-file">
-                            <a href="" target="_blank" class="file-name">název přiloženého soubor<span>(pdf)</span></a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="attached-file">
-                            <a href="" target="_blank" class="file-name">název přiloženého soubor<span>(txt)</span></a>
-                        </div>
-                    </li>
-                </ul>
-
-
-            </div>
-        </div>
-        <div class="card flex-column single-message" id="message-box-num_{$singleMessage->id}">
-            {var $message = $singleMessage}
-            {includeblock 'SingleMessage.latte'}
-            {control commentForm-$singleMessage->id}
-        </div>
+        {var $message = $singleMessage}
+        {includeblock 'SingleMessage.latte'}
+        {control commentForm-$singleMessage->id}
     {else}
         {foreach $messages as $message}  
         <div class="card flex-column {if $iterator->isFirst() && $groupPermission['createMessages']}grid-item-fst{/if}{if $message->deleted == 1}card-flat{/if}" id="message-box-num_{$message->id}"> 

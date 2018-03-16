@@ -1,73 +1,79 @@
-<div class="card-header">
-    {if $message->priority == 1}<div class="topped"></div>{/if}
-    {if $message->deleted == 1}<div class="deleted"></div>{/if}
-    <a href="{plink Profile:default 'id'=>$message->user->slug}" class="avatar">
-        <img src="{$message->user->profileImage}" alt="{$message->user->name}">
-    </a>
-    <h3 class="name truncate">
-        <a href="{plink Profile:default 'id'=>$message->user->slug}">{$message->user->name} {$message->user->surname}</a>
-    </h3>
-    <span class="card-date">{$message->created|date:"j. n."}</span>
- 
-    <a class="btn-flat btn-icon dropdown-button card-options waves-effect waves-dark" data-activates="message_dropdown_{$message->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
-        <i class="material-icons">more_horiz</i>
-    </a>
-    <ul id='message_dropdown_{$message->id}' class='dropdown-content'>
-        {if $message->deleted == 0}
-            {if !$message->top}
-                <li n:if="$message->isCreator"><a href="{link topMessage! idMessage=>$message->id}" class="ajax">Přesunout nahoru</a></li>
-            {else}
-                <li n:if="$message->isCreator"><a href="{link topMessage! idMessage=>$message->id, enable=>false}" class="ajax">Zrušit přesunutí</a></li>
-            {/if}
-            <li><a href="#" data-link="{plink //Group:message 'id'=>$activeGroup->slug, 'idMessage'=>$message->id}" class="copy-message-link">Kopírovat odkaz</a></li>
-            <li n:if="$message->isCreator" class="divider"></li>
-            <li><a n:if="$message->isCreator" href="#" data-link="{link deleteMessage! idMessage=>$message->id}" class="delete-message-button refresh-wall-messages">Smazat</a></li>
-        {else}
-            <li><a n:if="$message->isCreator" href="{link renewMessage! idMessage=>$message->id}" class="ajax refresh-wall-messages">Obnovit</a></li>
-        {/if}
-        {*<li><a href="#share-post_{$message->id}" class="modal-trigger">Znovu použít příspěvek</a></li>*}
-        <li><a n:if="$message->isCreator" href="{link editMessage! idMessage=>$message->id}" class="ajax edit-message-button">Upravit zprávu</a></li>
-    </ul>
-</div>
-<div class="card-content">
-    {if $message->title}
-        <div class="message-title">{$message->title}</div>
-    {/if}
-    {if isset($message->task) && $message->task->title}
-        <div class="message-title">{$message->task->title}</div>
-    {/if}
-    <p>{$message->text|breaklines}</p>
-    {if isset($message->attachments['files']) && !empty($message->attachments['files']) }
-    <ul class="attachments">
-        {foreach $message->attachments['files'] as $file}  
-        <li>
-            <a href="https://cdn.lato.cz/{$file['path']}/{$file['filename']}" target="_blank" class="attached-file">
-                <div class="file-icon {if $file['type'] == 'image'}image{elseif $file['type'] == 'document'}document{elseif$file['type'] == 'spreadsheet'}spreadsheet{elseif $file['type'] == 'presentation'}{else}unknown{/if}">
-                    <i class="material-icons">
-                        {if $file['type'] == 'image'}image{elseif $file['type'] == 'document'}description{elseif$file['type'] == 'spreadsheet'}equalizer{elseif $file['type'] == 'presentation'}slideshow{else}attachment{/if}
-                    </i>
-                </div>
-                <div class="file-name truncate">{$file['filename']}<span>({$file['type']} {$file['extension']})</span></div>   
-            </a>
-        </li>
-        {/foreach}
-    </ul>
-    {/if}
-
-</div>
-
-{if isset($message->attachments['media']) && !empty($message->attachments['media']) }
-<div class="media-container">
-    {foreach $message->attachments['media'] as $media}
-        {if $iterator->first}
-        <a class="img-full-size" href="https://cdn.lato.cz/{$media['path']|noescape}/{$media['filename']|noescape}" data-lightbox="message-gallery-{$message->id}" style="background-image: url('https://cdn.lato.cz/{$media['path']|noescape}/{$media['filename']|noescape}');">
-            {if count($message->attachments['media']) > 1}
-                <div class="media-count">+{count($message->attachments['media'])-1}</div>
-            {/if}
-        </a>
-        {else}
-            <a href="https://cdn.lato.cz/{$media['path']|noescape}/{$media['filename']|noescape}" data-lightbox="message-gallery-{$message->id}" class="hide"></a>
-        {/if}
-    {/foreach}
-</div>
+{if $message->type === 'task' && $message->task && $message->task->online}
+    {var $tt=>$message->task}
+    {control taskHeader-$tt->id}
 {/if}
+<div class="card flex-column single-message" id="message-box-num_{$message->id}">
+    <div class="card-header">
+        {if $message->priority == 1}<div class="topped"></div>{/if}
+        {if $message->deleted == 1}<div class="deleted"></div>{/if}
+        <a href="{plink Profile:default 'id'=>$message->user->slug}" class="avatar">
+            <img src="{$message->user->profileImage}" alt="{$message->user->name}">
+        </a>
+        <h3 class="name truncate">
+            <a href="{plink Profile:default 'id'=>$message->user->slug}">{$message->user->name} {$message->user->surname}</a>
+        </h3>
+        <span class="card-date">{$message->created|date:"j. n."}</span>
+
+        <a class="btn-flat btn-icon dropdown-button card-options waves-effect waves-dark" data-activates="message_dropdown_{$message->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+            <i class="material-icons">more_horiz</i>
+        </a>
+        <ul id='message_dropdown_{$message->id}' class='dropdown-content'>
+            {if $message->deleted == 0}
+                {if !$message->top}
+                    <li n:if="$message->isCreator"><a href="{link topMessage! idMessage=>$message->id}" class="ajax">Přesunout nahoru</a></li>
+                {else}
+                    <li n:if="$message->isCreator"><a href="{link topMessage! idMessage=>$message->id, enable=>false}" class="ajax">Zrušit přesunutí</a></li>
+                {/if}
+                <li><a href="#" data-link="{plink //Group:message 'id'=>$activeGroup->slug, 'idMessage'=>$message->id}" class="copy-message-link">Kopírovat odkaz</a></li>
+                <li n:if="$message->isCreator" class="divider"></li>
+                <li><a n:if="$message->isCreator" href="#" data-link="{link deleteMessage! idMessage=>$message->id}" class="delete-message-button refresh-wall-messages">Smazat</a></li>
+            {else}
+                <li><a n:if="$message->isCreator" href="{link renewMessage! idMessage=>$message->id}" class="ajax refresh-wall-messages">Obnovit</a></li>
+            {/if}
+            {*<li><a href="#share-post_{$message->id}" class="modal-trigger">Znovu použít příspěvek</a></li>*}
+            <li><a n:if="$message->isCreator" href="{link editMessage! idMessage=>$message->id}" class="ajax edit-message-button">Upravit zprávu</a></li>
+        </ul>
+    </div>
+    <div class="card-content">
+        {if $message->title}
+            <div class="message-title">{$message->title}</div>
+        {/if}
+        {if isset($message->task) && $message->task->title}
+            <div class="message-title">{$message->task->title}</div>
+        {/if}
+        <p>{$message->text|breaklines}</p>
+        {if isset($message->attachments['files']) && !empty($message->attachments['files']) }
+        <ul class="attachments">
+            {foreach $message->attachments['files'] as $file}  
+            <li>
+                <a href="https://cdn.lato.cz/{$file['path']}/{$file['filename']}" target="_blank" class="attached-file">
+                    <div class="file-icon {if $file['type'] == 'image'}image{elseif $file['type'] == 'document'}document{elseif$file['type'] == 'spreadsheet'}spreadsheet{elseif $file['type'] == 'presentation'}{else}unknown{/if}">
+                        <i class="material-icons">
+                            {if $file['type'] == 'image'}image{elseif $file['type'] == 'document'}description{elseif$file['type'] == 'spreadsheet'}equalizer{elseif $file['type'] == 'presentation'}slideshow{else}attachment{/if}
+                        </i>
+                    </div>
+                    <div class="file-name truncate">{$file['filename']}<span>({$file['type']} {$file['extension']})</span></div>   
+                </a>
+            </li>
+            {/foreach}
+        </ul>
+        {/if}
+
+    </div>
+
+    {if isset($message->attachments['media']) && !empty($message->attachments['media']) }
+    <div class="media-container">
+        {foreach $message->attachments['media'] as $media}
+            {if $iterator->first}
+            <a class="img-full-size" href="https://cdn.lato.cz/{$media['path']|noescape}/{$media['filename']|noescape}" data-lightbox="message-gallery-{$message->id}" style="background-image: url('https://cdn.lato.cz/{$media['path']|noescape}/{$media['filename']|noescape}');">
+                {if count($message->attachments['media']) > 1}
+                    <div class="media-count">+{count($message->attachments['media'])-1}</div>
+                {/if}
+            </a>
+            {else}
+                <a href="https://cdn.lato.cz/{$media['path']|noescape}/{$media['filename']|noescape}" data-lightbox="message-gallery-{$message->id}" class="hide"></a>
+            {/if}
+        {/foreach}
+    </div>
+    {/if}
+</div>

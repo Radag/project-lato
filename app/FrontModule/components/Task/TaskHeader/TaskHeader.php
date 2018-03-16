@@ -38,6 +38,8 @@ class TaskHeader extends \App\Components\BaseComponent
     
     protected $commitTaskForm;
     
+    public $mode = 'stream';
+    
     public function __construct(
         UserManager $userManager,
         GroupManager $groupManager,
@@ -51,9 +53,12 @@ class TaskHeader extends \App\Components\BaseComponent
         $this->classificationManager = $classificationManager;
     }
     
-    public function setTask($task)
+    public function setTask($task, $singleMode)
     {
         $this->task = $task;
+        if($singleMode) {
+            $this->mode = 'single';
+        }
     }
     
     public function setCommitTaskForm($form)
@@ -64,7 +69,12 @@ class TaskHeader extends \App\Components\BaseComponent
     public function render()
     {     
         $this->template->task = $this->task;
-        parent::render();
+        if($this->mode === 'stream') {
+            $this->template->setFile($this->getTemplateFilePath('TaskHeaderStream'));
+        } else {
+            $this->template->setFile($this->getTemplateFilePath('TaskHeaderSingle'));
+        }        
+        $this->template->render();
     }
     
     public function handleSetTaskCommit($idTask)

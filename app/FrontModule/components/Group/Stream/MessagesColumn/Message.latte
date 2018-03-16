@@ -45,15 +45,15 @@
     <p>{$message->text|breaklines}</p>
     {if isset($message->attachments['files']) && !empty($message->attachments['files']) }
     <ul class="attachments">
-        {foreach $message->attachments['files'] as $file}  
+        {foreach $message->attachments['files'] as $file}
         <li>
-            <a href="https://cdn.lato.cz/{$file['path']}/{$file['filename']}" target="_blank" class="attached-file">
-                <div class="file-icon {if $file['type'] == 'image'}image{elseif $file['type'] == 'document'}document{elseif$file['type'] == 'spreadsheet'}spreadsheet{elseif $file['type'] == 'presentation'}{else}unknown{/if}">
+            <a href="{$file->fullPath|noescape}" target="_blank" class="attached-file">
+                <div class="file-icon {if $file->type == 'image'}image{elseif $file->type == 'document'}document{elseif $file->type == 'spreadsheet'}spreadsheet{elseif $file->type == 'presentation'}{else}unknown{/if}">
                     <i class="material-icons">
-                        {if $file['type'] == 'image'}image{elseif $file['type'] == 'document'}description{elseif$file['type'] == 'spreadsheet'}equalizer{elseif $file['type'] == 'presentation'}slideshow{else}attachment{/if}
+                        {if $file->type == 'image'}image{elseif $file->type == 'document'}description{elseif $file->type == 'spreadsheet'}equalizer{elseif $file->type == 'presentation'}slideshow{else}attachment{/if}
                     </i>
                 </div>
-                <div class="file-name truncate">{$file['filename']}<span>({$file['type']} {$file['extension']})</span></div>   
+                <div class="file-name truncate">{$file->filename}<span>({$file->type} {$file->extension})</span></div>   
             </a>
         </li>
         {/foreach}
@@ -66,13 +66,13 @@
 <div class="media-container">
     {foreach $message->attachments['media'] as $media}
         {if $iterator->first}
-        <a class="img-full-size" href="https://cdn.lato.cz/{$media['path']|noescape}/{$media['filename']|noescape}" data-lightbox="message-gallery-{$message->id}" style="background-image: url('https://cdn.lato.cz/{$media['path']|noescape}/{$media['filename']|noescape}');">
+        <a class="img-full-size" href="{$media->fullPath|noescape}" data-lightbox="message-gallery-{$message->id}" style="background-image: url('{$media->fullPath|noescape}');">
             {if count($message->attachments['media']) > 1}
                 <div class="media-count">+{count($message->attachments['media'])-1}</div>
             {/if}
         </a>
         {else}
-            <a href="https://cdn.lato.cz/{$media['path']|noescape}/{$media['filename']|noescape}" data-lightbox="message-gallery-{$message->id}" class="hide"></a>
+            <a href="{$media->fullPath|noescape}}" data-lightbox="message-gallery-{$message->id}" class="hide"></a>
         {/if}
     {/foreach}
 </div>

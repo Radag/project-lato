@@ -51,7 +51,7 @@ class TaskManager extends BaseManager
             $now = new \DateTime();
             
             $tasksArray = array();
-            $tasks = $this->database->query("SELECT 
+            $tasks = $this->db->fetchAll("SELECT 
                             T1.id,
                             T1.name,
                             T1.message_id,
@@ -77,7 +77,7 @@ class TaskManager extends BaseManager
                     LEFT JOIN task_commit T5 ON T1.id=T5.task_id
                     LEFT JOIN ( SELECT COUNT(*) AS task_users, M.id FROM message M JOIN group_user G ON M.group_id=G.group_id GROUP BY M.id) T6 ON T6.id = T2.id
                     WHERE T2.group_id IN (" . implode(",", array_keys($groups)) . ") AND T1.deadline>=NOW()
-                    ORDER BY T1.deadline ASC LIMIT 5")->fetchAll();
+                    ORDER BY T1.deadline ASC LIMIT 5");
          
             foreach($tasks as $task) {
                 $taskObject  = new Task();

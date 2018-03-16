@@ -28,13 +28,16 @@ class BaseComponent extends Control
         return $form;
     }
     
-    protected function getTemplateFilePath()
+    protected function getTemplateFilePath($name = null)
     {
         $reflection = $this->getReflection();
         $dir = dirname($reflection->getFileName());
         $filename = $reflection->getShortName() . '.latte';
-
-        return $dir . \DIRECTORY_SEPARATOR . $filename;
+        if($name) {
+            return $dir . \DIRECTORY_SEPARATOR . $name . '.latte';
+        } else {
+            return $dir . \DIRECTORY_SEPARATOR . $filename;
+        }       
     }
 
     public function render()

@@ -97,7 +97,7 @@ class MessagesColumn extends \App\Components\BaseComponent
                 $task = $this->taskManager->getTask($idTask, $this->presenter->activeUser);
             }
             
-            $taskHeader->setTask($task);
+            $taskHeader->setTask($task, $this->singleMode);
             $taskHeader->setCommitTaskForm($this['commitTaskForm']);
             return $taskHeader;
         });

@@ -1,0 +1,70 @@
+{if $task->isCreator}
+    {if $task->createClassification == 1}
+        {if $task->timeLeft->invert === 0 }
+        <div class="avatar status">
+            <i class="material-icons in-progress">assignment</i>
+        </div>
+        <div class="time-left">
+            Termín odevzdání: {$task->deadline->format("j. n. H:i")}
+        </div>
+        {else}
+        <div class="avatar status">
+            <i class="material-icons locked">lock</i>
+        </div>
+        <div class="time-left">
+            Uzavřeno: {$task->deadline->format("j. n. H:i")}
+        </div>
+        {/if}
+        <a href="{plink :Front:Group:users do => students-studentsList-editGroupClassification, students-studentsList-idGroupClassification=>$task->idClassificationGroup}" class="btn gray no-shadow">Otevřít</a>
+    {/if}
+{elseif $task->online == 1}
+    {if $task->commit }
+        <div class="card card-flat assignment-detail">
+            <div class="card-content task-header">
+                <div class="avatar status">
+                    <i class="material-icons late">clear</i>
+                </div>
+                <div class="time-left">
+                    <strong>Odevzdáno pozdě: {$task->commit->created->format("j. n. H:i")} {if !empty($task->commit->updated)}(upraven {$task->commit->updated->format("j. n. H:i")}){/if}</strong>
+                </div>
+                <button type="button" data-link="{link editTaskCommit}" class="btn gray no-shadow submit-class-button">Upravit</button>
+            </div>
+            <div class="card-content task-content">
+                <div n:if="$task->commit->comment" class="task-comment">{$task->commit->comment}</div>
+                {if !empty($task->commit->files)}
+                    <ul class="attachments_uploads" >
+                    {foreach array_merge($task->commit->files['files'], $task->commit->files['media']) as $attach}
+                    <li>
+                        <div class="attached-file">
+                            <a href="{$attach->fullPath|noescape}" target="_blank" class="file-name">{$attach->filename}<span>({$attach->extension})</span></a>
+                            <div class="flex-spacer"></div>
+                            {*<a href="{link deleteAttachment!, idFile=>$attach->fileId}" class="ajax remove-attachment"><i class="material-icons">delete</i></a>*}
+                        </div>
+                    </li>
+                    {/foreach}
+                    </ul>
+                {/if}
+            </div>
+        </div>
+    {elseif $task->timeLeft->invert === 0}
+        <div class="card card-flat assignment-info">
+            <div class="card-content">
+                <div class="avatar">
+                    <i class="material-icons">assignment</i>
+                </div>
+                <div class="time-left">
+                    Termín odevzdání: <strong>{$task->deadline->format("j. n. H:i")}</strong>
+                </div>
+                <button type="button" data-link="{link editTaskCommit}" class="btn gray no-shadow submit-class-button">Odevzdat</button>
+            </div>
+        </div>
+    {else}
+        <div class="avatar status">
+            <i class="material-icons failed">clear</i>
+        </div>
+        <div class="time-left">
+            Uzavřeno: {$task->deadline->format("j. n. H:i")}
+        </div>
+    {/if}
+{/if}
+

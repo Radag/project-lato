@@ -45,7 +45,7 @@ class ImportForm extends \App\Components\BaseComponent
                 $studentsIds = json_decode($values->users);
                 $students = $this->groupManager->getGroupUsers($values->group_id, 'student', $studentsIds);
                 foreach($students as $student) {
-                    $userId = $this->fictiveUserManager->createFictiveUser($student, $group);
+                    $userId = $this->fictiveUserManager->createFictiveUser($student, $this->presenter->activeGroup);
                     $this->groupManager->addUserToGroup($this->presenter->activeGroup, $userId, GroupManager::RELATION_FIC_STUDENT);
                 }
                 $this->presenter->flashMessage('Studenti naimportováni.');      
