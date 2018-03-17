@@ -7,6 +7,16 @@
     </div>
     <div class="modal-content">
         <h3>Pozvat studenty</h3>
+        <div class="modal-users-chips no-border chips">
+            <div class="chip">
+                P. Šavelka
+                <i class="close material-icons">close</i>
+            </div>
+            <div class="chip">
+                A. Navrátil
+                <i class="close material-icons">close</i>
+            </div>
+        </div>
         <div class="form-row input-field">
             {input userName class=>'validate add-user-form'}
             {label userName}Jméno nebo e-mail studenta{/label}
@@ -61,9 +71,6 @@
             });
         </script>
         {/snippet}
-        {if $activeGroup->shareByCode == 1}
-            <p>Studenti se mohou také zapisovat pomocí kódu <strong>{$activeGroup->interCode}</strong>.</p>
-        {/if}
     </div>
     <div class="modal-footer">
         <div class="flex-spacer"></div>

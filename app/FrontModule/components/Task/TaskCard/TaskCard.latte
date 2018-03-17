@@ -12,6 +12,6 @@
         <p class="truncate">{if $task->title}<strong>{$task->title} • </strong>{/if}{$task->message->text}</p>
     </div>
     <div class="card-footer">
-        <button class="btn btn-flat" style="color: {$task->group->mainColor|noescape};">{$task->group->name}</button>
+        <button class="btn btn-flat" {* style="color: {$task->group->mainColor|noescape};" *}>{$task->group->name}</button>
     </div>
 </a>

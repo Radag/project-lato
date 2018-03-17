@@ -4,10 +4,10 @@
     {control taskHeader-$tt->id}
 </div>
 {/if}  
-<div class="card-header">
+<div class="card-header {if $message->type === 'task' && $message->task}assognment-header{/if}">
     {if $message->priority == 1}<div class="topped"></div>{/if}
     {if $message->deleted == 1}<div class="deleted"></div>{/if}
-    <a href="{plink Profile:default 'id'=>$message->user->slug}" class="avatar small">
+    <a href="{plink Profile:default 'id'=>$message->user->slug}" class="avatar {if $message->type === 'task' && $message->task}tiny{else}small{/if}">
         <img src="{$message->user->profileImage}" alt="{$message->user->name}">
     </a>
     <h3 class="name truncate">

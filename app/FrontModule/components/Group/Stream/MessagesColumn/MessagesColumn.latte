@@ -10,6 +10,11 @@
             {control commentForm-$message->id}
         </div>
         {/foreach}
+        <div class="card card-flat">
+            <div class="card-content">
+                <p class="secondary-par">Studenti se mohou přihlásit do skupiny zadáním kódu <strong>26HH32</strong>.</p>
+            </div>
+        </div>
     {/if}
     <script>
         $(document).ready(function() {
@@ -41,11 +46,7 @@
     </script>
 
     {* Kód skupiny *}
-    <div class="card card-flat">
-        <div class="card-content">
-            <p>Studenti se mohou přihlásit do skupiny zadáním kódu <strong>26HH32</strong>.</p>
-        </div>
-    </div>
+    
 
     {* UVÍTACÍ KARTA PRO STUDENTY *}
     {if count($messages) == 0 && !$isOwner}
@@ -55,7 +56,7 @@
             <div class="flex-spacer"></div>
         </div>
         <div class="card-content">
-            <p>Zde bude umístěn obsah, který zveřejní vyučující.</p>
+            <p class="secondary-par">Zde bude umístěn obsah, který zveřejní vyučující.</p>
         </div>
         <div class="card-footer">
             <a href="{plink Group:about}" class="btn gray no-shadow">Informace o skupině</a>
@@ -71,7 +72,7 @@
             <div class="flex-spacer"></div>
         </div>
         <div class="card-content">
-            <p>Vytvořili jsme pro Vás novou skupinu. Zde bude umístěn obsah, který zveřejníte studentům.</p>
+            <p class="secondary-par">Vytvořili jsme pro Vás novou skupinu. Zde bude umístěn obsah, který zveřejníte studentům.</p>
         </div>
         <div class="card-footer">
             <a href="{plink Group:users}" class="btn gray no-shadow">Studenti</a>

@@ -8,8 +8,8 @@
         <div class="card-content">
                 {foreach $actualTasks as $task}
                     <a n:if="$iterator->isFirst()" href="{plink Group:message 'id'=>$task->group->slug, 'idMessage'=>$task->idMessage}" class="assignment-stream-item truncate">
-                        <p class="remaining-time">Odevzdat do {$task->deadline->format('j. n. H:m')}</p>
-                        <p class="secondary-par truncate">{$task->title} {if $task->title} • {/if} {$task->message->text}</p>     
+                        <div class="remaining-time">Odevzdat do {$task->deadline->format('j. n. H:m')}</div>
+                        <div class="task-prev truncate">{$task->title} {if $task->title} • {/if} {$task->message->text}</div>     
                     </a>
                 {/foreach}
         </div>
