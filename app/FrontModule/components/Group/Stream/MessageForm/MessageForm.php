@@ -85,8 +85,8 @@ class MessageForm extends \App\Components\BaseComponent
              ->addConditionOn($form['messageType'], Form::EQUAL, Message::TYPE_TASK)
                  ->setRequired('Vložte čas')
                  ->addRule(Form::PATTERN, 'Čas musí být ve formátu 12:45', '([0-9]{2})\:([0-9]{2})');
-        $form->addCheckbox('online', "Odevzdat online");
-        $form->addCheckbox('create_classification', "Bude na známky");
+        $form->addCheckbox('online', "Studenti odevzdají práci online");
+        $form->addCheckbox('create_classification', "Povinnost bude známkována");
         $form->addHidden('attachments');
         $form->addSubmit('send', 'Publikovat');
         if($this->defaultMessage !== null) {
