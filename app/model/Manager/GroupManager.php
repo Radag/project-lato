@@ -1,58 +1,41 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace App\Model\Manager;
 
 use Nette;
 use App\Model\Entities\Group;
 use App\Model\Entities\User;
-use App\Model\Manager\NotificationManager;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\PublicActionManager;
 
-/**
- * Description of MessageManager
- *
- * @author Radaq
- */
 class GroupManager extends BaseManager {
  
     const RELATION_OWNER = 'owner';
     const RELATION_TEACHER = 'teacher';
     const RELATION_STUDENT = 'student';
     const RELATION_FIC_STUDENT = 'fictive-student';
-       
-    /** @var NotificationManager @inject */
-    protected $notificationManager;
-    
+           
     /** @var UserManager @inject */
-    protected $userManager;
+    public $userManager;
     
     /** @var PublicActionManager @inject */
-    protected $publicActionManager;
-    
+    public $publicActionManager;
+
     /** @var \Dibi\Connection  */
     protected $db;
     
-    public function __construct(Nette\Database\Context $database,
-                    Nette\Security\User $user,
-                    UserManager $userManager,
-                    PublicActionManager $publicActionManager,
-                    NotificationManager $notificationManager,
-            \Dibi\Connection $db
+    public function __construct(
+        Nette\Database\Context $database,
+        Nette\Security\User $user,
+        UserManager $userManager,
+        PublicActionManager $publicActionManager,
+        \Dibi\Connection $db
     )
     {
-            $this->database = $database;
-            $this->user = $user;
-            $this->userManager = $userManager;
-            $this->publicActionManager = $publicActionManager;
-            $this->notificationManager = $notificationManager;
-            $this->db = $db;
+        $this->database = $database;
+        $this->user = $user;
+        $this->userManager = $userManager;
+        $this->publicActionManager = $publicActionManager;
+        $this->db = $db;
     }
     
     

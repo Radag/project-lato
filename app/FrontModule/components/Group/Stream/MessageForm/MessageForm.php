@@ -133,7 +133,7 @@ class MessageForm extends \App\Components\BaseComponent
         
         $attachments = explode('_', $values->attachments);
 
-        $message->id = $this->messageManager->createMessage($message, $attachments);
+        $message->id = $this->messageManager->createMessage($message, $attachments, $this->presenter->activeGroup);
         
         if($values->messageType === Message::TYPE_TASK) {
             $task = new \App\Model\Entities\Task();

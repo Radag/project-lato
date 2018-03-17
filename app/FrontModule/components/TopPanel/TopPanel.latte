@@ -73,21 +73,13 @@
         </a>
     </li>
     {foreach $notifications as $notification} 
-    <li><a href="{if $notification->idMessage}{plink Group:message 'id'=>$notification->idGroup, 'idMessage'=>$notification->idMessage}{elseif $notification->idGroup}{plink Group:default 'id'=>$notification->idGroup}{else}{plink Profile:default 'id'=>$notification->participant->urlId}{/if}" class="clearfix"> 
-        <div class="avatar"> 
+    <li><a href="{*if $notification->idMessage}{plink Group:message 'id'=>$notification->idGroup, 'idMessage'=>$notification->idMessage}{elseif $notification->idGroup}{plink Group:default 'id'=>$notification->idGroup}{else}{plink Profile:default 'id'=>$notification->participant->urlId}{/if*}" class="clearfix"> 
+        {*<div class="avatar"> 
             <img src="{$notification->participant->profileImage}" alt="{$notification->participant->name}"> 
-        </div> 
+        </div>*}
         <div class="label">
             <div class="title truncate"> 
-                {if $notification->participant->slug} 
-                {if $notification->participant->name} 
-                {$notification->participant->name} {$notification->participant->surname} 
-                {else} 
-                {$notification->participant->username}
-                {/if} 
-                {else} 
-                {$notification->title} 
-                {/if} 
+                {$notification->title}
             </div>
             <p class="truncate">{$notification->text}</p> 
         </div> 

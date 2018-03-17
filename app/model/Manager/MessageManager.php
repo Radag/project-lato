@@ -23,26 +23,24 @@ use App\Model\Manager\GroupManager;
 class MessageManager extends BaseManager {
      
     /** @var NotificationManager @inject */
-    private $notificationManager;
+    public $notificationManager;
     
     /** @var GroupManager @inject */
-    private $groupManager;
+    public $groupManager;
     
-    /** @var \Dibi\Connection  */
-    protected $db;
-    
-    public function __construct(Nette\Database\Context $database,
-                    Nette\Security\User $user,
-            NotificationManager $notificationManager,
-            GroupManager $groupManager,
-             \Dibi\Connection $db
+    public function __construct(
+        Nette\Database\Context $database,
+        Nette\Security\User $user,
+        NotificationManager $notificationManager,
+        GroupManager $groupManager,
+        \Dibi\Connection $db
     )
     {
-            $this->database = $database;
-            $this->user = $user;
-            $this->notificationManager = $notificationManager;
-            $this->groupManager = $groupManager;
-            $this->db = $db;
+        $this->database = $database;
+        $this->user = $user;
+        $this->notificationManager = $notificationManager;
+        $this->groupManager = $groupManager;
+        $this->db = $db;
     }
     
     public function cloneMessage(Message $message, \App\Model\Entities\Group $toGroup) 
@@ -52,7 +50,7 @@ class MessageManager extends BaseManager {
     }
     
     
-    public function createMessage(Message $message, $attachments)
+    public function createMessage(Message $message, $attachments, $group)
     {
         $this->db->begin();
         if(empty($message->id)) {
@@ -64,6 +62,7 @@ class MessageManager extends BaseManager {
                 'created_by' => $this->user->id,
             ]);
             $message->id = $this->db->getInsertId();
+            $this->notificationManager->addNotificationNewMessage($message, $group, $this->groupManager);
         } else {
             $this->db->query("UPDATE message SET ",[
                 'text' => $message->text,
@@ -87,6 +86,8 @@ class MessageManager extends BaseManager {
             'message_id' => $comment->idMessage,
             'created_by' => $this->user->id
         ]);
+        $comment->id = $this->db->getInsertId();
+        $this->notificationManager->addNotificationNewComment($comment);
     }
     
     public function getMessages(\App\Model\Entities\Group $group, \App\Model\Entities\User $user, $filter = 'all')
