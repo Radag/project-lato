@@ -3,7 +3,6 @@
     {form usersForm class=>'ajax'}
         <div class="modal-content">
             <h3>Nová zpráva</h3>
-            <p>Vyberte uživatele, kteří budou součástí konverzace</p>       
             <div class="message-modal-users no-border chips hide"></div>
             <div class="form-row input-field">
                 {input user class=>'search-user-form'}
@@ -11,7 +10,11 @@
             </div>
             {snippet users-list }
                 <div class="prompter-loading">
-                    <div class="preloader-wrapper small active hide users-autocomplete-loader" style="margin: 48px 0 24px 0;">
+                    <div class="progress hide users-autocomplete-loader">
+                        <div class="indeterminate"></div>
+                    </div>
+                    
+                    {*<div class="preloader-wrapper small active hide users-autocomplete-loader" style="margin: 48px 0 24px 0;">
                         <div class="spinner-layer spinner-green-only">
                               <div class="circle-clipper left" >
                                 <div class="circle"></div>
@@ -21,7 +24,7 @@
                                 <div class="circle"></div>
                               </div>
                         </div>
-                    </div>
+                    </div>*}
                 </div>
                 <ul class="loaded-user-list custom-collection prompter" n:if="isset($userList)">
                     {foreach $userList as $userItem}

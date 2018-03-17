@@ -23,16 +23,8 @@
         </div>
         {snippet users-list }
         <div class="prompter-loading">
-            <div class="preloader-wrapper small active hide users-autocomplete-loader" style="margin: 48px 0 24px 0;">
-                <div class="spinner-layer spinner-green-only">
-                      <div class="circle-clipper left" >
-                        <div class="circle"></div>
-                      </div><div class="gap-patch">
-                        <div class="circle"></div>
-                      </div><div class="circle-clipper right">
-                        <div class="circle"></div>
-                      </div>
-                </div>
+            <div class="progress hide users-autocomplete-loader">
+                <div class="indeterminate"></div>
             </div>
         </div>
         <ul class="loaded-user-list custom-collection prompter" n:if="isset($userList)">
