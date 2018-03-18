@@ -4,7 +4,7 @@ namespace App\FrontModule\Components\Group\AddUserForm;
 use \Nette\Application\UI\Form;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\GroupManager;
-
+use App\Model\Manager\NotificationManager;
 
 class InviteForm extends \App\Components\BaseComponent
 {    
@@ -12,15 +12,20 @@ class InviteForm extends \App\Components\BaseComponent
     protected $userManager;
     
     /** @var GroupManager */
-    protected $groupManager;
+    public $groupManager;
+        
+    /** @var NotificationManager */
+    public $notificationManager;
 
     public function __construct(
         UserManager $userManager,
-        GroupManager $groupManager
+        GroupManager $groupManager,
+        NotificationManager $notificationManager
     )
     {
         $this->groupManager = $groupManager;
         $this->userManager = $userManager;
+        $this->notificationManager = $notificationManager;
     }
     
     protected function createComponentForm()

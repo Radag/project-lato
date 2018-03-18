@@ -26,9 +26,9 @@
             <div class="right-nav-flex">
                 <ul class="navbar-nav">
                     <li>
-                        <a class="button-collapse show-on-large slide-out-toggle" href="#" id="button-notification-slide" data-edge="right" data-activates="slide-out-notification" >
+                        <a class="button-collapse show-on-large slide-out-toggle ajax" href="{link notificationsRead!}" id="button-notification-slide" data-edge="right" data-activates="slide-out-notification" >
                             <i class="material-icons ">notifications</i>
-                            {snippet notificationCount}{if $unreadNotifications > 0}<span class="nav-badge">{$unreadNotifications}</span>{/if}{/snippet}
+                            {snippet notificationCount}{if $activeUser->unreadNotifications > 0}<span class="nav-badge">{$activeUser->unreadNotifications}</span>{/if}{/snippet}
                         </a>
                     </li>
                     <li>
@@ -73,7 +73,7 @@
         </a>
     </li>
     {foreach $notifications as $notification} 
-    <li><a href="{*if $notification->idMessage}{plink Group:message 'id'=>$notification->idGroup, 'idMessage'=>$notification->idMessage}{elseif $notification->idGroup}{plink Group:default 'id'=>$notification->idGroup}{else}{plink Profile:default 'id'=>$notification->participant->urlId}{/if*}" class="clearfix"> 
+    <li><a href="{link readNotification!, 'id'=>$notification->id}" class="clearfix {if empty($notification->isRead)}active{/if}"> 
         {*<div class="avatar"> 
             <img src="{$notification->participant->profileImage}" alt="{$notification->participant->name}"> 
         </div>*}

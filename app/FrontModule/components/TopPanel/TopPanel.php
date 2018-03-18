@@ -19,19 +19,19 @@ use App\FrontModule\Components\NewGroupForm\JoinGroupForm;
 class TopPanel extends Control
 {
     /** @var UserManager */
-    protected $userManager;
+    public $userManager;
     
     /** @var GroupManager */
-    protected $groupManager;
+    public $groupManager;
     
     /** @var ConversationManager */
-    protected $conversationManager;
+    public $conversationManager;
 
     /** @var NotificationManager */
-    protected $notificationManager;
+    public $notificationManager;
     
     /** @var \App\Model\Entities\Group */
-    protected $activeGroup = null;
+    public $activeGroup = null;
     
     /** @var \App\Model\Entities\User */
     protected $activeUser;
@@ -72,7 +72,6 @@ class TopPanel extends Control
         $template->activeUser = $this->presenter->activeUser;
         $template->backArrow = $this->backArrow;
         $template->notifications = $this->notificationManager->getNotifications($this->presenter->activeUser);
-        $template->unreadNotifications = $this->notificationManager->getUnreadNumber($this->presenter->activeUser);
         $template->unreadPrivMessages = 0;//$this->conversationManager->getUnreadNumber($this->presenter->activeUser);
         $template->privateMessages = $this->conversationManager->getConversations($this->presenter->activeUser);
         $template->groups = $this->groupManager->getUserGroups($this->presenter->activeUser);
@@ -114,7 +113,7 @@ class TopPanel extends Control
     
     public function createComponentJoinGroupForm()
     {
-        $form = new JoinGroupForm($this->groupManager);
+        $form = new JoinGroupForm($this->groupManager, $this->notificationManager);
         return $form;
     }
     
@@ -124,9 +123,16 @@ class TopPanel extends Control
         $this->redrawControl('messagesCount');   
     }
     
-    public function handleNotificationRead()
+    public function handleReadNotification($id)
     {
-        $this->notificationManager->setNotificationRead($this->activeUser->id);
+          $redirect = $this->notificationManager->getReadNotification($id, $this->presenter->activeUser);
+          $this->presenter->redirect($redirect->link, $redirect->args);
+    }
+    
+    public function handleNotificationsRead()
+    {
+        $this->notificationManager->setAllNotificationRead($this->presenter->activeUser->id);
+        $this->presenter->activeUser->unreadNotifications = 0;
         $this->redrawControl('notificationCount');
     }
     

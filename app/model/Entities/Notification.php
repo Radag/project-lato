@@ -19,6 +19,6 @@ class Notification extends AbstractEntity {
     public $icon = null;
     public $idUser = null;
     public $type = null;
-    public $data = [];
-
+    public $data = null;
+    public $isRead = null;
 }

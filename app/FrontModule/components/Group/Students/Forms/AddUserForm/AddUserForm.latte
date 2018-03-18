@@ -1,7 +1,9 @@
 <div id="add-users" class="modal modal-small">
     <div class="modal-content">
         <h3>Přidat studenty</h3>
-        <p>Studenti se mohou sami zapsat do skupiny pomocí kódu <strong>2H5K32</strong> nebo je můžete přidat manuálně.</p>
+        {if $activeGroup->shareByCode == 1}
+            <p>Studenti se mohou sami zapsat do skupiny pomocí kódu <strong>{$activeGroup->interCode}</strong> nebo je můžete přidat manuálně.</p>
+        {/if}
         <div class="checkbox-form-block combined-labels">
             <div class="form-row">
                 <input type="radio" value="invite" class="filled-in" id="opt1" name="stream-filter" checked="checked">

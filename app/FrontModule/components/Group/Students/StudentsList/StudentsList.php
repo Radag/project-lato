@@ -102,7 +102,7 @@ class StudentsList extends \App\Components\BaseComponent
         } elseif ($this->groupManager->isUserInGroup($user->id, $this->activeGroup->id)) {
             $this->presenter->flashMessage('Již je ve skupině.');
         } else {
-            $this->groupManager->addUserToGroup($this->activeGroup, $user->id, GroupManager::RELATION_STUDENT);
+            $this->groupManager->addUserToGroup($this->activeGroup, $user->id, GroupManager::RELATION_STUDENT, $this->notificationManager);
             $this->presenter->flashMessage('Byl přidán do skupiny.');
             
             $notification = new \App\Model\Entities\Notification;
@@ -176,9 +176,10 @@ class StudentsList extends \App\Components\BaseComponent
             $this->template->confirmDeleteUsers = $confirmDeleteUsers;
             $this->redrawControl('removeUsersModal');
         } else {
-            $usersArray = array();
+            $usersArray = [];
             foreach($users as $idUser) {
-                $this->groupManager->removeUserFromGroup($this->activeGroup->id, $idUser);
+                //tady to opravit
+                $this->groupManager->removeUserFromGroup($this->activeGroup, $idUser);
                 $usersArray[] = (object)array('id' => $idUser);
             }
             $data['users'] = $usersArray;

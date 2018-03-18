@@ -68,9 +68,10 @@ class MessageForm extends \App\Components\BaseComponent
         $form->addTextArea('text', 'Zpráva')
             ->setRequired('Napište zprávu');
         $form->addHidden('idMessage');
-        
-        $form->addText('title', 'Název');
         $form->addHidden('messageType', Message::TYPE_NOTICE);
+        $form->addText('title', 'Název')
+             ->addConditionOn($form['messageType'], Form::EQUAL, Message::TYPE_TASK)
+                 ->setRequired('Vložte název');
         $form->addText('date', 'Datum', null, 12)
              ->setAttribute('type', 'date')
              ->setAttribute('placeholder', date('d. m. Y'))

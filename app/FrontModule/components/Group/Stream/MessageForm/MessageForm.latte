@@ -16,7 +16,7 @@
         </div>
         <div class="form-row hide mes-title-row input-field">
             {input title}
-            {label title}Název (nepovinné){/label}
+            {label title}Název ({if $form['messageType']->getValue() === 'task'}povinné{else}nepovinné{/if}){/label}
         </div>
         <div class="form-row input-field">
             {input text class => 'materialize-textarea'}
@@ -30,7 +30,7 @@
         <ul class="custom-collection">
             <li class="hide mes-online-row">
                 <div class="item">
-                        {input online: class => 'filled-in black'}{label online:}{/label}
+                    {input online: class => 'filled-in black'}{label online:}{/label}
                 </div>
             </li>
             
@@ -90,16 +90,20 @@
         function loadInputsByType() {
             if($("#change-message-type-select").val() === 'notice') {
                 $(".mes-title-row, .mes-date-row, .mes-online-row").addClass('hide');
+                $("input[name='title']").next('label').text('Název (nepovinné)');
             } else if($("#change-message-type-select").val() === 'material') {
                 $(".mes-date-row, .mes-online-row").addClass('hide');
                 $(".mes-title-row").removeClass('hide');
+                $("input[name='title']").next('label').text('Název (nepovinné)');
             } else if($("#change-message-type-select").val() === 'task') {
+                $("input[name='title']").next('label').text('Název (povinné)');
                 $(".mes-title-row, .mes-date-row, .mes-online-row").removeClass('hide');
             }
             $("input[name='messageType']").val($("#change-message-type-select").val());
         }
 
         $(document).ready(function() {
+            Materialize.updateTextFields();
             $('.tooltipped').tooltip();
             loadInputsByType();
             $(".modal-close").on("click", function(e){

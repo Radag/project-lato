@@ -1,39 +1,31 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace App\FrontModule\Components\NewGroupForm;
 
 use \Nette\Application\UI\Form;
-use \Nette\Application\UI\Control;
 use App\Model\Manager\GroupManager;
+use App\Model\Manager\NotificationManager;
 
-
-
-/**
- * Description of JoinGroupForm
- *
- * @author Radaq
- */
-class JoinGroupForm extends Control
+class JoinGroupForm extends \App\Components\BaseComponent
 {
-        
-    private $groupManager;
+    /** @var GroupManager */
+    public $groupManager;
     
-    public function __construct(GroupManager $groupManager)
+    /** @var NotificationManager */
+    public $notificationManager;
+    
+    public function __construct(
+        GroupManager $groupManager,
+        NotificationManager $notificationManager
+    )
     {
         $this->groupManager = $groupManager;
-        
+        $this->notificationManager = $notificationManager;        
     }
-    
     
     protected function createComponentForm()
     {
        
-        $form = new \Nette\Application\UI\Form;
+        $form = $this->getForm();
         $form->addText('code', 'Kód skupiny')
              ->setRequired('Vložte kód skupiny.');        
         
@@ -42,40 +34,26 @@ class JoinGroupForm extends Control
         $form->onSuccess[] = [$this, 'processForm'];
         
         $form->onValidate[] = [$this, 'validateCode'];
-        
-        $form->onError[] = function(Form $form) {
-            $this->presenter->payload->invalidForm = true;
-            foreach($form->getErrors() as $error) {
-                $this->presenter->flashMessage($error, 'error');
-            }            
-        };
+
         return $form;
-    }
-    
-    public function render()
-    {
-        $template = $this->template;
-        $template->setFile(__DIR__ . '/JoinGroupForm.latte');
-        $template->render();
     }
     
     public function processForm(Form $form, $values) 
     {
         $group = $this->groupManager->getGroupByCode($values->code);
         if(!empty($group)) {
-            $this->groupManager->addUserToGroup($group, $this->presenter->activeUser->id, GroupManager::RELATION_STUDENT);
-            $this->presenter->flashMessage('Byl jste přiřazen do skupiny.', 'success');
-            $this->presenter->redirect(':Front:Group:default', array('id' => $group->urlId));
+            $this->groupManager->addUserToGroup($group, $this->presenter->activeUser->id, GroupManager::RELATION_STUDENT, 0, $this->notificationManager);
+            $this->presenter->flashMessage('Byl jste přiřazen do skupiny ' . $group->name, 'success');
+            $this->presenter->redirect(':Front:Group:default', ['id' => $group->slug]);
         } else {
             $this->presenter->flashMessage('Zadaný köd není platný.', 'warning');
-        }
-        
+        }     
     }
     
     public function validateCode(Form $form, $values)
     {
-        $idGroup = $this->groupManager->getGroupByCode($values->code);
-        if($idGroup) {
+        $group = $this->groupManager->getGroupByCode($values->code);
+        if($group) {
             return true;
         } else {
             $form->addError("Špatný kód");

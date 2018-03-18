@@ -1,28 +1,25 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace App\FrontModule\Components\Group\About;
 
 use App\Model\Manager\GroupManager;
-/**
- * Description of SignInForm
- *
- * @author Radaq
- */
+use App\Model\Manager\NotificationManager;
+
 class AboutGroup extends \App\Components\BaseComponent
 {
         
-    protected $groupManager;
+    /** @var GroupManager @inject */
+    public $groupManager;
+    
+    /** @var NotificationManager @inject */
+    public $notificationManager;
     
     public function __construct(
-        GroupManager $groupManager
+        GroupManager $groupManager,
+        NotificationManager $notificationManager
     )
     {
         $this->groupManager = $groupManager;
+        $this->notificationManager = $notificationManager;
     }
     
     
@@ -34,4 +31,10 @@ class AboutGroup extends \App\Components\BaseComponent
         parent::render();
     }
     
+    public function handleLeaveGroup()
+    {
+        $this->groupManager->removeUserFromGroup($this->presenter->activeGroup, $this->presenter->activeUser, $this->notificationManager);
+        $this->flashMessage("Opustil jste skupinu " . $this->presenter->activeGroup->name);
+        $this->presenter->redirect(':Front:Homepage:noticeboard');
+    }
 }

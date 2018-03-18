@@ -131,13 +131,13 @@ class AccountSettings extends \App\Components\BaseComponent
             }
             
             $delete = json_decode($values['deleteGroups']);
-            $groups = $this->groupManager->getUserGroups($this->presenter->activeUser);
+            $groups = $this->groupManager->getUserGroups($this->presenter->activeUser)->groups;
             if($groups && $delete) {
               foreach($delete as $idGroup) {
                     if($groups[$idGroup]->relation === 'OWNER') {
                         $this->groupManager->archiveGroup($idGroup);
                     } else {
-                        $this->groupManager->removeUserFromGroup($idGroup, $this->presenter->activeUser->id);
+                        $this->groupManager->removeUserFromGroup($groups[$idGroup], $this->presenter->activeUser);
                     }
                 }  
             }

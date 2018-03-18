@@ -26,6 +26,7 @@ class User extends AbstractEntity {
     public $classification = null;
     public $sex = null;
     public $isFictive = null;
+    public $unreadNotifications = 0;
     
     protected $mapFields = [
         'id' => 'id',
@@ -39,7 +40,8 @@ class User extends AbstractEntity {
         'email_notification' => 'emailNotification',
         'background_image' => 'backgroundImage',
         'sex' => 'sex',
-        'is_fictive' => 'isFictive'
+        'is_fictive' => 'isFictive',
+        'has_new_notification' => 'unreadNotifications'
     ];
     
     public function __construct($data = null)

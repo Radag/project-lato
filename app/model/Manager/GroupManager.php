@@ -2,10 +2,10 @@
 namespace App\Model\Manager;
 
 use Nette;
-use App\Model\Entities\Group;
-use App\Model\Entities\User;
+use App\Model\Entities;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\PublicActionManager;
+use App\Model\Manager\NotificationManager;
 
 class GroupManager extends BaseManager {
  
@@ -19,7 +19,7 @@ class GroupManager extends BaseManager {
     
     /** @var PublicActionManager @inject */
     public $publicActionManager;
-
+    
     /** @var \Dibi\Connection  */
     protected $db;
     
@@ -39,7 +39,7 @@ class GroupManager extends BaseManager {
     }
     
     
-    public function createGroup(Group $group) 
+    public function createGroup(Entities\Group $group) 
     {
         $this->db->begin();
         $this->db->query("INSERT INTO `group`", [
@@ -70,7 +70,7 @@ class GroupManager extends BaseManager {
         return $slug;
     }
     
-    public function addUserToGroup(Group $group, $userId, $relation, $fromLink = 0)
+    public function addUserToGroup(Entities\Group $group, $userId, $relation, $fromLink = 0, $notificationManager = null)
     {
         $added = true;
         $this->db->begin();
@@ -90,12 +90,15 @@ class GroupManager extends BaseManager {
         } else {
             $added = false;
         }
+        if($added && $notificationManager && $relation === self::RELATION_STUDENT) {
+            $notificationManager->addNotificationNewGroupMember($userId, $group);
+        }
         
         $this->db->commit();
         return $added;
     }
 
-    public function setGroupVisited(User $user, $idGroup)
+    public function setGroupVisited(Entities\User $user, $idGroup)
     {
         $this->db->query("UPDATE group_user SET last_visit=NOW() WHERE user_id=? AND group_id=?", $user->id, $idGroup);
     }
@@ -111,7 +114,7 @@ class GroupManager extends BaseManager {
         return $this->db->fetchPairs("SELECT id, main_color FROM group_scheme");
     }
     
-    public function getUserGroups(User $user, $filter = null)
+    public function getUserGroups(Entities\User $user, $filter = null)
     {
         $return = (object)['groups' => [], 'differentRelations' => false];
         $userGroups = $this->db->fetchAll("SELECT T1.id, T3.main_color, T1.name, T1.shortcut, T1.slug, T2.relation_type 
@@ -123,7 +126,7 @@ class GroupManager extends BaseManager {
   
         if(!empty($userGroups)) {
             foreach($userGroups as $s) {
-                $group = new Group;
+                $group = new Entities\Group;
                 $group->id = $s->id;
                 $group->name = $s->name;
                 $group->shortcut = $s->shortcut;
@@ -141,7 +144,7 @@ class GroupManager extends BaseManager {
         return $return;
     }  
 
-    public function getUserGroup($groupSlug, User $user, $isId = false)
+    public function getUserGroup($groupSlug, Entities\User $user, $isId = false)
     {
         $group = $this->db->fetch("SELECT 
                T1.id,
@@ -179,14 +182,14 @@ class GroupManager extends BaseManager {
             LEFT JOIN group_period T8 ON (T8.group_id = T1.id AND T8.active=1)
             WHERE " . ($isId ? "T1.id=?" : "T1.slug=?") . "AND T2.active=1", $user->id, $groupSlug);
         if($group) {
-            $owner = new User();
+            $owner = new Entities\User();
             $owner->surname = $group->owner_surname;
             $owner->name = $group->owner_name;
             $owner->id = $group->owner_id;
             $owner->slug = $group->owner_slug;
-            $owner->profileImage = User::createProfilePath($group->profile_image, $group->owner_sex);
+            $owner->profileImage = Entities\User::createProfilePath($group->profile_image, $group->owner_sex);
            
-            $groupModel = new Group();
+            $groupModel = new Entities\Group();
             $groupModel->owner = $owner;
             $groupModel->id = $group->id;
             $groupModel->name = $group->name;
@@ -216,9 +219,12 @@ class GroupManager extends BaseManager {
     }
     
  
-    public function removeUserFromGroup($idGroup, $idUser)
+    public function removeUserFromGroup(Entities\Group $group, Entities\User $user, NotificationManager $notificationManager)
     {
-        $this->database->query("UPDATE user_group SET ACTIVE=0 WHERE ID_USER=? AND ID_GROUP=?", $idUser, $idGroup);
+        $this->database->query("UPDATE group_user SET active=0 WHERE user_id=? AND group_id=?", $user->id, $group->id);
+        if($notificationManager) {
+            $notificationManager->addNotificationRemoveFromGroup($user, $group);
+        }
     }
     
     public function archiveGroup($idGroup)
@@ -226,14 +232,14 @@ class GroupManager extends BaseManager {
         $this->database->query("UPDATE groups SET ARCHIVED=1 WHERE ID_GROUP=?", $idGroup);
     }
     
-    public function setDeleted(Group $group, $deleted)
+    public function setDeleted(Entities\Group $group, $deleted)
     {
         $this->db->query("UPDATE `group` SET", [
             'show_deleted' => $deleted
         ], "WHERE id=?", $group->id);
     }
     
-    public function editGroup(Group $group)
+    public function editGroup(Entities\Group $group)
     {
         $this->db->query("UPDATE `group` SET", [
             'name' => $group->name,
@@ -251,7 +257,7 @@ class GroupManager extends BaseManager {
     }
     
     
-    public function switchSharing(Group $group, $stateByLink, $stateByCode) 
+    public function switchSharing(Entities\Group $group, $stateByLink, $stateByCode) 
     {
         $this->db->begin();
         $id = $this->db->fetchSingle("SELECT id FROM group_sharing WHERE group_id=?", $group->id);
@@ -299,7 +305,7 @@ class GroupManager extends BaseManager {
          
         $userArray = [];
         foreach($users as $us) {
-            $userArray[] = new User($us);
+            $userArray[] = new Entities\User($us);
              
         }
         return $userArray;
@@ -316,7 +322,7 @@ class GroupManager extends BaseManager {
         FROM `group` T1 WHERE T1.id=?", $idGroup);
     }
     
-    public function insertSchedule($schedule, Group $group)
+    public function insertSchedule($schedule, Entities\Group $group)
     {
         $this->database->beginTransaction();
         $this->database->query('DELETE FROM group_schedule WHERE ID_GROUP=?', $group->id);
@@ -331,18 +337,18 @@ class GroupManager extends BaseManager {
         $this->database->commit();
     }
     
-    public function getSchedule(Group $group)
+    public function getSchedule(Entities\Group $group)
     {
         return $this->db->fetchAll("SELECT * FROM group_schedule WHERE group_id=?", $group->id);
     }
     
-    public function setActivePeriod(Group $group, $period)
+    public function setActivePeriod(Entities\Group $group, $period)
     {
         $this->db->query("UPDATE group_period SET active=0, deactivated_when=NOW() WHERE group_id=? AND active=1", $group->id);
         $this->db->query("UPDATE group_period SET active=1 WHERE group_id=? AND id=?", $group->id, $period);
     }
     
-    public function addGroupPeriod(Group $group, $periodName, $active = 0)
+    public function addGroupPeriod(Entities\Group $group, $periodName, $active = 0)
     {
         $this->db->query("INSERT INTO group_period", [
             'group_id' => $group->id,
@@ -351,7 +357,7 @@ class GroupManager extends BaseManager {
         ]);
     }
     
-    public function getGroupPeriods(Group $group)
+    public function getGroupPeriods(Entities\Group $group)
     {
         return $this->db->fetchAll("SELECT * FROM group_period WHERE group_id=?", $group->id);
     }
@@ -368,7 +374,7 @@ class GroupManager extends BaseManager {
             WHERE T1.user_id=? AND T2.archived=0", $profileId, $guestId);
         
         foreach($groups as $group) {
-            $groupObject = new Group($group);
+            $groupObject = new Entities\Group($group);
             $groupObject->isMy = empty($group->is_my) ? false : true;
             $return[] = $groupObject;
         }
@@ -376,4 +382,12 @@ class GroupManager extends BaseManager {
     }
            
         
+    public function getGroupByCode($code) 
+    {
+        $group = $this->db->fetch("SELECT T1.*, T2.user_id AS owner FROM `group` T1 JOIN group_user T2 ON (T2.group_id=T1.id AND T2.relation_type='owner') WHERE T1.archived=0 AND T1.code=?", $code);
+        $groupEntity = new Entities\Group($group);
+        $groupEntity->owner = new Entities\User();
+        $groupEntity->owner->id = $group->owner;
+        return $groupEntity;
+    }
 }

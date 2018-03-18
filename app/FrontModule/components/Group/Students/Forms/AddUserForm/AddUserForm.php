@@ -21,6 +21,11 @@ class AddUserForm extends \App\Components\BaseComponent
         $this->importForm= $importForm;
     }
     
+    public function render() {
+        $this->template->activeGroup = $this->presenter->activeGroup;
+        parent::render();
+    }
+    
     public function createComponentInviteUserForm()
     {
         return $this->inviteForm->create();
