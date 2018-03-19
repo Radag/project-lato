@@ -1,9 +1,6 @@
 {if $task->isCreator}
     {if $task->createClassification == 1}
         {if $task->timeLeft->invert === 0 }
-        <div class="avatar status">
-            <i class="material-icons in-progress">assignment</i>
-        </div>
         <div class="time-left">
             Termín odevzdání: {$task->deadline->format("j. n. H:i")}
         </div>

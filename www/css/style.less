@@ -274,7 +274,7 @@ strong {
         }
 
         i.failed {
-            background-color: #E91E63;
+            background-color: #ffc107;
         }
 
 
@@ -658,6 +658,7 @@ input[type=search]:not(.browser-default) {
             width: 96px;
             text-align: center;
             font-size: 13px;
+            line-height: 19px;
             font-weight: 500;
             text-transform: uppercase;
 
@@ -671,7 +672,7 @@ input[type=search]:not(.browser-default) {
             }
 
             &.not-submitted {
-                color: #E91E63;
+                color: #ff2b3c;
             }
         }
         
@@ -924,7 +925,7 @@ input[type=search]:not(.browser-default) {
 
 .modal {
     width: 760px;
-    max-width: calc(~'100% - 48px');
+    max-width: calc(~'100% - 24px');
     background-color: #fff;
     max-height: 80%;
 
@@ -1982,6 +1983,13 @@ textarea.materialize-textarea {
 
 /* NAVIGATION HEADER */
 
+#slide-out {
+
+    .side-nav-header {
+        margin-bottom: 16px;
+    }
+}
+
 .main-nav > nav {
     background-color: #2196f3; 
 }
@@ -2303,6 +2311,12 @@ nav .nav-title {
 
 .side-nav {
 
+    .after-header-spacer {
+        height: 8px;
+        width: 100%;
+        background-color: transparent;
+    }
+
 }
 
 .side-nav li {
@@ -2355,7 +2369,6 @@ nav .nav-title {
     line-height: 36px;
     box-sizing: content-box;
     border-bottom: 1px solid #efefef;
-    margin-bottom: 16px;
     flex-wrap: nowrap;
 }
 
@@ -2887,14 +2900,21 @@ nav .nav-title {
             display: flex;
             align-items: center;
 
+            &.active {
+
+                &:hover {
+                    background-color: #e8e8e8 !important;
+                }
+            }
+
             .label {
 
                 .title {
-                    width: 216px;
+                    width: 192px;
                 }
 
                 p {
-                    width: 216px;
+                    width: 168px;
                     margin: 0;
                     font-size: 13px;
                     line-height: 21px;
@@ -2905,7 +2925,7 @@ nav .nav-title {
             .avatar {
                 height: 36px;
                 width: 36px;
-                margin-right: 16px;
+                margin-right: 12px;
 
                 img {
                     height: 36px;
@@ -4727,17 +4747,26 @@ nav .nav-title {
 }
 
 .classification-properties .minified-label {
+    display: flex;
+    align-items: center;
     padding: 24px;
     margin: 0;
     color: rgba(0, 0, 0, .87);
     font-weight: 500;
+
+    .more-info {
+        display: flex;
+        align-items: center;
+        font-weight: 400;
+        color: @secondary-text-color;
+
+        i {
+            margin: 0 8px 0 24px;
+            font-size: 20px;
+        }
+    }
 }
 
-.classification-properties .minified-label span {
-    font-weight: 400;
-    color: @secondary-text-color;
-    font-size: 14px;
-}
 
 .classification-properties .minified-icon {
     color: @secondary-text-color;
@@ -4792,6 +4821,11 @@ nav .nav-title {
 #noticeboard {
 
     #assignments {
+
+        .assignment {
+            background-color: @background-highlighted;
+            border-bottom: none;
+        }
 
         .card {
             margin-bottom: 0;
@@ -5071,5 +5105,15 @@ nav .nav-title {
     }
 }
 
+#slide-out-notification {
+
+    li {
+
+        .active {
+            background-color: @background-highlighted;
+            color: rgba(0, 0, 0, .87);
+        }
+    }
+}
 
 

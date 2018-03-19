@@ -2,13 +2,9 @@
     {if  $singleMode}
         {var $message = $singleMessage}
         {includeblock 'SingleMessage.latte'}
-        {control commentForm-$singleMessage->id}
     {else}
         {foreach $messages as $message}  
-        <div class="card flex-column {if $iterator->isFirst() && $groupPermission['createMessages']}grid-item-fst{/if}{if $message->deleted == 1}card-flat{/if}" id="message-box-num_{$message->id}"> 
             {includeblock 'Message.latte'}
-            {control commentForm-$message->id}
-        </div>
         {/foreach}
         <div class="card card-flat">
             <div class="card-content">

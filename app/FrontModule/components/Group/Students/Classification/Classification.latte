@@ -1,6 +1,6 @@
 {form form}
 <section class="main two-level-nav settings">
-    <div class="container offset-1">
+    {*<div class="container offset-1">
         <div class="row">
             <div class="col s12">
                 <header class="page-header">
@@ -8,13 +8,13 @@
                 </header>  
             </div>
         </div>
-    </div>
+    </div>*}
 
     <div class="container offset-1">
         <div class="row">
             <div class="col s12">
                 <header class="section-header">
-                    <h3>Vlastnosti známky</h3>
+                    <h3>Přidat známku</h3>
                     <div class="flex-spacer"></div>
                 </header>  
             </div>
@@ -25,19 +25,18 @@
         <div class="row">
             <div class="col s12">
                 <div class="card card-flat classification-properties modal-trigger" href="#edit-classification-modal">
-                    <p class="minified-label">{$classificationGroup->name}</p>
+                    <p class="minified-label">{$classificationGroup->name}
+                        <span class="more-info">
+                            <i class="material-icons">event</i> 22. 4. 2018</span></p>
                     <div class="flex-spacer"></div>
-                    <i class="minified-icon material-icons">more_horiz</i>
+                    <i class="minified-icon material-icons">create</i>
                 </div>   
             </div>
         </div>
         <div class="row">
             <div class="col s12">
                 <div class="section-header table-header">   
-                    <div class="title">Student</div>
-                    <div class="flex-spacer"></div>
-                    <div class="notice table-field"></div>
-                    <div class="table-field">Hodnocení</div>
+                    <div class="title">Hodnocení studentů</div>
                 </div>                
                 <ul class="collapsible popout table-body classification-update-table" data-collapsible="expandable">
                     {foreach $members as $member}
@@ -61,7 +60,7 @@
                                     {if $classificationGroup->task->isLate}
                                         <div class="table-field assignment-status not-submitted">Neodevzdáno</div>
                                     {else}
-                                        <div class="table-field assignment-status not-submitted">Čeká na odevzdání</div>
+                                        <div class="table-field assignment-status in-progress">Čeká na odevzdání</div>
                                     {/if}
                                 {/ifset}
                             {/if}
@@ -121,25 +120,27 @@
             </div>
         </div>
     </div>
+
+    <div id="edit-classification-modal" class="modal modal-small">
+        <div class="modal-content">
+            <h3>Upravit známku</h3>
+            <div class="form-row">
+                {input name}
+            </div>
+            <div class="form-row">
+                {input date}
+            </div>
+        </div>
+        <div class="modal-footer clearfix">
+            <div class="flex-spacer"></div>
+            <div class="form-control">
+                <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                <button type="button" class="waves-effect waves-light btn btn-confirm submit-classification" >Potvrdit</button>
+            </div>
+        </div>
+    </div>
 </section>
-<div id="edit-classification-modal" class="modal modal-small">
-    <div class="modal-content">
-        <h3>Vlastnosti známky</h3>
-        <div class="form-row">
-            {input name}
-        </div>
-        <div class="form-row">
-            {input date}
-        </div>
-    </div>
-    <div class="modal-footer clearfix">
-        <div class="flex-spacer"></div>
-        <div class="form-control">
-            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-            <button type="button" class="waves-effect waves-light btn btn-confirm submit-classification" >Potvrdit</button>
-        </div>
-    </div>
-</div>
+
 {/form}
 <script>
     $(document).ready(function() {

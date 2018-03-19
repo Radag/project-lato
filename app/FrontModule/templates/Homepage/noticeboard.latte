@@ -21,7 +21,7 @@
         </div>
     </div>
 <div class="container">
-    {*<div class="row">
+    <div class="row">
         <div class="col s12">
             <table id="one-day-schedule" class="card">
                 <tbody>
@@ -53,7 +53,7 @@
                 </tbody>
             </table>
         </div>
-    </div>*}
+    </div>
     <div class="row">
         <div class="col s12">
             <header class="section-header">
@@ -77,11 +77,11 @@
                 {if $iterator->counter <= 2}
                 <div class="col l6 m12 s12">
                     <div class="card flex-column">
-                        {* {if $task->online}
+                        {if $task->online}
                         <div class="assignment">
                             {control taskHeader-$task->id}
                         </div>
-                        {/if} *}
+                        {/if}
                         {control taskCard $task}
                     </div>
                 </div>

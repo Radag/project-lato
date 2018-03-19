@@ -72,11 +72,12 @@
             <i class="material-icons">done_all</i>
         </a>
     </li>
+    <li class="after-header-spacer"></li>
     {foreach $notifications as $notification} 
     <li><a href="{link readNotification!, 'id'=>$notification->id}" class="clearfix {if empty($notification->isRead)}active{/if}"> 
-        {*<div class="avatar"> 
-            <img src="{$notification->participant->profileImage}" alt="{$notification->participant->name}"> 
-        </div>*}
+        <div class="avatar"> 
+            <img src="/images/default-avatar_man.png" alt=""> 
+        </div>
         <div class="label">
             <div class="title truncate"> 
                 {$notification->title}
@@ -199,7 +200,7 @@
         </a></li>
     <li>
         <a n:class="$presenter->isLinkCurrent('Homepage:timetable') ? active, waves-effect, waves-dark" href="{plink Homepage:timetable}" >
-            <i class="material-icons">insert_invitation</i>Rozvrh
+            <i class="material-icons">event</i>Rozvrh
         </a>
     </li>
     <li>

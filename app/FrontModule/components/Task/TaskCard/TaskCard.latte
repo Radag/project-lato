@@ -6,7 +6,7 @@
         <h3 class="name truncate">
                 {$task->message->user->name} {$task->message->user->surname}
         </h3>
-        <span class="card-date">{$task->deadline->format("j. n.")}</span>
+        {*<span class="card-date">{$task->deadline->format("j. n.")}</span>*}
     </div>
     <div class="card-content">
         <p class="truncate">{if $task->title}<strong>{$task->title} • </strong>{/if}{$task->message->text}</p>
