@@ -7,7 +7,7 @@
                         <i class="material-icons">arrow_back</i>
                     </a>
                 {else}
-                    <a href="#" id="slide-left-button" data-activates="slide-out" class="button-collapse show-on-large slide-out-toggle">
+                    <a href="#" id="slide-left-button" data-target="slide-out" class="button-collapse show-on-large sidenav-trigger">
                         <i class="material-icons">menu</i>
                     </a>
                 {/if}
@@ -23,13 +23,13 @@
             <div class="right-nav-flex">
                 <ul class="navbar-nav">
                     <li>
-                        <a class="button-collapse show-on-large slide-out-toggle ajax" href="{link notificationsRead!}" id="button-notification-slide" data-edge="right" data-activates="slide-out-notification" >
+                        <a class="button-collapse show-on-large sidenav-trigger" href="#" id="button-notification-slide" data-target="slide-out-notification" >
                             <i class="material-icons ">notifications</i>
                             {snippet notificationCount}{if $activeUser->unreadNotifications > 0}<span class="nav-badge">{$activeUser->unreadNotifications}</span>{/if}{/snippet}
                         </a>
                     </li>
                     <li>
-                        <a class="button-collapse show-on-large slide-out-toggle" id="button-conversation-slide" href="#" data-edge="right" data-activates="slide-out-conversation" >
+                        <a class="button-collapse show-on-large sidenav-trigger" id="button-conversation-slide" href="#" data-target="slide-out-conversation" >
                             <i class="material-icons ">chat_bubble</i>
                             {snippet messagesCount}{if $unreadPrivMessages > 0}<span class="nav-badge">{$unreadPrivMessages}</span>{/if}{/snippet}
                         </a>
@@ -47,15 +47,21 @@
 <script>
     $(document).ready(function () {
         $('.side-nav-close').on('click', function () {
-            $('.button-collapse').sidenav('hide');
+            $('.sidenav').sidenav('close');
         });
-
-        $('#button-notification-slide, #button-conversation-slide').sidenav({
-            edge: 'right'
-        });
+        
         $('.dropdown-button').on('click', function () {
             $('.dropdown-button').not($(this)).dropdown('close');
         });
+        $('.sidenav.slide-out-right').sidenav({
+            menuWidth: 300, // Default is 240
+            edge: 'right'
+        });
+        $('.sidenav.slide-out-left').sidenav({
+            menuWidth: 300, // Default is 240
+            edge: 'left'
+        });
+         
     });
 </script>
 
@@ -141,7 +147,7 @@
 {/block}
 
 {block mainMenu}
-<ul id="slide-out" class="sidenav">
+<ul id="slide-out" class="sidenav slide-out-left">
     <li class="side-nav-close">
         <i class="material-icons">keyboard_arrow_left</i>Zavřít panel    
     </li>
@@ -161,7 +167,7 @@
         </a>
     </li>
     <li>
-        <ul class="collapsible collapsible-accordion">
+        <ul class="collapsible">
             <li>
                 <a n:class="($presenter->isLinkCurrent('Group:default') ? active), collapsible-header, waves-effect, waves-dark">
                     <i class="material-icons">people</i>Skupiny
