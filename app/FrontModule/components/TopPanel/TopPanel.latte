@@ -1,9 +1,6 @@
 <header class="navbar-fixed main-nav">
     <nav>
         <div class="nav-wrapper">
-            {include mainMenu}
-            {include conversationColumn}
-            {include notificationColumn}
             <div class="left-nav-flex">
                 {if $backArrow}
                     <a href="{$backArrow}" id="slide-left-button" class="show-on-large">
@@ -42,7 +39,10 @@
             </div>
         </div>
         <div class="progress loading-data" id="main-progress-loader"><div class="indeterminate"></div></div>
-    </nav>
+    </nav>     
+    {include mainMenu}
+    {include conversationColumn}
+    {include notificationColumn}
 </header>
 <script>
     $(document).ready(function () {
@@ -61,7 +61,7 @@
 
 {block notificationColumn}
 {snippet right-notification-list}
-<ul id="slide-out-notification" class="side-nav slide-out-right">
+<ul id="slide-out-notification" class="sidenav slide-out-right">
     <li class="side-nav-close">
         <i class="material-icons">keyboard_arrow_left</i>Zavřít panel    
     </li>
@@ -93,7 +93,7 @@
 
 {block conversationColumn}
 {snippet right-conversation-list}
-<ul id="slide-out-conversation" class="side-nav slide-out-right">
+<ul id="slide-out-conversation" class="sidenav slide-out-right">
     <li class="side-nav-close">
         <i class="material-icons">keyboard_arrow_left</i>Zavřít panel    
     </li>
@@ -141,7 +141,7 @@
 {/block}
 
 {block mainMenu}
-<ul id="slide-out" class="side-nav">
+<ul id="slide-out" class="sidenav">
     <li class="side-nav-close">
         <i class="material-icons">keyboard_arrow_left</i>Zavřít panel    
     </li>
