@@ -34,7 +34,7 @@
             data.push({ tag: $(this).data("name"), id: $(this).attr('value') });
         });
         
-        $('.message-modal-users').material_chip({ data: data});
+        $('.message-modal-users').chips({ data: data});
         $('.message-modal-users').on('chip.delete', function(e, chip){
             $(".added-users-list[value='" + chip.id + "']").remove();
         });
