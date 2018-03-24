@@ -46,22 +46,30 @@
         <div class="card-content">
             <p class="secondary-par">Zobrazit pouze následující položky</p>
             <form class="checkbox-form-block">
-                <div class="form-row">
-                    <input data-link="{link changeFilter! filter=>'all'}" type="radio" value="all" class="filled-in" id="opt1" name="stream-filter" checked="checked" />
-                    <label for="opt1">Všechny příspěvky</label>
-                </div>
-                <div class="form-row">
-                    <input data-link="{link changeFilter! filter=>'notice'}" type="radio" value="notice" class="filled-in" id="opt2" name="stream-filter" />
-                    <label for="opt2">Oznámení</label>
-                </div>
-                <div class="form-row">
-                    <input data-link="{link changeFilter! filter=>'material'}" type="radio" value="material" class="filled-in" id="opt3" name="stream-filter" />
-                    <label for="opt3">Studijní materiály</label>
-                </div>
-                <div class="form-row">
-                    <input data-link="{link changeFilter! filter=>'task'}" type="radio" value="task" class="filled-in" id="opt4" name="stream-filter" />
-                    <label for="opt4">Povinnosti</label>
-                </div>
+                <p class="form-row">
+                    <label>
+                        <input data-link="{link changeFilter! filter=>'all'}" type="radio" value="all" id="opt1" name="stream-filter" checked="checked" />
+                        <span for="opt1">Všechny příspěvky</span>
+                    </label>
+                </p>
+                <p class="form-row">
+                    <label>
+                        <input data-link="{link changeFilter! filter=>'notice'}" type="radio" value="notice"  id="opt2" name="stream-filter" />
+                        <span for="opt2">Oznámení</span>
+                    </label>
+                </p>
+                <p class="form-row">
+                    <label>
+                        <input data-link="{link changeFilter! filter=>'material'}" type="radio" value="material"  id="opt3" name="stream-filter" />
+                        <span for="opt3">Studijní materiály</span>
+                    </label>
+                </p>
+                <p class="form-row">
+                    <label>
+                        <input data-link="{link changeFilter! filter=>'task'}" type="radio" value="task" id="opt4" name="stream-filter" />
+                        <span for="opt4">Povinnosti</span>
+                    </label>
+                </p>
             </form>
             <script>
                 $("form input[name='stream-filter']").on('change', function (event) {
