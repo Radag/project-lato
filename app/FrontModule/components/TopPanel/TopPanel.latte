@@ -49,10 +49,6 @@
         $('.side-nav-close').on('click', function () {
             $('.sidenav').sidenav('close');
         });
-        
-        $('.dropdown-button').on('click', function () {
-            $('.dropdown-button').not($(this)).dropdown('close');
-        });
         $('.sidenav.slide-out-right').sidenav({
             menuWidth: 300, // Default is 240
             edge: 'right'
@@ -169,11 +165,11 @@
     <li>
         <ul class="collapsible">
             <li>
-                <a n:class="($presenter->isLinkCurrent('Group:default') ? active), collapsible-header, waves-effect, waves-dark">
+                <div class="collapsible-header waves-effect waves-dark">
                     <i class="material-icons">people</i>Skupiny
                     <div class="flex-spacer"></div>
                     <i class="material-icons show-more">expand_more</i>
-                </a>
+                </div>
                 <div class="collapsible-body">
                     <ul>
                         {foreach $groups->groups as $group}

@@ -9,8 +9,8 @@ $(function() {
         },
         success: function (data) {
             $("#main-progress-loader").hide();
-            $('.dropdown-button').dropdown();
-            Materialize.updateTextFields();
+            //$('.dropdown-button').dropdown();
+            M.updateTextFields();
         },
         error: function(data) {
             $("#main-progress-loader").hide();

@@ -7,7 +7,7 @@
                     <a href="{link addClassificationToUsers!}" class="btn white no-shadow modal-trigger" id="add-all-user-classification-button">
                         Přidat známku
                     </a>
-                    <button class="btn white no-shadow dropdown-button" id="user-action-button" data-beloworigin="true" data-activates="action-dropdown" disabled="disabled">
+                    <button class="btn white no-shadow dropdown-trigger" id="user-action-button" data-target="action-dropdown" disabled="disabled">
                         Akce
                     </button>
                     <ul id="action-dropdown" class="dropdown-content">
@@ -27,7 +27,7 @@
                             </a>
                         </li>
                     </ul>
-                    <div class="flex-spacer"></div>
+                    <div class="flex-spacer"></div> 
                 </header>  
             </div>
         </div>
@@ -44,7 +44,7 @@
                     <script>
                          $(function () {                           
                             $('.collapsible-header').on('click', function (e) {
-                                if($(e.target).parents(".dropdown-button").length) {
+                                if($(e.target).parents(".dropdown-trigger").length) {
                                     e.stopPropagation();
                                 }
                             });
@@ -76,17 +76,14 @@
                             });
                             
                             $("#button-open-all-cards").on("click", function() {
-                                if($(this).data('status') == 'close') {
-                                    $(".collapsible-header").addClass("active");
-                                    $(".collapsible").collapsible({ accordion: false }); 
+                                if($(this).data('status') === 'close') {
+                                    $("#students-list-callaps").collapsible('open');
+                                    $("#students-list-callaps li").addClass("active");
                                     $(this).data('status', 'open');
                                 } else {
-                                    $(".collapsible-header").removeClass(function(){
-                                        return "active";
-                                    });
-                                    $(".collapsible").collapsible({ accordion: true });
-                                    $(".collapsible").collapsible({ accordion: false });
-                                     $(this).data('status', 'close');
+                                    $("#students-list-callaps").collapsible('close');
+                                    $("#students-list-callaps li").removeClass('active');
+                                    $(this).data('status', 'close');
                                 }                          
                             });
                             
@@ -144,9 +141,10 @@
                                 window.location.replace(url);
                             });
                         });
+                        
                     </script>
                     {snippet memberList}
-                    <ul class="collapsible popout table-body" data-collapsible="expandable">
+                    <ul id="students-list-callaps" class="collapsible popout table-body" >
                         {foreach $groupMembers as $member}
                         <li>
                             <div class="collapsible-header table-row">
@@ -166,10 +164,10 @@
                                 </div>
                                 <div class="flex-spacer"></div>
                                 <div n:if="$member->isFictive == 0" class="table-field middle-column">
-                                    <a class="btn-flat btn-icon dropdown-button waves-effect waves-dark" data-target="user-action-dropdown-{$member->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                                    <a href="#" class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" data-target="user-action-dropdown-{$member->id}" >
                                         <i class="material-icons">more_horiz</i>
                                     </a>
-                                    <ul id='user-action-dropdown-{$member->id}' class='dropdown-content'>
+                                    <ul id="user-action-dropdown-{$member->id}" class="dropdown-content">
                                         <li><a href="{plink Profile:default 'id'=>$member->slug}">Zobrazit profil</a></li>
                                         <li><a href="{plink Conversation:default 'users'=>$member->slug}">Poslat soukromou zpravu</a></li>
                                     </ul>

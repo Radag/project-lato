@@ -16,9 +16,9 @@
         </h3>
         <span class="card-date">{$message->created|date:"j. n."}</span>
      
-        <a class="btn-flat btn-icon dropdown-button card-options waves-effect waves-dark" data-activates="message_dropdown_{$message->id}" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+        <button type="button" class="btn-flat btn-icon dropdown-trigger card-options waves-effect waves-dark" data-target="message_dropdown_{$message->id}" >
             <i class="material-icons">more_horiz</i>
-        </a>
+        </button>
         <ul id='message_dropdown_{$message->id}' class='dropdown-content'>
             {if $message->deleted == 0}
                 {if !$message->top}

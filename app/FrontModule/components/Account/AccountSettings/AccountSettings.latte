@@ -100,9 +100,9 @@
                                         <div class="admin-mark" style="background-color: {$group->mainColor|noescape}"></div>
                                     </div>
                                     <div class="label">{$group->name} {*<span>(g2)</span>*}</div>
-                                    <a class="btn-flat btn-icon dropdown-button waves-effect waves-dark" data-activates="group{$group->id}-options" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                                    <button type="button" class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" data-target="group{$group->id}-options" >
                                         <i class="material-icons">more_horiz</i>
-                                    </a>
+                                    </button>
                                     <ul id='group{$group->id}-options' class="dropdown-content">
                                         <li><a href="" class="delete-group-button waves-effect waves-dark">Smazat skupinu</a></li>
                                     </ul>
@@ -129,9 +129,9 @@
                                 <li class="group-list" data-action="leave" data-group-id="{$group->id}">
                                     <div class="group-shortcut-circle" style="background: {$group->mainColor|noescape};">{$group->shortcut|substr:0,1}</div>
                                     <div class="label">{$group->name} {*<span>(g2)</span>*}</div>
-                                    <a class="btn-flat btn-icon dropdown-button waves-effect waves-dark" data-activates="group{$group->id}-options" data-beloworigin="true" data-alignment="right" data-constraintwidth="false">
+                                    <button type="button" class="btn-flat btn-icon dropdown-button waves-effect waves-dark" data-target="group{$group->id}-options" >
                                         <i class="material-icons">more_horiz</i>
-                                    </a>
+                                    </button>
                                     <ul id='group{$group->id}-options' class="dropdown-content">
                                         <li><a href="" class="delete-group-button waves-effect waves-dark">Opustit skupinu</a></li>
                                     </ul>
