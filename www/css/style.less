@@ -21,6 +21,11 @@ body {
     -moz-osx-font-smoothing: grayscale;
     font-size:14px;
     line-height: 1.6em;
+    font-family: 'Roboto', 'Open sans', sans-serif;
+
+    * {
+        font-family: 'Roboto', 'Open sans', sans-serif;        
+    }
 }
 
 
@@ -2309,7 +2314,7 @@ nav .nav-title {
 
 /* ----- SIDEBAR NAVIGATION ----- */
 
-.side-nav {
+.sidenav {
 
     .after-header-spacer {
         height: 8px;
@@ -2319,21 +2324,21 @@ nav .nav-title {
 
 }
 
-.side-nav li {
+.sidenav li {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     padding: 0;
 }
 
-.side-nav li > a {
+.sidenav li > a {
     display: flex;
     padding: 0 16px;
     height: 56px;
     line-height: 56px;
 }
 
-.side-nav li > a > i.material-icons {
+.sidenav li > a > i.material-icons {
     color: @secondary-text-color;
     text-align: center;
     width: 36px !important;
@@ -2343,7 +2348,7 @@ nav .nav-title {
     font-size: 22px !important;
 }
 
-.side-nav .side-nav-close {
+.sidenav .side-nav-close {
     cursor: pointer;
     border-bottom: 1px solid #efefef;
     padding: 0 16px;
@@ -2352,17 +2357,17 @@ nav .nav-title {
 }
 
 @media only screen and (min-width: 601px) {
-    .side-nav .side-nav-close {
+    .sidenav .side-nav-close {
         display: none;
     } 
 }
 
-.side-nav .side-nav-close,
-.side-nav .side-nav-close i {
+.sidenav .side-nav-close,
+.sidenav .side-nav-close i {
     color: #2979FF !important;
 }
 
-.side-nav .side-nav-header {
+.sidenav .side-nav-header {
     display: flex;
     padding: 20px 16px;
     height: 36px;
@@ -2373,22 +2378,22 @@ nav .nav-title {
 }
 
 @media only screen and (max-width: 600px) {
-    .side-nav .side-nav-header {
+    .sidenav .side-nav-header {
         padding: 16px;
     } 
 }
 
 @media only screen and (min-width: 601px) {
-    .side-nav .side-nav-header {
+    .sidenav .side-nav-header {
         border-top: 5px solid #f9f9f9;
     } 
 }
 
-.side-nav .side-nav-header .avatar {
+.sidenav .side-nav-header .avatar {
     margin-right: 32px;
 }
 
-.side-nav .side-nav-header .title {
+.sidenav .side-nav-header .title {
     max-width: calc(~'100% - 68px');
     font-size: 15px;
     font-weight: 500;
@@ -2397,32 +2402,32 @@ nav .nav-title {
 }
 
 @media only screen and (max-width: 600px) {
-    .side-nav .side-nav-header .title {
+    .sidenav .side-nav-header .title {
         font-size: 14px;
     } 
 }
 
-.side-nav li a {
+.sidenav li a {
     flex-grow: 1;
     font-weight: 700;
     color: rgba(0, 0, 0, .87);
 }
 
-.side-nav .collapsible {
+.sidenav .collapsible {
     flex-grow: 1;
 }
 
-.side-nav .collapsible-body {
+.sidenav .collapsible-body {
     display: flex;
     flex-grow: 1;
 }
 
-.side-nav .collapsible-body ul {
+.sidenav .collapsible-body ul {
     flex-grow: 1;
 }
 
-.side-nav > li > a.active,
-.side-nav > li > a.active i { 
+.sidenav > li > a.active,
+.sidenav > li > a.active i { 
     color: #2979FF;
 }
 
@@ -2449,20 +2454,20 @@ nav .nav-title {
 }
 
 
-.side-nav a,
-.side-nav .collapsible-header {
+.sidenav a,
+.sidenav .collapsible-header {
     padding: 0 16px;
     height: 56px;
     line-height: 56px;
 }
 
-.side-nav .collapsible-body {
+.sidenav .collapsible-body {
     padding: 16px 0;
 }
 
 
 
-.side-nav .collapsible-body li a {
+.sidenav .collapsible-body li a {
     padding: 0 16px;
     align-items: center;
     font-weight: 400 !important;
@@ -2473,27 +2478,27 @@ nav .nav-title {
     transition: color 300ms ease-in-out;
 }
 
-.side-nav .collapsible-body li a:hover {
+.sidenav .collapsible-body li a:hover {
     background-color: transparent;
     color: rgba(0, 0, 0, .87) !important;
 }
 
-.side-nav .collapsible-body li a.active {
+.sidenav .collapsible-body li a.active {
     color: rgba(0, 0, 0, .87) !important;
     font-weight: 500 !important;
 }
 
 
-.side-nav .collapsible-body li a i {
+.sidenav .collapsible-body li a i {
     color: @secondary-text-color !important;
 }
 
-.side-nav .divider {
+.sidenav .divider {
     margin: 20px 0;
     background-color: #efefef;
 }
 
-.side-nav h4 {
+.sidenav h4 {
     font-size: 13px;
     color: @secondary-text-color;
     line-height: 1em;
@@ -2502,11 +2507,11 @@ nav .nav-title {
     font-weight: 500;
 }
 
-.side-nav .empty {
+.sidenav .empty {
     height: 40px;
 }
 
-.side-nav {
+.sidenav {
 
 
     .admin-mark {
