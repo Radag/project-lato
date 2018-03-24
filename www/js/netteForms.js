@@ -295,8 +295,7 @@ Nette.showFormErrors = function(form, errors) {
 	}
 
 	if (messages.length) {
-                Materialize.toast(messages.join('\n'), 4000, 'error');
-
+                M.toast({html: messages.join('\n'), displayLength: 4000, classes: 'error'});
 		if (focusElem) {
 			focusElem.focus();
 		}

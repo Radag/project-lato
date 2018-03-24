@@ -16,7 +16,7 @@
                                 <div class="date">Doručeno {$message->created->format("h:m d.m.Y")}</div>
                             </div>
                             <div class="card-content">
-                                <p>{$message->text}</p>
+                                <p>{$message->text|noescape}</p>
                             </div>
                         </div>
                         <div class="avatar">
@@ -92,6 +92,7 @@
                             <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
                             <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" >Potvrdit</button>
                         </div>
+                        {*
                         <script>
                             CKEDITOR.replace( 'new-message-area', {
                                 uiColor: '#FFFFFF',
@@ -104,6 +105,7 @@
                                 placeholder: 'some value'
                             });
                         </script>
+                        *}
                     </div>
                     {/form}
                     <script>

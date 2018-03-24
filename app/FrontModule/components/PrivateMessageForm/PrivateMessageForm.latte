@@ -62,7 +62,7 @@
             {/snippet}
             <script>
                 var chipsData = [];
-                var toUsers = [];
+                
                 function addNewUser(ele) {
                     var exist = false;
                     for(var i=0; chipsData.length>i; i++) {
@@ -71,17 +71,25 @@
                         }
                     }
                     if(!exist) {
-                        chipsData.push({ tag: $(ele).data('user-name'), id: $(ele).data('user-id') });
-                        toUsers.push($(ele).data('user-id'));
-                        $("input[name='users']").val(toUsers);
-                        changeSubmitButton();
+                        chipsData.push({ tag: $(ele).data('user-name'), id: $(ele).data('user-id') });                        
+                        updateUsersInput()
                     }
                     $('.message-modal-users').chips({ 
                         data: chipsData,
-                        onChipDelete: function(chip) {
-                            console.log("ahoj");
+                        onChipDelete: function(id, ele, chip) {
+                            updateUsersInput()
                         }
                     });
+                }
+                
+                function updateUsersInput()
+                {
+                    var toUsers = [];
+                    for(var i=0; i<chipsData.length; i++) {
+                        toUsers.push(chipsData[i].id);
+                    }
+                    $("input[name='users']").val(toUsers);
+                    changeSubmitButton();
                 }
 
                 function changeSubmitButton() {

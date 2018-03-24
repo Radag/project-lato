@@ -52,22 +52,27 @@ class ConversationPresenter extends BasePresenter
     {
         $ids = [];
         $messages = [];
-        if(empty($id)) {
+        if(empty($id) && !empty($users)) {
             $this->template->attenders = $this->userManager->getMultiple(explode(',', $users), true);
             foreach($this->template->attenders as $att) {
                 $ids[] = $att->id;
             }
-        } else {
+        } elseif(!empty($id)) {
             $conversation = $this->conversationManager->getConversation($id, $this->activeUser);
+            if(empty($conversation->users)) {
+                $this->redirect('Conversation:list');
+            }
             $messages = $conversation->messages;
             $this->template->attenders = $conversation->users;
+        } else {
+            $this->redirect('Conversation:list');
         }
         
         $attName = [];
         foreach($this->template->attenders as $att) {
             $attName[] = $att->name . ' ' . $att->surname;
         }
-        $this['topPanel']->setTitle('Konverzace s ' . implode(',', $attName));
+        $this['topPanel']->setTitle('Konverzace s ' . implode(', ', $attName));
         $this['form']->setValues([
             'users' => implode(',', $ids),
             'conversation_id' => $id

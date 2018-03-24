@@ -105,7 +105,7 @@ function latoShowAllComments(comment) {
 
 function latoShowUpFlashMessages() {
     $("#flashMessagesWrapper .flash").each(function(index, value){
-        Materialize.toast($(value).text(), 4000, $(value).data('type'));
+        M.toast({html: $(value).text(), displayLength: 4000, classes: $(value).data('type')});
         $(this).remove();
     });
 }
