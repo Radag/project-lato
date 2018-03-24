@@ -103,7 +103,6 @@
         }
 
         $(document).ready(function() {
-            Materialize.updateTextFields();
             $('.tooltipped').tooltip();
             loadInputsByType();
             $(".modal-close").on("click", function(e){
@@ -131,7 +130,7 @@
 </div>
 <script>
     $(document).ready(function() {
-        $('select').material_select();
+        $('select').formSelect();
     });
 
     $(".materialize-textarea").on('keydown', function(event) {

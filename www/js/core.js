@@ -10,6 +10,7 @@ $(function() {
         success: function (data) {
             $("#main-progress-loader").hide();
             $('.dropdown-button').dropdown();
+            Materialize.updateTextFields();
         },
         error: function(data) {
             $("#main-progress-loader").hide();

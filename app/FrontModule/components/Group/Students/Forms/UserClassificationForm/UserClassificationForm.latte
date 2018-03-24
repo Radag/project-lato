@@ -38,7 +38,7 @@
         $('.message-modal-users').on('chip.delete', function(e, chip){
             $(".added-users-list[value='" + chip.id + "']").remove();
         });
-        $('select').material_select();
+        $('select').formSelect();
         $("#form-user-classification input[name='name']").on("keyup", function(e) {
            if($(this).val() === "") {
                $("#form-user-classification .submit-button").prop('disabled', true);

@@ -16,7 +16,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:400i&subset=latin-ext" rel="stylesheet">
 
     <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="/css/materialize.min.css"  media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="/lib/materialize/css/materialize.min.css"  media="screen,projection"/>
     <link type="text/css" rel="stylesheet" href="/css/style.css"  media="screen,projection"/>
     {ifset $colorScheme}
         <link type="text/css" rel="stylesheet" href="/css/theme-{$colorScheme}.css"  media="screen,projection"/>
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script type="text/javascript" src="/js/dropzone.js"></script>
     <script type="text/javascript" src="/js/core.js"></script>
-    <script type="text/javascript" src="/js/materialize.js"></script>
+    <script type="text/javascript" src="/lib/materialize/js/materialize.min.js"></script>
     <script type="text/javascript" src="/js/netteForms.js"></script>
     <script type="text/javascript" src="/js/nette.ajax.js"></script>
     <script type="text/javascript" src="/js/upload.js"></script>
@@ -120,9 +120,9 @@
                         data: JSON.parse(data.users)
                     });
                 });*/
-                $('select').material_select();
+                $('select').formSelect();
             });
-            $('.button-collapse').sideNav({
+            $('.button-collapse').sidenav({
                 menuWidth: 300, // Default is 240
             });          
         </script>

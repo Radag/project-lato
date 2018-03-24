@@ -76,7 +76,12 @@
                         $("input[name='users']").val(toUsers);
                         changeSubmitButton();
                     }
-                    $('.message-modal-users').material_chip({ data: chipsData});
+                    $('.message-modal-users').material_chip({ 
+                        data: chipsData,
+                        onChipDelete: function(chip) {
+                            console.log("ahoj");
+                        }
+                    });
                 }
 
                 function changeSubmitButton() {
