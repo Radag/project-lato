@@ -17,9 +17,9 @@
                     </ul>
                     <ul class="left options">
                         <li>
-                            <a type="button" id="button-open-all-cards" data-status="close" class="btn-flat btn-icon">
+                            <button id="button-open-all-cards" data-status="close" class="btn-flat btn-icon">
                                 <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Otevřít všechny karty">visibility</i>
-                            </a>
+                            </button>
                         </li>
                         <li>
                             <a href="#add-users" class="btn-flat btn-icon modal-trigger">
@@ -27,7 +27,6 @@
                             </a>
                         </li>
                     </ul>
-                    <div class="flex-spacer"></div> 
                 </header>  
             </div>
         </div>
@@ -37,9 +36,10 @@
             <div class="col s12">
                 <form action="#">
                     <div class="section-header table-header">
-                        <input type="checkbox" class="filled-in" id="select-all" />
-                        <label for="select-all"></label>   
-                        <div class="title">Student</div>
+                        <label>
+                            <input type="checkbox" class="filled-in" id="select-all" />
+                            <span for="select-all">Student</span>
+                        </label>   
                     </div>
                     <script>
                          $(function () {                           
@@ -148,8 +148,10 @@
                         {foreach $groupMembers as $member}
                         <li>
                             <div class="collapsible-header table-row">
-                                <input type="checkbox" class="filled-in user-checkbox" id="user_{$member->id}" data-id="{$member->id}" data-slug="{$member->slug}" />
-                                <label for="user_{$member->id}"></label>
+                                <label>
+                                    <input type="checkbox" class="filled-in user-checkbox" id="user_{$member->id}" data-id="{$member->id}" data-slug="{$member->slug}" />
+                                    <span for="user_{$member->id}"></span>
+                                </label>
                                 {if $member->isFictive}
                                     <div class="avatar small fictive-user">
                                         {$member->surname|substr:0,1}

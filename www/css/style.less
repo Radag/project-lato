@@ -403,7 +403,7 @@ strong {
 // Forms 
 
 [type="checkbox"]:not(:checked)+label,
-[type="radio"]:not(:checked)+label {
+[type="radio"]:not(:checked)+span {
     color: @secondary-text-color;
     height: auto;
     min-height: 25px;
@@ -417,7 +417,7 @@ strong {
 }
 
 [type="checkbox"].filled-in:checked+label,
-[type="radio"].filled-in:checked+label {
+[type="radio"]:checked+span {
     color: rgba(0, 0, 0, .87);
     font-weight: 500;
     font-size: 14px;
@@ -550,11 +550,15 @@ input[type=search]:not(.browser-default) {
     font-size: 13px;
     font-weight: 500;
 
-    [type="checkbox"]+label {
-        padding-left: 20px;
-        margin-right: 24px;
-        height: 25px;
-        line-height: 25px;
+    label {
+        height: 21px;
+
+        [type="checkbox"]+span:not(.lever) {
+            padding-left: 44px;
+            font-size: 13px;
+            height: 21px;
+            line-height: 21px;
+        }
     }
 
     @media only screen and (max-width: 600px) {
@@ -571,6 +575,17 @@ input[type=search]:not(.browser-default) {
 .table-body {
     box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
     margin: 0 0 32px 0;
+
+    label {
+        height: 21px;
+
+        [type="checkbox"]+span:not(.lever) {
+            padding-left: 44px;
+            font-size: 13px;
+            height: 21px;
+            line-height: 21px;
+        }
+    }
 
     li {
         background-color: #fff;
@@ -716,28 +731,31 @@ input[type=search]:not(.browser-default) {
         & > li {
             box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
             margin: 0;
+
+            .collapsible-header {
+                -webkit-transition:  300ms ease-in-out;
+                -moz-transition:  300ms ease-in-out;
+                -o-transition:  300ms ease-in-out;
+                transition:  300ms ease-in-out;
+            }
         }
 
         & > li.active {
             box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+
+            .collapsible-header {
+                background-color: @background-highlighted;
+                border-bottom: none;
+            }
+
         }
 
-        .collapsible-header {
-            -webkit-transition:  300ms ease-in-out;
-            -moz-transition:  300ms ease-in-out;
-            -o-transition:  300ms ease-in-out;
-            transition:  300ms ease-in-out;
-        }
-
+        
         &.classmates {
 
             .collapsible-header {
                 cursor: default;
             }
-        }
-
-        .collapsible-header.active {
-            background-color: @background-highlighted;
         }
 
         .collapsible-body {
@@ -1104,6 +1122,11 @@ input[type=search]:not(.browser-default) {
         .button-collapse {
             margin: 0;
             height: auto !important;
+
+            i {
+                width: 40px;
+                text-align: center;
+            }
         }
 
         .content-nav {
@@ -1987,8 +2010,18 @@ textarea.materialize-textarea {
 
 /* NAVIGATION HEADER */
 
+
+#slide-left-button {
+
+        i {
+            width: 40px;
+            text-align: center;
+        }
+    }
+
 #slide-out {
 
+    
     .side-nav-header {
         margin-bottom: 16px;
     }
@@ -2337,7 +2370,7 @@ nav .nav-title {
     line-height: 56px;
 }
 
-.sidenav li > a > i.material-icons {
+.sidenav li i.material-icons {
     color: @secondary-text-color;
     text-align: center;
     width: 36px !important;
@@ -2416,7 +2449,7 @@ nav .nav-title {
     flex-grow: 1;
 }
 
-.sidenav .collapsible-body {
+.sidenav .collapsible li.active .collapsible-body {
     display: flex;
     flex-grow: 1;
 }
@@ -2458,6 +2491,9 @@ nav .nav-title {
     padding: 0 16px;
     height: 56px;
     line-height: 56px;
+    flex-grow: 1;
+    font-weight: 700;
+    color: rgba(0, 0, 0, .87);
 }
 
 .sidenav .collapsible-body {
