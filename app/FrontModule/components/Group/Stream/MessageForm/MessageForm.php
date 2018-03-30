@@ -87,6 +87,7 @@ class MessageForm extends \App\Components\BaseComponent
                  ->setRequired('Vložte čas')
                  ->addRule(Form::PATTERN, 'Čas musí být ve formátu 12:45', '([0-9]{2})\:([0-9]{2})');
         $form->addCheckbox('online', "Studenti odevzdají práci online");
+        $form->addCheckbox('student_list', "Vytvořit prezenční listinu");
         $form->addCheckbox('create_classification', "Povinnost bude známkována");
         $form->addHidden('attachments');
         $form->addSubmit('send', 'Publikovat');

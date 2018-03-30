@@ -130,7 +130,8 @@ class Classification extends \App\Components\BaseComponent
         $form = $this->getForm();
         $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, [GroupManager::RELATION_STUDENT, GroupManager::RELATION_FIC_STUDENT], $students);   
         foreach($members as $member) {
-            $form->addSelect('grade' . $member->id, 'Známka', $this->grades);
+            $form->addSelect('grade' . $member->id, 'Známka', $this->grades)
+                 ->setDefaultValue('—');
             $form->addTextArea('notice' . $member->id, 'Poznámka')
                  ->setAttribute('placeholder', 'Vložit poznámku k hodnocení ...');
         }
@@ -187,15 +188,21 @@ class Classification extends \App\Components\BaseComponent
         
     public function createComponentEditClassGroupForm()
     {
-        $form = new \Nette\Application\UI\Form;
+        $form = $this->getForm();
         $form->addText('name', 'Název')
              ->setRequired('Prosím napiště téma hodnocení.');
         $form->addText('date', 'Datum')
+             ->setAttribute('type', 'date')
              ->setAttribute('placeholder', 'Datum (nepovinné)');
         $form->addHidden('id');
         $form->addSubmit('send', 'Potvrdit');
 
-        $form->onSuccess[] = function(Form $form, $values) {
+        $form->onSuccess[] = function($form, $values) {
+            if(!empty($values->date)) {
+                $values->date = \DateTime::createFromFormat('Y-m-d', $values->date);
+            } else {
+                $values->date = null;
+            }            
             $this->classificationManager->updateClassificationGroup($values);
             $this->presenter->redirect('this');
         };

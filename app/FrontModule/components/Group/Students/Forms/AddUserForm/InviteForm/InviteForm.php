@@ -32,7 +32,7 @@ class InviteForm extends \App\Components\BaseComponent
     {
         $form = $this->getForm();
         $form->addText('userName', 'Název hodnocení');
-        $form->addHidden('user_id');
+        $form->addHidden('users');
         $form->addSubmit('send', 'Vytvořit');
 
         $form->onSuccess[] = [$this, 'processForm'];
@@ -58,12 +58,15 @@ class InviteForm extends \App\Components\BaseComponent
 
     public function processForm(Form $form, $values) 
     {
-        if($values->user_id) {
-            $added = $this->groupManager->addUserToGroup($this->presenter->activeGroup, $values->user_id, GroupManager::RELATION_STUDENT);
-            if($added) {
-                $this->presenter->flashMessage('Uživatel byl přidán', 'success');
-            } else {
-                $this->presenter->flashMessage('Uživatel je již členem skupiny', 'warning');
+        if($values->users) {
+            $users = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, GroupManager::RELATION_STUDENT, explode(',', $values->users));
+            foreach($users as $user) {
+                $added = $this->groupManager->addUserToGroup($this->presenter->activeGroup, $user->id, GroupManager::RELATION_STUDENT);
+                if($added) {
+                    $this->presenter->flashMessage("Student " . $user->name . " " . $user->surname . " byl přidán", 'success');
+                } else {
+                    $this->presenter->flashMessage("Student " . $user->name . " " . $user->surname . " je již členem skupiny", 'success');
+                }
             }
             $this->presenter->redirect(':Front:Group:users');
         }        

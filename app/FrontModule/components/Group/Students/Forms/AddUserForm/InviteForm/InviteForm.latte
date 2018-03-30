@@ -1,4 +1,4 @@
-{form form}
+{form form id=>'invite-user-form'}
     <div class="modal-bar">
         <button type="button" class="back-button">
             <i class="material-icons">arrow_back</i>
@@ -7,21 +7,12 @@
     </div>
     <div class="modal-content">
         <h3>Pozvat studenty</h3>
-        <div class="modal-users-chips no-border chips">
-            <div class="chip">
-                P. Šavelka
-                <i class="close material-icons">close</i>
-            </div>
-            <div class="chip">
-                A. Navrátil
-                <i class="close material-icons">close</i>
-            </div>
-        </div>
+        <div class="modal-users-chips no-border chips"></div>
         <div class="form-row input-field">
-            {input userName class=>'validate add-user-form'}
+            {input userName class=>'validate search-user-form'}
             {label userName}Jméno nebo e-mail studenta{/label}
         </div>
-        {snippet users-list }
+        {snippet users-list}
         <div class="prompter-loading">
             <div class="progress hide users-autocomplete-loader">
                 <div class="indeterminate"></div>
@@ -30,7 +21,7 @@
         <ul class="loaded-user-list custom-collection prompter" n:if="isset($userList)">
             {foreach $userList as $userItem}
                 <li {if $iterator->counter > 3}class="hide"{/if}>
-                    <a href="#" data-user-id="{$userItem->id}" class="add-user-item item">
+                    <a href="#" data-user-id="{$userItem->id}" data-user-name="{$userItem->name}" class="add-user-item item">
                         <div class="avatar">
                             <img src="{$userItem->profileImage|noescape}">
                         </div>
@@ -46,22 +37,10 @@
             {if count($userList) <= 0}
                 <li class="rest-of-all">Nic nenalezeno</li>
             {/if}
+            <script>
+                inviteFormAutoInput.renew();
+            </script>
         </ul>
-        <script>
-            $(function () {
-                $(".add-user-item").on('click', function(e) {
-                    e.preventDefault();
-                    $(".add-user-item").removeClass('active');
-                    $(this).addClass('active');
-                    $("input[name='user_id']").val($(this).data('user-id'));
-                    $(".submit-message-form").prop('disabled', false);
-                });
-                $(".rest-of-all").on('click', function(e) {
-                    $(".add-user-item").parent('li').removeClass('hide');
-                    $(".rest-of-all").addClass('hide');
-                });
-            });
-        </script>
         {/snippet}
     </div>
     <div class="modal-footer">
@@ -71,27 +50,10 @@
             <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" disabled>Přidat</button>
         </div>
     </div>
-    <script>
-        $(function () {
-            $(".add-user-form").on("keyup", function(e) {
-                if($(this).val().length > 2) {
-                    $(".loaded-user-list").hide();
-                    $(".users-autocomplete-loader").removeClass('hide');
-                    $.nette.ajax({
-                        url: {link searchUsers!},
-                        method: 'GET',
-                        data: {
-                            'term': $(this).val()
-                        },
-                        success: function(data) {
-                            $(".users-autocomplete-loader").addClass('hide');
-                        },
-                        error: function(data) {
-                            //$(".users-autocomplete-loader").addClass('hide');
-                        }
-                    });
-                }
-            });            
-        });
-    </script>
 {/form}
+<script>
+    var inviteFormAutoInput = new latoUserAutocomplete({
+        link: {link searchUsers!},
+        wrapper: $('#invite-user-form')
+    });
+</script>

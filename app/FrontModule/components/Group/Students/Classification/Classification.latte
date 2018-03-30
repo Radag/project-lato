@@ -25,9 +25,10 @@
         <div class="row">
             <div class="col s12">
                 <div class="card card-flat classification-properties modal-trigger" href="#edit-classification-modal">
-                    <p class="minified-label">{$classificationGroup->name}
-                        <span class="more-info">
-                            <i class="material-icons">event</i> 22. 4. 2018</span></p>
+                    <p class="minified-label">
+                        {$classificationGroup->name}
+                        <span class="more-info" n:if="$classificationGroup->classificationDate"><i class="material-icons">event</i> {$classificationGroup->classificationDate->format('j. n. Y')}</span>
+                    </p>
                     <div class="flex-spacer"></div>
                     <i class="minified-icon material-icons">create</i>
                 </div>   
@@ -120,28 +121,30 @@
             </div>
         </div>
     </div>
-
-    <div id="edit-classification-modal" class="modal modal-small">
+</section>
+{/form}
+<div id="edit-classification-modal" class="modal modal-small">
+    {form editClassGroupForm}
         <div class="modal-content">
             <h3>Upravit známku</h3>
-            <div class="form-row">
+            <div class="form-row input-field">
                 {input name}
+                {label name}{/label}
             </div>
-            <div class="form-row">
+            <div class="form-row input-field">
                 {input date}
+                {label date}{/label}
             </div>
         </div>
         <div class="modal-footer clearfix">
             <div class="flex-spacer"></div>
             <div class="form-control">
                 <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-                <button type="button" class="waves-effect waves-light btn btn-confirm submit-classification" >Potvrdit</button>
+                <button type="submit" class="waves-effect waves-light btn btn-confirm submit-classification" >Potvrdit</button>
             </div>
         </div>
-    </div>
-</section>
-
-{/form}
+    {/form}
+</div>
 <script>
     $(document).ready(function() {
         $('select').formSelect();

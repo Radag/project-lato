@@ -86,8 +86,11 @@ $(function() {
             }
         }
     });
-    */
+    */   
 });
+
+
+
 
 function latoReloadMessageWall()
 {

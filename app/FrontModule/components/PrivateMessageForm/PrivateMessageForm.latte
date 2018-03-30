@@ -1,6 +1,5 @@
 {snippet messagesForm}
-    {*if !$showMessageForm*}
-    {form usersForm class=>'ajax'}
+    {form usersForm class=>'ajax', id=>'private-message-form'}
         <div class="modal-content">
             <h3>Nová zpráva</h3>
             <div class="message-modal-users no-border chips hide"></div>
@@ -13,18 +12,6 @@
                     <div class="progress hide users-autocomplete-loader">
                         <div class="indeterminate"></div>
                     </div>
-                    
-                    {*<div class="preloader-wrapper small active hide users-autocomplete-loader" style="margin: 48px 0 24px 0;">
-                        <div class="spinner-layer spinner-green-only">
-                              <div class="circle-clipper left" >
-                                <div class="circle"></div>
-                              </div><div class="gap-patch">
-                                <div class="circle"></div>
-                              </div><div class="circle-clipper right">
-                                <div class="circle"></div>
-                              </div>
-                        </div>
-                    </div>*}
                 </div>
                 <ul class="loaded-user-list custom-collection prompter" n:if="isset($userList)">
                     {foreach $userList as $userItem}
@@ -45,85 +32,12 @@
                     {if count($userList) <= 0}
                         <li class="rest-of-all">Nic nenalezeno</li>
                     {/if}
+                    <script>
+                        privateMessgaeAutoInput.renew();
+                    </script>
                 </ul>
-                <script>
-                    $(function() {            
-                        $(".add-user-item").on('click', function(e) {
-                            e.preventDefault();
-                            addNewUser(this);
-
-                        });
-                        $(".rest-of-all").on('click', function(e) {
-                            $(".add-user-item").parent('li').removeClass('hide');
-                            $(".rest-of-all").addClass('hide');
-                        });
-                    });
-                </script>
+                
             {/snippet}
-            <script>
-                var chipsData = [];
-                
-                function addNewUser(ele) {
-                    var exist = false;
-                    for(var i=0; chipsData.length>i; i++) {
-                        if(chipsData[i].id == $(ele).data('user-id'))  {
-                            exist = true;
-                        }
-                    }
-                    if(!exist) {
-                        chipsData.push({ tag: $(ele).data('user-name'), id: $(ele).data('user-id') });                        
-                        updateUsersInput()
-                    }
-                    $('.message-modal-users').chips({ 
-                        data: chipsData,
-                        onChipDelete: function(id, ele, chip) {
-                            updateUsersInput()
-                        }
-                    });
-                }
-                
-                function updateUsersInput()
-                {
-                    var toUsers = [];
-                    for(var i=0; i<chipsData.length; i++) {
-                        toUsers.push(chipsData[i].id);
-                    }
-                    $("input[name='users']").val(toUsers);
-                    changeSubmitButton();
-                }
-
-                function changeSubmitButton() {
-                    if(chipsData.length > 0) {
-                        $(".message-modal-users").removeClass('hide');
-                        $("#private-message-next-submit").prop('disabled', false);
-                    } else {
-                        $(".message-modal-users").addClass('hide');
-                        $("#private-message-next-submit").prop('disabled', true);
-                    }
-                }
-
-                $(function () {
-                    $(".search-user-form").on("keyup", function(e) {
-                        if($(this).val().length > 2) {
-                            $(".loaded-user-list").hide();
-                            $(".users-autocomplete-loader").removeClass('hide');
-                            $.nette.ajax({
-                                url: {link searchUsers!},
-                                method: 'GET',
-                                data: {
-                                    'term': $(this).val()
-                                },
-                                success: function(data) {
-                                    $(".users-autocomplete-loader").addClass('hide');
-                                },
-                                error: function(data) {
-                                    //$(".users-autocomplete-loader").addClass('hide');
-                                }
-                            });
-                        }
-                    });            
-                });
-            </script>
         </div>
         <div class="modal-footer">
             <div class="flex-spacer"></div>
@@ -133,52 +47,10 @@
             </div>
         </div>
     {/form}
-    {*else}
-    {form form class=>'ajax'}
-        <div class="card message-editor">
-            <div class="card-content">
-                {input text class=>'materialize-textarea'}
-            </div>
-            <div class="card-footer">
-                <ul class="editor-options">
-                    <li>
-                        <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit soubor">
-                            <i class="material-icons">attach_file</i>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Tučné">
-                            <i class="material-icons">format_bold</i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Kurzíva">
-                            <i class="material-icons">format_italic</i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Podtržené">
-                            <i class="material-icons">format_underlined</i>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Nečíslovaný seznam">
-                            <i class="material-icons">format_list_bulleted</i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Číslovaný seznam">
-                            <i class="material-icons">format_list_numbered</i>
-                        </a>
-                    </li>
-                </ul>
-                <div class="flex-spacer"></div>
-                <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-                <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" >Potvrdit</button>
-            </div>
-        </div>
-    {/form}
-    {/if*}
+    <script>
+        var privateMessgaeAutoInput = new latoUserAutocomplete({
+            link: {link searchUsers!},
+            wrapper: $('#private-message-form')
+        });
+    </script>
 {/snippet}

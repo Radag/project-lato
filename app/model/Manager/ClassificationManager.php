@@ -196,9 +196,10 @@ class ClassificationManager extends BaseManager
     
     public function updateClassificationGroup($values)
     {
-        $data = array('NAME' => $values->name, 'CLASSIFICATION_DATE' => $values->date);
-        $this->database->query("UPDATE classification_group SET ? WHERE ID_CLASSIFICATION_GROUP=?", $data, $values->id);       
-       
+         $this->db->query("UPDATE classification_group SET ", [
+            'name' => $values->name,
+            'classification_date' => $values->date
+        ], " WHERE id=?", $values->id);     
     }
 
     public function getSchoolPeriods()

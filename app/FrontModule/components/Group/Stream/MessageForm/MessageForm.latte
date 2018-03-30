@@ -27,22 +27,21 @@
             {input date class => 'right-16'}
             {input time}
         </div>
-        <ul class="custom-collection">
-            <li class="hide mes-online-row">
+        <ul class="hide mes-online-row custom-collection">
+            <li>
                 <div class="item">
-                    {input online: class => 'filled-in black'}{label online:}{/label}
+                    {input online: class => 'filled-in black'}<span></span>{label online:}{/label}
                 </div>
             </li>
             
-            <li class="hide mes-online-row">
+            <li>
                 <div class="item">
-                    {input create_classification: class => 'filled-in black'}{label create_classification:}{/label}
+                    {input create_classification: class => 'filled-in black'}<span></span>{label create_classification:}{/label}
                 </div>
             </li>
-            <li class="hide mes-online-row">
+            <li>
                 <div class="item">
-                    <input type="checkbox" class="filled-in" id="student-list">
-                    <label for="student-list">Vytvořit prezenční listinu</label>
+                    {input student_list: class => 'filled-in black'}<span></span>{label student_list:}{/label}
                 </div>
             </li>
         </ul>
