@@ -431,10 +431,10 @@ $.nette.ext('forms', {
 // default snippet handler
 $.nette.ext('snippets', {
 	success: function (payload) {
-		if (payload.snippets) {
+                    if (payload.snippets) {
 			this.updateSnippets(payload.snippets);
-		}
-	}
+                    }
+                }
 }, {
 	beforeQueue: $.Callbacks(),
 	afterQueue: $.Callbacks(),

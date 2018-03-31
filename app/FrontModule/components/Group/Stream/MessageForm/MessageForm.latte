@@ -81,8 +81,8 @@
             </ul>
         </div>
         <div class="form-control">
-            <button data-reset-link="{link resetForm!}" type="button" class="reset-message-button modal-action modal-close waves-effect waves-light btn-flat" >Zrušit</button>
-            <button id="message-submit-button" class="btn waves-effect waves-light hide-modal-ajax-submit scroll-to-message" type="submit" name="send" >{$submitButtonName}</button>
+            <button type="button" data-reset-link="{link resetForm!}" class="reset-message-button modal-action modal-close waves-effect waves-light btn-flat" >Zrušit</button>
+            <button type="submit" id="message-submit-button" class="btn waves-effect waves-light hide-modal-ajax-submit scroll-to-message" name="send" >{$submitButtonName}</button>
         </div>
     </div>
     <script>  
@@ -128,10 +128,6 @@
     Přesuňte soubor prosím zde
 </div>
 <script>
-    $(document).ready(function() {
-        $('select').formSelect();
-    });
-
     $(".materialize-textarea").on('keydown', function(event) {
         if($(this).val() != "") {
             $(".modal-action").removeClass('disabled');

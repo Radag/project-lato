@@ -157,7 +157,6 @@ class MessageForm extends \App\Components\BaseComponent
         $this->presenter->flashMessage('Zpráva uložena', 'success');
         $this->presenter->payload->idMessage = $message->id;
         $this->handleResetForm();
-        $this->redrawControl('messageForm');
         $this->parent->redrawControl('streamSection');
     }
     

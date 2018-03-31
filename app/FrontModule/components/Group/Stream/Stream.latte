@@ -57,7 +57,8 @@
 </div>
     
 <script>  
-    $(document).ready(function() {           
+    $(document).ready(function() {
+        /*
         $('.modal-trigger-create-message').modal({
             ready: function() { 
                 var notHide = false;
@@ -98,35 +99,37 @@
                 });
             }
         });
+        */
         $("#show-create-post-modal").on('click', function(e) {
+            startModalLoading('#create-post-modal');
             $.nette.ajax({
                 url: {link resetForm! type=>'notice'},
                 success: function() {
-                    /*$("#change-message-type-select").val('notice');
-                    $("#change-message-type-select").formSelect();
-                    $("#change-message-type-select").change();*/
-                    $('#create-post-modal').modal('open');
+                    showModalLoading('#create-post-modal');
                 }
             });
             
         });
         $("#show-create-post-modal-material").on('click', function(e) {
+            startModalLoading('#create-post-modal');
             $.nette.ajax({
                 url: {link resetForm! type=>'material'},
                 success: function() {
-                    $('#create-post-modal').modal('open');
+                    showModalLoading('#create-post-modal');
                 }
             });
         });
         $("#show-create-post-modal-task").on('click', function(e) {
+            startModalLoading('#create-post-modal');
             $.nette.ajax({
                 url: {link resetForm! type=>'task'},
                 success: function() {
-                    $('#create-post-modal').modal('open');
+                    showModalLoading('#create-post-modal');
                 }
             });        
         });
         
+        /*
         if(!$.nette.ext('messageAjax')) {
             $.nette.ext('messageAjax', {
                 start: function (jqXHR, settings) {
@@ -136,7 +139,7 @@
                                 latoReloadMessageWall();
                                 /*$('html, body').animate({
                                     scrollTop: $('#message-box-num_' + data.idMessage).offset().top
-                                }, 700);*/
+                                }, 700);
                             }
                         });
                     }
@@ -152,5 +155,6 @@
                 }
             });
         }
+        */
     }); 
 </script>

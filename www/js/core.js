@@ -3,7 +3,7 @@ var latoAfterAjaxStart = [];
 $(function() {
     $("#main-progress-loader").hide();
     
-    $("form button[type='submit']").on('click', function() {
+    $("form:not(.ajax) button[type='submit']").on('click', function() {
         $(this).parents('form').submit();
         $(this).html($("#button-loader .preloader-wrapper").clone());
         $(this).prop('disabled', true);
@@ -52,11 +52,22 @@ $(function() {
 
     $.nette.ext('hideAjaxSubmitPopup', {
         start: function (jqXHR, settings) {
-            if(settings.nette !== undefined && $(settings.nette.ui).hasClass('hide-modal-ajax-submit')) { 
-                $('#full-screen-loader-modal').modal('open');
+           
+            if(settings.nette !== undefined && $(settings.nette.ui).is('button')) {
+                var buttonText = $(settings.nette.ui).html();
+                $(settings.nette.ui).html($("#button-loader .preloader-wrapper").clone());
+                $(settings.nette.ui).prop('disabled', true);
+                jqXHR.done(function( data, textStatus, jqXHR ) {
+                    if(data.invalidForm !== undefined && data.invalidForm) {
+                        $(settings.nette.ui).html(buttonText);
+                        $(settings.nette.ui).prop('disabled', false);
+                    }
+                });
+            } 
+            
+            if(settings.nette !== undefined && $(settings.nette.ui).hasClass('hide-modal-ajax-submit')) {
                 var modal = $(settings.nette.ui).closest('div.modal');
                 jqXHR.done(function( data, textStatus, jqXHR ) {
-                    $('#full-screen-loader-modal').modal('close');     
                     if(data.invalidForm === undefined || !data.invalidForm) {
                         modal.modal('close');
                     }
@@ -99,6 +110,21 @@ $(function() {
     */   
 });
 
+function startModalLoading(ele)
+{   
+    $(ele).modal('open');
+    $(ele + ' div').hide();
+    $(ele).addClass('modal-loader');
+    $(ele).append($(".full-screen-loader-modal").clone());
+    
+}
+
+function showModalLoading(ele)
+{
+    $(ele + ' div').fadeIn();
+    $(ele).removeClass('modal-loader');
+    $(ele + ' .full-screen-loader-modal').remove();
+}
 
 function datepicker()
 {

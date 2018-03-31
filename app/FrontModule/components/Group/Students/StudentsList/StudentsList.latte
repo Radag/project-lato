@@ -107,6 +107,7 @@
                             });
                             
                             $("#add-user-classification-button, #add-all-user-classification-button").on("click", function(event) {
+                                startModalLoading('#user-classification-modal');
                                 event.preventDefault();
                                 var users = [];
                                 if($(this).attr('id') === 'add-all-user-classification-button') {
@@ -125,7 +126,7 @@
                                         'users': users
                                     },
                                     complete: function(data) {
-                                        $('#user-classification-modal').modal('open');
+                                        showModalLoading('#user-classification-modal');
                                     }
                                 });
                             });
