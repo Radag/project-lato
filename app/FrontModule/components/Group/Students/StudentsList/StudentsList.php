@@ -120,10 +120,7 @@ class StudentsList extends \App\Components\BaseComponent
         $users = $this->presenter->getRequest()->getPost('users');
         if(!$confirmed) {
             if(is_array($users)) {
-               $classificationUsers = array();
-                foreach($users as $idUser) {
-                    $classificationUsers[] = $this->userManager->get($idUser);
-                }
+                $classificationUsers = $this->userManager->getMultiple($users, false, true);
             } else {
                 $classificationUsers = null;
             }
@@ -180,7 +177,7 @@ class StudentsList extends \App\Components\BaseComponent
             foreach($users as $idUser) {
                 //tady to opravit
                 $this->groupManager->removeUserFromGroup($this->activeGroup, $idUser);
-                $usersArray[] = (object)array('id' => $idUser);
+                $usersArray[] = (object)['id' => $idUser];
             }
             $data['users'] = $usersArray;
             $data['group'] = $this->groupManager->getGroup($this->activeGroup->id);

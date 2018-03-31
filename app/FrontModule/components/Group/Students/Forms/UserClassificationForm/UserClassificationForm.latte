@@ -3,12 +3,10 @@
         <h3>Přidat známku</h3> 
         {if isset($classificationUsers) && $classificationUsers}
         <p>Přidat známku těmto studentům</p>
-        {foreach $classificationUsers as $classUser}
-            <input class="added-users-list" type="hidden" data-name="{if !empty($classUser->name)}{$classUser->name|substr:0,1}. {$classUser->surname}{/if}" value="{$classUser->id}" name="users[]">
-        {/foreach}  
-        <div class="message-modal-users no-border">
-             
-
+        <div class="classification-users-list no-border">
+            {foreach $classificationUsers as $classUser}
+                <input class="added-users-list" type="hidden" data-name="{if !empty($classUser->name)}{$classUser->name|substr:0,1}. {$classUser->surname}{/if}" value="{$classUser->id}" name="users[]">
+            {/foreach}
         </div>
         {/if}       
         <div class="form-row input-field">
@@ -16,7 +14,7 @@
             {label name}Název hodnocení{/label}
         </div>
         <div class="form-row input-field">
-            {input date}
+            {input date class=>"datepicker"}
             {label date}Datum{/label}
         </div>
     </div>
@@ -29,16 +27,22 @@
     </div>
     <script>
     $(function() {
+        datepicker();
         var data = [];
         $(".added-users-list").each(function( index, value ) {
             data.push({ tag: $(this).data("name"), id: $(this).attr('value') });
         });
         
-        $('.message-modal-users').chips({ data: data});
-        $('.message-modal-users').on('chip.delete', function(e, chip){
-            $(".added-users-list[value='" + chip.id + "']").remove();
+        $('.classification-users-list').chips({ 
+            data: data,
+            onChipDelete: function(id, ele) {
+                $(".added-users-list").remove();
+                for(var i=0; i<data.length; i++) {
+                    $(".classification-users-list").append('<input class="added-users-list" type="hidden" data-name="' + data[i].tag + '" value="' + data[i].id + '" name="users[]" >');
+                }
+            }
         });
-        $('select').formSelect();
+        
         $("#form-user-classification input[name='name']").on("keyup", function(e) {
            if($(this).val() === "") {
                $("#form-user-classification .submit-button").prop('disabled', true);

@@ -187,6 +187,7 @@ class ClassificationManager extends BaseManager
         $this->db->query("INSERT INTO classification_group", [
             'group_id' => $groupClassification->group->id,
             'name' => $groupClassification->name,
+            'classification_date' => $groupClassification->date,
             'task_id' => isset($groupClassification->task) ? $groupClassification->task->id : null,
             'period_id' => $groupClassification->idPerion
         ]);

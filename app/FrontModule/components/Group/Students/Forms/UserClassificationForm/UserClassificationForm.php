@@ -45,8 +45,7 @@ class UserClassificationForm extends \App\Components\BaseComponent
         $form->addText('name', 'Název hodnocení')
              ->setRequired('Prosím napiště téma hodnocení.');
         $form->addText('date', 'Datum')
-             ->setAttribute('type', 'date')
-             ->setValue(date("Y-m-d"));
+             ->setValue(date("d. m. Y"));
         $form->addHidden('idClassification');
         $form->addSubmit('send', 'Vytvořit');
 
@@ -64,7 +63,7 @@ class UserClassificationForm extends \App\Components\BaseComponent
         $classificationGroup = new \App\Model\Entities\ClassificationGroup();
         $classificationGroup->name = $values->name;
         $classificationGroup->idPeriod = $this->presenter->activeGroup->activePeriodId;
-        $classificationGroup->classificationDate = \DateTime::createFromFormat('Y-m-d', $values->date);
+        $classificationGroup->classificationDate = \DateTime::createFromFormat('d. m. Y', $values->date);
         $users = $this->presenter->getRequest()->getPost('users');
         if(is_array($users)) {
            foreach($users as $idUser) {

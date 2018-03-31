@@ -90,15 +90,21 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
             return null;
         }
     }
-    
-    public function getMultiple($ids, $slug = false)
+        
+    public function getMultiple($ids, $slug = false, $includeFictive = false)
     { 
         $return = [];
         if(!empty($ids)) {
             if($slug) {
                 $usersData = $this->db->fetchAll("SELECT * FROM user JOIN user_real USING(id) WHERE slug IN (?)", $ids);  
             } else {
-                $usersData = $this->db->fetchAll("SELECT * FROM user user_real WHERE id IN (?)", $ids);  
+                if($includeFictive) {
+                    $usersData = $this->db->fetchAll("SELECT * FROM user WHERE id IN (?)", $ids);  
+                } else {
+                    $usersData = $this->db->fetchAll("SELECT * FROM user JOIN user_real USING(id) WHERE id IN (?)", $ids);  
+                    
+                }
+                
             }
             foreach($usersData as $user) {
                 $return[] = new User($user);

@@ -1,4 +1,4 @@
-{form form}
+{form form id=>'classification-form'}
 <section class="main two-level-nav settings">
     {*<div class="container offset-1">
         <div class="row">
@@ -22,12 +22,18 @@
     </div>
 
     <div class="container offset-1">
-        <div class="row">
+        <div class="row" n:snippet="classification-header">
             <div class="col s12">
                 <div class="card card-flat classification-properties modal-trigger" href="#edit-classification-modal">
                     <p class="minified-label">
-                        {$classificationGroup->name}
-                        <span class="more-info" n:if="$classificationGroup->classificationDate"><i class="material-icons">event</i> {$classificationGroup->classificationDate->format('j. n. Y')}</span>
+                        <span class="classification-name">{$classificationGroup->name}</span>
+                        <span class="more-info {if !$classificationGroup->classificationDate}hide{/if}"><i class="material-icons">event</i> 
+                            <span class="classification-date">
+                                {if $classificationGroup->classificationDate}
+                                    {$classificationGroup->classificationDate->format('j. n. Y')}
+                                {/if}
+                            </span>
+                        </span>
                     </p>
                     <div class="flex-spacer"></div>
                     <i class="minified-icon material-icons">create</i>
@@ -122,9 +128,19 @@
         </div>
     </div>
 </section>
+<script>
+    $(function () {                           
+        $('.collapsible-header').on('click', function (e) {
+            if($(e.target).parents(".grade-dropdown").length) {
+                e.stopPropagation();
+            }
+        });
+    });
+</script>
 {/form}
+{snippet classification-form}
 <div id="edit-classification-modal" class="modal modal-small">
-    {form editClassGroupForm}
+    {form editClassGroupForm class=>'ajax'}
         <div class="modal-content">
             <h3>Upravit známku</h3>
             <div class="form-row input-field">
@@ -132,7 +148,7 @@
                 {label name}{/label}
             </div>
             <div class="form-row input-field">
-                {input date}
+                {input date class=>'datepicker'}
                 {label date}{/label}
             </div>
         </div>
@@ -140,19 +156,32 @@
             <div class="flex-spacer"></div>
             <div class="form-control">
                 <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-                <button type="submit" class="waves-effect waves-light btn btn-confirm submit-classification" >Potvrdit</button>
+                <button type="{if empty($form[id]->getValue())}button{else}submit{/if}" class="waves-effect waves-light btn btn-confirm submit-classification-name" >Potvrdit</button>
             </div>
         </div>
     {/form}
 </div>
 <script>
     $(document).ready(function() {
-        $('select').formSelect();
-        $('.collapsible').collapsible();
-        
+        datepicker();
         $(".add-notice-button").on('click', function(e) {
             e.preventDefault();
             $(this).parents('.table-row').find('.notice-row').removeClass('hide');
         });
+        $("button[type='button'].submit-classification-name").on('click', function(e) {
+            $("span.classification-name").text($("#edit-classification-modal input[name='name']").val());
+            $("#classification-form input[name='name']").val($("#edit-classification-modal input[name='name']").val());
+            var date = $("#edit-classification-modal input[name='date']").val();
+            if(date) {
+                $("span.classification-date").text(date);
+                $("#classification-form input[name='date']").val(date);
+                $(".classification-properties .more-info").removeClass('hide');
+            } else {
+                $("#classification-form input[name='date']").val('');
+                $(".classification-properties .more-info").addClass('hide');
+            }       
+            $("#edit-classification-modal").modal('close');
+        });
     });
 </script>
+{/snippet}

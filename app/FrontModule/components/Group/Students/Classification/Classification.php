@@ -57,6 +57,10 @@ class Classification extends \App\Components\BaseComponent
         $this->template->activeUser = $this->presenter->activeUser;
         $students = [];
         if($this->parent->classGroupId !== 'new') {
+            if(empty($this->parent->classGroupId)){     
+                $this->parent->classGroupId = $this->presenter->request->getPost('id');
+            }
+            
             $this->classificationGroup = $this->classificationManager->getGroupClassification($this->parent->classGroupId);
             foreach($this->classificationGroup->classifications as $cla) {
                 $students[] = $cla->user->id;
@@ -89,23 +93,27 @@ class Classification extends \App\Components\BaseComponent
         
         foreach($this->classificationGroup->classifications as $classification) {
             $this['form']->setValues([
-                'grade' . $classification->user->id => $classification->grade,
-                'notice' . $classification->user->id => $classification->notice,
+                'notice' . $classification->user->id => empty($classification->notice) ? null : $classification->notice,
                 'members' => implode(',', $students)
-            ]); 
+            ]);
+            if(!empty($classification->grade)) {
+                $this['form']->setValues([
+                    'grade' . $classification->user->id => $classification->grade
+                ]);
+            }
         }
         
-        $this['form']->setDefaults(array(
+        $this['form']->setDefaults([
             'name' => $this->classificationGroup->name,
             'id' => $this->classificationGroup->id,
-            'date' => $this->classificationGroup->classificationDate ? $this->classificationGroup->classificationDate->format('Y-m-d') : null
-        ));
+            'date' => $this->classificationGroup->classificationDate ? $this->classificationGroup->classificationDate->format('d. m. Y') : null
+        ]);
         
-        $this['editClassGroupForm']->setDefaults(array(
+        $this['editClassGroupForm']->setDefaults([
             'name' => $this->classificationGroup->name,
-            'date' => $this->classificationGroup->classificationDate ? $this->classificationGroup->classificationDate->format('Y-m-d') : null,
+            'date' => $this->classificationGroup->classificationDate ? $this->classificationGroup->classificationDate->format('d. m. Y') : null,
             'id' => $this->classificationGroup->id
-        ));
+        ]);
         
         $this->template->classificationGroup = $this->classificationGroup;        
         $this->template->members = $members;
@@ -128,7 +136,7 @@ class Classification extends \App\Components\BaseComponent
         }
         
         $form = $this->getForm();
-        $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, [GroupManager::RELATION_STUDENT, GroupManager::RELATION_FIC_STUDENT], $students);   
+        $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, [GroupManager::RELATION_STUDENT, GroupManager::RELATION_FIC_STUDENT], $students);  
         foreach($members as $member) {
             $form->addSelect('grade' . $member->id, 'Známka', $this->grades)
                  ->setDefaultValue('—');
@@ -145,7 +153,7 @@ class Classification extends \App\Components\BaseComponent
             if(empty($values->id)) {
                 $classifiationGroup = new ClassificationGroup();
                 $classifiationGroup->name = $values->name;
-                $classifiationGroup->date = $values->date;
+                $classifiationGroup->date = \DateTime::createFromFormat('d. m. Y', $values->date);;
                 $classifiationGroup->group = $this->presenter->activeGroup;                
                 $classifiationGroup->idPerion = $this->presenter->activeGroup->activePeriodId;
                 $classGroupId = $this->classificationManager->createGroupClassification($classifiationGroup);
@@ -192,19 +200,20 @@ class Classification extends \App\Components\BaseComponent
         $form->addText('name', 'Název')
              ->setRequired('Prosím napiště téma hodnocení.');
         $form->addText('date', 'Datum')
-             ->setAttribute('type', 'date')
              ->setAttribute('placeholder', 'Datum (nepovinné)');
         $form->addHidden('id');
         $form->addSubmit('send', 'Potvrdit');
 
         $form->onSuccess[] = function($form, $values) {
             if(!empty($values->date)) {
-                $values->date = \DateTime::createFromFormat('Y-m-d', $values->date);
+                $values->date = \DateTime::createFromFormat('d. m. Y', $values->date);
             } else {
                 $values->date = null;
             }            
             $this->classificationManager->updateClassificationGroup($values);
-            $this->presenter->redirect('this');
+            $this->presenter->payload->reloadModal = true;
+            $this->redrawControl('classification-header');
+            $this->redrawControl('classification-form');
         };
         return $form;
     }

@@ -3,13 +3,23 @@ var latoAfterAjaxStart = [];
 $(function() {
     $("#main-progress-loader").hide();
     
+    $("form button[type='submit']").on('click', function() {
+        $(this).parents('form').submit();
+        $(this).html($("#button-loader .preloader-wrapper").clone());
+        $(this).prop('disabled', true);
+    });    
+    
     $.nette.ext('ajax-loader', {   
         before: function (jqXHR, settings) {
             $("#main-progress-loader").show();
         },
         success: function (data) {
             $("#main-progress-loader").hide();
-            //$('.dropdown-button').dropdown();
+            $('.dropdown-trigger').dropdown();
+            $('select').formSelect();
+            if(data.reloadModal) {
+                $('.modal').modal();
+            }
             M.updateTextFields();
         },
         error: function(data) {
@@ -90,14 +100,77 @@ $(function() {
 });
 
 
+function datepicker()
+{
+    $('.datepicker').datepicker({
+        container: '#date-picker-container',
+        format: "d. m. yyyy",
+        showClearBtn: false,
+        firstDay: 1,
+        i18n: {
+            cancel:	'Zrušit',
+            clear:	'Smazat',
+            done:	'Ok',
+            previousMonth:	'‹',
+            nextMonth:	'›',
+            months: [
+              'Leden',
+              'Únor',
+              'Březen',
+              'Duben',
+              'Květen',
+              'červen',
+              'Červenec',
+              'Srpen',
+              'Září',
+              'Říjen',
+              'Listopad',
+              'Prosinec'
+            ],
+            monthsShort: [
+              'Led',
+              'Úno',
+              'Bře',
+              'Dub',
+              'Kvě',
+              'Čer',
+              'Čvn',
+              'Srp',
+              'Zář',
+              'Říj',
+              'Lis',
+              'Pro'
+            ],
+            weekdays: [
+              'Neděle',
+              'Pondělí',
+              'Úterý',
+              'Středa',
+              'Čtvrtek',
+              'Pátek',
+              'Sobota'
+            ],
+            weekdaysShort: [
+              'Po',
+              'Út',
+              'St',
+              'Čt',
+              'Pá',
+              'So',
+              'Ne'
+            ],
+            weekdaysAbbrev:	['N','P','Ú','S','Č','P','S']
+        }
+    });
+}
 
 
 function latoReloadMessageWall()
 {
-    $('.masonry-grid').masonry('destroy');
-    $('.masonry-grid').masonry({
-        itemSelector: '.grid-item',
-    });
+//    $('.masonry-grid').masonry('destroy');
+//    $('.masonry-grid').masonry({
+//        itemSelector: '.grid-item',
+//    });masonry
 }
 
 function latoShowAllComments(comment) {
