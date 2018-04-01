@@ -120,9 +120,13 @@ class NotificationManager extends BaseManager
         return $return;
     }
         
-    public function setAllNotificationRead($idUser)
+    public function setAllNotificationRead($idUser, $global = true)
     {
-        $this->db->query("UPDATE user_real SET has_new_notification=0 WHERE id=?", $idUser);
+        if($global) {
+            $this->db->query("UPDATE user_real SET has_new_notification=0 WHERE id=?", $idUser);
+        } else {
+            $this->db->query("UPDATE notification SET `is_read`=NOW() WHERE user_id=? AND `is_read` IS NULL", $idUser);
+        }
     }
     
     public function getReadNotification($id, Entities\User $user)

@@ -7,7 +7,7 @@
 
 namespace App\FrontModule\Components\TopPanel;
 
-use \Nette\Application\UI\Control;
+
 use App\Model\Manager\UserManager;
 use App\Model\Manager\GroupManager;
 use App\Model\Manager\ConversationManager;
@@ -16,7 +16,7 @@ use App\FrontModule\Components\NewGroupForm\NewGroupForm;
 use App\FrontModule\Components\NewGroupForm\JoinGroupForm;
 
 
-class TopPanel extends Control
+class TopPanel extends \App\Components\BaseComponent
 {
     /** @var UserManager */
     public $userManager;
@@ -29,7 +29,7 @@ class TopPanel extends Control
 
     /** @var NotificationManager */
     public $notificationManager;
-    
+
     /** @var \App\Model\Entities\Group */
     public $activeGroup = null;
     
@@ -72,13 +72,11 @@ class TopPanel extends Control
         $template->activeUser = $this->presenter->activeUser;
         $template->backArrow = $this->backArrow;
         $template->notifications = $this->notificationManager->getNotifications($this->presenter->activeUser);
-        $template->unreadPrivMessages = 0;//$this->conversationManager->getUnreadNumber($this->presenter->activeUser);
-        $template->privateMessages = $this->conversationManager->getConversations($this->presenter->activeUser);
+        $template->privateMessages = $this->conversationManager->getConversations($this->presenter->activeUser, true);
         $template->groups = $this->groupManager->getUserGroups($this->presenter->activeUser);
         $template->colorScheme = $this->colorScheme;
-
-        $template->setFile(__DIR__ . '/TopPanel.latte');
-        $template->render();
+        
+        parent::render();
     }
     
     public function setTitle($title)
@@ -117,11 +115,7 @@ class TopPanel extends Control
         return $form;
     }
     
-    public function handlePrivateMessagesRead()
-    {
-        $this->privateMessageManager->setMessagesRead($this->activeUser->id);
-        $this->redrawControl('messagesCount');   
-    }
+    
     
     public function handleReadNotification($id)
     {
@@ -129,11 +123,28 @@ class TopPanel extends Control
           $this->presenter->redirect($redirect->link, $redirect->args);
     }
     
-    public function handleNotificationsRead()
+    public function handleNotificationsRead($global)
     {
-        $this->notificationManager->setAllNotificationRead($this->presenter->activeUser->id);
+        $this->notificationManager->setAllNotificationRead($this->presenter->activeUser->id, $global);
         $this->presenter->activeUser->unreadNotifications = 0;
-        $this->redrawControl('notificationCount');
+        
+        if($global) {
+            $this->redrawControl('notificationCount');
+        } else {
+            $this->redrawControl('right-notification-list');
+        }
+    }
+    
+    public function handlePrivateMessagesRead($global = true)
+    {
+        $this->conversationManager->setAllMessagesRead($this->presenter->activeUser, $global);
+        $this->presenter->activeUser->unreadPrivateMessages = 0;
+        if($global) {
+            $this->redrawControl('unreadPrivateMessages');   
+        } else {
+            $this->redrawControl('right-conversation-list');
+        }
+        
     }
     
 }

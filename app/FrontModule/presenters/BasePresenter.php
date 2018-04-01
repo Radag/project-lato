@@ -11,7 +11,6 @@ namespace App\FrontModule\Presenters;
 use Nette;
 use \App\Model\Manager\UserManager;
 use App\FrontModule\Components\TopPanel\ITopPanelFactory;
-use App\Model\Manager\PrivateMessageManager;
 use App\Model\Manager\NotificationManager;
 use App\FrontModule\Components\PrivateMessageForm\IPrivateMessageFormFactory;
 use App\Helpers\HelpersList;
@@ -32,10 +31,7 @@ class BasePresenter extends Nette\Application\UI\Presenter
     
     /** @var NotificationManager @inject */
     public $notificationManager;
-   
-    /** @var PrivateMessageManager @inject */
-    public $privateMessageManager;
-    
+
     /** @var IPrivateMessageFormFactory @inject */
     public $privateMessageForm;
     

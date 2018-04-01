@@ -41,7 +41,8 @@ class User extends AbstractEntity {
         'background_image' => 'backgroundImage',
         'sex' => 'sex',
         'is_fictive' => 'isFictive',
-        'has_new_notification' => 'unreadNotifications'
+        'has_new_notification' => 'unreadNotifications',
+        'has_new_private_message' => 'unreadPrivateMessages'
     ];
     
     public function __construct($data = null)

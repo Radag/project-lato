@@ -14,7 +14,6 @@ use App\Model\Manager\ClassificationManager;
 use App\Model\Manager\TaskManager;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\NotificationManager;
-use App\Model\Manager\PrivateMessageManager;
 use App\FrontModule\Components\Group\IAddUserFormFactory;
 
 
@@ -36,9 +35,6 @@ class StudentsList extends \App\Components\BaseComponent
     /** @var ClassificationManager */
     private $classificationManager;
     
-    /** @var PrivateMessageManager */
-    private $privateMessageManager;
-    
     /** @var IAddUserFormFactory */
     private $addUserForm;
     
@@ -49,7 +45,6 @@ class StudentsList extends \App\Components\BaseComponent
         TaskManager $taskManager,
         UserManager $userManager,
         NotificationManager $notificationManager,
-        PrivateMessageManager $privateMessageManager,
         IAddUserFormFactory $addUserForm
     )
     {
@@ -58,7 +53,6 @@ class StudentsList extends \App\Components\BaseComponent
         $this->taskManager = $taskManager;
         $this->userManager = $userManager;
         $this->notificationManager = $notificationManager;
-        $this->privateMessageManager = $privateMessageManager;
         $this->addUserForm = $addUserForm;
     }
 

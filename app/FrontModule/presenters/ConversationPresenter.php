@@ -62,6 +62,7 @@ class ConversationPresenter extends BasePresenter
             if(empty($conversation->users)) {
                 $this->redirect('Conversation:list');
             }
+            $this->conversationManager->setConversationRead($this->activeUser, $conversation);
             $messages = $conversation->messages;
             $this->template->attenders = $conversation->users;
         } else {

@@ -1,47 +1,27 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace App\FrontModule\Components\PrivateMessageForm;
 
 use \Nette\Application\UI\Form;
-use \Nette\Application\UI\Control;
-use App\Model\Entities\PrivateMessage;
-use App\Model\Manager\PrivateMessageManager;
 use App\Model\Manager\UserManager;
+use App\Model\Manager\ConversationManager;
+
 
 class PrivateMessageForm extends \App\Components\BaseComponent
 {
-    /** @var PrivateMessageManager */
-    protected $privateMessageManager;
+    /** @var ConversationManager */
+    public $conversationManager;
     
     /** @var UserManager */
-    protected $userManager;
-    
-    //protected $showMessageForm = false;
-    
+    public $userManager;
+
     public function __construct(
-        PrivateMessageManager $privateMessageManager,
+        ConversationManager $conversationManager,
         UserManager $userManager)
     {
-        $this->privateMessageManager = $privateMessageManager;
+        $this->conversationManager = $conversationManager;
         $this->userManager = $userManager;
     }
 
-    /*
-    public function setIdUserTo($idUserTo) 
-    {
-        $user = $this->userManager->get($idUserTo);
-        if($user) {
-            $this['form']['idUserTo']->setValue($idUserTo);
-            $this['form']['emailTo']->setValue($user->email);
-        }
-    }
-     * 
-     */
      
     protected function createComponentUsersForm()
     {
@@ -52,11 +32,19 @@ class PrivateMessageForm extends \App\Components\BaseComponent
 
         $form->onSuccess[] = function(Form $form, $values) {
             $attenders = $this->userManager->getMultiple(explode(',', $values->users), false);
-            $ids = [];
+            $slugIds = $ids =[];
             foreach($attenders as $att) {
-                $ids[] = $att->slug;
+                $ids[] = $att->id;
+                $slugIds[] = $att->slug;
             }
-            $this->presenter->redirect(':Front:Conversation:default', ['users' => implode(',', $ids)]);
+            $ids[] = $this->presenter->activeUser->id;
+            sort($ids);
+            $exist = $this->conversationManager->conversationExist($ids);
+            if($exist) {
+                $this->presenter->redirect(':Front:Conversation:default', ['id' => $exist->id]);
+            } else {
+                $this->presenter->redirect(':Front:Conversation:default', ['users' => implode(',', $slugIds)]);
+            }
         };
         return $form;
     }
@@ -71,62 +59,4 @@ class PrivateMessageForm extends \App\Components\BaseComponent
         $this->template->userList = $userList;
         $this->redrawControl('users-list');
     }
-    
-    /*
-    protected function createComponentForm()
-    {
-        $form = new \Nette\Application\UI\Form;
-        $form->addTextArea('text', 'Obsah')
-             ->setAttribute('placeholder', 'Napište zprávu ..')
-             ->setRequired('Prosím napiště text zprávy.');
-        $form->addText('emailTo', 'Email uživatele')
-             ->setAttribute('placeholder', 'Email uživatele');
-        $form->addHidden('users');
-        $form->addSubmit('send', 'Vytvořit');
-
-        $form->onSuccess[] = [$this, 'processForm'];
-        $form->onValidate[] = function($form) {
-            $user = $this->userManager->getUserByMail($form['emailTo']->getValue());
-            if(empty($user)) {
-                $form->addError('Uživatel s tím emailem neexituje');
-            }
-        };
-
-        return $form;
-    }
-     * 
-     */
-    
-  
-    
-    /*
-    public function render()
-    {
-        $this->template->showMessageForm = $this->showMessageForm;
-        parent::render();
-    }
-     * 
-     */
-    
-    
-    
-    
-    /*
-    public function processForm(Form $form, $values) 
-    {
-        $message = new PrivateMessage;
-        $userTo = $this->userManager->getUserByMail($values->emailTo);        
-        $message->text = $values->text;
-        $message->idUserFrom = $this->presenter->activeUser->id;
-        $message->idUserTo = $userTo->id;
-        $this['form']['text']->setValue("");      
-        $this->privateMessageManager->insertMessage($message);
-        $this->presenter->flashMessage('Zpráva byla odeslána', 'success');
-        if($this->presenter->isLinkCurrent('Profile:messages')) {
-            $this->presenter->redrawControl('messagesList');
-        }
-        $this->presenter->redrawControl('right-conversation-list');
-    }
-    *
-    */
 }

@@ -2,7 +2,6 @@ services:
     - App\Model\Manager\UserManager  
     - App\Model\Manager\MessageManager 
     - App\Model\Manager\GroupManager 
-    - App\Model\Manager\PrivateMessageManager
     - App\Model\Manager\NotificationManager
     - App\Model\Manager\FileManager
     - App\Model\Manager\PublicActionManager

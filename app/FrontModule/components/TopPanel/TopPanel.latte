@@ -23,15 +23,15 @@
             <div class="right-nav-flex">
                 <ul class="navbar-nav">
                     <li>
-                        <a class="button-collapse show-on-large sidenav-trigger" href="#" id="button-notification-slide" data-target="slide-out-notification" >
+                        <a id="button-notification-slide" class="button-collapse show-on-large sidenav-trigger" href="{link notificationsRead!}" data-target="slide-out-notification" >
                             <i class="material-icons ">notifications</i>
                             {snippet notificationCount}{if $activeUser->unreadNotifications > 0}<span class="nav-badge">{$activeUser->unreadNotifications}</span>{/if}{/snippet}
                         </a>
                     </li>
                     <li>
-                        <a class="button-collapse show-on-large sidenav-trigger" id="button-conversation-slide" href="#" data-target="slide-out-conversation" >
+                        <a id="button-conversation-slide" class="button-collapse show-on-large sidenav-trigger" href="{link privateMessagesRead!}" data-target="slide-out-conversation" >
                             <i class="material-icons ">chat_bubble</i>
-                            {snippet messagesCount}{if $unreadPrivMessages > 0}<span class="nav-badge">{$unreadPrivMessages}</span>{/if}{/snippet}
+                            {snippet unreadPrivateMessages}{if $activeUser->unreadPrivateMessages > 0}<span class="nav-badge">{$activeUser->unreadPrivateMessages}</span>{/if}{/snippet}
                         </a>
                     </li>
                     <li><a href="{plink Homepage:search}" class="waves-effect waves-dark"><i class="material-icons">search</i></a></li>
@@ -57,12 +57,16 @@
             menuWidth: 300, // Default is 240
             edge: 'left'
         });
+        $("#button-notification-slide, #button-conversation-slide").on('click', function(e) {
+            $.nette.ajax({
+                url: $(this).attr('href')
+            });
+        });
          
     });
 </script>
 
 {block notificationColumn}
-{snippet right-notification-list}
 <ul id="slide-out-notification" class="sidenav slide-out-right">
     <li class="side-nav-close">
         <i class="material-icons">keyboard_arrow_left</i>Zavřít panel    
@@ -70,10 +74,11 @@
     <li class="side-nav-header">
         <a href="#" class="title">Oznámení</a>
         <div class="flex-spacer"></div>
-        <a class="btn-flat btn-icon waves-effect waves-dark tooltipped" data-position="bottom" data-delay="50" data-tooltip="Označit vše jako přečtené">
+        <a class="btn-flat btn-icon waves-effect waves-dark tooltipped ajax" href="{link notificationsRead! 'global' => false}" data-position="bottom" data-delay="50" data-tooltip="Označit vše jako přečtené">
             <i class="material-icons">done_all</i>
         </a>
     </li>
+    {snippet right-notification-list}
     <li class="after-header-spacer"></li>
     {foreach $notifications as $notification} 
     <li><a href="{link readNotification!, 'id'=>$notification->id}" class="clearfix {if empty($notification->isRead)}active{/if}"> 
@@ -88,13 +93,12 @@
         </div> 
     </a></li> 
     {/foreach} 
+    {/snippet}
 </ul>
-{/snippet}
 {/block}
 
 
 {block conversationColumn}
-{snippet right-conversation-list}
 <ul id="slide-out-conversation" class="sidenav slide-out-right">
     <li class="side-nav-close">
         <i class="material-icons">keyboard_arrow_left</i>Zavřít panel    
@@ -102,11 +106,12 @@
     <li class="side-nav-header">
         <a href="{plink Profile:messages}" class="title">Konverzace</a>
         <div class="flex-spacer"></div>
-        <a class="btn-flat btn-icon waves-effect waves-dark tooltipped" data-position="bottom" data-delay="50" data-tooltip="Označit vše jako přečtené">
+        <a class="btn-flat btn-icon waves-effect waves-dark tooltipped ajax" href="{link privateMessagesRead! 'global' => false}" data-position="bottom" data-delay="50" data-tooltip="Označit vše jako přečtené">
             <i class="material-icons">done_all</i>
         </a>
     </li>
-
+    
+    {snippet right-conversation-list}
     {* DOČASNĚ SKRYTO
     <li>
         <div class="search-field">
@@ -127,7 +132,7 @@
     </li>
     {foreach $privateMessages as $message}
         <li>
-            <a href="{plink :Front:Conversation:default, 'users'=>$message->user->slug}" class="chat-person unread-mark">
+            <a href="{plink :Front:Conversation:default, 'id'=>$message->id}" class="chat-person {if empty($message->read)}unread-mark{/if}">
                 <div class="avatar">
                     <img src="{$message->user->profileImage|noescape}" alt="">
                 </div>
@@ -138,8 +143,8 @@
             </a>
         </li>
     {/foreach}
+    {/snippet}
 </ul>
-{/snippet}
 {/block}
 
 {block mainMenu}
