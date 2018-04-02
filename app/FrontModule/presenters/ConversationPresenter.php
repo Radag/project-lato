@@ -71,7 +71,9 @@ class ConversationPresenter extends BasePresenter
         
         $attName = [];
         foreach($this->template->attenders as $att) {
-            $attName[] = $att->name . ' ' . $att->surname;
+            if($att->id != $this->activeUser->id) {
+                $attName[] = $att->name . ' ' . $att->surname;
+            }
         }
         $this['topPanel']->setTitle(implode(', ', $attName));
         $this['form']->setValues([
@@ -79,6 +81,11 @@ class ConversationPresenter extends BasePresenter
             'conversation_id' => $id
         ]);
         $this->template->messages = $messages;
+    }
+    
+    public function handleReloadMessages()
+    {
+        $this->redrawControl("conversation-list-messages");
     }
     
     public function handleFilterMessages($filter = null)
