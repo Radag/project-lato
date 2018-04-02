@@ -70,79 +70,16 @@
                             <div class="flex-spacer"></div>
                             <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form">Odeslat</button>
                         </div>
-
-                        
-                        {*
-                        <div class="card-footer">
-                            <ul class="editor-options">
-                                <li>
-                                    <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit soubor">
-                                        <i class="material-icons">attach_file</i>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Tučné">
-                                        <i class="material-icons">format_bold</i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Kurzíva">
-                                        <i class="material-icons">format_italic</i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Podtržené">
-                                        <i class="material-icons">format_underlined</i>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Nečíslovaný seznam">
-                                        <i class="material-icons">format_list_bulleted</i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Číslovaný seznam">
-                                        <i class="material-icons">format_list_numbered</i>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <a href="#add-users-to-conversation" class="tooltipped modal-trigger" data-position="bottom" data-delay="50" data-tooltip="Přidat diskutující">
-                                        <i class="material-icons">person_add</i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#users-in-conversation" class="tooltipped modal-trigger" data-position="bottom" data-delay="50" data-tooltip="Upravit konverzaci">
-                                        <i class="material-icons">people</i>
-                                    </a>
-                                </li>
-                            </ul>
-                            <div class="flex-spacer"></div>
-                            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-                            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" >Potvrdit</button>
-                        </div> 
-                        *}
-                        {*
-                        <script>
-                            CKEDITOR.replace( 'new-message-area', {
-                                uiColor: '#FFFFFF',
-                                toolbarLocation: 'bottom',
-                                toolbarGroups: [
-                                    {"name":"basicstyles","groups":["basicstyles"]},
-                                    {"name":"paragraph","groups":["list","blocks"]}
-                                ],
-                                removeButtons: 'Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
-                                placeholder: 'some value'
-                            });
-                        </script>
-                        *}
                     </div>
                     {/form}
                     <script>
                         $(document).ready(function () {
+                            var defaultWight = $(".conversation").css('padding-bottom').match(/\d+/g).map(Number)[0];
                             $('html,body').animate({ scrollTop: document.body.scrollHeight },"fast");
+                            $("#new-message-area").on('keyup', function(e) {
+                                $(".conversation").css('padding-bottom', defaultWight + $(this).height());
+                                $('html,body').animate({ scrollTop: document.body.scrollHeight },0);
+                            });
                         });
                     </script>
                     <style>
