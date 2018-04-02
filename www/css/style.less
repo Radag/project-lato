@@ -4620,15 +4620,37 @@ nav .nav-title {
 
 
 .assignment-preview {
-    color: rgba(0, 0, 0, .87);
-    cursor: default;
+    
+    .assignment-header {
+        border-bottom: none;
+        padding-bottom: 0;
+        height: 60px;
+    }
+
+    .card-content {
+
+        .title {
+            display: block;
+            font-size: 16px;
+            color: rgba(0, 0, 0, .87);
+            font-weight: 500;
+        }
+
+        .group-name {
+            display: block;
+            font-size: 13px;
+            color: @secondary-text-color;
+            margin-top: 4px;
+
+        }
+    }
 }
 
 .assignment-preview .card-content p {
     padding-right: 56px;
 }
 
-.assignment {
+.assignment-header {
     border-bottom: 1px solid @line-color;
     padding: 20px 24px;
     width: 100%;

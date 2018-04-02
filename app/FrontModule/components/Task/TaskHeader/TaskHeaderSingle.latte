@@ -2,7 +2,7 @@
     {if $task->createClassification == 1}
         {if $task->timeLeft->invert === 0 }
         <div class="time-left">
-            Termín odevzdání: {$task->deadline->format("j. n. H:i")}
+            Termín odevzdání: <strong>{$task->deadline->format("j. n. H:i")}</strong>
         </div>
         {else}
         <div class="avatar small status">
@@ -52,6 +52,7 @@
                 <div class="time-left">
                     Termín odevzdání: <strong>{$task->deadline->format("j. n. H:i")}</strong>
                 </div>
+                <div class="flex-spacer"></div>
                 <button type="button" data-link="{link editTaskCommit}" class="btn gray no-shadow submit-class-button">Odevzdat</button>
             </div>
         </div>
@@ -63,5 +64,8 @@
             Uzavřeno: {$task->deadline->format("j. n. H:i")}
         </div>
     {/if}
+{else}
+    <div class="time-left">
+        Termín odevzdání: <strong>{$task->deadline->format("j. n. H:i")}</strong>
+    </div>
 {/if}
-
