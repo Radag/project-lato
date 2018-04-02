@@ -7,35 +7,45 @@
         <div class="row">
             <div class="col s12" n:snippet="conversation-list">
                 <div class="conversation">
+                    {var $last = null}
+                    {var $lastDate = new \Datetime()}                    
                     {foreach $messages as $message}
-                    <div class="time-bubble-row">
-                        <div class="time-bubble">22. 4. 2018, 22:00</div>
-                    </div>
-                    <div class="message {if !$message->fromMe}from{else}me{/if}">
-                        <div class="flex-spacer"></div>
-                        <div class="card bubble paper-shadow">
-                            {* <div class="card-header">
-                                <h3 class="name truncate">
-                                    <a href="{$message->user->slug}">{$message->user->name} {$message->user->surname}</a>
-                                </h3>
-                                <div class="date">Doručeno {$message->created->format("h:m d.m.Y")}</div>
-                            </div> *}
-                            <div class="card-content">
-                                <p>{$message->text|noescape}</p>
+                        {var $diff = $lastDate->diff($message->created)}  
+                        {if $diff->h + ($diff->days*24) > 0}
+                            <div class="time-bubble-row">
+                                <div class="time-bubble">{$message->created->format("d.m. Y, h:i")}</div>
                             </div>
-                        </div>
-                        <div class="avatar small">
-                            <img src="{$message->user->profileImage|noescape}">
-                        </div>
-                    </div>
-                    <div class="message {if !$message->fromMe}from{else}me{/if}">
-                        <div class="flex-spacer"></div>
-                        <div class="card bubble simple-bubble paper-shadow">
-                            <div class="card-content">
-                                <p>Zjednodušená bublina</p>
+                        {/if}
+                        {if $last != $message->user->id}
+                            <div class="message {if !$message->fromMe}from{else}me{/if}">
+                                <div class="flex-spacer"></div>
+                                <div class="card bubble paper-shadow">
+                                    {* <div class="card-header">
+                                        <h3 class="name truncate">
+                                            <a href="{$message->user->slug}">{$message->user->name} {$message->user->surname}</a>
+                                        </h3>
+                                        <div class="date">Doručeno {$message->created->format("h:m d.m.Y")}</div>
+                                    </div> *}
+                                    <div class="card-content">
+                                        <p>{$message->text|noescape}</p>
+                                    </div>
+                                </div>
+                                <div class="avatar small">
+                                    <img src="{$message->user->profileImage|noescape}">
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        {else}
+                            <div class="message {if !$message->fromMe}from{else}me{/if}">
+                                <div class="flex-spacer"></div>
+                                <div class="card bubble simple-bubble paper-shadow">
+                                    <div class="card-content">
+                                        <p>{$message->text|noescape}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {/if}
+                        {var $last = $message->user->id}
+                        {var $lastDate = $message->created}
                     {/foreach}
                 </div>
                 {form form class=>'ajax'}

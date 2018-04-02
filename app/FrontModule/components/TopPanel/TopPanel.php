@@ -123,7 +123,7 @@ class TopPanel extends \App\Components\BaseComponent
           $this->presenter->redirect($redirect->link, $redirect->args);
     }
     
-    public function handleNotificationsRead($global)
+    public function handleNotificationsRead($global = true)
     {
         $this->notificationManager->setAllNotificationRead($this->presenter->activeUser->id, $global);
         $this->presenter->activeUser->unreadNotifications = 0;

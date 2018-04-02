@@ -73,7 +73,7 @@ class ConversationPresenter extends BasePresenter
         foreach($this->template->attenders as $att) {
             $attName[] = $att->name . ' ' . $att->surname;
         }
-        $this['topPanel']->setTitle('Konverzace s ' . implode(', ', $attName));
+        $this['topPanel']->setTitle(implode(', ', $attName));
         $this['form']->setValues([
             'users' => implode(',', $ids),
             'conversation_id' => $id
