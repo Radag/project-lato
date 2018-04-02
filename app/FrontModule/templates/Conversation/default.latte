@@ -12,6 +12,7 @@
                     {foreach $messages as $message}
                         {var $diff = $lastDate->diff($message->created)}  
                         {if $diff->h + ($diff->days*24) > 0}
+                            {var $last = null}
                             <div class="time-bubble-row">
                                 <div class="time-bubble">{$message->created->format("d.m. Y, h:i")}</div>
                             </div>
