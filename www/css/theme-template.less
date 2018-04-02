@@ -66,12 +66,7 @@
         }
     }
 
-    & [type="checkbox"].filled-in:checked+label:before {
-        border-right-color: @accent-text-color;
-        border-bottom-color: @accent-text-color;
-    }
-
-    & [type="checkbox"].filled-in:checked+label:after {
+    & [type="checkbox"].filled-in:checked+span:not(.lever):after {
         border-color: @accent-color;
         background-color: @accent-color;
     }

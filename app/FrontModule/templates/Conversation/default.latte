@@ -3,24 +3,37 @@
 <section class="main" id="message-detail">
     <script src="/js/ckeditor/ckeditor.js"></script>
     <div class="container offset-1">
+        <div class="flex-spacer"></div>
         <div class="row">
             <div class="col s12" n:snippet="conversation-list">
                 <div class="conversation">
                     {foreach $messages as $message}
-                    <div class="message {if !$message->fromMe}me{else}from{/if}">
+                    <div class="time-bubble-row">
+                        <div class="time-bubble">22. 4. 2018, 22:00</div>
+                    </div>
+                    <div class="message {if !$message->fromMe}from{else}me{/if}">
+                        <div class="flex-spacer"></div>
                         <div class="card bubble paper-shadow">
-                            <div class="card-header">
+                            {* <div class="card-header">
                                 <h3 class="name truncate">
                                     <a href="{$message->user->slug}">{$message->user->name} {$message->user->surname}</a>
                                 </h3>
                                 <div class="date">Doručeno {$message->created->format("h:m d.m.Y")}</div>
-                            </div>
+                            </div> *}
                             <div class="card-content">
                                 <p>{$message->text|noescape}</p>
                             </div>
                         </div>
-                        <div class="avatar">
+                        <div class="avatar small">
                             <img src="{$message->user->profileImage|noescape}">
+                        </div>
+                    </div>
+                    <div class="message {if !$message->fromMe}from{else}me{/if}">
+                        <div class="flex-spacer"></div>
+                        <div class="card bubble simple-bubble paper-shadow">
+                            <div class="card-content">
+                                <p>Zjednodušená bublina</p>
+                            </div>
                         </div>
                     </div>
                     {/foreach}
@@ -40,8 +53,15 @@
 
                     <div class="card message-editor">
                         <div class="card-content">
-                            {input text class=>'materialize-textarea', id=>'new-message-area'}
+                            <div class="textarea-wrapper">
+                                {input text class=>'materialize-textarea no-border', id=>'new-message-area'}
+                            </div>
+                            <div class="flex-spacer"></div>
+                            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form">Odeslat</button>
                         </div>
+
+                        
+                        {*
                         <div class="card-footer">
                             <ul class="editor-options">
                                 <li>
@@ -91,7 +111,8 @@
                             <div class="flex-spacer"></div>
                             <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
                             <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" >Potvrdit</button>
-                        </div>
+                        </div> 
+                        *}
                         {*
                         <script>
                             CKEDITOR.replace( 'new-message-area', {
