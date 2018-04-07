@@ -254,7 +254,7 @@ strong {
     &.status {
         background-color: @line-color;
 
-        i.material-icons {
+        i {
             width: 36px;
             height: 36px;
             line-height: 36px;
@@ -976,7 +976,7 @@ input[type=search]:not(.browser-default) {
     }
 
     .modal-bar {
-        padding: 20px 24px;
+        padding: 16px 24px;
         background-color: @background-highlighted;
 
         @media only screen and (max-width: 600px) {
@@ -1819,6 +1819,7 @@ input[type=search]:not(.browser-default) {
     flex-direction: column;
     margin: 0;
     padding-top: 4px;
+    width: 100%;
 
     @media only screen and (max-width: 600px) {
         & {
@@ -2452,12 +2453,18 @@ nav .nav-title {
 
 .sidenav .side-nav-header .avatar {
     margin-right: 32px;
+    background-color: @btn-icon-highlighted;
+
+    img {
+        width: 36px;
+        height: 36px;
+    }
 }
 
 .sidenav .side-nav-header .title {
     max-width: calc(~'100% - 68px');
-    font-size: 15px;
-    font-weight: 500;
+    font-size: 14px;
+    font-weight: 700;
     color: rgba(0, 0, 0, .87);
     text-transform: uppercase;
 }
@@ -3086,7 +3093,6 @@ nav .nav-title {
 /* ----- CARD TEMPLATE ----- */
 
 .card {
-    display: flex;
     position:relative;
     width: 100%;
     background: #fff;
@@ -3279,7 +3285,6 @@ nav .nav-title {
 
 .card .card-content {
     padding: 24px;
-    width: 100%;
 
     p {
         margin-top: 16px;
@@ -4052,6 +4057,10 @@ nav .nav-title {
             align-items: center;
             flex-grow: 1;
 
+            label {
+                font-size: 14px;
+            }
+
             .title {
                 font-weight: 500;
                 color: rgba(0, 0, 0, .87);
@@ -4180,6 +4189,7 @@ nav .nav-title {
         margin-top: 32px;
 
         .form-row {
+            align-items: flex-start;
             margin-top: 24px;
 
             label {
@@ -4620,7 +4630,8 @@ nav .nav-title {
 
 
 .assignment-preview {
-    
+    margin-bottom: 32px;
+
     .assignment-header {
         border-bottom: none;
         padding-bottom: 0;
@@ -4630,18 +4641,21 @@ nav .nav-title {
     .card-content {
 
         .title {
-            display: block;
-            font-size: 16px;
-            color: rgba(0, 0, 0, .87);
-            font-weight: 500;
+
+            a {
+                font-size: 16px;
+                color: rgba(0, 0, 0, .87);
+                font-weight: 500;
+            }
         }
 
         .group-name {
-            display: block;
-            font-size: 13px;
-            color: @secondary-text-color;
             margin-top: 4px;
 
+            a {
+                font-size: 13px;
+                color: @secondary-text-color;
+            }
         }
     }
 }
@@ -4684,44 +4698,38 @@ nav .nav-title {
 .assignment-info {
 
     .card-content {
+        min-height: 80px;
         padding-top: 20px;
         padding-bottom: 20px;
         display: flex;
         align-items: center;
         color: @secondary-text-color;
 
+
+        .avatar.status {
+
+            i {
+                color: #fff;
+            }      
+        }
+
         i.material-icons {
             color: @secondary-text-color;
         }
-    }
-}
 
-.assignment-detail {
+        &.assignment-detail {
+            flex-direction: column;
+            align-items: flex-start;
+            border-top: 1px solid @line-color;
+            padding-top: 24px;
+            padding-bottom: 24px;
 
-    .card-content {
-
-        &.task-header {
-            padding-top: 20px;
-            padding-bottom: 20px;
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid @line-color;
-
-            .time-left {
-                flex-grow: 1;
+            .assignment-comment {
+                margin-bottom: 8px;
+                color: rgba(0, 0, 0, .87);
             }
-        }  
-    }
-
-    .task-content {
-
-        .task-comment {
-            margin-bottom: 8px;
         }
     }
-
-    
-
 }
 
 .assignment .remaining-time {
@@ -4886,9 +4894,11 @@ nav .nav-title {
     border-radius: 50%;
     width: 192px;
     height: 192px;
-    background-color: rgba(0, 0, 0, .06);
     margin: 72px auto 48px auto;
     cursor: pointer;
+    background-image: url('../images/icons/no-students-icon.png');
+    background-size: contain;
+    background-position: center;
 }
 
 @media only screen and (max-width: 600px) {
@@ -4927,6 +4937,7 @@ nav .nav-title {
 
 
 .classification-properties {
+    display: flex;
     align-items: center;
     cursor: pointer;
 }

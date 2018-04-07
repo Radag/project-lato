@@ -17,6 +17,10 @@
         </div>
         *}
         <div class="card-content">
-            <a href="{plink Group:message 'id'=>$task->group->slug, 'idMessage'=>$task->idMessage}" class="title">{if $task->title}{$task->title}{/if}</a>
-            <a href="" class="group-name">{$task->group->name}</a>
+            <div class="title">
+                <a href="{plink Group:message 'id'=>$task->group->slug, 'idMessage'=>$task->idMessage}">{if $task->title}{$task->title}{/if}</a>
+            </div>
+            <div class="group-name">
+                <a href=""> {$task->group->name}</a>
+            </div>
         </div>
