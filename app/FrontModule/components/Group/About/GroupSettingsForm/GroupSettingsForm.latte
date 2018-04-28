@@ -54,22 +54,22 @@
                             <div class="checkbox-form-block">
                                 <div class="form-row">
                                     <div class="submit-control checkbox-vertical-align">
-                                    {input PR_EDIT_OWN_MSG: class => 'filled-in'}{label PR_EDIT_OWN_MSG:}{/label}
+                                    {label PR_EDIT_OWN_MSG:}{input PR_EDIT_OWN_MSG: class => 'filled-in'}<span>{$form['PR_EDIT_OWN_MSG']->caption}</span>{/label}
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="submit-control checkbox-vertical-align">
-                                {input PR_DELETE_OWN_MSG: class => 'filled-in'}{label PR_DELETE_OWN_MSG:}{/label}
+                                {label PR_DELETE_OWN_MSG:}{input PR_DELETE_OWN_MSG: class => 'filled-in'}<span>{$form['PR_DELETE_OWN_MSG']->caption}</span>{/label}
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="submit-control checkbox-vertical-align">
-                            {input PR_CREATE_MSG: class => 'filled-in'}{label PR_CREATE_MSG:}{/label}
+                            {label PR_CREATE_MSG:}{input PR_CREATE_MSG: class => 'filled-in'}<span>{$form['PR_CREATE_MSG']->caption}</span>{/label}
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="submit-control checkbox-vertical-align">
-                        {input PR_SHARE_MSG: class => 'filled-in'}{label PR_SHARE_MSG:}{/label}
+                        {label PR_SHARE_MSG:}{input PR_SHARE_MSG: class => 'filled-in'}<span>{$form['PR_SHARE_MSG']->caption}</span>{/label}
                     </div>
                 </div>
             </div>
@@ -200,7 +200,7 @@
                     {foreach $form['periods']->items as $key => $label}
                         <div class="form-row">
                             <div class="submit-control checkbox-vertical-align">
-                                <input type="radio" n:name="periods:$key" class="filled-in black" ><label n:name="periods:$key">{$label}</label>
+                                <label n:name="periods:$key"><input type="radio" n:name="periods:$key" class="filled-in black" ><span>{$label}</span></label>
                             </div>
                         </div>
                     {/foreach}
