@@ -61,8 +61,10 @@ class SignInForm extends \App\Components\BaseComponent
             $this->presenter->flashMessage('Přihlášen', 'success');
         } catch (\Exception $ex) {
             $this->userEmail = $values->email;
+            $form->addError($ex->getMessage());
             $this->presenter->flashMessage($ex->getMessage(), 'error');
-            $this->presenter->redirect('this');  
+            $this->redrawControl('sign-in-form');
+            return false; 
         }
         
         if($this->presenter->session->hasSection('redirect')) {    

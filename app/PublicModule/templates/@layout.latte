@@ -34,9 +34,16 @@
                 </div>
             </nav>
         </header>
-        <div id="flashMessagesWrapper" style="display:none;">
-            <div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
-        </div>
+        {snippet flashMessages}
+            <div id="flashMessagesWrapper" style="display:none;">
+                <div n:foreach="$flashes as $key=>$flash" id="flashNum_{rand(1, 9999)}" n:class="flash" data-type="{$flash->type}">{$flash->message}</div>
+            </div>
+            <script>  
+                $(function () {
+                    latoShowUpFlashMessages();
+                });
+            </script>
+        {/snippet}
         <header id="page-header">
             <div class="container">
                 <div class="header-content">
@@ -122,5 +129,48 @@
             });
         </script>
         {/block}
+        <div id="button-loader" class="hide">
+            <div class="preloader-wrapper small active" style="height: 30px; width: 30px; top: 5px; margin: 0px 20px;">
+              <div class="spinner-layer spinner-blue">
+                <div class="circle-clipper left">
+                  <div class="circle"></div>
+                </div><div class="gap-patch">
+                  <div class="circle"></div>
+                </div><div class="circle-clipper right">
+                  <div class="circle"></div>
+                </div>
+              </div>
+
+              <div class="spinner-layer spinner-red">
+                <div class="circle-clipper left">
+                  <div class="circle"></div>
+                </div><div class="gap-patch">
+                  <div class="circle"></div>
+                </div><div class="circle-clipper right">
+                  <div class="circle"></div>
+                </div>
+              </div>
+
+              <div class="spinner-layer spinner-yellow">
+                <div class="circle-clipper left">
+                  <div class="circle"></div>
+                </div><div class="gap-patch">
+                  <div class="circle"></div>
+                </div><div class="circle-clipper right">
+                  <div class="circle"></div>
+                </div>
+              </div>
+
+              <div class="spinner-layer spinner-green">
+                <div class="circle-clipper left">
+                  <div class="circle"></div>
+                </div><div class="gap-patch">
+                  <div class="circle"></div>
+                </div><div class="circle-clipper right">
+                  <div class="circle"></div>
+                </div>
+              </div>
+            </div>
+        </div>
     </body>
 </html>
