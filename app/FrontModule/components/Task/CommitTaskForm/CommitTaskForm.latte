@@ -8,9 +8,6 @@
         <div class="form-row">
             {input comment class => 'materialize-textarea'}
         </div>
-        <div class="form-row">
-            <a type="text" class="upload-file-input" href="javascript:addNewTaskCommit()">Nahrát soubor</a>
-        </div>
         {input attachments id => 'taskAttachmentsIds'}
         <ul id="commit-upload-block" class="attachments_uploads {if empty($attachments)}hide{/if}" >
             {if !empty($attachments)}
@@ -25,6 +22,13 @@
                 {/foreach}
             {/if}
         </ul>
+        <div class="upload-file-input">
+            <a type="text" class="upload-btn" href="javascript:addNewTaskCommit()">
+                <i class="material-icons">attach_file</i>Nahrát soubor
+            </a>
+            <div class="flex-spacer"></div>
+        </div>
+        
     </div>
     <div class="modal-footer">
         <div class="flex-spacer"></div>
