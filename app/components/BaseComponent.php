@@ -17,14 +17,20 @@ use Nette\Application\UI\Control;
 class BaseComponent extends Control
 {
     
-    protected function getForm()
+    protected function getForm($flashError = true)
     {
         $form = new \Nette\Application\UI\Form;
-        $form->onError[] = function($form) {
-            foreach($form->errors as $error) {
-                $this->presenter->flashMessage($error, 'error');
-            }
-        };
+        if($flashError) {
+           $form->onError[] = function($form) {
+                foreach($form->errors as $error) {
+                    $this->presenter->flashMessage($error, 'error');
+                }
+            }; 
+        } else {
+            $form->onError[] = function($form) {
+                $this->redrawControl();
+            };
+        }
         return $form;
     }
     

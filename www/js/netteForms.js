@@ -203,6 +203,7 @@ Nette.validateControl = function(elem, rules, onlyCheck, value, emptyOptional) {
  * Validates whole form.
  */
 Nette.validateForm = function(sender) {
+        return true;
 	var form = sender.form || sender,
 		scope = false;
 
