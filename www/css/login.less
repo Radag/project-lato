@@ -7,6 +7,7 @@
 @background-highlighted: #f8f8f8;
 @line-color: rgba(0, 0, 0, .1);
 @secondary-text-color: rgba(0, 0, 0, .5);
+@error-color: #F44336;
 @btn-shadow-hover: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
 
 
@@ -177,6 +178,11 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
     color: @primary-color !important;
 }
 
+[type="checkbox"]+span:not(.lever) {
+    height: 21px;
+    line-height: 21px;
+}
+
 [type="checkbox"]+label {
 
     @media only screen and (max-width: 600px) {
@@ -275,6 +281,11 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
             }
         }
 
+        .errors {
+            font-size: 13px;
+            color: @error-color;
+        }
+
         .input-field {
             margin-top: 24px;
         }
@@ -301,6 +312,7 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
                 flex-grow: 1;
                 margin: 0;
                 line-height: 42px;
+                text-align: left;
 
                 & label {
                     color: rgba(0, 0, 0, .5);

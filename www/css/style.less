@@ -357,6 +357,10 @@ strong {
     &[disabled] {
         background-color: transparent;
     }
+
+    i {
+        font-size: 24px;
+    }
 }
 
 .btn-icon {
@@ -486,17 +490,25 @@ input[type=search]:not(.browser-default) {
     }
 }
 
+
+
 .upload-file-input {
-    display: block;
-    border-bottom: 1px solid @line-color;
-    margin: 0;
-    height: 45px;
-    font-size: 14px;
-    color: @secondary-text-color;
     display: flex;
-    align-items: center;
-    width: 100%;
-    cursor: pointer;
+    margin: 16px 0 0 0;
+
+    .upload-btn {
+        display: flex;
+        align-items: center;
+        height: 45px;
+        font-size: 14px;
+        color: @secondary-text-color;
+
+        i {
+            width: 24px;
+            text-align: center;
+            margin-right: 8px;
+        }
+    }
 }
 
 .select-wrapper {
@@ -1818,7 +1830,7 @@ input[type=search]:not(.browser-default) {
     display: flex;
     flex-direction: column;
     margin: 0;
-    padding-top: 4px;
+    padding-top: 12px;
     width: 100%;
 
     @media only screen and (max-width: 600px) {
@@ -2887,7 +2899,8 @@ nav .nav-title {
     .message-editor {
         position: absolute;
         bottom: 0;
-        left: 0;
+        left: 32px;
+        width: calc(~'100% - 64px');
         flex-direction: column;
         margin-bottom: 0;
         margin-top: 16px;
@@ -3651,6 +3664,18 @@ nav .nav-title {
 
 
 /* ----- STUDENTS ----- */
+
+#students {
+
+    .container {
+
+        &.no-students {
+            display: flex;
+            flex-direction: column;
+            min-height: calc(~'100vh - 134px');
+        }
+    }
+}
 
 /* ----- SETTINGS ----- */
 
@@ -4894,7 +4919,7 @@ nav .nav-title {
     border-radius: 50%;
     width: 192px;
     height: 192px;
-    margin: 72px auto 48px auto;
+    margin: 0 auto 48px auto;
     cursor: pointer;
     background-image: url('../images/icons/no-students-icon.png');
     background-size: contain;
@@ -4922,7 +4947,7 @@ nav .nav-title {
 
 #no-students-btn {
     display: block;
-    margin: auto;
+    margin: 0 auto 48px auto;
 }
 
 .chip {
@@ -5023,10 +5048,6 @@ nav .nav-title {
             border-bottom: none;
         }
 
-        .card {
-            margin-bottom: 0;
-        }
-
         .empty {
             display: flex;
             align-items: center;
@@ -5042,7 +5063,7 @@ nav .nav-title {
         .show-more {
             display: flex;
             justify-content: center;
-            margin: 48px 0;
+            margin: 16px 0 48px 0;
         }
     }
 
