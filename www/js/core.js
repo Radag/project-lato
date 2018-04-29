@@ -16,6 +16,7 @@ $(function() {
         success: function (data) {
             $("#main-progress-loader").hide();
             $('.dropdown-trigger').dropdown();
+            $('.tooltipped').tooltip();
             $('select').formSelect();
             if(data.reloadModal) {
                 $('.modal').modal();

@@ -72,7 +72,7 @@ class TopPanel extends \App\Components\BaseComponent
         $template->activeUser = $this->presenter->activeUser;
         $template->backArrow = $this->backArrow;
         $template->notifications = $this->notificationManager->getNotifications($this->presenter->activeUser);
-        $template->privateMessages = $this->conversationManager->getConversations($this->presenter->activeUser, true);
+        $template->privateMessages = $this->conversationManager->getConversations($this->presenter->activeUser);
         $template->groups = $this->groupManager->getUserGroups($this->presenter->activeUser);
         $template->colorScheme = $this->colorScheme;
         

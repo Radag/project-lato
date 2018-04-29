@@ -76,11 +76,20 @@ class ConversationManager extends BaseManager
         return $return;
     }
     
-    public function getConversations(User $user, $opositUser = false)
+    public function getConversations(User $user, $filter = null)
     {
         $return = [];
         
-        if($opositUser) {
+        if($filter === 'unread') {
+            $sql = "SELECT T3.*, T1.id AS conv_id, IFNULL(T4.created_when, T1.created_when) AS conv_created_when, T4.message, IF(T4.created_by=T2.user_id, NOW(), T6.`read`) AS `read`
+                FROM conversation T1 
+                JOIN converastion_attendant T2 ON T1.id=T2.conversation_id 
+                JOIN conversation_message T4 ON (T4.conversation_id=T1.id AND T4.top=1)
+                JOIN (SELECT MIN(user_id) AS user_id, conversation_id FROM converastion_attendant WHERE user_id!=? GROUP BY conversation_id) T5 ON T5.conversation_id=T1.id
+                JOIN user T3 ON T3.id=T5.user_id
+                LEFT JOIN converastion_attendant_read T6 ON T6.message_id=T4.id AND T6.user_id=T2.user_Id
+                WHERE T2.user_id=? AND IF(T4.created_by=T2.user_id, NOW(), T6.`read`) IS NULL";
+        } else {
             $sql = "SELECT T3.*, T1.id AS conv_id, IFNULL(T4.created_when, T1.created_when) AS conv_created_when, T4.message, IF(T4.created_by=T2.user_id, NOW(), T6.`read`) AS `read`
                 FROM conversation T1 
                 JOIN converastion_attendant T2 ON T1.id=T2.conversation_id 
@@ -89,18 +98,10 @@ class ConversationManager extends BaseManager
                 JOIN user T3 ON T3.id=T5.user_id
                 LEFT JOIN converastion_attendant_read T6 ON T6.message_id=T4.id AND T6.user_id=T2.user_Id
                 WHERE T2.user_id=?";
-            $conversations = $this->db->fetchAll($sql, $user->id, $user->id);
-        } else {
-            $sql = "SELECT T3.*, T1.id AS conv_id, IFNULL(T4.created_when, T1.created_when) AS conv_created_when, T4.message, T5.read
-                FROM conversation T1 
-                JOIN converastion_attendant T2 ON T1.id=T2.conversation_id 
-                LEFT JOIN conversation_message T4 ON (T4.conversation_id=T1.id AND T4.top=1)
-                JOIN user T3 ON T4.created_by=T3.id 
-                LEFT JOIN converastion_attendant_read T5 ON T5.message_id=T4.id AND T5.user_id=T3.id
-                WHERE T2.user_id=?";
-            $conversations = $this->db->fetchAll($sql, $user->id);
         }
         
+        $conversations = $this->db->fetchAll($sql, $user->id, $user->id);
+ 
         foreach($conversations as $conv) {
             $mes = new Conversation($conv);
             $mes->user = new User($conv);
