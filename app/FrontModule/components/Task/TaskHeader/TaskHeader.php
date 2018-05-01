@@ -53,7 +53,7 @@ class TaskHeader extends \App\Components\BaseComponent
         $this->classificationManager = $classificationManager;
     }
     
-    public function setTask($task, $singleMode = true)
+    public function setTask($task, $singleMode = false)
     {
         $this->task = $task;
         if($singleMode) {
