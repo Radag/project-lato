@@ -36,7 +36,7 @@ class SignInForm extends \App\Components\BaseComponent
     
     protected function createComponentForm()
     {
-        $form = $this->getForm();
+        $form = $this->getForm(false);
 
         $form->addEmail('email', 'Email:')
              ->setRequired('Prosím vyplňte váš přihlašovací email')

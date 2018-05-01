@@ -6,11 +6,11 @@
             <div class="col s12">
                 <header class="page-header">
                     <button class="btn white no-shadow dropdown-trigger" id="user-action-button" data-beloworigin="true" data-target="tasks-dropdown">
-                        Aktivní povinnosti
+                        {if $filter === 'closed'}Uzavřené povinnosti{else}Aktivní povinnosti{/if}
                     </button>
                     <ul id='tasks-dropdown' class='dropdown-content'>
                         <li><a href="{link 'this' filter=>'active'}">Aktivní povinnosti</a></li>        
-                        <li><a href="{link 'this' filter=>'closed'}">Uzavřené povinnosti</a></li>
+                        <li><a href="{link 'this' filter=>'closed'}" >Uzavřené povinnosti</a></li>
                     </ul>
                     <div class="flex-spacer"></div>
                 </header>  
@@ -19,47 +19,33 @@
     </div>
 
 {if $tasks}  
-
+    {snippet taskList}
     <div class="container offset-2">
-        <div class="row">
-            <div class="col s12">
-                <header class="section-header">
-                    <h3 class="left">Na tento týden</h3>
-                </header>
+        {foreach $tasks as $group}
+            <div class="row">
+                <div class="col s12">
+                    <header class="section-header">
+                        <h3 class="left">{$group->name}</h3>
+                    </header>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col s12">
-                {snippet actualTasks}
-                {foreach $tasks as $task}
-                    <div class="card flex-column assignment-preview">
-                        {if $task->online}
-                        <div class="assignment-header">
-                            {control taskHeader-$task->id}
+            <div class="row">
+                <div class="col s12">
+                    {foreach $group->tasks as $task}
+                        <div class="card flex-column assignment-preview">
+                            {if $task->online}
+                            <div class="assignment-header">
+                                {control taskHeader-$task->id}
+                            </div>
+                            {/if}
+                            {control taskCard $task}
                         </div>
-                        {/if}
-                        {control taskCard $task}
-                    </div>
-                {/foreach}
-                {/snippet}
+                    {/foreach}
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col s12">
-                <header class="section-header">
-                    <h3 class="left">Na příští týden</h3>
-                </header>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col s12">
-                <header class="section-header">
-                    <h3 class="left">Za déle než týden</h3>
-                </header>
-            </div>
-        </div>
+        {/foreach}
     </div>
+    {/snippet}
     <div id="commit-task-modal" class="modal modal-small">
         {snippet commitTaskForm}
             {control commitTaskForm}

@@ -22,18 +22,18 @@
                     <div class="flex-spacer"></div>
                     <ul class="left options">
                         <li>
-                            <button type="button" class="btn-flat btn-icon {if empty($messages)}disabled{/if}" {if empty($messages)}disabled{/if}>
+                            <a href="{link notificationsRead!}" class="btn-flat btn-icon ajax {if empty($messages)}disabled{/if}" {if empty($messages)}disabled{/if}>
                                 <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Označit vše jako přečtené">done_all</i>
-                            </button>
+                            </a>
                         </li>
                         <li>
-                            <button type="button" class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" data-target="messages_filter" >
+                            <button type="button" class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark tooltipped" data-target="messages_filter" data-tooltip="Filtrovat" >
                                 <i class="material-icons">filter_list</i>
                             </button>                           
                             <ul id='messages_filter' class='dropdown-content'>
                                 <li><a class="ajax" href="{link filterMessages!}">Všechny konverzace</a></li>
                                 <li><a class="ajax" href="{link filterMessages! 'filter' => 'unread'}">Nepřečtené konverzace</a></li>
-                                <li><a class="ajax" href="{link filterMessages! 'filter' => 'ignored'}">Ignorované konverzace</a></li>
+                                {*<li><a class="ajax" href="{link filterMessages! 'filter' => 'ignored'}">Ignorované konverzace</a></li>*}
                             </ul>
                         </li>
                     </ul>

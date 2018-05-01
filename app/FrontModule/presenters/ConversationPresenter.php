@@ -20,7 +20,7 @@ class ConversationPresenter extends BasePresenter
         $this['topPanel']->setTitle('Konverzace');
         $months = ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec'];
         $return = [];
-        $messages = $this->conversationManager->getConversations($this->activeUser);
+        $messages = $this->conversationManager->getConversations($this->activeUser, $this->messagesFilter);
         
         foreach($messages as $message) {
             $diff = (new \DateTime())->diff($message->created);
@@ -120,5 +120,14 @@ class ConversationPresenter extends BasePresenter
         };
 
         return $form;
+    }
+    
+    public function handleNotificationsRead()
+    {
+        $this->conversationManager->setAllMessagesRead($this->presenter->activeUser, true);
+        $this->conversationManager->setAllMessagesRead($this->presenter->activeUser, false);
+        $this->presenter->activeUser->unreadPrivateMessages = 0;
+        $this['topPanel']->redrawControl();
+        $this->redrawControl("messagesList");
     }
 }

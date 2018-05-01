@@ -17,3 +17,10 @@ extensions:
     dibi: Dibi\Bridges\Nette\DibiExtension22
     mailgun: App\Di\MailgunExt
     ftp: App\Di\FtpExt
+
+forms:
+    messages:
+        EQUAL: 'Please enter %s.'
+        FILLED: 'Please complete mandatory field.'
+        MIN_LENGTH: 'Please enter a value of at least %d characters.'
+        EMAIL: 'Vložte prosím platnou emailovou adresu'
