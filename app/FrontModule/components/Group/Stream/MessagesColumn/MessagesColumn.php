@@ -69,7 +69,7 @@ class MessagesColumn extends \App\Components\BaseComponent
             $this->comments = $data['comments'];
         } else {
             $this->template->singleMode = true;
-            $message = $this->messageManager->getMessage($this->singleMode, $this->presenter->activeUser);
+            $message = $this->messageManager->getMessage($this->singleMode, $this->presenter->activeUser, $this->presenter->activeGroup);
             $this->comments[$this->singleMode] = $this->messageManager->getMessageComments($this->singleMode);
             $this->messages = [$message->id => $message];
             $this->template->singleMessage = $message;

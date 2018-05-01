@@ -82,7 +82,7 @@ class HomepagePresenter extends BasePresenter
         $this->template->todaySchedule = $todaySchedule;
         $this->template->groups = $groups;
         $this->template->days = $this->days;
-        $this->tasks = $this->taskManager->getClosestTask($groups->groups);
+        $this->tasks = $this->taskManager->getClosestTask($groups->groups, true, $this->activeUser);
         $this->template->actualTasks = $this->tasks;
         //$this->template->actualNotices = $this->noticeManager->getNotices($this->activeUser, 3);
         $this->template->activeUser = $this->activeUser;
@@ -102,9 +102,9 @@ class HomepagePresenter extends BasePresenter
             $selectGroups = $groups->groups;
         }
         if($this->getParameter('filter') == 'closed') {
-            $this->tasks = $this->taskManager->getClosestTask($selectGroups, false);
+            $this->tasks = $this->taskManager->getClosestTask($selectGroups, false, $this->presenter->activeUser);
         } else {
-            $this->tasks = $this->taskManager->getClosestTask($selectGroups);
+            $this->tasks = $this->taskManager->getClosestTask($selectGroups, true, $this->presenter->activeUser);
         }
         
         $tasks = [];
@@ -148,7 +148,11 @@ class HomepagePresenter extends BasePresenter
     {
         return new \Nette\Application\UI\Multiplier(function ($idTask) {
             $taskHeader = $this->taskHeaderFactory->create();
-            $task = $this->taskManager->getTask($idTask, $this->presenter->activeUser);
+            if(isset($this->tasks[$idTask])) {
+                $task = $this->tasks[$idTask];
+            } else {
+                $task = $this->taskManager->getTask($idTask, $this->presenter->activeUser);
+            }
             $taskHeader->setTask($task);
             $taskHeader->setCommitTaskForm($this['commitTaskForm']);
             return $taskHeader;

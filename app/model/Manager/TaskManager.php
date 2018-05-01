@@ -45,7 +45,7 @@ class TaskManager extends BaseManager
         return $idTask;
     }
     
-    public function getClosestTask($groups, $active = true) 
+    public function getClosestTask($groups, $active, $user) 
     {
         if(!empty($groups)) {
             $now = new \DateTime();
@@ -70,7 +70,9 @@ class TaskManager extends BaseManager
                             T5.updated_when AS commit_updated,
                             T6.task_users,
                             T1.online,
-                            T1.create_classification
+                            T1.create_classification,
+                            T2.user_id as created_by,
+                            T8.id AS class_group_id
                     FROM task T1 
                     JOIN message T2 ON (T1.message_id = T2.id AND T2.deleted=0)
                     JOIN user T3 ON (T2.user_id=T3.id)
@@ -78,6 +80,7 @@ class TaskManager extends BaseManager
                     LEFT JOIN (SELECT COUNT(id) AS commit_count, task_id FROM task_commit GROUP BY task_id) T4 ON T4.task_id=T1.id
                     LEFT JOIN task_commit T5 ON T1.id=T5.task_id
                     LEFT JOIN ( SELECT COUNT(*) AS task_users, M.id FROM message M JOIN group_user G ON M.group_id=G.group_id GROUP BY M.id) T6 ON T6.id = T2.id
+                    LEFT JOIN classification_group T8 ON T1.id = T8.task_id
                     WHERE T2.group_id IN (" . implode(",", array_keys($groups)) . ") AND T1.deadline>=NOW()
                     ORDER BY T1.deadline ASC");
             } else {
@@ -99,7 +102,9 @@ class TaskManager extends BaseManager
                             T5.updated_when AS commit_updated,
                             T6.task_users,
                             T1.online,
-                            T1.create_classification
+                            T1.create_classification,                            
+                            T2.user_id as created_by,
+                            T8.id AS class_group_id,
                     FROM task T1 
                     JOIN message T2 ON (T1.message_id = T2.id AND T2.deleted=0)
                     JOIN user T3 ON (T2.user_id=T3.id)
@@ -107,6 +112,7 @@ class TaskManager extends BaseManager
                     LEFT JOIN (SELECT COUNT(id) AS commit_count, task_id FROM task_commit GROUP BY task_id) T4 ON T4.task_id=T1.id
                     LEFT JOIN task_commit T5 ON T1.id=T5.task_id
                     LEFT JOIN ( SELECT COUNT(*) AS task_users, M.id FROM message M JOIN group_user G ON M.group_id=G.group_id GROUP BY M.id) T6 ON T6.id = T2.id
+                    LEFT JOIN classification_group T8 ON T1.id = T8.task_id
                     WHERE T2.group_id IN (" . implode(",", array_keys($groups)) . ")  AND T1.deadline<NOW()
                     ORDER BY T1.deadline ASC");
             }
@@ -122,6 +128,7 @@ class TaskManager extends BaseManager
                 $taskObject->message->user->profileImage = \App\Model\Entities\User::createProfilePath($task->profile_image, $task->user_sex);
         
                 $taskObject->commitCount = $task->commit_count;
+                $taskObject->isCreator = $user->id == $task->created_by;
                 $taskObject->deadline = $task->deadline;
                 $taskObject->title = $task->name;
                 $taskObject->idMessage = $task->message_id;
@@ -131,7 +138,8 @@ class TaskManager extends BaseManager
                 $taskObject->online = $task->online;
                 $taskObject->id = $task->id;
                 $taskObject->createClassification = $task->create_classification;
-                
+                $taskObject->idClassificationGroup = $task->class_group_id;
+                        
                 if(!empty($task->commit_id)) {
                     $taskObject->commit = new \App\Model\Entities\TaskCommit();
                     $taskObject->commit->idCommit = $task->commit_id;
@@ -157,13 +165,14 @@ class TaskManager extends BaseManager
                         T2.id AS class_group_id,
                         T3.group_id,
                         T4.slug,
+                        T4.name AS group_name,
                         T5.task_users,
                         T6.id AS commit_id,
                         T6.created_when AS commit_created,
                         T6.updated_when AS commit_updated,
                         T6.comment AS commit_comment,
                         T3.text,
-                        T3.created_by,
+                        T3.user_id as created_by,
                         T1.create_classification
                 FROM task T1 
                 LEFT JOIN classification_group T2 ON T1.id = T2.task_id
@@ -187,6 +196,9 @@ class TaskManager extends BaseManager
         $taskObject->taskMembers = $task->task_users;
         $taskObject->isCreator = $user->id == $task->created_by;
         $taskObject->createClassification = $task->create_classification;
+        $taskObject->group = new \App\Model\Entities\Group();
+        $taskObject->group->name = $task->group_name;
+        $taskObject->group->slug = $task->slug;
         if(!empty($task->commit_id)) {
             $commit = new \App\Model\Entities\TaskCommit();
             $commit->idCommit = $task->commit_id;

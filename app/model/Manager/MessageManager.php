@@ -139,7 +139,7 @@ class MessageManager extends BaseManager {
                 WHERE T1.group_id=? AND T1.deleted IN (?) AND T1.type IN (?)", $group->id, $delete, $filters);
         $attachments = $this->getAttachments($attachmentsData);
         foreach($messages as $message) {
-            $mess = $this->convertMesssage($message, $attachments, $user);
+            $mess = $this->convertMesssage($message, $attachments, $user, [], $group);
             $return[$mess->id] = $mess;
         }
         
@@ -147,7 +147,7 @@ class MessageManager extends BaseManager {
         return ['messages' => $return, 'comments' => $comments];
     }
     
-    public function getMessage($idMessage, $user)
+    public function getMessage($idMessage, $user, $group)
     {
           $message = $this->db->fetch("SELECT T1.text, T1.type, T1.id, T2.id AS user_id, T2.sex, T2.slug, T2.name, T2.surname, T1.created_when,
                         T9.profile_image,
@@ -192,10 +192,10 @@ class MessageManager extends BaseManager {
             $commitsAttach = $this->getAttachments($commitsAttachData);
         }
         
-        return $this->convertMesssage($message, $attachments, $user, $commitsAttach);
+        return $this->convertMesssage($message, $attachments, $user, $commitsAttach, $group);
     }
     
-    protected function convertMesssage($message, $attachments, $user, $commitsAttach = [])
+    protected function convertMesssage($message, $attachments, $user, $commitsAttach = [], $group)
     {        
         $now = new \DateTime();
         $mess = new Message();
@@ -232,6 +232,7 @@ class MessageManager extends BaseManager {
                 $mess->task->createClassification = $message->create_classification;
                 $mess->task->isCreator = $user->id == $userObject->id;
                 $mess->task->idClassificationGroup = $message->id_classification_group;
+                $mess->task->group = $group;
                 if(!empty($message->commit_id)) {
                     $commit = new \App\Model\Entities\TaskCommit();
                     $commit->idCommit = $message->commit_id;

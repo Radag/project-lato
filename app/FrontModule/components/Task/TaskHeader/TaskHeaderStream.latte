@@ -12,7 +12,8 @@
             Uzavřeno: <strong>{$task->deadline->format("j. n. H:i")}</strong>
         </div>
         {/if}
-        <a href="{plink :Front:Group:users do => students-studentsList-editGroupClassification, students-studentsList-idGroupClassification=>$task->idClassificationGroup}" class="btn gray no-shadow"><span class="hide-on-small-only">Oznámkovat</span><i class="material-icons hide-on-med-and-up">folder_open</i></a>
+        <a href="{plink :Front:Group:users do => students-studentsList-editGroupClassification, students-studentsList-idGroupClassification=>$task->idClassificationGroup, id=>$task->group->slug}" 
+           class="btn gray no-shadow"><span class="hide-on-small-only">Oznámkovat</span><i class="material-icons hide-on-med-and-up">folder_open</i></a>
     {/if}
 {else}
     {if $task->online == 1}

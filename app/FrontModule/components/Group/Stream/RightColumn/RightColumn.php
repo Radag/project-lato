@@ -37,7 +37,7 @@ class RightColumn extends \App\Components\BaseComponent
     public function render() {
         $this->template->relation = $this->presenter->activeGroup->relation;
         $this->template->lastClassificationChange = $this->classificationManager->getLastChange($this->presenter->activeUser->id, $this->presenter->activeGroup->id);
-        $this->template->actualTasks = $this->taskManager->getClosestTask(array($this->presenter->activeGroup->id => $this->presenter->activeGroup));
+        $this->template->actualTasks = $this->taskManager->getClosestTask([$this->presenter->activeGroup->id => $this->presenter->activeGroup], true, $this->presenter->activeUser);
         parent::render();
     }
    
