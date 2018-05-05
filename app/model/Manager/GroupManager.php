@@ -117,11 +117,12 @@ class GroupManager extends BaseManager {
     public function getUserGroups(Entities\User $user, $filter = null)
     {
         $return = (object)['groups' => [], 'differentRelations' => false];
-        $userGroups = $this->db->fetchAll("SELECT T1.id, T3.main_color, T1.name, T1.shortcut, T1.slug, T2.relation_type 
+        $userGroups = $this->db->fetchAll("SELECT T1.id, T3.main_color, T1.name, T1.shortcut, T1.slug, T2.relation_type, T4.id AS owner_id
             FROM `group` T1
             JOIN group_user T2 ON (T1.id=T2.group_id AND T2.user_id=? AND T2.active=1 " . (!isset($filter->relation) ? "" : "AND T2.relation_type='" . $filter->relation . "'") . ")
-            JOIN group_scheme T3 ON (T1.group_scheme_id=T3.id)" .
-            (isset($filter->skip_ids) ? " WHERE T1.id NOT IN (" . $filter->skip_ids . ")" : "")
+            JOIN group_user T4 ON (T1.id=T4.group_id AND T4.active=1 AND T4.relation_type='owner')
+            JOIN group_scheme T3 ON (T1.group_scheme_id=T3.id) WHERE T1.archived=0 " .
+            (isset($filter->skip_ids) ? " AND T1.id NOT IN (" . $filter->skip_ids . ")" : "")
             . "ORDER BY T1.name ASC", $user->id);   
   
         if(!empty($userGroups)) {
@@ -133,6 +134,8 @@ class GroupManager extends BaseManager {
                 $group->mainColor = $s->main_color;
                 $group->slug = $s->slug;
                 $group->relation = $s->relation_type;
+                $group->owner = new Entities\User();
+                $group->owner->id = $s->owner_id;
                 $return->groups[$s->id] = $group;
             }
         $relations = [];
@@ -229,7 +232,7 @@ class GroupManager extends BaseManager {
     
     public function archiveGroup($idGroup)
     {
-        $this->database->query("UPDATE groups SET ARCHIVED=1 WHERE ID_GROUP=?", $idGroup);
+        $this->db->query("UPDATE `group` SET archived=1 WHERE id=?", $idGroup);
     }
     
     public function setDeleted(Entities\Group $group, $deleted)

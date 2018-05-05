@@ -104,9 +104,9 @@ class TaskManager extends BaseManager
                             T1.online,
                             T1.create_classification,                            
                             T2.user_id as created_by,
-                            T8.id AS class_group_id,
+                            T8.id AS class_group_id
                     FROM task T1 
-                    JOIN message T2 ON (T1.message_id = T2.id AND T2.deleted=0)
+                    JOIN message T2 ON (T1.message_id=T2.id AND T2.deleted=0)
                     JOIN user T3 ON (T2.user_id=T3.id)
                     JOIN user_real T7 ON (T3.id=T7.id)
                     LEFT JOIN (SELECT COUNT(id) AS commit_count, task_id FROM task_commit GROUP BY task_id) T4 ON T4.task_id=T1.id

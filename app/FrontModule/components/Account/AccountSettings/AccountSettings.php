@@ -85,12 +85,11 @@ class AccountSettings extends \App\Components\BaseComponent
         $form->addText('email')
              ->setRequired('Zadejte svůj email')
              ->setDefaultValue($this->presenter->activeUser->email);
-        $form->addText('birthday')
-             ->setRequired('Zadejte datum narození')
-             ->setAttribute('type', 'date');
+        $form->addText('birthday');
+             //->setRequired('Zadejte datum narození');
         
         if($this->presenter->activeUser->birthday) {
-            $form['birthday']->setDefaultValue($this->presenter->activeUser->birthday->format('Y-m-d'));
+            $form['birthday']->setDefaultValue($this->presenter->activeUser->birthday->format('d. m. Y'));
         }
             
         $form->addText('school');
@@ -115,7 +114,7 @@ class AccountSettings extends \App\Components\BaseComponent
         
         $form->addSubmit('submit', 'Odeslat');
         $form->onSuccess[] = function($form, $values) {
-            $values->birthday = \DateTime::createFromFormat('Y-m-d', $values->birthday);
+            $values->birthday = \DateTime::createFromFormat('d. m. Y', $values->birthday);
             $this->userManager->updateUser($values, $this->presenter->activeUser );
             
             if(!empty($values['school'])) {
@@ -133,11 +132,11 @@ class AccountSettings extends \App\Components\BaseComponent
             $delete = json_decode($values['deleteGroups']);
             $groups = $this->groupManager->getUserGroups($this->presenter->activeUser)->groups;
             if($groups && $delete) {
-              foreach($delete as $idGroup) {
-                    if($groups[$idGroup]->relation === 'OWNER') {
+                foreach($delete as $idGroup) {
+                    if(isset($groups[$idGroup]) && $groups[$idGroup]->relation === 'owner') {
                         $this->groupManager->archiveGroup($idGroup);
-                    } else {
-                        $this->groupManager->removeUserFromGroup($groups[$idGroup], $this->presenter->activeUser);
+                    } elseif(isset($groups[$idGroup])) {
+                        $this->groupManager->removeUserFromGroup($groups[$idGroup], $this->presenter->activeUser, $this->notificationManager);
                     }
                 }  
             }

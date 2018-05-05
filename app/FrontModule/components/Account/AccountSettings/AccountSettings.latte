@@ -29,7 +29,7 @@
                             {label email}E-mailová adresa{/label}
                         </div>
                         <div class="form-row input-field">
-                            {input birthday}
+                            {input birthday class=>"datepicker"}
                             {label birthday}Datum narození{/label}
                         </div>
                     </div>
@@ -129,7 +129,7 @@
                                 <li class="group-list" data-action="leave" data-group-id="{$group->id}">
                                     <div class="group-shortcut-circle" style="background: {$group->mainColor|noescape};">{$group->shortcut|substr:0,1}</div>
                                     <div class="label">{$group->name} {*<span>(g2)</span>*}</div>
-                                    <button type="button" class="btn-flat btn-icon dropdown-button waves-effect waves-dark" data-target="group{$group->id}-options" >
+                                    <button type="button" class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" data-target="group{$group->id}-options" >
                                         <i class="material-icons">more_horiz</i>
                                     </button>
                                     <ul id='group{$group->id}-options' class="dropdown-content">
@@ -160,7 +160,7 @@
                     <div class="flex-spacer"></div>
                     <div class="form-control">
                         <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">ne</button>
-                        <button type="button" onClick="confirmDelete()" class="waves-effect modal-close waves-light btn btn-confirm" >Ano</button>
+                        <button type="button" onClick="confirmDelete('group-delete-confirm-modal')" class="waves-effect modal-close waves-light btn btn-confirm" >Ano</button>
                     </div>
                 </div>
             </div>
@@ -172,11 +172,11 @@
                     <div class="flex-spacer"></div>
                     <div class="form-control">
                         <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Ne</button>
-                        <button type="button" onClick="confirmDelete()" class="waves-effect waves-light btn modal-close btn-confirm" >Ano</button>
+                        <button type="button" onClick="confirmDelete('group-leave-confirm-modal')" class="waves-effect waves-light btn modal-close btn-confirm" >Ano</button>
                     </div>
                 </div>
             </div>
-            <script>
+            <script>         
                 $('#group-delete-confirm-modal').modal();
                 $('#group-leave-confirm-modal').modal();
                 var removeGroup = [];
@@ -190,9 +190,10 @@
                         $('#group-leave-confirm-modal').modal('open');
                     }
                 });
-                function confirmDelete() {
-                    var id = $('#group-delete-confirm-modal').data('group-id');
-                    $('li.group-list[data-group-id="' + id + '"]').closest('li.group-list').next('li.remove-group').show();
+                function confirmDelete(modal) {
+                    var id = $('#' + modal).data('group-id');
+                    $('li.group-list[data-group-id="' + id + '"]').hide();
+                    $('li.group-list[data-group-id="' + id + '"]').next('li.remove-group').show();
                     var index = removeGroup.indexOf(id);
                     if(index === -1) {
                         removeGroup.push(id);
@@ -205,6 +206,7 @@
                     $(this).closest('li.remove-group').hide();
                     var index = removeGroup.indexOf($(this).closest('li.remove-group').data('group-id'));
                     removeGroup.splice(index, 1);
+                    $('li.group-list[data-group-id="' + $(this).closest('li.remove-group').data('group-id') + '"]').show();
                     $("input[name='deleteGroups']").val(JSON.stringify(removeGroup));
                 });
                 var form_modified = false;
@@ -220,7 +222,6 @@
                         return 'Máte neuložené změny. Opravdu chcete stránku opustit ?';
                     }
                 };
-               
             </script>
         </div>
     </div>
@@ -246,12 +247,8 @@
 </section>
 
 <script>
-    $('.datepicker').datepicker({
-        selectMonths: true, // Creates a dropdown to control month
-        selectYears: 15 // Creates a dropdown of 15 years to control year
-    });
-
-    $(function () {              
+    $(function () {
+        datepicker();
         var profileImage = new Dropzone("#profile-image-button", {
             url: {link uploadProfileImage!},
             previewTemplate: '<div id="preview-template" style="display: none;"></div>'
