@@ -140,7 +140,7 @@ class AccountSettings extends \App\Components\BaseComponent
                     }
                 }  
             }
-            $this->presenter->flashMessage('Nastavení notifikací uloženo', 'success');
+            $this->presenter->flashMessage('Nastavení uloženo', 'success');
             $this->redirect('this');
         };
         return $form;        
