@@ -18,21 +18,21 @@
 {else}
     {if $task->online == 1}
         {if $task->commit }
-            <div class="avatar small status">
+            {*<div class="avatar small status">
                 <i class="material-icons done">done</i>
-            </div>
+            </div>*}
             <div class="time-left">
-                Odevzdáno: {$task->commit->created->format("j. n. H:i")}
-                {if !empty($task->commit->updated)}(upraven {$task->commit->updated->format("j. n. H:i")}){/if}
+                <strong>Odevzdáno</strong> | Termín odevzdání: <strong>{$task->deadline->format("j. n. H:i")}</strong> {*{$task->commit->created->format("j. n. H:i")}
+                {if !empty($task->commit->updated)}(upraven {$task->commit->updated->format("j. n. H:i")}){/if}*}
             </div>
         {elseif $task->timeLeft->invert === 0}  
-            <div class="time-left">Termín odevzdání: {$task->deadline->format("j. n. H:i")}</div> 
+            <div class="time-left">Termín odevzdání: <strong>{$task->deadline->format("j. n. H:i")}</strong></div> 
         {else}
-            <div class="avatar small status">
+            {*<div class="avatar small status">
                 <i class="material-icons failed">lock</i>
-            </div>
+            </div>*}
             <div class="time-left">
-                Uzavřeno: {$task->deadline->format("j. n. H:i")}
+                Uzavřeno: <strong>{$task->deadline->format("j. n. H:i")}</strong>
             </div>
         {/if}
         <button type="button" data-link="{link editTaskCommit}" class="btn gray no-shadow submit-class-button">

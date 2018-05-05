@@ -19,9 +19,10 @@
             <div class="col s12">
                 <form action="#">
                     <div class="section-header table-header">
-                        <input type="checkbox" class="filled-in" id="select-all" />
-                        <label for="select-all"></label>   
-                        <div class="title">Student</div>
+                        <label>
+                            <input type="checkbox" class="filled-in" id="select-all" />
+                            <span for="select-all">Student</span>   
+                        </label>
                     </div>
                     <script>
                          $(function () {                           
@@ -70,8 +71,10 @@
                         {foreach $groupMembers as $member}
                         <li>
                             <div class="collapsible-header table-row">
-                                <input type="checkbox" class="filled-in user-checkbox" id="user_{$member->id}" data-id="{$member->id}" data-slug="{$member->slug}"/>
-                                <label for="user_{$member->id}"></label>
+                                <label>
+                                    <input type="checkbox" class="filled-in user-checkbox" id="user_{$member->id}" data-id="{$member->id}" data-slug="{$member->slug}"/>
+                                    <span for="user_{$member->id}"></span>
+                                </label>
                                 <div class="avatar small">
                                     <img src="{$member->profileImage}">
                                 </div>

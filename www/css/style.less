@@ -753,6 +753,7 @@ input[type=search]:not(.browser-default) {
     }
 
     &.popout {
+        box-shadow: none !important;
 
         & > li {
             box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
@@ -927,12 +928,7 @@ input[type=search]:not(.browser-default) {
             }
         } 
 
-        &.assignment-header {
-
-            h3 {
-                font-size: 16px;
-            }
-        }
+        
     }
 
     
@@ -971,11 +967,31 @@ input[type=search]:not(.browser-default) {
     height: auto;
 }
 
+
+.modal::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.modal::-webkit-scrollbar:vertical {
+    width: 10px;
+}
+
+.modal::-webkit-scrollbar:horizontal {
+    height: 10px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, .15);
+}
+
+
+
 .modal {
     width: 760px;
     max-width: calc(~'100% - 24px');
     background-color: #fff;
     max-height: 80%;
+
 
     @media only screen and (max-width: 600px) {
         & {
@@ -1418,7 +1434,7 @@ input[type=search]:not(.browser-default) {
             color: @secondary-text-color;
             font-size: 16px;
             flex-grow: 1;
-            line-height: 42px;
+            line-height: 36px;
         }
     }
 
@@ -1571,7 +1587,7 @@ input[type=search]:not(.browser-default) {
 
                 .material-icons {
                     display: block;
-                    width: 36px;
+                    width: 32px;
                     height: 24px;
                     line-height: 24px;
                     margin-right: 8px;
@@ -4697,14 +4713,28 @@ nav .nav-title {
     align-items: center;
     color: @secondary-text-color;
 
-    .material-icons {
-        width: 36px;
-        height: 36px;
-        line-height: 36px;
-        border-radius: 50%;
-        text-align: center;
-        font-size: 24px !important;
 
+    .avatar {
+        margin-right: 12px;
+    }
+
+    .message-type {
+        background-color: @background-highlighted;
+        padding: 24px;
+        margin: -24px 16px -24px -24px;
+
+        .avatar {
+            margin: 0;
+        }
+
+        i {
+            font-size: 20px !important;
+        }
+    }
+
+
+    h3 {
+        font-size: 16px;
     }
 
     .time-left {
