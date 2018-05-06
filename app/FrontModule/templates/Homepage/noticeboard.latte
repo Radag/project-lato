@@ -77,11 +77,7 @@
                 {if $iterator->counter <= 2}
                 <div class="col l6 m12 s12">
                     <div class="card flex-column assignment-preview">
-                        {if $task->online}
-                        <div class="assignment-header">
-                            {control taskHeader-$task->id}
-                        </div>
-                        {/if}
+                        {control taskHeader-$task->id}
                         {control taskCard $task}
                     </div>
                 </div>

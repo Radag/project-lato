@@ -203,7 +203,11 @@ class HomepagePresenter extends BasePresenter
     
     public function redrawTasks() {
         $groups = $this->groupManager->getUserGroups($this->activeUser);
-        $this->tasks = $this->taskManager->getClosestTask($groups);
+        if($this->getParameter('filter') == 'closed') {
+            $this->tasks = $this->taskManager->getClosestTask($groups->groups, false, $this->presenter->activeUser);
+        } else {
+            $this->tasks = $this->taskManager->getClosestTask($groups->groups, true, $this->presenter->activeUser);
+        }
         $this->redrawControl('actualTasks');
     }
         

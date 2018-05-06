@@ -28,6 +28,7 @@ class BaseComponent extends Control
             }; 
         } else {
             $form->onError[] = function($form) {
+                $this->presenter->payload->invalidForm = true;    
                 $this->redrawControl();
             };
         }

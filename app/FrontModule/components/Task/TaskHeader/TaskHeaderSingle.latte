@@ -1,5 +1,5 @@
+<div class="assignment-header">
 {if $task->isCreator}
-
     {if $task->createClassification == 1}
         <div class="card card-flat assignment-info">
             <div class="card-content">
@@ -103,3 +103,4 @@
         Termín odevzdání: <strong>{$task->deadline->format("j. n., H:i")}</strong>
     </div>
 {/if}
+</div>

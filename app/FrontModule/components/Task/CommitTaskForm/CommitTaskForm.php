@@ -58,8 +58,9 @@ class CommitTaskForm extends \App\Components\BaseComponent
         return $form;
     }
     
-    public function setDefault(TaskCommit $commit)
+    public function setDefault(Task $task)
     {
+        $commit = $this->taskManager->getCommitByUser($task->id, $this->presenter->activeUser->id);        
         $this['form']->setDefaults(array(
             'comment' => $commit->comment,
             'idCommit' => $commit->idCommit
@@ -67,13 +68,13 @@ class CommitTaskForm extends \App\Components\BaseComponent
         $this->template->attachments = $commit->files;
     }
              
-    public function setTask($task)
+    public function setTask(Task $task)
     {
         $this['form']->setValues([
             'idTask' => $task->id
         ]);
         if($task->commit) {
-            $this->setDefault($task->commit);
+            $this->setDefault($task);
         }
         $this->redrawControl('commitTaskForm');
     }

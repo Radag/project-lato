@@ -101,4 +101,20 @@ function setUploadForm(uploadDropzoneId, config) {
             $(config.inputWithIds).val($(config.inputWithIds).val() + "_" + uploadedFile.file.idFile);
         }
     });
+    
+    if(!$.nette.ext('deleteAttachmentButton')) {
+        $.nette.ext('deleteAttachmentButton', {
+            start: function (jqXHR, settings) {
+                if(settings.nette !== undefined && $(settings.nette.ui).hasClass('remove-attachment')) { 
+                    $('#full-screen-loader-modal').modal('open');
+                    jqXHR.done(function( data, textStatus, jqXHR ) {
+                        $('#full-screen-loader-modal').modal('close');     
+                        if(data.invalidForm === undefined || !data.invalidForm) {
+                            $(settings.nette.ui).parents('.attached-file').remove();
+                        }
+                    });
+                } 
+            }
+        });
+    }
 }

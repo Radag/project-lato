@@ -8,12 +8,15 @@
         </select>
     </div>
     <div class="modal-content">
+        <div class="errors" n:if="$form->hasErrors()">
+            <div class="error" n:foreach="$form->getErrors() as $error">{$error}</div>
+        </div>
         <div class="modal-header">
             <div class="avatar small">
                 <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
             </div>
             <h4>{$activeUser->name} {$activeUser->surname}</h4>
-        </div>
+        </div>        
         <div class="form-row hide mes-title-row input-field">
             {input title}
             {label title}Název ({if $form['messageType']->getValue() === 'task'}povinné{else}nepovinné{/if}){/label}
@@ -50,9 +53,9 @@
                 {foreach $attachments as $attach}
                 <li>
                     <div class="attached-file">
-                        <a href="https://cdn.lato.cz/{$attach['path']|noescape}/{$attach['filename']}" target="_blank" class="file-name">{$attach['filename']}<span></span></a>
+                        <a href="{$attach->fullPath|noescape}" target="_blank" class="file-name">{$attach->filename}<span></span></a>
                         <div class="flex-spacer"></div>
-                        <a href="{link deleteAttachment!, idFile=>$attach['id_file']}" class="ajax remove-attachment"><i class="material-icons">delete</i></a>
+                        <a href="{link deleteAttachment!, idFile=>$attach->fileId}" class="ajax remove-attachment"><i class="material-icons">delete</i></a>
                     </div>
                 </li>
                 {/foreach}
@@ -115,6 +118,17 @@
             $(".reset-message-button").on('click', function(e) {
                 $.nette.ajax({
                     url: $(this).data('reset-link')
+                });
+            });
+            $(".edit-message-button").on("click", function(event) {
+                startModalLoading('#create-post-modal');
+                event.preventDefault();
+                $.nette.ajax({
+                    url: $(this).attr('href'),
+                    method: 'POST',
+                    complete: function(data) {
+                        showModalLoading('#create-post-modal');
+                    }
                 });
             });
         });

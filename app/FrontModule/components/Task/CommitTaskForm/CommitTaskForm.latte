@@ -1,7 +1,11 @@
 {snippet commitTaskForm}
 {form form class=>'ajax'}
     <div class="modal-content">
-        <h3>Odevzdat úkol</h3>
+        {if !empty($form['idCommit']->getValue())}
+            <h3>Upravit úkol</h3>
+        {else}
+            <h3>Odevzdat úkol</h3>
+        {/if}
         <div id="taskCommitDropzone" style="display: none; text-align: center; padding-top: 15%; font-size: 18px; border: 0 !important; position: absolute; background-color: white; opacity: 0.94; width: 100%; height: 100%; top:0px; left:0px; z-index:999; ">
             Přesuňte soubor prosím zde
         </div>
@@ -16,7 +20,7 @@
                     <div class="attached-file">
                         <a href="{$attach->path}" target="_blank" class="file-name">{$attach->filename}<span></span></a>
                         <div class="flex-spacer"></div>
-                        <a href="{link deleteAttachment!, idFile=>$attach->fileId}" class="ajax remove-attachment"><i class="material-icons">delete</i></a>
+                        <a href="{link deleteAttachment!, idFile=>$attach->idFile}" class="ajax remove-attachment"><i class="material-icons">delete</i></a>
                     </div>
                 </li>
                 {/foreach}

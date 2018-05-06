@@ -110,7 +110,7 @@ class MessagesColumn extends \App\Components\BaseComponent
             if(isset($this->messages[$idMessage])) {
                 $commentForm->setMessage($this->messages[$idMessage]);
             } else {
-                $commentForm->setMessage($this->messageManager->getMessage($idMessage, $this->presenter->activeUser));
+                $commentForm->setMessage($this->messageManager->getMessage($idMessage, $this->presenter->activeUser, $this->presenter->activeGroup));
             }
             if(isset($this->comments[$idMessage])) {
                 $commentForm->setComments($this->comments[$idMessage]);
@@ -126,7 +126,7 @@ class MessagesColumn extends \App\Components\BaseComponent
     
     public function handleEditMessage($idMessage)
     {
-        $message = $this->messageManager->getMessage($idMessage, $this->presenter->activeUser);
+        $message = $this->messageManager->getMessage($idMessage, $this->presenter->activeUser, $this->presenter->activeGroup);
         $this->parent['messageForm']->setDefaults($message);
         $this->parent->redrawControl('messageForm');
     }

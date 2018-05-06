@@ -11,7 +11,7 @@ use App\Model\Manager\UserManager;
 use App\Model\Manager\GroupManager;
 use App\Model\Manager\TaskManager;
 use App\Model\Manager\ClassificationManager;
-use App\FrontModule\Components\Stream\ICommitTaskFormFactory;
+use App\FrontModule\Components\Stream\CommitTaskForm;
 
 /**
  * Description of SignInForm
@@ -36,6 +36,7 @@ class TaskHeader extends \App\Components\BaseComponent
     /** @var \App\Model\Entities\Task */
     protected $task;
     
+     /** @var CommitTaskForm */
     protected $commitTaskForm;
     
     public $mode = 'stream';
@@ -53,7 +54,7 @@ class TaskHeader extends \App\Components\BaseComponent
         $this->classificationManager = $classificationManager;
     }
     
-    public function setTask($task, $singleMode = false)
+    public function setTask(\App\Model\Entities\Task $task, $singleMode = false)
     {
         $this->task = $task;
         if($singleMode) {

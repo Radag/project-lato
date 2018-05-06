@@ -63,7 +63,7 @@ class MessageForm extends \App\Components\BaseComponent
   
     public function createComponentForm()
     {   
-        $form = $this->getForm();
+        $form = $this->getForm(false);
         $form->getElementPrototype()->class('ajax');
         $form->addTextArea('text', 'Zpráva')
             ->setRequired('Napište zprávu');
