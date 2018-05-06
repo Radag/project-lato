@@ -8,6 +8,7 @@
         </div>
         {var $tt=>$message->task}
         {control taskHeader-$tt->id}
+    </div>
     {/if} 
     <div class="card-header {if $message->type === 'task' && $message->task}card-assignment-header{/if}">
         {if $message->priority == 1}<div class="topped"></div>{/if}
