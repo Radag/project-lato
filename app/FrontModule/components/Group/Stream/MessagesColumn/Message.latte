@@ -1,9 +1,15 @@
 <div class="card flex-column {if $iterator->isFirst() && $groupPermission['createMessages']}grid-item-fst{/if}{if $message->deleted == 1}card-flat{/if}" id="message-box-num_{$message->id}"> 
     {if $message->type === 'task' && $message->task}
+    <div class="assignment-header">
+        <div class="message-type">
+            <div class="avatar tiny colored">
+                <i class="material-icons">assignment</i>
+            </div>
+        </div>
         {var $tt=>$message->task}
         {control taskHeader-$tt->id}
     {/if} 
-    <div class="card-header {if $message->type === 'task' && $message->task}assognment-header{/if}">
+    <div class="card-header {if $message->type === 'task' && $message->task}card-assignment-header{/if}">
         {if $message->priority == 1}<div class="topped"></div>{/if}
         {if $message->deleted == 1}<div class="deleted"></div>{/if}
         <a href="{plink Profile:default 'id'=>$message->user->slug}" class="avatar {if $message->type === 'task' && $message->task}tiny{else}small{/if}">

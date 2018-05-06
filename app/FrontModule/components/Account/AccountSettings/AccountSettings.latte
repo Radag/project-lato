@@ -89,7 +89,7 @@
                         <h2>Moje skupiny</h2>
                     </div>
                     <div class="card-content">
-                        <p class="secondary-par"><strong>Skupiny, které spravuji</strong></p>
+                        <p class="secondary-par">Seznam skupin, které jsem vytvořil nebo spravuji</p>
                         <ul class="groups bottom-margin">
                             {var something=true}
                             {foreach $groups->groups as $group}
@@ -120,7 +120,14 @@
                                 </li>
                             {/if}
                         </ul>
-                        <p class="secondary-par"><strong>Skupiny, v nichž jsem členem</strong></p>
+                    </div>
+                </div>
+                <div class="card flex-column">
+                    <div class="card-header">
+                        <h2>Ostatní skupiny</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="secondary-par">Seznam skupin, ve kterých jsem pouze členem</p>
                         <ul class="groups">
                             {var something=true}
                             {foreach $groups->groups as $group}
