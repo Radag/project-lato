@@ -1,11 +1,8 @@
-<div class="assignment-header">
 {if $task->isCreator}
     {if $task->createClassification == 1}
         <div class="card card-flat assignment-info">
             <div class="card-content">
-                <div class="avatar">
-                    <i class="material-icons">assignment</i>
-                </div>
+                
                 <div class="time-left">
                     Termín odevzdání: <strong>{$task->deadline->format("j. n., H:i")}</strong>
                 </div>
@@ -13,17 +10,13 @@
         </div>
         <div class="card card-flat assignment-info">
             <div class="card-content">
-                <div class="avatar">
-                    <i class="material-icons">assignment</i>
-                </div>
+                
                 {if $task->timeLeft->invert === 0 }
                 <div class="time-left">
                     Termín odevzdání: <strong>{$task->deadline->format("j. n., H:i")}</strong>
                 </div>
                 {else}
-                <div class="avatar small status">
-                    <i class="material-icons locked">lock</i>
-                </div>
+                
                 <div class="time-left">
                     Uzavřeno: {$task->deadline->format("j. n. H:i")}
                 </div>
@@ -45,9 +38,6 @@
         </div>
         <div class="card card-flat assignment-info">
             <div class="card-content">
-                <div class="avatar small status">
-                    <i class="material-icons done">assignment_turned_in</i>
-                </div>
                 <div class="assignment-status">
                     <strong>{if !empty($task->commit->updated)}Upraveno {$task->commit->updated->format("j. n., H:i")}{else}Odevzdáno: {$task->commit->created->format("j. n., H:i")}{/if}</strong> 
                 </div>
@@ -80,9 +70,6 @@
         </div>
         <div class="card card-flat assignment-info">
             <div class="card-content">
-                <div class="avatar small status">
-                    <i class="material-icons locked">assignment</i>
-                </div>
                 <div class="assignment-status">
                     <strong>Čeká na odevzdání</strong>
                 </div>
@@ -91,9 +78,6 @@
             </div>
         </div>
     {else}
-        <div class="avatar status">
-            <i class="material-icons failed">clear</i>
-        </div>
         <div class="time-left">
             Uzavřeno: {$task->deadline->format("j. n. H:i")}
         </div>
@@ -103,4 +87,3 @@
         Termín odevzdání: <strong>{$task->deadline->format("j. n., H:i")}</strong>
     </div>
 {/if}
-</div>
