@@ -13,12 +13,20 @@
     <div class="card-header {if $message->type === 'task' && $message->task}card-assignment-header{/if}">
         {if $message->priority == 1}<div class="topped"></div>{/if}
         {if $message->deleted == 1}<div class="deleted"></div>{/if}
-        <a href="{plink Profile:default 'id'=>$message->user->slug}" class="avatar {if $message->type === 'task' && $message->task}tiny{else}small{/if}">
-            <img src="{$message->user->profileImage}" alt="{$message->user->name}">
-        </a>
-        <h3 class="name truncate">
-            <a href="{plink Profile:default 'id'=>$message->user->slug}">{$message->user->name} {$message->user->surname}</a>
-        </h3>
+        {if $message->type === 'task' && $message->task}
+            <div class="name truncate">
+                <div class="message-title">{$message->task->title}</div>
+                <div class="user-name">Adam Navrátil</div>
+            </div>
+        {else}
+            <a href="{plink Profile:default 'id'=>$message->user->slug}" class="avatar {if $message->type === 'task' && $message->task}tiny{else}small{/if}">
+                <img src="{$message->user->profileImage}" alt="{$message->user->name}">
+            </a>
+            <h3 class="name truncate">
+                <a href="{plink Profile:default 'id'=>$message->user->slug}">{$message->user->name} {$message->user->surname}</a>
+            </h3>
+        {/if}
+        
         <span class="card-date">{$message->created|date:"j. n."}</span>
      
         <button type="button" class="btn-flat btn-icon dropdown-trigger card-options waves-effect waves-dark" data-target="message_dropdown_{$message->id}" >
@@ -42,12 +50,6 @@
         </ul>
     </div>
     <div class="card-content">
-        {if $message->title}
-            <div class="message-title">{$message->title}</div>
-        {/if}
-        {if isset($message->task) && $message->task->title}
-            <div class="message-title">{$message->task->title}</div>
-        {/if}
         <p>{$message->text|breaklines}</p>
         {if isset($message->attachments['files']) && !empty($message->attachments['files']) }
         <ul class="attachments">
