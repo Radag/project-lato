@@ -33,7 +33,9 @@
                 <div class="col s12">
                     {foreach $group->tasks as $task}
                         <div class="card flex-column assignment-preview">
-                            {control taskHeader-$task->id}
+                            <div class="assignment-header">
+                                {control taskHeader-$task->id}
+                            </div>
                             {control taskCard $task}
                         </div>
                     {/foreach}

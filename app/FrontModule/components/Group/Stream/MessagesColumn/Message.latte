@@ -16,7 +16,7 @@
         {if $message->type === 'task' && $message->task}
             <div class="name truncate">
                 <div class="message-title">{$message->task->title}</div>
-                <div class="user-name">Adam Navrátil</div>
+                <div class="user-name">{$message->user->name} {$message->user->surname}</div>
             </div>
         {else}
             <a href="{plink Profile:default 'id'=>$message->user->slug}" class="avatar {if $message->type === 'task' && $message->task}tiny{else}small{/if}">
