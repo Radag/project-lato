@@ -1865,7 +1865,7 @@ input[type=search]:not(.browser-default) {
             align-items: center;
             width: 100%;
             border: 1px solid @line-color;
-            padding: 16px;
+            padding: 16px 12px;
         }
 
         .file-name {
@@ -2601,10 +2601,10 @@ nav .nav-title {
 
 .sidenav h4 {
     font-size: 13px;
-    color: @secondary-text-color;
+    color: rgba(0, 0, 0, .38);
     line-height: 1em;
     margin: 0;
-    padding: 8px 16px 16px 16px;
+    padding: 8px 16px;
     font-weight: 500;
 }
 
@@ -2983,9 +2983,10 @@ nav .nav-title {
 }
 
 .slide-out-right {
+    background-color: #f3f3f3;
+    width: 360px;
 
     .side-nav-header {
-        background-color: @background-highlighted;
         border: 0;
         height: 70px;
         padding: 16px;
@@ -2994,7 +2995,7 @@ nav .nav-title {
 
         & > .title {
             color: rgba(0, 0, 0, .87);
-            font-size: 15px;
+            font-size: 14px;
             text-transform: uppercase;
             font-weight: 500;
             padding: 0;
@@ -3088,33 +3089,91 @@ nav .nav-title {
             .label {
 
                 .title {
-                    width: 192px;
+                    width: 190px;
                 }
 
                 p {
-                    width: 168px;
+                    width: 166px;
                     margin: 0;
                     font-size: 13px;
                     line-height: 21px;
                     font-weight: 400;
+                    color: @secondary-text-color;
                 }
             }
 
             .avatar {
-                height: 36px;
-                width: 36px;
+                height: 32px;
+                width: 32px;
                 margin-right: 12px;
 
                 img {
-                    height: 36px;
-                    width: 36px;
+                    height: 32px;
+                    width: 32px;
                 }
+            }
+
+            .mark-as-read {
+                visibility: hidden;
+
+                .material-icons {
+                    font-size: 16px !important;
+                    margin: 0;
+                    height: 20px !important;
+                    line-height: 20px !important;
+
+                    &:hover {
+                        color: #000;
+                    }
+                }
+            }
+
+            &:hover .mark-as-read {
+                visibility: visible;
             }
         }
 
-        .unread-mark {
-            background-color: @background-highlighted;
+        &.sidenav-card {
+            padding: 0 8px;
+            margin: 8px 0;
+            
+
+            & > a {
+                background-color: #fff;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+                height: 104px;
+                width: 100%;
+                padding: 16px 8px;
+                align-items: stretch;
+
+                .avatar {
+                    margin-top: 2px;
+                }
+
+                .label {
+                    display: flex;
+                    flex-direction: column;
+                    flex-grow: 1;
+                }
+
+                .date {
+                    display: block;
+                    font-size: 13px;
+                    color: @secondary-text-color;
+                    font-weight: 400;
+                    line-height: 1.2em;
+
+                    .material-icons {
+
+                    }
+                }
+            }
+
         }
+    }
+
+    .sidenav-spacer {
+       height: 24px;
     }
 }
 
@@ -4065,7 +4124,7 @@ nav .nav-title {
 .prompter-loading {
     display: flex;
     justify-content: center;
-    margin: -16px 0 36px 0;
+    margin: 0;
 
     .progress {
         margin: 0;
@@ -4092,6 +4151,10 @@ nav .nav-title {
 
     &:last-child {
         margin-bottom: 16px;
+    }
+
+    &.mes-online-row {
+        margin-bottom: 0;
     }
 
     & > li {
@@ -4151,6 +4214,10 @@ nav .nav-title {
 
         margin: 20px 0;
 
+        &:last-child {
+            margin-bottom: 0;
+        }
+
         & > li {
             margin: 0 -12px;
 
@@ -4171,7 +4238,7 @@ nav .nav-title {
             }
 
             &.rest-of-all {
-                margin: 20px 0 32px 0;
+                margin: 16px 0;
                 font-size: 13px;
                 color: @hyperlink-color;
                 cursor: pointer;
@@ -4222,6 +4289,8 @@ nav .nav-title {
 }
 
 .input-field {
+    margin-bottom: 0;
+
     label {
         font-size: 14px;
     }

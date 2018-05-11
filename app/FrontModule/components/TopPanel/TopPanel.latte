@@ -76,11 +76,44 @@
         <a href="#" class="title">Oznámení</a>
         <div class="flex-spacer"></div>
         <a class="btn-flat btn-icon waves-effect waves-dark tooltipped ajax" href="{link notificationsRead! 'global' => false}" data-position="bottom" data-delay="50" data-tooltip="Označit vše jako přečtené">
-            <i class="material-icons">done_all</i>
+            <i class="material-icons">more_horiz</i>
         </a>
     </li>
+{*   *}
+
+    <h4>Nové</h4>
+    <li class="sidenav-card">
+        <a href="">
+            <div class="avatar"> 
+                <img src="/images/default-avatar_man.png" alt=""> 
+            </div>
+            <div class="label">
+                <div class="title truncate">Český jazyk</div>
+                <p class="truncate">Pozvání do skupiny</p>
+                <div class="flex-spacer"></div>
+                <span class="date">21. 9. 22:30</span>
+            </div>
+            <div class="mark-as-read"><i class="material-icons">clear</i></div>
+        </a>
+    </li>
+    <li class="sidenav-card">
+        <a href="">
+            <div class="avatar"> 
+                <img src="/images/default-avatar_man.png" alt=""> 
+            </div>
+            <div class="label">
+                <div class="title truncate">Matematika</div>
+                <p class="truncate">Oznámení | Petr Šavelka</p>
+                <div class="flex-spacer"></div>
+                <span class="date">21. 9. 22:30</span>
+            </div>
+            <div class="mark-as-read"><i class="material-icons">clear</i></div>
+        </a>
+    </li>
+    <li class="sidenav-spacer"></li>
+    <h4>Přečtené</h4>
+
     {snippet right-notification-list}
-    <li class="after-header-spacer"></li>
     {foreach $notifications as $notification} 
     <li><a href="{link readNotification!, 'id'=>$notification->id}" class="clearfix {if empty($notification->isRead)}active{/if}"> 
         <div class="avatar"> 
@@ -88,9 +121,12 @@
         </div>
         <div class="label">
             <div class="title truncate"> 
-                {$notification->title}
+                Název skupiny
             </div>
-            <p class="truncate">{$notification->text}</p> 
+            <p class="truncate">Oznámení | Petr Šavelka</p> 
+        </div>
+        <div class="mark-as-read">
+            <div class="icon"></div>
         </div> 
     </a></li> 
     {/foreach} 
@@ -164,7 +200,7 @@
         </a>
     </li>
     <li>
-        <a n:class="$presenter->isLinkCurrent('Conversation:list') ? active" href="{plink Conversation:list}" >
+        <a n:class="$presenter->isLinkCurrent('Conversation:list') ? active, waves-effect, waves-dark" href="{plink Conversation:list}" >
             <i class="material-icons">chat_bubble</i>Konverzace
         </a>
     </li>
@@ -222,11 +258,11 @@
         </a>
     </li>
     <li class="divider"></li>
-    <h4>Správa účtu</h4>
-    <li><a href="{plink Account:default}" n:class="$presenter->isLinkCurrent('Account:*') ? active">
+    <h4 style="margin-bottom: 8px">Správa účtu</h4>
+    <li><a href="{plink Account:default}" n:class="$presenter->isLinkCurrent('Account:*') ? active, waves-effect, waves-dark">
             <i class="material-icons">settings</i>Nastavení
         </a></li>
-    <li><a href="{plink Homepage:logout}">
+    <li><a href="{plink Homepage:logout}" class="waves-effect waves-dark">
             <i class="material-icons">power_settings_new</i>Odhlásit se
         </a></li>
     <li class="divider"></li>
