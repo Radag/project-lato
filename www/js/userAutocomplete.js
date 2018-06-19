@@ -55,12 +55,13 @@
         });
         this.updateUsersInput();
       }
-      return this.chipsElement.chips({
+      this.chipsElement.chips({
         data: this.chipsData,
         onChipDelete: function(id, ele, chip) {
           return _this.updateUsersInput();
         }
       });
+      return $(this.wrapper).find(".search-user-form").val('').focus();
     };
 
     latoUserAutocomplete.prototype.updateUsersInput = function() {

@@ -13,8 +13,6 @@ use App\Model\Manager\FileManager;
 use App\Model\Manager\TaskManager;
 use App\Model\Entities\Task;
 use \Nette\Application\UI\Form;
-use \Nette\Application\UI\Control;
-use App\Model\Entities\TaskCommit;
 
 
 class CommitTaskForm extends \App\Components\BaseComponent
@@ -60,7 +58,7 @@ class CommitTaskForm extends \App\Components\BaseComponent
     
     public function setDefault(Task $task)
     {
-        $commit = $this->taskManager->getCommitByUser($task->id, $this->presenter->activeUser->id);        
+        $commit = $this->taskManager->getCommitByUser($task->id, $this->presenter->activeUser->id);  
         $this['form']->setDefaults(array(
             'comment' => $commit->comment,
             'idCommit' => $commit->idCommit
@@ -103,7 +101,7 @@ class CommitTaskForm extends \App\Components\BaseComponent
         $file = $this->getPresenter()->request->getFiles();
         $path = 'users/' . $this->presenter->activeUser->slug . '/files';
         
-        $uploadedFile = $this->fileManager->uploadFile($file['file'], $path);
+        $uploadedFile = $this->fileManager->uploadFile($file['file'], $path);       
         $this->getPresenter()->payload->file = $uploadedFile;
         $this->getPresenter()->sendPayload();
     }

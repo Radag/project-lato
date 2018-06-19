@@ -68,7 +68,7 @@
                                 <img src="{$message->user->profileImage}" alt="">
                             </div>
                             <div class="name">{$message->user->name} {$message->user->surname}</div>
-                            <div class="prefix truncate">{$message->text}</div>
+                            <div class="prefix truncate">{if $message->lastIsMme == 1}Já: {/if}{$message->text}</div>
                             <div class="date">
                                 {if $message->diffDays === 0}
                                     {$message->created->format('h:i')}

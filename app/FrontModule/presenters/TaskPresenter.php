@@ -148,6 +148,6 @@ class TaskPresenter extends BasePresenter
         } else {
             $this->tasks = $this->taskManager->getClosestTask($groups->groups, true, $this->presenter->activeUser);
         }
-        $this->redrawControl('actualTasks');
+        $this->redrawControl('tasks');
     }
 }

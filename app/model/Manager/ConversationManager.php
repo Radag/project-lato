@@ -81,7 +81,7 @@ class ConversationManager extends BaseManager
         $return = [];
         
         if($filter === 'unread') {
-            $sql = "SELECT T3.*, T1.id AS conv_id, IFNULL(T4.created_when, T1.created_when) AS conv_created_when, T4.message, IF(T4.created_by=T2.user_id, NOW(), T6.`read`) AS `read`
+            $sql = "SELECT T3.*, T1.id AS conv_id, IFNULL(T4.created_when, T1.created_when) AS conv_created_when, T4.message, IF(T4.created_by=T2.user_id, 1, 0) AS last_is_me, IF(T4.created_by=T2.user_id, NOW(), T6.`read`) AS `read`
                 FROM conversation T1 
                 JOIN converastion_attendant T2 ON T1.id=T2.conversation_id 
                 JOIN conversation_message T4 ON (T4.conversation_id=T1.id AND T4.top=1)
@@ -90,7 +90,7 @@ class ConversationManager extends BaseManager
                 LEFT JOIN converastion_attendant_read T6 ON T6.message_id=T4.id AND T6.user_id=T2.user_Id
                 WHERE T2.user_id=? AND IF(T4.created_by=T2.user_id, NOW(), T6.`read`) IS NULL";
         } else {
-            $sql = "SELECT T3.*, T1.id AS conv_id, IFNULL(T4.created_when, T1.created_when) AS conv_created_when, T4.message, IF(T4.created_by=T2.user_id, NOW(), T6.`read`) AS `read`
+            $sql = "SELECT T3.*, T1.id AS conv_id, IFNULL(T4.created_when, T1.created_when) AS conv_created_when, T4.message, IF(T4.created_by=T2.user_id, 1, 0) AS last_is_me, IF(T4.created_by=T2.user_id, NOW(), T6.`read`) AS `read`
                 FROM conversation T1 
                 JOIN converastion_attendant T2 ON T1.id=T2.conversation_id 
                 JOIN conversation_message T4 ON (T4.conversation_id=T1.id AND T4.top=1)

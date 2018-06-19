@@ -21,11 +21,13 @@ class Conversation extends AbstractEntity {
     public $read = false;
     public $user;
     public $text = '';
+    public $lastIsMme = null;
     
     protected $mapFields = [
         'conv_id' => 'id',
         'conv_created_when' => 'created',
         'message' => 'text',
-        'read' => 'read'
+        'read' => 'read',
+        'last_is_me' => 'lastIsMme'
     ];
 }

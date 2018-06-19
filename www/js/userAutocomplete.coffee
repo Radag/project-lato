@@ -39,6 +39,7 @@ class @latoUserAutocomplete
 			data: @chipsData
 			onChipDelete: (id, ele, chip) =>
 				@updateUsersInput()
+		$(@wrapper).find(".search-user-form").val('').focus()
 				
 	updateUsersInput: () ->
 		toUsers = []
