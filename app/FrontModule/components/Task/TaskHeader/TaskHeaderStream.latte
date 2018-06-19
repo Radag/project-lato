@@ -29,7 +29,7 @@
             </div>
         {/if}
         <button type="button" data-link="{link editTaskCommit}" class="btn gray no-shadow submit-class-button">
-            {if $task->commit}Upravit{else}Otevřít{/if}
+            {if $task->commit}Upravit{else}Odevzdat{/if}
         </button>
     {else}
         {if $task->timeLeft->invert === 0}  

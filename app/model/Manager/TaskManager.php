@@ -45,14 +45,41 @@ class TaskManager extends BaseManager
         return $idTask;
     }
     
-    public function getClosestTask($groups, $active, $user) 
+    public function getTaskStats($groups, \App\Model\Entities\User $user)
+    {
+        $ownerIds = [-1];
+        $studentIds = [-1];
+        foreach($groups as $group) {
+            if($group->relation === 'owner') {
+                $ownerIds[] = $group->id;
+            } else {
+                $studentIds[] = $group->id;
+            }
+        }
+        return $this->db->fetch("
+                SELECT 
+                    SUM(IF(T2.id IS NULL, 0, 1)) AS tasks,
+                    SUM(IF(T3.id IS NULL, 0, 1)) AS owner
+                FROM task T1 
+                LEFT JOIN message T2 ON (T1.message_id = T2.id AND T2.deleted=0 AND T2.group_id IN (" . implode(",", $studentIds) . "))
+                LEFT JOIN message T3 ON (T1.message_id = T3.id AND T3.deleted=0 AND T3.group_id IN (" . implode(",", $ownerIds) . "))");
+    }
+    
+    public function getClosestTask($groups, $active, $user, $fromGroupOwner = false) 
     {
         if(!empty($groups)) {
-            $now = new \DateTime();
-            
+            $now = new \DateTime();         
             $tasksArray = [];
-            if($active) {
-                $tasks = $this->db->fetchAll("SELECT 
+            
+            if($fromGroupOwner) {
+                $groupIds = [];
+                foreach($groups as $group) {
+                    if($group->relation === 'owner') {
+                        $groupIds[] = $group->id;
+                    }
+                }
+                if($groupIds) {
+                    $tasks = $this->db->fetchAll("SELECT 
                             T1.id,
                             T1.name,
                             T1.message_id,
@@ -73,50 +100,64 @@ class TaskManager extends BaseManager
                             T1.create_classification,
                             T2.user_id as created_by,
                             T8.id AS class_group_id
-                    FROM task T1 
-                    JOIN message T2 ON (T1.message_id = T2.id AND T2.deleted=0)
+                    FROM message T2 
+                    JOIN task T1 ON (T1.message_id = T2.id)
                     JOIN user T3 ON (T2.user_id=T3.id)
                     JOIN user_real T7 ON (T3.id=T7.id)
                     LEFT JOIN (SELECT COUNT(id) AS commit_count, task_id FROM task_commit GROUP BY task_id) T4 ON T4.task_id=T1.id
                     LEFT JOIN task_commit T5 ON T1.id=T5.task_id
                     LEFT JOIN ( SELECT COUNT(*) AS task_users, M.id FROM message M JOIN group_user G ON M.group_id=G.group_id GROUP BY M.id) T6 ON T6.id = T2.id
                     LEFT JOIN classification_group T8 ON T1.id = T8.task_id
-                    WHERE T2.group_id IN (" . implode(",", array_keys($groups)) . ") AND T1.deadline>=NOW()
-                    ORDER BY T1.deadline ASC");
+                    WHERE T2.group_id IN (" . implode(",", $groupIds) . ") AND T2.deleted=0 AND T1.closed=?
+                    ORDER BY T2.created_when DESC", $active ? 0 : 1);
+                } else {
+                    $tasks = [];
+                }                
             } else {
-                $tasks = $this->db->fetchAll("SELECT 
-                            T1.id,
-                            T1.name,
-                            T1.message_id,
-                            T1.deadline,
-                            T2.text,
-                            T2.group_id,
-                            T3.id AS user_id,
-                            T3.name AS user_name,
-                            T3.surname AS user_surname,
-                            T7.profile_image,
-                            T3.sex AS user_sex,
-                            T4.commit_count,
-                            T5.id AS commit_id,
-                            T5.created_when AS commit_created,
-                            T5.updated_when AS commit_updated,
-                            T6.task_users,
-                            T1.online,
-                            T1.create_classification,                            
-                            T2.user_id as created_by,
-                            T8.id AS class_group_id
-                    FROM task T1 
-                    JOIN message T2 ON (T1.message_id=T2.id AND T2.deleted=0)
-                    JOIN user T3 ON (T2.user_id=T3.id)
-                    JOIN user_real T7 ON (T3.id=T7.id)
-                    LEFT JOIN (SELECT COUNT(id) AS commit_count, task_id FROM task_commit GROUP BY task_id) T4 ON T4.task_id=T1.id
-                    LEFT JOIN task_commit T5 ON T1.id=T5.task_id
-                    LEFT JOIN ( SELECT COUNT(*) AS task_users, M.id FROM message M JOIN group_user G ON M.group_id=G.group_id GROUP BY M.id) T6 ON T6.id = T2.id
-                    LEFT JOIN classification_group T8 ON T1.id = T8.task_id
-                    WHERE T2.group_id IN (" . implode(",", array_keys($groups)) . ")  AND T1.deadline<NOW()
-                    ORDER BY T1.deadline ASC");
+                $groupIds = [];
+                foreach($groups as $group) {
+                    if($group->relation === 'student') {
+                        $groupIds[] = $group->id;
+                    }
+                }
+                if(!empty($groupIds)) {
+                    $active ? $timeCompare = '>=' : $timeCompare = '<';
+                    $tasks = $this->db->fetchAll("SELECT 
+                                T1.id,
+                                T1.name,
+                                T1.message_id,
+                                T1.deadline,
+                                T2.text,
+                                T2.group_id,
+                                T3.id AS user_id,
+                                T3.name AS user_name,
+                                T3.surname AS user_surname,
+                                T7.profile_image,
+                                T3.sex AS user_sex,
+                                T4.commit_count,
+                                T5.id AS commit_id,
+                                T5.created_when AS commit_created,
+                                T5.updated_when AS commit_updated,
+                                T6.task_users,
+                                T1.online,
+                                T1.create_classification,
+                                T2.user_id as created_by,
+                                T8.id AS class_group_id
+                        FROM task T1 
+                        JOIN message T2 ON (T1.message_id = T2.id AND T2.deleted=0)
+                        JOIN user T3 ON (T2.user_id=T3.id)
+                        JOIN user_real T7 ON (T3.id=T7.id)
+                        LEFT JOIN (SELECT COUNT(id) AS commit_count, task_id FROM task_commit GROUP BY task_id) T4 ON T4.task_id=T1.id
+                        LEFT JOIN task_commit T5 ON T1.id=T5.task_id
+                        LEFT JOIN ( SELECT COUNT(*) AS task_users, M.id FROM message M JOIN group_user G ON M.group_id=G.group_id GROUP BY M.id) T6 ON T6.id = T2.id
+                        LEFT JOIN classification_group T8 ON T1.id = T8.task_id
+                        WHERE T2.group_id IN (" . implode(",", $groupIds) . ") AND T1.deadline" . $timeCompare . "NOW()
+                        ORDER BY T1.deadline ASC");
+                } else {
+                     $tasks = [];
+                }
             }
-
+            
             foreach($tasks as $task) {
                 $taskObject  = new Task();
                 $taskObject->message = new \App\Model\Entities\Message();

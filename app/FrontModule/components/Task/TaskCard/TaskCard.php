@@ -26,6 +26,7 @@ class TaskCard extends Control
     }
 
     public function render($task) {
+        $this->template->activeUser = $this->presenter->activeUser;
         $this->template->task = $task;
         $this->template->setFile($this->getTemplateFilePath());
         $this->template->render();
