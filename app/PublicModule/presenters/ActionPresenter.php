@@ -77,7 +77,7 @@ class ActionPresenter extends BasePresenter
         $user = $this->userManager->get($idUser);
         $this->userManager->verifyEmail($user, base64_decode($email));
         $this->presenter->flashMessage('Email byl úspěšně ověřen', 'success');
-        $this->redirect('Homepage:default');
+        $this->redirect(':Front:Homepage:confirm-success');
     }
     
     protected function newPassword() 

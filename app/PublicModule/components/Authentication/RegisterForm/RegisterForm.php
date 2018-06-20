@@ -79,7 +79,7 @@ class RegisterForm extends \App\Components\BaseComponent
             $redirect->remove();
             $this->presenter->redirect($link, $params);
         } else {
-            $this->presenter->redirect(':Front:Homepage:noticeboard');  
+            $this->presenter->redirect(':Front:Homepage:confirm');  
         }
     }
 }
