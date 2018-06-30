@@ -78,58 +78,45 @@
         <a class="btn-flat btn-icon waves-effect waves-dark tooltipped ajax" href="{link notificationsRead! 'global' => false}" data-position="bottom" data-delay="50" data-tooltip="Označit vše jako přečtené">
             <i class="material-icons">more_horiz</i>
         </a>
-    </li>
-{*   *}
-
-    <h4>Nové</h4>
-    <li class="sidenav-card">
-        <a href="">
-            <div class="avatar"> 
-                <img src="/images/default-avatar_man.png" alt=""> 
-            </div>
-            <div class="label">
-                <div class="title truncate">Český jazyk</div>
-                <p class="truncate">Pozvání do skupiny</p>
-                <div class="flex-spacer"></div>
-                <span class="date">21. 9. 22:30</span>
-            </div>
-            <div class="mark-as-read"><i class="material-icons">remove</i></div>
-        </a>
-    </li>
-    <li class="sidenav-card">
-        <a href="">
-            <div class="avatar"> 
-                <img src="/images/default-avatar_man.png" alt=""> 
-            </div>
-            <div class="label">
-                <div class="title truncate">Matematika</div>
-                <p class="truncate">Oznámení | Petr Šavelka</p>
-                <div class="flex-spacer"></div>
-                <span class="date">21. 9. 22:30</span>
-            </div>
-            <div class="mark-as-read"><i class="material-icons">remove</i></div>
-        </a>
-    </li>
-    <li class="sidenav-spacer"></li>
-    <h4>Přečtené</h4>
-
+    </li>    
     {snippet right-notification-list}
-    {foreach $notifications as $notification} 
-    <li><a href="{link readNotification!, 'id'=>$notification->id}" class="clearfix {if empty($notification->isRead)}active{/if}"> 
-        <div class="avatar"> 
-            <img src="/images/default-avatar_man.png" alt=""> 
-        </div>
-        <div class="label">
-            <div class="title truncate"> 
-                Název skupiny
+        {if !empty($notifications->new)}
+        <h4>Nové</h4>
+        {foreach $notifications->new as $notification}
+        <li class="sidenav-card">
+            <a href="">
+                <div class="avatar"> 
+                    <img src="{$notification->triggerUser->profileImage}" alt=""> 
+                </div>
+                <div class="label">
+                    <div class="title truncate">{$notification->title}</div>
+                    <p class="truncate">{$notification->text}</p>
+                    <div class="flex-spacer"></div>
+                    <span class="date">{$notification->created->format("j. n. H:i")}</span>
+                </div>
+                <div class="mark-as-read"><i class="material-icons">remove</i></div>
+            </a>
+        </li>
+        {/foreach}
+        {/if}
+        <li class="sidenav-spacer"></li>
+        <h4>Přečtené</h4>
+        {foreach $notifications->old as $notification} 
+        <li><a href="{link readNotification!, 'id'=>$notification->id}" class="clearfix {if empty($notification->isRead)}active{/if}"> 
+            <div class="avatar"> 
+                <img src="{$notification->triggerUser->profileImage}" alt=""> 
             </div>
-            <p class="truncate">Oznámení | Petr Šavelka</p> 
-        </div>
-        <div class="mark-as-read">
-            <div class="icon"></div>
-        </div> 
-    </a></li> 
-    {/foreach} 
+            <div class="label">
+                <div class="title truncate"> 
+                    {$notification->text}
+                </div>
+                <p class="truncate">{$notification->type} | {$notification->triggerUser->name, $notification->triggerUser->surname}</p> 
+            </div>
+            <div class="mark-as-read">
+                <div class="icon"></div>
+            </div> 
+        </a></li> 
+        {/foreach} 
     {/snippet}
 </ul>
 {/block}

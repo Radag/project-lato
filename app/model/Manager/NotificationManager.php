@@ -17,6 +17,14 @@ class NotificationManager extends BaseManager
     //byl přidán do skupiny
     const TYPE_NEW_CLASSIFICATION = 'new_classification';
     
+    public $types = [
+        self::TYPE_ADD_GROUP_MSG => 'nová zpráva',
+        self::TYPE_ADD_COMMENT => 'nový komentář',
+        self::TYPE_NEW_GROUP_MEMBER => 'nový člen skupiny',
+        self::TYPE_REMOVE_FROM_GROUP => 'člen odešel ze skupiny',
+        self::TYPE_NEW_CLASSIFICATION => 'nová známka'
+    ];
+    
     /** @var GroupManager @inject */
     public $groupManager;
     
@@ -38,7 +46,8 @@ class NotificationManager extends BaseManager
             'text' => $notification->text,
             'title' => $notification->title,
             'data' => $notification->data,
-            'type' => $notification->type
+            'type' => $notification->type,
+            'trigger_user_id' => $notification->triggerUser
         ]);
         $this->db->query("UPDATE user_real SET has_new_notification=has_new_notification+1 WHERE id=?", $notification->idUser);
     }
@@ -48,6 +57,7 @@ class NotificationManager extends BaseManager
         $notification->title = "Nový přispěvek v " . $group->name;
         $notification->text = $message->text;
         $notification->type = self::TYPE_ADD_GROUP_MSG;
+        $notification->triggerUser = $this->user->id;
         $notification->data = json_encode([
             'groupId' => $group->id,
             'messageId' => $message->id
@@ -67,6 +77,7 @@ class NotificationManager extends BaseManager
         $notification->title = "Nový komentář k příspěvku";
         $notification->text = $comment->text;
         $notification->type = self::TYPE_ADD_COMMENT;
+        $notification->triggerUser = $this->user->id;
         $notification->data = json_encode([
             'commentId' => $comment->id
         ]);
@@ -81,6 +92,7 @@ class NotificationManager extends BaseManager
         $notification->title = "Nový člen";
         $notification->text = "Do vaší skupiny " . $group->name . " se přidal nový člen " . $user->name .  ' ' . $user->surname . ".";
         $notification->idUser = $group->owner->id;
+        $notification->triggerUser = $this->user->id;
         $notification->type = self::TYPE_NEW_GROUP_MEMBER;
         $notification->data = json_encode([
             'userId' => $userId
@@ -95,27 +107,41 @@ class NotificationManager extends BaseManager
         $notification->text = "Student " . $user->name . ' ' . $user->surname . " odešel ze skupiny.";
         $notification->type = self::TYPE_REMOVE_FROM_GROUP;
         $notification->idUser = $group->owner->id;
+        $notification->triggerUser = $this->user->id;
         $this->addNotification($notification);          
     }
     
     public function getNotifications(Entities\User $user)
     {
-        $return = [];
+        $return = (object)['new' => [], 'old' => []];
         $notifications = $this->db->fetchAll("SELECT 
                     T1.id,
                     T1.text,
                     T1.title,
-                    T1.is_read
+                    T1.is_read,
+                    T1.created_when,
+                    T1.data,
+                    T2.profile_image,
+                    T2.name,
+                    T2.surname,
+                    T1.type
                 FROM notification T1 
+                JOIN vw_all_users T2 ON T1.trigger_user_id=T2.id
                 WHERE T1.user_id=?
-                ORDER BY T1.created_when DESC LIMIT 5", $user->id);
+                ORDER BY IF(T1.is_read IS NULL,NULL,T1.created_when), T1.created_when DESC LIMIT 15", $user->id);
+
         foreach($notifications as $notif) {
-            $notification = new Entities\Notification();
-            $notification->title = $notif->title;
-            $notification->text = $notif->text;
-            $notification->id = $notif->id;
-            $notification->isRead = $notif->is_read;
-            $return[] = $notification;
+            $notification = new Entities\Notification($notif);
+            $notification->triggerUser = new Entities\User();
+            $notification->triggerUser->name = $notif->name;
+            $notification->triggerUser->surname = $notif->surname;
+            $notification->triggerUser->profileImage = $notif->profile_image;
+            $notification->type = $this->types[$notif->type];
+            if($notification->isRead === null) {
+                $return->new[] = $notification;
+            } else {
+                $return->old[] = $notification;
+            }            
         }
         return $return;
     }

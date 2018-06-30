@@ -25,6 +25,7 @@ class BaseComponent extends Control
                 foreach($form->errors as $error) {
                     $this->presenter->flashMessage($error, 'error');
                 }
+                $this->presenter->payload->invalidForm = true;
             }; 
         } else {
             $form->onError[] = function($form) {

@@ -104,6 +104,7 @@ class StudentsList extends \App\Components\BaseComponent
             $notification->title = "Byl jste přidán do skupiny";
             $notification->text = "Byl jste přidán do skupiny " . $this->activeGroup->name;
             $notification->idGroup = $this->activeGroup->id;
+            $notification->triggerUser = $this->presenter->activeUser->id;
             $this->notificationManager->addNotification($notification);
         }
         $this->presenter->redirect('this');

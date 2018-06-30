@@ -32,7 +32,7 @@ class RegisterForm extends \App\Components\BaseComponent
     
     protected function createComponentForm()
     {
-        $form = $this->getForm();
+        $form = $this->getForm(false);
         $form->addText('email', 'Váš email:')
              ->addRule(Form::EMAIL, 'Email nemá správný formát.')
              ->setRequired('Prosím vyplňte váš email.');
@@ -52,14 +52,19 @@ class RegisterForm extends \App\Components\BaseComponent
 
 
         $form->addSubmit('send', 'Registrovat');
-
+        $form->onValidate[] = function(Form $form, $values) {
+            $exist = $this->userManager->getUserByMail($values->email);
+            if($exist) {
+                $form->addError("Uživatel s tímto emailem je již registrován");
+            }
+        };
         $form->onSuccess[] = [$this, 'processForm'];
         return $form;
     }  
     
     public function processForm(Form $form, $values) 
     {
-       try {
+        try {
             $pass = $values->password1;
             $idUser = $this->userManager->add($values);
             

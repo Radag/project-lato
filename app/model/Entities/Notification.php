@@ -21,4 +21,15 @@ class Notification extends AbstractEntity {
     public $type = null;
     public $data = null;
     public $isRead = null;
+    public $created = null;
+    public $triggerUser = null;
+    
+    protected $mapFields = [
+        'id' => 'id',
+        'title' => 'title',
+        'text' => 'text',
+        'created_when' => 'created',
+        'is_read' => 'isRead'
+    ];
+    
 }
