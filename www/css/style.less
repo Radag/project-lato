@@ -969,7 +969,6 @@ input[type=search]:not(.browser-default) {
     height: auto;
 }
 
-
 .modal::-webkit-scrollbar {
     -webkit-appearance: none;
 }
@@ -4790,9 +4789,9 @@ nav .nav-title {
 
 .assignment-header {
     border-bottom: 1px solid @line-color;
-    padding: 20px 24px;
-    height: 80px;
-    width: 100%;
+    padding: 24px 0;
+    margin: 0 24px;
+    width: calc(~'100% - 48px');
     display: flex;
     align-items: center;
     color: @secondary-text-color;
@@ -4803,11 +4802,11 @@ nav .nav-title {
     }
 
     .message-type {
-        background-color: @background-highlighted;
-        padding: 24px;
-        margin: -24px 16px -24px -24px;
+        margin-right: 12px;
 
         .avatar {
+            width: 40px;
+            height: 40px;
             margin: 0;
         }
 
