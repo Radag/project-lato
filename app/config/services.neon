@@ -35,3 +35,4 @@ services:
     - App\FrontModule\Components\Group\IAddUserFormFactory
     - App\FrontModule\Components\Group\AddUserForm\InviteFormFactory
     - App\FrontModule\Components\Group\AddUserForm\ImportFormFactory
+    -  App\FrontModule\Components\Account\IAccountActivatedFactory

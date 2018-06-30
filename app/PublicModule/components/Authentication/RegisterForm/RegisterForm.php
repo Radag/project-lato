@@ -76,15 +76,16 @@ class RegisterForm extends \App\Components\BaseComponent
             $this->presenter->flashMessage($ex->getMessage(), 'error');
             return false;
         }
-        $this->presenter->user->login($values->email, $pass);
-        if($this->presenter->session->hasSection('redirect')) {    
-            $redirect = $this->presenter->session->getSection('redirect');
-            $link = ':' . $redirect->link . ':' . $redirect->action;
-            $params = $redirect->params;
-            $redirect->remove();
-            $this->presenter->redirect($link, $params);
-        } else {
-            $this->presenter->redirect(':Front:Homepage:confirm');  
-        }
+        //$this->presenter->user->login($values->email, $pass);
+        $this->presenter->redirect(':Public:Homepage:confirm'); 
+//        if($this->presenter->session->hasSection('redirect')) {    
+//            $redirect = $this->presenter->session->getSection('redirect');
+//            $link = ':' . $redirect->link . ':' . $redirect->action;
+//            $params = $redirect->params;
+//            $redirect->remove();
+//            $this->presenter->redirect($link, $params);
+//        } else {
+//            $this->presenter->redirect(':Public:Homepage:confirm');  
+//        }
     }
 }

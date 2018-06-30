@@ -72,12 +72,20 @@ class ActionPresenter extends BasePresenter
     
     protected function validateMail() 
     {
-        $email = $this->request->getParameter('email');
+        $email =  base64_decode($this->request->getParameter('email'));
         $idUser = $this->request->getParameter('idUser');
-        $user = $this->userManager->get($idUser);
-        $this->userManager->verifyEmail($user, base64_decode($email));
-        $this->presenter->flashMessage('Email byl úspěšně ověřen', 'success');
-        $this->redirect(':Front:Homepage:confirm-success');
+        $user = $this->userManager->getUserByMail($email);
+        if($user && $user->id == $idUser) {
+            $this->userManager->verifyEmail($user, $email);
+            $this->presenter->flashMessage('Email byl úspěšně ověřen', 'success');
+            $this->userManager->freeLogin = true;
+            $this->presenter->user->login($email, null);
+            $this->redirect(':Front:Homepage:confirm-success');
+        } else {
+            $this->presenter->flashMessage('Špatný link', 'error');
+            $this->redirect(':Public:Homepage:default');
+        }
+        
     }
     
     protected function newPassword() 

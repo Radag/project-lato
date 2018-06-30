@@ -23,17 +23,22 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
         $this->db = $db;
     }
 
+    public $freeLogin = false;
+    
     public function authenticate(array $credentials)
     {
         list($email, $password) = $credentials;
         $row = $this->db->fetch("SELECT * FROM user_real JOIN user USING (id) WHERE email=?", $email);
-        if (!$row) {
-            throw new Nette\Security\AuthenticationException('Špatné uživatelské jméno nebo heslo.', self::IDENTITY_NOT_FOUND);
-        } elseif (!Passwords::verify($password, $row->password)) {
-            throw new Nette\Security\AuthenticationException('Špatné uživatelské jméno nebo heslo.', self::INVALID_CREDENTIAL);
-        } elseif (Passwords::needsRehash($row->password)) {
-            $this->db->query("UPDATE user_real ", ['password' => Passwords::hash($password)], "WHERE id=?", $row->id);
+        if(!$this->freeLogin) {
+            if (!$row) {
+                throw new Nette\Security\AuthenticationException('Špatné uživatelské jméno nebo heslo.', self::IDENTITY_NOT_FOUND);
+            } elseif (!Passwords::verify($password, $row->password)) {
+                throw new Nette\Security\AuthenticationException('Špatné uživatelské jméno nebo heslo.', self::INVALID_CREDENTIAL);
+            } elseif (Passwords::needsRehash($row->password)) {
+                $this->db->query("UPDATE user_real ", ['password' => Passwords::hash($password)], "WHERE id=?", $row->id);
+            }
         }
+        
         $this->setLastLogin($row->id);
 
         $arr = $row->toArray();

@@ -1,0 +1,31 @@
+<div class="container" id="sign-in-message-page">
+    {form form}
+	<div class="status-icon">
+		<i class="material-icons">verified_user</i>
+	</div>
+	<h1>Váš učet je aktivní!</h1>
+	<p>Váš e-mail byl ověřen a účet plně aktivován. Ještě předtím než ho začnete používat, vyberte si profilový obrázek, pod kterým Vás ostatní uživatelé uvidí. Později si můžete nahrát vlastní fotografii.</p>
+	<ul class="choose-avatar">
+		<li class="flex-spacer"></li>
+                {foreach $form['avatar']->items as $key=>$item}
+                    <li class="avatar">
+                        <label n:name="avatar:$key">
+                            <input n:name="avatar:$key" />
+                            <img src="{$item|noescape}" >
+                        </label>
+                    </li>
+                {/foreach}
+		<li class="flex-spacer"></li>
+	</ul>
+	<button type="submit" class="btn" disabled>Pokračovat</button>
+        <script type="text/javascript">
+            $(".choose-avatar input:checked").closest("label").find('img').addClass('selected');
+            $(".choose-avatar input").on('change', function() {
+                $(".choose-avatar img").removeClass('selected');
+                $(this).closest("label").find('img').addClass('selected');
+                $('form button').prop('disabled', false);
+            });
+        </script>
+    {/form}
+</div>
+

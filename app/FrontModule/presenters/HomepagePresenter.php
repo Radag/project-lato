@@ -11,6 +11,7 @@ use App\FrontModule\Components\TaskHeader\ITaskHeader;
 use App\FrontModule\Components\Stream\ICommitTaskFormFactory;
 use App\FrontModule\Components\Task\TaskCard;
 use App\Model\Manager\ClassificationManager;
+use App\FrontModule\Components\Account\IAccountActivatedFactory;
 
 class HomepagePresenter extends BasePresenter
 {
@@ -34,6 +35,9 @@ class HomepagePresenter extends BasePresenter
     
     /** @var ICommitTaskFormFactory @inject */
     public $commitTaskForm; 
+    
+    /** @var IAccountActivatedFactory @inject */
+    public $accountActivated; 
         
     protected $days = ['Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota', 'Neděle'];
     
@@ -159,5 +163,10 @@ class HomepagePresenter extends BasePresenter
     {
         $form = new SearchForm($this->searchManager); 
         return $form;
+    }
+    
+    protected function createComponentActivatedForm()
+    {
+        return $this->accountActivated->create();
     }
 }
