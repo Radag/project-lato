@@ -99,7 +99,7 @@
                     <h3 class="left">Skupiny</h3>
                     <div class="flex-spacer"></div>
                     <ul class="right options">
-                        {if !empty($groups)}
+                        {if !empty($groups->groups)}
                         <li>
                             <a class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" data-target="add-group" >
                                 <i class="material-icons">add</i>
@@ -116,35 +116,36 @@
         </div>
 
     <div class="row" id="group-cards">
-        {if count($groups) === 0}
-        <div class="col l4 m6 s12">
-            <a href="#create-group" class="card card-flat empty waves-effect waves-dark modal-trigger">
-                <div class="avatar"><i class="material-icons">create</i></div>
-                Vytvořit skupinu
-            </a>
-        </div>
-        <div class="col l4 m6 s12">
-            <a href="#join-group" class="card card-flat empty waves-effect waves-dark modal-trigger">
-                <div class="avatar"><i class="material-icons">exposure_plus_1</i></div>
-                Zapsat se do skupiny
-            </a>
-        </div>
+        {if !empty($groups->groups)}
+            {foreach $groups->groups as $group}
+            <div class="col l4 m6 s12">
+                <a href="{link Group:default, 'id'=>$group->slug}" class="card">
+                    <div class="avatar" style="background-color:{$group->mainColor|noescape};">{$group->shortcut|substr:0,1}
+                        {if $groups->differentRelations && $group->relation === 'owner'}<div class="admin-mark" style="background-color:{$group->mainColor|noescape};"></div>{/if}
+                    </div>
+                    <div class="title">
+                        {$group->name}
+                        <span>
+                            {*$group->owner->name} {$group->owner->surname*}
+                        </span>
+                    </div>
+                </a>
+            </div>
+            {/foreach}
+        {else}
+            <div class="col l4 m6 s12">
+                <a href="#create-group" class="card card-flat empty waves-effect waves-dark modal-trigger">
+                    <div class="avatar"><i class="material-icons">create</i></div>
+                    Vytvořit skupinu
+                </a>
+            </div>
+            <div class="col l4 m6 s12">
+                <a href="#join-group" class="card card-flat empty waves-effect waves-dark modal-trigger">
+                    <div class="avatar"><i class="material-icons">exposure_plus_1</i></div>
+                    Zapsat se do skupiny
+                </a>
+            </div>
         {/if}
-        {foreach $groups->groups as $group}
-        <div class="col l4 m6 s12">
-            <a href="{link Group:default, 'id'=>$group->slug}" class="card">
-                <div class="avatar" style="background-color:{$group->mainColor|noescape};">{$group->shortcut|substr:0,1}
-                    {if $groups->differentRelations && $group->relation === 'owner'}<div class="admin-mark" style="background-color:{$group->mainColor|noescape};"></div>{/if}
-                </div>
-                <div class="title">
-                    {$group->name}
-                    <span>
-                        {*$group->owner->name} {$group->owner->surname*}
-                    </span>
-                </div>
-            </a>
-        </div>
-        {/foreach}
     </div>
 </div>
 </section>

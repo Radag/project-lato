@@ -388,9 +388,13 @@ class GroupManager extends BaseManager {
     public function getGroupByCode($code) 
     {
         $group = $this->db->fetch("SELECT T1.*, T2.user_id AS owner FROM `group` T1 JOIN group_user T2 ON (T2.group_id=T1.id AND T2.relation_type='owner') WHERE T1.archived=0 AND T1.code=?", $code);
-        $groupEntity = new Entities\Group($group);
-        $groupEntity->owner = new Entities\User();
-        $groupEntity->owner->id = $group->owner;
-        return $groupEntity;
+        if($group) {
+            $groupEntity = new Entities\Group($group);
+            $groupEntity->owner = new Entities\User();
+            $groupEntity->owner->id = $group->owner;
+            return $groupEntity;
+        } else {
+            return false;
+        }
     }
 }

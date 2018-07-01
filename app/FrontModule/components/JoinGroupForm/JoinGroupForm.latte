@@ -1,7 +1,11 @@
-<div id="join-group" class="modal modal-small">
+<div id="join-group" class="modal modal-small" >
+    {snippet join-group}
     {form form class=>'ajax'}
     <div class="modal-content">
         <h3>Zapsat se do skupiny</h3>
+        <div class="errors" n:if="$form->hasErrors()">
+            <div class="error" n:foreach="$form->getErrors() as $error">{$error}</div>
+        </div>
         <div class="form-row input-field">
             {input code class=>'validate'}
             {label code}Zadejte kód skupiny{/label}
@@ -15,5 +19,6 @@
         </div>
     </div>
     {/form}
+    {/snippet}
 </div>
 

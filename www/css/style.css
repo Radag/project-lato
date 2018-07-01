@@ -819,6 +819,10 @@ input[type=search]:not(.browser-default) {
   padding-bottom: 8px;
   font-size: 14px;
 }
+.modal .modal-content .errors {
+  font-size: 13px;
+  color: #F44336;
+}
 .modal .modal-content .modal-users-chips,
 .modal .modal-content .message-modal-users {
   display: flex;

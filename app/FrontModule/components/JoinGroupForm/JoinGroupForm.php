@@ -25,7 +25,7 @@ class JoinGroupForm extends \App\Components\BaseComponent
     protected function createComponentForm()
     {
        
-        $form = $this->getForm();
+        $form = $this->getForm(false);
         $form->addText('code', 'Kód skupiny')
              ->setRequired('Vložte kód skupiny.');        
         
