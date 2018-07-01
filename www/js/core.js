@@ -3,6 +3,15 @@ var latoAfterAjaxStart = [];
 $(function() {
     $("#main-progress-loader").hide();
     
+    $(".modal-trigger").on('click', function(e) {
+        var input =  $($(this).attr('href')).find("input[type='text']");
+        if(input.length > 0) {
+            setTimeout(function() { 
+                input.get(0).focus() 
+            }, 300);
+        }        
+    });
+    
     $("form:not(.ajax) button[type='submit']").on('click', function() {
         $(this).parents('form').submit();
         $(this).html($("#button-loader .preloader-wrapper").clone());

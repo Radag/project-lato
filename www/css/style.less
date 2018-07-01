@@ -10,7 +10,7 @@
 @line-color: rgba(0, 0, 0, .1);
 @hyperlink-color: #2979FF;
 @btn-icon-highlighted: rgba(0, 0, 0, .1);
-
+@error-color: #F44336;
 
 
 /* ----- MATERIALIZE ----- */
@@ -1076,6 +1076,11 @@ input[type=search]:not(.browser-default) {
             padding: 0;
             padding-bottom: 8px;
             font-size: 14px;
+        }
+        
+        .errors {
+            font-size: 13px;
+            color: @error-color;
         }
 
         .modal-users-chips,
