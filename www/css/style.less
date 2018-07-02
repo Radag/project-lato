@@ -2759,8 +2759,7 @@ nav .nav-title {
     }
 }
 
-.no-messages-block,
-.no-classification-block {
+.empty-content-block {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -2771,13 +2770,24 @@ nav .nav-title {
         color: rgba(0, 0, 0, .25);
     }
 
-    .no-messages-icon {
+    .empty-content-icon {
         width: 124px;
         height: 124px;
         margin: 0 auto 56px auto;
-        background-image: url('../images/icons/no-messages-icon.png');
         background-size: contain;
-        background-position: center; 
+        background-position: center;
+
+        &.no-messages-icon {
+            background-image: url('../images/icons/no-messages-icon.png');
+        } 
+
+        &.no-students-icon {
+            background-image: url('../images/icons/no-students-icon.png');
+        }
+
+        &.no-tasks-icon {
+            background-image: url('../images/icons/no-tasks-icon.png');
+        }
     }
 
     h2 {
@@ -2785,6 +2795,11 @@ nav .nav-title {
         font-weight: 400;
         color: @secondary-text-color;
         margin: 0;
+    }
+
+    .empty-content-btn {
+        display: block;
+        margin: 48px auto;
     }
 }
 
@@ -3764,17 +3779,7 @@ nav .nav-title {
 
 /* ----- STUDENTS ----- */
 
-#students {
 
-    .container {
-
-        &.no-students {
-            display: flex;
-            flex-direction: column;
-            min-height: calc(~'100vh - 134px');
-        }
-    }
-}
 
 /* ----- SETTINGS ----- */
 
@@ -5034,53 +5039,7 @@ nav .nav-title {
 
 /* ----- STUDENTS (GROUP) ----- */
 
-.no-students-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    width: 124px;
-    height: 124px;
-    margin: 0 auto 56px auto;
-    cursor: pointer;
-    background-image: url('../images/icons/no-students-icon.png');
-    background-size: contain;
-    background-position: center;
-}
 
-@media only screen and (max-width: 600px) {
-    .no-students-icon {
-        width: 124px;
-        height: 124px;
-        margin: 48px auto 32px auto;
-    }
-}
-
-.no-students {
-    h2 {
-        font-size: 16px;
-        font-weight: 400;
-        color: @secondary-text-color;
-        margin: 0;
-        text-align: center;
-    }
-}
-
-.no-students-icon i {
-    font-size: 96px !important;
-    color: rgba(0, 0, 0, .38);
-}
-
-@media only screen and (max-width: 600px) {
-    .no-students-icon i {
-        font-size: 80px !important;
-    }
-}
-
-#no-students-btn {
-    display: block;
-    margin: 48px auto;
-}
 
 .chip {
 
