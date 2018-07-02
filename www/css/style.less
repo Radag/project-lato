@@ -22,6 +22,7 @@ body {
     font-size:14px;
     line-height: 1.6em;
     font-family: 'Roboto', 'Open sans', sans-serif;
+    min-height: calc(~'100vh - 32px');
 
     * {
         font-family: 'Roboto', 'Open sans', sans-serif;        
@@ -2151,6 +2152,7 @@ nav .nav-title {
 
 .main {
     margin: 32px auto;
+//    min-height: calc(~'100vh - 134px');
 }
 
 @media only screen and (max-width: 992px) { 
@@ -2787,6 +2789,10 @@ nav .nav-title {
 
         &.no-tasks-icon {
             background-image: url('../images/icons/no-tasks-icon.png');
+        }
+
+        &.no-classification-icon {
+            background-image: url('../images/icons/no-classification-icon.png');
         }
     }
 
@@ -4105,11 +4111,6 @@ nav .nav-title {
     background-color: #e1b83d;
 }
 
-.group-link {
-    padding: 16px;
-    background-color: #f9f9f9;
-    margin-bottom: 24px;
-}
 
 /* ----- EMPTY MESSAGE ----- */
 
@@ -4446,6 +4447,10 @@ nav .nav-title {
             }
         }
     }
+
+    .secondary-par:last-child {
+        margin-bottom: 8px;
+    }
 }
 
 
@@ -4589,6 +4594,13 @@ nav .nav-title {
 
 .card.settings .custom-collection li .material-icons {
     font-size: 24px !important;
+}
+
+.group-link {
+    font-size: 16px;
+    margin-top: 16px;
+    padding: 16px;
+    background-color: @background-highlighted;
 }
 
 #layout-footer {

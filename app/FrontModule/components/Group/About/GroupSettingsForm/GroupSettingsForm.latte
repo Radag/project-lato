@@ -91,12 +91,6 @@
                         </label>
                     </div>
                 </div>
-                <div n:if="$sharing->link">
-                    <br>
-                    <span class="notice">Odkaz pro sdílení je 
-                        <a href="{plink //:Public:Action:default, id => $activeGroup->publicCode}">{plink //:Public:Action:default, id => $activeGroup->publicCode}</a>
-                    </span>
-                </div>
                 <div class="form-row">
                     <p>Povolit sdílení pomocí kódu</p>
                     <div class="switch">
@@ -105,10 +99,6 @@
                             <span class="lever"></span>
                         </label>
                     </div>
-                </div>
-                <div n:if="$sharing->code" >
-                    <br>
-                    <span class="notice">Kód pro zápis je <strong>{$activeGroup->interCode}</strong></span>
                 </div>
             </div>
             <script>
