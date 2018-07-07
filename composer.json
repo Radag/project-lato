@@ -1,10 +1,10 @@
 {
 	"name": "nette/web-project",
-	"description": "Nette: Standard Web Project",
+	"description": "Lato",
 	"type": "project",
 	"license": ["MIT", "BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
 	"require": {
-		"php": ">= 5.3",
+		"php": ">= 7.2.0",
 		"nette/application": "^2.3.6",
 		"nette/bootstrap": "^2.3",
 		"nette/caching": "^2.3",
@@ -24,6 +24,11 @@
 		"mailgun/mailgun-php": "^2.4",
 		"php-http/curl-client": "^1.7",
 		"guzzlehttp/psr7": "^1.4"
+	},
+        "config": {
+		"platform": {
+			"php": "7.2.0"
+		}
 	},
 	"require-dev": {
 		"nette/tester": "^1.6"
