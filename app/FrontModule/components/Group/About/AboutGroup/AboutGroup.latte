@@ -96,25 +96,28 @@
                     <div class="card-header">
                         <h2>Sdílení</h2>
                     </div>
-                    {if $activeGroup->shareByCode == 1 || $activeGroup->shareByLink == 1}
                     <div class="card-content">
-                        <p class="secondary-par">
-                            Studenti se mohou zapisovat pomocí 
-                            {if $activeGroup->shareByCode == 1}
-                                kódu <strong>{$activeGroup->interCode}</strong>
-                            {/if}
-                            {if $activeGroup->shareByLink == 1}
-                                <br>
+                    {if $activeGroup->shareByCode == 1 || $activeGroup->shareByLink == 1}
+                    
+                        
+                            {if $activeGroup->shareByCode == 1 && $activeGroup->shareByLink == 1}
+                                <p class="secondary-par"> 
+                                Studenti se mohou zapisovat pomocí kódu <strong>{$activeGroup->interCode}</strong> nebo zadáním následujícího odkazu</p>
+                                <div class="group-link">{plink //:Public:Action:default, id => $activeGroup->publicCode}</div>
+                            {else}
                                 {if $activeGroup->shareByCode == 1}
-                                    nebo
+                                    <p class="secondary-par"> 
+                                    Studenti se mohou zapisovat pomocí kódu <strong>{$activeGroup->interCode}</strong>.
                                 {/if}
-                                odkazu <a href="{plink //:Public:Action:default, id => $activeGroup->publicCode}">{plink //:Public:Action:default, id => $activeGroup->publicCode}</a>
+                                {if $activeGroup->shareByLink == 1}
+                                    <p class="secondary-par"> 
+                                    Studenti se mohou zapisovat zadáním následujícího odkazu</p>
+                                    <div class="group-link">{plink //:Public:Action:default, id => $activeGroup->publicCode}</div>
+                                {/if}
                             {/if}
-                        </p>
-                    </div>
+                    {else}
+                        <p class="secondary-par italic">Nejsou nastaveny žádné možnosti pro veřejné sdílení této skupiny.</p>
                     {/if}
-                    <div class="card-footer offset">
-                        <button class="btn-flat card-bottom modal-trigger" href="#add-user-to-group">Přidat studenta</button>
                     </div>
                 </div>
             </div>
@@ -152,7 +155,7 @@
                         <h2>Správa skupiny</h2>
                     </div>
                     <div class="card-content">
-                        <p class="secondary-par">O správné fungování této skupiny se starají</p>
+                        <p class="secondary-par">Vedení této skupiny zajišťují následující uživatelé</p>
                         <ul class="custom-collection group-admins">
                             <li class="collection-item">    
                                 <a href="{plink Profile:default 'id'=>$activeGroup->owner->slug}" class="item">

@@ -22,6 +22,7 @@ body {
     font-size:14px;
     line-height: 1.6em;
     font-family: 'Roboto', 'Open sans', sans-serif;
+    min-height: calc(~'100vh - 32px');
 
     * {
         font-family: 'Roboto', 'Open sans', sans-serif;        
@@ -2077,15 +2078,14 @@ textarea.materialize-textarea {
 
 #slide-left-button {
 
-        i {
-            width: 40px;
-            text-align: center;
-        }
+    i {
+        width: 40px;
+        text-align: center;
     }
+}
 
 #slide-out {
 
-    
     .side-nav-header {
         margin-bottom: 16px;
     }
@@ -2152,6 +2152,7 @@ nav .nav-title {
 
 .main {
     margin: 32px auto;
+//    min-height: calc(~'100vh - 134px');
 }
 
 @media only screen and (max-width: 992px) { 
@@ -2486,13 +2487,8 @@ nav .nav-title {
 }
 
 .sidenav .side-nav-header .avatar {
-    margin-right: 32px;
+    margin-right: 28px;
     background-color: @btn-icon-highlighted;
-
-    img {
-        width: 36px;
-        height: 36px;
-    }
 }
 
 .sidenav .side-nav-header .title {
@@ -2765,8 +2761,7 @@ nav .nav-title {
     }
 }
 
-.no-messages-block,
-.no-classification-block {
+.empty-content-block {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -2777,11 +2772,40 @@ nav .nav-title {
         color: rgba(0, 0, 0, .25);
     }
 
+    .empty-content-icon {
+        width: 124px;
+        height: 124px;
+        margin: 0 auto 56px auto;
+        background-size: contain;
+        background-position: center;
+
+        &.no-messages-icon {
+            background-image: url('../images/icons/no-messages-icon.png');
+        } 
+
+        &.no-students-icon {
+            background-image: url('../images/icons/no-students-icon.png');
+        }
+
+        &.no-tasks-icon {
+            background-image: url('../images/icons/no-tasks-icon.png');
+        }
+
+        &.no-classification-icon {
+            background-image: url('../images/icons/no-classification-icon.png');
+        }
+    }
+
     h2 {
-        font-size: 18px;
+        font-size: 16px;
         font-weight: 400;
         color: @secondary-text-color;
-        margin: 40px 0;
+        margin: 0;
+    }
+
+    .empty-content-btn {
+        display: block;
+        margin: 48px auto;
     }
 }
 
@@ -3177,8 +3201,8 @@ nav .nav-title {
     }
 
     .sidenav-spacer {
-       height: 24px;
-    }
+     height: 24px;
+ }
 }
 
 
@@ -3679,18 +3703,18 @@ nav .nav-title {
 }
 
 :-moz-placeholder { /* Firefox 18- */
- font-size: 14px;
- color: @secondary-text-color;  
+   font-size: 14px;
+   color: @secondary-text-color;  
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
- font-size: 14px;
- color: @secondary-text-color;  
+   font-size: 14px;
+   color: @secondary-text-color;  
 }
 
 :-ms-input-placeholder {  
- font-size: 14px;
- color: @secondary-text-color;  
+   font-size: 14px;
+   color: @secondary-text-color;  
 }
 
 .modal {
@@ -3700,19 +3724,19 @@ nav .nav-title {
     }
 
     :-moz-placeholder { /* Firefox 18- */
-     font-size: 15px;
-     color: @secondary-text-color;  
- }
+       font-size: 15px;
+       color: @secondary-text-color;  
+   }
 
- ::-moz-placeholder {  /* Firefox 19+ */
-     font-size: 15px;
-     color: @secondary-text-color;  
- }
+   ::-moz-placeholder {  /* Firefox 19+ */
+       font-size: 15px;
+       color: @secondary-text-color;  
+   }
 
- :-ms-input-placeholder {  
-     font-size: 15px;
-     color: @secondary-text-color;  
- }
+   :-ms-input-placeholder {  
+       font-size: 15px;
+       color: @secondary-text-color;  
+   }
 }
 
 
@@ -3734,7 +3758,7 @@ nav .nav-title {
 
         .custom-collection {
 
-            
+
 
             .secondary-par {
 
@@ -3761,17 +3785,7 @@ nav .nav-title {
 
 /* ----- STUDENTS ----- */
 
-#students {
 
-    .container {
-
-        &.no-students {
-            display: flex;
-            flex-direction: column;
-            min-height: calc(~'100vh - 134px');
-        }
-    }
-}
 
 /* ----- SETTINGS ----- */
 
@@ -3876,16 +3890,17 @@ nav .nav-title {
 /* GROUPS */
 
 .admin-mark {
-                position: absolute;
-                top: 0;
-                left: 0;
-                height: 8px;
-                width: 8px;
-                border-radius: 50%;
-                box-shadow: 0 0 0 2px #fff;
-            }
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 8px;
+    width: 8px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px #fff;
+}
 
 #group-cards {
+    padding-bottom: 32px;
 
     .card {
         padding: 20px 24px;
@@ -4096,11 +4111,6 @@ nav .nav-title {
     background-color: #e1b83d;
 }
 
-.group-link {
-    padding: 16px;
-    background-color: #f9f9f9;
-    margin-bottom: 24px;
-}
 
 /* ----- EMPTY MESSAGE ----- */
 
@@ -4437,6 +4447,10 @@ nav .nav-title {
             }
         }
     }
+
+    .secondary-par:last-child {
+        margin-bottom: 8px;
+    }
 }
 
 
@@ -4473,15 +4487,15 @@ nav .nav-title {
 }
 
 .card.settings-group-name .card-content :-moz-placeholder { /* Firefox 18- */
- font-size: 16px
+   font-size: 16px
 }
 
 .card.settings-group-name .card-content ::-moz-placeholder {  /* Firefox 19+ */
- font-size: 16px
+   font-size: 16px
 }
 
 .card.settings-group-name .card-content :-ms-input-placeholder {  
- font-size: 16px;
+   font-size: 16px;
 }
 
 
@@ -4580,6 +4594,13 @@ nav .nav-title {
 
 .card.settings .custom-collection li .material-icons {
     font-size: 24px !important;
+}
+
+.group-link {
+    font-size: 16px;
+    margin-top: 16px;
+    padding: 16px;
+    background-color: @background-highlighted;
 }
 
 #layout-footer {
@@ -5030,43 +5051,7 @@ nav .nav-title {
 
 /* ----- STUDENTS (GROUP) ----- */
 
-.no-students-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    width: 192px;
-    height: 192px;
-    margin: 0 auto 48px auto;
-    cursor: pointer;
-    background-image: url('../images/icons/no-students-icon.png');
-    background-size: contain;
-    background-position: center;
-}
 
-@media only screen and (max-width: 600px) {
-    .no-students-icon {
-        width: 160px;
-        height: 160px;
-        margin: 48px auto 32px auto;
-    }
-}
-
-.no-students-icon i {
-    font-size: 96px !important;
-    color: rgba(0, 0, 0, .38);
-}
-
-@media only screen and (max-width: 600px) {
-    .no-students-icon i {
-        font-size: 80px !important;
-    }
-}
-
-#no-students-btn {
-    display: block;
-    margin: 0 auto 48px auto;
-}
 
 .chip {
 
@@ -5184,7 +5169,40 @@ nav .nav-title {
             margin: 16px 0 48px 0;
         }
     }
+}
 
+#page-footer {
+    border-top: 1px solid @line-color;
+    padding: 48px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    flex-direction: column;
+
+    @media only screen and (max-width: 600px) {
+        & {
+            padding: 40px 24px;
+        }
+    }
+
+    #logo {
+        height: 28px;
+        width: 64px;
+        background: url("../images/logo-b&w.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;        
+    }
+
+    .copy {
+        line-height: 28px;
+        font-size: 13px;
+        color: @secondary-text-color;
+
+        a {
+            color: @secondary-text-color;
+        }
+    }
 }
 
 
@@ -5454,7 +5472,7 @@ nav .nav-title {
 
 #sign-in-message-page {
     max-width: 720px;
-    padding-top: 15vh;
+    padding-top: 10vh;
     padding-bottom: 15vh;
 
     .status-icon {
@@ -5472,7 +5490,7 @@ nav .nav-title {
             font-size: 56px;
         }
 
-        &.confirmed {
+        &.verified {
             border-color: #d5d5d5;
             background-color: #00ce0c;
 
@@ -5525,6 +5543,7 @@ nav .nav-title {
     .btn {
         margin: auto;
         display: block;
+        background-color: #2196f3;
     }
 
 }
