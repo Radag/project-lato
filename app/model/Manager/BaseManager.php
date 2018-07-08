@@ -8,8 +8,9 @@ use Nette;
 /**
  * Users management.
  */
-class BaseManager extends Nette\Object
+class BaseManager 
 {
+    use Nette\SmartObject;
     protected $user;
 
     /** @var Nette\Database\Context */

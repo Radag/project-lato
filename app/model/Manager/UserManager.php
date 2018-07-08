@@ -10,9 +10,10 @@ use App\Model\Entities\User;
 /**
  * Users management.
  */
-class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
+class UserManager implements Nette\Security\IAuthenticator
 {
-
+    use Nette\SmartObject;
+    
     /** @var \Dibi\Connection  */
     protected $db;
     
