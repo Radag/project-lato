@@ -35,6 +35,14 @@ body {
         }
     }
 
+    .col {
+        @media only screen and (max-width: 600px) {
+            & {
+                padding: 0;
+            }
+        }
+    }
+
 /*
     &.offset-1 {
         max-width: 1020px;
@@ -499,11 +507,12 @@ nav {
     background-position: center;
     margin-top: -64px;
     height: 100vh;
-    min-height: 580px;
+    min-height: 560px;
     display: flex;
 
     @media only screen and (max-width: 600px) {
         & {
+            max-height: 720px;
             margin-top: -56px;
         }
 
@@ -519,11 +528,18 @@ nav {
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding-top: 70px;
+            padding-top: 100px;
+
+            @media only screen and (max-width: 600px) {
+                & {
+                    padding-top: 120px;
+                    padding-bottom: 56px;
+                }
+            }
 
             h1 {
                 font-size: 40px;
-                line-height: 1.6em;
+                line-height: 1.5em;
                 font-weight: 400;
                 color: #fff;
                 margin: 0;
@@ -548,8 +564,7 @@ nav {
 
                 @media only screen and (max-width: 600px) {
                     & {
-                        margin-top: 32px;
-                        font-size: 17px;
+                        font-size: 16px;
                     }
                 }
             }
@@ -565,14 +580,21 @@ nav {
 
                 @media only screen and (max-width: 600px) {
                     & {
-                        font-size: 16px;
+                        font-size: 14px;
                     }
                 }
             }
 
             .btn-row {
-                margin: 40px 0 64px 0;
+                margin: 40px 0 48px 0;
                 display: flex;
+
+                @media only screen and (max-width: 600px) {
+                    & {
+                        margin: 24px 0 32px 0;
+                        flex-direction: column;
+                    }
+                }
 
                 .btn {
                     height: 48px;
@@ -583,9 +605,11 @@ nav {
 
                     @media only screen and (max-width: 600px) {
                         & {
-                            margin-top: 64px;
                             font-weight: 500;
                             font-size: 15px;
+                            margin: 6px 0;
+                            height: 40px;
+                            line-height: 40px;
                         }
                     }
                 }
@@ -597,7 +621,14 @@ nav {
                 background: url('../images/login/platforms.png');
                 background-size: contain;
                 background-position: center;
+                background-repeat: no-repeat;
                 margin-top: 24px;
+
+                @media only screen and (max-width: 600px) {
+                    & {
+                        width: 96px;
+                    }
+                }
             }
         }
 
@@ -605,11 +636,11 @@ nav {
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 0 0 48px 0;
+            padding: 48px 0 48px 0;
 
             @media only screen and (max-width: 600px) {
                 & {
-                    padding: 0 0 40px 0;
+                    display: none;
                 }
             }
 
@@ -669,10 +700,33 @@ nav {
     padding: 80px 0 120px 0;
     background-color: #fff;
 
+    @media only screen and (max-width: 600px) {
+        & {
+            padding: 48px 0 96px 0;
+        }
+    }
+
     .feature {
         margin-bottom: 96px;
         display: flex;
         align-items: stretch;
+
+        @media only screen and (max-width: 600px) {
+            & {
+                flex-direction: column;
+                margin-bottom: 48px;
+            }
+        }
+
+        &.reversed {
+            flex-direction: row-reverse;
+
+            @media only screen and (max-width: 600px) {
+                & {
+                    flex-direction: column;
+                }
+            }
+        }
 
         &:last-child {
             margin-bottom: 0;
@@ -681,6 +735,12 @@ nav {
         h4 {
             font-size: 20px;
             font-weight: 400;
+
+            @media only screen and (max-width: 600px) {
+                & {
+                    text-align: center;
+                }
+            }
         }
 
         p {
@@ -688,6 +748,13 @@ nav {
             font-size: 16px;
             margin-bottom: 16px;
             line-height: 1.6em;
+
+            @media only screen and (max-width: 600px) {
+                & {
+                    text-align: center;
+                    font-size: 15px;
+                }
+            }
         }
 
         .platforms {
@@ -697,6 +764,12 @@ nav {
             background-size: contain;
             background-position: center;
             margin-top: 24px;
+
+            @media only screen and (max-width: 600px) {
+                & {
+                    margin: auto;
+                }
+            }
         }
 
         .illustration {
@@ -705,6 +778,18 @@ nav {
             align-items: center;
             padding-top: 8px;
             padding-bottom: 8px;
+
+            @media only screen and (max-width: 600px) {
+                & {
+                    padding-top: 32px;
+                    padding-bottom: 32px;
+                }
+
+                & > img {
+                    width: 175px;
+                    height: 125px;
+                }
+            }
         }
     }
 
@@ -717,6 +802,12 @@ nav {
     padding: 80px 0 120px 0;
     background-color: @background-highlighted;
     text-align: center;
+
+    @media only screen and (max-width: 600px) {
+        & {
+            padding: 48px 0 64px 0;
+        }
+    }
 }
 
 
@@ -725,9 +816,21 @@ nav {
 #contact {
     padding: 80px 0 120px 0;
 
+    @media only screen and (max-width: 600px) {
+        & {
+            padding: 48px 0 64px 0;
+        }
+    }
+
     .lato-contact {
         display: flex;
         align-items: center;
+
+        @media only screen and (max-width: 600px) {
+            & {
+                margin-top: 16px;
+            }
+        }
 
         .icon {
             display: flex;
@@ -739,18 +842,38 @@ nav {
             background-color: #e91e63;
             margin-right: 16px;
 
+            @media only screen and (max-width: 600px) {
+                & {
+                    width: 40px;
+                    height: 40px;
+                }
+            }
+
             .mail-icon {
                 background: url('../images/login/mail-icon.png');
                 background-size: contain;
                 background-position: center;
                 height: 30px;
                 width: 30px;
+
+                @media only screen and (max-width: 600px) {
+                    & {
+                        width: 24px;
+                        height: 24px;
+                    }
+                }
             }
         }
 
         .label {
             font-size: 20px;
             font-weight: 500;
+
+            @media only screen and (max-width: 600px) {
+                & {
+                    font-size: 18px;
+                }
+            }
         }
     }
 
@@ -760,6 +883,12 @@ nav {
         width: 6px;
         height: 6px;
         margin: 20px 25px;
+
+        @media only screen and (max-width: 600px) {
+            & {
+                margin: 20px 17px;
+            }
+        }
     }
 
     .founder {
@@ -773,10 +902,25 @@ nav {
             padding: 4px;
             margin-right: 20px;
 
+            @media only screen and (max-width: 600px) {
+                & {
+                    padding: 0;
+                    width: 40px;
+                    height: 40px;
+                }
+            }
+
             img {
                 border-radius: 50%;
                 width: 48px;
                 height: 48px;
+
+                @media only screen and (max-width: 600px) {
+                    & {
+                        width: 40px;
+                        height: 40px;
+                    }
+                }
             }
         }
 
@@ -803,6 +947,12 @@ nav {
     h4 {
         font-size: 16px;
         font-weight: 500;
+
+        @media only screen and (max-width: 600px) {
+            & {
+                margin-top: 48px;
+            }
+        }
     }
 
     .note {
@@ -810,12 +960,6 @@ nav {
         color: @secondary-text-color;
         font-style: italic;
         font-weight: 300;
-    }
-
-    @media only screen and (max-width: 600px) {
-        & {
-            padding: 64px 0 96px 0;
-        }
     }
 }
 
