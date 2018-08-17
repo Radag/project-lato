@@ -393,6 +393,11 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
                 }
             }
         }
+
+        .terms-of-use {
+            font-size: 13px;
+            margin: 0;
+        }
     }
 
     .modal-footer {
@@ -512,7 +517,6 @@ nav {
 
     @media only screen and (max-width: 600px) {
         & {
-            max-height: 720px;
             margin-top: -56px;
         }
 
@@ -528,7 +532,7 @@ nav {
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding-top: 100px;
+            padding-top: 140px;
 
             @media only screen and (max-width: 600px) {
                 & {
@@ -928,6 +932,12 @@ nav {
 
             .name {
                 font-weight: 500;
+
+                @media only screen and (max-width: 600px) {
+                    & {
+                        font-size: 14px;
+                    }
+                }
 
                 span {
                     color: @secondary-text-color;

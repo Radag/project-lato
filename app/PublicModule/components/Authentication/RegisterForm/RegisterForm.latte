@@ -25,6 +25,9 @@
         <div class="errors" n:if="$form->hasErrors()">
             <div class="error" n:foreach="$form->getErrors() as $error">{$error}</div>
         </div>
+        <div class="form-row">
+            <p class="terms-of-use">Kliknutím na tlačítko Registrovat souhlasíte s <a href="">podmínkami použivání</a> a <a href="">zásadami ochrany osobních údajů</a>.</p>
+        </div>
         <div class="flex-row form-controls">
             {*<p class="remember-me">
                 Souhlasim

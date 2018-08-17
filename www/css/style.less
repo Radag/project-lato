@@ -1365,15 +1365,15 @@ input[type=search]:not(.browser-default) {
                 }
 
                 .avatar {
-                    width: 72px;
-                    height: 72px;
-                    margin: 8px 20px;
+                    width: 64px;
+                    height: 64px;
+                    margin: 8px 12px 8px 20px;
                     padding: 4px;
                     background-color: rgba(29, 29, 29, .16);
 
                     img {
-                        height: 64px;
-                        width: 64px;
+                        height: 56px;
+                        width: 56px;
                     }
 
                     @media only screen and (max-width: 600px) {
@@ -1436,6 +1436,12 @@ input[type=search]:not(.browser-default) {
     .new-message {
         display: flex;
         padding: 20px 24px;
+
+        @media only screen and (max-width: 600px) {
+            & {
+                padding: 20px 12px;
+            }
+        }
 
         .new-message-label {
             color: @secondary-text-color;
@@ -1529,6 +1535,7 @@ input[type=search]:not(.browser-default) {
             @media only screen and (max-width: 600px) {
                 & {
                     padding: 20px 12px;
+                    border-bottom: 2px solid @line-color;
                 }
             }
             
@@ -1537,12 +1544,12 @@ input[type=search]:not(.browser-default) {
 
                 @media only screen and (max-width: 600px) {
                     & {
-                        width: 32px;
-                        height: 32px;
+                        width: 36px;
+                        height: 36px;
 
                         img {
-                            height: 32px;
-                            width: 32px;
+                            height: 36px;
+                            width: 36px;
                         }
                     }
                 }
@@ -1576,7 +1583,7 @@ input[type=search]:not(.browser-default) {
 
             @media only screen and (max-width: 600px) {
                 & {
-                    padding: 16px 12px;
+                    display: none;
                 }
             }
 
@@ -2284,6 +2291,12 @@ nav .nav-title {
     line-height: 1em;
     color: @secondary-text-color;   
     text-transform: uppercase;
+
+    @media only screen and (max-width: 600px) {
+            & {
+                font-size: 12px;
+            }
+        }
 }
 
 .section-header ul.options {
@@ -2781,6 +2794,14 @@ nav .nav-title {
         background-size: contain;
         background-position: center;
 
+        @media only screen and (max-width: 600px) {
+            & {
+                width: 96px;
+                height: 96px;
+                margin-bottom: 48px;
+            }
+        }
+
         &.no-messages-icon {
             background-image: url('../images/icons/no-messages-icon.png');
         } 
@@ -2803,11 +2824,23 @@ nav .nav-title {
         font-weight: 400;
         color: @secondary-text-color;
         margin: 0;
+
+        @media only screen and (max-width: 600px) {
+            & {
+                font-size: 14px;
+            }
+        }
     }
 
     .empty-content-btn {
         display: block;
         margin: 48px auto;
+
+        @media only screen and (max-width: 600px) {
+            & {
+                margin: 40px auto;
+            }
+        }
     }
 }
 
@@ -4445,7 +4478,7 @@ nav .nav-title {
         @media only screen and (max-width: 600px) {
             & {
                 margin-top: 8px;
-                margin-bottom: 16px;
+                margin-bottom: 24px;
             }
         }
     }
@@ -4696,6 +4729,12 @@ nav .nav-title {
     line-height: 1em;
     font-weight: 300;
     color: @secondary-text-color;
+
+    @media only screen and (max-width: 600px) {
+            & {
+                font-size: 25px;
+            }
+        }
 }
 
 .schedule-row .day-title .name {
@@ -4707,9 +4746,15 @@ nav .nav-title {
 }
 
 #one-day-schedule .day-title .name {
-    margin-top: 12px;
+    margin-top: 8px;
     font-size: 13px;
     color: @secondary-text-color;
+
+    @media only screen and (max-width: 600px) {
+            & {
+                font-size: 12px;
+            }
+        }
 }
 
 .schedule-row .day-title-spacer {
@@ -5159,6 +5204,12 @@ nav .nav-title {
             padding: 20px 24px;
             color: @secondary-text-color;
             font-style: italic;
+
+            @media only screen and (max-width: 600px) {
+                & {
+                    padding: 16px 12px;
+                }
+            }
 
             .avatar {
                 background-color: #39b54a;
