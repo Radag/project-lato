@@ -207,7 +207,7 @@
                 <h2>Správa skupiny</h2>
             </div>
             <div class="card-content">
-                <p class="secondary-par">O správné fungování této skupiny se starají</p>
+                <p class="secondary-par">Zakladatel a správce skupiny</p>
                 <ul class="custom-collection group-admins">
                     <li class="collection-item">    
                         <a href="{plink Profile:default 'id'=>$activeGroup->owner->slug}" class="item">
@@ -216,26 +216,26 @@
                                 <span class="title truncate">
                                     {$activeGroup->owner->name} {$activeGroup->owner->surname}
                                 </span>
-                                <span class="subtitle truncate">
+                                {*<span class="subtitle truncate">
                                     Učitel
-                                </span>
+                                </span>*}
                             </div>    
                         </a>   
-                        <button type="button" class="btn-flat btn-icon dropdown-trigger card-options waves-effect waves-dark" data-target="admin_dropdown_1" >
+                        {*<button type="button" class="btn-flat btn-icon dropdown-trigger card-options waves-effect waves-dark" data-target="admin_dropdown_1" >
                             <i class="material-icons">more_vert</i>
                         </button>
                         <ul id='admin_dropdown_1' class='dropdown-content'>
                             <li><a href="#edit-admin-modal" class="modal-trigger">Upravit oprávnění</a></li>
                             <li><a href="#remove-admin-modal" class="modal-trigger">Odebrat</a></li>
-                        </ul>
+                        </ul>*}
                     </li>
                 </ul>
             </div>
-            <div class="card-footer">
+            {*<div class="card-footer">
                 <a href="/auth/homepage/classification" class="btn-flat card-bottom">
                     Přidat uživatele
                 </a>
-            </div>
+            </div>*}
         </div>
     </div>
     </div>
@@ -260,68 +260,70 @@
     {/form}
     {/snippetArea}
     </div>
-</section>
-<div id="edit-admin-modal" class="modal modal-small">
-    <div class="modal-content">
-        <h3>Petr Šavelka</h3>
-        <p>Uživatel bude ve skupině vystupovat jako</p>
-        <form class="checkbox-form-block">
-            <div class="form-row">
-                <input type="radio" class="filled-in" id="opt1" name="stream-filter" checked="checked" />
-                <label for="opt1">Správce skupiny</label>
-            </div>
-            <div class="form-row">
-                <input type="radio" class="filled-in" id="opt2" name="stream-filter" />
-                <label for="opt2">Učitel</label>
-            </div>
-            <div class="form-row">
-                <input type="radio" class="filled-in" id="opt3" name="stream-filter" />
-                <label for="opt3">Pomocný učitel</label>
-            </div>
-            <div class="form-row">
-                <input type="radio" class="filled-in" id="opt4" name="stream-filter" />
-                <label for="opt4">Konzultant</label>
-            </div>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <div class="flex-spacer"></div>
-        <div class="form-control">
-            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" >Uložit</button>
-        </div>
-    </div>
-</div>
 
-<div id="remove-admin-modal" class="modal modal-small">
-    <div class="modal-content">
-        <h3>Petr Šavelka</h3>
-        <p>Opravdu si přejete odebrat tohoto učitele ze skupiny?</p>
-    </div>
-    <div class="modal-footer">
-        <div class="flex-spacer"></div>
-        <div class="form-control">
-            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" >Odebrat</button>
+    <div id="edit-admin-modal" class="modal modal-small">
+        <div class="modal-content">
+            <h3>Petr Šavelka</h3>
+            <p>Uživatel bude ve skupině vystupovat jako</p>
+            <form class="checkbox-form-block">
+                <div class="form-row">
+                    <input type="radio" class="filled-in" id="opt1" name="stream-filter" checked="checked" />
+                    <label for="opt1">Správce skupiny</label>
+                </div>
+                <div class="form-row">
+                    <input type="radio" class="filled-in" id="opt2" name="stream-filter" />
+                    <label for="opt2">Učitel</label>
+                </div>
+                <div class="form-row">
+                    <input type="radio" class="filled-in" id="opt3" name="stream-filter" />
+                    <label for="opt3">Pomocný učitel</label>
+                </div>
+                <div class="form-row">
+                    <input type="radio" class="filled-in" id="opt4" name="stream-filter" />
+                    <label for="opt4">Konzultant</label>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <div class="flex-spacer"></div>
+            <div class="form-control">
+                <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" >Uložit</button>
+            </div>
         </div>
     </div>
-</div>
-<div id="add-period-modal" class="modal modal-small">
-    {snippet periodForm}
-    {form newPeriod class=>'ajax'}
-    <div class="modal-content">
-        <h3>Vytvořit období</h3>
-        <div class="form-row">
-            {input name class=>'validate'}
+
+    <div id="remove-admin-modal" class="modal modal-small">
+        <div class="modal-content">
+            <h3>Petr Šavelka</h3>
+            <p>Opravdu si přejete odebrat tohoto učitele ze skupiny?</p>
+        </div>
+        <div class="modal-footer">
+            <div class="flex-spacer"></div>
+            <div class="form-control">
+                <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" >Odebrat</button>
+            </div>
         </div>
     </div>
-    <div class="modal-footer">
-        <div class="flex-spacer"></div>
-        <div class="form-control">
-            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form hide-modal-ajax-submit" >Vytvořit</button>
+    <div id="add-period-modal" class="modal modal-small">
+        {snippet periodForm}
+        {form newPeriod class=>'ajax'}
+        <div class="modal-content">
+            <h3>Vytvořit období</h3>
+            <div class="form-row">
+                {input name class=>'validate'}
+            </div>
         </div>
+        <div class="modal-footer">
+            <div class="flex-spacer"></div>
+            <div class="form-control">
+                <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form hide-modal-ajax-submit" >Vytvořit</button>
+            </div>
+        </div>
+        {/form}
+        {/snippet}
     </div>
-    {/form}
-    {/snippet}
-</div>
+
+</section>
