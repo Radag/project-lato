@@ -70,6 +70,9 @@ class NewGroupForm extends Control
         $group->shortcut = strtoupper(substr($values['name'], 0, 3));
         $group->mainColor = $values['color'];        
         $idGroup = $this->groupManager->createGroup($group);
+        $group->id = $idGroup;
+        $this->groupManager->switchSharing($group, 1, 1);
+        
         $this->presenter->redirect('Group:default', ['id' => $idGroup]);
     }
 }

@@ -1,7 +1,7 @@
 {block content}
 {control topPanel}
 <section class="main">
-    <div class="container offset-1">
+    <div class="container offset-1" n:if="!empty($myClassification)">
         <div class="row">
             <div class="col s12">
                 <header class="page-header">
@@ -24,7 +24,7 @@
                     <div class="empty-content-icon no-classification-icon"></div>
                     <h2>Zatím nebylo uděleno žádné hodnocení</h2>
                 </div>
-                <form action="#">
+                <form action="#" n:if="!empty($myClassification)">
                     <div class="section-header table-header">  
                         <div class="title">Předmět</div>
                         <div class="flex-spacer"></div>

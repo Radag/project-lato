@@ -4,6 +4,23 @@
         <div class="label">Přidat studenty</div>
     </button>
 </div>
-<div class="modal-content">
-    <h3>Vytvořit studenty</h3>
-</div>
+{form form class=>'ajax'}
+    <div class="modal-content">
+        <h3>Vytvořit studenta</h3>
+        <div class="form-row input-field">
+            {input name}
+            {label name}Jméno{/label}
+        </div>
+        <div class="form-row input-field">
+            {input surname}
+            {label surname}Příjmení{/label}
+        </div>
+    </div>
+    <div class="modal-footer clearfix">
+        <div class="flex-spacer"></div>
+        <div class="form-control">
+            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+            <button type="submit" class="waves-effect waves-light btn btn-confirm hide-modal-ajax-submit" >Přidat</button>
+        </div>
+    </div>
+{/form}

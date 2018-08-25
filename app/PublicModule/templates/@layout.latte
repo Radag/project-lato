@@ -24,9 +24,9 @@
                     <div id="logo"></div>
                     <div class="flex-spacer"></div>
                     <ul id="right-nav">
-                        <li class="hide-on-med-and-down"><a href="">Domů</a></li>
-                        <li class="hide-on-med-and-down"><a href="">O projektu</a></li>
-                        <li class="hide-on-med-and-down"><a href="">Kontakt</a></li>
+                        <li class="hide-on-med-and-down"><a href="#page-header">Domů</a></li>
+                        <li class="hide-on-med-and-down"><a href="#about">O projektu</a></li>
+                        <li class="hide-on-med-and-down"><a href="#contact">Kontakt</a></li>
                         <li n:if="!$isLogged" class="last-one">
                             <a href="#login-modal" class="login-modal-trigger">Přihlásit</a>
                         </li>
@@ -36,6 +36,24 @@
                     </ul>
                 </div>
             </nav>
+            <script>  
+                $(function () {
+                    $("#right-nav li a").on('click', function(e) {
+                        e.preventDefault();
+                        $('html, body').animate({ scrollTop: $($(this).attr('href')).offset().top - 50}, 500);
+                    });                    
+                    $(window).scroll(function() {
+                        $("#right-nav li").removeClass('active');
+                        if($('html').scrollTop() < ($('#about').offset().top - 50)) {
+                            $('a[href="#page-header"]').parents('li').addClass('active');
+                        } else if($('html').scrollTop() < ($('#contact').offset().top - 50)) {
+                            $('a[href="#about"]').parents('li').addClass('active');
+                        } else {
+                            $('a[href="#contact"]').parents('li').addClass('active');
+                        }
+                    });
+                });
+            </script>
         </header>
         {snippet flashMessages}
             <div id="flashMessagesWrapper" style="display:none;">

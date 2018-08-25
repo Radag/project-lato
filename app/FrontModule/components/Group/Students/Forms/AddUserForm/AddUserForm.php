@@ -3,6 +3,7 @@ namespace App\FrontModule\Components\Group;
 
 use App\FrontModule\Components\Group\AddUserForm\InviteFormFactory;
 use App\FrontModule\Components\Group\AddUserForm\ImportFormFactory;
+use App\FrontModule\Components\Group\AddUserForm\ICreateFormFactory;
 
 class AddUserForm extends \App\Components\BaseComponent
 {
@@ -11,14 +12,19 @@ class AddUserForm extends \App\Components\BaseComponent
     
     /** @var ImportFormFactory */
     protected $importForm;
+    
+    /** @var ICreateFormFactory */
+    protected $createForm;
 
     public function __construct(
         InviteFormFactory $inviteForm,
-        ImportFormFactory $importForm
+        ImportFormFactory $importForm,
+        ICreateFormFactory $createForm
     )
     {
         $this->inviteForm = $inviteForm;
-        $this->importForm= $importForm;
+        $this->importForm = $importForm;
+        $this->createForm = $createForm;
     }
     
     public function render() {
@@ -38,6 +44,6 @@ class AddUserForm extends \App\Components\BaseComponent
     
     public function createComponentCreateUserForm()
     {
-        return new AddUserForm\CreateForm();
+        return $this->createForm->create();
     }
 }
