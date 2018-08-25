@@ -61,8 +61,26 @@
                 {/foreach}
             {/if}
         </ul>
+        <div n:snippet="link-section">
+            {ifset $links}
+                {foreach $links as $key=>$link}
+                    <div>
+                        {ifset $link->youtube}
+                            <iframe width="200" src="https://www.youtube.com/embed/{$link->youtube}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                            <input type="hidden" name="link_youtube[]" value="{$link->youtube}">
+                        {/ifset}
+                        {ifset $link->web}
+                            <img width="50" src="{$link->web->image|noescape}">
+                            <strong>{$link->web->title}</strong>
+                            <p>{$link->web->description}</p>
+                            <input type="hidden" name="link_web[]" value="{$link->web->url}">
+                        {/ifset}
+                    </div>
+                {/foreach}
+            {/ifset}
+        </div>
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer">        
         <div class="attachments-nav">
             {input attachments id => 'attachmentsIds'}
             <ul>
@@ -72,12 +90,12 @@
                     </a>
                 </li>
                 <li>
-                    <a href="javascript:addNewAttachment()" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit video z YouTube">
+                    <a href="javascript:addLinkAttachment()" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit video z YouTube">
                         <i class="material-icons">video_library</i>
                     </a>
                 </li>
                 <li>
-                    <a href="javascript:addNewAttachment()" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit hypertextový odkaz">
+                    <a href="javascript:addLinkAttachment()" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit hypertextový odkaz">
                         <i class="material-icons">insert_link</i>
                     </a>
                 </li>
@@ -153,6 +171,12 @@
         $("#messageContentDropzone").trigger('click');
     }
     
+    function addLinkAttachment()
+    {
+        $('#add-link-modal').modal();
+        $('#add-link-modal').modal('open');
+    }
+    
     $(function() {
         setUploadForm("#messageContentDropzone", {
             links: {
@@ -166,3 +190,34 @@
     });
 </script>
 {/define}
+<div id="add-link-modal" class="modal modal-small">
+    <form action="{link addLink!}" method="post" class="ajax">
+        <div class="modal-content">            
+            <h3>Zadejte odkaz</h3>
+            <ul class="custom-collection">
+                <div class="form-row input-field">
+                    <input id="message-link" type="text" name="link" />
+                    <label for="message-link">Odkaz</label>
+                </div>
+            </ul>
+            {snippet link-snippet}
+            {ifset $links}
+                {foreach $links as $key=>$link}
+                    {ifset $link->youtube}
+                        <input type="hidden" name="link_youtube[]" value="{$link->youtube}">
+                    {/ifset}
+                    {ifset $link->web}
+                        <input type="hidden" name="link_web[]" value="{$link->web->url}">
+                    {/ifset}
+                {/foreach}
+            {/ifset}
+            {/snippet}
+        </div>
+        <div class="modal-footer">
+            <div class="form-control">
+                <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                <button type="submit" class="waves-effect waves-light btn btn-confirm hide-modal-ajax-submit">Vložit</button>
+            </div>
+        </div>
+    </form>
+</div>

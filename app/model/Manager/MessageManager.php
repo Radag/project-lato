@@ -440,4 +440,13 @@ class MessageManager extends BaseManager {
         }
                
     }
+    
+    public function addMessageLink($data)
+    {
+        $this->db->query("INSERT INTO message_links", [
+            'message_id' => $data->message_id,
+            'youtube' => $data->youtube,
+            'web' => $data->web
+        ]);
+    }
 }
