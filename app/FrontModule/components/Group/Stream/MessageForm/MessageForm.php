@@ -109,6 +109,9 @@ class MessageForm extends \App\Components\BaseComponent
                 )); 
             }
         }
+        $form->onError[] = function($form) {
+            $this->template->links = $this->loadLinks();
+        };
 
         $form->onSuccess[] = [$this, 'processForm'];
           
@@ -149,11 +152,39 @@ class MessageForm extends \App\Components\BaseComponent
             $task->id = $this->taskManager->createTask($task);
             $this->classificationManager->updateTaskClassification($task, $this->presenter->activeGroup, $this->groupManager);
         }
-        
+                
         if($values->messageType === Message::TYPE_MATERIALS) {
             $message->title = $values->title;
             $this->messageManager->createMaterial($message);
         }
+        
+        $youtube = $this->presenter->request->getPost('link_youtube');        
+        $webs = $this->presenter->request->getPost('link_web');
+        if(!empty($youtube)) {
+            foreach($youtube as $link) {
+                $this->messageManager->addMessageLink((object)[
+                    'youtube' => $link,
+                    'web' => null,
+                    'message_id' => $message->id,
+                    'title' => null,
+                    'image' => null,
+                    'description' => null
+                ]);
+            }
+        }        
+        if(!empty($webs)) {
+            foreach($webs as $web) {
+                $webData = $this->transformWeb($web);                
+                $this->messageManager->addMessageLink((object)[
+                    'youtube' => null,
+                    'web' => $webData->url,
+                    'message_id' => $message->id,
+                    'title' => $webData->title,
+                    'image' => $webData->image,
+                    'description' => $webData->description
+                ]);
+            }
+        }        
 
         $this->presenter->flashMessage('Zpráva uložena', 'success');
         $this->presenter->payload->idMessage = $message->id;
@@ -170,10 +201,9 @@ class MessageForm extends \App\Components\BaseComponent
     }
     
     
-    public function handleAddLink()
+    public function loadLinks()
     {
         $links = [];
-        $url = parse_url($this->presenter->request->getPost('link'));
         $youtube = $this->presenter->request->getPost('link_youtube');        
         $webs = $this->presenter->request->getPost('link_web');
         if(!empty($youtube)) {
@@ -186,6 +216,14 @@ class MessageForm extends \App\Components\BaseComponent
                $links[] = (object)['web' => $this->transformWeb($web)]; 
             }
         }
+        return $links;
+    }
+    
+    public function handleAddLink()
+    {
+        $links = $this->loadLinks();
+        $url = parse_url($this->presenter->request->getPost('link'));
+        
      
         if(isset($url['host'])) {
             if($url['host'] === 'www.youtube.com' && $url['path'] === '/watch') {

@@ -32,5 +32,6 @@ class Message extends AbstractEntity {
     public $title = null;
     public $create_classification = null;
     public $isCreator = false;
+    public $links;
 
 }

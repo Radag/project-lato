@@ -138,8 +138,22 @@ class MessageManager extends BaseManager {
                 JOIN file_list T3 ON T2.file_id=T3.id
                 WHERE T1.group_id=? AND T1.deleted IN (?) AND T1.type IN (?)", $group->id, $delete, $filters);
         $attachments = $this->getAttachments($attachmentsData);
+        
+        $linksData = $this->db->fetchAll("SELECT T2.* FROM 
+                                      message T1 
+                                      JOIN message_links T2 ON T1.id=T2.message_id
+                                      WHERE T1.group_id=? AND T1.deleted IN (?) AND T1.type IN (?)", $group->id, $delete, $filters);
+        $linksArray = [];
+        foreach($linksData as $link) {
+            $linksArray[$link->message_id][] = $link;
+        }
+        
         foreach($messages as $message) {
-            $mess = $this->convertMesssage($message, $attachments, $user, [], $group);
+            $links = [];
+            if(isset($linksArray[$message->id])) {
+                $links = $linksArray[$message->id];
+            }
+            $mess = $this->convertMesssage($message, $attachments, $user, [], $group, $links);
             $return[$mess->id] = $mess;
         }
         
@@ -182,6 +196,10 @@ class MessageManager extends BaseManager {
                 JOIN file_list T3 ON T2.file_id=T3.id
                 WHERE T1.id=?", $idMessage);
         $attachments = $this->getAttachments($attachmentsData);
+        $linksData = $this->db->fetchAll("SELECT * FROM 
+                                      message_links
+                                      WHERE message_id=?", $idMessage);
+        
         $commitsAttach = [];
         if($message->commit_id) {
             $commitsAttachData = $this->db->fetchAll("SELECT 
@@ -192,10 +210,10 @@ class MessageManager extends BaseManager {
             $commitsAttach = $this->getAttachments($commitsAttachData);
         }
         
-        return $this->convertMesssage($message, $attachments, $user, $commitsAttach, $group);
+        return $this->convertMesssage($message, $attachments, $user, $commitsAttach, $group, $linksData);
     }
     
-    protected function convertMesssage($message, $attachments, $user, $commitsAttach = [], $group)
+    protected function convertMesssage($message, $attachments, $user, $commitsAttach, $group, $links = [])
     {        
         $now = new \DateTime();
         $mess = new Message();
@@ -219,6 +237,7 @@ class MessageManager extends BaseManager {
         } else {
             $mess->attachments = null;
         }
+        $mess->links = $links;
 
         if($message->type == Message::TYPE_TASK) {
             if(!empty($message->task_id)) {
@@ -446,7 +465,10 @@ class MessageManager extends BaseManager {
         $this->db->query("INSERT INTO message_links", [
             'message_id' => $data->message_id,
             'youtube' => $data->youtube,
-            'web' => $data->web
+            'web' => $data->web,
+            'title' => $data->title,
+            'image' => $data->image,
+            'description' => $data->description
         ]);
     }
 }

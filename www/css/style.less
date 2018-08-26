@@ -5601,3 +5601,31 @@ nav .nav-title {
 
 }
 
+.message-links {
+    display: grid;
+    grid-template-columns: 220px auto auto;
+    grid-gap: 20px 0px;
+    margin-top: 20px;
+    
+    .message-link {
+        background-color: rgba(255, 255, 255, 0.8);
+        width: 220px;
+        a {
+            position: relative;
+            img {
+                float: left;
+            }
+            strong {                
+                font-size: 15px;
+                display: block;
+            }
+            span.description {
+                text-align: left;
+                font-size: 12px;
+                color: rgba(0, 0, 0, 0.45);
+                clear: left;
+                display: block;
+            }
+        }
+    }
+}

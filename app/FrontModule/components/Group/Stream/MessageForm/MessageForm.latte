@@ -61,19 +61,21 @@
                 {/foreach}
             {/if}
         </ul>
-        <div n:snippet="link-section">
+        <div n:snippet="link-section" class="message-links">
             {ifset $links}
                 {foreach $links as $key=>$link}
-                    <div>
+                    <div class="message-link">
                         {ifset $link->youtube}
                             <iframe width="200" src="https://www.youtube.com/embed/{$link->youtube}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                             <input type="hidden" name="link_youtube[]" value="{$link->youtube}">
                         {/ifset}
                         {ifset $link->web}
-                            <img width="50" src="{$link->web->image|noescape}">
-                            <strong>{$link->web->title}</strong>
-                            <p>{$link->web->description}</p>
-                            <input type="hidden" name="link_web[]" value="{$link->web->url}">
+                            <a href="{$link->web->url}" target="_blank">
+                                <img width="50" src="{$link->web->image|noescape}">
+                                <strong>{$link->web->title}</strong>
+                                <span class="description">{$link->web->description}</span>
+                                <input type="hidden" name="link_web[]" value="{$link->web->url}">
+                            </a>                          
                         {/ifset}
                     </div>
                 {/foreach}
@@ -174,6 +176,7 @@
     function addLinkAttachment()
     {
         $('#add-link-modal').modal();
+        $('#message-link-input').val('');
         $('#add-link-modal').modal('open');
     }
     
@@ -196,8 +199,8 @@
             <h3>Zadejte odkaz</h3>
             <ul class="custom-collection">
                 <div class="form-row input-field">
-                    <input id="message-link" type="text" name="link" />
-                    <label for="message-link">Odkaz</label>
+                    <input id="message-link-input" type="text" name="link" />
+                    <label for="message-link-input">Odkaz</label>
                 </div>
             </ul>
             {snippet link-snippet}
