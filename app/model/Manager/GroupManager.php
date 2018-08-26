@@ -288,20 +288,20 @@ class GroupManager extends BaseManager {
                 T2.id, T2.sex, T2.name, T2.surname, T2.profile_image, T2.slug, T2.is_fictive
             FROM group_user T1
             JOIN vw_all_users T2 ON T1.user_id = T2.id
-            WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type IN (?) AND T1.user_id IN (?)", $idGroup, $filterRelation, $filterIds);
+            WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type IN (?) AND T1.user_id IN (?) ORDER BY T2.surname, T2.name ASC", $idGroup, $filterRelation, $filterIds);
         } else {
             if($exludeId) {
                 $users = $this->db->fetchAll("SELECT
                 T2.id, T2.sex, T2.name, T2.surname, T2.profile_image, T2.slug, T2.is_fictive
                 FROM group_user T1
                 JOIN vw_all_users T2 ON T1.user_id = T2.id
-                WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type IN (?) AND T1.user_id NOT IN (?)", $idGroup, $filterRelation, $exludeId);
+                WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type IN (?) AND T1.user_id NOT IN (?) ORDER BY T2.surname, T2.name ASC", $idGroup, $filterRelation, $exludeId);
             } else {
                 $users = $this->db->fetchAll("SELECT
                 T2.id, T2.sex, T2.name, T2.surname, T2.profile_image, T2.slug, T2.is_fictive
                 FROM group_user T1
                 JOIN vw_all_users T2 ON T1.user_id = T2.id
-                WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type IN (?)", $idGroup, $filterRelation);
+                WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type IN (?) ORDER BY T2.surname, T2.name ASC", $idGroup, $filterRelation);
             }
 
         }
