@@ -46,7 +46,7 @@
                 <li><a n:if="$message->isCreator" href="{link renewMessage! idMessage=>$message->id}" class="ajax refresh-wall-messages">Obnovit</a></li>
             {/if}
             {*<li><a href="#share-post_{$message->id}" class="modal-trigger">Znovu použít příspěvek</a></li>*}
-            <li><a n:if="$message->isCreator" href="{link editMessage! idMessage=>$message->id}" class="ajax edit-message-button">Upravit zprávu</a></li>
+            <li><a n:if="$message->isCreator" href="{link editMessage! idMessage=>$message->id}" class="edit-message-button">Upravit zprávu</a></li>
         </ul>
     </div>
     <div class="card-content">

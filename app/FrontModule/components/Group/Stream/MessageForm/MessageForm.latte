@@ -135,14 +135,14 @@
                loadInputsByType();
             });
 
-            $(".reset-message-button").on('click', function(e) {
+            $(".reset-message-button").off('click').on('click', function(e) {
                 $.nette.ajax({
                     url: $(this).data('reset-link')
                 });
             });
-            $(".edit-message-button").on("click", function(event) {
-                startModalLoading('#create-post-modal');
+            $(".edit-message-button").off('click').on("click", function(event) {
                 event.preventDefault();
+                startModalLoading('#create-post-modal');
                 $.nette.ajax({
                     url: $(this).attr('href'),
                     method: 'POST',
@@ -158,9 +158,10 @@
 {/snippet}
 
 {define uploadBlock}
-<div id="messageContentDropzone" style="display: none; text-align: center; padding-top: 15%; font-size: 18px; border: 0 !important; position: absolute; background-color: white; opacity: 0.94; width: 100%; height: 100%; top:0px; left:0px; z-index:999; ">
+{*<div id="messageContentDropzone" style="display: none; text-align: center; padding-top: 15%; font-size: 18px; border: 0 !important; position: absolute; background-color: white; opacity: 0.94; width: 100%; height: 100%; top:0px; left:0px; z-index:999; ">
     Přesuňte soubor prosím zde
-</div>
+</div>*}
+<div id="messageContentDropzone" style="display: none;"></div>
 <script>
     $(".materialize-textarea").on('keydown', function(event) {
         if($(this).val() != "") {
