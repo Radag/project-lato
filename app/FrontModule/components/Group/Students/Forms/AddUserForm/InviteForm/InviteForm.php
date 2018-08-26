@@ -59,7 +59,7 @@ class InviteForm extends \App\Components\BaseComponent
     public function processForm(Form $form, $values) 
     {
         if($values->users) {
-            $users = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, GroupManager::RELATION_STUDENT, explode(',', $values->users));
+            $users = $this->userManager->getMultiple(explode(',', $values->users), false);
             foreach($users as $user) {
                 $added = $this->groupManager->addUserToGroup($this->presenter->activeGroup, $user->id, GroupManager::RELATION_STUDENT);
                 if($added) {

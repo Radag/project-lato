@@ -105,11 +105,11 @@ class TaskManager extends BaseManager
                     JOIN user T3 ON (T2.user_id=T3.id)
                     JOIN user_real T7 ON (T3.id=T7.id)
                     LEFT JOIN (SELECT COUNT(id) AS commit_count, task_id FROM task_commit GROUP BY task_id) T4 ON T4.task_id=T1.id
-                    LEFT JOIN task_commit T5 ON T1.id=T5.task_id
+                    LEFT JOIN task_commit T5 ON T1.id=T5.task_id AND T5.user_id=?
                     LEFT JOIN ( SELECT COUNT(*) AS task_users, M.id FROM message M JOIN group_user G ON M.group_id=G.group_id GROUP BY M.id) T6 ON T6.id = T2.id
                     LEFT JOIN classification_group T8 ON T1.id = T8.task_id
                     WHERE T2.group_id IN (" . implode(",", $groupIds) . ") AND T2.deleted=0 AND T1.closed=?
-                    ORDER BY T2.created_when DESC", $active ? 0 : 1);
+                    ORDER BY T2.created_when DESC", $user->id , $active ? 0 : 1);
                 } else {
                     $tasks = [];
                 }                
@@ -142,17 +142,19 @@ class TaskManager extends BaseManager
                                 T1.online,
                                 T1.create_classification,
                                 T2.user_id as created_by,
-                                T8.id AS class_group_id
+                                T8.id AS class_group_id,
+                                T9.grade
                         FROM task T1 
                         JOIN message T2 ON (T1.message_id = T2.id AND T2.deleted=0)
                         JOIN user T3 ON (T2.user_id=T3.id)
                         JOIN user_real T7 ON (T3.id=T7.id)
                         LEFT JOIN (SELECT COUNT(id) AS commit_count, task_id FROM task_commit GROUP BY task_id) T4 ON T4.task_id=T1.id
-                        LEFT JOIN task_commit T5 ON T1.id=T5.task_id
+                        LEFT JOIN task_commit T5 ON T1.id=T5.task_id AND T5.user_id=?
                         LEFT JOIN ( SELECT COUNT(*) AS task_users, M.id FROM message M JOIN group_user G ON M.group_id=G.group_id GROUP BY M.id) T6 ON T6.id = T2.id
                         LEFT JOIN classification_group T8 ON T1.id = T8.task_id
+                        LEFT JOIN classification T9 ON T9.classification_group_id = T8.id AND T9.user_id=?
                         WHERE T2.group_id IN (" . implode(",", $groupIds) . ") AND T1.deadline" . $timeCompare . "NOW()
-                        ORDER BY T1.deadline ASC");
+                        ORDER BY T1.deadline ASC", $user->id, $user->id);
                 } else {
                      $tasks = [];
                 }
@@ -186,6 +188,7 @@ class TaskManager extends BaseManager
                     $taskObject->commit->idCommit = $task->commit_id;
                     $taskObject->commit->created = $task->commit_created;
                     $taskObject->commit->updated = $task->commit_updated;
+                    $taskObject->commit->grade = $task->grade;
                 }
                 $tasksArray[$task->id] = $taskObject;
             }
@@ -261,7 +264,7 @@ class TaskManager extends BaseManager
     }
     
     public function getCommitByUser($idTask, $idUser) 
-    {        
+    {              
         $return = new TaskCommit();
         $commit = $this->database->query("SELECT T1.id, T1.comment, T2.file_id,
                             T3.path,

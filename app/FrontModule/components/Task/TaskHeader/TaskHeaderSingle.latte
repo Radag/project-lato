@@ -10,7 +10,6 @@
         </div>
         <div class="card card-flat assignment-info">
             <div class="card-content">
-                
                 {if $task->timeLeft->invert === 0 }
                 <div class="time-left">
                     Termín odevzdání: <strong>{$task->deadline->format("j. n., H:i")}</strong>
@@ -42,7 +41,11 @@
                     <strong>{if !empty($task->commit->updated)}Upraveno {$task->commit->updated->format("j. n., H:i")}{else}Odevzdáno: {$task->commit->created->format("j. n., H:i")}{/if}</strong> 
                 </div>
                 <div class="flex-spacer"></div>
-                <button type="button" data-link="{link editTaskCommit}" class="btn gray no-shadow submit-class-button">Upravit</button>
+                {if $task->commit && !empty($task->commit->grade) && $task->commit->grade !== '—'}
+                    Známka: <strong>{$task->commit->grade}</strong>
+                {else}
+                    <button type="button" data-link="{link editTaskCommit}" class="btn gray no-shadow submit-class-button">Upravit</button>
+                {/if}
             </div>
             <div class="card-content assignment-detail">
                 <div n:if="$task->commit->comment" class="assignment-comment">{$task->commit->comment}</div>
@@ -52,7 +55,6 @@
                     <li>
                         <a href="{$attach->fullPath|noescape}" target="_blank" class="attached-file">
                             <div class="file-name">{$attach->filename}<span>({$attach->extension}, 22. 8., 22:00)</span></div>
-
                         </a>
                     </li>
                     {/foreach}

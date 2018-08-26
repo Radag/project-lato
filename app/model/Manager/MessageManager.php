@@ -119,7 +119,8 @@ class MessageManager extends BaseManager {
                         T7.commit_count,
                         T8.title,
                         T5.create_classification,
-                        T9.id AS id_classification_group
+                        T9.id AS id_classification_group,
+                        T11.grade
                 FROM message T1 
                 LEFT JOIN user T2 ON T1.user_id=T2.id 
                 JOIN user_real T10 ON T10.id=T2.id
@@ -128,8 +129,9 @@ class MessageManager extends BaseManager {
                 LEFT JOIN (SELECT COUNT(id) AS commit_count, task_id FROM task_commit GROUP BY task_id) T7 ON T7.task_id=T5.id
                 LEFT JOIN message_material T8 ON T1.id=T8.message_id
                 LEFT JOIN classification_group T9 ON T9.task_id = T5.id
+                LEFT JOIN classification T11 ON T11.classification_group_id = T9.id AND T11.user_id=?                       
                 WHERE T1.group_id=? AND T1.deleted IN (?) AND T1.type IN (?) 
-                ORDER BY IFNULL(T1.top, T1.created_when) DESC", $user->id, $group->id, $delete, $filters);
+                ORDER BY IFNULL(T1.top, T1.created_when) DESC", $user->id, $user->id, $group->id, $delete, $filters);
         
         $attachmentsData = $this->db->fetchAll("SELECT 
                     T1.id, T3.id AS file_id, T3.extension, T3.mime, T3.type, T3.full_path, T3.filename
@@ -178,7 +180,8 @@ class MessageManager extends BaseManager {
                         T8.title,
                         T5.online,
                         T5.create_classification,
-                        T9.id AS id_classification_group
+                        T9.id AS id_classification_group,
+                        T11.grade
                 FROM message T1 
                 LEFT JOIN user T2 ON T1.user_id=T2.id 
                 JOIN user_real T9 ON T9.id=T2.id
@@ -187,7 +190,8 @@ class MessageManager extends BaseManager {
                 LEFT JOIN (SELECT COUNT(id) AS commit_count, task_id FROM task_commit GROUP BY task_id) T7 ON T7.task_id=T5.id
                 LEFT JOIN message_material T8 ON T1.id=T8.message_id
                 LEFT JOIN classification_group T10 ON T10.task_id = T5.id
-                WHERE T1.id=?", $user->id, $idMessage);
+                LEFT JOIN classification T11 ON T11.classification_group_id = T10.id AND T11.user_id=?     
+                WHERE T1.id=?", $user->id, $user->id, $idMessage);
           
         $attachmentsData = $this->db->fetchAll("SELECT 
                     T1.id, T3.id AS file_id, T3.extension, T3.mime, T3.type, T3.full_path, T3.filename
@@ -258,6 +262,7 @@ class MessageManager extends BaseManager {
                     $commit->created = $message->commit_created;
                     $commit->updated = $message->commit_updated;
                     $commit->comment = $message->commit_comment;
+                    $commit->grade = $message->grade;
                     $commit->files = isset($commitsAttach[$commit->idCommit]) ? $commitsAttach[$commit->idCommit] : null;
                     $mess->task->commit = $commit;
                 }

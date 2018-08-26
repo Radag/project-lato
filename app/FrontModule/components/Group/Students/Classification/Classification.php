@@ -62,17 +62,30 @@ class Classification extends \App\Components\BaseComponent
             }
             
             $this->classificationGroup = $this->classificationManager->getGroupClassification($this->parent->classGroupId);
-            foreach($this->classificationGroup->classifications as $cla) {
-                $students[] = $cla->user->id;
-            }
+            if($this->classificationGroup->task !== null) {
+                $students = null;
+            } else {
+                foreach($this->classificationGroup->classifications as $cla) {
+                    $students[] = $cla->user->id;
+                }
+            }            
             $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, [GroupManager::RELATION_STUDENT, GroupManager::RELATION_FIC_STUDENT], $students);
+            $fillStudents = false;
+            if($students === null) {
+                $students = [];
+                $fillStudents = true;
+            }
+            
             if(!empty($this->classificationGroup->task)) {
                 foreach($members as $member) {
                     $commit = $this->taskManager->getCommitByUser($this->classificationGroup->task->id, $member->id);
                     if($commit) {
-                        $commit->isLate = $this->classificationGroup->task->deadline > $commit->created;
+                        $commit->isLate = $this->classificationGroup->task->deadline < $commit->created;
                     }
                     $this->classificationGroup->task->commitArray[$member->id] = $commit;
+                    if($fillStudents) {
+                        $students[] = $member->id;
+                    }
                 }
             } 
             $this['form']->setDefaults(array(
@@ -90,7 +103,6 @@ class Classification extends \App\Components\BaseComponent
           
             $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, [GroupManager::RELATION_STUDENT, GroupManager::RELATION_FIC_STUDENT], $students);
         }
-        
         foreach($this->classificationGroup->classifications as $classification) {
             $this['form']->setValues([
                 'notice' . $classification->user->id => empty($classification->notice) ? null : $classification->notice,
@@ -124,9 +136,16 @@ class Classification extends \App\Components\BaseComponent
     {   
         $students = [];
         if($this->classificationGroup) {
-            foreach($this->classificationGroup->classifications as $cla) {
-                $students[] = $cla->user->id;
-            } 
+            if(!empty($this->classificationGroup->task)) {
+                $members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, [GroupManager::RELATION_STUDENT, GroupManager::RELATION_FIC_STUDENT]);
+                foreach($members as $member) {
+                    $students[] = $member->id;
+                }
+            } else {
+                foreach($this->classificationGroup->classifications as $cla) {
+                    $students[] = $cla->user->id;
+                }
+            }                     
         } else {
             if(empty($this->presenter->getHttpRequest()->getPost('members'))) {
                 $students = null;

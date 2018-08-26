@@ -14,23 +14,29 @@
     {/if}
 {else}
     {if $task->online == 1}
-        {if $task->commit}
+        {if $task->commit && !empty($task->commit->grade) && $task->commit->grade !== '—'}
             <div class="time-left">
-                <strong>Odevzdáno</strong> | Termín odevzdání: <strong>{$task->deadline->format("j. n. H:i")}</strong> {*{$task->commit->created->format("j. n. H:i")}
-                {if !empty($task->commit->updated)}(upraven {$task->commit->updated->format("j. n. H:i")}){/if}*}
-            </div>
-        {elseif $task->timeLeft->invert === 0}  
-            <div class="time-left">
-                Termín odevzdání: <strong>{$task->deadline->format("j. n. H:i")}</strong>
+                <strong>Odevzdáno</strong> | Známka: <strong>{$task->commit->grade}</strong>
             </div> 
         {else}
-            <div class="time-left">
-                <strong>Neodevzdáno</strong> | Uzavřeno: <strong>{$task->deadline->format("j. n. H:i")}</strong>
-            </div>
+            {if $task->commit}
+                <div class="time-left">
+                    <strong>Odevzdáno</strong> | Termín odevzdání: <strong>{$task->deadline->format("j. n. H:i")}</strong> {*{$task->commit->created->format("j. n. H:i")}
+                    {if !empty($task->commit->updated)}(upraven {$task->commit->updated->format("j. n. H:i")}){/if}*}
+                </div>
+            {elseif $task->timeLeft->invert === 0}  
+                <div class="time-left">
+                    Termín odevzdání: <strong>{$task->deadline->format("j. n. H:i")}</strong>
+                </div> 
+            {else}
+                <div class="time-left">
+                    <strong>Neodevzdáno</strong> | Uzavřeno: <strong>{$task->deadline->format("j. n. H:i")}</strong>
+                </div>
+            {/if}
+            <button type="button" data-link="{link editTaskCommit}" class="btn gray no-shadow submit-class-button">
+                {if $task->commit}Upravit{else}Odevzdat{/if}
+            </button>
         {/if}
-        <button type="button" data-link="{link editTaskCommit}" class="btn gray no-shadow submit-class-button">
-            {if $task->commit}Upravit{else}Odevzdat{/if}
-        </button>
     {else}
         {if $task->timeLeft->invert === 0}  
             <div class="time-left">
