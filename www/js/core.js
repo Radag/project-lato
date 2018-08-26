@@ -64,11 +64,11 @@ $(function() {
         start: function (jqXHR, settings) {
            
             if(settings.nette !== undefined && $(settings.nette.ui).is('button')) {
-                var buttonText = $(settings.nette.ui).html();
+                var buttonText = $(settings.nette.ui).text();
                 $(settings.nette.ui).html($("#button-loader .preloader-wrapper").clone());
                 $(settings.nette.ui).prop('disabled', true);
-                jqXHR.done(function( data, textStatus, jqXHR ) {
-                    if(data.invalidForm !== undefined && data.invalidForm) {
+                jqXHR.done(function( data, textStatus, jqXHR ) {   
+                    if(data.invalidForm !== undefined) {
                         $(settings.nette.ui).html(buttonText);
                         $(settings.nette.ui).prop('disabled', false);
                     }

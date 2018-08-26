@@ -15,6 +15,7 @@ use App\Model\Entities\Message;
 use App\Model\Manager\TaskManager;
 use App\Model\Manager\ClassificationManager;
 use App\Model\Manager\GroupManager;
+use Dusterio\LinkPreview\Client;
 
 /**
  * Description of SignInForm
@@ -168,6 +169,74 @@ class MessageForm extends \App\Components\BaseComponent
          ], true);
     }
     
+    
+    public function handleAddLink()
+    {
+        $links = [];
+        $url = parse_url($this->presenter->request->getPost('link'));
+        $youtube = $this->presenter->request->getPost('link_youtube');        
+        $webs = $this->presenter->request->getPost('link_web');
+        if(!empty($youtube)) {
+            foreach($youtube as $link) {
+               $links[] = (object)['youtube' => $link]; 
+            }
+        }        
+        if(!empty($webs)) {
+            foreach($webs as $web) {
+               $links[] = (object)['web' => $this->transformWeb($web)]; 
+            }
+        }
+     
+        if(isset($url['host'])) {
+            if($url['host'] === 'www.youtube.com' && $url['path'] === '/watch') {
+                $output = [];
+                parse_str($url['query'], $output); 
+                $links[] = (object)['youtube' => $output['v']];
+            } else {
+                $links[] = (object)['web' => $this->transformWeb($this->presenter->request->getPost('link'))];
+            }
+            
+        } else {
+            $this->presenter->flashMessage('Špatné url');
+        }              
+        $this->presenter->payload->invalidForm = false;
+        $this->template->links = $links;
+        $this->redrawControl('link-section');
+        $this->redrawControl('link-snippet');
+        
+    }
+    
+    protected function transformWeb($web)
+    {
+//        $page = new EmbedPage($web);
+//        return (object)[
+//            'image' => $page->getImage(),
+//            'title' => $page->getTitle(),
+//            'description' => $page->getDescription(),
+//            'url' => $web
+//        ];
+        
+        
+        $page = new Client($web);
+        $previews = $page->getPreview('general')->toArray();
+        $title = $description = $image = null;
+        if($previews['description']) {
+            $description = $previews['description'];
+        }
+        if(isset($previews['cover'])) {
+            $image = $previews['cover'];
+        }
+        if(isset($previews['title'])) {
+            $title = $previews['title'];
+        }
+        
+        return (object)[
+            'image' => $image,
+            'title' =>  $title,
+            'description' => $description,
+            'url' => $web
+        ];
+    }
     
     public function render()
     {
