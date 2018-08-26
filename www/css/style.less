@@ -638,6 +638,24 @@ input[type=search]:not(.browser-default) {
             }
         }
 
+        &.no-classification {
+            padding: 32px 24px;
+            font-style: italic;
+            color: @secondary-text-color;
+
+            @media only screen and (max-width: 992px) {
+                & {
+                    padding: 32px 16px;
+                }
+            }
+
+            @media only screen and (max-width: 600px) {
+                & {
+                    padding: 24px 12px;
+                }
+            }
+        }
+
         &.active {
             border-bottom: 0px solid transparent;
         }
@@ -3072,6 +3090,7 @@ nav .nav-title {
         }
 
         .btn-icon {
+            display: block;
             width: 36px;
             height: 36px;
             flex-grow: 0;
@@ -3081,8 +3100,8 @@ nav .nav-title {
 
             .material-icons {
                 margin: 0;
-                line-height: 36px;
-                height: 36px;
+                line-height: 36px !important;
+                height: 36px !important;
             }
         }
     }
@@ -3197,16 +3216,14 @@ nav .nav-title {
         }
 
         &.sidenav-card {
-            padding: 0 8px;
-            margin: 8px 0;
+            padding: 0;
+            margin: 0;
             
 
             & > a {
-                background-color: #fff;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
-                height: 104px;
+                height: 92px;
                 width: 100%;
-                padding: 16px 8px;
+                padding: 16px;
                 align-items: stretch;
 
                 .avatar {
@@ -3836,12 +3853,10 @@ nav .nav-title {
         background-size: cover;
 
         img {
-            margin-top: 8px;
-            margin-bottom: 32px;
-            height: 176px;
-            width: 176px;
+            height: 128px;
+            width: 128px;
             border-radius: 50%;
-            border: 8px solid rgba(0, 0, 0, .25);
+            border: 6px solid rgba(0, 0, 0, .25);
         }
 
         .btn {
@@ -5600,6 +5615,7 @@ nav .nav-title {
     }
 
 }
+
 
 .message-links {
     display: grid;

@@ -490,6 +490,21 @@ input[type=search]:not(.browser-default) {
     padding: 20px 12px;
   }
 }
+.table-body .table-row.no-classification {
+  padding: 32px 24px;
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.45);
+}
+@media only screen and (max-width: 992px) {
+  .table-body .table-row.no-classification {
+    padding: 32px 16px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .table-body .table-row.no-classification {
+    padding: 24px 12px;
+  }
+}
 .table-body .table-row.active {
   border-bottom: 0px solid transparent;
 }
@@ -2349,6 +2364,7 @@ nav .nav-title {
   background-color: transparent !important;
 }
 .slide-out-right .side-nav-header .btn-icon {
+  display: block;
   width: 36px;
   height: 36px;
   flex-grow: 0;
@@ -2358,8 +2374,8 @@ nav .nav-title {
 }
 .slide-out-right .side-nav-header .btn-icon .material-icons {
   margin: 0;
-  line-height: 36px;
-  height: 36px;
+  line-height: 36px !important;
+  height: 36px !important;
 }
 .slide-out-right .new-message {
   display: flex;
@@ -2447,15 +2463,13 @@ nav .nav-title {
   visibility: visible;
 }
 .slide-out-right li.sidenav-card {
-  padding: 0 8px;
-  margin: 8px 0;
+  padding: 0;
+  margin: 0;
 }
 .slide-out-right li.sidenav-card > a {
-  background-color: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-  height: 104px;
+  height: 92px;
   width: 100%;
-  padding: 16px 8px;
+  padding: 16px;
   align-items: stretch;
 }
 .slide-out-right li.sidenav-card > a .avatar {
@@ -2926,12 +2940,10 @@ nav .nav-title {
   background-size: cover;
 }
 #account-settings #account-images img {
-  margin-top: 8px;
-  margin-bottom: 32px;
-  height: 176px;
-  width: 176px;
+  height: 128px;
+  width: 128px;
   border-radius: 50%;
-  border: 8px solid rgba(0, 0, 0, 0.25);
+  border: 6px solid rgba(0, 0, 0, 0.25);
 }
 #account-settings #account-images .btn {
   margin-bottom: 16px;
