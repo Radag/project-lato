@@ -21,7 +21,9 @@
         <div class="row">
             <div class="col s12">
                 <div class="empty-content-block" n:if="empty($myClassification)">
-                    <div class="empty-content-icon no-classification-icon"></div>
+                    <div class="empty-content-icon">
+                        <div class="icon-image no-classification-icon"></div>
+                    </div>
                     <h2>Zatím nebylo uděleno žádné hodnocení</h2>
                 </div>
                 <form action="#" n:if="!empty($myClassification)">

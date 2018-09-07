@@ -2808,31 +2808,40 @@ nav .nav-title {
     .empty-content-icon {
         width: 124px;
         height: 124px;
-        margin: 0 auto 56px auto;
-        background-size: contain;
-        background-position: center;
+        padding: 32px;
+        border-radius: 50%;
+        margin: 0 auto 32px auto;
+        background-color: rgba(0, 0, 0, .03);
+        box-sizing: content-box;
 
         @media only screen and (max-width: 600px) {
             & {
                 width: 96px;
                 height: 96px;
-                margin-bottom: 48px;
+                margin-bottom: 24px;
             }
         }
 
-        &.no-messages-icon {
+        .icon-image {
+            height: 100%;
+            width: 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .no-messages-icon {
             background-image: url('../images/icons/no-messages-icon.png');
         } 
 
-        &.no-students-icon {
+        .no-students-icon {
             background-image: url('../images/icons/no-students-icon.png');
         }
 
-        &.no-tasks-icon {
+        .no-tasks-icon {
             background-image: url('../images/icons/no-tasks-icon.png');
         }
 
-        &.no-classification-icon {
+        .no-classification-icon {
             background-image: url('../images/icons/no-classification-icon.png');
         }
     }

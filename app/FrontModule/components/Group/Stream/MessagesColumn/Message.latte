@@ -51,24 +51,6 @@
     </div>
     <div class="card-content">
         <p>{$message->text|breaklines}</p>
-        {if !empty($message->links)}
-        <div class="message-links">
-            {foreach $message->links as $link}
-            <div class="message-link">
-                {ifset $link->youtube}
-                    <iframe width="200" src="https://www.youtube.com/embed/{$link->youtube}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                {/ifset}
-                {ifset $link->web}
-                    <a href="{$link->web}" target="_blank">
-                        <img width="50" src="{$link->image|noescape}">
-                        <strong>{$link->title}</strong>
-                        <span class="description">{$link->description}</span>
-                    </a>
-                {/ifset}
-            </div>
-            {/foreach}
-        </div>
-        {/if}
         {if isset($message->attachments['files']) && !empty($message->attachments['files']) }
         <ul class="attachments">
             {foreach $message->attachments['files'] as $file}
@@ -86,6 +68,25 @@
         </ul>
         {/if}
     </div>
+
+    {if !empty($message->links)}
+    <div class="media-container">
+        {foreach $message->links as $link}
+        <div class="message-link">
+            {ifset $link->youtube}
+            <iframe class="img-full-size" src="https://www.youtube.com/embed/{$link->youtube}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            {/ifset}
+            {ifset $link->web}
+            <a href="{$link->web}" target="_blank">
+                <img width="50" src="{$link->image|noescape}">
+                <strong>{$link->title}</strong>
+                <span class="description">{$link->description}</span>
+            </a>
+            {/ifset}
+        </div>
+        {/foreach}
+    </div>
+    {/if}
 
     {if isset($message->attachments['media']) && !empty($message->attachments['media']) }
     <div class="media-container">

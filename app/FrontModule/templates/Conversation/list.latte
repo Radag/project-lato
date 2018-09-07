@@ -46,7 +46,9 @@
             <div class="col s12">
                 {if empty($messages)}
                     <div class="empty-content-block">
-                        <div class="empty-content-icon no-messages-icon"></div>
+                        <div class="empty-content-icon">
+                            <div class="icon-image no-messages-icon"></div>
+                        </div>
                         {if $filter == 'unread'}
                             <h2>Nemáte žádné nepřečtené konverzace</h2>
                         {elseif $filter == 'ignored'}
