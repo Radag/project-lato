@@ -151,7 +151,7 @@ class AccountSettings extends \App\Components\BaseComponent
         $files = $this->presenter->getRequest()->getFiles();
         $image = Image::fromFile($files['file']);
         if($image->width < 176 ||  $image->height < 176) {
-            $this->presenter->flashMessage('Obrázek musí mít větší rozměry než 176 x 176', 'error');
+            $this->presenter->flashMessage('Velikost obrázku musí být alespoň 176 × 176 pixelů', 'error');
         } else {
             $path = 'users/' . $this->presenter->activeUser->slug . '/profile';
             $file = $this->fileManager->saveFile($files['file'], $path);
@@ -168,7 +168,7 @@ class AccountSettings extends \App\Components\BaseComponent
         $files = $this->presenter->getRequest()->getFiles();
         $image = Image::fromFile($files['file']);
         if($image->width < 1156 ||  $image->height < 420) {
-            $this->presenter->flashMessage('Obrázek musí mít větší rozměry než 1156 x 420', 'error');
+            $this->presenter->flashMessage('Velikost obrázku musí být alespoň 1156 × 420 pixelů', 'error');
         } else {
             $path = 'users/' . $this->presenter->activeUser->slug . '/profile';
             $file = $this->fileManager->saveFile($files['file'], $path);
