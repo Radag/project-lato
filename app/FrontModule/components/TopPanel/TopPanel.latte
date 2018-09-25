@@ -176,10 +176,12 @@
         <i class="material-icons">keyboard_arrow_left</i>Zavřít panel    
     </li>
     <li class="side-nav-header">
-        <div class="avatar small"><img src="{$activeUser->profileImage}"></div>
-        <div class="title">
-            <div class="truncate">{$activeUser->name} {$activeUser->surname}</div>
-        </div>
+        <a href="" class="profile">
+            <div class="avatar small"><img src="{$activeUser->profileImage}"></div>
+            <div class="title">
+                <div class="truncate">{$activeUser->name} {$activeUser->surname}</div>
+            </div>
+        </a>
     </li>
     <li><a n:class="$presenter->isLinkCurrent('Homepage:noticeboard') ? active, waves-effect, waves-dark" href="{plink Homepage:noticeboard}" >
             <i class="material-icons">dashboard</i>Nástěnka
