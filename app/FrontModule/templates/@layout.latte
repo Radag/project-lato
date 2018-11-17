@@ -61,6 +61,20 @@
                 {control privateMessageForm}
             {/snippet}
         </div>
+        <div id="delete-confirm-modal" class="modal modal-small">
+            <div class="modal-content">
+                <h3 class="delete-title"></h3>
+                <p class="delete-text"></p>
+            </div>
+            <div class="modal-footer">
+                <div class="flex-spacer"></div>
+                <div class="form-control">
+                    <input type="hidden" name="confirm-delete-url">
+                    <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                    <button type="button" class="waves-effect waves-light btn btn-confirm confirm">Potvrdit</button>
+                </div>
+            </div>
+        </div>
         <script>  
             $(function () {
                 $.nette.ext('showPrivateMessageFormModal', {

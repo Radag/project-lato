@@ -58,11 +58,9 @@ class SignInForm extends \App\Components\BaseComponent
         try {
             $this->getPresenter()->user->setAuthenticator($this->userManager);
             $this->getPresenter()->user->login($values->email, $values->password);
-            $this->presenter->flashMessage('Přihlášen', 'success');
         } catch (\Exception $ex) {
             $this->userEmail = $values->email;
             $form->addError($ex->getMessage());
-            $this->presenter->flashMessage($ex->getMessage(), 'error');
             $this->redrawControl('sign-in-form');
             return false; 
         }

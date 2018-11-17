@@ -12,6 +12,36 @@ $(function() {
         }        
     });
     
+    if($("form.leave-warning").length > 0) {
+        var formModified = false;
+        $('form.leave-warning').on('keyup change paste', 'input, select, textarea', function(){
+            formModified = true;
+        });
+        $('form.leave-warning').on('submit', function(event) {
+            formModified = false;
+        });
+
+        window.onbeforeunload = function(){
+            if(formModified) {
+                return 'Máte neuložené změny. Opravdu chcete stránku opustit ?';
+            }
+        };
+    }
+    
+    
+    $(".delete-confirm").on('click', function(e) {
+        e.preventDefault();
+        $("#delete-confirm-modal .delete-title").text($(this).data('title'));
+        $("#delete-confirm-modal .delete-text").html($(this).data('text'));
+        $("#delete-confirm-modal input[name='confirm-delete-url']").val($(this).data('url'));
+        $("#delete-confirm-modal button.confirm").off('click').on('click', function(e) {
+            $(this).html($("#button-loader .preloader-wrapper").clone());
+            $(this).prop('disabled', true);
+            window.location.href = $("#delete-confirm-modal input[name='confirm-delete-url']").val();
+        });
+        $("#delete-confirm-modal").modal('open');
+    });
+    
     $("form:not(.ajax) button[type='submit']").on('click', function() {
         $(this).parents('form').submit();
         $(this).html($("#button-loader .preloader-wrapper").clone());

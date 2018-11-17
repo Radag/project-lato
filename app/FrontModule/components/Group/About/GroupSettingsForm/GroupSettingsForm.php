@@ -103,7 +103,7 @@ class GroupSettingsForm extends \App\Components\BaseComponent
             $scheRet[] = $sch;
         }
         for($i=0; $i<$this->scheduleTermsNum; $i++) {
-            $scheRet[] = array();
+            $scheRet[] = [];
         }
         $this->template->form = $this["form"];
         $this->template->schedule = $scheRet;
@@ -133,25 +133,26 @@ class GroupSettingsForm extends \App\Components\BaseComponent
     }
    
     protected function validateSchedule($scheduleData) {
-        $persistData = array();
+        $persistData = [];
         $error = false;
-        foreach($scheduleData as $data) {
-            if(!empty($data["TIME_FROM"]) && !empty($data["TIME_TO"])) {
-                $timeFrom = explode(':', $data["TIME_FROM"]);
-                $timeTo = explode(':', $data["TIME_TO"]);
-                if(count($timeFrom) === 2 && count($timeTo) === 2
-                   && Validators::isNumericInt($timeFrom[0]) && Validators::isInRange($timeFrom[0], array(0,60))
-                   && Validators::isNumericInt($timeFrom[1]) && Validators::isInRange($timeFrom[1], array(0,60))
-                   && Validators::isNumericInt($timeTo[0]) && Validators::isInRange($timeTo[0], array(0,60))
-                   && Validators::isNumericInt($timeTo[1]) && Validators::isInRange($timeTo[1], array(0,60))
-                ) {
-                    $persistData[] = $data;   
-                } else {
-                    $error = 'Časy musí být ve tvaru 12:55';
+        if($scheduleData) {
+            foreach($scheduleData as $data) {
+                if(!empty($data["TIME_FROM"]) && !empty($data["TIME_TO"])) {
+                    $timeFrom = explode(':', $data["TIME_FROM"]);
+                    $timeTo = explode(':', $data["TIME_TO"]);
+                    if(count($timeFrom) === 2 && count($timeTo) === 2
+                       && Validators::isNumericInt($timeFrom[0]) && Validators::isInRange($timeFrom[0], array(0,60))
+                       && Validators::isNumericInt($timeFrom[1]) && Validators::isInRange($timeFrom[1], array(0,60))
+                       && Validators::isNumericInt($timeTo[0]) && Validators::isInRange($timeTo[0], array(0,60))
+                       && Validators::isNumericInt($timeTo[1]) && Validators::isInRange($timeTo[1], array(0,60))
+                    ) {
+                        $persistData[] = $data;   
+                    } else {
+                        $error = 'Časy musí být ve tvaru 12:55';
+                    }
                 }
-            }
-        } 
-        
+            } 
+        }        
         if($error) {
             $this->presenter->flashMessage($error, 'error');
         } else {

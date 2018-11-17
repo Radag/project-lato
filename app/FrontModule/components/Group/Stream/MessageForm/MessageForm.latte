@@ -1,5 +1,6 @@
 {snippet messageForm}
     {form form}
+    {if $isOnwer}
     <div class="post-type-selector"> 
         <select id="change-message-type-select">
             <option value="notice" {if $form['messageType']->getValue() === 'notice'}selected{/if}>Oznámení</option>
@@ -7,6 +8,7 @@
             <option value="task" {if $form['messageType']->getValue() === 'task'}selected{/if}>Povinnost</option>
         </select>
     </div>
+    {/if}
     <div class="modal-content">
         <div class="errors" n:if="$form->hasErrors()">
             <div class="error" n:foreach="$form->getErrors() as $error">{$error}</div>
@@ -71,9 +73,13 @@
                         {/ifset}
                         {ifset $link->web}
                             <a href="{$link->web->url}" target="_blank">
-                                <img width="50" src="{$link->web->image|noescape}">
-                                <strong>{$link->web->title}</strong>
-                                <span class="description">{$link->web->description}</span>
+                                {ifset $link->web->image}                                    
+                                    <img width="50" src="{$link->web->image|noescape}">
+                                    <strong>{$link->web->title}</strong>
+                                    <span class="description">{$link->web->description}</span>
+                                {else}                                    
+                                    <strong>{$link->web->url}</strong>
+                                {/ifset}
                                 <input type="hidden" name="link_web[]" value="{$link->web->url}">
                             </a>                          
                         {/ifset}
@@ -110,23 +116,25 @@
     </div>
     <script>  
         function loadInputsByType() {
-            if($("#change-message-type-select").val() === 'notice') {
-                $(".mes-title-row, .mes-date-row, .mes-online-row").addClass('hide');
-                $("input[name='title']").next('label').text('Název (nepovinné)');
-            } else if($("#change-message-type-select").val() === 'material') {
-                $(".mes-date-row, .mes-online-row").addClass('hide');
-                $(".mes-title-row").removeClass('hide');
-                $("input[name='title']").next('label').text('Název (nepovinné)');
-            } else if($("#change-message-type-select").val() === 'task') {
-                $("input[name='title']").next('label').text('Název (povinné)');
-                $(".mes-title-row, .mes-date-row, .mes-online-row").removeClass('hide');
-            }
-            $("input[name='messageType']").val($("#change-message-type-select").val());
+            if($("#change-message-type-select").length > 0) {
+                 if($("#change-message-type-select").val() === 'notice') {
+                    $(".mes-title-row, .mes-date-row, .mes-online-row").addClass('hide');
+                    $("input[name='title']").next('label').text('Název (nepovinné)');
+                } else if($("#change-message-type-select").val() === 'material') {
+                    $(".mes-date-row, .mes-online-row").addClass('hide');
+                    $(".mes-title-row").removeClass('hide');
+                    $("input[name='title']").next('label').text('Název (nepovinné)');
+                } else if($("#change-message-type-select").val() === 'task') {
+                    $("input[name='title']").next('label').text('Název (povinné)');
+                    $(".mes-title-row, .mes-date-row, .mes-online-row").removeClass('hide');
+                }
+                $("input[name='messageType']").val($("#change-message-type-select").val());
+            }           
         }
 
         $(document).ready(function() {
             $('.tooltipped').tooltip();
-            loadInputsByType();
+            //loadInputsByType();
             $(".modal-close").on("click", function(e){
                 $('#create-post-modal').modal('close');
             });
@@ -198,9 +206,14 @@
     <form action="{link addLink!}" method="post" class="ajax">
         <div class="modal-content">            
             <h3>Zadejte odkaz</h3>
+            {snippet errors}
+            <div class="errors" n:ifset="$linkErrors">
+                <div class="error" n:foreach="$linkErrors as $error">{$error}</div>
+            </div>
+            {/snippet}
             <ul class="custom-collection">
                 <div class="form-row input-field">
-                    <input id="message-link-input" type="text" name="link" />
+                    <input id="message-link-input" type="url" name="link" />
                     <label for="message-link-input">Odkaz</label>
                 </div>
             </ul>
@@ -219,9 +232,14 @@
         </div>
         <div class="modal-footer">
             <div class="form-control">
-                <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                <button type="button" class="modal-action modal-link-close waves-effect waves-light btn-flat">Zrušit</button>
                 <button type="submit" class="waves-effect waves-light btn btn-confirm hide-modal-ajax-submit">Vložit</button>
             </div>
         </div>
+        <script>
+            $(".modal-link-close").on('click', function(e) {
+                $("#add-link-modal").modal().close();
+            });
+        </script>
     </form>
 </div>
