@@ -2,25 +2,25 @@
 
 namespace App\FrontModule\Components;
 
-use \Nette\Application\UI\Control;
-
 use App\Model\Manager\SearchManager;
 
-class SearchForm extends Control
+class SearchForm extends \App\Components\BaseComponent
 {
-    protected  $searchManager;
-    public $searchResults = array();
+    /** @var SearchManager */
+    public $searchManager;
     
+    public $searchResults = [];
     
-    public function __construct(SearchManager $searchManager)
+    public function __construct(
+        SearchManager $searchManager
+    )
     {
-        $this->searchManager = $searchManager;
-        
+        $this->searchManager = $searchManager;  
     }
     
     protected function createComponentForm()
     {
-        $form = new \Nette\Application\UI\Form;
+        $form = $this->getForm();
         $form->addText('text', 'Hledat')
              ->setAttribute('placeholder', 'Jméno osoby nebo název skupiny')
              ->setAttribute('autofocus')
@@ -33,15 +33,14 @@ class SearchForm extends Control
     
     public function render()
     {
-        $template = $this->template;
-        $template->results = $this->searchResults;
-        $template->setFile(__DIR__ . '/SearchForm.latte');
-        $template->render();
+        $this->template->results = $this->searchResults;
+        parent::render();
     }
     
     public function processForm($form, $values) 
     {
         $this->searchResults = $this->searchManager->searchTerm($values->text);
-        $this->redrawControl(); 
+        $this->presenter->payload->invalidForm = false;
+        $this->redrawControl();
     }
 }

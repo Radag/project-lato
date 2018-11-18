@@ -58,8 +58,7 @@ class MessagesColumn extends \App\Components\BaseComponent
         $this->taskHeaderFactory = $taskHeaderFactory;
         $this->taskManager = $taskManager;
         $this->commitTaskForm = $commitTaskForm;
-    }
-    
+    }    
         
     public function render() {
         if($this->singleMode === false) {

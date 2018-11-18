@@ -1,9 +1,4 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 namespace App\FrontModule\Components\Stream;
 
@@ -31,8 +26,7 @@ class RightColumn extends \App\Components\BaseComponent
         $this->taskManager = $taskManager;
         $this->classificationManager = $classificationManager;
         $this->groupManager = $groupManager;
-    }
-        
+    }        
     
     public function render() {
         $this->template->relation = $this->presenter->activeGroup->relation;

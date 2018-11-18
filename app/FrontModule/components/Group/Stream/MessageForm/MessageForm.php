@@ -1,9 +1,4 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 namespace App\FrontModule\Components\Stream\MessageForm;
 
@@ -17,14 +12,8 @@ use App\Model\Manager\ClassificationManager;
 use App\Model\Manager\GroupManager;
 use Dusterio\LinkPreview\Client;
 
-/**
- * Description of SignInForm
- *
- * @author Radaq
- */
 class MessageForm extends \App\Components\BaseComponent
-{
-    
+{ 
     /** @var MessageManager */
     protected $messageManager;
     

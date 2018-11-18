@@ -8,26 +8,18 @@ class SearchManager extends BaseManager
 {    
     public function searchTerm($term) {
         $term = '%' . $term . '%';
-        $return = (object)array('users' => array(), 'groups' => array());
-        $users = $this->database->fetchAll("SELECT * FROM vw_user_detail WHERE name LIKE ? OR surname LIKE ?", $term , $term);
+        $return = (object)['users' => [], 'groups' => []];
+        $users = $this->db->fetchAll("SELECT * FROM vw_all_users WHERE name LIKE ? OR surname LIKE ?", $term , $term);
         foreach($users as $userData) {
-            $user = new User();
-            $user->id = $userData->ID_USER;
-            $user->surname = $userData->SURNAME;
-            $user->name = $userData->NAME;
-            $user->email = $userData->EMAIL;
-            $user->urlId = $userData->URL_ID;
-            $user->profileImage = User::createProfilePath($userData->PROFILE_PATH, $userData->PROFILE_FILENAME, $userData->SEX);
+            $user = new User($userData);
             $return->users[] = $user;
             
         }
-        $groups = $this->database->fetchAll("SELECT T1.*, T2.MAIN_COLOR FROM groups T1 LEFT JOIN group_color_scheme T2 ON T1.COLOR_SCHEME=T2.ID_SCHEME WHERE T1.name LIKE ?", $term);
+        $groups = $this->db->fetchAll("SELECT T1.*, T2.main_color
+                                       FROM `group` T1 JOIN group_scheme T2 ON T1.group_scheme_id=T2.id
+                                       WHERE T1.name LIKE ?", $term);
         foreach($groups as $groupData) {
-            $group = new Group();
-            $group->name = $groupData->NAME;
-            $group->shortcut = $groupData->SHORTCUT;
-            $group->mainColor = $groupData->MAIN_COLOR;
-            $group->urlId = $groupData->URL_ID;
+            $group = new Group($groupData);
             $return->groups[] = $group;
             
         }

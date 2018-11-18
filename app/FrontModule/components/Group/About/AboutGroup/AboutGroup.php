@@ -21,8 +21,7 @@ class AboutGroup extends \App\Components\BaseComponent
     {
         $this->groupManager = $groupManager;
         $this->notificationManager = $notificationManager;
-    }
-    
+    }    
     
     public function render() 
     {

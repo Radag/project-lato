@@ -1,9 +1,4 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 namespace App\FrontModule\Components\Group;
 
@@ -11,7 +6,6 @@ use App\Model\Manager\GroupManager;
 
 class Classmates extends \App\Components\BaseComponent
 {
-    
      /** @var GroupManager @inject */
     public $groupManager;
     
@@ -27,7 +21,5 @@ class Classmates extends \App\Components\BaseComponent
         $this->template->groupMembers = $members;
         parent::render();
     }
-       
-   
-    
+ 
 }

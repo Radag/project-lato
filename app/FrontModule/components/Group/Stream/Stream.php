@@ -10,16 +10,16 @@ use App\FrontModule\Components\Stream\ICommitTaskForm;
 class Stream extends \App\Components\BaseComponent
 {
     /** @var  IMessagesColumn @inject */
-    protected $messageColumn;
+    public $messageColumn;
 
     /** @var  IRightColumn @inject */
-    protected $rightColumn;
+    public $rightColumn;
 
     /** @var  IMessageForm @inject */
-    protected $messageForm;
+    public $messageForm;
     
     /** @var  ICommitTaskForm @inject */
-    protected $commitTaskForm;
+    public $commitTaskForm;
     
     public $singleMode = false;
     

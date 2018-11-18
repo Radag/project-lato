@@ -29,7 +29,7 @@
                 {if !empty($results)}
                 <div id="search-results">              
                     {foreach $results->users as $foundUser}
-                    <a href="{plink Profile:default 'id'=>$foundUser->urlId}" class="card card-flat waves-effect waves-light-gray">
+                    <a href="{plink Profile:default 'id'=>$foundUser->slug}" class="card card-flat waves-effect waves-light-gray">
                         <div class="avatar">
                             <img src="{$foundUser->profileImage}">
                         </div>
@@ -42,7 +42,7 @@
                     </a>
                     {/foreach}
                     {foreach $results->groups as $group}
-                    <a href="{plink Group:default, 'id'=>$group->urlId}" class="card waves-effect waves-light-gray">
+                    <a href="{plink Group:default, 'id'=>$group->slug}" class="card waves-effect waves-light-gray">
                         <div class="avatar">
                             <div class="group-shortcut-circle" style="background-color: {$group->mainColor|noescape}" >{$group->shortcut|substr:0,1}</div>
                         </div>

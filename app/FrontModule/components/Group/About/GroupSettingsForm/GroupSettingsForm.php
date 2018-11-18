@@ -1,36 +1,26 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 namespace App\FrontModule\Components\Group\About;
 
 use \Nette\Application\UI\Form;
 use App\Model\Manager\GroupManager;
 use App\Model\Manager\ClassificationManager;
-use App\Model\Entities\Group;
 use Nette\Utils\Validators;
 
-
-
-/**
- * Description of SignInForm
- *
- * @author Radaq
- */
 class GroupSettingsForm extends \App\Components\BaseComponent
 {
-        
-    protected $groupManager;
-    protected $classificationManager;
-    protected $scheduleTermsNum = 1;
+    /** @var GroupManager @inject */
+    public $groupManager;
+    
+    /** @var ClassificationManager @inject */
+    public $classificationManager;
+    
+    public $scheduleTermsNum = 1;
     
     public function __construct(
-                GroupManager $groupManager,
-                ClassificationManager $classificationManager
-            )
+        GroupManager $groupManager,
+        ClassificationManager $classificationManager
+    )
     {
         $this->groupManager = $groupManager;
         $this->classificationManager = $classificationManager;

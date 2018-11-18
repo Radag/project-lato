@@ -1,17 +1,10 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 namespace App\FrontModule\Components\Stream;
 
 use \Nette\Application\UI\Form;
-use \Nette\Application\UI\Control;
 use App\Model\Manager\MessageManager;
 use App\Model\Manager\UserManager;
-
 
 class CommentForm extends \App\Components\BaseComponent
 {

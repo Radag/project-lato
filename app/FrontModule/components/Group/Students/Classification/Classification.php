@@ -1,37 +1,31 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 namespace App\FrontModule\Components\Group;
 
 use App\Model\Manager\ClassificationManager;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\GroupManager;
-use App\Model\Entities\ClassificationGroup;
 use App\Model\Manager\TaskManager;
+use App\Model\Entities\ClassificationGroup;
 
 class Classification extends \App\Components\BaseComponent
-{
-       
+{    
     /** @var UserManager */
-    private $userManager;
+    public $userManager;
     
     /** @var ClassificationManager */
-    private $classificationManager;
+    public $classificationManager;
     
     /** @var GroupManager */
-    private $groupManager;
+    public $groupManager;
     
     /** @var TaskManager */
-    private $taskManager;
-    
-    protected $grades = ['1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '—' => '—', 'N' => 'N'];
+    public $taskManager;
     
     /** @var ClassificationGroup */
-    protected $classificationGroup = null;
+    public $classificationGroup = null;
+    
+    public $grades = ['1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '—' => '—', 'N' => 'N'];
     
     public function __construct(
         ClassificationManager $classificationManager,

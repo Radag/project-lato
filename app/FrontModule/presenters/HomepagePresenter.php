@@ -1,11 +1,11 @@
 <?php
 namespace App\FrontModule\Presenters;
 
-use App\FrontModule\Components\SearchForm;
 use App\FrontModule\Components\Account\IAccountActivated;
 use App\FrontModule\Components\IStorage;
 use App\FrontModule\Components\IClassification;
 use App\FrontModule\Components\INoticeboard;
+use App\FrontModule\Components\ISearchForm;
 
 class HomepagePresenter extends BasePresenter
 {
@@ -17,6 +17,9 @@ class HomepagePresenter extends BasePresenter
 
     /** @var IStorage @inject */
     public $storage; 
+    
+    /** @var ISearchForm @inject */
+    public $searchForm;
     
     /** @var IAccountActivated @inject */
     public $accountActivated; 
@@ -43,7 +46,7 @@ class HomepagePresenter extends BasePresenter
     
     protected function createComponentSearchForm()
     {
-        return new SearchForm($this->searchManager);
+        return $this->searchForm->create();
     }
     
     protected function createComponentActivatedForm()
