@@ -1,5 +1,5 @@
 <section class="main" id="account-settings">
-{form form}
+{form form class=>'leave-warning'}
     <div class="container">
         <div class="row equal-cols">
             <div class="col m12 l4">
@@ -106,7 +106,7 @@
                                         <i class="material-icons">more_horiz</i>
                                     </button>
                                     <ul id='group{$group->id}-options' class="dropdown-content">
-                                        <li><a href="" class="delete-group-button waves-effect waves-dark">Smazat skupinu</a></li>
+                                        <li><a href="" class="delete-group-button waves-effect waves-dark" data-name="{$group->name}">Smazat skupinu</a></li>
                                     </ul>
                                 </li>
                                 <li class="remove-group" style="display: none" data-group-id="{$group->id}">
@@ -142,7 +142,7 @@
                                         <i class="material-icons">more_horiz</i>
                                     </button>
                                     <ul id='group{$group->id}-options' class="dropdown-content">
-                                        <li><a href="" class="delete-group-button waves-effect waves-dark">Opustit skupinu</a></li>
+                                        <li><a href="" class="delete-group-button waves-effect waves-dark" data-name="{$group->name}">Opustit skupinu</a></li>
                                     </ul>
                                 </li>
                                 <li class="remove-group" style="display: none" data-group-id="{$group->id}">
@@ -163,7 +163,7 @@
             </div>
             <div id="group-delete-confirm-modal" class="modal modal-small">
                 <div class="modal-content">
-                    <h3>V1A - Programování</h3>
+                    <h3></h3>
                     <p>Všechny záznamy, příspěvky, přílohy a komentáře budou odstraněny. Všichni studenti ve skupině obdrží oznámení o provedené akci.</p>
 
                     <p>Opravdu si přejete smazat tuto skupinu?</p>
@@ -178,7 +178,7 @@
             </div>
             <div id="group-leave-confirm-modal" class="modal modal-small">
                 <div class="modal-content">
-                    <h3>V1A - Programování</h3>
+                    <h3></h3>
                     <p>Opravdu si přejete opustit tuto skupinu?</p>
                 </div>
                 <div class="modal-footer">
@@ -189,7 +189,7 @@
                     </div>
                 </div>
             </div>
-            <script>         
+            <script>
                 $('#group-delete-confirm-modal').modal();
                 $('#group-leave-confirm-modal').modal();
                 var removeGroup = [];
@@ -197,9 +197,11 @@
                     event.preventDefault();
                     if($(this).closest('li.group-list').data('action') === 'delete') {
                         $('#group-delete-confirm-modal').data('group-id', $(this).closest('li.group-list').data('group-id'));
+                        $('#group-delete-confirm-modal h3').text($(this).data('name'));
                         $('#group-delete-confirm-modal').modal('open');
                     } else {
                         $('#group-leave-confirm-modal').data('group-id', $(this).closest('li.group-list').data('group-id'));
+                        $('#group-leave-confirm-modal h3').text($(this).data('name'));
                         $('#group-leave-confirm-modal').modal('open');
                     }
                 });
@@ -221,20 +223,7 @@
                     removeGroup.splice(index, 1);
                     $('li.group-list[data-group-id="' + $(this).closest('li.remove-group').data('group-id') + '"]').show();
                     $("input[name='deleteGroups']").val(JSON.stringify(removeGroup));
-                });
-                var form_modified = false;
-                $('form').on('keyup change paste', 'input, select, textarea', function(){
-                    form_modified = true;
-                });
-                $('#account-settings form').on('submit', function(event) {
-                    form_modified = false;
-                });
-                
-                window.onbeforeunload = function(){
-                    if(form_modified) {
-                        return 'Máte neuložené změny. Opravdu chcete stránku opustit ?';
-                    }
-                };
+                });               
             </script>
         </div>
     </div>

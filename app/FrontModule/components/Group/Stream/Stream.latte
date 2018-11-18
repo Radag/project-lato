@@ -11,6 +11,7 @@
                                 Chcete ostatním něco sdělit?
                             </div>
                         </div>
+                        {if $isOnwer}
                         <ul class="alternate">
                             <li id="show-create-post-modal-material" class="hide-on-small-only">
                                 <i class="material-icons" data-position="bottom" data-delay="50" data-tooltip="Vložit studijní materiál">school</i>
@@ -25,6 +26,7 @@
                                 <div class="label">Zobrazit možnosti</div>
                             </li>
                         </ul>
+                        {/if}
                     </div>
                 {elseif !$singleMode}
                     <div class="card card-flat create-post-disabled">

@@ -11,12 +11,12 @@
         </div>
         <div n:if="$activeGroup->relation === 'owner'" class="row">
             <div class="col s12 edit-btn">
-                <a href="{plink Group:settings}" class="btn no-shadow waves-effect waves-light" >Upravit informace</a>
+                <a href="{plink Group:settings}" class="btn no-shadow waves-effect waves-light" >Upravit informace</a>  
             </div>
         </div>
         <div n:if="$activeGroup->relation !== 'owner'" class="row">
             <div class="col s12 edit-btn">
-                <a href="{link leaveGroup!}" class="btn no-shadow waves-effect waves-light" >Opustit skupinu</a>
+                <a href="#" data-url="{link leaveGroup!}" data-text="Opravdu si přejete opustit tuto skupinu?" data-title="{$activeGroup->name}" class="btn no-shadow waves-effect waves-light delete-confirm" >Opustit skupinu</a>
             </div>
         </div>
         <div class="row">
@@ -29,12 +29,12 @@
                         <p class="secondary-par">Základní informace o skupině</p>
                         <div class="form-row-block">
                             {if !empty($activeGroup->subgroup)}
-                             <div class="form-row static">
-                                <i class="material-icons icon-label">group</i>
-                                <div class="input-flex filled">
-                                    {$activeGroup->subgroup}     
+                                <div class="form-row static">
+                                    <i class="material-icons icon-label">group</i>
+                                    <div class="input-flex filled">
+                                        {$activeGroup->subgroup}     
+                                    </div>
                                 </div>
-                            </div>
                             {/if}
 
                             <div class="form-row static">
@@ -97,27 +97,27 @@
                         <h2>Sdílení</h2>
                     </div>
                     <div class="card-content">
-                    {if $activeGroup->shareByCode == 1 || $activeGroup->shareByLink == 1}
-                    
-                        
+                        {if $activeGroup->shareByCode == 1 || $activeGroup->shareByLink == 1}
+
+
                             {if $activeGroup->shareByCode == 1 && $activeGroup->shareByLink == 1}
                                 <p class="secondary-par"> 
-                                Studenti se mohou zapisovat pomocí kódu <strong>{$activeGroup->interCode}</strong> nebo zadáním následujícího odkazu</p>
+                                    Studenti se mohou zapisovat pomocí kódu <strong>{$activeGroup->interCode}</strong> nebo zadáním následujícího odkazu</p>
                                 <div class="group-link">{plink //:Public:Action:default, id => $activeGroup->publicCode}</div>
                             {else}
                                 {if $activeGroup->shareByCode == 1}
                                     <p class="secondary-par"> 
-                                    Studenti se mohou zapisovat pomocí kódu <strong>{$activeGroup->interCode}</strong>.
-                                {/if}
-                                {if $activeGroup->shareByLink == 1}
+                                        Studenti se mohou zapisovat pomocí kódu <strong>{$activeGroup->interCode}</strong>.
+                                    {/if}
+                                    {if $activeGroup->shareByLink == 1}
                                     <p class="secondary-par"> 
-                                    Studenti se mohou zapisovat zadáním následujícího odkazu</p>
+                                        Studenti se mohou zapisovat zadáním následujícího odkazu</p>
                                     <div class="group-link">{plink //:Public:Action:default, id => $activeGroup->publicCode}</div>
                                 {/if}
                             {/if}
-                    {else}
-                        <p class="secondary-par italic">Nejsou nastaveny žádné možnosti pro veřejné sdílení této skupiny.</p>
-                    {/if}
+                        {else}
+                            <p class="secondary-par italic">Nejsou nastaveny žádné možnosti pro veřejné sdílení této skupiny.</p>
+                        {/if}
                     </div>
                 </div>
             </div>
@@ -149,7 +149,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="card flex-column settings">
                     <div class="card-header">
                         <h2>Správa skupiny</h2>

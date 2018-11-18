@@ -44,7 +44,7 @@ class MessageForm extends \App\Components\BaseComponent
     protected $groupManager;
     
     /** @var Message */
-    protected $defaultMessage = null;
+    protected $defaultMessage = null;   
     
     public function __construct(UserManager $userManager,
         MessageManager $messageManager, 
@@ -116,7 +116,12 @@ class MessageForm extends \App\Components\BaseComponent
         $form->onSuccess[] = [$this, 'processForm'];
           
         $form->onValidate[] = function($form) {
-            if(!in_array($form['messageType']->getValue(), [Message::TYPE_MATERIALS, Message::TYPE_NOTICE, Message::TYPE_TASK])) {
+            if($this->presenter->activeGroup->relation === 'owner') {
+                $allowed = [Message::TYPE_MATERIALS, Message::TYPE_NOTICE, Message::TYPE_TASK];
+            } else {
+                $allowed = [ Message::TYPE_NOTICE];
+            }            
+            if(!in_array($form['messageType']->getValue(), $allowed)) {
                 $form->addError('Takový typ nelze zadat.');
             }
         };
@@ -222,29 +227,33 @@ class MessageForm extends \App\Components\BaseComponent
     public function handleAddLink()
     {
         $links = $this->loadLinks();
-        $url = parse_url($this->presenter->request->getPost('link'));
-        
-     
+        $link = $this->presenter->request->getPost('link');
+        if(!mb_strrpos($link, 'http://') && !mb_strrpos($link, 'https://')) {
+            $link = 'http://' . $link;
+        }
+        $url = parse_url($link);
         if(isset($url['host'])) {
-            if($url['host'] === 'www.youtube.com' && $url['path'] === '/watch') {
+            if($url['host'] === 'www.youtube.com' && isset($url['path']) && $url['path'] === '/watch') {
                 $output = [];
                 parse_str($url['query'], $output); 
                 $links[] = (object)['youtube' => $output['v']];
             } else {
-                $links[] = (object)['web' => $this->transformWeb($this->presenter->request->getPost('link'))];
-            }
-            
+                $links[] = (object)['web' => $this->transformWeb($link, $url)];
+            }     
+            $this->presenter->payload->invalidForm = false;
+            $this->template->links = $links;
+            $this->redrawControl('link-section');
+            $this->redrawControl('link-snippet');
         } else {
-            $this->presenter->flashMessage('Špatné url');
+            $this->template->linkErrors = ['Špatné url'];
+            $this->presenter->payload->invalidForm = true;
+            $this->redrawControl('errors');
         }              
-        $this->presenter->payload->invalidForm = false;
-        $this->template->links = $links;
-        $this->redrawControl('link-section');
-        $this->redrawControl('link-snippet');
+        
         
     }
     
-    protected function transformWeb($web)
+    protected function transformWeb($web, $url)
     {
 //        $page = new EmbedPage($web);
 //        return (object)[
@@ -254,15 +263,22 @@ class MessageForm extends \App\Components\BaseComponent
 //            'url' => $web
 //        ];
         
+        try {
+            $page = new Client($web);
+        } catch (\Exception $ex) {
+            return (object)['url' => $web];
+        }
         
-        $page = new Client($web);
         $previews = $page->getPreview('general')->toArray();
         $title = $description = $image = null;
         if($previews['description']) {
             $description = $previews['description'];
         }
         if(isset($previews['cover'])) {
-            $image = $previews['cover'];
+            $image = $previews['cover'];            
+            if(!mb_strrpos($image, $url['host'])) {
+                $image = $url['scheme'] . '://' . $url['host'] . $image;
+            }
         }
         if(isset($previews['title'])) {
             $title = $previews['title'];
@@ -287,7 +303,7 @@ class MessageForm extends \App\Components\BaseComponent
         } else {
             $this->template->submitButtonName = 'Publikovat';
         }
-        
+        $this->template->isOnwer = ($this->presenter->activeGroup->relation === 'owner');
         $this->template->activeUser = $this->presenter->activeUser;
         $this->template->defaultMessage = $this->defaultMessage;
         parent::render();

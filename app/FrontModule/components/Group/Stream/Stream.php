@@ -52,6 +52,7 @@ class Stream extends \App\Components\BaseComponent
         $this->template->singleMode = $this->singleMode;
         $this->template->activeUser = $this->presenter->activeUser;
         $this->template->groupPermission = $this->presenter->groupPermission;
+        $this->template->isOnwer = ($this->presenter->activeGroup->relation === 'owner');
         parent::render();
     }
     
@@ -67,7 +68,8 @@ class Stream extends \App\Components\BaseComponent
     
     public function createComponentMessageForm()
     {
-        return $this->messageForm->create();
+        $component = $this->messageForm->create();  
+        return $component;
     }
     
     public function createComponentCommitTaskForm()
