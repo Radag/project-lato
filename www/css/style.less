@@ -6,7 +6,9 @@
 @card-flat: rgba(0, 0, 0, .05);
 @icon-background: rgba(0, 0, 0, .03);
 @secondary-text-color: rgba(0, 0, 0, .45);
-@secondary-color: #26a69a;
+// @secondary-color: #26a69a;
+@accent-color: #ffc107;
+@accent-color-text: rgba(0, 0, 0, .87);
 @line-color: rgba(0, 0, 0, .1);
 @hyperlink-color: #2979FF;
 @btn-icon-highlighted: rgba(0, 0, 0, .1);
@@ -296,7 +298,7 @@ strong {
     }
 
     &.indeterminate {
-        background-color: rgba(0, 171, 157, 1);
+        background-color: @accent-color;
     }
 }
 
@@ -307,6 +309,12 @@ strong {
     font-size: 14px;
     font-weight: 500;
     padding: 0 1em;
+    background-color: @accent-color;
+    color: @accent-color-text;
+
+    &:hover {
+        background-color: @accent-color;
+    }
 
     @media only screen and (max-width: 600px) {
         & {
@@ -2761,7 +2769,7 @@ nav .nav-title {
 
         &.unread-mark {
             background-color: @background-highlighted;
-            border-left: 2px solid @secondary-color;
+            border-left: 2px solid @accent-color;
         }
 
         .avatar {
@@ -4928,7 +4936,6 @@ nav .nav-title {
         }
 
         i {
-            font-size: 20px !important;
         }
     }
 

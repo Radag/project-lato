@@ -4,6 +4,7 @@
 
 @primary-color: #2196f3;
 @accent-color: #ffc300;
+@accent-color-text: rgba(0, 0, 0, .87);
 @background-highlighted: #f8f8f8;
 @line-color: rgba(0, 0, 0, .1);
 @secondary-text-color: rgba(0, 0, 0, .45);
@@ -19,6 +20,11 @@ body {
     -moz-osx-font-smoothing: grayscale;
     font-size: 16px;
     line-height: 1.6em;
+    font-family: 'Roboto', 'Open sans', sans-serif;
+
+    * {
+        font-family: 'Roboto', 'Open sans', sans-serif;
+    }
 }
 
 
@@ -244,6 +250,7 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 
     &.accent-color {
         background-color: @accent-color;
+        // color: @accent-color-text;
 
         &:hover {
             background-color: @accent-color;

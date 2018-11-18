@@ -86,7 +86,7 @@
 
     & .btn {
         background-color: @accent-color;
-        color: @accent-text-color;
+        color: @accent-color-text;
     }
 
     & input:not([type]):focus:not([readonly]), 
@@ -108,8 +108,9 @@
 
     .avatar {
         &.colored {
-            background-color: @accent-color;
-            color: #fff;
+            background-color: @primary-color;
+            /* background-color: @accent-color; */
+            color: @text-color;
         }
     }
 
@@ -119,7 +120,7 @@
 
     & .chips .chip.selected {
         background-color: @accent-color;
-        color: @accent-text-color;
+        color: @accent-color-text;
     }
 }
 
