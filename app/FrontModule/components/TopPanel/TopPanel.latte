@@ -29,12 +29,20 @@
                             {snippet notificationCount}{if $activeUser->unreadNotifications > 0}<span class="nav-badge">{$activeUser->unreadNotifications}</span>{/if}{/snippet}
                         </a>
                     </li>
+                    
+
+                    {* DOČASNÉ SKRYTÍ CHATU
+
                     <li>
                         <a id="button-conversation-slide" class="button-collapse show-on-large sidenav-trigger" href="{link privateMessagesRead!}" data-target="slide-out-conversation" >
                             <i class="material-icons ">chat_bubble</i>
                             {snippet unreadPrivateMessages}{if $activeUser->unreadPrivateMessages > 0}<span class="nav-badge">{$activeUser->unreadPrivateMessages}</span>{/if}{/snippet}
                         </a>
                     </li>
+
+                    *}
+
+
                     <li><a href="{plink Homepage:search}" class="waves-effect waves-dark"><i class="material-icons">search</i></a></li>
                 </ul>
             </div>
@@ -187,11 +195,19 @@
             <i class="material-icons">dashboard</i>Nástěnka
         </a>
     </li>
+
+
+    {* DOČASNÉ SKRYTÍ CHATU
+
     <li>
         <a n:class="$presenter->isLinkCurrent('Conversation:list') ? active, waves-effect, waves-dark" href="{plink Conversation:list}" >
             <i class="material-icons">chat_bubble</i>Konverzace
         </a>
     </li>
+
+    *}
+    
+
     <li>
         <ul class="collapsible">
             <li>
