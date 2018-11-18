@@ -3,10 +3,10 @@
 namespace App\FrontModule\Components;
 
 
-interface IStorageFactory
+interface INoticeboard
 {
     /**
-     * @return Storage 
+     * @return Noticeboard 
     */
     public function create();
     

@@ -4,13 +4,13 @@ namespace App\FrontModule\Presenters;
 
 use App\Model\Manager\UserManager;
 use App\Model\Manager\GroupManager;
-use App\FrontModule\Components\Stream\IStreamFactory;
-use App\FrontModule\Components\Group\About\IGroupSettingsFormFactory;
-use App\FrontModule\Components\Group\About\IAboutGroupFactory;
 use App\Model\Entities\Group;
-use App\FrontModule\Components\Stream\ICommitTaskFormFactory;
-use App\FrontModule\Components\Group\IStudentsFactory;
-use App\FrontModule\Components\Group\IClassmatesFactory;
+use App\FrontModule\Components\Stream\IStream;
+use App\FrontModule\Components\Group\About\IGroupSettingsForm;
+use App\FrontModule\Components\Group\About\IAboutGroup;
+use App\FrontModule\Components\Stream\ICommitTaskForm;
+use App\FrontModule\Components\Group\IStudents;
+use App\FrontModule\Components\Group\IClassmates;
 
 class GroupPresenter extends BasePresenter
 {    
@@ -20,22 +20,22 @@ class GroupPresenter extends BasePresenter
      /** @var GroupManager @inject */
     public $groupManager;
     
-    /** @var IGroupSettingsFormFactory @inject */
+    /** @var IGroupSettingsForm @inject */
     public $groupSettings = null;
     
-    /** @var IStreamFactory @inject */
+    /** @var IStream @inject */
     public $streamFactory;
     
-    /** @var IStudentsFactory @inject */
+    /** @var IStudents @inject */
     public $studentsFactory;
     
-    /** @var ICommitTaskFormFactory @inject */
+    /** @var ICommitTaskForm @inject */
     public $commitTaskFormFactory;
     
-    /** @var IClassmatesFactory @inject */
+    /** @var IClassmates @inject */
     public $classmatesFactory;
     
-    /** @var IAboutGroupFactory @inject */
+    /** @var IAboutGroup @inject */
     public $aboutGroup;
     
     /** @var Group */

@@ -1,21 +1,10 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace App\Model\Manager;
 
 use App\Model\Entities\Classification;
 use App\Model\Entities\ClassificationGroup;
 
-/**
- * Description of TaskManager
- *
- * @author Radaq
- */
 class ClassificationManager extends BaseManager 
 {     
     public function createClassification(Classification $classification)
@@ -116,7 +105,7 @@ class ClassificationManager extends BaseManager
     {
         $query = "SELECT * FROM classification WHERE id=?";
         $class = $this->database->query($query, $idClassification)->fetch();
-
+        
         $classification = new Classification;
         $classification->idClassificationGroup = $class->classification_group_id;
         $classification->id = $class->id;
@@ -169,8 +158,7 @@ class ClassificationManager extends BaseManager
             $classificationGroup->task->isLate = (new \DateTime() > $classificationArray->deadline);
         }
         
-        
-        $classifications = $this->database->query("SELECT * FROM classification WHERE classification_group_id=?", $idGroupClassification)->fetchAll();
+        $classifications = $this->db->fetchAll("SELECT * FROM classification WHERE classification_group_id=?", $idGroupClassification);
         foreach($classifications as $classification) {
             $classObject = new Classification();
             $classObject->grade = $classification->grade;

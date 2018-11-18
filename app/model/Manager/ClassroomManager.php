@@ -1,11 +1,5 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace App\Model\Manager;
 
 use Nette;
@@ -15,11 +9,6 @@ use App\Model\Manager\NotificationManager;
 use App\Model\Manager\UserManager;
 use App\Model\Entities\Classroom;
 
-/**
- * Description of ClassroomManager
- *
- * @author Radaq
- */
 class ClassroomManager extends BaseManager 
 {
     

@@ -7,34 +7,37 @@ services:
     - App\Model\Manager\PublicActionManager
     - App\Model\Manager\ClassroomManager
     - App\Model\Manager\TaskManager
-    - App\Model\Manager\SchedulelManager
+    - App\Model\Manager\ScheduleManager
     - App\Model\Manager\NoticeManager
     - App\Model\Manager\ClassificationManager
-    - App\Mail\MailManager
     - App\Model\Manager\SearchManager
     - App\Model\Manager\SchoolManager
     - App\Model\Manager\ConversationManager
     - App\Model\Manager\FictiveUserManager
 
-    - App\FrontModule\Components\Stream\IStreamFactory
-    - App\FrontModule\Components\Group\About\IGroupSettingsFormFactory
-    - App\FrontModule\Components\Group\About\IAboutGroupFactory  
-    - App\FrontModule\Components\Stream\ICommitTaskFormFactory
+    - App\Mail\MailManager
+
+    - App\FrontModule\Components\Stream\IStream
+    - App\FrontModule\Components\Group\About\IGroupSettingsForm
+    - App\FrontModule\Components\Group\About\IAboutGroup
+    - App\FrontModule\Components\Stream\ICommitTaskForm
     - App\FrontModule\Components\TaskHeader\ITaskHeader
-    - App\FrontModule\Components\Group\IStudentsFactory
+    - App\FrontModule\Components\Group\IStudents
     - App\FrontModule\Components\Account\IAccountSettings
-    - App\FrontModule\Components\Group\IStudentsListFactory
-    - App\FrontModule\Components\Group\IClassificationFactory
-    - App\FrontModule\Components\Stream\IMessagesColumnFactory
-    - App\FrontModule\Components\Stream\IRightColumnFactory
-    - App\FrontModule\Components\PrivateMessageForm\IPrivateMessageFormFactory
-    - App\FrontModule\Components\TopPanel\ITopPanelFactory
-    - App\FrontModule\Components\Stream\MessageForm\IMessageFormFactory
-    - App\FrontModule\Components\Stream\ICommentFormFactory
-    - App\FrontModule\Components\Group\IClassmatesFactory
-    - App\FrontModule\Components\Group\IAddUserFormFactory
-    - App\FrontModule\Components\Group\AddUserForm\InviteFormFactory
-    - App\FrontModule\Components\Group\AddUserForm\ImportFormFactory
-    - App\FrontModule\Components\Group\AddUserForm\ICreateFormFactory
-    - App\FrontModule\Components\Account\IAccountActivatedFactory
-    - App\FrontModule\Components\IStorageFactory
+    - App\FrontModule\Components\Group\IStudentsList
+    - App\FrontModule\Components\Group\IClassification
+    - App\FrontModule\Components\Stream\IMessagesColumn
+    - App\FrontModule\Components\Stream\IRightColumn
+    - App\FrontModule\Components\PrivateMessageForm\IPrivateMessageForm
+    - App\FrontModule\Components\TopPanel\ITopPanel
+    - App\FrontModule\Components\Stream\MessageForm\IMessageForm
+    - App\FrontModule\Components\Stream\ICommentForm
+    - App\FrontModule\Components\Group\IClassmates
+    - App\FrontModule\Components\Group\IAddUserForm
+    - App\FrontModule\Components\Group\AddUserForm\IInviteForm
+    - App\FrontModule\Components\Group\AddUserForm\IImportForm
+    - App\FrontModule\Components\Group\AddUserForm\ICreateForm
+    - App\FrontModule\Components\Account\IAccountActivated
+    - App\FrontModule\Components\IStorage
+    - App\FrontModule\Components\IClassification
+    - App\FrontModule\Components\INoticeboard

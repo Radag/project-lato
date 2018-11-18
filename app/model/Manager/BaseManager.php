@@ -13,9 +13,6 @@ class BaseManager
     use Nette\SmartObject;
     protected $user;
 
-    /** @var Nette\Database\Context */
-    protected $database;
-    
     /** @var \Dibi\Connection  */
     protected $db;
     
@@ -23,13 +20,11 @@ class BaseManager
     protected $ftpSender;
 
     public function __construct(
-        Nette\Database\Context $database,
         Nette\Security\User $user,
         \Dibi\Connection $db,
         \App\Di\FtpSender $ftpSender
     )
     {
-        $this->database = $database;
         $this->user = $user;
         $this->db = $db;
         $this->ftpSender = $ftpSender;

@@ -1,25 +1,25 @@
 <?php
 namespace App\FrontModule\Components\Group;
 
-use App\FrontModule\Components\Group\AddUserForm\InviteFormFactory;
-use App\FrontModule\Components\Group\AddUserForm\ImportFormFactory;
-use App\FrontModule\Components\Group\AddUserForm\ICreateFormFactory;
+use App\FrontModule\Components\Group\AddUserForm\IInviteForm;
+use App\FrontModule\Components\Group\AddUserForm\IImportForm;
+use App\FrontModule\Components\Group\AddUserForm\ICreateForm;
 
 class AddUserForm extends \App\Components\BaseComponent
 {
-    /** @var InviteFormFactory */
+    /** @var IInviteForm */
     protected $inviteForm;
     
-    /** @var ImportFormFactory */
+    /** @var IImportForm */
     protected $importForm;
     
-    /** @var ICreateFormFactory */
+    /** @var ICreateForm */
     protected $createForm;
 
     public function __construct(
-        InviteFormFactory $inviteForm,
-        ImportFormFactory $importForm,
-        ICreateFormFactory $createForm
+        IInviteForm $inviteForm,
+        IImportForm $importForm,
+        ICreateForm $createForm
     )
     {
         $this->inviteForm = $inviteForm;

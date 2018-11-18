@@ -1,25 +1,19 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 namespace App\FrontModule\Components\Group;
-
 
 class Students extends \App\Components\BaseComponent
 {    
 
-    /** @var IClassificationFactory @inject */
+    /** @var IClassification @inject */
     public $classification;
     
-    /** @var IStudentsListFactory @inject */
+    /** @var IStudentsList @inject */
     public $studentsList;
     
     public function __construct(
-        IClassificationFactory $classification,
-        IStudentsListFactory $studentsList
+        IClassification $classification,
+        IStudentsList $studentsList
     )
     {
         $this->classification = $classification;

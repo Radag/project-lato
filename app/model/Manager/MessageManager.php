@@ -1,11 +1,5 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace App\Model\Manager;
 
 use Nette;
@@ -15,11 +9,6 @@ use App\Model\Entities\User;
 use App\Model\Manager\NotificationManager;
 use App\Model\Manager\GroupManager;
 
-/**
- * Description of MessageManager
- *
- * @author Radaq
- */
 class MessageManager extends BaseManager {
      
     /** @var NotificationManager @inject */
@@ -29,14 +18,12 @@ class MessageManager extends BaseManager {
     public $groupManager;
     
     public function __construct(
-        Nette\Database\Context $database,
         Nette\Security\User $user,
         NotificationManager $notificationManager,
         GroupManager $groupManager,
         \Dibi\Connection $db
     )
     {
-        $this->database = $database;
         $this->user = $user;
         $this->notificationManager = $notificationManager;
         $this->groupManager = $groupManager;

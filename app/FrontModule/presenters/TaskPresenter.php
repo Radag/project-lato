@@ -6,7 +6,7 @@ use App\Model\Manager\GroupManager;
 use App\Model\Manager\TaskManager;
 use App\Model\Manager\SearchManager;
 use App\FrontModule\Components\TaskHeader\ITaskHeader;
-use App\FrontModule\Components\Stream\ICommitTaskFormFactory;
+use App\FrontModule\Components\Stream\ICommitTaskForm;
 use App\FrontModule\Components\Task\TaskCard;
 
 class TaskPresenter extends BasePresenter
@@ -23,11 +23,9 @@ class TaskPresenter extends BasePresenter
     /** @var ITaskHeader @inject */
     public $taskHeaderFactory;
     
-    /** @var ICommitTaskFormFactory @inject */
+    /** @var ICommitTaskForm @inject */
     public $commitTaskForm; 
         
-    protected $days = ['Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota', 'Neděle'];
-    
     protected $tasks = [];
    
     public function startup() {

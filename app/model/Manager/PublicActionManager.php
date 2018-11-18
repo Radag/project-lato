@@ -1,20 +1,6 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace App\Model\Manager;
 
-use Nette;
-
-/**
- * Description of PublicActionManager
- *
- * @author Radaq
- */
 class PublicActionManager extends BaseManager 
 {
     const ACTION_ADD_TO_GROUP = 1;

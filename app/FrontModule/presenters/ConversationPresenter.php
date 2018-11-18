@@ -5,9 +5,7 @@ namespace App\FrontModule\Presenters;
 use App\Model\Manager\ConversationManager;
 
 class ConversationPresenter extends BasePresenter
-{
-    
-    
+{    
     /** @var ConversationManager @inject */
     public $conversationManager;
 

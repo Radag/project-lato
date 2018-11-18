@@ -1,26 +1,15 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace App\FrontModule\Presenters;
 
 use Nette;
 use \App\Model\Manager\UserManager;
-use App\FrontModule\Components\TopPanel\ITopPanelFactory;
+use App\FrontModule\Components\TopPanel\ITopPanel;
 use App\Model\Manager\NotificationManager;
-use App\FrontModule\Components\PrivateMessageForm\IPrivateMessageFormFactory;
+use App\FrontModule\Components\PrivateMessageForm\IPrivateMessageForm;
 use App\Helpers\HelpersList;
 use App\Model\Manager\GroupManager;
 
-/**
- * Description of BasePresenter
- *
- * @author Radaq
- */
 class BasePresenter extends Nette\Application\UI\Presenter
 {    
     /** @var UserManager @inject */
@@ -32,15 +21,17 @@ class BasePresenter extends Nette\Application\UI\Presenter
     /** @var NotificationManager @inject */
     public $notificationManager;
 
-    /** @var IPrivateMessageFormFactory @inject */
+    /** @var IPrivateMessageForm @inject */
     public $privateMessageForm;
     
-    /** @var ITopPanelFactory @inject */
+    /** @var ITopPanel @inject */
     public $topPanel;
     
     /** @var \App\Model\Entities\User */
     public $activeUser;
-    
+           
+    public $days = ['Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota', 'Neděle'];
+     
     protected function startup()
     {
         parent::startup();
@@ -103,5 +94,11 @@ class BasePresenter extends Nette\Application\UI\Presenter
     
     public function redrawTasks()    {
         
+    }
+    
+    public function handleLogout()
+    {
+        $this->user->logout(true);
+        $this->redirect(':Public:Homepage:default');
     }
 }

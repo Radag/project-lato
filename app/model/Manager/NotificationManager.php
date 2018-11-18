@@ -3,7 +3,6 @@ namespace App\Model\Manager;
 
 use App\Model\Entities;
 
-
 class NotificationManager extends BaseManager
 {   
     //přidání zprávy do skupiny

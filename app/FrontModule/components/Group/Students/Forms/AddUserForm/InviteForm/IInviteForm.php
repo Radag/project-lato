@@ -3,10 +3,10 @@ namespace App\FrontModule\Components\Group\AddUserForm;
 
 
 
-interface ICreateFormFactory
+interface IInviteForm
 {
     /**
-     * @return CreateForm
+     * @return InviteForm
     */
     public function create();
     

@@ -1,44 +1,33 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 namespace App\FrontModule\Components\Stream;
 
-use App\FrontModule\Components\Stream\IMessagesColumnFactory;
-use App\FrontModule\Components\Stream\IRightColumnFactory;
-use App\FrontModule\Components\Stream\MessageForm\IMessageFormFactory;
-use App\FrontModule\Components\Stream\ICommitTaskFormFactory;
+use App\FrontModule\Components\Stream\IMessagesColumn;
+use App\FrontModule\Components\Stream\IRightColumn;
+use App\FrontModule\Components\Stream\MessageForm\IMessageForm;
+use App\FrontModule\Components\Stream\ICommitTaskForm;
 
-/**
- * Description of SignInForm
- *
- * @author Radaq
- */
 class Stream extends \App\Components\BaseComponent
 {
-    
-    /** @var  IMessagesColumnFactory @inject */
+    /** @var  IMessagesColumn @inject */
     protected $messageColumn;
 
-    /** @var  IRightColumnFactory @inject */
+    /** @var  IRightColumn @inject */
     protected $rightColumn;
 
-    /** @var  IMessageFormFactory @inject */
+    /** @var  IMessageForm @inject */
     protected $messageForm;
     
-    /** @var  ICommitTaskFormFactory @inject */
+    /** @var  ICommitTaskForm @inject */
     protected $commitTaskForm;
     
     public $singleMode = false;
     
     public function __construct(
-        IMessagesColumnFactory $messageColumn, 
-        IRightColumnFactory $rightColumn,
-        IMessageFormFactory $messageForm,
-        ICommitTaskFormFactory $commitTaskForm
+        IMessagesColumn $messageColumn, 
+        IRightColumn $rightColumn,
+        IMessageForm $messageForm,
+        ICommitTaskForm $commitTaskForm
     )
     {
         $this->messageColumn = $messageColumn;

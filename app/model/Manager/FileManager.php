@@ -1,12 +1,9 @@
 <?php
-
 namespace App\Model\Manager;
 
 use Nette;
 
-/**
- * Users management.
- */
+
 class FileManager extends BaseManager
 {
     

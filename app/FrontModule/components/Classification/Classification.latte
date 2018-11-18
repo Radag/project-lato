@@ -1,0 +1,90 @@
+<section class="main">
+    <div class="container offset-1" n:if="!empty($myClassification)">
+        <div class="row">
+            <div class="col s12">
+                <header class="page-header">
+                    <ul class="left options">
+                        <li>
+                            <button type="button" class="btn-flat btn-icon" data-status="close" id="button-open-all-cards">
+                                <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Otevřít všechny karty">visibility</i>
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="flex-spacer"></div>
+                </header>  
+            </div>
+        </div>
+    </div>
+    <div class="container offset-1">
+        <div class="row">
+            <div class="col s12">
+                <div class="empty-content-block" n:if="empty($myClassification)">
+                    <div class="empty-content-icon">
+                        <div class="icon-image no-classification-icon"></div>
+                    </div>
+                    <h2>Zatím nebylo uděleno žádné hodnocení</h2>
+                </div>
+                <form action="#" n:if="!empty($myClassification)">
+                    <div class="section-header table-header">  
+                        <div class="title">Předmět</div>
+                        <div class="flex-spacer"></div>
+                        {* <div class="table-field assessment-date">Poslední změna</div>
+                        <div class="table-field">Hodnocení</div> *}
+                    </div>
+
+                    <ul id="classification-callaps" class="collapsible popout table-body">
+                        {foreach $myClassification as $group}
+                            <li>
+                                <div class="{if $group['group']->statistics->count_grade !== 0}collapsible-header{/if} table-row">
+                                    <div class="avatar small" style="background-color: {$group['group']->mainColor|noescape};">{$group['group']->shortcut|substr:0,1}</div>
+                                    <div class="title">
+                                        {$group['group']->name}
+                                    </div>
+                                    <div class="flex-spacer"></div>
+                                    {*<div class="table-field">{ifset $group['group']->statistics->last_change}{$group['group']->statistics->last_change->format("j. n. \\v H:i")}{/ifset}</div>*}
+                                    <div class="classification table-field">
+                                        {if $group['group']->statistics->count_grade !== 0}
+                                            ({$group['group']->statistics->count_grade})&nbsp;<strong>{$group['group']->statistics->avg_grade}</strong></div>
+                                        {else}
+                                        –
+                                    {/if}
+                                </div>
+                                {if count($group['classification']) > 0}
+                                    <div class="collapsible-body">
+                                        <div class="classification-table">
+                                            {foreach $group['classification'] as $classification}
+                                                <div class="table-row">
+                                                    <a class="title truncate">{ifset $classification->name}{$classification->name}{/ifset}</a>
+                                                    <div class="flex-spacer">{ifset $classification->notice}{$classification->notice}{/ifset}</div>
+                                                    <div class="table-field middle-column">{ifset $classification->lastChange}{$classification->lastChange->format("j. n. \\v H:i")}{/ifset}</div>
+                                                    <div class="classification table-field">
+                                                        <strong>{ifset $classification->grade}{$classification->grade}{/ifset}</strong>
+                                                    </div>
+                                                </div>
+                                            {/foreach}
+                                        </div>
+                                    </div>
+                                {/if}
+                            </li>
+                        {/foreach}
+                    </ul>
+                </form>
+                <script>
+                    $(function () {
+                        $("#button-open-all-cards").on("click", function() {
+                            if($(this).data('status') === 'close') {
+                                $("#classification-callaps").collapsible('open');
+                                $("#classification-callaps li").addClass("active");
+                                $(this).data('status', 'open');
+                            } else {
+                                $("#classification-callaps").collapsible('close');
+                                $("#classification-callaps li").removeClass('active');
+                                $(this).data('status', 'close');
+                            }                          
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</section>

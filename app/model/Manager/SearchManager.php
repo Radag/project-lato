@@ -1,25 +1,11 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace App\Model\Manager;
 
-use Nette;
 use App\Model\Entities\User;
 use App\Model\Entities\Group;
-/**
- * Description of TaskManager
- *
- * @author Radaq
- */
+
 class SearchManager extends BaseManager 
-{     
-           
-    
+{    
     public function searchTerm($term) {
         $term = '%' . $term . '%';
         $return = (object)array('users' => array(), 'groups' => array());

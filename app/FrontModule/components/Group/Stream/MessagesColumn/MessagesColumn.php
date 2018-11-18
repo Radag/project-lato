@@ -10,9 +10,9 @@ namespace App\FrontModule\Components\Stream;
 use App\Model\Manager\MessageManager;
 use App\Model\Manager\GroupManager;
 use App\Model\Manager\TaskManager;
-use App\FrontModule\Components\Stream\ICommentFormFactory;
+use App\FrontModule\Components\Stream\ICommentForm;
 use App\FrontModule\Components\TaskHeader\ITaskHeader;
-use App\FrontModule\Components\Stream\ICommitTaskFormFactory;
+use App\FrontModule\Components\Stream\ICommitTaskForm;
 
 class MessagesColumn extends \App\Components\BaseComponent
 {
@@ -26,13 +26,13 @@ class MessagesColumn extends \App\Components\BaseComponent
     /** @var  ITaskHeader @inject */
     protected $taskHeaderFactory;
 
-    /** @var  ICommentFormFactory @inject */
+    /** @var  ICommentForm @inject */
     protected $commentForm;
     
     /** @var  TaskManager @inject */
     protected $taskManager;
     
-    /** @var ICommitTaskFormFactory */
+    /** @var ICommitTaskForm */
     protected $commitTaskForm;  
       
     protected $filter = 'all';
@@ -46,10 +46,10 @@ class MessagesColumn extends \App\Components\BaseComponent
     public function __construct(
         MessageManager $messageManager,
         GroupManager $groupManager,
-        ICommentFormFactory $commentForm,
+        ICommentForm $commentForm,
         ITaskHeader $taskHeaderFactory,
         TaskManager $taskManager,            
-        ICommitTaskFormFactory $commitTaskForm
+        ICommitTaskForm $commitTaskForm
     )
     {
         $this->messageManager = $messageManager;

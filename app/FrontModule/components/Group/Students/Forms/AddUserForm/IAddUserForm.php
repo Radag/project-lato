@@ -1,9 +1,8 @@
 <?php
+
 namespace App\FrontModule\Components\Group;
 
-
-
-interface IAddUserFormFactory
+interface IAddUserForm
 {
     /**
      * @return AddUserForm 

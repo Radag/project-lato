@@ -1,22 +1,11 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace App\Model\Manager;
 
 use App\Model\Entities\PrivateMessage;
 use App\Model\Entities\User;
 use App\Model\Entities\Conversation;
 
-/**
- * Description of MessageManager
- *
- * @author Radaq
- */
 class ConversationManager extends BaseManager
 {    
        

@@ -1,9 +1,8 @@
 <?php
+
 namespace App\FrontModule\Components\Group\AddUserForm;
 
-
-
-interface ImportFormFactory
+interface IImportForm
 {
     /**
      * @return ImportForm

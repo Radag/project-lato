@@ -6,10 +6,6 @@ use Nette;
 use Nette\Security\Passwords;
 use App\Model\Entities\User;
 
-
-/**
- * Users management.
- */
 class UserManager implements Nette\Security\IAuthenticator
 {
     use Nette\SmartObject;

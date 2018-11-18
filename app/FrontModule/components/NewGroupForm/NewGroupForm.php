@@ -1,9 +1,4 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 namespace App\FrontModule\Components\NewGroupForm;
 
@@ -11,13 +6,6 @@ use \Nette\Application\UI\Form;
 use \Nette\Application\UI\Control;
 use App\Model\Manager\GroupManager;
 
-
-
-/**
- * Description of SignInForm
- *
- * @author Radaq
- */
 class NewGroupForm extends Control
 {
         

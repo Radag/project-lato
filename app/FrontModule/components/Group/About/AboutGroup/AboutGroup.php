@@ -1,4 +1,5 @@
 <?php
+
 namespace App\FrontModule\Components\Group\About;
 
 use App\Model\Manager\GroupManager;

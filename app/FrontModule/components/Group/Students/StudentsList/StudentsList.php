@@ -14,7 +14,7 @@ use App\Model\Manager\ClassificationManager;
 use App\Model\Manager\TaskManager;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\NotificationManager;
-use App\FrontModule\Components\Group\IAddUserFormFactory;
+use App\FrontModule\Components\Group\IAddUserForm;
 
 
 class StudentsList extends \App\Components\BaseComponent
@@ -35,7 +35,7 @@ class StudentsList extends \App\Components\BaseComponent
     /** @var ClassificationManager */
     private $classificationManager;
     
-    /** @var IAddUserFormFactory */
+    /** @var IAddUserForm */
     private $addUserForm;
     
     
@@ -45,7 +45,7 @@ class StudentsList extends \App\Components\BaseComponent
         TaskManager $taskManager,
         UserManager $userManager,
         NotificationManager $notificationManager,
-        IAddUserFormFactory $addUserForm
+        IAddUserForm $addUserForm
     )
     {
         $this->groupManager = $groupManager;

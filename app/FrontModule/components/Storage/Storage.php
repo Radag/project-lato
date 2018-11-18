@@ -7,9 +7,7 @@ class Storage extends \App\Components\BaseComponent
 {
     /** @var FileManager $fileManager */
     public $fileManager;
-    
-
-    
+        
     public function __construct(
         FileManager $fileManager
     )
