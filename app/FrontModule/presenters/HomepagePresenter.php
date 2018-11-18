@@ -12,6 +12,7 @@ use App\FrontModule\Components\Stream\ICommitTaskFormFactory;
 use App\FrontModule\Components\Task\TaskCard;
 use App\Model\Manager\ClassificationManager;
 use App\FrontModule\Components\Account\IAccountActivatedFactory;
+use App\FrontModule\Components\IStorageFactory;
 
 class HomepagePresenter extends BasePresenter
 {
@@ -34,7 +35,10 @@ class HomepagePresenter extends BasePresenter
     public $taskHeaderFactory;
     
     /** @var ICommitTaskFormFactory @inject */
-    public $commitTaskForm; 
+    public $commitTaskForm;    
+    
+    /** @var IStorageFactory @inject */
+    public $storage; 
     
     /** @var IAccountActivatedFactory @inject */
     public $accountActivated; 
@@ -53,8 +57,13 @@ class HomepagePresenter extends BasePresenter
     public function actionClassification()
     {
         $this['topPanel']->setTitle('Klasifikace');
-        $this->template->myClassification = $this->classificationManager->getMyClassification($this->activeUser);;
+        $this->template->myClassification = $this->classificationManager->getMyClassification($this->activeUser);
     }
+    
+    public function actionStorage()
+    {
+        $this['topPanel']->setTitle('Úložiště');
+    }    
     
     public function actionLogout()
     {
@@ -168,5 +177,10 @@ class HomepagePresenter extends BasePresenter
     protected function createComponentActivatedForm()
     {
         return $this->accountActivated->create();
+    }
+    
+    protected function createComponentStorage()
+    {
+        return $this->storage->create();
     }
 }

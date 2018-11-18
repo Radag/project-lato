@@ -317,13 +317,16 @@ class MessageForm extends \App\Components\BaseComponent
     public function handleUploadAttachment()
     {
         $file = $this->getPresenter()->request->getFiles();
-        if($file['file']->getSize() < 3000000) {
+        if($file['file']->getSize() > 3000000) {
+            $this->getPresenter()->payload->message = 'Soubor nesmí být větší než 3Mb.';
+            $this->getPresenter()->payload->error = true;            
+        } elseif($this->fileManager->isStorageOfLimit($this->presenter->activeUser->id)) {
+            $this->getPresenter()->payload->message = 'Již jste překročili limit úložiště.';
+            $this->getPresenter()->payload->error = true;            
+        } else {            
             $path = 'users/' . $this->presenter->activeUser->slug . '/files';       
             $uploadedFile = $this->fileManager->uploadFile($file['file'], $path);
             $this->getPresenter()->payload->file = $uploadedFile;
-        } else {
-            $this->getPresenter()->payload->message = 'Soubor nesmí být větší než 3Mb.';
-            $this->getPresenter()->payload->error = true;
         }
                
         $this->getPresenter()->sendPayload();

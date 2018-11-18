@@ -37,3 +37,4 @@ services:
     - App\FrontModule\Components\Group\AddUserForm\ImportFormFactory
     - App\FrontModule\Components\Group\AddUserForm\ICreateFormFactory
     - App\FrontModule\Components\Account\IAccountActivatedFactory
+    - App\FrontModule\Components\IStorageFactory

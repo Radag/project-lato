@@ -64,8 +64,8 @@ function setUploadForm(uploadDropzoneId, config) {
         var attachTemplate = $("." + file.classId);
         if(uploadedFile.error) {
             attachTemplate.remove();
-            $("#flashMessagesWrapper").append("<div class='flash'>" + uploadedFile.message + "</div>");
-            latoShowUpFlashMessages();
+            $(config.uploadBlock).append("<div class='error'>" + uploadedFile.message + "</div>");
+//            latoShowUpFlashMessages();
         } else {
             attachTemplate.find(".progress").hide();
             attachTemplate.find(".file-name").html(uploadedFile.file.fileName + " <span>" + uploadedFile.file.type + "</span>");

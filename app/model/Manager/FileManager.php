@@ -76,12 +76,13 @@ class FileManager extends BaseManager
     const FILE_TYPE_OTHER = 'other';
     
     const USER_DIRECTORY = '/var/www/cdn/users/';
-
+    
+    const STORAGE_LIMIT = 5242880;
     
     public function removeFile($idFile)
     {
-        $this->database->beginTransaction();
-        $file = $this->database->query('SELECT path, filename FROM file_list WHERE id=?', $idFile)->fetch();
+        $this->db->begin();
+        $file = $this->db->fetch('SELECT * FROM file_list WHERE id=?', $idFile);
         if($file) {
             $connId = $this->getFtpConnection();
             if(ftp_size($connId , '/var/www/cdn/' . $file['path'] . '/' . $file['filename']) !== -1) {
@@ -89,10 +90,22 @@ class FileManager extends BaseManager
             }
             $this->deleteFile($idFile);
         }
-        $this->database->commit();
+        $this->db->commit();
         return true;
     }
+    
+    public function isFileOwner($idFile, $idUser)
+    {
+        $file = $this->db->fetch("SELECT id FROM file_list WHERE created_by=? AND id=?", $idUser, $idFile);
+        return !empty($file);
+    }
 
+    public function isStorageOfLimit($idUser)
+    {
+        $sum = $this->db->fetchSingle("SELECT SUM(size) FROM file_list WHERE created_by=?", $idUser);
+        return ($sum > self::STORAGE_LIMIT);
+    }
+    
     public function saveFile($file, $path) 
     {
         $connId = $this->getFtpConnection();
@@ -184,6 +197,31 @@ class FileManager extends BaseManager
     protected function deleteFile($idFile)
     {
         $this->db->query('DELETE FROM file_list WHERE id=?', $idFile);
+    }
+    
+    public function getUserFiles($userId)
+    {
+        $totalSize = 0;
+        $files = $this->db->fetchAll("SELECT * FROM file_list WHERE created_by=?", $userId);
+        foreach($files as $file) {
+            $file->format_size = $this->formatBytes($file->size);
+            $totalSize += $file->size;
+        }
+        $total = (object)[
+            'current' => $this->formatBytes($totalSize),
+            'limit' => $this->formatBytes(self::STORAGE_LIMIT),
+            'percent' => round(100/self::STORAGE_LIMIT * $totalSize) 
+        ];
+        
+        return (object)['files' => $files, 'total' => $total];
+    }
+    
+    function formatBytes($size) 
+    { 
+        $base = log($size) / log(1024);
+        $suffix = array("", "KB", "MB", "GB", "TB");
+        $f_base = floor($base);
+        return round(pow(1024, $base - floor($base)), 1) . ' ' . $suffix[$f_base];
     }
 }
 

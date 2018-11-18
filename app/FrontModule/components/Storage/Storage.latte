@@ -1,0 +1,20 @@
+<div class="container" >
+    <div>
+        Limit úložiště : {$total->limit}<br>
+        Aktuální velikost : {$total->current}<br>
+        Procent : {$total->percent} %<br>
+    </div>
+    
+    
+    {if $files}
+        {foreach $files as $file}
+        <div class="card">
+            {$file->filename}
+            vytvořeno : {$file->created_when->format('Y.m.d')}<br>       
+            velikost: {$file->format_size}
+            <a href="{link delete! idFile=>$file->id}">Smazat</a>
+        </div>
+        {/foreach}
+    {/if}
+</div>
+
