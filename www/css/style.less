@@ -6,7 +6,7 @@
 @card-flat: rgba(0, 0, 0, .05);
 @icon-background: rgba(0, 0, 0, .03);
 @secondary-text-color: rgba(0, 0, 0, .45);
-// @secondary-color: #26a69a;
+@secondary-color: #26a69a;
 @accent-color: #ffc107;
 @accent-color-text: rgba(0, 0, 0, .87);
 @line-color: rgba(0, 0, 0, .1);
@@ -18,7 +18,7 @@
 /* ----- MATERIALIZE ----- */
 
 body {
-    background-color: #efefef;  
+    background-color: #efefef;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-size:14px;
@@ -360,7 +360,7 @@ strong {
 
     &:hover {
         background-color: transparent;
-        box-shadow: none;
+        // box-shadow: none;
     }
 
     &[disabled] {
@@ -3095,6 +3095,7 @@ nav .nav-title {
 
             &:hover {
                 background-color: transparent;
+
             }
         }
     }
@@ -4886,23 +4887,27 @@ nav .nav-title {
     }
 
     .card-content {
+        display: flex;
 
-        .title {
+        .info-flex {
 
-            a {
-                font-size: 16px;
-                color: rgba(0, 0, 0, .87);
-                font-weight: 500;
+            .title {
+
+                a {
+                    font-size: 16px;
+                    color: rgba(0, 0, 0, .87);
+                    font-weight: 500;
+                }
             }
-        }
 
-        .assignment-info {
-            margin-top: 4px;
-            color: @secondary-text-color;
+            .assignment-info {
+                margin-top: 4px;
+                color: @secondary-text-color;
 
-            a {
-                font-size: 14px;
-                color: inherit;
+                a {
+                    font-size: 14px;
+                    color: inherit;
+                }
             }
         }
     }
@@ -5493,7 +5498,6 @@ nav .nav-title {
         align-items: center;
         margin: 24px 0 0 0;
         padding: 24px 0 0 0;
-        //background-color: @background-highlighted;
         border-top: 1px solid @line-color;
         font-style: italic;
         color: @secondary-text-color;

@@ -1,9 +1,16 @@
 <div class="card-content">
-    <div class="title">
-        <a href="{plink Group:message 'id'=>$task->group->slug, 'idMessage'=>$task->idMessage}">{if $task->title}{$task->title}{/if}</a>
-    </div>
-    <div class="assignment-info">
-        {if $task->message->user->id !== $activeUser->id}<a href="{plink Profile:default 'id'=>$task->message->user->slug}">{$task->message->user->name} {$task->message->user->surname}</a>, {/if}
-        <a href="{plink Group:default, 'id'=>$task->group->slug}"> {$task->group->name}</a>
-    </div>
+	<div class="avatar small" style="background-color: #333;">
+	
+	 {* Zkratka skupiny - doplní Adam *}
+	
+	</div>
+	<div class="info-flex">
+	    <div class="title">
+	        <a href="{plink Group:message 'id'=>$task->group->slug, 'idMessage'=>$task->idMessage}">{if $task->title}{$task->title}{/if}</a>
+	    </div>
+	    <div class="assignment-info">
+	        {if $task->message->user->id !== $activeUser->id}<a href="{plink Profile:default 'id'=>$task->message->user->slug}">{$task->message->user->name} {$task->message->user->surname}</a>, {/if}
+	        <a href="{plink Group:default, 'id'=>$task->group->slug}"> {$task->group->name}</a>
+	    </div>
+	</div>
 </div>
