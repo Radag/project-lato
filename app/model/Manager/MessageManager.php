@@ -150,6 +150,12 @@ class MessageManager extends BaseManager {
         return ['messages' => $return, 'comments' => $comments];
     }
     
+    public function canUserEditMessage($userId, $groupId)
+    {
+        $message = $this->db->fetch("SELECT id FROM message WHERE user_id=? AND id=?", $userId, $groupId);
+        return !empty($message);
+    }
+    
     public function getMessage($idMessage, $user, $group)
     {
           $message = $this->db->fetch("SELECT T1.text, T1.type, T1.id, T2.id AS user_id, T2.sex, T2.slug, T2.name, T2.surname, T1.created_when,

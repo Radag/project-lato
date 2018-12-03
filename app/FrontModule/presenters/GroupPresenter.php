@@ -41,10 +41,6 @@ class GroupPresenter extends BasePresenter
     /** @var Group */
     public $activeGroup = null;
     
-    public $groupPermission = [
-        'createMessages' => false
-    ];
-    
     /** @persistent */
     public $id;
     
@@ -58,30 +54,18 @@ class GroupPresenter extends BasePresenter
         if(empty($id) || empty($this->activeGroup)){
             $this->redirect(':Front:Homepage:noticeboard');
         }
-        $this->setPermission();
         $this['topPanel']->setActiveGroup($this->activeGroup);
-        $this['topPanel']->addToMenu((object)array('name' => 'stream', 'link' => $this->link('default'), 'active' => $this->isLinkCurrent('default')));
+        $this['topPanel']->addToMenu((object)['name' => 'stream', 'link' => $this->link('default'), 'active' => $this->isLinkCurrent('default')]);
         if($this->activeGroup->relation === 'owner') {
-            $this['topPanel']->addToMenu((object)array('name' => 'studenti', 'link' => $this->link('users'), 'active' => $this->isLinkCurrent('users')));
+            $this['topPanel']->addToMenu((object)['name' => 'studenti', 'link' => $this->link('users'), 'active' => $this->isLinkCurrent('users')]);
         } else {
-            $this['topPanel']->addToMenu((object)array('name' => 'spolužáci', 'link' => $this->link('classmates'), 'active' => $this->isLinkCurrent('classmates')));
+            $this['topPanel']->addToMenu((object)['name' => 'spolužáci', 'link' => $this->link('classmates'), 'active' => $this->isLinkCurrent('classmates')]);
         }
-        $this['topPanel']->addToMenu((object)array('name' => 'o skupině', 'link' => $this->link('about'), 'active' => ($this->isLinkCurrent('about') || $this->isLinkCurrent('settings'))));    
+        $this['topPanel']->addToMenu((object)['name' => 'o skupině', 'link' => $this->link('about'), 'active' => ($this->isLinkCurrent('about') || $this->isLinkCurrent('settings'))]);    
         $this->template->colorScheme = $this->activeGroup->colorScheme;
         $this->template->activeGroup = $this->activeGroup;
         $this->template->activeUser = $this->activeUser;
-        $this->template->groupPermission = $this->groupPermission;
     }  
-        
-    protected function setPermission()
-    {
-        if($this->activeGroup->relation === 'owner') {
-            $this->groupPermission['createMessages'] = true;
-        } else {
-            $this->groupPermission['createMessages'] = true;
-        }
-    }
-    
     
     public function actionMessage($idMessage)
     {       

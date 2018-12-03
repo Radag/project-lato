@@ -115,7 +115,7 @@ class GroupManager extends BaseManager {
     public function getUserGroups(Entities\User $user, $filter = null)
     {
         $return = (object)['groups' => [], 'differentRelations' => false];
-        $userGroups = $this->db->fetchAll("SELECT T1.id, T3.main_color, T1.name, T1.shortcut, T1.slug, T2.relation_type, T4.id AS owner_id
+        $userGroups = $this->db->fetchAll("SELECT T1.id, T3.main_color, T3.name AS color_scheme, T1.name, T1.shortcut, T1.slug, T2.relation_type, T4.id AS owner_id
             FROM `group` T1
             JOIN group_user T2 ON (T1.id=T2.group_id AND T2.user_id=? AND T2.active=1 " . (!isset($filter->relation) ? "" : "AND T2.relation_type='" . $filter->relation . "'") . ")
             JOIN group_user T4 ON (T1.id=T4.group_id AND T4.active=1 AND T4.relation_type='owner')
@@ -130,6 +130,7 @@ class GroupManager extends BaseManager {
                 $group->name = $s->name;
                 $group->shortcut = $s->shortcut;
                 $group->mainColor = $s->main_color;
+                $group->colorScheme = $s->color_scheme;
                 $group->slug = $s->slug;
                 $group->relation = $s->relation_type;
                 $group->owner = new Entities\User();
@@ -171,7 +172,9 @@ class GroupManager extends BaseManager {
                T6.share_by_code,
                T7.hash_code AS public_code,
                T8.id AS period_id,
-               T8.name AS period_name
+               T8.name AS period_name,
+               T1.pr_user_msg_create,
+               T1.pr_share_msg
             FROM `group` T1
             JOIN group_user T2 ON (T1.id = T2.group_id AND T2.user_id=?)
             JOIN group_scheme T3 ON (T1.group_scheme_id = T3.id)
@@ -182,6 +185,7 @@ class GroupManager extends BaseManager {
             LEFT JOIN public_actions T7 ON (T7.id = T6.action_id AND T7.active=1)
             LEFT JOIN group_period T8 ON (T8.group_id = T1.id AND T8.active=1)
             WHERE " . ($isId ? "T1.id=?" : "T1.slug=?") . "AND T2.active=1", $user->id, $groupSlug);
+        
         if($group) {
             $owner = new Entities\User();
             $owner->surname = $group->owner_surname;
@@ -209,6 +213,8 @@ class GroupManager extends BaseManager {
             $groupModel->publicCode = $group->public_code;
             $groupModel->activePeriodId = $group->period_id;
             $groupModel->activePeriodName = $group->period_name;
+            $groupModel->pr_user_msg_create = $group->pr_user_msg_create;
+            $groupModel->pr_share_msg = $group->pr_share_msg;
             if($groupModel->relation == 'owner') {
                 $groupModel->showDeleted = $group->show_deleted;
             }
@@ -222,7 +228,7 @@ class GroupManager extends BaseManager {
  
     public function removeUserFromGroup(Entities\Group $group, Entities\User $user, NotificationManager $notificationManager)
     {
-        $this->database->query("UPDATE group_user SET active=0 WHERE user_id=? AND group_id=?", $user->id, $group->id);
+        $this->db->query("UPDATE group_user SET active=0 WHERE user_id=? AND group_id=?", $user->id, $group->id);
         if($notificationManager) {
             $notificationManager->addNotificationRemoveFromGroup($user, $group);
         }
@@ -248,7 +254,9 @@ class GroupManager extends BaseManager {
             'room' => $group->room,
             'subgroup' => $group->subgroup,
             'shortcut' => $group->shortcut,
-            'group_scheme_id' => $group->colorSchemeId
+            'group_scheme_id' => $group->colorSchemeId,
+            'pr_share_msg' => $group->pr_share_msg,
+            'pr_user_msg_create' => $group->pr_user_msg_create
         ], "WHERE id=?", $group->id);
     }
     
@@ -310,17 +318,6 @@ class GroupManager extends BaseManager {
              
         }
         return $userArray;
-    }
-      
-    public function getPrivileges($idGroup)
-    {
-        return $this->db->fetch("SELECT 
-                T1.id,
-                T1.PR_DELETE_OWN_MSG,
-                T1.PR_CREATE_MSG,
-                T1.PR_EDIT_OWN_MSG,
-                T1.PR_SHARE_MSG
-        FROM `group` T1 WHERE T1.id=?", $idGroup);
     }
     
     public function insertSchedule($schedule, Entities\Group $group)

@@ -75,7 +75,6 @@ class MessagesColumn extends \App\Components\BaseComponent
         }
         $this->template->singleMode = $this->singleMode;
         $this->template->messages = $this->messages;
-        $this->template->groupPermission = $this->presenter->groupPermission;
         $this->template->activeGroup = $this->presenter->activeGroup;
         $this->template->isOwner = $this->presenter->activeGroup->relation === 'owner' ? true : false;
         parent::render();

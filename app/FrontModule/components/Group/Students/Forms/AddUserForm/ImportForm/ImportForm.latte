@@ -16,7 +16,7 @@
             {foreach $adminGroups as $group}
             <li>
                 <a href="{link selectGroup! id=>$group->id}" class="item ajax">
-                    <div class="avatar" style="background-color: {$group->mainColor|noescape};">{$group->shortcut|substr:0,1}</div>
+                    <div class="avatar {$group->colorScheme|noescape}" >{$group->shortcut|substr:0,1}</div>
                     <div class="label">{$group->name}</div>
                     <div class="flex-spacer"></div>
                     <div class="count"><strong>4</strong> / 20</div>
@@ -29,7 +29,7 @@
         {/if}
     {else}
         <div class="selected-group">
-            <div class="avatar" style="background-color: {$selectedGroup->mainColor|noescape};">{$selectedGroup->shortcut|substr:0,1}</div>
+            <div class="avatar {$selectedGroup->colorScheme}">{$selectedGroup->shortcut|substr:0,1}</div>
             <div class="label">{$selectedGroup->name}</div>
             <div class="flex-spacer"></div>
             <a href="{link selectGroup!}" class="clear ajax">
@@ -42,8 +42,10 @@
         <ul class="custom-collection group-list">
             <li>
                 <div class="item">
-                    <input type="checkbox" class="filled-in select-all-checkbox" id="all" />
-                    <label for="all" class="select-all">Vybrat vše</label> 
+                    <label for="all-import" class="select-all">
+                        <input type="checkbox" class="filled-in select-all-checkbox" id="all-import" />
+                        <span>Vybrat vše</span>
+                    </label> 
                 </div>
             </li>
             <li class="divider"></li>
@@ -51,8 +53,10 @@
                 {foreach $students as $student}
                 <li>
                     <div class="item">
-                        <input type="checkbox" class="filled-in to-check" data-id="{$student->id}" id="modal_user_{$student->id}" />
-                        <label for="modal_user_{$student->id}"></label>
+                        <label for="modal_user_{$student->id}">
+                            <input type="checkbox" class="filled-in to-check" data-id="{$student->id}" id="modal_user_{$student->id}" />
+                            <span></span>
+                        </label>
                         <div class="avatar">
                             <img src="{$student->profileImage}">
                         </div>

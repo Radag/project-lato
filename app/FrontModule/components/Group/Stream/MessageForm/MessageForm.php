@@ -126,9 +126,11 @@ class MessageForm extends \App\Components\BaseComponent
         $message->idGroup = $this->presenter->activeGroup->id;
         $message->type = $values->messageType;
         
-        if(!empty($values->idMessage)) {
-            //TODO - kontrola oprávnění
+        if(!empty($values->idMessage)) {            
             $message->id = $values->idMessage;
+            if(!$this->messageManager->canUserEditMessage($message->user->id, $message->id )) {
+                throw new \InvalidArgumentException('Wrong ID');
+            }
         }
         
         $attachments = explode('_', $values->attachments);

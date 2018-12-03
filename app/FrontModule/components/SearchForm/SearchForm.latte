@@ -44,7 +44,7 @@
                     {foreach $results->groups as $group}
                     <a href="{plink Group:default, 'id'=>$group->slug}" class="card waves-effect waves-light-gray">
                         <div class="avatar">
-                            <div class="group-shortcut-circle" style="background-color: {$group->mainColor|noescape}" >{$group->shortcut|substr:0,1}</div>
+                            <div class="group-shortcut-circle {$group->colorScheme}" >{$group->shortcut|substr:0,1}</div>
                         </div>
                         <div class="title">
                             {$group->name}

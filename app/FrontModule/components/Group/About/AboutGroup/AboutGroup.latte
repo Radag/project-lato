@@ -73,25 +73,37 @@
                         <p class="secondary-par">
                             Povolené akce na streamu
                         </p>
+                        
                         <div class="form-row-block">
                             <div class="form-row static">
-                                <i class="material-icons icon-label">check</i>
-                                <div class="input-flex filled">
-                                    Studenti mohou upravovat své příspěvky
-                                </div>
+                                {if $activeGroup->pr_user_msg_create == 1}
+                                    <i class="material-icons icon-label">check</i>
+                                    <div class="input-flex filled">
+                                        Studenti mohou vytvářet příspěvky
+                                    </div>
+                                {else}
+                                    <i class="material-icons icon-label">block</i>
+                                    <div class="input-flex filled">
+                                        Studenti nemohou vytvářet příspěvky
+                                    </div>
+                                {/if}
                             </div>
-
                             <div class="form-row static">
-                                <i class="material-icons icon-label">check</i>
-                                <div class="input-flex filled">
-                                    Studenti mohou smazat své příspěvky
-                                </div>
+                                {if $activeGroup->pr_share_msg == 1}
+                                    <i class="material-icons icon-label">check</i>
+                                    <div class="input-flex filled">
+                                        Příspěvky mohou být volně sdíleny mezi jinými skupinami
+                                    </div>
+                                {else}
+                                    <i class="material-icons icon-label">block</i>
+                                    <div class="input-flex filled">
+                                        Příspěvky nemohou být sdíleny mezi jinými skupinami
+                                    </div>
+                                {/if}
                             </div>
-
                         </div>
                     </div>
                 </div>
-
                 <div class="card flex-column">
                     <div class="card-header">
                         <h2>Sdílení</h2>

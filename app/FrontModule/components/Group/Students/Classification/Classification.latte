@@ -1,122 +1,125 @@
 {form form id=>'classification-form'}
 <section class="main two-level-nav settings">
-    <div class="container offset-1">
-        <div class="row">
-            <div class="col s12">
-                <header class="section-header">
-                    <h3>Přidat známku</h3>
-                    <div class="flex-spacer"></div>
-                </header>  
-            </div>
-        </div>
-    </div>
-
-    <div class="container offset-1">
-        <div class="row" n:snippet="classification-header">
-            <div class="col s12">
-                <div class="card card-flat classification-properties modal-trigger" href="#edit-classification-modal">
-                    <p class="minified-label">
-                        <span class="classification-name">{$classificationGroup->name}</span>
-                        <span class="more-info {if !$classificationGroup->classificationDate}hide{/if}"><i class="material-icons">event</i> 
-                            <span class="classification-date">
-                                {if $classificationGroup->classificationDate}
-                                    {$classificationGroup->classificationDate->format('j. n. Y')}
-                                {/if}
-                            </span>
-                        </span>
-                    </p>
-                    <div class="flex-spacer"></div>
-                    <i class="minified-icon material-icons">create</i>
-                </div>   
-            </div>
-        </div>
-        <div class="row">
-            <div class="col s12">
-                <div class="section-header table-header">   
-                    <div class="title">Hodnocení studentů</div>
-                </div>                
-                <ul class="collapsible popout table-body classification-update-table" data-collapsible="expandable">
-                    {foreach $members as $member}
-                    <li>
-                        <div class="collapsible-header table-row">
-                            <div class="avatar small">
-                                <img src="{$member->profileImage}">
-                            </div>
-                            <div class="title">
-                                {if !empty($member->name)}<span>{$member->surname}</span>, {$member->name}{/if}  
-                            </div>
-                            <div class="flex-spacer"></div>
-                            {if !empty($classificationGroup->task)}
-                                {ifset $classificationGroup->task->commitArray[$member->id]}
-                                    {if $classificationGroup->task->commitArray[$member->id]->isLate}
-                                        <div class="table-field assignment-status late-submitted">Odevzdáno pozdě</div>
-                                    {else}
-                                        <div class="table-field assignment-status late-submitted">Odevzdáno</div>
-                                    {/if}
-                                {else}
-                                    {if $classificationGroup->task->isLate}
-                                        <div class="table-field assignment-status not-submitted">Neodevzdáno</div>
-                                    {else}
-                                        <div class="table-field assignment-status in-progress">Čeká na odevzdání</div>
-                                    {/if}
-                                {/ifset}
-                            {/if}
-                            <div class="grade-dropdown table-field">
-                                {input grade$member->id class=>'no-border'}
-                            </div>
-                        </div>
-                        <div class="collapsible-body">
-                            <div class="table-row">
-                                {input notice$member->id class=>'materialize-textarea'}
-                                {if !empty($classificationGroup->task) && isset($classificationGroup->task->commitArray[$member->id])}
-                                <ul class="attachments">
-                                    {foreach $classificationGroup->task->commitArray[$member->id]->files as $attach}
-                                    <li data-file-id="{$attach->idFile}">
-                                        <a href="{$attach->path|noescape}" target="_blank" class="attached-file">
-                                            <div class="file-icon spreadsheet">
-                                                <i class="material-icons">
-                                                    equalizer
-                                                </i>
-                                            </div>
-                                            <div class="file-name truncate">
-                                                {$attach->filename} 
-                                                <span>({$attach->mime}, .{$attach->extension}) – Nahráno {$classificationGroup->task->commitArray[$member->id]->created->format("j. n. H:i")}
-                                                    {if $classificationGroup->task->commitArray[$member->id]->updated}
-                                                        (Aktualizováno {$classificationGroup->task->commitArray[$member->id]->updated->format("j. n. H:i")})
-                                                    {/if}
-                                                </span>
-                                            </div>   
-                                        </a>
-                                    </li>
-                                    {/foreach}
-                                </ul>
-                                {/if}
-                            </div>
-                        </div>
-                    </li>
-                    {/foreach}
-                </ul>   
-            </div>
-        </div>
-    </div>
-    <div class="submit-settings">
+    {if $members}    
         <div class="container offset-1">
             <div class="row">
                 <div class="col s12">
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="flex-spacer"></div>
-                            <div class="form-control">
-                                <a href="{link back!}" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</a>
-                                <button type="submit" class="waves-effect waves-light btn btn-confirm submit-classification">Uložit</button>
+                    <header class="section-header">
+                        <h3>Přidat známku</h3>
+                        <div class="flex-spacer"></div>
+                    </header>  
+                </div>
+            </div>
+        </div>
+        <div class="container offset-1">
+            <div class="row" n:snippet="classification-header">
+                <div class="col s12">
+                    <div class="card card-flat classification-properties modal-trigger" href="#edit-classification-modal">
+                        <p class="minified-label">
+                            <span class="classification-name">{$classificationGroup->name}</span>
+                            <span class="more-info {if !$classificationGroup->classificationDate}hide{/if}"><i class="material-icons">event</i> 
+                                <span class="classification-date">
+                                    {if $classificationGroup->classificationDate}
+                                        {$classificationGroup->classificationDate->format('j. n. Y')}
+                                    {/if}
+                                </span>
+                            </span>
+                        </p>
+                        <div class="flex-spacer"></div>
+                        <i class="minified-icon material-icons">create</i>
+                    </div>   
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <div class="section-header table-header">   
+                        <div class="title">Hodnocení studentů</div>
+                    </div>                
+                    <ul class="collapsible popout table-body classification-update-table" data-collapsible="expandable">
+                        {foreach $members as $member}
+                        <li>
+                            <div class="collapsible-header table-row">
+                                <div class="avatar small">
+                                    <img src="{$member->profileImage}">
+                                </div>
+                                <div class="title">
+                                    {if !empty($member->name)}<span>{$member->surname}</span>, {$member->name}{/if}  
+                                </div>
+                                <div class="flex-spacer"></div>
+                                {if !empty($classificationGroup->task)}
+                                    {ifset $classificationGroup->task->commitArray[$member->id]}
+                                        {if $classificationGroup->task->commitArray[$member->id]->isLate}
+                                            <div class="table-field assignment-status late-submitted">Odevzdáno pozdě</div>
+                                        {else}
+                                            <div class="table-field assignment-status late-submitted">Odevzdáno</div>
+                                        {/if}
+                                    {else}
+                                        {if $classificationGroup->task->isLate}
+                                            <div class="table-field assignment-status not-submitted">Neodevzdáno</div>
+                                        {else}
+                                            <div class="table-field assignment-status in-progress">Čeká na odevzdání</div>
+                                        {/if}
+                                    {/ifset}
+                                {/if}
+                                <div class="grade-dropdown table-field">
+                                    {input grade$member->id class=>'no-border'}
+                                </div>
                             </div>
-                            <div class="flex-spacer"></div>
+                            <div class="collapsible-body">
+                                <div class="table-row">
+                                    {input notice$member->id class=>'materialize-textarea'}
+                                    {if !empty($classificationGroup->task) && isset($classificationGroup->task->commitArray[$member->id])}
+                                    <ul class="attachments">
+                                        {foreach $classificationGroup->task->commitArray[$member->id]->files as $attach}
+                                        <li data-file-id="{$attach->idFile}">
+                                            <a href="{$attach->path|noescape}" target="_blank" class="attached-file">
+                                                <div class="file-icon spreadsheet">
+                                                    <i class="material-icons">
+                                                        equalizer
+                                                    </i>
+                                                </div>
+                                                <div class="file-name truncate">
+                                                    {$attach->filename} 
+                                                    <span>({$attach->mime}, .{$attach->extension}) – Nahráno {$classificationGroup->task->commitArray[$member->id]->created->format("j. n. H:i")}
+                                                        {if $classificationGroup->task->commitArray[$member->id]->updated}
+                                                            (Aktualizováno {$classificationGroup->task->commitArray[$member->id]->updated->format("j. n. H:i")})
+                                                        {/if}
+                                                    </span>
+                                                </div>   
+                                            </a>
+                                        </li>
+                                        {/foreach}
+                                    </ul>
+                                    {/if}
+                                </div>
+                            </div>
+                        </li>
+                        {/foreach}
+                    </ul>   
+                </div>
+            </div>
+        </div>
+        <div class="submit-settings">
+            <div class="container offset-1">
+                <div class="row">
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="flex-spacer"></div>
+                                <div class="form-control">
+                                    <a href="{link back!}" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</a>
+                                    <button type="submit" class="waves-effect waves-light btn btn-confirm submit-classification">Uložit</button>
+                                </div>
+                                <div class="flex-spacer"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    {else}
+        <div>Žádní studenti k oznámkování</div>
+    {/if}
 </section>
 <script>
     $(function () {                           

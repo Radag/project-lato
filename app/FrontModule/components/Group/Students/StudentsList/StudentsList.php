@@ -75,7 +75,6 @@ class StudentsList extends \App\Components\BaseComponent
             }
         }
         $this->template->groupMembers = $members;
-        $this->template->permission = $this->presenter->groupPermission;
         $this->template->activeUser = $this->presenter->activeUser;
         parent::render();
     }
@@ -156,22 +155,15 @@ class StudentsList extends \App\Components\BaseComponent
     {
         $users = $this->presenter->getRequest()->getPost('users');
         if(!$confirmed) {
-            $confirmDeleteUsers = array();
-            foreach($users as $idUser) {
-                $confirmDeleteUsers[] = $this->userManager->get($idUser);
-            }
-            $this->template->confirmDeleteUsers = $confirmDeleteUsers;
+            $this->template->confirmDeleteUsers = $this->userManager->getMultiple($users, false, true);
             $this->redrawControl('removeUsersModal');
         } else {
             $usersArray = [];
             foreach($users as $idUser) {
-                //tady to opravit
-                $this->groupManager->removeUserFromGroup($this->activeGroup, $idUser);
+                $user = $this->userManager->get($idUser, false, true);
+                $this->groupManager->removeUserFromGroup($this->presenter->activeGroup, $user, $this->notificationManager);
                 $usersArray[] = (object)['id' => $idUser];
             }
-            $data['users'] = $usersArray;
-            $data['group'] = $this->groupManager->getGroup($this->activeGroup->id);
-            $this->notificationManager->addNotificationType(NotificationManager::TYPE_REMOVE_FROM_GROUP, $data);
             $this->flashMessage('Uživatel byl odebrán ze skupiny.', 'success');
             $this->redirect('this');
         }

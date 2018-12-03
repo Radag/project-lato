@@ -47,15 +47,10 @@ class GroupSettingsForm extends \App\Components\BaseComponent
              ->setDefaultValue($this->presenter->activeGroup->room);
         
         //oprávnění
-        $privileges = $this->groupManager->getPrivileges($this->presenter->activeGroup->id);
-        $form->addCheckbox('PR_DELETE_OWN_MSG', 'Uživatelé mohou smazat své příspěvky')
-             ->setDefaultValue($privileges->PR_DELETE_OWN_MSG);
-        $form->addCheckbox('PR_CREATE_MSG', 'Uživatelé mohou vytvářet oznámení')
-             ->setDefaultValue($privileges->PR_CREATE_MSG);
-        $form->addCheckbox('PR_EDIT_OWN_MSG', 'Uživatelé mohou upravovat své příspěvky')
-             ->setDefaultValue($privileges->PR_EDIT_OWN_MSG);  
-        $form->addCheckbox('PR_SHARE_MSG', 'Příspěvky mohou být volně sdíleny mezi jinými skupinami')
-             ->setDefaultValue($privileges->PR_SHARE_MSG);  
+        $form->addCheckbox('pr_user_msg_create', 'Studenti mohou vytvářet příspěvky')
+             ->setDefaultValue($this->presenter->activeGroup->pr_user_msg_create);
+        $form->addCheckbox('pr_share_msg', 'Příspěvky mohou být volně sdíleny mezi jinými skupinami')
+             ->setDefaultValue($this->presenter->activeGroup->pr_share_msg);  
         
         //sdílení
         $form->addCheckbox('shareByLink','Povolit sdílení pomocí odkazu', array(1,0))
@@ -161,6 +156,8 @@ class GroupSettingsForm extends \App\Components\BaseComponent
         $group->subgroup = $values->subgroup;
         $group->shortcut = $values->shortcut;
         $group->room = $values->room;
+        $group->pr_user_msg_create = $values->pr_user_msg_create;
+        $group->pr_share_msg = $values->pr_share_msg;
                
         $this->groupManager->editGroup($group);
         $this->groupManager->setActivePeriod($group, $values->periods);

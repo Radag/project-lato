@@ -86,7 +86,7 @@ class Noticeboard extends \App\Components\BaseComponent
     public function createComponentTaskHeader()
     {
         return new \Nette\Application\UI\Multiplier(function ($idTask) {
-            $taskHeader = $this->taskHeaderFactory->create();
+            $taskHeader = $this->taskHeader->create();
             if(isset($this->tasks[$idTask])) {
                 $task = $this->tasks[$idTask];
             } else {

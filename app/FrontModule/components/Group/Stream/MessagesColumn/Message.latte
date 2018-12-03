@@ -1,4 +1,4 @@
-<div class="card flex-column {if $iterator->isFirst() && $groupPermission['createMessages']}grid-item-fst{/if}{if $message->deleted == 1}card-flat{/if}" id="message-box-num_{$message->id}"> 
+<div class="card flex-column {if $iterator->isFirst()}grid-item-fst{/if}{if $message->deleted == 1}card-flat{/if}" id="message-box-num_{$message->id}"> 
     {if $message->type === 'task' && $message->task}
     <div class="assignment-header">
         <div class="message-type">

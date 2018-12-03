@@ -254,7 +254,7 @@ class TaskManager extends BaseManager
     public function getCommitByUser($idTask, $idUser) 
     {              
         $return = new TaskCommit();
-        $commit = $this->database->query("SELECT T1.id, T1.comment, T2.file_id,
+        $commit = $this->db->fetchAll("SELECT T1.id, T1.comment, T2.file_id,
                             T3.path,
                             T3.filename,
                             T1.created_when,
@@ -264,7 +264,7 @@ class TaskManager extends BaseManager
                         FROM task_commit T1
                         LEFT JOIN task_commit_attachment T2 ON T1.id=T2.commit_id
                         LEFT JOIN file_list T3 ON T2.file_id=T3.id
-                        WHERE T1.task_id = ? AND T1.user_id = ?", $idTask, $idUser)->fetchAll();
+                        WHERE T1.task_id = ? AND T1.user_id = ?", $idTask, $idUser);
         if(!$commit) {
             return null;
         }

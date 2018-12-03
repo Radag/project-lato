@@ -184,7 +184,7 @@
         <i class="material-icons">keyboard_arrow_left</i>Zavřít panel    
     </li>
     <li class="side-nav-header">
-        <a href="" class="profile">
+        <a href="{plink Profile:default id=>$activeUser->slug}" class="profile">
             <div class="avatar small"><img src="{$activeUser->profileImage}"></div>
             <div class="title">
                 <div class="truncate">{$activeUser->name} {$activeUser->surname}</div>
@@ -221,8 +221,8 @@
                         {foreach $groups->groups as $group}
                             <li>
                                 <a n:class="$presenter->isLinkCurrent('Group:default', array('id'=>$group->slug)) ? active" href="{plink Group:default 'id'=>$group->slug}">
-                                    <div class="group-shortcut-circle" style="background-color: {$group->mainColor|noescape}" >{$group->shortcut|substr:0,1}
-                                        {if $groups->differentRelations && $group->relation === 'owner'}<div class="admin-mark" style="background-color: {$group->mainColor|noescape}"></div>{/if}
+                                    <div class="group-shortcut-circle {$group->colorScheme}" >{$group->shortcut|substr:0,1}
+                                        {if $groups->differentRelations && $group->relation === 'owner'}<div class="admin-mark" ></div>{/if}
                                     </div>
                                     {$group->name}
                                 </a>

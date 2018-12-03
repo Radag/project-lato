@@ -49,6 +49,8 @@ class Group extends AbstractEntity {
     
     public $showDeleted = false;
     
+    public $pr_user_msg_create = 0;
+    public $pr_share_msg = 0;
     
     protected $mapFields = [
         'id' => 'id',

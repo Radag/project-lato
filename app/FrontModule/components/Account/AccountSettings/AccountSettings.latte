@@ -98,8 +98,8 @@
                                 {if $group->relation === 'owner'}
                                 {var something=false}
                                 <li class="group-list" data-action="delete" data-group-id="{$group->id}">
-                                    <div class="group-shortcut-circle" style="background: {$group->mainColor|noescape};">{$group->shortcut|substr:0,1}
-                                        <div class="admin-mark" style="background-color: {$group->mainColor|noescape}"></div>
+                                    <div class="group-shortcut-circle {$group->colorScheme}"or >{$group->shortcut|substr:0,1}
+                                        <div class="admin-mark" ></div>
                                     </div>
                                     <div class="label">{$group->name} {*<span>(g2)</span>*}</div>
                                     <button type="button" class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" data-target="group{$group->id}-options" >
@@ -136,7 +136,7 @@
                                 {if $group->relation !== 'owner'}
                                 {var something=false}
                                 <li class="group-list" data-action="leave" data-group-id="{$group->id}">
-                                    <div class="group-shortcut-circle" style="background: {$group->mainColor|noescape};">{$group->shortcut|substr:0,1}</div>
+                                    <div class="group-shortcut-circle {$group->colorScheme}" >{$group->shortcut|substr:0,1}</div>
                                     <div class="label">{$group->name} {*<span>(g2)</span>*}</div>
                                     <button type="button" class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" data-target="group{$group->id}-options" >
                                         <i class="material-icons">more_horiz</i>

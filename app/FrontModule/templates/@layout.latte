@@ -138,7 +138,8 @@
                 });*/
                 $('select').formSelect();
                 $('.collapsible').collapsible({ accordion: false });
-                $('.dropdown-trigger').dropdown({ alignment: 'right' });
+                $('.dropdown-trigger:not(.to-left)').dropdown({ alignment: 'right' });
+                $('.dropdown-trigger.to-left').dropdown({ alignment: 'left' });
                 $('.tooltipped').tooltip();
             });
                   

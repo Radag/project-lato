@@ -44,6 +44,11 @@ class HomepagePresenter extends BasePresenter
         $this['topPanel']->setTitle('Úložiště');
     }
     
+    public function actionSearch()
+    {
+        $this['topPanel']->setTitle('Vyhledávání');
+    }
+    
     protected function createComponentSearchForm()
     {
         return $this->searchForm->create();

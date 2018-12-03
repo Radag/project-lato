@@ -36,9 +36,9 @@
             <div class="col s12">
                 <form action="#">
                     <div class="section-header table-header">
-                        <label>
+                        <label for="select-all">
                             <input type="checkbox" class="filled-in" id="select-all" />
-                            <span for="select-all">Student</span>
+                            <span>Vybrat vše</span>
                         </label>   
                     </div>
                     <script>
@@ -149,9 +149,9 @@
                         {foreach $groupMembers as $member}
                         <li>
                             <div class="collapsible-header table-row">
-                                <label>
+                                <label for="user_{$member->id}">
                                     <input type="checkbox" class="filled-in user-checkbox" id="user_{$member->id}" data-id="{$member->id}" data-slug="{$member->slug}" />
-                                    <span for="user_{$member->id}"></span>
+                                    <span></span>
                                 </label>
                                 {if $member->isFictive}
                                     <div class="avatar small fictive-user">

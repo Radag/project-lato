@@ -27,7 +27,6 @@ class AboutGroup extends \App\Components\BaseComponent
     {
         $this->template->periods = $this->groupManager->getGroupPeriods($this->presenter->activeGroup);
         $this->template->activeGroup = $this->presenter->activeGroup;
-        $this->template->groupPermission = $this->presenter->groupPermission;
         parent::render();
     }
     

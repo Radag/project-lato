@@ -47,7 +47,6 @@ class Classification extends \App\Components\BaseComponent
     
     public function render()
     {
-        $this->template->permission = $this->presenter->groupPermission;
         $this->template->activeUser = $this->presenter->activeUser;
         $students = [];
         if($this->parent->classGroupId !== 'new') {

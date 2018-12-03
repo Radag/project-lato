@@ -40,8 +40,8 @@ class Stream extends \App\Components\BaseComponent
     {
         $this->template->singleMode = $this->singleMode;
         $this->template->activeUser = $this->presenter->activeUser;
-        $this->template->groupPermission = $this->presenter->groupPermission;
-        $this->template->isOnwer = ($this->presenter->activeGroup->relation === 'owner');
+        $this->template->activeGroup = $this->presenter->activeGroup;
+        $this->template->isOwner = ($this->presenter->activeGroup->relation === 'owner');
         parent::render();
     }
     

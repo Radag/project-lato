@@ -1,7 +1,7 @@
 <div class="container {if $singleMode}offset-2{/if} main two-level-nav" id="group">
     <div class="row">
             <div class="col s12 {if !$singleMode}l8{/if}" id="stream" >
-                {if $groupPermission['createMessages'] && !$singleMode}
+                {if ($isOwner || $activeGroup->pr_user_msg_create == 1) && !$singleMode}
                     <div class="card create-post">
                         <div id="show-create-post-modal" class="create-announcement">
                             <div class="avatar small">
@@ -11,7 +11,7 @@
                                 Chcete ostatním něco sdělit?
                             </div>
                         </div>
-                        {if $isOnwer}
+                        {if $isOwner}
                         <ul class="alternate">
                             <li id="show-create-post-modal-material" class="hide-on-small-only">
                                 <i class="material-icons" data-position="bottom" data-delay="50" data-tooltip="Vložit studijní materiál">school</i>
