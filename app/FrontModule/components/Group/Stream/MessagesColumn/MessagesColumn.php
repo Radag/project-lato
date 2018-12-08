@@ -124,9 +124,11 @@ class MessagesColumn extends \App\Components\BaseComponent
     
     public function handleEditMessage($idMessage)
     {
-        $message = $this->messageManager->getMessage($idMessage, $this->presenter->activeUser, $this->presenter->activeGroup);
-        $this->parent['messageForm']->setDefaults($message);
-        $this->parent->redrawControl('messageForm');
+        if($this->messageManager->canUserEditMessage($idMessage, $this->presenter->activeUser, $this->presenter->activeGroup)) {
+            $message = $this->messageManager->getMessage($idMessage, $this->presenter->activeUser, $this->presenter->activeGroup);
+            $this->parent['messageForm']->setDefaults($message);
+            $this->parent->redrawControl('messageForm');
+        }        
     }
 
     public function handleSetTaskClassification($idTask)
@@ -146,26 +148,33 @@ class MessagesColumn extends \App\Components\BaseComponent
     
     public function handleDeleteMessage($idMessage) 
     {   
-        $this->messageManager->deleteMessage($idMessage, true);
-        $this->presenter->flashMessage('Zpráva byla smazána.');
+        if($this->messageManager->canUserEditMessage($idMessage, $this->presenter->activeUser, $this->presenter->activeGroup)) {
+            $this->messageManager->deleteMessage($idMessage, true);
+            $this->presenter->flashMessage('Zpráva byla smazána.');
+        }
         $this->redrawControl();
     }
 
     public function handleRenewMessage($idMessage) 
     {   
-        $this->messageManager->deleteMessage($idMessage, false);
-        $this->presenter->flashMessage('Zpráva byla obnovena.');
+        if($this->messageManager->canUserEditMessage($idMessage, $this->presenter->activeUser, $this->presenter->activeGroup)) {
+            $this->messageManager->deleteMessage($idMessage, false);
+            $this->presenter->flashMessage('Zpráva byla obnovena.');
+        }
         $this->redrawControl();
     }
     
     public function handleTopMessage($idMessage, $enable = true) 
     {
-        $this->messageManager->topMessage($idMessage, $enable);
-        if($enable) {
-            $this->presenter->flashMessage('Zpráva byla posunuta nahoru.');
-        } else {
-            $this->presenter->flashMessage('Zrušeno topování zprávy.'); 
+        if($this->presenter->activeGroup->relation === 'owner') {
+            $this->messageManager->topMessage($idMessage, $enable);
+            if($enable) {
+                $this->presenter->flashMessage('Zpráva byla posunuta nahoru.');
+            } else {
+                $this->presenter->flashMessage('Zrušeno topování zprávy.'); 
+            }
         }
+        
         $this->redrawControl();
     }
     

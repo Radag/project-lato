@@ -12,12 +12,12 @@
     <div class="modal-content">
         <div class="errors" n:if="$form->hasErrors()">
             <div class="error" n:foreach="$form->getErrors() as $error">{$error}</div>
-        </div>
+        </div>        
         <div class="modal-header">
             <div class="avatar small">
-                <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
+                <img src="{$messageUser->profileImage}" alt="{$messageUser->name}">
             </div>
-            <h4>{$activeUser->name} {$activeUser->surname}</h4>
+            <h4>{$messageUser->name} {$messageUser->surname}</h4>
         </div>        
         <div class="form-row hide mes-title-row input-field">
             {input title}
@@ -148,17 +148,19 @@
                     url: $(this).data('reset-link')
                 });
             });
-            $(".edit-message-button").off('click').on("click", function(event) {
-                event.preventDefault();
-                startModalLoading('#create-post-modal');
-                $.nette.ajax({
-                    url: $(this).attr('href'),
-                    method: 'POST',
-                    complete: function(data) {
-                        showModalLoading('#create-post-modal');
+            
+            if(!$.nette.ext('message-form-loader')) {
+                $.nette.ext('message-form-loader', {   
+                    start: function (jqXHR, settings) {
+                        if(settings.nette !== undefined && $(settings.nette.ui).hasClass('edit-message-button')) {
+                            startModalLoading('#create-post-modal');
+                            jqXHR.done(function( data, textStatus, jqXHR ) {
+                                showModalLoading('#create-post-modal');
+                            });
+                        }
                     }
                 });
-            });
+            }
         });
     </script>
     {include uploadBlock}

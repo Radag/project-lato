@@ -48,9 +48,11 @@ class RightColumn extends \App\Components\BaseComponent
         $form->addCheckbox('showDeleted','Zobrazit smazané položky', [true, false])
              ->setDefaultValue($this->presenter->activeGroup->showDeleted);
         $form->onSuccess[] = function($form, $values) {
-            $this->groupManager->setDeleted($this->presenter->activeGroup, $values->showDeleted);
-            $this->presenter->activeGroup->showDeleted = $values->showDeleted;
-            $this->parent['messagesColumn']->redrawControl();
+            if($this->presenter->activeGroup->relation === 'owner') {
+                $this->groupManager->setDeleted($this->presenter->activeGroup, $values->showDeleted);
+                $this->presenter->activeGroup->showDeleted = $values->showDeleted;
+                $this->parent['messagesColumn']->redrawControl();
+            }            
         };
         return $form;        
     }
