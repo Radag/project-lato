@@ -1,8 +1,8 @@
 <div class="card-content">
         
 	<div class="avatar small {$task->group->colorScheme}">
-            {$task->group->shortcut|substr:0,1}
-        </div>
+        {$task->group->shortcut|substr:0,1}
+    </div>
 	<div class="info-flex">
 	    <div class="title">
 	        <a href="{plink Group:message 'id'=>$task->group->slug, 'idMessage'=>$task->idMessage}">{if $task->title}{$task->title}{/if}</a>

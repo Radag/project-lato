@@ -14,9 +14,11 @@
                         <div class="profile-title">
                             {$activeUser->name} {$activeUser->surname}
                         </div>
+
+                        {* DOČASNĚ SKRYTÉ FUNKCE // IGNOROVÁNÍ UŽIVATELE A PŘIDÁNÍ DO PŘÁTEL
                         {snippet profileMenu}
                         <ul class="controls">
-                            {*
+                            
                             {if !$isMe}
                                 {if $isFriend}
                                 <li><a href="{link removeFriend!, 'idUser'=>$activeUser->id}" class="tooltipped waves-effect waves-light ajax" data-position="bottom" data-delay="50" data-tooltip="Odebrat z přátel"><i class="material-icons">person_remove</i></a></li>
@@ -25,7 +27,7 @@
                                 {/if}
                             <li><a href="{link showPrivateMessageForm! 'idUserTo'=>$activeUser->id}" class="ajax show-new-private-message waves-effect waves-light"><i class="material-icons">chat</i></a></li>
                             {/if}
-                            *}
+                            
                             <li>
                                 <button type="button" class="btn-flat btn-icon dropdown-trigger waves-effect waves-light" data-target="profile-options" >
                                     <i class="material-icons">more_vert</i>
@@ -36,6 +38,8 @@
                             </li>
                         </ul>
                         {/snippet}
+                        *}
+
                     </div>
                 </div>
             </div>

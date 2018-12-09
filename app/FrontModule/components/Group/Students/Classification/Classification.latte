@@ -66,8 +66,19 @@
                                 </div>
                             </div>
                             <div class="collapsible-body">
-                                <div class="table-row">
+                                <div class="table-row flex-column">
                                     {input notice$member->id class=>'materialize-textarea'}
+
+                                    {* POKUD JE VLOZENA POZNAMKA BUDE SE ZOBRAZOVAT VARIANT A NEBO B *}
+                                    <div class="comment">
+                                        <span>Komentář studenta</span>
+                                        <p>Nějaký komentář související s odevzdaným úkolem.</p>
+                                    </div>
+                                    <div class="comment empty">
+                                        <p>Student nepřiložil k úkolu žádný komentář.</p>
+                                    </div>
+
+
                                     {if !empty($classificationGroup->task) && isset($classificationGroup->task->commitArray[$member->id])}
                                     <ul class="attachments">
                                         {foreach $classificationGroup->task->commitArray[$member->id]->files as $attach}
