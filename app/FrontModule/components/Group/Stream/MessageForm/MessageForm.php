@@ -128,7 +128,7 @@ class MessageForm extends \App\Components\BaseComponent
         
         if(!empty($values->idMessage)) {            
             $message->id = $values->idMessage;
-            if(!$this->messageManager->canUserEditMessage($message->user->id, $message->id )) {
+            if(!$this->messageManager->canUserEditMessage($message->id, $this->presenter->activeUser, $this->presenter->activeGroup)) {
                 throw new \InvalidArgumentException('Wrong ID');
             }
         }
@@ -288,14 +288,17 @@ class MessageForm extends \App\Components\BaseComponent
         if($this->defaultMessage !== null) {
             if($this->defaultMessage->attachments) {
                 $this->template->attachments = array_merge($this->defaultMessage->attachments['files'], $this->defaultMessage->attachments['media']);
-            }
-            
+            }            
             $this->template->submitButtonName = 'Upravit';
         } else {
             $this->template->submitButtonName = 'Publikovat';
         }
         $this->template->isOnwer = ($this->presenter->activeGroup->relation === 'owner');
-        $this->template->activeUser = $this->presenter->activeUser;
+        if($this->defaultMessage) {
+            $this->template->messageUser = $this->defaultMessage->user;            
+        } else {
+            $this->template->messageUser = $this->presenter->activeUser;            
+        }
         $this->template->defaultMessage = $this->defaultMessage;
         parent::render();
     }

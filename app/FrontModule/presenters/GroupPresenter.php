@@ -75,16 +75,17 @@ class GroupPresenter extends BasePresenter
     
     public function actionSettings()
     {
-        if(!$this->activeGroup->relation === 'owner') {
-            $this->redirect(':Front:Homepage:noticeboard');
+        if($this->activeGroup->relation !== 'owner') {
+            $this->redirect('Homepage:noticeboard');
         }
         $this['topPanel']->setTitle('nastavení');
     }
     
     public function actionUsers()
     {
-        if(!$this->activeGroup->relation === 'owner') {
-            $this->redirect(':Front:Homepage:noticeboard');
+        
+        if($this->activeGroup->relation !== 'owner') {
+            $this->redirect('Homepage:noticeboard');
         }
         $this['topPanel']->setTitle('uživatelé');
     }
