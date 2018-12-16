@@ -1,9 +1,4 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 namespace App\FrontModule\Components\TaskHeader;
 
@@ -13,31 +8,25 @@ use App\Model\Manager\TaskManager;
 use App\Model\Manager\ClassificationManager;
 use App\FrontModule\Components\Stream\CommitTaskForm;
 
-/**
- * Description of SignInForm
- *
- * @author Radaq
- */
 class TaskHeader extends \App\Components\BaseComponent
 {
-    
     /** @var UserManager */
-    protected $userManager;
+    public $userManager;
     
     /** @var GroupManager  */
-    protected $groupManager;  
+    public $groupManager;  
     
     /** @var TaskManager */
-    protected $taskManager;
+    public $taskManager;
     
     /** @var ClassificationManager */
-    protected $classificationManager; 
+    public $classificationManager; 
          
     /** @var \App\Model\Entities\Task */
-    protected $task;
+    public $task;
     
      /** @var CommitTaskForm */
-    protected $commitTaskForm;
+    public $commitTaskForm;
     
     public $mode = 'stream';
     
@@ -68,7 +57,7 @@ class TaskHeader extends \App\Components\BaseComponent
     }
     
     public function render()
-    {     
+    {
         $this->template->task = $this->task;
         if($this->mode === 'stream') {
             $this->template->setFile($this->getTemplateFilePath('TaskHeaderStream'));

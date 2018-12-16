@@ -74,7 +74,7 @@ class FileManager extends BaseManager
     
     const USER_DIRECTORY = '/var/www/cdn/users/';
     
-    const STORAGE_LIMIT = 5242880;
+    const STORAGE_LIMIT = 524288000;
     
     public function removeFile($idFile)
     {

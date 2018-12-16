@@ -93,7 +93,7 @@ class CommitTaskForm extends \App\Components\BaseComponent
         $idTaskCommit = $this->taskManager->createTaskCommit($taskCommit, $attachments);
         
         $this->presenter->flashMessage('Úkol odevzdán', 'success');
-        $this->presenter->redrawTasks();
+        $this->parent->redrawTasks();
     }
     
     public function handleUploadAttachment()
@@ -108,10 +108,12 @@ class CommitTaskForm extends \App\Components\BaseComponent
     
     public function handleDeleteAttachment($idFile)
     {
-        $this->taskManager->removeAttachment($idFile);
-        $this->fileManager->removeFile($idFile);
-        $this->getPresenter()->payload->idFile = $idFile;
-        $this->getPresenter()->payload->deleted = true;
-        $this->getPresenter()->sendPayload();
+        if($this->fileManager->isFileOwner($idFile, $this->presenter->activeUser->id)) {
+            $this->taskManager->removeAttachment($idFile);
+            $this->fileManager->removeFile($idFile);
+            $this->getPresenter()->payload->idFile = $idFile;
+            $this->getPresenter()->payload->deleted = true;
+            $this->getPresenter()->sendPayload();
+        }        
     }
 }

@@ -60,7 +60,8 @@ class MessagesColumn extends \App\Components\BaseComponent
         $this->commitTaskForm = $commitTaskForm;
     }    
         
-    public function render() {
+    public function render() 
+    {
         if($this->singleMode === false) {
             $this->template->singleMode = false;
             $data = $this->messageManager->getMessages($this->presenter->activeGroup, $this->presenter->activeUser, $this->filter);
@@ -120,6 +121,11 @@ class MessagesColumn extends \App\Components\BaseComponent
     protected function createComponentCommitTaskForm()
     {
         return $this->commitTaskForm->create();    
+    }
+    
+    public function redrawTasks()
+    {
+        $this->redrawControl('messages');
     }
     
     public function handleEditMessage($idMessage)

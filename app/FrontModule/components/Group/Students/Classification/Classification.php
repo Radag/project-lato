@@ -172,6 +172,9 @@ class Classification extends \App\Components\BaseComponent
             } else {
                 $classGroupId = $values->id;
             }
+            if(!$this->classificationManager->canEditClassificationGroup($classGroupId, $this->presenter->activeUser)) {
+                throw \InvalidArgumentException();
+            }
             
             $vals = [];
             foreach($values as $key=>$val) {
@@ -217,11 +220,14 @@ class Classification extends \App\Components\BaseComponent
         $form->addSubmit('send', 'Potvrdit');
 
         $form->onSuccess[] = function($form, $values) {
+            if(!$this->classificationManager->canEditClassificationGroup($values->id, $this->presenter->activeUser)) {
+                throw \InvalidArgumentException();
+            }
             if(!empty($values->date)) {
                 $values->date = \DateTime::createFromFormat('d. m. Y', $values->date);
             } else {
                 $values->date = null;
-            }            
+            }
             $this->classificationManager->updateClassificationGroup($values);
             $this->presenter->payload->reloadModal = true;
             $this->redrawControl('classification-header');

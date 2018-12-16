@@ -72,13 +72,8 @@ class Noticeboard extends \App\Components\BaseComponent
         parent::render();
     } 
     
-    public function redrawTasks() {
-        $groups = $this->groupManager->getUserGroups($this->activeUser);
-        if($this->getParameter('filter') == 'closed') {
-            $this->tasks = $this->taskManager->getClosestTask($groups->groups, false, $this->presenter->activeUser);
-        } else {
-            $this->tasks = $this->taskManager->getClosestTask($groups->groups, true, $this->presenter->activeUser);
-        }
+    public function redrawTasks() 
+    {
         $this->redrawControl('actualTasks');
     }
     

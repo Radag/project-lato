@@ -183,6 +183,16 @@ class ClassificationManager extends BaseManager
         return $this->db->getInsertId();
     }
     
+    public function canEditClassificationGroup($classGroupId, $user)
+    {
+        $id = $this->db->fetch("SELECT T1.id FROM classification_group T1
+            JOIN `group` T2 ON T1.group_id=T2.id
+            JOIN group_user T3 ON T2.id=T3.group_id
+            WHERE T1.id=? AND T3.user_id=? AND T3.active=1 AND T3.relation_type='owner'", $classGroupId, $user->id);
+        return !empty($id);
+    }
+
+
     public function updateClassificationGroup($values)
     {
          $this->db->query("UPDATE classification_group SET ", [

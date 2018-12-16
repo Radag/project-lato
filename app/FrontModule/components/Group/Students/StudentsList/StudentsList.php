@@ -104,28 +104,17 @@ class StudentsList extends \App\Components\BaseComponent
         $this->presenter->redirect('this');
     }
     
-    public function handleAddClassificationToUsers($confirmed = false) 
+    public function handleAddClassificationToUsers() 
     {
         $users = $this->presenter->getRequest()->getPost('users');
-        if(!$confirmed) {
-            if(is_array($users)) {
-                $classificationUsers = $this->userManager->getMultiple($users, false, true);
-            } else {
-                $classificationUsers = null;
-            }
-            $this['userClassificationForm']->setUsers($classificationUsers);
-            $this->redrawControl('userClassificationForm');
+        if(is_array($users)) {
+            $classificationUsers = $this->userManager->getMultiple($users, false, true);
         } else {
-            foreach($users as $idUser) {
-                $message = new \App\Model\Entities\PrivateMessage();
-                $message->text = $this->presenter->getRequest()->getPost('text');
-                $message->idUserFrom = $this->presenter->activeUser->id;
-                $message->idUserTo = $idUser;
-                $this->privateMessageManager->insertMessage($message);
-            }
-            $this->flashMessage('Zpáva byla odeslána.', 'success');
-            $this->redirect('this');
+            $classificationUsers = null;
         }
+        $this['userClassificationForm']->setUsers($classificationUsers);
+        $this->redrawControl('userClassificationForm');
+
     }
     
     public function handleSendMessageToUsers($confirmed = false) 
