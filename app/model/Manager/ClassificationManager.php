@@ -164,7 +164,7 @@ class ClassificationManager extends BaseManager
             $classObject->grade = $classification->grade;
             $classObject->notice = $classification->notice;
             $classObject->user = new \App\Model\Entities\User($classification);
-            $classificationGroup->classifications[] = $classObject;
+            $classificationGroup->classifications[$classObject->user->id] = $classObject;
         }
         
         return $classificationGroup;

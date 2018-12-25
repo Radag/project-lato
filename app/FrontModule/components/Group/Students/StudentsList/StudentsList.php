@@ -151,6 +151,7 @@ class StudentsList extends \App\Components\BaseComponent
             foreach($users as $idUser) {
                 $user = $this->userManager->get($idUser, false, true);
                 $this->groupManager->removeUserFromGroup($this->presenter->activeGroup, $user, $this->notificationManager);
+                $this->notificationManager->addWasRemovedFromGroup($user, $this->presenter->activeGroup, $this->notificationManager);
                 $usersArray[] = (object)['id' => $idUser];
             }
             $this->flashMessage('Uživatel byl odebrán ze skupiny.', 'success');

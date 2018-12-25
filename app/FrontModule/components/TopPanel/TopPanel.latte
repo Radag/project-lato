@@ -92,7 +92,7 @@
         <h4>Nové</h4>
         {foreach $notifications->new as $notification}
         <li class="sidenav-card">
-            <a href="">
+            <a href="{link readNotification!, 'id'=>$notification->id}">
                 <div class="avatar"> 
                     <img src="{$notification->triggerUser->profileImage}" alt=""> 
                 </div>

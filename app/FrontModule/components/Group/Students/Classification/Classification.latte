@@ -67,40 +67,39 @@
                             </div>
                             <div class="collapsible-body">
                                 <div class="table-row flex-column">
-                                    {input notice$member->id class=>'materialize-textarea'}
-
-                                    {* POKUD JE VLOZENA POZNAMKA BUDE SE ZOBRAZOVAT VARIANT A NEBO B *}
-                                    <div class="comment">
-                                        <span>Komentář studenta</span>
-                                        <p>Nějaký komentář související s odevzdaným úkolem.</p>
-                                    </div>
-                                    <div class="comment empty">
-                                        <p>Student nepřiložil k úkolu žádný komentář.</p>
-                                    </div>
-
-
+                                    {input notice$member->id class=>'materialize-textarea'}                                    
                                     {if !empty($classificationGroup->task) && isset($classificationGroup->task->commitArray[$member->id])}
-                                    <ul class="attachments">
-                                        {foreach $classificationGroup->task->commitArray[$member->id]->files as $attach}
-                                        <li data-file-id="{$attach->idFile}">
-                                            <a href="{$attach->path|noescape}" target="_blank" class="attached-file">
-                                                <div class="file-icon spreadsheet">
-                                                    <i class="material-icons">
-                                                        equalizer
-                                                    </i>
-                                                </div>
-                                                <div class="file-name truncate">
-                                                    {$attach->filename} 
-                                                    <span>({$attach->mime}, .{$attach->extension}) – Nahráno {$classificationGroup->task->commitArray[$member->id]->created->format("j. n. H:i")}
-                                                        {if $classificationGroup->task->commitArray[$member->id]->updated}
-                                                            (Aktualizováno {$classificationGroup->task->commitArray[$member->id]->updated->format("j. n. H:i")})
-                                                        {/if}
-                                                    </span>
-                                                </div>   
-                                            </a>
-                                        </li>
-                                        {/foreach}
-                                    </ul>
+                                        {if $classificationGroup->task->commitArray[$member->id]->comment}
+                                            <div class="comment">
+                                                <span>Komentář studenta</span>
+                                                <p>{$classificationGroup->task->commitArray[$member->id]->comment}</p>
+                                            </div>
+                                        {else}
+                                            <div class="comment empty">
+                                                <p>Student nepřiložil k úkolu žádný komentář.</p>
+                                            </div>
+                                        {/if}
+                                        <ul class="attachments">
+                                            {foreach $classificationGroup->task->commitArray[$member->id]->files as $attach}
+                                            <li data-file-id="{$attach->idFile}">
+                                                <a href="{$attach->path|noescape}" target="_blank" class="attached-file">
+                                                    <div class="file-icon spreadsheet">
+                                                        <i class="material-icons">
+                                                            equalizer
+                                                        </i>
+                                                    </div>
+                                                    <div class="file-name truncate">
+                                                        {$attach->filename} 
+                                                        <span>({$attach->mime}, .{$attach->extension}) – Nahráno {$classificationGroup->task->commitArray[$member->id]->created->format("j. n. H:i")}
+                                                            {if $classificationGroup->task->commitArray[$member->id]->updated}
+                                                                (Aktualizováno {$classificationGroup->task->commitArray[$member->id]->updated->format("j. n. H:i")})
+                                                            {/if}
+                                                        </span>
+                                                    </div>   
+                                                </a>
+                                            </li>
+                                            {/foreach}
+                                        </ul>
                                     {/if}
                                 </div>
                             </div>

@@ -6,6 +6,7 @@ use App\Model\Manager\ClassificationManager;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\GroupManager;
 use App\Model\Manager\TaskManager;
+use App\Model\Manager\NotificationManager;
 use App\Model\Entities\ClassificationGroup;
 
 class Classification extends \App\Components\BaseComponent
@@ -15,6 +16,9 @@ class Classification extends \App\Components\BaseComponent
     
     /** @var ClassificationManager */
     public $classificationManager;
+    
+    /** @var NotificationManager */
+    public $notificationManager;
     
     /** @var GroupManager */
     public $groupManager;
@@ -31,9 +35,11 @@ class Classification extends \App\Components\BaseComponent
         ClassificationManager $classificationManager,
         UserManager $userManager,
         GroupManager $groupManager,
+        NotificationManager $notificationManager,
         TaskManager $taskManager
     )
     {
+        $this->notificationManager = $notificationManager;
         $this->classificationManager = $classificationManager;
         $this->userManager = $userManager;
         $this->groupManager = $groupManager;
@@ -165,7 +171,7 @@ class Classification extends \App\Components\BaseComponent
             if(empty($values->id)) {
                 $classifiationGroup = new ClassificationGroup();
                 $classifiationGroup->name = $values->name;
-                $classifiationGroup->date = \DateTime::createFromFormat('d. m. Y', $values->date);;
+                $classifiationGroup->date = \DateTime::createFromFormat('d. m. Y', $values->date);
                 $classifiationGroup->group = $this->presenter->activeGroup;                
                 $classifiationGroup->idPerion = $this->presenter->activeGroup->activePeriodId;
                 $classGroupId = $this->classificationManager->createGroupClassification($classifiationGroup);
@@ -176,6 +182,7 @@ class Classification extends \App\Components\BaseComponent
                 throw \InvalidArgumentException();
             }
             
+            $currentClass = $this->classificationManager->getGroupClassification($classGroupId);            
             $vals = [];
             foreach($values as $key=>$val) {
                 if(strpos($key, 'grade') === 0) {
@@ -195,6 +202,15 @@ class Classification extends \App\Components\BaseComponent
                 $classification->idUser = $idUser;
                 $classification->idPeriod = $this->presenter->activeGroup->activePeriodId;
                 $this->classificationManager->createClassification($classification);
+                if(($val['grade'] && $val['grade'] !== '—') || !empty($val['notice'])) {
+                    if(isset($currentClass->classifications[$idUser])) {
+                        if($val['grade'] != $currentClass->classifications[$idUser]->grade ||  $val['notice'] != $currentClass->classifications[$idUser]->notice) {                        
+                            $this->notificationManager->addClassification($idUser, $this->presenter->activeGroup);
+                        }
+                    } else {
+                        $this->notificationManager->addClassification($idUser, $this->presenter->activeGroup);
+                    }
+                }                
             }
             
             $this->presenter->flashMessage('Uloženo', 'success');

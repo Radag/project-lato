@@ -33,5 +33,17 @@ class Message extends AbstractEntity {
     public $create_classification = null;
     public $isCreator = false;
     public $links;
+    
+    public function getType()
+    {
+        if($this->type === self::TYPE_MATERIALS) {
+            return 'materiál';
+        } if($this->type === self::TYPE_NOTICE) {
+            return 'poznámka';
+        } if($this->type === self::TYPE_TASK) {
+            return 'povinnost';
+        }
+    }
+
 
 }

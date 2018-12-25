@@ -226,12 +226,9 @@ class GroupManager extends BaseManager {
     }
     
  
-    public function removeUserFromGroup(Entities\Group $group, Entities\User $user, NotificationManager $notificationManager)
+    public function removeUserFromGroup(Entities\Group $group, Entities\User $user)
     {
         $this->db->query("UPDATE group_user SET active=0 WHERE user_id=? AND group_id=?", $user->id, $group->id);
-        if($notificationManager) {
-            $notificationManager->addNotificationRemoveFromGroup($user, $group);
-        }
     }
     
     public function archiveGroup($idGroup)

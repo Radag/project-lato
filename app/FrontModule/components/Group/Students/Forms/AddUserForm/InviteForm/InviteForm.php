@@ -63,6 +63,7 @@ class InviteForm extends \App\Components\BaseComponent
             foreach($users as $user) {
                 $added = $this->groupManager->addUserToGroup($this->presenter->activeGroup, $user->id, GroupManager::RELATION_STUDENT);
                 if($added) {
+                    $this->notificationManager->addNotificationInviteGroupMember($this->presenter->activeGroup, $user);
                     $this->presenter->flashMessage("Student " . $user->name . " " . $user->surname . " byl přidán", 'success');
                 } else {
                     $this->presenter->flashMessage("Student " . $user->name . " " . $user->surname . " je již členem skupiny", 'success');

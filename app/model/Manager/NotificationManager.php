@@ -11,17 +11,23 @@ class NotificationManager extends BaseManager
     const TYPE_ADD_COMMENT = 'new_comment';
     //nový člen ve skupině
     const TYPE_NEW_GROUP_MEMBER = 'new_group_member';
+    //byl přidán do skupiny
+    const TYPE_GROUP_INVITE_MEMBER = 'new_group_invite';
     //byl vyhozem ze skupiny
     const TYPE_REMOVE_FROM_GROUP = 'removed_group_member';
-    //byl přidán do skupiny
+    //byl vyhozem ze skupiny
+    const TYPE_LEFT_GROUP = 'left_group';
+    //nové hodnocení
     const TYPE_NEW_CLASSIFICATION = 'new_classification';
     
     public $types = [
         self::TYPE_ADD_GROUP_MSG => 'nová zpráva',
         self::TYPE_ADD_COMMENT => 'nový komentář',
         self::TYPE_NEW_GROUP_MEMBER => 'nový člen skupiny',
-        self::TYPE_REMOVE_FROM_GROUP => 'člen odešel ze skupiny',
-        self::TYPE_NEW_CLASSIFICATION => 'nová známka'
+        self::TYPE_REMOVE_FROM_GROUP => 'byl jste vyhozen ze skupiny',
+        self::TYPE_LEFT_GROUP => 'člen odešel ze skupiny',
+        self::TYPE_NEW_CLASSIFICATION => 'nová známka',
+        self::TYPE_GROUP_INVITE_MEMBER => 'byl jste přidán do skupiny'
     ];
     
     /** @var GroupManager @inject */
@@ -53,8 +59,9 @@ class NotificationManager extends BaseManager
     
     public function addNotificationNewMessage(Entities\Message $message, Entities\Group $group, $groupManager) {
         $notification = new Entities\Notification();
-        $notification->title = "Nový přispěvek v " . $group->name;
-        $notification->text = $message->text;
+        $notification->title = $group->name;
+        $notification->text = ""
+                . "Příspěvek typu " . $message->getType();
         $notification->type = self::TYPE_ADD_GROUP_MSG;
         $notification->triggerUser = $this->user->id;
         $notification->data = json_encode([
@@ -84,12 +91,13 @@ class NotificationManager extends BaseManager
         $this->addNotification($notification);    
     }
     
+    /* student se sám přidal do skupiny */
     public function addNotificationNewGroupMember($userId, Entities\Group $group) 
     { 
         $notification = new Entities\Notification();
         $user = $this->db->fetch("SELECT * FROM user WHERE id=?", $userId);
-        $notification->title = "Nový člen";
-        $notification->text = "Do vaší skupiny " . $group->name . " se přidal nový člen " . $user->name .  ' ' . $user->surname . ".";
+        $notification->title = $group->name;
+        $notification->text = "Přidal se " . $user->name .  ' ' . $user->surname . ".";
         $notification->idUser = $group->owner->id;
         $notification->triggerUser = $this->user->id;
         $notification->type = self::TYPE_NEW_GROUP_MEMBER;
@@ -99,13 +107,54 @@ class NotificationManager extends BaseManager
         $this->addNotification($notification);          
     }
     
-    public function addNotificationRemoveFromGroup(Entities\User $user, Entities\Group $group) 
+    /* student byl přidán do skupiny */
+    public function addNotificationInviteGroupMember(Entities\Group $group, Entities\User $user) 
     { 
         $notification = new Entities\Notification();
-        $notification->title = "Student odešel ze skupiny";
-        $notification->text = "Student " . $user->name . ' ' . $user->surname . " odešel ze skupiny.";
+        $notification->title = $group->name;
+        $notification->text = "Byl jste přidán do skupiny";
+        $notification->idUser = $user->id;
+        $notification->triggerUser = $this->user->id;
+        $notification->type = self::TYPE_GROUP_INVITE_MEMBER;
+        $notification->data = json_encode([
+            'groupId' => $group->id
+        ]);
+        $this->addNotification($notification);          
+    }
+    
+    /* student byl vyhozen ze skupiny */
+    public function addWasRemovedFromGroup(Entities\User $user, Entities\Group $group) 
+    { 
+        $notification = new Entities\Notification();
+        $notification->title = $group->name;
+        $notification->text = "Byl jste vyhozen ze skupiny";
         $notification->type = self::TYPE_REMOVE_FROM_GROUP;
+        $notification->idUser = $user->id;
+        $notification->triggerUser = $this->user->id;
+        $this->addNotification($notification);          
+    }
+    
+    /* student sám odešel ze skupiny */
+    public function addLeftGroup(Entities\User $user, Entities\Group $group) 
+    { 
+        $notification = new Entities\Notification();
+        $notification->title = "Student " . $user->name . ' ' . $user->surname;
+        $notification->text = "Odešel ze skupiny " . $group->name . ".";
+        $notification->type = self::TYPE_LEFT_GROUP;
         $notification->idUser = $group->owner->id;
+        $notification->triggerUser = $this->user->id;
+        $this->addNotification($notification);          
+    }
+    
+    
+    /* student sám odešel ze skupiny */
+    public function addClassification($idUser, Entities\Group $group) 
+    { 
+        $notification = new Entities\Notification();
+        $notification->title = $group->name;
+        $notification->text = "Přibylo nové hodnocení.";
+        $notification->type = self::TYPE_NEW_CLASSIFICATION;
+        $notification->idUser = $idUser;
         $notification->triggerUser = $this->user->id;
         $this->addNotification($notification);          
     }
@@ -182,6 +231,11 @@ class NotificationManager extends BaseManager
                     $return->link = 'Profile:default'; 
                     $return->args = ['id'=>$user->slug];
                 }                
+            } elseif ($notification->type === self::TYPE_GROUP_INVITE_MEMBER) {                
+                $return->link = 'Group:default'; 
+                $return->args = ['id'=>$data->groupId];              
+            } elseif ($notification->type === self::TYPE_NEW_CLASSIFICATION) {                
+                $return->link = 'Homepage:classification';        
             }
         }
         return $return;

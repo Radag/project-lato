@@ -126,7 +126,8 @@ class AccountSettings extends \App\Components\BaseComponent
                     if(isset($groups[$idGroup]) && $groups[$idGroup]->relation === 'owner') {
                         $this->groupManager->archiveGroup($idGroup);
                     } elseif(isset($groups[$idGroup])) {
-                        $this->groupManager->removeUserFromGroup($groups[$idGroup], $this->presenter->activeUser, $this->notificationManager);
+                        $this->groupManager->removeUserFromGroup($groups[$idGroup], $this->presenter->activeUser);
+                        $this->notificationManager->addLeftGroup($this->presenter->activeUser, $groups[$idGroup]);
                     }
                 }  
             }

@@ -32,7 +32,8 @@ class AboutGroup extends \App\Components\BaseComponent
     
     public function handleLeaveGroup()
     {
-        $this->groupManager->removeUserFromGroup($this->presenter->activeGroup, $this->presenter->activeUser, $this->notificationManager);
+        $this->groupManager->removeUserFromGroup($this->presenter->activeGroup, $this->presenter->activeUser);
+        $this->notificationManager->addLeftGroup($this->presenter->activeUser, $this->presenter->activeGroup);
         $this->flashMessage("Opustil jste skupinu " . $this->presenter->activeGroup->name);
         $this->presenter->redirect(':Front:Homepage:noticeboard');
     }
