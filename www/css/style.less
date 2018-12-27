@@ -639,6 +639,7 @@ input[type=search]:not(.browser-default) {
         min-height: 1em;
         line-height: 1em;
         border-bottom: 1px solid @line-color;
+        flex-wrap: wrap;
 
         @media only screen and (max-width: 600px) {
             & {
@@ -757,6 +758,7 @@ input[type=search]:not(.browser-default) {
         }
 
         .classification {
+            align-self: center;
             display: flex;
             align-items: center;
             justify-content: flex-end;
@@ -828,25 +830,11 @@ input[type=search]:not(.browser-default) {
                         border-top: none;
                     }
 
-                    .edit {
-                        width: 20px;
-                        text-align: center;
-                        margin-right: 24px;
-                        color: @secondary-text-color;
-
-                        @media only screen and (max-width: 600px) {
-                            & {
-                                margin-right: 16px;
-                                font-size: 18px;
-                            }
-                        }
-                    }
-
                     .info {
                         display: flex;
-                        align-items: center;
-                        flex-grow: 1;
+                        align-items: baseline;
                         line-height: 1.6em;
+                        width: 100%;
 
                         @media only screen and (max-width: 600px) {
                             & {
@@ -856,20 +844,26 @@ input[type=search]:not(.browser-default) {
                         }
 
                         .title {
-                            font-weight: 400;
+                            display: block;
+                            font-weight: 500;
                             color: rgba(0, 0, 0, .87);
+                            margin-right: 8px;
                         }  
 
                         .date {
-                            @media only screen and (max-width: 600px) {
-                                & {
-                                    color: @secondary-text-color;
-                                    font-size: 13px;
-                                    margin: 0;
-                                }
-                            }
+                            color: @secondary-text-color;
+                            font-size: 13px;
+                            margin: 0;  
                         }
-                    }                    
+                    } 
+
+                    .note {
+                        color: @secondary-text-color;
+                        font-size: 13px;
+                        width: 100%;
+                        margin-top: 8px
+                    }   
+                                    
                 }
             }
         }
@@ -1477,8 +1471,22 @@ input[type=search]:not(.browser-default) {
         }
     }
 
+    .info {
+        .row {
+            margin-bottom: 16px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            .label {
+                color: @secondary-text-color;
+            }
+        }
+    }
+
     .groups {
-        margin: 24px 0;
+        margin: 24px 0 0 0;
 
         li {
 
@@ -1508,6 +1516,10 @@ input[type=search]:not(.browser-default) {
                 cursor: default;
                 opacity: .35;
                 font-weight: 400;
+            }
+
+            &:last-child a {
+                margin-bottom: 0;
             }
         }
     }

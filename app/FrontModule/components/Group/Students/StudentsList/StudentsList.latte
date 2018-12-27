@@ -184,17 +184,22 @@
                                     {if isset($member->getClassification()->items) && !empty($member->getClassification()->items)}
                                     {foreach $member->getClassification()->items as $classification}
                                     <div class="table-row">
-                                        <a  href="{link editGroupClassification! 'idGroupClassification'=>$classification->idClassificationGroup}" class="material-icons edit">edit</a>
-                                        <div class="info truncate">
-                                            
+                                        <div class="info">
                                             <a href="{link editGroupClassification! 'idGroupClassification'=>$classification->idClassificationGroup}" class="title truncate">{$classification->name}</a>
+                                            <div class="date">
+                                                {$classification->classificationDate->format("j. n. Y")}
+                                            </div>
                                             <div class="flex-spacer"></div>
-                                        <div class="date middle-column">{$classification->classificationDate->format("j. n. Y")}</div>
+                                            <div class="classification">
+                                                <strong>{$classification->grade ?: '—'}</strong>
+                                            </div>
                                         </div>
+                                        <div class="note">
 
-                                        <div class="classification">
-                                            <strong>{$classification->grade ?: '—'}</strong>
+                                            * TADY DOPLŇ POZNÁMKU K HODNOCENÍ
+
                                         </div>
+                                        
                                     </div>
                                     {/foreach}
                                     {else}

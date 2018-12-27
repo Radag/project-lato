@@ -222,7 +222,7 @@
                             <li>
                                 <a n:class="$presenter->isLinkCurrent('Group:default', array('id'=>$group->slug)) ? active" href="{plink Group:default 'id'=>$group->slug}">
                                     <div class="group-shortcut-circle {$group->colorScheme}" >{$group->shortcut|substr:0,1}
-                                        {if $groups->differentRelations && $group->relation === 'owner'}<div class="admin-mark" ></div>{/if}
+                                        {if $groups->differentRelations && $group->relation === 'owner'}<div class="admin-mark {$group->colorScheme}" ></div>{/if}
                                     </div>
                                     {$group->name}
                                 </a>

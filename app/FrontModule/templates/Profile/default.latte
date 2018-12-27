@@ -70,7 +70,19 @@
                     <div class="card-header">
                         <h2>Osobní a kontaktní informace</h2>
                     </div>
-                    <div class="card-content list clearfix">
+                    <div class="card-content info clearfix">
+                        
+                        {* TOTO BY SE MĚLO ZOBRAZOVAT POKUD TEN UŽIVATEL O SOBĚ NEZADAL VŮBEC ŽÁDNÝ INFO *}
+                        <p class="secondary-par italic">
+                            Uživatel si nepřeje zveřejňovat žádné osobní informace
+                        </p>
+
+                        {* TOTO BY SE MĚLO ZOBRAZOVAT POKUD TEN UŽIVATEL PROHLÍŽÍ VLASTNÍ PROFIL *}
+                        <p class="secondary-par italic">
+                            V tuto chvíli nemáte zveřejněny žádné osobní informace
+                        </p>
+
+                        
                         {ifset $schools}
                         {foreach $schools as $school}
                         <div class="row">
@@ -111,6 +123,13 @@
                             </div>
                         </div>*}
                     </div>
+                    <div class="card-footer">
+
+                        {* TOTO SE BUDE ZOBRAZOVAT POUZE POKUD JE UŽIVATEL NA VLASTNÍM PROFILU A NAVÍC NEMÁ VYPLNĚNÉ ŽÁDNÉ INFORMACE *}
+                        <a href="" class="btn waves-effect waves-light">
+                            Upravit
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="col l6 m12 s12">
@@ -119,7 +138,18 @@
                         <h2>Skupiny</h2>
                     </div>
                     <div class="card-content">
-                        <p class="secondary-par">Uživatel je aktivním členem následujících skupin<p>
+
+                        {* TOTO BY SE MĚLO ZOBRAZOVAT POKUD TEN UŽIVATEL NEMÁ SPOLEČNÉ S NÁVŠTĚVNÍKEM PROFILU ŽÁDNÉ SKUPINY *}
+                        <p class="secondary-par">
+                            Uživatel si nepřeje zveřejňovat žádné osobní informace
+                        </p>
+
+                        {* TOTO BY SE MĚLO ZOBRAZOVAT POKUD TEN UŽIVATEL SI PROHLÍŽÍ VLASTNÍ PROFIL *}
+                        <p class="secondary-par">
+                            V těchto skupinách jsem zapsán jako učitel nebo student
+                        </p>
+
+                        <p class="secondary-par">S uživatelem máte společné tyto skupiny<p>
                         <ul class="groups">
                             {foreach $groups as $group}
                             <li {if !$group->isMy}class="disabled"{/if}>
@@ -137,7 +167,10 @@
                             </li>
                             {/foreach}
                         </ul>
+
+
                     </div>
+                    <div class="card-footer"></div>
                 </div>
                 
             </div>
