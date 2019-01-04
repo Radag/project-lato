@@ -21,7 +21,7 @@ class ProfilePresenter extends BasePresenter
         $this['topPanel']->setTitle('Profil');
         $this->template->activeUser = $this->activeUser;
         $myClasses = $this->classroomManager->getClasses($this->activeUser);
-        if($id === null) {  
+        if($id === null || $this->activeUser->slug === $id) {  
             $this->template->profileUser = $this->activeUser;
             $this->template->isMe = true;
             $this->template->schools = $myClasses;

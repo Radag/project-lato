@@ -135,6 +135,7 @@ class ClassificationManager extends BaseManager
             $classObject->grade = $class->grade;
             $classObject->id = $class->id;
             $classObject->name = $class->name;
+            $classObject->notice = $class->notice;
             $classObject->idClassificationGroup = $class->classification_group_id;
             $return[$class->user_id][] = $classObject;
         }

@@ -194,12 +194,9 @@
                                                 <strong>{$classification->grade ?: '—'}</strong>
                                             </div>
                                         </div>
-                                        <div class="note">
-
-                                            * TADY DOPLŇ POZNÁMKU K HODNOCENÍ
-
-                                        </div>
-                                        
+                                        {if $classification->notice}
+                                            <div class="note">{$classification->notice}</div>
+                                        {/if}                                        
                                     </div>
                                     {/foreach}
                                     {else}

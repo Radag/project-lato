@@ -70,39 +70,33 @@
                     <div class="card-header">
                         <h2>Osobní a kontaktní informace</h2>
                     </div>
-                    <div class="card-content info clearfix">
-                        
-                        {* TOTO BY SE MĚLO ZOBRAZOVAT POKUD TEN UŽIVATEL O SOBĚ NEZADAL VŮBEC ŽÁDNÝ INFO *}
-                        <p class="secondary-par italic">
-                            Uživatel si nepřeje zveřejňovat žádné osobní informace
-                        </p>
-
-                        {* TOTO BY SE MĚLO ZOBRAZOVAT POKUD TEN UŽIVATEL PROHLÍŽÍ VLASTNÍ PROFIL *}
-                        <p class="secondary-par italic">
-                            V tuto chvíli nemáte zveřejněny žádné osobní informace
-                        </p>
-
-                        
-                        {ifset $schools}
-                        {foreach $schools as $school}
-                        <div class="row">
-                            <div class="col s3 label">
-                                Škola
+                    <div class="card-content info clearfix">                        
+                        {if $schools}
+                            {foreach $schools as $school}
+                            <div class="row">
+                                <div class="col s3 label">
+                                    Škola
+                                </div>
+                                <div class="col s9 text">
+                                    {$school->school}
+                                </div>
                             </div>
-                            <div class="col s9 text">
-                                {$school->school}
+                            <div class="row">
+                                <div class="col s3  label">
+                                    Třída
+                                </div>
+                                <div class="col s9  text">
+                                    {$school->className} {$school->classGrade}
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col s3  label">
-                                Třída
-                            </div>
-                            <div class="col s9  text">
-                                {$school->className} {$school->classGrade}
-                            </div>
-                        </div>
-                        {/foreach}
-                        {/ifset}
+                            {/foreach}
+                        {else}                            
+                            {if $isMe}
+                                <p class="secondary-par italic">V tuto chvíli nemáte zveřejněny žádné osobní informace</p> 
+                            {else}
+                                <p class="secondary-par italic">Uživatel si nepřeje zveřejňovat žádné osobní informace</p>
+                            {/if}                            
+                        {/if}
                         {* TOHLE BY ASI NEMĚLO BÝT VEŘEJNÝ*}
                         {*if !empty($activeUser->birthday)}
                         <div class="row">
@@ -124,11 +118,12 @@
                         </div>*}
                     </div>
                     <div class="card-footer">
-
-                        {* TOTO SE BUDE ZOBRAZOVAT POUZE POKUD JE UŽIVATEL NA VLASTNÍM PROFILU A NAVÍC NEMÁ VYPLNĚNÉ ŽÁDNÉ INFORMACE *}
-                        <a href="" class="btn waves-effect waves-light">
-                            Upravit
-                        </a>
+                        {if $isMe}
+                            {* TOTO SE BUDE ZOBRAZOVAT POUZE POKUD JE UŽIVATEL NA VLASTNÍM PROFILU A NAVÍC NEMÁ VYPLNĚNÉ ŽÁDNÉ INFORMACE *}
+                            <a href="{plink Account:default}" class="btn waves-effect waves-light">
+                                Upravit
+                            </a>
+                        {/if}
                     </div>
                 </div>
             </div>
@@ -138,37 +133,32 @@
                         <h2>Skupiny</h2>
                     </div>
                     <div class="card-content">
-
-                        {* TOTO BY SE MĚLO ZOBRAZOVAT POKUD TEN UŽIVATEL NEMÁ SPOLEČNÉ S NÁVŠTĚVNÍKEM PROFILU ŽÁDNÉ SKUPINY *}
-                        <p class="secondary-par">
-                            Uživatel si nepřeje zveřejňovat žádné osobní informace
-                        </p>
-
-                        {* TOTO BY SE MĚLO ZOBRAZOVAT POKUD TEN UŽIVATEL SI PROHLÍŽÍ VLASTNÍ PROFIL *}
-                        <p class="secondary-par">
-                            V těchto skupinách jsem zapsán jako učitel nebo student
-                        </p>
-
-                        <p class="secondary-par">S uživatelem máte společné tyto skupiny<p>
-                        <ul class="groups">
-                            {foreach $groups as $group}
-                            <li {if !$group->isMy}class="disabled"{/if}>
-                                {if !$group->isMy}
-                                    <div class="group-shortcut-circle" style="background: {$group->mainColor|noescape};">{$group->shortcut|substr:0,1}
-                                    </div>
-                                    {$group->name}
-                                {else}
-                                    <a href="{link Group:default, 'id'=>$group->slug}">
+                        {if $groups}
+                            {if $isMe}
+                                <p class="secondary-par">V těchto skupinách jsem zapsán jako učitel nebo student</p>
+                            {else}
+                                <p class="secondary-par">S uživatelem máte společné tyto skupiny</p>
+                            {/if}
+                            <ul class="groups">
+                                {foreach $groups as $group}
+                                <li {if !$group->isMy}class="disabled"{/if}>
+                                    {if !$group->isMy}
                                         <div class="group-shortcut-circle" style="background: {$group->mainColor|noescape};">{$group->shortcut|substr:0,1}
                                         </div>
                                         {$group->name}
-                                    </a>
-                                {/if}
-                            </li>
-                            {/foreach}
-                        </ul>
-
-
+                                    {else}
+                                        <a href="{link Group:default, 'id'=>$group->slug}">
+                                            <div class="group-shortcut-circle" style="background: {$group->mainColor|noescape};">{$group->shortcut|substr:0,1}
+                                            </div>
+                                            {$group->name}
+                                        </a>
+                                    {/if}
+                                </li>
+                                {/foreach}
+                            </ul>
+                        {else}
+                            <p class="secondary-par">S uživatelem nemáte žádné společné skupiny</p>
+                        {/if}                        
                     </div>
                     <div class="card-footer"></div>
                 </div>
