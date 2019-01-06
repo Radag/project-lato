@@ -14,6 +14,40 @@
 @btn-icon-highlighted: rgba(0, 0, 0, .1);
 @error-color: #F44336;
 
+/* ----- THEMES ----- */
+
+.amber {
+    background-color: #ffc107 !important; 
+}
+
+.blue-gray {
+    background-color: #455A64 !important;
+}
+
+.blue {
+    background-color: #2196f3 !important;
+}
+
+.lime {
+    background-color: #cddc20 !important;
+}
+
+.cyan {
+    background-color: #00bcd4 !important;
+}
+
+.pink {
+    background-color: #e91e63 !important;
+}
+
+.purple {
+    background-color: #9c27b0 !important;
+}
+
+.teal {
+    background-color: #009688 !important;
+}
+
 
 /* ----- MATERIALIZE ----- */
 
@@ -2823,11 +2857,6 @@ nav .nav-title {
     align-items: center;
     margin-top: 20vh;
 
-    i.material-icons {
-        font-size: 128px !important;
-        color: rgba(0, 0, 0, .25);
-    }
-
     .empty-content-icon {
         width: 124px;
         height: 124px;
@@ -2836,6 +2865,9 @@ nav .nav-title {
         margin: 0 auto 32px auto;
         background-color: rgba(0, 0, 0, .03);
         box-sizing: content-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         @media only screen and (max-width: 600px) {
             & {
@@ -2852,20 +2884,9 @@ nav .nav-title {
             background-position: center;
         }
 
-        .no-messages-icon {
-            background-image: url('../images/icons/no-messages-icon.png');
-        } 
-
-        .no-students-icon {
-            background-image: url('../images/icons/no-students-icon.png');
-        }
-
-        .no-tasks-icon {
-            background-image: url('../images/icons/no-tasks-icon.png');
-        }
-
-        .no-classification-icon {
-            background-image: url('../images/icons/no-classification-icon.png');
+        i.material-icons {
+            font-size: 80px;
+            color: rgba(0, 0, 0, .15);
         }
     }
 
