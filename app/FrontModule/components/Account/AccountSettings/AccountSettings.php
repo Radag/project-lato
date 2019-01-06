@@ -109,6 +109,8 @@ class AccountSettings extends \App\Components\BaseComponent
             
             if(!empty($values['school'])) {
                 $this->schoolManager->insertSchool($values['school'], $values['class'], $this->presenter->activeUser);
+            } else {
+                $this->schoolManager->removeSchools($this->presenter->activeUser);
             }
             
             foreach($values as $key=>$val) {

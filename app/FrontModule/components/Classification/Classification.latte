@@ -34,7 +34,6 @@
                         {* <div class="table-field assessment-date">Poslední změna</div>
                         <div class="table-field">Hodnocení</div> *}
                     </div>
-
                     <ul id="classification-callaps" class="collapsible popout table-body">
                         {foreach $myClassification as $group}
                             <li>
@@ -65,9 +64,11 @@
                                                             <strong>{ifset $classification->grade}{$classification->grade}{/ifset}</strong>
                                                         </div>
                                                     </div>
-                                                    <div class="note">
-                                                        {ifset $classification->notice}{$classification->notice}{/ifset}
-                                                    </div>
+                                                   {if isset($classification->notice) && $classification->notice}
+                                                        <div class="note">
+                                                            {$classification->notice}
+                                                        </div>
+                                                    {/if}
                                                 </div>
                                             {/foreach}
                                         </div>

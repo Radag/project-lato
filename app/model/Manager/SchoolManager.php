@@ -33,7 +33,13 @@ class SchoolManager extends BaseManager
         $this->db->commit();
     }
     
-    public function getSchool(User $user) {
+    public function removeSchools(User $user) 
+    {
+        return $this->db->query("DELETE FROM school_class_user WHERE user_id=?", $user->id);
+    }
+    
+    public function getSchool(User $user)
+    {
         return $this->db->fetch("SELECT T2.name AS school, T3.name AS class FROM 
             school_class_user T1
             LEFT JOIN school T2 ON T1.school_id = T2.id

@@ -32,6 +32,6 @@
 		}
 	},
 	"require-dev": {
-		"nette/tester": "^1.6"
+		"nette/tester": "2.0"
 	}
 }

@@ -105,7 +105,7 @@ class UserManager implements Nette\Security\IAuthenticator
                 $usersData = $this->db->fetchAll("SELECT * FROM user JOIN user_real USING(id) WHERE slug IN (?)", $ids);  
             } else {
                 if($includeFictive) {
-                    $usersData = $this->db->fetchAll("SELECT * FROM user WHERE id IN (?)", $ids);  
+                    $usersData = $this->db->fetchAll("SELECT * FROM user LEFT JOIN user_real USING(id) WHERE id IN (?)", $ids);  
                 } else {
                     $usersData = $this->db->fetchAll("SELECT * FROM user JOIN user_real USING(id) WHERE id IN (?)", $ids);  
                     

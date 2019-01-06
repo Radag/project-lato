@@ -194,12 +194,9 @@
                                                 <strong>{$classification->grade ?: '—'}</strong>
                                             </div>
                                         </div>
-                                        <div class="note">
-
-                                            * TADY DOPLŇ POZNÁMKU K HODNOCENÍ
-
-                                        </div>
-                                        
+                                        {if $classification->notice}
+                                            <div class="note">{$classification->notice}</div>
+                                        {/if}                                        
                                     </div>
                                     {/foreach}
                                     {else}
@@ -308,7 +305,7 @@
                         <li>
                             <div class="item">
                                 <img src="{$userDelete->profileImage}" alt="" class="avatar small">
-                                <span class="title">{if !empty($user->name)}{$userDelete->name} {$userDelete->surname}{/if}</span>
+                                <span class="title">{$userDelete->name} {$userDelete->surname}</span>
                                 <input type="hidden" value="{$userDelete->id}" name="users[]">
                             </div>        
                         </li>
