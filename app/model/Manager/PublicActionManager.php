@@ -25,10 +25,10 @@ class PublicActionManager extends BaseManager
     }
     
     public function getActionType($hashCode) {
-        $action = $this->database->query("SELECT 
+        $action = $this->db->fetchSingle("SELECT 
                 T1.ACTION_TYPE
         FROM public_actions T1
-        WHERE T1.HASH_CODE=? AND T1.ACTIVE=1", $hashCode)->fetchField();
+        WHERE T1.HASH_CODE=? AND T1.ACTIVE=1", $hashCode);
         
         return $action;
     }

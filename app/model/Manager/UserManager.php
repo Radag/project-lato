@@ -76,7 +76,7 @@ class UserManager implements Nette\Security\IAuthenticator
     
     public function updatePassword(User $user, $password) 
     {
-        $this->db->query("UPDATE user_real", ['password' =>  Passwords::hash($password)], "WHERE id=?", $user->id);
+        $this->db->query("UPDATE user_real SET ", ['password' =>  Passwords::hash($password)], "WHERE id=?", $user->id);
     }
 
     public function get($idUser, $slug = false, $includeFictive = false)

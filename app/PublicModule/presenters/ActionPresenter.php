@@ -2,36 +2,15 @@
 
 namespace App\PublicModule\Presenters;
 
-use App\Model\Manager\UserManager;
 use App\Model\Manager\GroupManager;
 use App\Model\Manager\PublicActionManager;
 use \Nette\Application\UI\Form;
 
 class ActionPresenter extends BasePresenter
 {
-    /**
-     * @var UserManager $userManager
-     */
-    private $userManager;
 
-    /**
-     * @var GroupManager $groupManager
-     */
-    private $groupManager;
-    
-    /**
-     * @var PublicActionManager $publicActionManager
-     */
-    private $publicActionManager;
-
-
-    
-    public function __construct(UserManager $userManager, GroupManager $groupManager, PublicActionManager $publicActionManager)
-    {
-        $this->userManager = $userManager;
-        $this->groupManager = $groupManager;
-        $this->publicActionManager = $publicActionManager;
-    }
+    /** @var GroupManager @inject */
+    public $groupManager;
     
     public function actionDefault($id)
     {
@@ -113,11 +92,8 @@ class ActionPresenter extends BasePresenter
     {
         $form = new Form;
         $form->addPassword('password1', 'Heslo:')
-             ->setAttribute('placeholder', 'Heslo')
-            ->setRequired('Prosím vyplňte své heslo.');
-        
+            ->setRequired('Prosím vyplňte své heslo.');        
         $form->addPassword('password2', 'Heslo znovu:')
-             ->setAttribute('placeholder', 'Heslo znovu')
             ->setRequired('Prosím napište heslo znovu pro kontrolu.')
             ->addRule(Form::EQUAL, 'Hesla se neshodují', $form['password1']);
         $form->addHidden('secret');

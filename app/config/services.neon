@@ -42,3 +42,5 @@ services:
     - App\FrontModule\Components\IClassification
     - App\FrontModule\Components\INoticeboard
     - App\FrontModule\Components\ISearchForm
+
+    - App\PublicModule\Components\IContactForm
