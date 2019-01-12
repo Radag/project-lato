@@ -2,66 +2,41 @@
 
 namespace App\PublicModule\Components;
 
+use App\Mail\MailManager;
 use \Nette\Application\UI\Form;
-use App\Model\Manager\UserManager;
-
 
 class ContactForm extends \App\Components\BaseComponent
 {
+    /** @var MailManager */
+    public $mailManager;
     
-    /**
-     *
-     * @var UserManager $userManager
-     */
-    private $userManager;
-    
-    /** @persistent */
-    public $userEmail = '';
-    
-    public function __construct(UserManager $userManager)
+    public function __construct(MailManager $mailManager)
     {
-        $this->userManager = $userManager;
+        $this->mailManager = $mailManager;
     }
     
     protected function createComponentForm()
     {
         $form = $this->getForm(false);
 
+        $form->addText('name')
+             ->setRequired('Zadejte vaše jméno.');
+        
         $form->addEmail('email', 'Email:')
-             ->setRequired('Prosím vyplňte váš přihlašovací email')
-             ->setDefaultValue($this->userEmail);
+             ->setRequired('Prosím vyplňte váš email');
 
-        $form->addPassword('password', 'Heslo:')
-            ->setRequired('Prosím vyplňte své heslo.');
-
-        $form->addCheckbox('remember');
-
+        $form->addTextArea('text');
         $form->addSubmit('send', 'Přihlásit');
-
+        
         $form->onSuccess[] = [$this, 'processForm'];
         return $form;
     }  
     
     public function processForm(Form $form, $values) 
     {
-        try {
-            $this->getPresenter()->user->setAuthenticator($this->userManager);
-            $this->getPresenter()->user->login($values->email, $values->password);
-        } catch (\Exception $ex) {
-            $this->userEmail = $values->email;
-            $form->addError($ex->getMessage());
-            $this->redrawControl('sign-in-form');
-            return false; 
-        }
-        
-        if($this->presenter->session->hasSection('redirect')) {    
-            $redirect = $this->presenter->session->getSection('redirect');
-            $link = ':' . $redirect->link . ':' . $redirect->action;
-            $params = $redirect->params;
-            $redirect->remove();
-            $this->presenter->redirect($link, $params);
-        } else {
-            $this->presenter->redirect(':Front:Homepage:noticeboard');  
-        }
+        $this->mailManager->sendContactMail($values);
+        $this->presenter->flashMessage('Děkujeme ze zprávu.');
+        $form->setValues([], true);
+        $this->redrawControl();
     }
 }

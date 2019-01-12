@@ -82,6 +82,25 @@ class MailManager
         }
     }
     
+    public function sendContactMail($values)
+    {
+        $latte = new \Latte\Engine;
+
+        $body = $latte->renderToString(__DIR__ . '/templates/contact.latte', [
+            'name' => $values->name,
+            'email' => $values->email,
+            'text' => $values->text
+        ]);
+
+        $mailData = (object)[
+            'from' => 'Lato <info@lato.cz>',
+            'to' => 'radaqs@gmail.com, petr.savelka@gmail.com',
+            'subject' => 'Nová zpráva z Lato.cz',
+            'body' => $body,
+        ];
+        $this->sendMail($mailData);
+    }
+    
     public function sendMail($mailData)
     { 
         /*

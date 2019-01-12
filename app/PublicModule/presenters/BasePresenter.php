@@ -19,7 +19,7 @@ class BasePresenter extends Nette\Application\UI\Presenter
     public $mailManager;
     
     /** @var PublicActionManager @inject */
-    public $publicActionManager;        
+    public $publicActionManager;  
     
     public function startup(): void 
     {        
@@ -31,6 +31,7 @@ class BasePresenter extends Nette\Application\UI\Presenter
         } else {
             $this->template->isLogged = false;
         }
+        $this->template->showMainScreen = true;
         parent::startup();
     }
     

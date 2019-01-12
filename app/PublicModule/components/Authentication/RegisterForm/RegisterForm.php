@@ -50,6 +50,8 @@ class RegisterForm extends \App\Components\BaseComponent
             ->setRequired('Prosím napište heslo znovu pro kontrolu.')
             ->addRule(Form::EQUAL, 'Hesla se neshodují', $form['password1']);
 
+        $form->addCheckbox('terms')
+             ->setRequired('Musíte souhlasit s podmínkami.');
 
         $form->addSubmit('send', 'Registrovat');
         $form->onValidate[] = function(Form $form, $values) {

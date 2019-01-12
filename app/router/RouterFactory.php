@@ -38,7 +38,11 @@ class RouterFactory
         
         $router[] = $publicRouter = new RouteList('Public');
         $publicRouter[] = new Route('a/<id>', 'Action:default');
+        $publicRouter[] = new Route('podminky-pouzivani', 'Homepage:terms');
+        $publicRouter[] = new Route('podminky-ochrany-osobnich-udaju', 'Homepage:gdpr');
 	$publicRouter[] = new Route('<presenter>/<action>[/<id>]', 'Homepage:default');
+        
+        
         
         return $router;
     }

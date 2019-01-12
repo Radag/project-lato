@@ -1,28 +1,26 @@
-{snippet sign-in-form}
-{form form class=>'ajax'}
-    <div class="modal-content">
-        <h2>Přihlášení</h2>
-        <div class="form-row input-field">
-            {input email}
-            {label email}E-mail{/label}
+{snippet contact-form}
+    {form form class=>'ajax'}
+        <div class="modal-content">
+            <h4>Napište nám</h4>
+            <p class="note">* Všechna pole formuláře jsou povinná.</p>
+            <div class="errors" n:if="$form->hasErrors()">
+                <div class="error" n:foreach="$form->getErrors() as $error">{$error}</div>
+            </div>
+            <div class="form-row input-field">
+                {input name}
+                {label name}Jméno a příjmení{/label}
+            </div>
+            <div class="form-row input-field">
+                {input email}
+                {label email}E-mail{/label}
+            </div>
+            <div class="form-row input-field">
+                {input text class=>'materialize-textarea'}
+                {label text}Sem napiště Vaši zprávu ...{/label}
+            </div>            
+            <div class="form-row">
+                <button type="submit" class="btn waves-effect waves-light">Odeslat</button>
+            </div>
         </div>
-        <div class="form-row input-field">
-            {input password}
-            {label password}Heslo{/label}
-        </div>
-        <div class="errors" n:if="$form->hasErrors()">
-            <div class="error" n:foreach="$form->getErrors() as $error">{$error}</div>
-        </div>
-        <div class="form-controls">
-            <p class="remember-me truncate">      
-                {label remember:}
-                    {input remember: class=>'filled-in'}
-                    <span>Neodhlašovat</span>
-                {/label}
-            </p>
-            <button class="btn waves-effect waves-light" type="submit" >Přihlásit</button>
-        </div>
-        <a href="#" class="bottom-link switch-login-form-lost">Zapomněli jste heslo?</a>
-    </div>
-{/form}
+    {/form}
 {/snippet}

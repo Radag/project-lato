@@ -26,7 +26,15 @@
             <div class="error" n:foreach="$form->getErrors() as $error">{$error}</div>
         </div>
         <div class="form-row">
-            <p class="terms-of-use">Kliknutím na tlačítko Registrovat souhlasíte s <a href="">podmínkami použivání</a> a <a href="">zásadami ochrany osobních údajů</a>.</p>
+            <p class="terms-of-use">
+                {label terms:}
+                    {input terms: class=>'filled-in'}
+                    <span> Souhlasíte s 
+                <a href="{plink Homepage:terms}" target="blank">podmínkami používání</a> a 
+                <a href="{plink Homepage:gdpr}" target="blank">zásadami ochrany osobních údajů</a>.</span>
+                {/label}
+               
+            </p>
         </div>
         <div class="flex-row form-controls">
             {*<p class="remember-me">

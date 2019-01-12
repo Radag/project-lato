@@ -65,7 +65,7 @@
                 });
             </script>
         {/snippet}
-        <header id="page-header">
+        <header id="page-header" n:if="$showMainScreen">
             <div class="container">
                 <div class="header-content">
                     <h1>Sociální síť pro studenty a učitele</h1>
@@ -125,7 +125,22 @@
             $(function () {
                 $.nette.init();
                 $('.modal').modal();
-
+                setLoginForm();
+                if($("#lost-password-form")) {
+                    $("#lost-password-form").modal({
+                        dismissible: false
+                    });
+                    $("#lost-password-form").modal('open');
+                }
+                $.nette.ext('setup-login', {   
+                    success: function (data) {
+                        setLoginForm();
+                    }
+                });
+            });
+            
+            function setLoginForm() 
+            {
                 $(".login-modal-trigger").on('click', function(e){
                     $(".switch-login-form-login").click();
                     $('#login-modal').modal('open');
@@ -154,13 +169,7 @@
                     $("#register-form-section").addClass('hide');
                     $("#lost-form-section").removeClass('hide');
                 });
-                if($("#lost-password-form")) {
-                    $("#lost-password-form").modal({
-                        dismissible: false
-                    });
-                    $("#lost-password-form").modal('open');
-                }
-            });
+            }
         </script>
         {/block}
         <div id="button-loader" class="hide">
