@@ -256,11 +256,11 @@
             <i class="material-icons">assessment</i>Klasifikace
         </a>
     </li>
-    <li>
+    {* <li>
         <a n:class="$presenter->isLinkCurrent('Homepage:storage') ? active, waves-effect, waves-dark" href="{plink :Front:Homepage:storage}" >
             <i class="material-icons">storage</i>Uložiště
         </a>
-    </li>
+    </li> *}
     <li class="divider"></li>
     <h4 style="margin-bottom: 8px">Správa účtu</h4>
     <li><a href="{plink Account:default}" n:class="$presenter->isLinkCurrent('Account:*') ? active, waves-effect, waves-dark">
@@ -274,7 +274,7 @@
 
     <li class="side-nav-footer">
         <p><a href="{plink :Public:Homepage:default}">Více informací o sociální síti Lato</a></p>
-        <p>© 2018 <strong>Lato.cz</strong></p>
+        <div id="logo"></div>
     </li>
 </ul>
 {/block}

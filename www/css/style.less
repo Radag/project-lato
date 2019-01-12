@@ -2711,6 +2711,7 @@ nav .nav-title {
     }
 
     li.side-nav-footer {
+        display: block;
         margin-top: 24px;
         padding: 16px 20px;
 
@@ -2732,11 +2733,15 @@ nav .nav-title {
                     background-color: transparent;
                 }
             }
+        }
 
-            strong {
-                color: rgba(0, 0, 0, .38);
-                margin-left: 3px;
-            }
+        #logo {
+            height: 24px;
+            width: 56px;
+            background: url("../images/logo-b&w.png");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;        
         }
     }
 }
@@ -5313,6 +5318,8 @@ nav .nav-title {
 
 #noticeboard {
 
+    padding-bottom: 32px;
+
     #assignments {
 
         .assignment {
@@ -5346,39 +5353,8 @@ nav .nav-title {
     }
 }
 
-#page-footer {
-    border-top: 1px solid @line-color;
-    padding: 48px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center; 
-    flex-direction: column;
 
-    @media only screen and (max-width: 600px) {
-        & {
-            padding: 40px 24px;
-        }
-    }
-
-    #logo {
-        height: 28px;
-        width: 64px;
-        background: url("../images/logo-b&w.png");
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: contain;        
-    }
-
-    .copy {
-        line-height: 28px;
-        font-size: 13px;
-        color: @secondary-text-color;
-
-        a {
-            color: @secondary-text-color;
-        }
-    }
-}
+    
 
 
 .card-link-big {
@@ -5718,6 +5694,7 @@ nav .nav-title {
         margin: auto;
         display: block;
         background-color: #2196f3;
+        color: #fff;
     }
 
 }
