@@ -44,11 +44,19 @@
                     {input create_classification: class => 'filled-in black'}<span></span>{label create_classification:}{/label}
                 </div>
             </li>
+
+            
+            {* --------- DOČASNĚ SKRYTA PREZENČNÍ LISTINA
+
             <li>
                 <div class="item">
                     {input student_list: class => 'filled-in black'}<span></span>{label student_list:}{/label}
                 </div>
             </li>
+
+            *}
+
+
         </ul>
         <ul id="message-upload-block" class="attachments_uploads" {if empty($attachments)}style="display: block;"{/if} >
             {if !empty($attachments)}

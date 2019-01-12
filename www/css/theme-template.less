@@ -71,6 +71,11 @@
         background-color: @accent-color;
     }
 
+    & [type="checkbox"].filled-in:checked+span:not(.lever):before {
+        border-right-color: @accent-color-text;
+        border-bottom-color: @accent-color-text;
+    }
+
     & [type="radio"]:checked+span:after {
         background-color: @accent-color;
         border-color: @accent-color;
