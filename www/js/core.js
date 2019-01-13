@@ -153,7 +153,7 @@ $(function() {
 function startModalLoading(ele)
 {   
     $(ele).modal('open');
-    $(ele + ' div').hide();
+    $(ele + ' > div').hide();
     $(ele).addClass('modal-loader');
     $(ele).append($(".full-screen-loader-modal").clone());
     
@@ -161,7 +161,7 @@ function startModalLoading(ele)
 
 function showModalLoading(ele)
 {
-    $(ele + ' div').fadeIn();
+    $(ele + ' > div').fadeIn();
     $(ele).removeClass('modal-loader');
     $(ele + ' .full-screen-loader-modal').remove();
 }

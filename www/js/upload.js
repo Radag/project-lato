@@ -62,6 +62,7 @@ function setUploadForm(uploadDropzoneId, config) {
         }
         var uploadedFile = JSON.parse(file.xhr.response);
         var attachTemplate = $("." + file.classId);
+        $(config.uploadBlock).find('div.error').remove();
         if(uploadedFile.error) {
             attachTemplate.remove();
             $(config.uploadBlock).append("<div class='error'>" + uploadedFile.message + "</div>");

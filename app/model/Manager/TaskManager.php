@@ -74,6 +74,7 @@ class TaskManager extends BaseManager
                             T1.deadline,
                             T2.text,
                             T2.group_id,
+                            T2.id AS message_id,
                             T3.id AS user_id,
                             T3.name AS user_name,
                             T3.surname AS user_surname,
@@ -152,6 +153,7 @@ class TaskManager extends BaseManager
                 $taskObject  = new Task();
                 $taskObject->message = new \App\Model\Entities\Message();
                 $taskObject->message->text = $task->text;
+                $taskObject->message->id = $task->message_id;
                 $taskObject->message->user = new \App\Model\Entities\User();
                 $taskObject->message->user->id = $task->user_id;
                 $taskObject->message->user->name = $task->user_name;
@@ -260,7 +262,8 @@ class TaskManager extends BaseManager
                             T1.created_when,
                             T1.updated_when,
                             T3.mime,
-                            T3.extension
+                            T3.extension,
+                            T3.created_when AS file_created
                         FROM task_commit T1
                         LEFT JOIN task_commit_attachment T2 ON T1.id=T2.commit_id
                         LEFT JOIN file_list T3 ON T2.file_id=T3.id
@@ -275,7 +278,7 @@ class TaskManager extends BaseManager
             $return->created = $attach->created_when;
             $return->updated = $attach->updated_when;
             if(!empty($attach->file_id)) {
-                $return->files[] = (object)['idFile' => $attach->file_id, 'mime' => $attach->mime,'extension' => $attach->extension, 'path' => 'https://cdn.lato.cz/' . $attach->path . '/' . $attach->filename, 'filename' => $attach->filename];
+                $return->files[] = (object)['idFile' => $attach->file_id, 'created' => $attach->file_created, 'mime' => $attach->mime,'extension' => $attach->extension, 'path' => 'https://cdn.lato.cz/' . $attach->path . '/' . $attach->filename, 'filename' => $attach->filename];
             }
         }
         return $return;

@@ -52,6 +52,7 @@ class GroupPresenter extends BasePresenter
             $this->activeGroup = $this->groupManager->getUserGroup($id, $this->activeUser);
         }        
         if(empty($id) || empty($this->activeGroup)){
+            $this->presenter->flashMessage('Skupina neexistuje nebo do ní nemáte přístup.');
             $this->redirect(':Front:Homepage:noticeboard');
         }
         $this['topPanel']->setActiveGroup($this->activeGroup);

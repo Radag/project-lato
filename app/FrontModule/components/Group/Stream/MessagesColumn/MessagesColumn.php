@@ -70,9 +70,11 @@ class MessagesColumn extends \App\Components\BaseComponent
         } else {
             $this->template->singleMode = true;
             $message = $this->messageManager->getMessage($this->singleMode, $this->presenter->activeUser, $this->presenter->activeGroup);
-            $this->comments[$this->singleMode] = $this->messageManager->getMessageComments($this->singleMode);
-            $this->messages = [$message->id => $message];
-            $this->template->singleMessage = $message;
+            if($message) {
+                $this->comments[$this->singleMode] = $this->messageManager->getMessageComments($this->singleMode);
+                $this->messages = [$message->id => $message];
+                $this->template->singleMessage = $message;
+            }            
         }
         $this->template->singleMode = $this->singleMode;
         $this->template->messages = $this->messages;
@@ -149,7 +151,7 @@ class MessagesColumn extends \App\Components\BaseComponent
         } else {
             $idGroupClassification = $task->idClassificationGroup;
         }
-        $this->presenter->redirect(':Front:Group:users', array('do'=> 'usersList-classification' , 'usersList-idGroupClassification' => $idGroupClassification)); 
+        $this->presenter->redirect(':Front:Group:users', ['do'=> 'usersList-classification' , 'usersList-idGroupClassification' => $idGroupClassification]); 
     }
     
     public function handleDeleteMessage($idMessage) 
