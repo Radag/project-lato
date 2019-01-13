@@ -42,21 +42,11 @@
         </div>
     </div>
 {/form}
-<script>
-    $("#commit-task-modal").modal();
-    $(".submit-class-button").off().on('click', function(e) {
-        $.nette.ajax({
-            url: $(this).data('link'),
-            method: 'GET'
-        }).done(function (msg) {
-            $("#commit-task-modal").modal('open');
-        });
-    });
+<script> 
     function addNewTaskCommit() 
     {
         $("#taskCommitDropzone").trigger('click');
-    }
-    
+    }        
     $(function() {
         setUploadForm("#taskCommitDropzone", {
             links: {

@@ -1,10 +1,9 @@
 {if $task->isCreator}
     {if $task->createClassification == 1}
         <div class="card card-flat assignment-info">
-            <div class="card-content">
-                
+            <div class="card-content">                
                 <div class="time-left">
-                    Termín odevzdání: <strong>{$task->deadline->format("j. n., H:i")}</strong>
+                    Termín odevzdání: <strong>{$task->deadline->format("j. n., G:i")}</strong>
                 </div>
             </div>
         </div>
@@ -12,12 +11,12 @@
             <div class="card-content">
                 {if $task->timeLeft->invert === 0 }
                 <div class="time-left">
-                    Termín odevzdání: <strong>{$task->deadline->format("j. n., H:i")}</strong>
+                    Termín odevzdání: <strong>{$task->deadline->format("j. n., G:i")}</strong>
                 </div>
                 {else}
                 
                 <div class="time-left">
-                    Uzavřeno: {$task->deadline->format("j. n. H:i")}
+                    Uzavřeno: {$task->deadline->format("j. n. G:i")}
                 </div>
                 {/if}
                 <div class="flex-spacer"></div>
@@ -31,14 +30,14 @@
         <div class="card card-flat assignment-info">
             <div class="card-content">
                 <div class="time-left">
-                    Termín odevzdání: <strong>{$task->deadline->format("j. n., H:i")}</strong>
+                    Termín odevzdání: <strong>{$task->deadline->format("j. n., G:i")}</strong>
                 </div>
             </div>
         </div>
         <div class="card card-flat assignment-info">
             <div class="card-content">
                 <div class="assignment-status">
-                    <strong>{if !empty($task->commit->updated)}Upraveno {$task->commit->updated->format("j. n., H:i")}{else}Odevzdáno: {$task->commit->created->format("j. n., H:i")}{/if}</strong> 
+                    <strong>{if !empty($task->commit->updated)}Upraveno {$task->commit->updated->format("j. n., G:i")}{else}Odevzdáno: {$task->commit->created->format("j. n., G:i")}{/if}</strong> 
                 </div>
                 <div class="flex-spacer"></div>
                 {if $task->commit && !empty($task->commit->grade) && $task->commit->grade !== '—'}
@@ -54,7 +53,7 @@
                     {foreach array_merge($task->commit->files['files'], $task->commit->files['media']) as $attach}
                     <li>
                         <a href="{$attach->fullPath|noescape}" target="_blank" class="attached-file">
-                            <div class="file-name">{$attach->filename}<span>({$attach->extension}, 22. 8., 22:00)</span></div>
+                            <div class="file-name">{$attach->filename}<span>({$attach->extension}, {$attach->created->format("j. n., G:i")})</span></div>
                         </a>
                     </li>
                     {/foreach}
@@ -66,7 +65,7 @@
         <div class="card card-flat assignment-info">
             <div class="card-content">
                 <div class="time-left">
-                    Termín odevzdání: <strong>{$task->deadline->format("j. n., H:i")}</strong>
+                    Termín odevzdání: <strong>{$task->deadline->format("j. n., G:i")}</strong>
                 </div>
             </div>
         </div>
@@ -81,11 +80,22 @@
         </div>
     {else}
         <div class="time-left">
-            Uzavřeno: {$task->deadline->format("j. n. H:i")}
+            Uzavřeno: {$task->deadline->format("j. n. G:i")}
         </div>
     {/if}
 {else}
     <div class="time-left">
-        Termín odevzdání: <strong>{$task->deadline->format("j. n., H:i")}</strong>
+        Termín odevzdání: <strong>{$task->deadline->format("j. n., G:i")}</strong>
     </div>
 {/if}
+<script>
+    $(".submit-class-button").off().on('click', function(e) {
+        startModalLoading('#commit-task-modal');
+        $.nette.ajax({
+            url: $(this).data('link'),
+            method: 'GET'
+        }).done(function (msg) {
+            showModalLoading('#commit-task-modal');
+        });
+    });
+</script>

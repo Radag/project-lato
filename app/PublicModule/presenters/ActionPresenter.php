@@ -11,7 +11,7 @@ class ActionPresenter extends BasePresenter
 
     /** @var GroupManager @inject */
     public $groupManager;
-    
+        
     public function actionDefault($id)
     {
         $action = $this->publicActionManager->getActionType($id);

@@ -1,11 +1,11 @@
 {if $task->isCreator}
     {if $task->timeLeft->invert === 0 }
     <div class="time-left">
-        Termín odevzdání: <strong>{$task->deadline->format("j. n. H:i")}</strong>
+        Termín odevzdání: <strong>{$task->deadline->format("j. n. G:i")}</strong>
     </div>
     {else}
     <div class="time-left">
-        Uzavřeno: <strong>{$task->deadline->format("j. n. H:i")}</strong>
+        Uzavřeno: <strong>{$task->deadline->format("j. n. G:i")}</strong>
     </div>
     {/if}
     {if $task->createClassification == 1}
@@ -21,31 +21,44 @@
         {else}
             {if $task->commit}
                 <div class="time-left">
-                    <strong>Odevzdáno</strong> | Termín odevzdání: <strong>{$task->deadline->format("j. n. H:i")}</strong> {*{$task->commit->created->format("j. n. H:i")}
-                    {if !empty($task->commit->updated)}(upraven {$task->commit->updated->format("j. n. H:i")}){/if}*}
+                    <strong>Odevzdáno</strong> | Termín odevzdání: <strong>{$task->deadline->format("j. n. G:i")}</strong> {*{$task->commit->created->format("j. n. G:i")}
+                    {if !empty($task->commit->updated)}(upraven {$task->commit->updated->format("j. n. G:i")}){/if}*}
                 </div>
             {elseif $task->timeLeft->invert === 0}  
                 <div class="time-left">
-                    Termín odevzdání: <strong>{$task->deadline->format("j. n. H:i")}</strong>
+                    Termín odevzdání: <strong>{$task->deadline->format("j. n. G:i")}</strong>
                 </div> 
             {else}
                 <div class="time-left">
-                    <strong>Neodevzdáno</strong> | Uzavřeno: <strong>{$task->deadline->format("j. n. H:i")}</strong>
+                    <strong>Neodevzdáno</strong> | Uzavřeno: <strong>{$task->deadline->format("j. n. G:i")}</strong>
                 </div>
             {/if}
-            <button type="button" data-link="{link editTaskCommit}" class="btn gray no-shadow submit-class-button">
-                {if $task->commit}Upravit{else}Odevzdat{/if}
-            </button>
+            {if $task->commit}
+                <a href="{plink Group:message 'idMessage'=>$task->message->id, 'id'=>$task->group->slug}" class="btn gray no-shadow">Otevřít</a>
+            {else}
+                <button type="button" data-link="{link editTaskCommit}" class="btn gray no-shadow submit-class-button">Odevzdat</button>
+            {/if}            
         {/if}
     {else}
         {if $task->timeLeft->invert === 0}  
             <div class="time-left">
-                Termín odevzdání: <strong>{$task->deadline->format("j. n. H:i")}</strong>
+                Termín odevzdání: <strong>{$task->deadline->format("j. n. G:i")}</strong>
             </div> 
         {else}
             <div class="time-left">
-                Uzavřeno: <strong>{$task->deadline->format("j. n. H:i")}</strong>
+                Uzavřeno: <strong>{$task->deadline->format("j. n. G:i")}</strong>
             </div>
         {/if}
     {/if}
 {/if}
+<script>
+    $(".submit-class-button").off().on('click', function(e) {
+        startModalLoading('#commit-task-modal');
+        $.nette.ajax({
+            url: $(this).data('link'),
+            method: 'GET'
+        }).done(function (msg) {
+            showModalLoading('#commit-task-modal');
+        });
+    });
+</script>

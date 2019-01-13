@@ -75,6 +75,8 @@ class FileManager extends BaseManager
     const USER_DIRECTORY = '/var/www/cdn/users/';
     
     const STORAGE_LIMIT = 524288000;
+    const FILE_LIMIT = 52428800;
+     
     
     public function removeFile($idFile)
     {
@@ -125,8 +127,6 @@ class FileManager extends BaseManager
     public function uploadFile(Nette\Http\FileUpload $file, $path)
     {
         $connId = $this->getFtpConnection();
-
-        
         $createdDirecories = ftp_nlist($connId , self::USER_DIRECTORY . $this->user->getIdentity()->data['slug']);
         if(empty($createdDirecories)) {
             $this->createUserDirectories($connId);
@@ -134,8 +134,13 @@ class FileManager extends BaseManager
         
         $date = new \DateTime();
         $timestamp = $date->getTimestamp();
-
-        if (ftp_put($connId, '/var/www/cdn/' . $path . '/' . $timestamp . '_' . $file->getSanitizedName(), $file->getTemporaryFile(), FTP_BINARY)) {
+        $return = [
+            'success' => false
+        ];
+        if($file->getSize() > self::FILE_LIMIT) {
+            $return['message'] = 'Soubor nesmí být větší než 50Mb.';
+            return $return;         
+        } elseif ($file->getSize() && ftp_put($connId, '/var/www/cdn/' . $path . '/' . $timestamp . '_' . $file->getSanitizedName(), $file->getTemporaryFile(), FTP_BINARY)) {
             if(in_array($file->getContentType(), self::FILE_TYPE_DOCUMENT['types'])) {
                 $newFile['TYPE'] = self::FILE_TYPE_DOCUMENT['code'];
             } elseif (in_array($file->getContentType(), self::FILE_TYPE_SPREADSHEET['types'])) {
@@ -158,9 +163,11 @@ class FileManager extends BaseManager
             $return['fileName'] = $file->getName();
             $return['type'] = $file->getContentType();
             $return['fullPath'] = $newFile['FULLPATH'];
+            $return['success'] = true;
             return $return; 
         } else {
-            return false;
+            $return['message'] = 'Soubor nesmí být větší než 50Mb.';
+            return $return;
         }
     }
 

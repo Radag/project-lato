@@ -49,6 +49,13 @@ class HomepagePresenter extends BasePresenter
         $this['topPanel']->setTitle('Vyhledávání');
     }
     
+    public function actionConfirm()
+    {
+        if($this->activeUser->emailVerification === 1) {
+            $this->redirect(':Front:Homepage:noticeboard');
+        }
+    }
+    
     protected function createComponentSearchForm()
     {
         return $this->searchForm->create();
