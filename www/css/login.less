@@ -1012,6 +1012,95 @@ nav {
     }
 }
 
+#terms {
+
+    p {
+        color: rgba(0, 0, 0, .87);
+    }
+
+    padding: 80px 0;
+
+    strong {
+        color: rgba(0, 0, 0, .87);
+        font-weight: 500;
+    }
+
+    h1 {
+        font-weight: 400;
+        color: rgba(0, 0, 0, .87);
+        font-size: 30px;
+        line-height: 1.6em;
+        margin: 0; 
+        text-align: left;
+
+        @media only screen and (max-width: 600px) {
+            & {
+                font-size: 24px
+            }
+        }   
+    }
+
+    .terms-list {
+        padding-left: 64px;
+    }
+
+    ol {
+        margin-top: 16px;
+        padding-left: 0px;
+        counter-reset: section;
+        list-style-type: none;
+
+        .heading {
+            font-size: 20px;
+            font-weight: 500;
+            text-align: left;
+            margin: 40px 0 24px 0;
+            color: rgba(0, 0, 0, .87);
+
+
+            @media only screen and (max-width: 600px) {
+                & {
+
+                }
+            } 
+
+            & > ol {
+                margin-top: 24px;
+            }  
+
+            .title {
+
+            }
+        }
+
+        li {
+            color: rgba(0, 0, 0, .87);
+            font-size: 15px;
+            font-weight: 400;
+            margin: 12px 0;
+            text-indent: -64px;
+
+            @media only screen and (max-width: 600px) {
+                & {
+                    font-size: 14px;
+                }
+            }
+        }
+
+
+
+        li:before {
+            
+            width: 64px;
+            
+            color: @secondary-text-color;
+            float: left;
+            counter-increment: section;
+            content: counters(section, ".");
+        }
+
+    }
+}
 
 
 
