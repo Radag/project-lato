@@ -84,7 +84,7 @@ a {
 p {
     color: @secondary-text-color;
     font-size: 15px;
-    margin: 16px 0;
+    margin: 0 0 16px 0;
 
     @media only screen and (max-width: 600px) {
         & {
@@ -495,6 +495,10 @@ nav {
                     }
                 }
 
+                &.active {
+                    background-color: transparent;
+                }
+
                 & > a {
                     color: rgba(255, 255, 255, .7);
                     padding: 0 16px; 
@@ -725,8 +729,74 @@ nav {
         }
     }
 
-    .feature {
-        margin-bottom: 96px;
+    .hex-column {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .hex-box {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 130px;
+        width: 120px;
+    }
+
+    .hex-icon {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+    }
+
+    .hex-icon .material-icons {
+        font-size: 55px;
+    }
+
+    .hex {
+        width: 65px; 
+        height: 110px;
+        border-radius: 16px ~'/' 8px;
+        transform: rotate(-90deg);
+    }
+
+    .hex-blue {
+        background-color: #20d5fa;
+    }
+
+    .hex-orange {
+        background-color: #ffb800;
+    }
+
+    .hex-red {
+        background-color: #ff3c91;
+    }
+
+    .hex:before, .hex:after {
+        position: absolute;
+        width: inherit; height: inherit;
+        border-radius: inherit;
+        background: inherit;
+        content: '';
+    }
+
+    .hex:before {
+        transform: rotate(60deg);
+    }
+
+    .hex:after {
+        transform: rotate(-60deg);
+    }
+
+
+    .features {
         display: flex;
         align-items: stretch;
 
@@ -737,40 +807,22 @@ nav {
             }
         }
 
-        &.reversed {
-            flex-direction: row-reverse;
-
-            @media only screen and (max-width: 600px) {
-                & {
-                    flex-direction: column;
-                }
-            }
-        }
-
-        &:last-child {
-            margin-bottom: 0;
-        }
 
         h4 {
             font-size: 20px;
-            font-weight: 400;
-
-            @media only screen and (max-width: 600px) {
-                & {
-                    text-align: center;
-                }
-            }
+            margin: 36px 0 20px 0;
+            font-weight: 500;
+            color: rgba(0, 0, 0, .87);
         }
 
         p {
             color: @secondary-text-color;
             font-size: 16px;
-            margin-bottom: 16px;
             line-height: 1.6em;
+            text-align: center;
 
             @media only screen and (max-width: 600px) {
-                & {
-                    text-align: center;
+                & {     
                     font-size: 15px;
                 }
             }
