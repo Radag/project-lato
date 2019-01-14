@@ -13,14 +13,8 @@ application:
 session:
     expiration: 14 days
 
-slackLogger: 
-    enabled: true 
-    timeout: 60 
-    slackUrl: 'https://hooks.slack.com/services/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' 
-    logUrl: '' 
 
 extensions:
     dibi: Dibi\Bridges\Nette\DibiExtension22
     mailgun: App\Di\MailgunExt
     ftp: App\Di\FtpExt
-#    slackLogger: Nette\DI\NetteSlackLogger\SlackLoggerExtension 
