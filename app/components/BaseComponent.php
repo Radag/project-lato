@@ -20,7 +20,7 @@ class BaseComponent extends Control
     protected function getForm($flashError = true)
     {
         $form = new \Nette\Application\UI\Form;
-        $form->addProtection();
+        //$form->addProtection();
         if($flashError) {
            $form->onError[] = function($form) {
                 foreach($form->errors as $error) {
