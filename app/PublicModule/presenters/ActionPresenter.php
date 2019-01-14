@@ -55,11 +55,15 @@ class ActionPresenter extends BasePresenter
         $idUser = $this->request->getParameter('idUser');
         $user = $this->userManager->getUserByMail($email);
         if($user && $user->id == $idUser) {
-            $this->userManager->verifyEmail($user, $email);
-            $this->presenter->flashMessage('Email byl úspěšně ověřen', 'success');
-            $this->userManager->freeLogin = true;
-            $this->presenter->user->login($email, null);
-            $this->redirect(':Front:Homepage:confirm-success');
+            if($user->emailVerification) {
+                $this->redirect(':Front:Homepage:noticeboard');
+            } else {
+                $this->userManager->verifyEmail($user, $email);
+                $this->presenter->flashMessage('Email byl úspěšně ověřen', 'success');
+                $this->userManager->freeLogin = true;
+                $this->presenter->user->login($email, null);
+                $this->redirect(':Front:Homepage:confirm-success');
+            }
         } else {
             $this->presenter->flashMessage('Špatný link', 'error');
             $this->redirect(':Public:Homepage:default');

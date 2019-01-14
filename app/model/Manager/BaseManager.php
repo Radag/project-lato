@@ -18,7 +18,7 @@ class BaseManager
     
     /** @var \App\Di\FtpSender  */
     protected $ftpSender;
-
+    
     public function __construct(
         Nette\Security\User $user,
         \Dibi\Connection $db,

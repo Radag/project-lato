@@ -26,6 +26,7 @@ class User extends AbstractEntity {
     public $classification = null;
     public $sex = null;
     public $isFictive = null;
+    public $avatar = null;
     public $unreadNotifications = 0;
     public $emailVerification = 0;
     
@@ -79,6 +80,7 @@ class User extends AbstractEntity {
     public function bindUser($data)
     {
         if(isset($data->profile_image)) {
+            $this->avatar = $data->profile_image;
             $this->profileImage = self::createProfilePath($data->profile_image);
         } elseif($data){
             if(isset($data->sex)) {

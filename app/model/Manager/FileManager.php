@@ -125,7 +125,7 @@ class FileManager extends BaseManager
     }
     
     public function uploadFile(Nette\Http\FileUpload $file, $path)
-    {
+    { 
         $connId = $this->getFtpConnection();
         $createdDirecories = ftp_nlist($connId , self::USER_DIRECTORY . $this->user->getIdentity()->data['slug']);
         if(empty($createdDirecories)) {
@@ -139,8 +139,17 @@ class FileManager extends BaseManager
         ];
         if($file->getSize() > self::FILE_LIMIT) {
             $return['message'] = 'Soubor nesmí být větší než 50Mb.';
-            return $return;         
-        } elseif ($file->getSize() && ftp_put($connId, '/var/www/cdn/' . $path . '/' . $timestamp . '_' . $file->getSanitizedName(), $file->getTemporaryFile(), FTP_BINARY)) {
+            return $return;
+        } elseif (!$file->getSize()) {
+            $return['message'] = 'Soubor nesmí být větší než 50Mb.';
+            return $return;
+        } elseif ($file->getSize()) {
+            if(!\Tracy\Debugger::isEnabled()) {
+                $file->move('/var/www/cdn/' . $path . '/' . $timestamp . '_' . $file->getSanitizedName());
+            } else {
+                ftp_put($connId, '/var/www/cdn/' . $path . '/' . $timestamp . '_' . $file->getSanitizedName(), $file->getTemporaryFile(), FTP_BINARY);
+            }
+            
             if(in_array($file->getContentType(), self::FILE_TYPE_DOCUMENT['types'])) {
                 $newFile['TYPE'] = self::FILE_TYPE_DOCUMENT['code'];
             } elseif (in_array($file->getContentType(), self::FILE_TYPE_SPREADSHEET['types'])) {
@@ -165,9 +174,6 @@ class FileManager extends BaseManager
             $return['fullPath'] = $newFile['FULLPATH'];
             $return['success'] = true;
             return $return; 
-        } else {
-            $return['message'] = 'Soubor nesmí být větší než 50Mb.';
-            return $return;
         }
     }
 

@@ -48,12 +48,14 @@ class BasePresenter extends \Nette\Application\UI\Presenter
     
     protected function setActiveUser()
     {
-        $this->activeUser = $this->userManager->get($this->user->id);        
+        $this->activeUser = $this->userManager->get($this->user->id);
         if($this->activeUser === null) {
             $this->user->logout();
             $this->redirect(':Public:Homepage:default');
-        } elseif($this->activeUser->emailVerification != 1 && !$this->isLinkCurrent(':Front:Homepage:confirm')) {
-            $this->redirect(':Front:Homepage:confirm');
+        } elseif($this->activeUser->emailVerification != 1 && !$this->isLinkCurrent('Homepage:confirm')) {
+            $this->redirect('Homepage:confirm');
+        } elseif(!$this->activeUser->avatar && !$this->isLinkCurrent('Homepage:confirmSuccess')) {
+            $this->redirect('Homepage:confirmSuccess');
         }
     }
     
