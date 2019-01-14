@@ -176,8 +176,8 @@ class MessageForm extends \App\Components\BaseComponent
                     'web' => $webData->url,
                     'message_id' => $message->id,
                     'title' => $webData->title,
-                    'image' => $webData->image,
-                    'description' => $webData->description
+                    'image' => isset($webData->image) ? $webData->image : null,
+                    'description' => isset($webData->description) ? $webData->description : null
                 ]);
             }
         }        
@@ -219,7 +219,7 @@ class MessageForm extends \App\Components\BaseComponent
     {
         $links = $this->loadLinks();
         $link = $this->presenter->request->getPost('link');
-        if(!mb_strrpos($link, 'http://') && !mb_strrpos($link, 'https://')) {
+        if(mb_strrpos($link, 'http://') === false && mb_strrpos($link, 'https://') === false) {
             $link = 'http://' . $link;
         }
         $url = parse_url($link);
@@ -244,7 +244,7 @@ class MessageForm extends \App\Components\BaseComponent
         
     }
     
-    protected function transformWeb($web, $url)
+    protected function transformWeb($web, $url = null)
     {
 //        $page = new EmbedPage($web);
 //        return (object)[
@@ -256,18 +256,18 @@ class MessageForm extends \App\Components\BaseComponent
         
         try {
             $page = new Client($web);
+            $previews = $page->getPreview('general')->toArray();
         } catch (\Exception $ex) {
-            return (object)['url' => $web];
+            return (object)['url' => $web, 'title' => $web];
         }
         
-        $previews = $page->getPreview('general')->toArray();
         $title = $description = $image = null;
         if($previews['description']) {
             $description = $previews['description'];
         }
         if(isset($previews['cover'])) {
-            $image = $previews['cover'];            
-            if(!mb_strrpos($image, $url['host'])) {
+            $image = $previews['cover'];       
+            if(mb_strrpos($image, 'http://') === false && mb_strrpos($image, 'https://') === false) {
                 $image = $url['scheme'] . '://' . $url['host'] . $image;
             }
         }
