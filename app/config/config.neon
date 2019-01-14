@@ -23,4 +23,4 @@ extensions:
     dibi: Dibi\Bridges\Nette\DibiExtension22
     mailgun: App\Di\MailgunExt
     ftp: App\Di\FtpExt
-    slackLogger: Nette\DI\NetteSlackLogger\SlackLoggerExtension 
+#    slackLogger: Nette\DI\NetteSlackLogger\SlackLoggerExtension 
