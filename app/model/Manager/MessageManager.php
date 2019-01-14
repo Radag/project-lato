@@ -195,7 +195,7 @@ class MessageManager extends BaseManager {
         }
           
         $attachmentsData = $this->db->fetchAll("SELECT 
-                    T1.id, T3.id AS file_id, T3.extension, T3.mime, T3.type, T3.full_path, T3.filename
+                    T1.id, T3.id AS file_id, T3.extension, T3.mime, T3.type, T3.full_path, T3.filename, T3.created_when
                 FROM message T1 
                 JOIN message_attachment T2 ON T1.id=T2.message_id
                 JOIN file_list T3 ON T2.file_id=T3.id

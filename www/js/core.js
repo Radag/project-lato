@@ -54,7 +54,8 @@ $(function() {
         },
         success: function (data) {
             $("#main-progress-loader").hide();
-            $('.dropdown-trigger').dropdown();
+            $('.dropdown-trigger:not(.to-left)').dropdown({ alignment: 'right' });
+            $('.dropdown-trigger.to-left').dropdown({ alignment: 'left' });
             $('.tooltipped').tooltip();
             $('select').formSelect();
             if(data.reloadModal) {
