@@ -179,7 +179,7 @@
 {/block}
 
 {block mainMenu}
-<ul id="slide-out" class="sidenav slide-out-left">
+<ul id="slide-out" class="sidenav sidenav-left slide-out-left">
     <li class="side-nav-close">
         <i class="material-icons">keyboard_arrow_left</i>Zavřít panel    
     </li>
@@ -224,7 +224,7 @@
                                     <div class="group-shortcut-circle {$group->colorScheme}" >{$group->shortcut|substr:0,1}
                                         {if $groups->differentRelations && $group->relation === 'owner'}<div class="admin-mark {$group->colorScheme}" ></div>{/if}
                                     </div>
-                                    {$group->name}
+                                    <div class="group-name truncate">{$group->name} <span>(prog1)</span></div>
                                 </a>
                             </li>
                             {/foreach}
