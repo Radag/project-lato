@@ -4,7 +4,7 @@
     <div class="container profile-header">
         <div class="row">
             <div class="col s12">
-                <div class="card" {if $activeUser->backgroundImage}style="background-image: url('{$activeUser->backgroundImage}')"{/if}>
+                <div class="card" {if $activeUser->backgroundImage}style="background-image: url('{$activeUser->backgroundImage|noescape}')"{/if}>
                     <div class="profile-cover">                       
                     </div>
                     <div class="profile-navbar">

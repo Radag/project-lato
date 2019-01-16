@@ -144,10 +144,11 @@ class FileManager extends BaseManager
             $return['message'] = 'Soubor nesmí být větší než 50Mb.';
             return $return;
         } elseif ($file->getSize()) {
+            $filename = $this->getFileName($file);
             if(!\Tracy\Debugger::isEnabled()) {
-                $file->move('/var/www/cdn/' . $path . '/' . $timestamp . '_' . $file->getSanitizedName());
+                $file->move('/var/www/cdn/' . $path . '/' . $filename);
             } else {
-                ftp_put($connId, '/var/www/cdn/' . $path . '/' . $timestamp . '_' . $file->getSanitizedName(), $file->getTemporaryFile(), FTP_BINARY);
+                ftp_put($connId, '/var/www/cdn/' . $path . '/' . $filename, $file->getTemporaryFile(), FTP_BINARY);
             }
             
             if(in_array($file->getContentType(), self::FILE_TYPE_DOCUMENT['types'])) {
@@ -164,7 +165,7 @@ class FileManager extends BaseManager
             $newFile['PATH'] = $path;
             $newFile['MIME'] = $file->getContentType();
             $newFile['SIZE'] = $file->getSize();
-            $newFile['FILENAME'] = $timestamp . '_' . $file->getSanitizedName();
+            $newFile['FILENAME'] = $filename;
             $newFile['EXTENSION'] = pathinfo($file->getSanitizedName(), PATHINFO_EXTENSION);
             $newFile['FULLPATH'] = 'https://cdn.lato.cz/' . $path . '/' . $newFile['FILENAME'];
             $return['idFile'] = $this->saveNewFile($newFile);
@@ -175,6 +176,19 @@ class FileManager extends BaseManager
             $return['success'] = true;
             return $return; 
         }
+    }
+    
+    public function getFileName(Nette\Http\FileUpload $file)
+    {
+        $continue = true;
+        while($continue) {
+            $filename = Nette\Utils\Random::generate(12) . '.' . pathinfo($file->getSanitizedName(), PATHINFO_EXTENSION);
+            $exist = $this->db->fetchSingle("SELECT id FROM `file_list` WHERE filename=?", $filename);
+            if(!$exist) {
+                $continue = false;
+            }
+        }
+        return $filename;
     }
 
     protected function getFtpConnection()

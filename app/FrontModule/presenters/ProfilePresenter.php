@@ -28,6 +28,10 @@ class ProfilePresenter extends BasePresenter
             $profileId = $this->activeUser->id;
         } else {
             $profileUser = $this->userManager->get($id, true);
+            if(!$profileUser) {
+                $this->flashMessage("Tento uživatel neexistuje");
+                $this->redirect('Homepage:noticeboard');
+            }
             $profileId = $profileUser->id;
             $this->template->activeUser = $profileUser; 
             $this->template->isMe = false;

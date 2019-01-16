@@ -189,7 +189,7 @@ class MessageManager extends BaseManager {
                 LEFT JOIN message_material T8 ON T1.id=T8.message_id
                 LEFT JOIN classification_group T10 ON T10.task_id = T5.id
                 LEFT JOIN classification T11 ON T11.classification_group_id = T10.id AND T11.user_id=?     
-                WHERE T1.id=?", $user->id, $user->id, $idMessage);
+                WHERE T1.id=? AND T1.group_id=?", $user->id, $user->id, $idMessage, $group->id);
         if(!$message) {
             return false;
         }

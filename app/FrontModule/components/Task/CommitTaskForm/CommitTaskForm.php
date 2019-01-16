@@ -59,11 +59,16 @@ class CommitTaskForm extends \App\Components\BaseComponent
     public function setDefault(Task $task)
     {
         $commit = $this->taskManager->getCommitByUser($task->id, $this->presenter->activeUser->id);  
-        $this['form']->setDefaults(array(
-            'comment' => $commit->comment,
-            'idCommit' => $commit->idCommit
-        ));
-        $this->template->attachments = $commit->files;
+        if($commit) {
+            $this['form']->setDefaults(array(
+                'comment' => $commit->comment,
+                'idCommit' => $commit->idCommit
+            ));
+            $this->template->attachments = $commit->files;
+        } else {
+            $this->flashMessage('Tento úkol neexistuje');
+            $this->redirect('this');
+        }        
     }
              
     public function setTask(Task $task)
