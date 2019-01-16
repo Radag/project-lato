@@ -1,7 +1,9 @@
  {snippet messages}
     {if  $singleMode}
-        {var $message = $singleMessage}
-        {includeblock 'SingleMessage.latte'}
+        {ifset $singleMessage}
+            {var $message = $singleMessage}
+            {includeblock 'SingleMessage.latte'}            
+        {/ifset}       
     {else}
         {foreach $messages as $message}  
             {includeblock 'Message.latte'}
