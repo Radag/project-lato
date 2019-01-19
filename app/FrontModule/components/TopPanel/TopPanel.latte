@@ -81,15 +81,17 @@
         <i class="material-icons">keyboard_arrow_left</i>Zavřít panel    
     </li>
     <li class="side-nav-header">
-        <a href="#" class="title">Oznámení</a>
-        <div class="flex-spacer"></div>
-        <a class="btn-flat btn-icon waves-effect waves-dark tooltipped ajax" href="{link notificationsRead! 'global' => false}" data-position="bottom" data-delay="50" data-tooltip="Označit vše jako přečtené">
-            <i class="material-icons">clear_all</i>
-        </a>
+        <div class="header-wrapper">
+            <a href="#" class="title">Oznámení</a>
+            <div class="flex-spacer"></div>
+            <a class="btn-flat btn-icon waves-effect waves-dark tooltipped ajax" href="{link notificationsRead! 'global' => false}" data-position="bottom" data-delay="50" data-tooltip="Označit vše jako přečtené">
+                <i class="material-icons">clear_all</i>
+            </a>
+        </div>
     </li>    
     {snippet right-notification-list}
-        {if !empty($notifications->new)}
         <h4>Nové</h4>
+        {if !empty($notifications->new)}
         {foreach $notifications->new as $notification}
         <li class="sidenav-card">
             <a href="{link readNotification!, 'id'=>$notification->id}">
@@ -99,12 +101,22 @@
                 <div class="label">
                     <div class="title truncate">{$notification->title}</div>
                     <p class="truncate">{$notification->text}</p>
-                    <span class="date">{$notification->created->format("j. n. H:i")}</span>
+                    {*
+                        DOČASNĚ SKRYTO - MYSLÍM, ŽE TAM VŮBEC ČAS BÝT NEMUSÍ
+                        span class="date">{$notification->created->format("j. n. H:i")}</span>
+                    *}
                 </div>
-                <div class="mark-as-read"><i class="material-icons">remove</i></div>
+                <div class="avatar mark-as-read"><i class="material-icons">check_circle</i></div>
             </a>
         </li>
         {/foreach}
+        {else}
+        <li class="sidenav-card-empty">
+            <div class="avatar tiny">
+                <i class="material-icons">notifications_none</i>
+            </div>
+            <div class="label">Nemáte žádná nová oznámení</div>
+        </li>
         {/if}
         <li class="sidenav-spacer"></li>
         <h4>Přečtené</h4>
