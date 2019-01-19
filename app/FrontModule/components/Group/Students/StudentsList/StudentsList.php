@@ -229,7 +229,12 @@ class StudentsList extends \App\Components\BaseComponent
     
     public function handleEditGroupClassification($idGroupClassification)
     {
-        $this->parent->showClassification($idGroupClassification);
+        if($this->classificationManager->canEditClassificationGroup($idGroupClassification, $this->presenter->activeUser)) {
+            $this->parent->showClassification($idGroupClassification);
+        } else {
+            $this->presenter->flashMessage('Tato klasifikace neexistuje');
+            $this->presenter->redirect('Group:default', ['id' => $this->presenter->activeGroup->slug]);
+        }        
     }
     
 }
