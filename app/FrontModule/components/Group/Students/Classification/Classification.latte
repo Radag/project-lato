@@ -34,6 +34,14 @@
                 <div class="col s12">
                     <div class="section-header table-header">   
                         <div class="title">Hodnocení studentů</div>
+                        <div class="flex-spacer"></div>
+                        <button type="button" class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" data-target="sort_students" >
+                            <i class="material-icons">sort</i>
+                        </button>
+                        <ul id='sort_students' class='dropdown-content'>
+                            <li><a href="#">Seřadit podle stavu odevzdání</a></li>
+                            <li><a href="#">Seřadit podle jména</a>
+                        </ul>  
                     </div>                
                     <ul class="collapsible popout table-body classification-update-table" data-collapsible="expandable">
                         {foreach $members as $member}

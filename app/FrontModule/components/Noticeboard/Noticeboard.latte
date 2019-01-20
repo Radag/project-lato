@@ -120,7 +120,7 @@
                     <div class="avatar {$group->colorScheme}">{$group->shortcut|substr:0,1}
                         {if $groups->differentRelations && $group->relation === 'owner'}<div class="admin-mark {$group->colorScheme}"></div>{/if}
                     </div>
-                    <div class="title">
+                    <div class="title truncate">
                         {$group->name}
                         <span>(prog1)</span>
                     </div>

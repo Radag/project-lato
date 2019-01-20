@@ -231,6 +231,7 @@ strong {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
     height: 36px;
     width: 36px;
     border-radius: 50%;
@@ -448,6 +449,7 @@ strong {
 }
 
 .dropdown-content {
+    text-transform: none;
     padding: 10px 0 !important;
     box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
     width: 240px !important;
@@ -885,16 +887,17 @@ input[type=search]:not(.browser-default) {
 
                     .info {
                         display: flex;
+                        flex-wrap: wrap;
                         align-items: baseline;
                         line-height: 1.6em;
                         width: 100%;
 
-                        @media only screen and (max-width: 600px) {
+                        /*@media only screen and (max-width: 600px) {
                             & {
                                 flex-direction: column;
                                 align-items: flex-start;
                             }
-                        }
+                        }*/
 
                         .title {
                             display: block;
@@ -906,16 +909,32 @@ input[type=search]:not(.browser-default) {
                         .date {
                             color: @secondary-text-color;
                             font-size: 13px;
-                            margin: 0;  
+                            margin: 0; 
+
+                            @media only screen and (max-width: 600px) {
+                                & {
+                                    order: 3;
+                                    width: 100%;
+                                }
+                            }
+
                         }
                     } 
-
                     .note {
                         color: @secondary-text-color;
                         font-size: 13px;
+                        line-height: 1.6em;
                         width: 100%;
-                        margin-top: 8px
-                    }   
+                        margin-top: 8px;
+
+                        @media only screen and (max-width: 600px) {
+                            & {
+                                margin-top: 16px;
+                            }
+                        }
+                    } 
+
+                      
                                     
                 }
             }
@@ -3166,7 +3185,7 @@ nav .nav-title {
 
         .header-wrapper {
             display: flex;
-            padding: 20px;
+            padding: 16px 20px;
 
             & > .title {
                 color: rgba(0, 0, 0, .87);
