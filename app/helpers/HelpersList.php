@@ -39,4 +39,38 @@ class HelpersList
                 
         return $return;
     }
+    
+    public static function attachTypeIco($type)
+    {
+        if($type === 'image') {
+            $icon = 'image';
+        } elseif ($type === 'document') {
+            $icon = 'document';
+        } elseif($type === 'spreadsheet') {
+            $icon = 'spreadsheet';
+        } elseif($type === 'presentation') {
+            $icon = 'unknown';
+        } else {
+            $icon = 'unknown';
+        }
+        
+        if($type === 'image') {
+            $iconName = 'image';
+        } elseif ($type === 'document') {
+            $iconName = 'description';
+        } elseif($type === 'spreadsheet') {
+            $iconName = 'equalizer';
+        } elseif($type === 'presentation') {
+            $iconName = 'slideshow';
+        } else {
+            $iconName = 'attachment';
+        }
+        
+        $return = '<div class="file-icon ' . $icon . '">
+                        <i class="material-icons">
+                            ' . $iconName . '
+                        </i>
+                    </div>';
+        return $return;
+    }
 }

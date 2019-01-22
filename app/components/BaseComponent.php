@@ -1,19 +1,10 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 namespace App\Components;
 
 use Nette\Application\UI\Control;
+use App\Helpers\HelpersList;
 
-/**
- * Description of SignInForm
- *
- * @author Radaq
- */
 class BaseComponent extends Control
 {
     
@@ -51,6 +42,12 @@ class BaseComponent extends Control
 
     public function render()
     {
+        $this->template->addFilter('timeDifferceText', function($timeLeft) {
+            return HelpersList::timeDifferceText($timeLeft);
+        });
+        $this->template->addFilter('attachTypeIco', function($type) {
+            return HelpersList::attachTypeIco($type);
+        });
         $this->template->setFile($this->getTemplateFilePath());
         $this->template->render();
     }

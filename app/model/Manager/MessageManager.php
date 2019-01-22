@@ -121,7 +121,7 @@ class MessageManager extends BaseManager {
                 ORDER BY IFNULL(T1.top, T1.created_when) DESC", $user->id, $user->id, $group->id, $delete, $filters);
         
         $attachmentsData = $this->db->fetchAll("SELECT 
-                    T1.id, T3.id AS file_id, T3.extension, T3.mime, T3.type, T3.full_path, T3.filename, T3.created_when
+                    T1.id, T3.id AS file_id, T3.extension, T3.mime, T3.type, T3.full_path, T3.filename, T3.created_when, IFNULL(T3.name, T3.filename) AS name
                 FROM message T1 
                 JOIN message_attachment T2 ON T1.id=T2.message_id
                 JOIN file_list T3 ON T2.file_id=T3.id
@@ -195,7 +195,7 @@ class MessageManager extends BaseManager {
         }
           
         $attachmentsData = $this->db->fetchAll("SELECT 
-                    T1.id, T3.id AS file_id, T3.extension, T3.mime, T3.type, T3.full_path, T3.filename, T3.created_when
+                    T1.id, T3.id AS file_id, T3.extension, T3.mime, T3.type, T3.full_path, T3.filename, T3.created_when, IFNULL(T3.name, T3.filename) AS name
                 FROM message T1 
                 JOIN message_attachment T2 ON T1.id=T2.message_id
                 JOIN file_list T3 ON T2.file_id=T3.id
@@ -208,7 +208,7 @@ class MessageManager extends BaseManager {
         $commitsAttach = [];
         if($message->commit_id) {
             $commitsAttachData = $this->db->fetchAll("SELECT 
-                    T1.commit_id as id, T2.id AS file_id, T2.extension, T2.mime, T2.type, T2.full_path, T2.filename, T2.created_when
+                    T1.commit_id as id, T2.id AS file_id, T2.extension, T2.mime, T2.type, T2.full_path, T2.filename, T2.created_when, IFNULL(T2.name, T2.filename) AS name
                 FROM task_commit_attachment T1
                 JOIN file_list T2 ON T1.file_id=T2.id
                 WHERE T1.commit_id=?", $message->commit_id);
@@ -290,7 +290,8 @@ class MessageManager extends BaseManager {
                         'mime' => $attach->mime,
                         'filename' => $attach->filename,  
                         'fileId' => $attach->file_id,
-                        'created' => $attach->created_when
+                        'created' => $attach->created_when,
+                        'name' => $attach->name
                     ];
                 } else {
                     $return[$attach->id]['files'][$attach->file_id] = (object)[
@@ -300,7 +301,8 @@ class MessageManager extends BaseManager {
                         'fullPath' => $attach->full_path,
                         'filename' => $attach->filename, 
                         'fileId' => $attach->file_id,
-                        'created' => $attach->created_when
+                        'created' => $attach->created_when,
+                        'name' => $attach->name
                     ];
                 }
             }

@@ -115,7 +115,7 @@ class GroupManager extends BaseManager {
     public function getUserGroups(Entities\User $user, $filter = null)
     {
         $return = (object)['groups' => [], 'differentRelations' => false];
-        $userGroups = $this->db->fetchAll("SELECT T1.id, T3.main_color, T3.name AS color_scheme, T1.name, T1.shortcut, T1.slug, T2.relation_type, T4.id AS owner_id
+        $userGroups = $this->db->fetchAll("SELECT T1.id, T3.main_color, T3.name AS color_scheme, T1.name, T1.shortcut, T1.slug, T2.relation_type, T4.id AS owner_id, T1.subgroup
             FROM `group` T1
             JOIN group_user T2 ON (T1.id=T2.group_id AND T2.user_id=? AND T2.active=1 " . (!isset($filter->relation) ? "" : "AND T2.relation_type='" . $filter->relation . "'") . ")
             JOIN group_user T4 ON (T1.id=T4.group_id AND T4.active=1 AND T4.relation_type='owner')
@@ -133,6 +133,7 @@ class GroupManager extends BaseManager {
                 $group->colorScheme = $s->color_scheme;
                 $group->slug = $s->slug;
                 $group->relation = $s->relation_type;
+                $group->subgroup = $s->subgroup;
                 $group->owner = new Entities\User();
                 $group->owner->id = $s->owner_id;
                 $return->groups[$s->id] = $group;

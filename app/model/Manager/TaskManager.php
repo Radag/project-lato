@@ -263,7 +263,9 @@ class TaskManager extends BaseManager
                             T1.updated_when,
                             T3.mime,
                             T3.extension,
-                            T3.created_when AS file_created
+                            T3.type,
+                            T3.created_when AS file_created,
+                            IFNULL(T3.name, T3.filename) as name
                         FROM task_commit T1
                         LEFT JOIN task_commit_attachment T2 ON T1.id=T2.commit_id
                         LEFT JOIN file_list T3 ON T2.file_id=T3.id
@@ -278,7 +280,16 @@ class TaskManager extends BaseManager
             $return->created = $attach->created_when;
             $return->updated = $attach->updated_when;
             if(!empty($attach->file_id)) {
-                $return->files[] = (object)['idFile' => $attach->file_id, 'created' => $attach->file_created, 'mime' => $attach->mime,'extension' => $attach->extension, 'path' => 'https://cdn.lato.cz/' . $attach->path . '/' . $attach->filename, 'filename' => $attach->filename];
+                $return->files[] = (object)[
+                    'idFile' => $attach->file_id, 
+                    'created' => $attach->file_created, 
+                    'mime' => $attach->mime,
+                    'extension' => $attach->extension, 
+                    'type' => $attach->type, 
+                    'path' => 'https://cdn.lato.cz/' . $attach->path . '/' . $attach->filename, 
+                    'filename' => $attach->filename,                    
+                    'name' => $attach->name
+                ];
             }
         }
         return $return;
