@@ -117,8 +117,18 @@ h3 {
 
     @media only screen and (max-width: 600px) {
         & {
-            font-size: 15px;
-            margin: 24px 0;
+            font-size: 14px;
+            margin: 8px 0 24px 0;
+        }
+    }
+
+    span {
+        display: block;
+
+        @media only screen and (max-width: 600px) {
+            & {
+                margin-top: 8px;
+            }
         }
     }
 }
@@ -532,7 +542,7 @@ nav {
     background-position: center;
     margin-top: -64px;
     height: 100vh;
-    min-height: 560px;
+    min-height: 480px;
     display: flex;
 
     @media only screen and (max-width: 600px) {
@@ -572,8 +582,21 @@ nav {
 
                 @media only screen and (max-width: 600px) {
                     & {
-                        font-size: 24px;
+                        font-size: 20px;
+                        margin-bottom: 8px;
                     }
+                }
+
+                span {
+                    @media only screen and (max-width: 600px) {
+                        & {
+                            display: block;
+                            font-weight: 500;
+                            font-size: 1.4em;
+                            line-height: 1.4em;
+                        }
+                    }
+
                 }
             }
 
@@ -726,7 +749,7 @@ nav {
 
     @media only screen and (max-width: 600px) {
         & {
-            padding: 48px 0 96px 0;
+            padding: 48px 0 32px 0;
         }
     }
 
@@ -734,6 +757,13 @@ nav {
         display: flex;
         flex-direction: column;
         align-items: center;
+
+        @media only screen and (max-width: 600px) {
+            &:first-child .hex-box {
+                margin-top: 8px;
+            }
+        }
+
     }
     
     .hex-box {
@@ -743,6 +773,14 @@ nav {
         justify-content: center;
         height: 130px;
         width: 120px;
+
+        @media only screen and (max-width: 600px) {
+            & {
+                margin-top: 40px;
+                height: 104px;
+                width: 96px;
+            }
+        }
     }
 
     .hex-icon {
@@ -759,6 +797,12 @@ nav {
 
     .hex-icon .material-icons {
         font-size: 55px;
+
+        @media only screen and (max-width: 600px) {
+            & {
+                font-size: 45px;
+            }
+        }
     }
 
     .hex {
@@ -766,6 +810,14 @@ nav {
         height: 110px;
         border-radius: 16px ~'/' 8px;
         transform: rotate(-90deg);
+
+        @media only screen and (max-width: 600px) {
+            & {
+                height: 90px;
+                width: 55px;
+                border-radius: 12px ~'/' 6px;
+            }
+        }
     }
 
     .hex-blue {
@@ -814,6 +866,12 @@ nav {
             margin: 36px 0 20px 0;
             font-weight: 500;
             color: rgba(0, 0, 0, .87);
+
+            @media only screen and (max-width: 600px) {
+                & {
+                    margin: 16px 0;
+                }
+            }
         }
 
         p {
@@ -878,7 +936,7 @@ nav {
 
     @media only screen and (max-width: 600px) {
         & {
-            padding: 48px 0 64px 0;
+            padding: 48px 0 80px 0;
         }
     }
 }
