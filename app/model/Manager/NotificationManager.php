@@ -203,6 +203,12 @@ class NotificationManager extends BaseManager
         }
     }
     
+    public function setNotificationRead($idUser, $idNotification)
+    {
+        $this->db->query("UPDATE user_real SET has_new_notification=has_new_notification-1 WHERE id=?", $idUser);
+        $this->db->query("UPDATE notification SET `is_read`=NOW() WHERE user_id=? AND `is_read` IS NULL AND id=?", $idUser, $idNotification);
+    }
+    
     public function getReadNotification($id, Entities\User $user)
     {
         $return = (object)['link' => 'Homepage:noticeboard', 'args' => []];

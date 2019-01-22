@@ -53,7 +53,7 @@
                     {foreach array_merge($task->commit->files['files'], $task->commit->files['media']) as $attach}
                     <li>
                         <a href="{$attach->fullPath|noescape}" target="_blank" class="attached-file">
-                            <div class="file-name">{$attach->filename}<span>({$attach->extension}, {$attach->created->format("j. n., G:i")})</span></div>
+                            <div class="file-name">{$attach->name}<span>({$attach->extension}, {$attach->created->format("j. n., G:i")})</span></div>
                         </a>
                     </li>
                     {/foreach}

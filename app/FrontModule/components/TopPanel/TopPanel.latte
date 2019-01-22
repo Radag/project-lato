@@ -84,7 +84,7 @@
         <div class="header-wrapper">
             <a href="#" class="title">Oznámení</a>
             <div class="flex-spacer"></div>
-            <a class="btn-flat btn-icon waves-effect waves-dark tooltipped ajax" href="{link notificationsRead! 'global' => false}" data-position="bottom" data-delay="50" data-tooltip="Označit vše jako přečtené">
+            <a class="btn-flat btn-icon waves-effect waves-dark tooltipped ajax" href="{link notificationsRead! 'global' => true}" data-position="bottom" data-delay="50" data-tooltip="Označit vše jako přečtené">
                 <i class="material-icons">clear_all</i>
             </a>
         </div>
@@ -106,7 +106,7 @@
                         span class="date">{$notification->created->format("j. n. H:i")}</span>
                     *}
                 </div>
-                <div class="avatar mark-as-read"><i class="material-icons">check_circle</i></div>
+                <div class="avatar mark-as-read" data-link="{link notificationsRead! 'global' => false, 'idNotification' => $notification->id}" ><i class="material-icons">check_circle</i></div>
             </a>
         </li>
         {/foreach}
@@ -136,6 +136,14 @@
             </div> 
         </a></li> 
         {/foreach} 
+        <script>
+            $(".mark-as-read").on('click', function(e) {
+                e.preventDefault();
+                 $.nette.ajax({
+                    url: $(this).data('link')
+                });
+            });
+        </script>
     {/snippet}
 </ul>
 {/block}
@@ -236,7 +244,7 @@
                                     <div class="group-shortcut-circle {$group->colorScheme}" >{$group->shortcut|substr:0,1}
                                         {if $groups->differentRelations && $group->relation === 'owner'}<div class="admin-mark {$group->colorScheme}" ></div>{/if}
                                     </div>
-                                    <div class="group-name truncate">{$group->name} <span>(prog1)</span></div>
+                                    <div class="group-name truncate">{$group->name} {if $group->subgroup}<span>({$group->subgroup})</span>{/if}</div>
                                 </a>
                             </li>
                             {/foreach}

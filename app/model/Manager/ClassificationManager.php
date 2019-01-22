@@ -50,7 +50,7 @@ class ClassificationManager extends BaseManager
              
         $this->db->commit();
     }
-    
+        
     public function updateTaskClassification(\App\Model\Entities\Task $task, \App\Model\Entities\Group $group, $groupManager) 
     {
         $exist = $this->db->fetch("SELECT * FROM classification_group WHERE task_id=?", $task->id);

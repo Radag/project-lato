@@ -97,13 +97,9 @@
                                             {foreach $classificationGroup->task->commitArray[$member->id]->files as $attach}
                                             <li data-file-id="{$attach->idFile}">
                                                 <a href="{$attach->path|noescape}" target="_blank" class="attached-file">
-                                                    <div class="file-icon spreadsheet">
-                                                        <i class="material-icons">
-                                                            equalizer
-                                                        </i>
-                                                    </div>
+                                                    {$attach->type|attachTypeIco|noescape}
                                                     <div class="file-name truncate">
-                                                        {$attach->filename}
+                                                        {$attach->name}
                                                         <span>({$attach->mime}, .{$attach->extension}) – Nahráno {$attach->created->format("j. n. G:i")}</span>
                                                     </div>   
                                                 </a>

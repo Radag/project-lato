@@ -122,7 +122,7 @@
                     </div>
                     <div class="title truncate">
                         {$group->name}
-                        <span>(prog1)</span>
+                        {if $group->subgroup}<span>({$group->subgroup})</span>{/if}
                     </div>
                 </a>
             </div>
