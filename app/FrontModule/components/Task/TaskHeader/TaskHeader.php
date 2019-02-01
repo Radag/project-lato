@@ -73,6 +73,7 @@ class TaskHeader extends \App\Components\BaseComponent
         $this->presenter->redrawControl('commitTaskForm');
     }
     
+    /*
     public function handleSetTaskClassification($idTask)
     {
         $task = $this->taskManager->getTask($idTask);
@@ -85,8 +86,10 @@ class TaskHeader extends \App\Components\BaseComponent
         } else {
             $idGroupClassification = $task->idClassificationGroup;
         }
-        $this->presenter->redirect(':Front:Group:users', array('do'=> 'usersList-classification' ,'id' => $task->message->group->urlId , 'usersList-idGroupClassification' => $idGroupClassification)); 
+        $this->presenter->redirect('Group:usersClassification', ['id' => $task->message->group->slug, 'classificationGroupId' => $idGroupClassification]); 
     }
+     * 
+     */
     
     public function handleEditTaskCommit()
     {

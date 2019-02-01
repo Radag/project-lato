@@ -9,7 +9,7 @@
     </div>
     {/if}
     {if $task->createClassification == 1}
-    <a href="{plink :Front:Group:users do => students-studentsList-editGroupClassification, students-studentsList-idGroupClassification=>$task->idClassificationGroup, id=>$task->group->slug}" 
+    <a href="{plink Group:usersClassification classificationGroupId=>$task->idClassificationGroup, id=>$task->group->slug}" 
        class="btn gray no-shadow"><span class="hide-on-small-only">Oznámkovat</span><i class="material-icons hide-on-med-and-up">folder_open</i></a>
     {/if}
 {else}

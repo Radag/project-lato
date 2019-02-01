@@ -7,29 +7,27 @@ use App\Model\Entities\ClassificationGroup;
 
 class ClassificationManager extends BaseManager 
 {     
-    public function createClassification(Classification $classification)
+    public function createClassification(ClassificationGroup $classificationGroup, Classification $classification)
     {
         $insert = false;
         $this->db->begin();
         if($classification->idClassificationGroup !== null) {
-            $idClassification = $this->db->fetchSingle("SELECT id FROM classification WHERE classification_group_id=? AND user_id=?", $classification->idClassificationGroup, $classification->idUser);
+            $idClassification = $this->db->fetchSingle("SELECT id FROM classification WHERE classification_group_id=? AND user_id=?", $classificationGroup->id, $classification->idUser);
             if($idClassification) {
                 $this->db->query("UPDATE classification SET ", [
                     'notice' => $classification->notice, 
                     'grade' => $classification->grade,
-                    'name' => $classification->name,
                     'classification_date' => $classification->date
                 ], " WHERE id=?" ,$idClassification);
             } else {
                 $insert = true;
             }   
-        } else if($classification->idClassification !== null) {
+        } else if($classification->id !== null) {
             $this->db->query("UPDATE classification SET ", [
                 'notice' => $classification->notice, 
                 'grade' => $classification->grade,
-                'name' => $classification->name,
                 'classification_date' => $classification->date
-            ], " WHERE id=?", $classification->idClassification);       
+            ], " WHERE id=?", $classification->id);       
         } else {
             $insert = true;
         }
@@ -37,13 +35,10 @@ class ClassificationManager extends BaseManager
         if($insert) {
             $this->db->query('INSERT INTO classification', [
                 'user_id' => $classification->idUser,
-                'group_id' => $classification->group->id,
-                'name' => $classification->name,
-                'classification_group_id' => $classification->idClassificationGroup,
+                'classification_group_id' => $classificationGroup->id,
                 'notice' => $classification->notice,
                 'created_by' => $this->user->id,
                 'grade' => $classification->grade,
-                'period_id' => $classification->idPeriod,
                 'classification_date' => $classification->date 
             ]);  
         }
@@ -58,17 +53,18 @@ class ClassificationManager extends BaseManager
             $groupClassification = new ClassificationGroup();
             $groupClassification->task = $task;
             $groupClassification->group = $group;
-            $groupClassification->idPerion = $group->activePeriodId;
+            $groupClassification->idPeriod = $group->activePeriodId;
             $groupClassification->name = $task->title;
-            $classGroupId = $this->createGroupClassification($groupClassification);
+            $groupClassification->forAll = 1;
+            $groupClassification->id = $this->createGroupClassification($groupClassification);
             $students = $groupManager->getGroupUsers($group->id, GroupManager::RELATION_STUDENT);
             foreach($students as $student) {
                 $classification = new \App\Model\Entities\Classification();
-                $classification->idClassificationGroup = $classGroupId;
+                $classification->idClassificationGroup = $groupClassification->id;
                 $classification->group = $group;
                 $classification->idUser = $student->id;
                 $classification->idPeriod = $group->activePeriodId;
-                $this->createClassification($classification);
+                $this->createClassification($groupClassification, $classification);
             }
             
         } elseif($exist && $task->create_classification == 0) {
@@ -128,7 +124,20 @@ class ClassificationManager extends BaseManager
     public function getGroupPeriodClassification(\App\Model\Entities\Group $group)
     {
         $return = [];
-        $classifications = $this->db->fetchAll("SELECT * FROM vw_classification WHERE group_id=? AND period_id=?", $group->id, $group->activePeriodId);
+        $sql = "SELECT 
+                        T2.id, 
+                        T2.classification_group_id,
+                        T1.name,
+                        T2.grade,
+                        T2.user_id,
+                        T2.notice,
+                        T2.period_id,
+                        IFNULL(T2.classification_date, T2.created_when) AS classification_date
+                FROM 
+                classification_group T1
+                JOIN classification T2 ON T1.id=T2.classification_group_id
+                WHERE T1.group_id=? AND T1.period_id=?";        
+        $classifications = $this->db->fetchAll($sql, $group->id, $group->activePeriodId);
         foreach($classifications as $class) {
             $classObject = new Classification;
             $classObject->classificationDate = $class->classification_date;
@@ -152,6 +161,7 @@ class ClassificationManager extends BaseManager
         $classificationGroup->id = $classificationArray->id;
         $classificationGroup->name = $classificationArray->name;
         $classificationGroup->classificationDate = $classificationArray->classification_date;
+        $classificationGroup->forAll = $classificationArray->for_all;
         if(!empty($classificationArray->task_id)) {
             $classificationGroup->task = new \App\Model\Entities\Task();
             $classificationGroup->task->id = $classificationArray->task_id;
@@ -178,10 +188,16 @@ class ClassificationManager extends BaseManager
             'name' => $groupClassification->name,
             'classification_date' => $groupClassification->classificationDate,
             'task_id' => isset($groupClassification->task) ? $groupClassification->task->id : null,
-            'period_id' => $groupClassification->idPerion
+            'period_id' => $groupClassification->idPeriod,
+            'for_all' => $groupClassification->forAll
         ]);
-
-        return $this->db->getInsertId();
+        $groupClassificationId = $this->db->getInsertId();
+        
+        foreach($groupClassification->classifications as $classification) {
+            $groupClassification->id = $groupClassificationId;
+            $this->createClassification($groupClassification, $classification);
+        }
+        return $groupClassificationId;
     }
     
     public function canEditClassificationGroup($classGroupId, $user)

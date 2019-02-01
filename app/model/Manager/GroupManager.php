@@ -185,7 +185,7 @@ class GroupManager extends BaseManager {
             LEFT JOIN group_sharing T6 ON T6.group_id=T1.id
             LEFT JOIN public_actions T7 ON (T7.id = T6.action_id AND T7.active=1)
             LEFT JOIN group_period T8 ON (T8.group_id = T1.id AND T8.active=1)
-            WHERE " . ($isId ? "T1.id=?" : "T1.slug=?") . "AND T2.active=1", $user->id, $groupSlug);
+            WHERE " . ($isId ? "T1.id=?" : "T1.slug=?") . "AND T2.active=1 AND T1.archived=0", $user->id, $groupSlug);
         
         if($group) {
             $owner = new Entities\User();
@@ -286,31 +286,34 @@ class GroupManager extends BaseManager {
     }
     
     public function getGroupUsers($idGroup, $filterRelation, $filterIds = null, $exludeId = null)
-    {         
-        if($filterIds) {
+    {
+        if($filterIds !== null) {
              $users = $this->db->fetchAll("SELECT
                 T2.id, T2.sex, T2.name, T2.surname, T2.profile_image, T2.slug, T2.is_fictive
             FROM group_user T1
             JOIN vw_all_users T2 ON T1.user_id = T2.id
-            WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type IN (?) AND T1.user_id IN (?) ORDER BY T2.surname, T2.name ASC", $idGroup, $filterRelation, $filterIds);
+            WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type IN (?) AND T1.user_id IN (?)
+            ORDER BY T2.surname, T2.name ASC", $idGroup, $filterRelation, $filterIds);
         } else {
-            if($exludeId) {
+            if($exludeId !== null) {
                 $users = $this->db->fetchAll("SELECT
                 T2.id, T2.sex, T2.name, T2.surname, T2.profile_image, T2.slug, T2.is_fictive
                 FROM group_user T1
                 JOIN vw_all_users T2 ON T1.user_id = T2.id
-                WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type IN (?) AND T1.user_id NOT IN (?) ORDER BY T2.surname, T2.name ASC", $idGroup, $filterRelation, $exludeId);
+                WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type IN (?) AND T1.user_id NOT IN (?) 
+                ORDER BY T2.surname, T2.name ASC", $idGroup, $filterRelation, $exludeId);
             } else {
                 $users = $this->db->fetchAll("SELECT
                 T2.id, T2.sex, T2.name, T2.surname, T2.profile_image, T2.slug, T2.is_fictive
                 FROM group_user T1
                 JOIN vw_all_users T2 ON T1.user_id = T2.id
-                WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type IN (?) ORDER BY T2.surname, T2.name ASC", $idGroup, $filterRelation);
+                WHERE T1.group_id=? AND T1.active=1 AND T1.relation_type IN (?) 
+                ORDER BY T2.surname, T2.name ASC", $idGroup, $filterRelation);
             }
 
         }
          
-        $userArray = [];
+        $userArray = [];     
         foreach($users as $us) {
             $userArray[] = new Entities\User($us);
              

@@ -139,6 +139,7 @@ class MessagesColumn extends \App\Components\BaseComponent
         }        
     }
 
+    /* MAYBE TO DELETE
     public function handleSetTaskClassification($idTask)
     {
         $task = $this->taskManager->getTask($idTask);
@@ -153,7 +154,8 @@ class MessagesColumn extends \App\Components\BaseComponent
         }
         $this->presenter->redirect(':Front:Group:users', ['do'=> 'usersList-classification' , 'usersList-idGroupClassification' => $idGroupClassification]); 
     }
-    
+     * 
+     */
     public function handleDeleteMessage($idMessage) 
     {   
         if($this->messageManager->canUserEditMessage($idMessage, $this->presenter->activeUser, $this->presenter->activeGroup)) {

@@ -24,9 +24,9 @@
                     <div id="logo"></div>
                     <div class="flex-spacer"></div>
                     <ul id="right-nav">
-                        <li class="hide-on-med-and-down"><a href="#page-header">Domů</a></li>
-                        <li class="hide-on-med-and-down"><a href="#about">O projektu</a></li>
-                        <li class="hide-on-med-and-down"><a href="#contact">Kontakt</a></li>
+                        {foreach $menuItems as $key=>$item}
+                            <li class="hide-on-med-and-down"><a href="{$key}">{$item}</a></li>
+                        {/foreach}
                         <li n:if="!$isLogged" class="last-one">
                             <a href="#login-modal" class="login-modal-trigger">Přihlásit</a>
                         </li>

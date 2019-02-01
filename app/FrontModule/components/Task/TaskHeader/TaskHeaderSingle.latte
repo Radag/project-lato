@@ -20,7 +20,7 @@
                 </div>
                 {/if}
                 <div class="flex-spacer"></div>
-                <a href="{plink :Front:Group:users do => students-studentsList-editGroupClassification, students-studentsList-idGroupClassification=>$task->idClassificationGroup}" 
+                <a href="{plink Group:usersClassification classificationGroupId=>$task->idClassificationGroup, id=>$task->group->slug}" 
                    class="btn gray no-shadow">Otevřít</a>
             </div>
         </div>

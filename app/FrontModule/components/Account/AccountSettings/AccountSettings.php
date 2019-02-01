@@ -54,7 +54,16 @@ class AccountSettings extends \App\Components\BaseComponent
         $this->template->userAccount = $this->presenter->activeUser;
         //$this->notificationTypes = $this->notificationManager->getNotificationTypes();
         //$this->template->notifications = $this->notificationTypes;
-        $this->template->groups = $this->groupManager->getUserGroups($this->presenter->activeUser);
+        $groups = $this->groupManager->getUserGroups($this->presenter->activeUser);
+        $this->template->studentGroups = [];
+        $this->template->teacherGroups = [];
+        foreach($groups->groups as $group) {
+            if($group->relation === 'owner') {
+                $this->template->teacherGroups[] = $group;
+            } else {
+                $this->template->studentGroups[] = $group;
+            }
+        }
         parent::render();
     }
     

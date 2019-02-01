@@ -3,7 +3,6 @@
 namespace App\FrontModule\Components\Group;
 
 use App\Model\Manager\GroupManager;
-use App\FrontModule\Components\NewClassificationForm\NewClassificationForm;
 use App\FrontModule\Components\NewClassificationForm\UserClassificationForm;
 use App\Model\Manager\ClassificationManager;
 use App\Model\Manager\TaskManager;
@@ -159,82 +158,15 @@ class StudentsList extends \App\Components\BaseComponent
         }
     }
     
-    
-    public function handleEditUserClassificationForm($idClassification) 
-    {
-       
-        $classification = $this->classificationManager->getClassification($idClassification);
-        $this['userClassificationForm']['form']->setDefaults(array(
-            'name' => $classification->name,
-            'grade' => $classification->grade,
-            'notice' => $classification->notice,
-            'idClassification' => $classification->id
-        ));
-        
-        $this['userClassificationForm']->setUsers(array($classification->user));
-        $this->redrawControl('userClassificationForm');
-    }
-
-    
-    public function createComponentAddClassificationForm()
-    {
-        
-        $component = new NewClassificationForm($this->classificationManager, $this->groupManager, $this->presenter->activeGroup);
-        return $component;
-    }
-    
     public function createComponentUserClassificationForm()
     {
         
         $component = new UserClassificationForm($this->classificationManager, $this->groupManager, $this->presenter->activeGroup);
         return $component;
     }
-    
-    protected function createComponentClassificationForm()
-    {
-        $members = $this->groupManager->getGroupUsers($this->activeGroup->id);
-        $form = new \Nette\Application\UI\Form;
-        foreach($members as $member) {
-            $form->addText('grade' . $member->id, 'Známka')
-                 ->setAttribute('placeholder', 'Neuvedeno');
-            $form->addTextArea('notice' . $member->id, 'Poznámka')
-                 ->setAttribute('placeholder', 'Poznámka');
-        }
-        $form->addHidden('idGroupClassification');
-        $form->addSubmit('send', 'Uložit');
-
-        $form->onSuccess[] = function(\Nette\Application\UI\Form $form) {
-            $members = $this->groupManager->getGroupUsers($this->activeGroup->id);
-            $values = $form->getValues(true);
-            foreach($members as $member) {
-                $classification = new \App\Model\Entities\Classification();
-                $classification->grade = $values['grade' . $member->id];
-                $classification->notice = $values['notice' . $member->id];
-                $classification->idClassificationGroup = $values['idGroupClassification'];
-                $classification->group = $this->activeGroup;
-                $classification->user = $member;
-                $classification->idPeriod = $this->presenter->activePeriod;
-                $this->classificationManager->createClassification($classification);
-            }
-            $this->redirect('this');
-        };
         
-        return $form;
-    }
-    
     public function createComponentAddUserForm()
     {
         return $this->addUserForm->create();
     }
-    
-    public function handleEditGroupClassification($idGroupClassification)
-    {
-        if($this->classificationManager->canEditClassificationGroup($idGroupClassification, $this->presenter->activeUser)) {
-            $this->parent->showClassification($idGroupClassification);
-        } else {
-            $this->presenter->flashMessage('Tato klasifikace neexistuje');
-            $this->presenter->redirect('Group:default', ['id' => $this->presenter->activeGroup->slug]);
-        }        
-    }
-    
 }

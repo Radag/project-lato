@@ -9,7 +9,8 @@ use App\FrontModule\Components\Stream\IStream;
 use App\FrontModule\Components\Group\About\IGroupSettingsForm;
 use App\FrontModule\Components\Group\About\IAboutGroup;
 use App\FrontModule\Components\Stream\ICommitTaskForm;
-use App\FrontModule\Components\Group\IStudents;
+use App\FrontModule\Components\Group\IClassification;
+use App\FrontModule\Components\Group\IStudentsList;
 use App\FrontModule\Components\Group\IClassmates;
 
 class GroupPresenter extends BasePresenter
@@ -26,8 +27,11 @@ class GroupPresenter extends BasePresenter
     /** @var IStream @inject */
     public $streamFactory;
     
-    /** @var IStudents @inject */
-    public $studentsFactory;
+    /** @var IClassification @inject */
+    public $studentsClassification;
+    
+    /** @var IStudentsList @inject */
+    public $studentsList;
     
     /** @var ICommitTaskForm @inject */
     public $commitTaskFormFactory;
@@ -58,7 +62,7 @@ class GroupPresenter extends BasePresenter
         $this['topPanel']->setActiveGroup($this->activeGroup);
         $this['topPanel']->addToMenu((object)['name' => 'stream', 'link' => $this->link('default'), 'active' => $this->isLinkCurrent('default')]);
         if($this->activeGroup->relation === 'owner') {
-            $this['topPanel']->addToMenu((object)['name' => 'studenti', 'link' => $this->link('users'), 'active' => $this->isLinkCurrent('users')]);
+            $this['topPanel']->addToMenu((object)['name' => 'studenti', 'link' => $this->link('usersList'), 'active' => $this->isLinkCurrent('usersList')]);
         } else {
             $this['topPanel']->addToMenu((object)['name' => 'spolužáci', 'link' => $this->link('classmates'), 'active' => $this->isLinkCurrent('classmates')]);
         }
@@ -82,7 +86,16 @@ class GroupPresenter extends BasePresenter
         $this['topPanel']->setTitle('nastavení');
     }
     
-    public function actionUsers()
+    public function actionUsersClassification($classificationGroupId)
+    {
+        if($this->activeGroup->relation !== 'owner' || empty($classificationGroupId)) {
+            $this->redirect('Group:default');
+        }
+        $this['topPanel']->setTitle('uživatelé');
+        $this['studentsClassification']->setGroupClassification($classificationGroupId);
+    }
+    
+    public function actionUsersList()
     {
         
         if($this->activeGroup->relation !== 'owner') {
@@ -111,8 +124,13 @@ class GroupPresenter extends BasePresenter
         return $this->groupSettings->create();
     }
 
-    public function createComponentStudents()
+    public function createComponentStudentsList()
     {
-        return $this->studentsFactory->create();
+        return $this->studentsList->create();
+    }
+    
+    public function createComponentStudentsClassification()
+    {
+        return $this->studentsClassification->create();
     }
 }

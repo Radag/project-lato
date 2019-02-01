@@ -1,3 +1,4 @@
+{snippet class-form}
 {form form id=>'classification-form'}
 <section class="main two-level-nav settings">
     {if $members}    
@@ -35,13 +36,15 @@
                     <div class="section-header table-header">   
                         <div class="title">Hodnocení studentů</div>
                         <div class="flex-spacer"></div>
-                        <button type="button" class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" data-target="sort_students" >
-                            <i class="material-icons">sort</i>
-                        </button>
-                        <ul id='sort_students' class='dropdown-content'>
-                            <li><a href="#">Seřadit podle stavu odevzdání</a></li>
-                            <li><a href="#">Seřadit podle jména</a>
-                        </ul>  
+                        {if $classificationGroup->task}
+                            <button type="button" class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" data-target="sort_students" >
+                                <i class="material-icons">sort</i>
+                            </button>
+                            <ul id='sort_students' class='dropdown-content'>
+                                <li><a href="{link changeSort! idGroupClassification=>$classificationGroup->id, sort=>'submit'}" class="ajax_n">Seřadit podle stavu odevzdání</a></li>
+                                <li><a href="{link changeSort! idGroupClassification=>$classificationGroup->id, sort=>'name'}" class="ajax_n">Seřadit podle jména</a>
+                            </ul>
+                        {/if}
                     </div>                
                     <ul class="collapsible popout table-body classification-update-table" data-collapsible="expandable">
                         {foreach $members as $member}
@@ -123,7 +126,7 @@
                             <div class="card-content">
                                 <div class="flex-spacer"></div>
                                 <div class="form-control">
-                                    <a href="{link back!}" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</a>
+                                    <a href="{plink Group:usersList}" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</a>
                                     <button type="submit" class="waves-effect waves-light btn btn-confirm submit-classification">Uložit</button>
                                 </div>
                                 <div class="flex-spacer"></div>
@@ -147,6 +150,7 @@
     });
 </script>
 {/form}
+{/snippet}
 {snippet classification-form}
 <div id="edit-classification-modal" class="modal modal-small">
     {form editClassGroupForm class=>'ajax'}

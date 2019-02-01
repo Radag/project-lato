@@ -91,37 +91,32 @@
                         <h2>Učitel</h2>
                     </div>
                     <div class="card-content">
-                        <p class="secondary-par">Tyto skupiny využívám pro svoji výuku.</p>
-                        <ul class="groups bottom-margin">
-                            {var something=true}
-                            {foreach $groups->groups as $group}
-                                {if $group->relation === 'owner'}
-                                {var something=false}
-                                <li class="group-list" data-action="delete" data-group-id="{$group->id}">
-                                    <div class="group-shortcut-circle {$group->colorScheme}"or >{$group->shortcut|substr:0,1}
-                                        <div class="admin-mark {$group->colorScheme}" ></div>
-                                    </div>
-                                    <div class="label">{$group->name} {if $group->subgroup}<span>({$group->subgroup})</span>{/if}</div>
-                                    <button type="button" class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" data-target="group{$group->id}-options" >
-                                        <i class="material-icons">more_horiz</i>
-                                    </button>
-                                    <ul id='group{$group->id}-options' class="dropdown-content">
-                                        <li><a href="" class="delete-group-button waves-effect waves-dark" data-name="{$group->name}">Smazat skupinu</a></li>
-                                    </ul>
-                                </li>
-                                <li class="remove-group" style="display: none" data-group-id="{$group->id}">
-                                    <i class="material-icons">delete</i>
-                                    <div class="label">{$group->name}</div>
-                                    <a href="" class="btn-flat cancel-delete-btn">zrušit</a>
-                                </li>
-                                {/if}
-                            {/foreach} 
-                            {if $something}
-                                <li class="secondary-par">
-                                   Nejsem vyučující v žádné skupině.
-                                </li>
-                            {/if}
-                        </ul>
+                        {if $teacherGroups}
+                            <p class="secondary-par">Tyto skupiny využívám pro svoji výuku.</p>
+                            <ul class="groups bottom-margin">
+                                {foreach $teacherGroups as $group}
+                                    <li class="group-list" data-action="delete" data-group-id="{$group->id}">
+                                        <div class="group-shortcut-circle {$group->colorScheme}"or >{$group->shortcut|substr:0,1}
+                                            <div class="admin-mark {$group->colorScheme}" ></div>
+                                        </div>
+                                        <div class="label">{$group->name} {if $group->subgroup}<span>({$group->subgroup})</span>{/if}</div>
+                                        <button type="button" class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" data-target="group{$group->id}-options" >
+                                            <i class="material-icons">more_horiz</i>
+                                        </button>
+                                        <ul id='group{$group->id}-options' class="dropdown-content">
+                                            <li><a href="" class="delete-group-button waves-effect waves-dark" data-name="{$group->name}">Smazat skupinu</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="remove-group" style="display: none" data-group-id="{$group->id}">
+                                        <i class="material-icons">delete</i>
+                                        <div class="label">{$group->name}</div>
+                                        <a href="" class="btn-flat cancel-delete-btn">zrušit</a>
+                                    </li>
+                                {/foreach}
+                            </ul>
+                        {else}
+                            <p class="secondary-par">Nejsem vyučující v žádné skupině.</p>
+                        {/if} 
                     </div>
                 </div>
                 <div class="card flex-column">
@@ -129,35 +124,30 @@
                         <h2>Student</h2>
                     </div>
                     <div class="card-content">
-                        <p class="secondary-par">V těchto skupinách jsem zapsán jako student.</p>
-                        <ul class="groups">
-                            {var something=true}
-                            {foreach $groups->groups as $group}
-                                {if $group->relation !== 'owner'}
-                                {var something=false}
-                                <li class="group-list" data-action="leave" data-group-id="{$group->id}">
-                                    <div class="group-shortcut-circle {$group->colorScheme}" >{$group->shortcut|substr:0,1}</div>
-                                    <div class="label">{$group->name} <span>(prog1)</span></div>
-                                    <button type="button" class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" data-target="group{$group->id}-options" >
-                                        <i class="material-icons">more_horiz</i>
-                                    </button>
-                                    <ul id='group{$group->id}-options' class="dropdown-content">
-                                        <li><a href="" class="delete-group-button waves-effect waves-dark" data-name="{$group->name}">Opustit skupinu</a></li>
-                                    </ul>
-                                </li>
-                                <li class="remove-group" style="display: none" data-group-id="{$group->id}">
-                                    <i class="material-icons">delete</i>
-                                    <div class="label">{$group->name}</div>
-                                    <a href="" class="btn-flat cancel-delete-btn">zrušit</a>
-                                </li>
-                                {/if}
-                            {/foreach}
-                            {if $something}
-                                <li>
-                                   V žádné skupině nejsem zapsán jako student.
-                                </li>
-                            {/if}
-                        </ul>
+                        {if $studentGroups}
+                            <p class="secondary-par">V těchto skupinách jsem zapsán jako student.</p>
+                            <ul class="groups">
+                                {foreach $studentGroups as $group}
+                                    <li class="group-list" data-action="leave" data-group-id="{$group->id}">
+                                        <div class="group-shortcut-circle {$group->colorScheme}" >{$group->shortcut|substr:0,1}</div>
+                                        <div class="label">{$group->name} <span>(prog1)</span></div>
+                                        <button type="button" class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" data-target="group{$group->id}-options" >
+                                            <i class="material-icons">more_horiz</i>
+                                        </button>
+                                        <ul id='group{$group->id}-options' class="dropdown-content">
+                                            <li><a href="" class="delete-group-button waves-effect waves-dark" data-name="{$group->name}">Opustit skupinu</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="remove-group" style="display: none" data-group-id="{$group->id}">
+                                        <i class="material-icons">delete</i>
+                                        <div class="label">{$group->name}</div>
+                                        <a href="" class="btn-flat cancel-delete-btn">zrušit</a>
+                                    </li>
+                                {/foreach}
+                            </ul>
+                        {else}
+                            <p class="secondary-par">V žádné skupině nejsem zapsán jako student.</p>
+                        {/if}
                     </div>
                 </div>
             </div>

@@ -22,7 +22,6 @@ services:
     - App\FrontModule\Components\Group\About\IAboutGroup
     - App\FrontModule\Components\Stream\ICommitTaskForm
     - App\FrontModule\Components\TaskHeader\ITaskHeader
-    - App\FrontModule\Components\Group\IStudents
     - App\FrontModule\Components\Account\IAccountSettings
     - App\FrontModule\Components\Group\IStudentsList
     - App\FrontModule\Components\Group\IClassification

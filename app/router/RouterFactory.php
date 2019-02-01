@@ -22,7 +22,7 @@ class RouterFactory
 
 	$router[] = $frontRouter = new RouteList('Front');
         $frontRouter[] = new Route('auth', 'Homepage:noticeboard');
-	$frontRouter[] = new Route('auth/skupina/<id>/studenti', 'Group:users');
+	$frontRouter[] = new Route('auth/skupina/<id>/studenti', 'Group:usersList');
 	$frontRouter[] = new Route('auth/skupina/<id>/o-skupine', 'Group:about');
 	$frontRouter[] = new Route('auth/skupina/<id>/nastaveni', 'Group:settings');
 	$frontRouter[] = new Route('auth/skupina/<id>[/<action>]', 'Group:default');
