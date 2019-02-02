@@ -12,7 +12,8 @@
                     </button>
                     <ul id="action-dropdown" class="dropdown-content">
                         <li><a href="{link addClassificationToUsers!}" class="add-user-classification-button" >Přidat známku</a></li>        
-                        <li><a href="#" data-link="{plink Conversation:default}" id="send-message-user-button" >Poslat soukromou zprávu</a></li>
+                        {* DOČASNĚ SKRYTO DOKUD NEBUDE HOTOVÝ CHAT
+                        <li><a href="#" data-link="{plink Conversation:default}" id="send-message-user-button" >Poslat soukromou zprávu</a></li> *}
                         <li><a href="{link deleteUsers!}" id="delete-user-button" >Odebrat ze skupiny</a></li>
                     </ul>
                     <ul class="left options">
@@ -166,7 +167,8 @@
                                     </a>
                                     <ul id="user-action-dropdown-{$member->id}" class="dropdown-content">
                                         <li><a href="{plink Profile:default 'id'=>$member->slug}">Zobrazit profil</a></li>
-                                        <li><a href="{plink Conversation:default 'users'=>$member->slug}">Poslat soukromou zpravu</a></li>
+                                        {*  DOČASNĚ SKRYTO DOKUD NEBUDE HOTOVÝ CHAT
+                                        <li><a href="{plink Conversation:default 'users'=>$member->slug}">Poslat soukromou zpravu</a></li> *}
                                     </ul>
                                     
                                     {* {if !empty($member->getClassification()->lastDate)}{$member->getClassification()->lastDate->format("j. n. Y")}{else}--{/if} *}

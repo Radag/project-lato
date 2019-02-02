@@ -160,6 +160,15 @@ body {
     clear:both;
 }
 
+.flex-row {
+    display: flex;
+}
+
+.flex-column {
+    flex-direction: column;
+    align-items: stretch;
+}
+
 .no-margin {
     margin: 0 !important;
 }
@@ -169,7 +178,8 @@ body {
 }
 
 
-// Texts
+
+// Text
 
 p, h1, h2, h3, h4 {
     line-height: 1.6em;
@@ -1062,21 +1072,7 @@ input[type=search]:not(.browser-default) {
     height: auto;
 }
 
-.modal::-webkit-scrollbar {
-    -webkit-appearance: none;
-}
 
-.modal::-webkit-scrollbar:vertical {
-    width: 10px;
-}
-
-.modal::-webkit-scrollbar:horizontal {
-    height: 10px;
-}
-
-.modal::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, .15);
-}
 
 
 
@@ -1086,11 +1082,26 @@ input[type=search]:not(.browser-default) {
     background-color: #fff;
     max-height: 80%;
 
-
     @media only screen and (max-width: 600px) {
         & {
             width: calc(~'100% - 24px');
         }
+    }
+
+    &::-webkit-scrollbar {
+        -webkit-appearance: none;
+    }
+
+    &::-webkit-scrollbar:vertical {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar:horizontal {
+        height: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, .15);
     }
 
     p {
@@ -1858,7 +1869,7 @@ input[type=search]:not(.browser-default) {
     display: flex;
     flex-direction: column;
     margin: 0;
-    padding: 24px 0 0 0;
+    padding: 40px 0 0 0;
 
     @media only screen and (max-width: 600px) {
         & {
@@ -1894,7 +1905,7 @@ input[type=search]:not(.browser-default) {
             width: 36px;
             height: 36px;
             margin-right: 12px;
-            border-radius: 50%;
+            border-radius: 2px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -1908,7 +1919,7 @@ input[type=search]:not(.browser-default) {
             }
 
             &.unknown {
-                background-color: #607d8b;
+                background-color: #26798b;
             }
 
             &.document {
@@ -3408,14 +3419,7 @@ nav .nav-title {
     }
 }
 
-.flex-row {
-    display: flex;
-}
 
-.flex-column {
-    flex-direction: column;
-    align-items: stretch;
-}
 
 @media only screen and (max-width: 992px) {
     .card {
@@ -3978,7 +3982,7 @@ nav .nav-title {
     }
 
     .groups {
-        margin: 24px 0;
+        margin: 24px 0 16px 0;
 
         & > li {
             display: flex;
@@ -4104,88 +4108,6 @@ nav .nav-title {
 }
 
 
-
-/* TOHLE TADY PODLE ME NEMUSI BYT
-
-#group-cards .group-users {
-    display: block;
-    color: rgba(255, 255, 255, 1);
-    position:absolute;
-    bottom:0;
-    left:0;
-    background-color:rgba(0, 0, 0, .07);
-    font-size:14px;
-    height:48px;
-    line-height:48px;
-    width:100%;
-    padding:0 24px;
-    -webkit-transition: background-color 300ms ease-in-out;
-    -moz-transition: background-color 300ms ease-in-out;
-    -o-transition: background-color 300ms ease-in-out;
-    transition: background-color 300ms ease-in-out;
-}
-
-#group-cards .group-users:hover {
-    background-color:@line-color;
-}
-
-#group-cards .group-founder {
-    padding:24px;
-    height:112px;
-}
-
-#group-cards .group-founder .user-img {   
-    margin:0px 16px 12px 0;
-    float:left;
-}
-
-#group-cards .group-founder .user-info {
-    float:left;
-}
-
-#group-cards .group-founder .user-name {
-    display: block;
-    font-size:16px;
-    line-height:28px;
-    font-weight:500;  
-    color:rgba(0, 0, 0, .87);
-}
-
-#group-cards .group-founder .user-role {
-    display: block;
-    font-weight:400;
-    font-size:13px;
-    color:@secondary-text-color;
-    line-height:13px;
-}
-
-#group-cards .group-activity {
-    padding:24px;
-    font-size:14px;
-    line-height:14px;
-    color:@secondary-text-color;
-}
-
-@media(max-width:1220px) {
-    #group-cards .m6 {
-        width:33.333%;
-    }
-}
-
-@media(max-width:992px) {
-    #group-cards .m6 {
-        width:50%;
-    }
-}
-
-@media(max-width:600px) {
-    #group-cards .m6 {
-        width:100%;
-    }
-}
-
-*/
-
 .section-header .options {
 }
 
@@ -4212,58 +4134,40 @@ nav .nav-title {
 
 
 
+
 .group-color-select {
     display: flex;
     margin: 20px 0 0 0;
-}
 
-@media only screen and (max-width: 600px) {
-    .group-color-select {
-        margin-top: 16px;
+    @media only screen and (max-width: 600px) {
+        & {
+            margin-top: 16px;
+        }
+    }
+
+    i {
+        display: block;
+        border-radius: 50%;
+        height: 26px;
+        width: 26px;
+        margin-right: 8px;
+        color: #fff;
+        cursor: pointer;
+        text-align: center;
+        font-size: 18px !important;
+    }
+
+    label:last-child i {
+        margin-right: 0;
+    }
+
+    input:checked+i:after {
+        content: "check";
+        line-height: 26px;
+        text-align: center;
     }
 }
 
-.group-color-select i {
-    display: block;
-    border-radius: 50%;
-    height: 26px;
-    width: 26px;
-    margin-right: 8px;
-    color: #fff;
-    cursor: pointer;
-    text-align: center;
-    font-size: 18px !important;
-}
-
-.group-color-select label:last-child i {
-    margin-right: 0;
-}
-
-.group-color-select input:checked+i:after {
-    content: "check";
-    line-height: 26px;
-    text-align: center;
-}
-
-.group-color-select i.green-bg {
-    background-color: #55bf66;
-}
-
-.group-color-select i.yellow-bg {
-    background-color: #66ff00;
-}
-
-.group-color-select i.blue-bg {
-    background-color: #00a2ff;
-}
-
-.group-color-select i.purple-bg {
-    background-color: #ff2b71;
-}
-
-.group-color-select i.orange-bg {
-    background-color: #e1b83d;
-}
 
 
 /* ----- EMPTY MESSAGE ----- */
