@@ -60,7 +60,7 @@ class Classification extends \App\Components\BaseComponent
                 $commit = $this->taskManager->getCommitByUser($this->classificationGroup->task->id, $member->id);
                 if($commit) {
                     $commit->isLate = $this->classificationGroup->task->deadline < $commit->created;
-                    $member->order = $commit->created->getTimestamp();
+                    $member->order = (new \Datetime)->getTimestamp() - $commit->created->getTimestamp();
                 }
                 $this->classificationGroup->task->commitArray[$member->id] = $commit;
             }
