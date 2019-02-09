@@ -2,6 +2,7 @@
     <div class="container offset-1">
         <div class="row">
             <div class="col s12">
+                {* DOČASNĚ SKRYTO DOKUD NEBUDE HOTOVÝ CHAT
                 <header class="page-header">
                     <button class="btn white no-shadow dropdown-trigger" id="user-action-button" data-beloworigin="true" data-target="action-dropdown" disabled="disabled">
                         Akce
@@ -10,7 +11,7 @@
                         <li><a href="#" data-link="{plink Conversation:default}" id="send-message-user-button" >Poslat soukromou zprávu</a></li>
                     </ul>
                     <div class="flex-spacer"></div>
-                </header>  
+                </header> *} 
             </div>
         </div>
     </div>
@@ -88,7 +89,8 @@
                                     </button>
                                     <ul id='user-action-dropdown-{$member->id}' class='dropdown-content'>
                                         <li><a href="{plink Profile:default 'id'=>$member->slug}">Zobrazit profil</a></li>
-                                        <li><a href="{plink Conversation:default 'users'=>$member->slug}">Poslat soukromou zpravu</a></li>
+                                        {*  DOČASNĚ SKRYTO DOKUD NEBUDE HOTOVÝ CHAT
+                                        <li><a href="{plink Conversation:default 'users'=>$member->slug}">Poslat soukromou zpravu</a></li>*}
                                     </ul>
                                 </div>
                             </div>

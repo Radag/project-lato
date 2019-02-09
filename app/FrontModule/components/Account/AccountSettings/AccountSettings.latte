@@ -30,10 +30,12 @@
                             {input email}
                             {label email}E-mailová adresa{/label}
                         </div>
+                        {* DOČASNĚ SKRYTO DOKUD NEPOLADIME KALENDAR
                         <div class="form-row input-field">
                             {input birthday class=>"datepicker"}
                             {label birthday}Datum narození{/label}
                         </div>
+                        *}
                     </div>
                 </div>
             </div>
@@ -90,65 +92,72 @@
                     <div class="card-header">
                         <h2>Učitel</h2>
                     </div>
+                    
+                    {if $teacherGroups}
                     <div class="card-content">
-                        {if $teacherGroups}
-                            <p class="secondary-par">Tyto skupiny využívám pro svoji výuku.</p>
-                            <ul class="groups bottom-margin">
-                                {foreach $teacherGroups as $group}
-                                    <li class="group-list" data-action="delete" data-group-id="{$group->id}">
-                                        <div class="group-shortcut-circle {$group->colorScheme}"or >{$group->shortcut|substr:0,1}
-                                            <div class="admin-mark {$group->colorScheme}" ></div>
-                                        </div>
-                                        <div class="label">{$group->name} {if $group->subgroup}<span>({$group->subgroup})</span>{/if}</div>
-                                        <button type="button" class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" data-target="group{$group->id}-options" >
-                                            <i class="material-icons">more_horiz</i>
-                                        </button>
-                                        <ul id='group{$group->id}-options' class="dropdown-content">
-                                            <li><a href="" class="delete-group-button waves-effect waves-dark" data-name="{$group->name}">Smazat skupinu</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="remove-group" style="display: none" data-group-id="{$group->id}">
-                                        <i class="material-icons">delete</i>
-                                        <div class="label">{$group->name}</div>
-                                        <a href="" class="btn-flat cancel-delete-btn">zrušit</a>
-                                    </li>
-                                {/foreach}
-                            </ul>
-                        {else}
-                            <p class="secondary-par">Nejsem vyučující v žádné skupině.</p>
-                        {/if} 
+                        <p class="secondary-par">Tyto skupiny využívám pro svoji výuku.</p>
+                        <ul class="groups bottom-margin">
+                            {foreach $teacherGroups as $group}
+                            <li class="group-list" data-action="delete" data-group-id="{$group->id}">
+                                <div class="group-shortcut-circle {$group->colorScheme}"or >{$group->shortcut|substr:0,1}
+                                    <div class="admin-mark {$group->colorScheme}" ></div>
+                                </div>
+                                <div class="label">{$group->name} {if $group->subgroup}<span>({$group->subgroup})</span>{/if}</div>
+                                <button type="button" class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" data-target="group{$group->id}-options" >
+                                    <i class="material-icons">more_horiz</i>
+                                </button>
+                                <ul id='group{$group->id}-options' class="dropdown-content">
+                                    <li><a href="" class="delete-group-button waves-effect waves-dark" data-name="{$group->name}">Smazat skupinu</a></li>
+                                </ul>
+                            </li>
+                            <li class="remove-group" style="display: none" data-group-id="{$group->id}">
+                                <i class="material-icons">delete</i>
+                                <div class="label">{$group->name}</div>
+                                <a href="" class="btn-flat cancel-delete-btn">zrušit</a>
+                            </li>
+                            {/foreach}
+                        </ul>
                     </div>
+                    {else}
+                    <div class="card-content">
+                        <p class="secondary-par">Nejsem vyučující v žádné skupině.</p>
+                    </div>
+                    <div class="card-footer card-bottom"></div>
+                    {/if} 
                 </div>
                 <div class="card flex-column">
                     <div class="card-header">
                         <h2>Student</h2>
                     </div>
+                    {if $studentGroups}
                     <div class="card-content">
-                        {if $studentGroups}
-                            <p class="secondary-par">V těchto skupinách jsem zapsán jako student.</p>
-                            <ul class="groups">
-                                {foreach $studentGroups as $group}
-                                    <li class="group-list" data-action="leave" data-group-id="{$group->id}">
-                                        <div class="group-shortcut-circle {$group->colorScheme}" >{$group->shortcut|substr:0,1}</div>
-                                        <div class="label">{$group->name} <span>(prog1)</span></div>
-                                        <button type="button" class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" data-target="group{$group->id}-options" >
-                                            <i class="material-icons">more_horiz</i>
-                                        </button>
-                                        <ul id='group{$group->id}-options' class="dropdown-content">
-                                            <li><a href="" class="delete-group-button waves-effect waves-dark" data-name="{$group->name}">Opustit skupinu</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="remove-group" style="display: none" data-group-id="{$group->id}">
-                                        <i class="material-icons">delete</i>
-                                        <div class="label">{$group->name}</div>
-                                        <a href="" class="btn-flat cancel-delete-btn">zrušit</a>
-                                    </li>
-                                {/foreach}
-                            </ul>
-                        {else}
-                            <p class="secondary-par">V žádné skupině nejsem zapsán jako student.</p>
-                        {/if}
+                        <p class="secondary-par">V těchto skupinách jsem zapsán jako student.</p>
+                        <ul class="groups">
+                            {foreach $studentGroups as $group}
+                            <li class="group-list" data-action="leave" data-group-id="{$group->id}">
+                                <div class="group-shortcut-circle {$group->colorScheme}" >{$group->shortcut|substr:0,1}</div>
+                                <div class="label">{$group->name} <span>(prog1)</span></div>
+                                <button type="button" class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" data-target="group{$group->id}-options" >
+                                    <i class="material-icons">more_horiz</i>
+                                </button>
+                                <ul id='group{$group->id}-options' class="dropdown-content">
+                                    <li><a href="" class="delete-group-button waves-effect waves-dark" data-name="{$group->name}">Opustit skupinu</a></li>
+                                </ul>
+                            </li>
+                            <li class="remove-group" style="display: none" data-group-id="{$group->id}">
+                                <i class="material-icons">delete</i>
+                                <div class="label">{$group->name}</div>
+                                <a href="" class="btn-flat cancel-delete-btn">zrušit</a>
+                            </li>
+                            {/foreach}
+                        </ul>
                     </div>
+                    {else}
+                    <div class="card-content">
+                        <p class="secondary-par">V žádné skupině nejsem zapsán jako student.</p>
+                    </div>
+                    <div class="card-footer card-bottom"></div>
+                    {/if}
                 </div>
             </div>
             <div id="group-delete-confirm-modal" class="modal modal-small">
