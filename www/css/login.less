@@ -1120,6 +1120,30 @@ nav {
         }
     }
 
+    #links {
+        display: flex;
+        margin: 4px 0;
+
+        li {
+            margin: 0 4px;
+            font-size: 13px;
+            line-height: 1.6em;
+
+            &:after {
+                content: ", ";
+                color: @secondary-text-color;
+            }
+
+            &:last-child:after {
+                content: none;   
+            }
+
+            a {
+                color: @secondary-text-color;
+            }
+        }
+    }
+
     #logo {
         height: 28px;
         width: 64px;
@@ -1130,8 +1154,9 @@ nav {
     }
 
     .copy {
-        line-height: 28px;
+        line-height: 1.6em;
         font-size: 13px;
+        margin: 4px 0;
         color: @secondary-text-color;
     }
 }
