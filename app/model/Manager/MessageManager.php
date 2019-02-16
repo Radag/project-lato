@@ -121,10 +121,11 @@ class MessageManager extends BaseManager {
                 ORDER BY IFNULL(T1.top, T1.created_when) DESC", $user->id, $user->id, $group->id, $delete, $filters);
         
         $attachmentsData = $this->db->fetchAll("SELECT 
-                    T1.id, T3.id AS file_id, T3.extension, T3.mime, T3.type, T3.full_path, T3.filename, T3.created_when, IFNULL(T3.name, T3.filename) AS name
+                    T1.id, T3.id AS file_id, T3.extension, T3.mime, T3.type, T3.full_path, T3.filename, T3.created_when, IFNULL(T3.name, T3.filename) AS name, T4.preview_full_path
                 FROM message T1 
                 JOIN message_attachment T2 ON T1.id=T2.message_id
                 JOIN file_list T3 ON T2.file_id=T3.id
+                LEFT JOIN file_list_preview T4 ON T4.file_id=T3.id
                 WHERE T1.group_id=? AND T1.deleted IN (?) AND T1.type IN (?)", $group->id, $delete, $filters);
         $attachments = $this->getAttachments($attachmentsData);
         
@@ -195,10 +196,11 @@ class MessageManager extends BaseManager {
         }
           
         $attachmentsData = $this->db->fetchAll("SELECT 
-                    T1.id, T3.id AS file_id, T3.extension, T3.mime, T3.type, T3.full_path, T3.filename, T3.created_when, IFNULL(T3.name, T3.filename) AS name
+                    T1.id, T3.id AS file_id, T3.extension, T3.mime, T3.type, T3.full_path, T3.filename, T3.created_when, IFNULL(T3.name, T3.filename) AS name, T4.preview_full_path
                 FROM message T1 
                 JOIN message_attachment T2 ON T1.id=T2.message_id
                 JOIN file_list T3 ON T2.file_id=T3.id
+                LEFT JOIN file_list_preview T4 ON T4.file_id=T3.id
                 WHERE T1.id=?", $idMessage);
         $attachments = $this->getAttachments($attachmentsData);
         $linksData = $this->db->fetchAll("SELECT * FROM 
@@ -291,7 +293,8 @@ class MessageManager extends BaseManager {
                         'filename' => $attach->filename,  
                         'fileId' => $attach->file_id,
                         'created' => $attach->created_when,
-                        'name' => $attach->name
+                        'name' => $attach->name,
+                        'preview' => $attach->preview_full_path
                     ];
                 } else {
                     $return[$attach->id]['files'][$attach->file_id] = (object)[

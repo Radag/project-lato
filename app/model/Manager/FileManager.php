@@ -162,6 +162,23 @@ class FileManager extends BaseManager
             } else {
                 $newFile['TYPE'] = self::FILE_TYPE_OTHER;
             }
+            if($file->isImage()) {
+                $preview = $file->toImage();
+                $preview->resize(500, 500, Nette\Utils\Image::SHRINK_ONLY);          
+                $previewName = 'p_' . $filename;
+                if(!\Tracy\Debugger::isEnabled()) {
+                    $preview->save('/var/www/cdn/' . $path . '/' . $previewName, 80);
+                } else {
+                    $preview->save(TEMP_DIR . '/' . $previewName, 80);
+                    ftp_put($connId, '/var/www/cdn/' . $path . '/' . $previewName, TEMP_DIR . '/' . $previewName, FTP_BINARY);
+                    unlink(TEMP_DIR . '/' . $previewName);
+                }
+                $newFile['PREVIEW'] = [
+                    'NAME' => $previewName,
+                    'FULLPATH' => 'https://cdn.lato.cz/' . $path . '/' . $previewName
+                ];
+            }
+            
             $newFile['PATH'] = $path;
             $newFile['MIME'] = $file->getContentType();
             $newFile['SIZE'] = $file->getSize();
@@ -217,7 +234,15 @@ class FileManager extends BaseManager
             'full_path' => $file['FULLPATH'],            
             'name' => $file['NAME']
         ]);
-        return $this->db->getInsertId();
+        $fileId = $this->db->getInsertId();
+        if(isset($file['PREVIEW'])) {
+            $this->db->query("INSERT INTO file_list_preview", [
+                'file_id' => $fileId,
+                'preview_name' => $file['PREVIEW']['NAME'],
+                'preview_full_path' => $file['PREVIEW']['FULLPATH']
+            ]);
+        }
+        return $fileId;
     }
     
     protected function deleteFile($idFile)

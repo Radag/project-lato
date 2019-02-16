@@ -101,13 +101,13 @@
     <div class="media-container">
         {foreach $message->attachments['media'] as $media}
             {if $iterator->first}
-            <a class="img-full-size" href="{$media->fullPath|noescape}" data-lightbox="message-gallery-{$message->id}" style="background-image: url('{$media->fullPath|noescape}');">
+            <a class="img-full-size" href="{$media->fullPath|noescape}" data-lightbox="message-gallery-{$message->id}" style="background-image: url('{if $media->preview}{$media->preview|noescape}{else}{$media->fullPath|noescape}{/if}');">
                 {if count($message->attachments['media']) > 1}
                     <div class="media-count">+{count($message->attachments['media'])-1}</div>
                 {/if}
             </a>
             {else}
-                <a href="{$media->fullPath|noescape}}" data-lightbox="message-gallery-{$message->id}" class="hide"></a>
+                <a href="{$media->fullPath|noescape}" data-lightbox="message-gallery-{$message->id}" class="hide"></a>
             {/if}
         {/foreach}
     </div>
