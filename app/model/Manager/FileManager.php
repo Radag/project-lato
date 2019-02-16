@@ -242,6 +242,21 @@ class FileManager extends BaseManager
         return (object)['files' => $files, 'total' => $total];
     }
     
+    public function getFile($id)
+    {
+        $attach = $this->db->fetch("SELECT * FROM file_list WHERE id=?", $id);
+        return (object)[
+            'type' => $attach->type,
+            'extension' => $attach->extension,
+            'fullPath' => $attach->full_path,
+            'mime' => $attach->mime,
+            'filename' => $attach->filename,  
+            'fileId' => $attach->id,
+            'created' => $attach->created_when,
+            'name' => $attach->name 
+        ];
+    }
+    
     function formatBytes($size) 
     { 
         $base = log($size) / log(1024);

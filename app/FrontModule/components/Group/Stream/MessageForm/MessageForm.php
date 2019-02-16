@@ -98,8 +98,15 @@ class MessageForm extends \App\Components\BaseComponent
                 )); 
             }
         }
-        $form->onError[] = function($form) {
+        $form->onError[] = function(Form $form) {
             $this->template->links = $this->loadLinks();
+            $attachments = [];
+            foreach(explode('_', $form->getValues()['attachments']) as $attach) {
+                if($attach) {
+                    $attachments[] = $this->fileManager->getFile($attach);
+                }
+            }
+            $this->template->attachments = $attachments;
         };
 
         $form->onSuccess[] = [$this, 'processForm'];
@@ -118,7 +125,7 @@ class MessageForm extends \App\Components\BaseComponent
     }    
     
     
-     public function processForm(Form $form, $values) 
+    public function processForm(Form $form, $values) 
     {
         $message = new \App\Model\Entities\Message;
         $message->text = $values->text;

@@ -2,7 +2,7 @@
 <div class="card-comments {if count($comments) == 0}card-comments-empty{/if}"> 
         {if count($comments) > 0}  
         <div class="comments-header">
-            <div  onclick="latoShowAllComments(this);" class="comments-count">
+            <div onclick="latoShowAllComments(this);" data-opened="false" class="comments-count">
                 {if count($comments) === 1}
                     {count($comments)} komenář
                 {elseif count($comments) <= 4}
@@ -15,24 +15,24 @@
         <div class="comments-content">
            {foreach $comments as $comm}
                 <div class="comment-row" {if !$iterator->isLast()}style="display: none;"{/if}>
-                <a href="{plink Profile:default 'id'=>$comm->user->slug}" class="avatar tiny">
-                    <img src="{$comm->user->profileImage}" alt="{$comm->user->name}">
-                </a>
-                <div class="comment-content">
-                    <div class="comment-header">
-                        <a href="{plink Profile:default 'id'=>$comm->user->slug}">{$comm->user->name} {$comm->user->surname}</a>
-                        <div class="flex-spacer"></div>
-                        <span>
-                        {if $comm->sinceStart->d >= 1}
-                            {$comm->created|date:"j. n."}
-                        {else}
-                            {$comm->created|date:"h:i"}
-                        {/if}
-                        </span>
+                    <a href="{plink Profile:default 'id'=>$comm->user->slug}" class="avatar tiny">
+                        <img src="{$comm->user->profileImage}" alt="{$comm->user->name}">
+                    </a>
+                    <div class="comment-content">
+                        <div class="comment-header">
+                            <a href="{plink Profile:default 'id'=>$comm->user->slug}">{$comm->user->name} {$comm->user->surname}</a>
+                            <div class="flex-spacer"></div>
+                            <span>
+                            {if $comm->sinceStart->d >= 1}
+                                {$comm->created|date:"j. n."}
+                            {else}
+                                {$comm->created|date:"h:i"}
+                            {/if}
+                            </span>
+                        </div>
+                        <div class="comment-text {if $iterator->isLast()}truncate{/if}">{$comm->text|breaklines}</div>
                     </div>
-                    <div class="comment-text {if $iterator->isLast()}truncate{/if}">{$comm->text|breaklines}</div>
                 </div>
-            </div>
            {/foreach}
         </div>
         {/if}

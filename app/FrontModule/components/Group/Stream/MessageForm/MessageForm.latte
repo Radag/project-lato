@@ -63,7 +63,7 @@
                 {foreach $attachments as $attach}
                 <li>
                     <div class="attached-file">
-                        <a href="{$attach->fullPath|noescape}" target="_blank" class="file-name">{$attach->filename}<span></span></a>
+                        <a href="{$attach->fullPath|noescape}" target="_blank" class="file-name">{$attach->name}<span>{$attach->mime}</span></a>
                         <div class="flex-spacer"></div>
                         <a href="{link deleteAttachment!, idFile=>$attach->fileId}" class="ajax remove-attachment"><i class="material-icons">delete</i></a>
                     </div>
@@ -98,7 +98,7 @@
     </div>
     <div class="modal-footer">        
         <div class="attachments-nav">
-            {input attachments id => 'attachmentsIds'}
+            {input attachments id=>'attachmentsIds'}
             <ul>
                 <li>
                     <a href="javascript:addNewAttachment()" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Přiložit soubor">

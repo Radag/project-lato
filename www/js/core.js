@@ -241,9 +241,16 @@ function latoReloadMessageWall()
 }
 
 function latoShowAllComments(comment) {
-    $(comment).closest(".card-comments").find(".comments-content .comment-row").show();
-    $(comment).closest(".card-comments").find(".comments-content .comment-row .comment-text").removeClass('truncate');
-    latoReloadMessageWall();
+    if($(comment).data('opened')) {
+        $(comment).closest(".card-comments").find(".comments-content .comment-row").hide();
+        $(comment).closest(".card-comments").find(".comments-content .comment-row").last().show();
+        $(comment).closest(".card-comments").find(".comments-content .comment-row").last().find(".comment-text").addClass('truncate');
+        $(comment).data('opened', false);
+    } else {
+        $(comment).closest(".card-comments").find(".comments-content .comment-row").show();
+        $(comment).closest(".card-comments").find(".comments-content .comment-row .comment-text").removeClass('truncate');
+        $(comment).data('opened', true)
+    }
 }
 
 function latoShowUpFlashMessages() {

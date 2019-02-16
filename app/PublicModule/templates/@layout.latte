@@ -44,20 +44,20 @@
                     <div class="flex-spacer"></div>
                     <ul id="right-nav">
                         {foreach $menuItems as $key=>$item}
-                            <li class="hide-on-med-and-down"><a href="{$key}">{$item}</a></li>
+                            <li class="hide-on-med-and-down"><a href="{$key}" class="menu-item">{$item}</a></li>
                         {/foreach}
                         <li n:if="!$isLogged" class="last-one">
                             <a href="#login-modal" class="login-modal-trigger">Přihlásit</a>
                         </li>
                         <li n:if="$isLogged" class="last-one">
-                            <a href="" class="register-modal">Odhlásit</a>
+                            <a href="{link logout!}" class="register-modal logout">Odhlásit</a>
                         </li>
                     </ul>
                 </div>
             </nav>
             <script>  
                 $(function () {
-                    $("#right-nav li a").on('click', function(e) {
+                    $("#right-nav li a.menu-item").on('click', function(e) {
                         e.preventDefault();
                         $('html, body').animate({ scrollTop: $($(this).attr('href')).offset().top - 50}, 500);
                     });                    
@@ -114,8 +114,8 @@
 
         <footer id="page-footer">
             <ul id="links">
-                <li><a href="#">Všeobecné obchodní podmínky</a></li>
-                <li><a href="#">Zásady ochrany osobních údajů</a></li>
+                <li><a href="{plink Homepage:gdpr}">Všeobecné obchodní podmínky</a></li>
+                <li><a href="{plink Homepage:terms}">Zásady ochrany osobních údajů</a></li>
             </ul>
             <div class="copy"><strong>lato.cz</strong> | © {date('Y')}</div>
             <div id="logo"></div>

@@ -61,4 +61,10 @@ class BasePresenter extends Nette\Application\UI\Presenter
         parent::flashMessage($message, $type);
         $this->redrawControl('flashMessages');
     }
+    
+    public function handleLogout()
+    {
+        $this->user->logout(true);
+        $this->redirect(':Public:Homepage:default');
+    }
 }
