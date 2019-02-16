@@ -30,7 +30,7 @@ class BasePresenter extends Nette\Application\UI\Presenter
     public function startup(): void 
     {        
         if($this->user->isLoggedIn() && !$this->isLinkCurrent('Action:*')) {
-            $this->redirect(':Front:Homepage:noticeboard');  
+            //$this->redirect(':Front:Homepage:noticeboard');  
         }
         if($this->user->isLoggedIn()) {
             $this->template->isLogged = true;

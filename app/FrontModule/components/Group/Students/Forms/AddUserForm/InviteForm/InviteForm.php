@@ -69,7 +69,7 @@ class InviteForm extends \App\Components\BaseComponent
                     $this->presenter->flashMessage("Student " . $user->name . " " . $user->surname . " je již členem skupiny", 'success');
                 }
             }
-            $this->presenter->redirect(':Front:Group:users');
+            $this->presenter->redirect('this');
         }        
     }
 }

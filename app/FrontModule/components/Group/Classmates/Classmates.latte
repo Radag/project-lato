@@ -18,6 +18,7 @@
     <div class="container offset-1">
         <div class="row">
             <div class="col s12">
+                {if $groupMembers}
                 <form action="#">
                     <div class="section-header table-header">
                         <label>
@@ -99,8 +100,9 @@
                     </ul>
                     {/snippet}
                 </form>
-            
-                
+                {else}
+                    <div>Nemáte žádné spolužáky.</div>
+                {/if}          
             </div>
         </div>
     </div>
