@@ -1,4 +1,5 @@
 <section class="main two-level-nav">
+    {if $groupMembers}
     <div class="container offset-1">
         <div class="row">
             <div class="col s12">
@@ -18,7 +19,6 @@
     <div class="container offset-1">
         <div class="row">
             <div class="col s12">
-                {if $groupMembers}
                 <form action="#">
                     <div class="section-header table-header">
                         <label>
@@ -99,11 +99,22 @@
                         {/foreach}
                     </ul>
                     {/snippet}
-                </form>
-                {else}
-                    <div>Nemáte žádné spolužáky.</div>
-                {/if}          
+                </form>          
             </div>
         </div>
     </div>
+    {else}
+    <div class="container empty-content-block offset-1">
+        <div class="flex-spacer"></div>
+        <div class="row">
+            <div class="col s12">
+                <div class="empty-content-icon">
+                    <i class="material-icons">people</i>
+                </div>
+                <h2>V této skupině nemáte žádné spolužáky</h2>
+            </div>
+        </div>
+        <div class="flex-spacer"></div>
+    </div>
+    {/if}
 </section>
