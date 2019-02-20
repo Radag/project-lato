@@ -16,7 +16,6 @@ class FileManager extends BaseManager
             'image/bmp',
             'image/x-windows-bmp',
             'image/gif',
-            'image/jpeg',
             'image/pjpeg',
             'image/jpeg',
             'image/pjpeg',
@@ -105,23 +104,43 @@ class FileManager extends BaseManager
         return ($sum > self::STORAGE_LIMIT);
     }
     
-    public function saveFile($file, $path) 
+    public function saveFile(Nette\Http\FileUpload $file, $path, $restrictions = []) 
     {
         $connId = $this->getFtpConnection();
         $createdDirecories = ftp_nlist($connId , self::USER_DIRECTORY . $this->user->getIdentity()->data['slug']);
         if(empty($createdDirecories)) {
             $this->createUserDirectories($connId);
         }
-        $date = new \DateTime();
-        $timestamp = $date->getTimestamp();
-        if (ftp_put($connId, '/var/www/cdn/' . $path . '/' . $timestamp . '_' . $file->getSanitizedName(), $file->getTemporaryFile(), FTP_BINARY)) {
-            $return['fileName'] = $file->getName();
-            $return['type'] = $file->getContentType();
-            $return['fullPath'] = 'https://cdn.lato.cz/' . $path . '/' .  $timestamp . '_' . $file->getSanitizedName();
-            return $return; 
+        
+        if(isset($restrictions['type'])) {
+            if($file->isImage() && in_array($file->getContentType(), $restrictions['type'])) {
+                $preview = $file->toImage();
+                $preview->resize($restrictions['width'], $restrictions['height'], Nette\Utils\Image::EXACT);          
+                $previewName = $this->getFileName($file);
+                if(!\Tracy\Debugger::isEnabled()) {
+                    $preview->save('/var/www/cdn/' . $path . '/' . $previewName, 100);
+                } else {
+                    $preview->save(TEMP_DIR . '/' . $previewName, 100);
+                    ftp_put($connId, '/var/www/cdn/' . $path . '/' . $previewName, TEMP_DIR . '/' . $previewName, FTP_BINARY);
+                    unlink(TEMP_DIR . '/' . $previewName);
+                }
+                $return['fileName'] = $file->getName();
+                $return['type'] = $file->getContentType();
+                $return['fullPath'] = 'https://cdn.lato.cz/' . $path . '/' .  $previewName;
+                return $return; 
+            }
         } else {
-            return false;
-        }
+            $date = new \DateTime();
+            $timestamp = $date->getTimestamp();
+            if (ftp_put($connId, '/var/www/cdn/' . $path . '/' . $timestamp . '_' . $file->getSanitizedName(), $file->getTemporaryFile(), FTP_BINARY)) {
+                $return['fileName'] = $file->getName();
+                $return['type'] = $file->getContentType();
+                $return['fullPath'] = 'https://cdn.lato.cz/' . $path . '/' .  $timestamp . '_' . $file->getSanitizedName();
+                return $return; 
+            } else {
+                return false;
+            }
+        }        
     }
     
     public function uploadFile(Nette\Http\FileUpload $file, $path)

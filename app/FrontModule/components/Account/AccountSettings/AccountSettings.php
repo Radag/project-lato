@@ -156,7 +156,7 @@ class AccountSettings extends \App\Components\BaseComponent
             $this->presenter->flashMessage('Velikost obrázku musí být alespoň 176 × 176 pixelů', 'error');
         } else {
             $path = 'users/' . $this->presenter->activeUser->slug . '/profile';
-            $file = $this->fileManager->saveFile($files['file'], $path);
+            $file = $this->fileManager->saveFile($files['file'], $path, ['width' => 200, 'height' => 200, 'type' => ['image/png', 'image/jpeg']]);
             if($file) {
                 $this->userManager->assignProfileImage($this->presenter->activeUser, $file);
             }
@@ -173,7 +173,7 @@ class AccountSettings extends \App\Components\BaseComponent
             $this->presenter->flashMessage('Velikost obrázku musí být alespoň 1156 × 420 pixelů', 'error');
         } else {
             $path = 'users/' . $this->presenter->activeUser->slug . '/profile';
-            $file = $this->fileManager->saveFile($files['file'], $path);
+            $file = $this->fileManager->saveFile($files['file'], $path, ['width' => 1156, 'height' => 420, 'type' => ['image/png', 'image/jpeg']]);
             if($file) {
                 $this->userManager->assignBackgroundImage($this->presenter->activeUser, $file);
             }
