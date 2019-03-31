@@ -52,7 +52,7 @@ class BasePresenter extends \Nette\Application\UI\Presenter
         if($this->activeUser === null) {
             $this->user->logout();
             $this->redirect(':Public:Homepage:default');
-        } elseif($this->activeUser->emailVerification != 1 && !$this->isLinkCurrent('Homepage:confirm')) {
+        } elseif($this->activeUser->emailVerification != 1 && !$this->isLinkCurrent('Homepage:confirm') && !$this->isLinkCurrent('Homepage:confirmSuccess')) {
             $this->redirect('Homepage:confirm');
         } elseif(!$this->activeUser->avatar && !$this->isLinkCurrent('Homepage:confirmSuccess')) {
             $this->redirect('Homepage:confirmSuccess');

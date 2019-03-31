@@ -53,7 +53,7 @@ class Classification extends \App\Components\BaseComponent
         
     public function render()
     {
-        $members = $this->getMembers();        
+        $members = $this->getMembers();
         //pokud je to task, tak se načtou všechny odevzdané úkoly
         if($this->classificationGroup->task) {
             foreach($members as $member) {
@@ -72,15 +72,18 @@ class Classification extends \App\Components\BaseComponent
             $newArray = [];
             foreach($members as $i => $mem) {
                 if(isset($mem->order)) {
+                    while (isset($newArray[$mem->order])) {
+                        $mem->order = $mem->order + 1;
+                    }
                     $newArray[$mem->order] = $mem;
                 } else {
                     $newArray[$i] = $mem;
                 }
-            }
+            }        
             krsort($newArray);
             $members = $newArray;
         }
-        
+                     
         $this->template->activeUser = $this->presenter->activeUser;
         $this->template->classificationGroup = $this->classificationGroup;        
         $this->template->members = $members;
