@@ -34,11 +34,11 @@
                         <div class="form-row input-field">
                             {input birthday class=>"datepicker"}
                             {label birthday}Datum narození{/label}
-                        </div>
-                        *}
                     </div>
+                        *}
                 </div>
             </div>
+        </div>
         </div>
         <div class="row">
             <div class="col s12 l6">
@@ -61,7 +61,7 @@
                 {*<div class="card flex-column">
                     <div class="card-header">
                         <h2>Oznámení</h2>
-                    </div>
+            </div>
                     <div class="card-content">
                         <div class="form-row">
                             <p class="secondary-par">Vybraná oznámení chci zasílat také e-mailem</p>
@@ -204,6 +204,11 @@
                         $('#group-leave-confirm-modal').modal('open');
                     }
                 });
+                
+                $("#profile-image-button").on('click', function(event) {
+                    event.preventDefault();
+                    $('#change-user-avatar-modal').modal('open');
+                });
                 function confirmDelete(modal) {
                     var id = $('#' + modal).data('group-id');
                     $('li.group-list[data-group-id="' + id + '"]').hide();
@@ -245,12 +250,60 @@
         </div>
     </div>
 {/form}
+<div id="change-user-avatar-modal" class="modal modal-small dropzone-modal" >
+    {form avatarForm}
+        <div class="modal-content">
+            <h3>Změnit avatar</h3>
+            <p>Vyberte si nový avatar nebo <a class="upload-avatar" href="javascript:void();">nahrajte vlastní fotografii</a>.</p>
+            <ul class="choose-avatar">
+                    <li class="flex-spacer"></li>
+                    {foreach $form['avatar']->items as $key=>$item}
+                        <li class="avatar">
+                            <label n:name="avatar:$key">
+                                <input n:name="avatar:$key" />
+                                <img src="{$item|noescape}" >
+                            </label>
+                        </li>
+                    {/foreach}
+                    <li class="flex-spacer"></li>
+            </ul>
+            <script type="text/javascript">
+                $(".choose-avatar input:checked").closest("label").find('img').addClass('selected');
+                $(".choose-avatar input").on('change', function() {
+                    $(".choose-avatar img").removeClass('selected');
+                    $(this).closest("label").find('img').addClass('selected');
+                    $('form button').prop('disabled', false);
+                });
+                $(".upload-avatar").on('click', function(e) {
+                    e.preventDefault();
+                    $("#change-user-avatar-dropzone").click();
+                });
+            </script>
+        </div>
+        <div class="modal-footer">
+            <div class="flex-spacer"></div>
+            <div class="form-control">
+                <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                <button type="submit" class="waves-effect waves-light btn modal-close btn-confirm" >Potvrdit</button>
+            </div>
+        </div>
+    {/form}
+    <div id="change-user-avatar-dropzone" class="dropzone-area" ></div>
+</div>
 </section>
-
 <script>
     $(function () {
-        datepicker();
-        var profileImage = new Dropzone("#profile-image-button", {
+        $('#change-user-avatar-modal').modal();
+        datepicker();        
+        var timeout = true;
+        $('body, .dropzone-area').on('dragover', function (event) {
+            clearTimeout(timeout);
+            $(".dropzone-modal").addClass('active');
+            timeout = setTimeout(function () {
+                $(".dropzone-modal").removeClass('active');
+            }, 1000);
+        });
+        var profileImage = new Dropzone("#change-user-avatar-dropzone", {
             url: {link uploadProfileImage!},
             previewTemplate: '<div id="preview-template" style="display: none;"></div>'
         });
@@ -262,8 +315,8 @@
             if(image.snippets) {
                 $("#snippet--flashMessages").html(image.snippets['snippet--flashMessages']);
             }
+            $('#change-user-avatar-modal').modal('close');
         });
-        
         var backgroundImage = new Dropzone("#background-image-button", {
             url: {link uploadBackgroundImage!},
             previewTemplate: '<div id="preview-template" style="display: none;"></div>'

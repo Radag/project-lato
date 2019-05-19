@@ -10,7 +10,7 @@ class AccountActivated extends \App\Components\BaseComponent
     /** @var UserManager $userManager */
     public $userManager;
 
-    public $avatarList = [
+    public static $avatarList = [
         "/images/default_avatars/male_1.png",
 	"/images/default_avatars/female_2.png",
 	"/images/default_avatars/male_3.png",
@@ -35,7 +35,7 @@ class AccountActivated extends \App\Components\BaseComponent
     {
         $form = $this->getForm();
         
-        $form->addRadioList('avatar', 'avatar', $this->avatarList)
+        $form->addRadioList('avatar', 'avatar', self::$avatarList)
              ->setRequired();
         
         $form->addSubmit('submit', 'Odeslat');

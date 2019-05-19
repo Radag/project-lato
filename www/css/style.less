@@ -5658,3 +5658,21 @@ nav .nav-title {
         }
     }
 }
+
+.dropzone-modal {
+    .dropzone-area {
+        display: none;
+    }    
+    &.active .dropzone-area {
+        display: block;
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        background-color: white;
+        top: 0px;
+        left: 0;
+        z-index: 9;
+        border: 3px solid grey;
+        border-style: dashed;
+    } 
+}

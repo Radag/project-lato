@@ -181,4 +181,20 @@ class AccountSettings extends \App\Components\BaseComponent
             $this->presenter->sendPayload();
         }
     }
+    
+    protected function createComponentAvatarForm()
+    {
+        $form = $this->getForm();
+        
+        $form->addRadioList('avatar', 'avatar', AccountActivated::$avatarList)
+             ->setRequired();
+        
+        $form->addSubmit('submit', 'Odeslat');
+        $form->onSuccess[] = function($form, $values) {
+            $file = ['fullPath' => "https://www.lato.cz" . AccountActivated::$avatarList[$values->avatar]];
+            $this->userManager->assignProfileImage($this->presenter->activeUser, $file);
+            $this->presenter->redirect('this');
+        };
+        return $form;        
+    }
 }
