@@ -4042,6 +4042,33 @@ nav .nav-title {
             }
         }
     }
+
+    #change-user-avatar-modal {
+
+        .choose-avatar {
+            display: flex;
+            align-items: flex-start;
+            margin: 24px 0;
+
+            label {
+                height: 100%;
+            }
+
+            .avatar img {
+                opacity: .5;
+                cursor: pointer;
+                -webkit-transition: opacity 300ms ease-in-out;
+                -moz-transition: opacity 300ms ease-in-out;
+                -o-transition: opacity 300ms ease-in-out;
+                transition: opacity 300ms ease-in-out;
+
+                &.selected,
+                &:hover {
+                    opacity: 1;
+                }
+            }            
+        }
+    }
 }
 
 /* ----- ABOUT ----- */
