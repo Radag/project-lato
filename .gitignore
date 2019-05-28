@@ -13,3 +13,5 @@ composer.lock
 /temp/cache/
 /temp/
 /node_modules
+
+\.DS_Store

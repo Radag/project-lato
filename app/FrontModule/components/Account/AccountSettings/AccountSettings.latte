@@ -256,16 +256,14 @@
             <h3>Změnit avatar</h3>
             <p>Vyberte si nový avatar nebo <a class="upload-avatar" href="javascript:void();">nahrajte vlastní fotografii</a>.</p>
             <ul class="choose-avatar">
-                    <li class="flex-spacer"></li>
                     {foreach $form['avatar']->items as $key=>$item}
-                        <li class="avatar">
+                        <li class="avatar large">
                             <label n:name="avatar:$key">
                                 <input n:name="avatar:$key" />
                                 <img src="{$item|noescape}" >
                             </label>
                         </li>
                     {/foreach}
-                    <li class="flex-spacer"></li>
             </ul>
             <script type="text/javascript">
                 $(".choose-avatar input:checked").closest("label").find('img').addClass('selected');
