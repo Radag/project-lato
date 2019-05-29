@@ -71,7 +71,8 @@ class FileManager extends BaseManager
     ];
     const FILE_TYPE_OTHER = 'other';
     
-    const USER_DIRECTORY = '/var/www/cdn/users/';
+    const USER_DIRECTORY = '/users/';
+    const FILES_DIRECTORY = '/files/';
     
     const STORAGE_LIMIT = 524288000;
     const FILE_LIMIT = 52428800;
@@ -83,8 +84,8 @@ class FileManager extends BaseManager
         $file = $this->db->fetch('SELECT * FROM file_list WHERE id=?', $idFile);
         if($file) {
             $connId = $this->getFtpConnection();
-            if(ftp_size($connId , '/var/www/cdn/' . $file['path'] . '/' . $file['filename']) !== -1) {
-                ftp_delete($connId, '/var/www/cdn/' . $file['path'] . '/' . $file['filename']);
+            if(ftp_size($connId , self::FILES_DIRECTORY . $file['path'] . '/' . $file['filename']) !== -1) {
+                ftp_delete($connId, self::FILES_DIRECTORY . $file['path'] . '/' . $file['filename']);
             }
             $this->deleteFile($idFile);
         }
@@ -107,7 +108,7 @@ class FileManager extends BaseManager
     public function saveFile(Nette\Http\FileUpload $file, $path, $restrictions = []) 
     {
         $connId = $this->getFtpConnection();
-        $createdDirecories = ftp_nlist($connId , self::USER_DIRECTORY . $this->user->getIdentity()->data['slug']);
+        $createdDirecories = ftp_nlist($connId , self::FILES_DIRECTORY . self::USER_DIRECTORY . $this->user->getIdentity()->data['slug']);
         if(empty($createdDirecories)) {
             $this->createUserDirectories($connId);
         }
@@ -118,10 +119,10 @@ class FileManager extends BaseManager
                 $preview->resize($restrictions['width'], $restrictions['height'], Nette\Utils\Image::EXACT);          
                 $previewName = $this->getFileName($file);
                 if(!\Tracy\Debugger::isEnabled()) {
-                    $preview->save('/var/www/cdn/' . $path . '/' . $previewName, 100);
+                    $preview->save(self::FILES_DIRECTORY . $path . '/' . $previewName, 100);
                 } else {
                     $preview->save(TEMP_DIR . '/' . $previewName, 100);
-                    ftp_put($connId, '/var/www/cdn/' . $path . '/' . $previewName, TEMP_DIR . '/' . $previewName, FTP_BINARY);
+                    ftp_put($connId, self::FILES_DIRECTORY . $path . '/' . $previewName, TEMP_DIR . '/' . $previewName, FTP_BINARY);
                     unlink(TEMP_DIR . '/' . $previewName);
                 }
                 $return['fileName'] = $file->getName();
@@ -132,7 +133,7 @@ class FileManager extends BaseManager
         } else {
             $date = new \DateTime();
             $timestamp = $date->getTimestamp();
-            if (ftp_put($connId, '/var/www/cdn/' . $path . '/' . $timestamp . '_' . $file->getSanitizedName(), $file->getTemporaryFile(), FTP_BINARY)) {
+            if (ftp_put($connId, self::FILES_DIRECTORY . $path . '/' . $timestamp . '_' . $file->getSanitizedName(), $file->getTemporaryFile(), FTP_BINARY)) {
                 $return['fileName'] = $file->getName();
                 $return['type'] = $file->getContentType();
                 $return['fullPath'] = 'https://cdn.lato.cz/' . $path . '/' .  $timestamp . '_' . $file->getSanitizedName();
@@ -146,7 +147,7 @@ class FileManager extends BaseManager
     public function uploadFile(Nette\Http\FileUpload $file, $path)
     { 
         $connId = $this->getFtpConnection();
-        $createdDirecories = ftp_nlist($connId , self::USER_DIRECTORY . $this->user->getIdentity()->data['slug']);
+        $createdDirecories = ftp_nlist($connId , self::FILES_DIRECTORY . self::USER_DIRECTORY . $this->user->getIdentity()->data['slug']);
         if(empty($createdDirecories)) {
             $this->createUserDirectories($connId);
         }
@@ -165,9 +166,9 @@ class FileManager extends BaseManager
         } elseif ($file->getSize()) {
             $filename = $this->getFileName($file);
             if(!\Tracy\Debugger::isEnabled()) {
-                $file->move('/var/www/cdn/' . $path . '/' . $filename);
+                $file->move(self::FILES_DIRECTORY . $path . '/' . $filename);
             } else {
-                ftp_put($connId, '/var/www/cdn/' . $path . '/' . $filename, $file->getTemporaryFile(), FTP_BINARY);
+                ftp_put($connId, self::FILES_DIRECTORY . $path . '/' . $filename, $file->getTemporaryFile(), FTP_BINARY);
             }
             
             if(in_array($file->getContentType(), self::FILE_TYPE_DOCUMENT['types'])) {
@@ -186,10 +187,10 @@ class FileManager extends BaseManager
                 $preview->resize(500, 500, Nette\Utils\Image::SHRINK_ONLY);          
                 $previewName = 'p_' . $filename;
                 if(!\Tracy\Debugger::isEnabled()) {
-                    $preview->save('/var/www/cdn/' . $path . '/' . $previewName, 80);
+                    $preview->save(self::FILES_DIRECTORY . $path . '/' . $previewName, 80);
                 } else {
                     $preview->save(TEMP_DIR . '/' . $previewName, 80);
-                    ftp_put($connId, '/var/www/cdn/' . $path . '/' . $previewName, TEMP_DIR . '/' . $previewName, FTP_BINARY);
+                    ftp_put($connId, self::FILES_DIRECTORY . $path . '/' . $previewName, TEMP_DIR . '/' . $previewName, FTP_BINARY);
                     unlink(TEMP_DIR . '/' . $previewName);
                 }
                 $newFile['PREVIEW'] = [
