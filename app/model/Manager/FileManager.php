@@ -107,11 +107,18 @@ class FileManager extends BaseManager
     
     public function saveFile(Nette\Http\FileUpload $file, $path, $restrictions = []) 
     {
-        $connId = $this->getFtpConnection();
-        $createdDirecories = ftp_nlist($connId , self::FILES_DIRECTORY . self::USER_DIRECTORY . $this->user->getIdentity()->data['slug']);
-        if(empty($createdDirecories)) {
-            $this->createUserDirectories($connId);
-        }
+        if(!\Tracy\Debugger::isEnabled()) {
+            $createdDirecories = file_exists(self::FILES_DIRECTORY . self::USER_DIRECTORY . $this->user->getIdentity()->data['slug']);
+            if(!$createdDirecories) {
+                $this->createUserDirectories();
+            }
+        } else {
+            $connId = $this->getFtpConnection();
+            $createdDirecories = ftp_nlist($connId , self::FILES_DIRECTORY . self::USER_DIRECTORY . $this->user->getIdentity()->data['slug']);
+            if(empty($createdDirecories)) {
+                $this->createUserDirectories($connId);
+            }
+        }        
         
         if(isset($restrictions['type'])) {
             if($file->isImage() && in_array($file->getContentType(), $restrictions['type'])) {
@@ -132,26 +139,41 @@ class FileManager extends BaseManager
             }
         } else {
             $date = new \DateTime();
-            $timestamp = $date->getTimestamp();
-            if (ftp_put($connId, self::FILES_DIRECTORY . $path . '/' . $timestamp . '_' . $file->getSanitizedName(), $file->getTemporaryFile(), FTP_BINARY)) {
+            if(!\Tracy\Debugger::isEnabled()) {
+                $file->move(self::FILES_DIRECTORY . $path . '/' . $timestamp . '_' . $file->getSanitizedName());
                 $return['fileName'] = $file->getName();
                 $return['type'] = $file->getContentType();
                 $return['fullPath'] = 'https://cdn.lato.cz/' . $path . '/' .  $timestamp . '_' . $file->getSanitizedName();
                 return $return; 
             } else {
-                return false;
+                $timestamp = $date->getTimestamp();
+                if (ftp_put($connId, self::FILES_DIRECTORY . $path . '/' . $timestamp . '_' . $file->getSanitizedName(), $file->getTemporaryFile(), FTP_BINARY)) {
+                    $return['fileName'] = $file->getName();
+                    $return['type'] = $file->getContentType();
+                    $return['fullPath'] = 'https://cdn.lato.cz/' . $path . '/' .  $timestamp . '_' . $file->getSanitizedName();
+                    return $return; 
+                } else {
+                    return false;
+                }
             }
         }        
     }
     
     public function uploadFile(Nette\Http\FileUpload $file, $path)
     { 
-        $connId = $this->getFtpConnection();
-        $createdDirecories = ftp_nlist($connId , self::FILES_DIRECTORY . self::USER_DIRECTORY . $this->user->getIdentity()->data['slug']);
-        if(empty($createdDirecories)) {
-            $this->createUserDirectories($connId);
+        if(!\Tracy\Debugger::isEnabled()) {
+            $createdDirecories = file_exists(self::FILES_DIRECTORY . self::USER_DIRECTORY . $this->user->getIdentity()->data['slug']);
+            if(!$createdDirecories) {
+                $this->createUserDirectories();
+            }
+        } else {
+            $connId = $this->getFtpConnection();
+            $createdDirecories = ftp_nlist($connId , self::FILES_DIRECTORY . self::USER_DIRECTORY . $this->user->getIdentity()->data['slug']);
+            if(empty($createdDirecories)) {
+                $this->createUserDirectories($connId);
+            }
         }
-        
+       
         $date = new \DateTime();
         $timestamp = $date->getTimestamp();
         $return = [
@@ -234,11 +256,18 @@ class FileManager extends BaseManager
         return $this->ftpSender->getConnection();
     }
 
-    protected function createUserDirectories($connId)
+    protected function createUserDirectories($connId = null)
     {
-        ftp_mkdir($connId, self::USER_DIRECTORY . $this->user->getIdentity()->data['slug']);
-        ftp_mkdir($connId, self::USER_DIRECTORY . $this->user->getIdentity()->data['slug'] . '/profile');
-        ftp_mkdir($connId, self::USER_DIRECTORY . $this->user->getIdentity()->data['slug'] . '/files');
+        if($connId) {
+            ftp_mkdir($connId, self::USER_DIRECTORY . $this->user->getIdentity()->data['slug']);
+            ftp_mkdir($connId, self::USER_DIRECTORY . $this->user->getIdentity()->data['slug'] . '/profile');
+            ftp_mkdir($connId, self::USER_DIRECTORY . $this->user->getIdentity()->data['slug'] . '/files');
+        } else {
+            mkdir(self::USER_DIRECTORY . $this->user->getIdentity()->data['slug']);
+            mkdir(self::USER_DIRECTORY . $this->user->getIdentity()->data['slug'] . '/profile');
+            mkdir(self::USER_DIRECTORY . $this->user->getIdentity()->data['slug'] . '/files');
+        }
+        
     }
 
     protected function saveNewFile($file)
