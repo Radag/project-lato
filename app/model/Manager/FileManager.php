@@ -71,12 +71,13 @@ class FileManager extends BaseManager
     ];
     const FILE_TYPE_OTHER = 'other';
     
-    const USER_DIRECTORY = '/users/';
+    const USER_DIRECTORY = 'users/';
     const FILES_DIRECTORY = '/files/';
     
     const STORAGE_LIMIT = 524288000;
     const FILE_LIMIT = 52428800;
      
+    const USE_FTP = false;
     
     public function removeFile($idFile)
     {
@@ -107,7 +108,7 @@ class FileManager extends BaseManager
     
     public function saveFile(Nette\Http\FileUpload $file, $path, $restrictions = []) 
     {
-        if(!\Tracy\Debugger::isEnabled()) {
+        if(!self::USE_FTP) {
             $createdDirecories = file_exists(self::FILES_DIRECTORY . self::USER_DIRECTORY . $this->user->getIdentity()->data['slug']);
             if(!$createdDirecories) {
                 $this->createUserDirectories();
@@ -125,7 +126,7 @@ class FileManager extends BaseManager
                 $preview = $file->toImage();
                 $preview->resize($restrictions['width'], $restrictions['height'], Nette\Utils\Image::EXACT);          
                 $previewName = $this->getFileName($file);
-                if(!\Tracy\Debugger::isEnabled()) {
+                if(!self::USE_FTP) {
                     $preview->save(self::FILES_DIRECTORY . $path . '/' . $previewName, 100);
                 } else {
                     $preview->save(TEMP_DIR . '/' . $previewName, 100);
@@ -139,7 +140,7 @@ class FileManager extends BaseManager
             }
         } else {
             $date = new \DateTime();
-            if(!\Tracy\Debugger::isEnabled()) {
+            if(!self::USE_FTP) {
                 $file->move(self::FILES_DIRECTORY . $path . '/' . $timestamp . '_' . $file->getSanitizedName());
                 $return['fileName'] = $file->getName();
                 $return['type'] = $file->getContentType();
@@ -161,7 +162,7 @@ class FileManager extends BaseManager
     
     public function uploadFile(Nette\Http\FileUpload $file, $path)
     { 
-        if(!\Tracy\Debugger::isEnabled()) {
+        if(!self::USE_FTP) {
             $createdDirecories = file_exists(self::FILES_DIRECTORY . self::USER_DIRECTORY . $this->user->getIdentity()->data['slug']);
             if(!$createdDirecories) {
                 $this->createUserDirectories();
@@ -187,7 +188,7 @@ class FileManager extends BaseManager
             return $return;
         } elseif ($file->getSize()) {
             $filename = $this->getFileName($file);
-            if(!\Tracy\Debugger::isEnabled()) {
+            if(!self::USE_FTP) {
                 $file->move(self::FILES_DIRECTORY . $path . '/' . $filename);
             } else {
                 ftp_put($connId, self::FILES_DIRECTORY . $path . '/' . $filename, $file->getTemporaryFile(), FTP_BINARY);
@@ -208,7 +209,7 @@ class FileManager extends BaseManager
                 $preview = $file->toImage();
                 $preview->resize(500, 500, Nette\Utils\Image::SHRINK_ONLY);          
                 $previewName = 'p_' . $filename;
-                if(!\Tracy\Debugger::isEnabled()) {
+                if(!self::USE_FTP) {
                     $preview->save(self::FILES_DIRECTORY . $path . '/' . $previewName, 80);
                 } else {
                     $preview->save(TEMP_DIR . '/' . $previewName, 80);
@@ -258,14 +259,15 @@ class FileManager extends BaseManager
 
     protected function createUserDirectories($connId = null)
     {
-        if($connId) {
+        if($connId !== null) {
             ftp_mkdir($connId, self::USER_DIRECTORY . $this->user->getIdentity()->data['slug']);
             ftp_mkdir($connId, self::USER_DIRECTORY . $this->user->getIdentity()->data['slug'] . '/profile');
             ftp_mkdir($connId, self::USER_DIRECTORY . $this->user->getIdentity()->data['slug'] . '/files');
         } else {
-            mkdir(self::USER_DIRECTORY . $this->user->getIdentity()->data['slug']);
-            mkdir(self::USER_DIRECTORY . $this->user->getIdentity()->data['slug'] . '/profile');
-            mkdir(self::USER_DIRECTORY . $this->user->getIdentity()->data['slug'] . '/files');
+            \Tracy\Debugger::barDump(self::FILES_DIRECTORY . self::USER_DIRECTORY . $this->user->getIdentity()->data['slug']);
+            mkdir(self::FILES_DIRECTORY . self::USER_DIRECTORY . $this->user->getIdentity()->data['slug']);
+            mkdir(self::FILES_DIRECTORY . self::USER_DIRECTORY . $this->user->getIdentity()->data['slug'] . '/profile');
+            mkdir(self::FILES_DIRECTORY . self::USER_DIRECTORY . $this->user->getIdentity()->data['slug'] . '/files');
         }
         
     }
