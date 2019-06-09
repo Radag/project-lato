@@ -72,7 +72,7 @@ class FileManager extends BaseManager
     const FILE_TYPE_OTHER = 'other';
     
     const USER_DIRECTORY = 'users/';
-    const FILES_DIRECTORY = '/files/';
+    const FILES_DIRECTORY = '/files/cdn-lato/';
     
     const STORAGE_LIMIT = 524288000;
     const FILE_LIMIT = 52428800;
