@@ -1,5 +1,6 @@
 {snippet contact-form}
     {form form class=>'ajax'}
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
         <div class="modal-content">
             <h4>Napište nám</h4>
             <p class="note">* Všechna pole formuláře jsou povinná.</p>
@@ -17,7 +18,8 @@
             <div class="form-row input-field">
                 {input text class=>'materialize-textarea'}
                 {label text}Sem napiště Vaši zprávu ...{/label}
-            </div>            
+            </div>
+            <div class="g-recaptcha" data-sitekey="6LcDhq0UAAAAAEVUrw7fZRtr62DlQ0X_y3uFtCZN"></div>            
             <div class="form-row">
                 <button type="submit" class="btn waves-effect waves-light">Odeslat</button>
             </div>
