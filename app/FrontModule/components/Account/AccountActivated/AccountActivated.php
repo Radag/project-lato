@@ -40,7 +40,7 @@ class AccountActivated extends \App\Components\BaseComponent
         
         $form->addSubmit('submit', 'Odeslat');
         $form->onSuccess[] = function($form, $values) {
-            $file = ['fullPath' => "https://www.lato.cz" . $this->avatarList[$values->avatar]];
+            $file = ['fullPath' => "https://www.lato.cz" . self::$avatarList[$values->avatar]];
             $this->userManager->assignProfileImage($this->presenter->activeUser, $file);
             $this->presenter->redirect(':Front:Homepage:noticeboard');
         };
