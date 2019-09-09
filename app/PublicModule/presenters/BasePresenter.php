@@ -57,9 +57,11 @@ class BasePresenter extends Nette\Application\UI\Presenter
         return new LostPasswordForm($this->userManager, $this->mailManager);
     }
     
-    public function flashMessage($message, $type = 'info') {
-        parent::flashMessage($message, $type);
+    public function flashMessage($message, $type = 'info'): \stdClass 
+    {
+        $flash = parent::flashMessage($message, $type);
         $this->redrawControl('flashMessages');
+        return $flash;
     }
     
     public function handleLogout()

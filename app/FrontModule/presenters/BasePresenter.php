@@ -88,9 +88,11 @@ class BasePresenter extends \Nette\Application\UI\Presenter
         $this->redirect('this');
     }
     
-    public function flashMessage($message, $type = 'info') {
-        parent::flashMessage($message, $type);
+    public function flashMessage($message, $type = 'info'): \stdClass 
+    {
+        $flash = parent::flashMessage($message, $type);
         $this->redrawControl('flashMessages');
+        return $flash;
     }
     
     public function redrawTasks()    {

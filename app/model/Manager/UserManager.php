@@ -4,6 +4,7 @@ namespace App\Model\Manager;
 
 use Nette;
 use Nette\Security\Passwords;
+use Nette\Security\IIdentity;
 use App\Model\Entities\User;
 
 class UserManager implements Nette\Security\IAuthenticator
@@ -22,17 +23,18 @@ class UserManager implements Nette\Security\IAuthenticator
 
     public $freeLogin = false;
     
-    public function authenticate(array $credentials)
+    public function authenticate(array $credentials): IIdentity
     {
+        $passwords = new Passwords();
         list($email, $password) = $credentials;
         $row = $this->db->fetch("SELECT * FROM user_real JOIN user USING (id) WHERE email=?", $email);
         if(!$this->freeLogin) {
             if (!$row) {
                 throw new Nette\Security\AuthenticationException('Špatné uživatelské jméno nebo heslo.', self::IDENTITY_NOT_FOUND);
-            } elseif (!Passwords::verify($password, $row->password)) {
+            } elseif (!$passwords->verify($password, $row->password)) {
                 throw new Nette\Security\AuthenticationException('Špatné uživatelské jméno nebo heslo.', self::INVALID_CREDENTIAL);
-            } elseif (Passwords::needsRehash($row->password)) {
-                $this->db->query("UPDATE user_real ", ['password' => Passwords::hash($password)], "WHERE id=?", $row->id);
+            } elseif ($passwords->needsRehash($row->password)) {
+                $this->db->query("UPDATE user_real ", ['password' => $passwords->hash($password)], "WHERE id=?", $row->id);
             }
         }
         
@@ -51,6 +53,7 @@ class UserManager implements Nette\Security\IAuthenticator
     public function add($values)
     {
         try {
+            $passwords = new Passwords();
             $this->db->begin();
             $this->db->query("INSERT INTO user", [
                 'name' => $values->name,
@@ -60,7 +63,7 @@ class UserManager implements Nette\Security\IAuthenticator
             
             $this->db->query("INSERT INTO user_real", [
                 'email' => $values->email,
-                'password' => Passwords::hash($values->password1),
+                'password' => $passwords->hash($values->password1),
                 'register_ip' => $_SERVER['REMOTE_ADDR'],
                 'id' => $idUser
             ]);
@@ -76,7 +79,8 @@ class UserManager implements Nette\Security\IAuthenticator
     
     public function updatePassword(User $user, $password) 
     {
-        $this->db->query("UPDATE user_real SET ", ['password' =>  Passwords::hash($password)], "WHERE id=?", $user->id);
+        $passwords = new Passwords();
+        $this->db->query("UPDATE user_real SET ", ['password' => $passwords->hash($password)], "WHERE id=?", $user->id);
     }
 
     public function get($idUser, $slug = false, $includeFictive = false)
