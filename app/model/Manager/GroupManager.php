@@ -56,16 +56,16 @@ class GroupManager extends BaseManager {
             }
         }
         
-        $slug = $group->id . '_' . \Nette\Utils\Strings::webalize($group->name);
+        $group->slug = $group->id . '_' . \Nette\Utils\Strings::webalize($group->name);
         $this->db->query("UPDATE `group` SET", [
             'code' => $code,
-            'slug' => $slug
+            'slug' => $group->slug
         ], "WHERE id=?", $group->id);
         
         $this->addUserToGroup($group, $group->owner->id, self::RELATION_OWNER);
         $this->addGroupPeriod($group, 'První období', 1);
         $this->db->commit();
-        return $slug;
+        return $group;
     }
     
     public function addUserToGroup(Entities\Group $group, $userId, $relation, $fromLink = 0, $notificationManager = null)
