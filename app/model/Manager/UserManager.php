@@ -143,7 +143,7 @@ class UserManager implements Nette\Security\IAuthenticator
         $this->db->query("UPDATE user_real SET", [
             'email_notification' => $values['emailNotification'],
             'email' => $values['email'],
-            'birthday' => $values['birthday']
+            'birthday' => $values['birthday'] ? $values['birthday'] : null
         ], "WHERE id=?", $user->id);
     }
 
