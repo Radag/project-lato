@@ -63,7 +63,7 @@
 {/define}
 {define messageAttachments}
     <div class="card-content">
-        <p>{$message->text|breaklines}</p>
+        <p class="message-text">{$message->text|breaklines}</p>
         {if isset($message->attachments['files']) && !empty($message->attachments['files']) }
         <ul class="attachments">
             {foreach $message->attachments['files'] as $file}
