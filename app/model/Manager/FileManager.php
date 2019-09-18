@@ -184,7 +184,7 @@ class FileManager extends BaseManager
             $return['message'] = 'Soubor nesmí být větší než 50Mb.';
             return $return;
         } elseif (!$file->getSize()) {
-            $return['message'] = 'Soubor nesmí být větší než 50Mb.';
+            $return['message'] = 'Nastala chyba při uploadu souboru: ' . $file->getError();
             return $return;
         } elseif ($file->getSize()) {
             $filename = $this->getFileName($file);
@@ -321,6 +321,24 @@ class FileManager extends BaseManager
     public function getFile($id)
     {
         $attach = $this->db->fetch("SELECT * FROM file_list WHERE id=?", $id);
+        return (object)[
+            'type' => $attach->type,
+            'extension' => $attach->extension,
+            'fullPath' => $attach->full_path,
+            'mime' => $attach->mime,
+            'filename' => $attach->filename,  
+            'fileId' => $attach->id,
+            'created' => $attach->created_when,
+            'name' => $attach->name 
+        ];
+    }
+    
+    public function getFileByName($name)
+    {
+        $attach = $this->db->fetch("SELECT * FROM file_list WHERE filename=?", $name);
+        if(!$attach) {
+            return null;
+        }
         return (object)[
             'type' => $attach->type,
             'extension' => $attach->extension,
