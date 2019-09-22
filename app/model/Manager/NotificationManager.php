@@ -48,7 +48,7 @@ class NotificationManager extends BaseManager
     {
         $this->db->query("INSERT INTO notification", [
             'user_id' => $notification->idUser,
-            'text' => $notification->text,
+            'text' => mb_substr($notification->text, 0, 255),
             'title' => $notification->title,
             'data' => $notification->data,
             'type' => $notification->type,

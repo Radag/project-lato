@@ -29,9 +29,10 @@ class CommentForm extends \App\Components\BaseComponent
         $form = $this->getForm();
         $form->getElementPrototype()->class('ajax');
         $form->addTextArea('text', 'Zpráva')
-                ->setAttribute('placeholder', 'Napište komentář ...')
-            ->setRequired('Napište zprávu')
-            ->addRule(\Nette\Forms\Form::FILLED, 'Zpráva musí obsahovat text');
+             ->setAttribute('placeholder', 'Napište komentář ...')
+             ->setMaxLength(300)
+             ->setRequired('Napište zprávu')
+             ->addRule(\Nette\Forms\Form::FILLED, 'Zpráva musí obsahovat text');
         $form->addHidden('idMessage', $this->message->id);
         $form->addSubmit('send', 'Publikovat');
         //$link = $this->presenter->link('this', array('id'=>$this->getParent()->getParent()->getActiveGroup()->id));

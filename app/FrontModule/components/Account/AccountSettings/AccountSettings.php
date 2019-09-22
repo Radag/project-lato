@@ -168,6 +168,11 @@ class AccountSettings extends \App\Components\BaseComponent
     public function handleUploadBackgroundImage()
     {
         $files = $this->presenter->getRequest()->getFiles();
+        if(!$files['file']) {
+            $this->presenter->flashMessage('Chyba při nahrávání souboru.', 'error');
+            $this->presenter->sendPayload();
+            return;
+        }
         $image = Image::fromFile($files['file']);
         if($image->width < 1156 ||  $image->height < 420) {
             $this->presenter->flashMessage('Velikost obrázku musí být alespoň 1156 × 420 pixelů', 'error');

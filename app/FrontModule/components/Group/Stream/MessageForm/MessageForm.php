@@ -321,7 +321,7 @@ class MessageForm extends \App\Components\BaseComponent
         if($this->fileManager->isStorageOfLimit($this->presenter->activeUser->id)) {
             $this->getPresenter()->payload->message = 'Již jste překročili limit úložiště.';
             $this->getPresenter()->payload->error = true;            
-        } else {            
+        } elseif($file['file']) {            
             $path = 'users/' . $this->presenter->activeUser->slug . '/files';       
             $uploadedFile = $this->fileManager->uploadFile($file['file'], $path);
             if($uploadedFile['success']) {
@@ -330,6 +330,9 @@ class MessageForm extends \App\Components\BaseComponent
                 $this->getPresenter()->payload->error = true;
                 $this->getPresenter()->payload->message = $uploadedFile['message'];
             }
+        } else {
+            $this->getPresenter()->payload->error = true;
+            $this->getPresenter()->payload->message = "Soubor se nepodařilo nahrát.";
         }
                
         $this->getPresenter()->sendPayload();
