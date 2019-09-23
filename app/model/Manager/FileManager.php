@@ -83,11 +83,17 @@ class FileManager extends BaseManager
     {
         $this->db->begin();
         $file = $this->db->fetch('SELECT * FROM file_list WHERE id=?', $idFile);
-        if($file) {
-            $connId = $this->getFtpConnection();
-            if(ftp_size($connId , self::FILES_DIRECTORY . $file['path'] . '/' . $file['filename']) !== -1) {
-                ftp_delete($connId, self::FILES_DIRECTORY . $file['path'] . '/' . $file['filename']);
-            }
+        if($file) {            
+            if(!self::USE_FTP) {
+                if(file_exists(self::FILES_DIRECTORY . $file['path'] . '/' . $file['filename'])) {
+                    unlink(self::FILES_DIRECTORY . $file['path'] . '/' . $file['filename']);
+                }                
+            } else {
+                $connId = $this->getFtpConnection();
+                if(ftp_size($connId , self::FILES_DIRECTORY . $file['path'] . '/' . $file['filename']) !== -1) {
+                    ftp_delete($connId, self::FILES_DIRECTORY . $file['path'] . '/' . $file['filename']);
+                } 
+            }            
             $this->deleteFile($idFile);
         }
         $this->db->commit();

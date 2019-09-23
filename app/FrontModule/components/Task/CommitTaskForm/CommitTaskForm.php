@@ -106,12 +106,17 @@ class CommitTaskForm extends \App\Components\BaseComponent
         $file = $this->getPresenter()->request->getFiles();
         $path = 'users/' . $this->presenter->activeUser->slug . '/files';
         
-        $uploadedFile = $this->fileManager->uploadFile($file['file'], $path); 
-        if($uploadedFile['success']) {
-            $this->getPresenter()->payload->file = $uploadedFile;
+        if(isset($file['file'])) {
+            $uploadedFile = $this->fileManager->uploadFile($file['file'], $path); 
+            if($uploadedFile['success']) {
+                $this->getPresenter()->payload->file = $uploadedFile;
+            } else {
+                $this->getPresenter()->payload->error = true;
+                $this->getPresenter()->payload->message = $uploadedFile['message'];
+            }
         } else {
             $this->getPresenter()->payload->error = true;
-            $this->getPresenter()->payload->message = $uploadedFile['message'];
+            $this->getPresenter()->payload->message = "Došlo k chybě při ukládání souboru.";
         }
         
         $this->getPresenter()->sendPayload();
