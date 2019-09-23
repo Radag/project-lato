@@ -14,7 +14,7 @@ function setUploadForm(uploadDropzoneId, config) {
     var uploadsFiles = {};
     
     var uploadContent = new Dropzone(uploadDropzoneId, {
-        maxFilesize: 100,
+        timeout: 0,
         url: config.links.upload,
         previewTemplate: '<div id="preview-template" classs="hide"></div>'
     });
