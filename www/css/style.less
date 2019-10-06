@@ -452,6 +452,10 @@ strong {
         border: 1px solid @line-color;
     }
 
+    &.card-bottom {
+        padding: 0;
+    }
+
     i {
         font-size: 24px;
     }
@@ -549,6 +553,11 @@ strong {
 [type="checkbox"].filled-in:checked+label:after,
 [type="checkbox"].filled-in:checked+label:before {
     top: 2px;
+}
+
+[type="checkbox"].filled-in:disabled:not(:checked) + span:not(.lever):after {
+  border-color: transparent;
+  background-color: rgba(0, 0, 0, .1);
 }
 
 .switch-row {
@@ -5985,6 +5994,47 @@ nav .nav-title {
             &.btn {
                 margin: 48px 0 24px 0;
                 text-decoration: none;
+            }
+        }
+    }
+}
+
+#test-creation {
+
+    .question-form-row {
+        display: flex;
+
+        label > span {
+            margin: .75rem 0;
+        }
+
+        .question-option {
+            margin-top: 0;
+            flex-grow: 1;
+        }
+    }
+
+    
+
+    #add-question {
+        font-size: 1rem;
+        color: @secondary-text-color;
+        cursor: pointer;
+        -webkit-transition:  300ms ease-in-out;
+        -moz-transition:  300ms ease-in-out;
+        -o-transition:  300ms ease-in-out;
+        transition:  300ms ease-in-out;
+
+        &:hover {
+            color: @primary-text-color;
+        }
+
+        .card-content {
+            display: flex;
+            align-items: center;
+
+            i.material-icons {
+                margin-right: .75rem;
             }
         }
     }
