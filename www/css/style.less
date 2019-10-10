@@ -5954,7 +5954,7 @@ nav .nav-title {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 16px auto 32px auto;
+            margin: 1rem auto 2rem auto;
             width: 96px;
             height: 96px;
             border-radius: 50%;
@@ -5978,7 +5978,7 @@ nav .nav-title {
         }
 
         h2 {
-            margin: 0 0 8px 0;
+            margin: 0 0 .5rem 0;
             font-size: 1.25rem;
             font-weight: 500;
         }
@@ -5992,7 +5992,7 @@ nav .nav-title {
             text-decoration: underline;
 
             &.btn {
-                margin: 48px 0 24px 0;
+                margin: 3rem 0 1.5rem 0;
                 text-decoration: none;
             }
         }
@@ -6001,8 +6001,36 @@ nav .nav-title {
 
 #test-creation {
 
+    .card {
+        .drag-card {
+            position: absolute;
+            width: 100%;
+            top: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            cursor: pointer;
+            padding: .25rem 0;
+
+            i {
+                font-size: 1.25rem;
+                transform: rotate(90deg);
+                color: rgba(0, 0, 0, .25);
+            }
+        }
+    }
+
+    
+
+
+
     .question-form-row {
         display: flex;
+        position: relative;
+        -webkit-transition:  300ms ease-in-out;
+        -moz-transition:  300ms ease-in-out;
+        -o-transition:  300ms ease-in-out;
+        transition:  300ms ease-in-out;
 
         label > span {
             margin: .75rem 0;
@@ -6011,6 +6039,36 @@ nav .nav-title {
         .question-option {
             margin-top: 0;
             flex-grow: 1;
+
+
+        }
+
+        .remove {
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            color: @secondary-text-color;
+            margin: .75rem 0;
+            opacity: 0;
+            -webkit-transition:  300ms ease-in-out;
+            -moz-transition:  300ms ease-in-out;
+            -o-transition:  300ms ease-in-out;
+            transition:  300ms ease-in-out;
+
+            &:hover {
+                color: @primary-text-color;
+            }
+        }
+
+        &:hover .remove {
+            display: block;
+            opacity: 1;
+            width: 24px;
+        }
+
+        &.filled:hover {
+            padding-right: 2rem;
         }
     }
 

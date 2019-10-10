@@ -15,10 +15,13 @@
 
 /* ----- MATERIALIZE ----- */
 
+html {
+    font-size: 100%;
+}
+
 body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-size: 16px;
     line-height: 1.6em;
     font-family: 'Roboto', 'Open sans', sans-serif;
 
@@ -33,11 +36,11 @@ body {
 .container {
     width:100%;
     max-width:1080px;
-    padding:0 32px;
+    padding:0 2rem;
 
     @media only screen and (max-width: 600px) {
         & {
-            padding: 0 24px;
+            padding: 0 1.5rem;
         }
     }
 
@@ -83,12 +86,12 @@ a {
 
 p {
     color: @secondary-text-color;
-    font-size: 15px;
-    margin: 16px 0;
+    font-size: .9375rem;
+    margin: 1rem 0;
 
     @media only screen and (max-width: 600px) {
         & {
-            font-size: 14px;
+            font-size: .875rem;
         }
     }
 }
@@ -97,13 +100,13 @@ h2 {
     text-align: center;
     font-weight: 400;
     color: rgba(0, 0, 0, .87);
-    font-size: 30px;
+    font-size: 2rem;
     line-height: 1.6em;
     margin: 0; 
 
     @media only screen and (max-width: 600px) {
         & {
-            font-size: 24px
+            font-size: 1.5rem;
         }
     }   
 }
@@ -111,14 +114,14 @@ h2 {
 h3 {
     color: @secondary-text-color;
     text-align: center;
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 1.6em;
-    margin: 20px 0 56px 0;
+    margin: 1.25rem 0 3.5rem 0;
 
     @media only screen and (max-width: 600px) {
         & {
-            font-size: 14px;
-            margin: 8px 0 24px 0;
+            font-size: .875rem;
+            margin: .5rem 0 1.5rem 0;
         }
     }
 
@@ -127,7 +130,7 @@ h3 {
 
         @media only screen and (max-width: 600px) {
             & {
-                margin-top: 8px;
+                margin-top: .5rem;
             }
         }
     }
@@ -153,14 +156,14 @@ input[type=datetime-local]:not(.browser-default),
 input[type=tel]:not(.browser-default),
 input[type=number]:not(.browser-default),
 input[type=search]:not(.browser-default) {
-    font-size: 16px;
+    font-size: 1rem;
     border-bottom: 1px solid @line-color;
     margin-bottom: 0;
     height: 45px;
 
     @media only screen and (max-width: 992px) {
         &, &, &, &, &, &, &, &, &, &, &, & {
-            font-size: 16px;
+            font-size: 1rem;
         }
     }
 }
@@ -168,12 +171,12 @@ input[type=search]:not(.browser-default) {
 textarea.materialize-textarea {
     border-bottom: 1px solid rgba(0, 0, 0, .12);
     min-height: 7.5em;
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 1.6em;
 
     @media only screen and (max-width: 992px) {
         & {
-            font-size: 16px;
+            font-size: 1rem;
         }
     }
 }
@@ -242,7 +245,7 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 }
 
 .btn {
-    font-size: 15px;
+    font-size: .9375rem;
     padding: 0 1em;
     border-radius: 3px;
     font-weight: 500;
@@ -252,7 +255,7 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 
     @media only screen and (max-width: 600px) {
         & {
-            font-size: 14px;
+            font-size: .875rem;
             height: 36px;
             line-height: 36px;
         }
@@ -274,25 +277,25 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 }
 
 .form-row {
-    font-size: 16px;
+    font-size: 1rem;
     display: flex;
     align-items: center;
-    margin-top: 16px;
-    min-height: 32px;
+    margin-top: 1rem;
+    min-height: 2rem;
 
     &.input-field {
-        margin-top: 24px;
+        margin-top: 1.5rem;
 
         @media only screen and (max-width: 600px) {
             & {
-                margin-top: 32px;
+                margin-top: 2rem;
             }
         }
 
         label {
             color: @secondary-text-color;
             left: 0;
-            font-size: 16px;
+            font-size: 1rem;
 
             &.active {
                 color: rgba(0, 0, 0, .25);
@@ -300,7 +303,7 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 
             @media only screen and (max-width: 600px) {
                 & {
-                    font-size: 14px;
+                    font-size: .875rem;
                 }
             }
         }  
@@ -343,41 +346,41 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
     .modal-content {
 
         h2 {
-            font-size: 25px;
-            margin: 8px 0 24px 0;
+            font-size: 1.5rem;
+            margin: .5rem 0 1.5rem 0;
             color: rgba(0, 0, 0, .87);
 
             @media only screen and (max-width: 600px) {
                 & {
-                    font-size: 22px;
+                    font-size: 1.25rem;
                 }
             }
         }
 
         .errors {
-            font-size: 13px;
+            font-size: .8125rem;
             color: @error-color;
         }
 
         .input-field {
-            margin-top: 24px;
+            margin-top: 1.5rem;
         }
 
         @media only screen and (max-width: 600px) {
             & {
-                padding: 24px 16px;
+                padding: 1.5rem 1rem;
             }
         }
 
         .form-controls {
             display: flex;
-            margin-top: 24px;
-            margin-bottom: 8px;
+            margin-top: 1.5rem;
+            margin-bottom: .5rem;
             justify-content: center;
 
             @media only screen and (max-width: 600px) {
                 & {
-                    margin-top: 24px;
+                    margin-top: 1.5rem;
                 }
             }
 
@@ -389,12 +392,12 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 
                 & label {
                     color: rgba(0, 0, 0, .5);
-                    line-height: 20px;
-                    font-size: 15px;
+                    line-height: 1.333em;
+                    font-size: .9375rem;
 
                     @media only screen and (max-width: 600px) {
                         & {
-                            font-size: 14px;
+                            font-size: .875rem;
                         }
                     }
                 }
@@ -403,24 +406,24 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 
         .bottom-link {
             display: block;
-            margin-top: 48px;
+            margin-top: 2rem;
             text-align: center;
             color: #2979FF;
-            font-size: 14px;
+            font-size: .875rem;
 
             @media only screen and (max-width: 600px) {
                 & {
-                    font-size: 14px;
-                    margin-top: 40px;
+                    font-size: .875rem;
+                    margin-top: 2.5rem;
                 }
             }
         }
 
         .terms-of-use {
-            margin: 8px 0 0 0;
+            margin: .5rem 0 0 0;
 
             span {
-                font-size: 13px;
+                font-size: .8125rem;
             }
         }
     }
@@ -431,12 +434,12 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
         text-transform: uppercase;
         padding: 0;
         height: auto;
-        font-size: 14px;
+        font-size: .875rem;
         font-weight: 500;
 
         @media only screen and (max-width: 600px) {
             & {
-                font-size: 14px;
+                font-size: .875rem;
             }
         }
 
@@ -474,12 +477,12 @@ nav {
 
         @media only screen and (max-width: 600px) {
             & {
-                padding: 0 16px;
+                padding: 0 1rem;
             }
         }
 
         #logo {
-            height: 32px;
+            height: 2rem;
             width: 112px;
             background: url("../images/login/logo.png");
             background-size: cover;
@@ -512,8 +515,8 @@ nav {
 
                 & > a {
                     color: rgba(255, 255, 255, .7);
-                    padding: 0 16px; 
-                    font-size: 14px;
+                    padding: 0 1rem; 
+                    font-size: .875rem;
                     text-transform: uppercase;
 
                     &:hover {
@@ -537,7 +540,7 @@ nav {
 // Page Header
 
 #page-header {
-    background: url('../images/login/header.jpg');
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, .5), rgba(0, 0, 0, 0.5)), url('../images/login/header.jpg');
     background-size: cover;
     background-position: center;
     margin-top: -64px;
@@ -578,12 +581,12 @@ nav {
                 color: #fff;
                 margin: 0;
                 text-align: center;
-                text-shadow: 0 2px 8px rgba(0, 0, 0, .3);
+                text-shadow: 0 2px .5rem rgba(0, 0, 0, .3);
 
                 @media only screen and (max-width: 600px) {
                     & {
                         font-size: 20px;
-                        margin-bottom: 8px;
+                        margin-bottom: .5rem;
                     }
                 }
 
@@ -605,19 +608,19 @@ nav {
                 line-height: 1.6em;
                 font-weight: 400;
                 color: #fff;
-                margin: 8px 0 0 0;
+                margin: .5rem 0 0 0;
                 text-align: center;
                 text-shadow: 0 1px 4px rgba(0, 0, 0, .2);
 
                 @media only screen and (max-width: 600px) {
                     & {
-                        font-size: 16px;
+                        font-size: 1rem;
                     }
                 }
             }
 
             h3 {
-                font-size: 16px;
+                font-size: 1rem;
                 line-height: 1.6em;
                 font-weight: 400;
                 color: #fff;
@@ -627,33 +630,33 @@ nav {
 
                 @media only screen and (max-width: 600px) {
                     & {
-                        font-size: 14px;
+                        font-size: .875rem;
                     }
                 }
             }
 
             .btn-row {
-                margin: 40px 0 48px 0;
+                margin: 40px 0 3rem 0;
                 display: flex;
 
                 @media only screen and (max-width: 600px) {
                     & {
-                        margin: 24px 0 32px 0;
+                        margin: 24px 0 2rem 0;
                         flex-direction: column;
                     }
                 }
 
                 .btn {
-                    height: 48px;
-                    line-height: 48px;
-                    font-size: 16px;
+                    height: 3rem;
+                    line-height: 3rem;
+                    font-size: 1rem;
                     padding: 0 2rem;
                     margin: 0 6px;
 
                     @media only screen and (max-width: 600px) {
                         & {
                             font-weight: 500;
-                            font-size: 15px;
+                            font-size: .9375rem;
                             margin: 6px 0;
                             height: 40px;
                             line-height: 40px;
@@ -664,7 +667,7 @@ nav {
 
             .platforms {
                 width: 120px;
-                height: 32px;
+                height: 2rem;
                 background: url('../images/login/platforms.png');
                 background-size: contain;
                 background-position: center;
@@ -683,7 +686,7 @@ nav {
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 48px 0 48px 0;
+            padding: 48px 0;
 
             @media only screen and (max-width: 600px) {
                 & {
@@ -749,7 +752,7 @@ nav {
 
     @media only screen and (max-width: 600px) {
         & {
-            padding: 48px 0 32px 0;
+            padding: 3rem 0 2rem 0;
         }
     }
 
@@ -856,7 +859,7 @@ nav {
         @media only screen and (max-width: 600px) {
             & {
                 flex-direction: column;
-                margin-bottom: 48px;
+                margin: 3rem 0;
             }
         }
 
@@ -883,14 +886,14 @@ nav {
 
             @media only screen and (max-width: 600px) {
                 & {     
-                    font-size: 15px;
+                    font-size: .9375rem;
                 }
             }
         }
 
         .platforms {
             width: 120px;
-            height: 32px;
+            height: 2rem;
             background: url('../images/login/platforms-gray.png');
             background-size: contain;
             background-position: center;
@@ -912,8 +915,8 @@ nav {
 
             @media only screen and (max-width: 600px) {
                 & {
-                    padding-top: 32px;
-                    padding-bottom: 32px;
+                    padding-top: 2rem;
+                    padding-bottom: 2rem;
                 }
 
                 & > img {
@@ -936,7 +939,7 @@ nav {
 
     @media only screen and (max-width: 600px) {
         & {
-            padding: 48px 0 80px 0;
+            padding: 3rem 0 80px 0;
         }
     }
 
@@ -963,7 +966,7 @@ nav {
 
         @media only screen and (max-width: 600px) {
             & {
-                margin-top: 16px;
+                margin-top: 1rem;
             }
         }
 
@@ -975,7 +978,7 @@ nav {
             height: 56px;
             border-radius: 50%;
             background-color: #e91e63;
-            margin-right: 16px;
+            margin-right: 1rem;
 
             @media only screen and (max-width: 600px) {
                 & {
@@ -1066,7 +1069,7 @@ nav {
 
                 @media only screen and (max-width: 600px) {
                     & {
-                        font-size: 14px;
+                        font-size: .875rem;
                     }
                 }
 
@@ -1079,14 +1082,14 @@ nav {
             }
 
             .e-mail {
-                font-size: 13px;
+                font-size: .8125rem;
                 color: @secondary-text-color;
             }
         }
     }
 
     h4 {
-        font-size: 16px;
+        font-size: 1rem;
         font-weight: 500;
 
         @media only screen and (max-width: 600px) {
@@ -1097,7 +1100,7 @@ nav {
     }
 
     .note {
-        font-size: 13px;
+        font-size: .8125rem;
         color: @secondary-text-color;
         font-style: italic;
         font-weight: 300;
@@ -1108,7 +1111,7 @@ nav {
 
 #page-footer {
     background-color: @background-highlighted;
-    padding: 48px 32px;
+    padding: 3rem 2rem;
     display: flex;
     justify-content: center;
     align-items: center; 
@@ -1116,31 +1119,17 @@ nav {
 
     @media only screen and (max-width: 600px) {
         & {
-            padding: 40px 24px;
+            padding: 2.5rem 1.5rem;
         }
     }
 
     #links {
-        display: flex;
-        margin: 4px 0;
+        text-align: center;
+        font-size: 0.8125rem;
+        color: @secondary-text-color;
 
-        li {
-            margin: 0 4px;
-            font-size: 13px;
-            line-height: 1.6em;
-
-            &:after {
-                content: ", ";
-                color: @secondary-text-color;
-            }
-
-            &:last-child:after {
-                content: none;   
-            }
-
-            a {
-                color: @secondary-text-color;
-            }
+        a {
+            color: inherit;
         }
     }
 
@@ -1155,8 +1144,8 @@ nav {
 
     .copy {
         line-height: 1.6em;
-        font-size: 13px;
-        margin: 4px 0;
+        font-size: .8125rem;
+        margin: .25rem 0;
         color: @secondary-text-color;
     }
 }
@@ -1167,7 +1156,7 @@ nav {
         color: rgba(0, 0, 0, .87);
     }
 
-    padding: 80px 0;
+    padding: 5rem 0;
 
     strong {
         color: rgba(0, 0, 0, .87);
@@ -1177,33 +1166,33 @@ nav {
     h1 {
         font-weight: 400;
         color: rgba(0, 0, 0, .87);
-        font-size: 30px;
+        font-size: 2rem;
         line-height: 1.6em;
         margin: 0; 
         text-align: left;
 
         @media only screen and (max-width: 600px) {
             & {
-                font-size: 24px
+                font-size: 1.5rem;
             }
         }   
     }
 
     .terms-list {
-        padding-left: 64px;
+        padding-left: 4rem;
     }
 
     ol {
-        margin-top: 16px;
+        margin-top: 1rem;
         padding-left: 0px;
         counter-reset: section;
         list-style-type: none;
 
         .heading {
-            font-size: 20px;
+            font-size: 1.25rem;
             font-weight: 500;
             text-align: left;
-            margin: 40px 0 24px 0;
+            margin: 2.5rem 0 1.5rem 0;
             color: rgba(0, 0, 0, .87);
 
 
@@ -1214,7 +1203,7 @@ nav {
             } 
 
             & > ol {
-                margin-top: 24px;
+                margin-top: 1.5rem;
             }  
 
             .title {
@@ -1224,14 +1213,14 @@ nav {
 
         li {
             color: rgba(0, 0, 0, .87);
-            font-size: 15px;
+            font-size: .9375rem;
             font-weight: 400;
-            margin: 12px 0;
-            text-indent: -64px;
+            margin: .75rem 0;
+            text-indent: -4rem;
 
             @media only screen and (max-width: 600px) {
                 & {
-                    font-size: 14px;
+                    font-size: .875rem;
                 }
             }
         }
