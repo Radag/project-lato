@@ -1,0 +1,107 @@
+<section class="main settings" id="test-creation">
+    {form form class=>'ajax', id=>'test-editor-form'}
+    <div class="container offset-1">
+        <div class="form-row input-field">
+            {input name}
+            {label name}{/label}
+        </div>
+        <br>
+        <div class="row">
+            <div class="col s12">
+                {foreach $questions as $question}
+                    {include questionTemplate $question->number, $question}
+                {/foreach}
+                <div class="card card-flat" id="add-question">
+                    <div class="card-content">
+                        <i class="material-icons">add</i>Přidat další otázku
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="submit-page">
+        <div class="container offset-1">
+            <div class="row">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="flex-spacer"></div>
+                            <div class="form-control">
+                                <button class="btn white waves-effect waves-dark">Uložit</button>
+                                <button class="btn waves-effect waves-light btn-confirm" id="account-submit-button" type="submit" name="send">Uložit a odejít</button>
+                            </div>
+                            <div class="flex-spacer"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+    {/form}
+</section>
+ 
+{define questionTemplate $number, $options}
+<div class="card question-block" data-number="{$number}">
+    <div class="card-content">
+        <div class="question-title input-field">
+            <textarea name="question[{$number}][name]" id="question-{$number}" class="materialize-textarea" placeholder="Položit otázku ..."></textarea>
+            <label for="question-{$number}">Otázka {$number}</label>
+        </div>
+        <div class="checkbox-form-block">
+            {if is_array($options)}          
+                {foreach $question->options as $option}
+                    {include optionTemplate $number, $option->number, $option}
+                {/foreach}
+            {else}
+                {include optionTemplate $number, 'XXX'}
+            {/if}
+        </div>
+    </div>
+    <div class="drag-card"><i class="material-icons">drag_indicator</i></div>
+</div>
+{/define}
+{define optionTemplate $questionNumber, $optionNumber, $option}
+    <div class="question-form-row {if $option}filled{/if}">
+        <label>
+            <input name="question[{$questionNumber}][correct][{$optionNumber}]" type="checkbox" class="filled-in" disabled="disabled">
+            <span></span>
+        </label>
+        <div class="question-option input-field">
+            <textarea name="question[{$questionNumber}][answer][{$optionNumber}]" class="materialize-textarea question-answer" placeholder="Přidat možnost odpovědi ..."></textarea>
+        </div>
+        <div class="remove {if !$option}hide{/if}"><i class="material-icons">clear</i></div>
+        <input type="hidden" name="question[{$questionNumber}][id][{$optionNumber}]" value="">
+    </div>
+{/define}
+
+
+<div id="templates" style="display: none;">
+    {include questionTemplate "XXX"}
+    {include optionTemplate "XXX", "YYY"}
+</div>
+<script>
+    $("#test-editor-form").on("keyup", function(e) {
+        if($(e.target).hasClass("question-answer")) {
+            var row = $(e.target).parents(".question-form-row");
+            if(!row.hasClass("filled") && $(e.target).val().length > 0) {
+                row.addClass("filled");
+                row.find("input[type='checkbox']").prop('disabled', false);
+                row.find(".remove").removeClass("hide");
+            }
+            if($(e.target).parents(".checkbox-form-block").find(".question-form-row:not(.filled)").length === 0) {
+                var optionTemplate = $("#templates > .question-form-row").clone().get(0).outerHTML;
+                var optionNumber = $(e.target).parents(".checkbox-form-block").find(".question-form-row").length + 1;
+                optionTemplate = optionTemplate.replace(/XXX/g, $(e.target).parents(".question-block").data("number"));
+                optionTemplate = optionTemplate.replace(/YYY/g, optionNumber);
+                $(e.target).parents(".checkbox-form-block").append(optionTemplate);
+            } 
+        }
+    });
+    
+    $("#add-question").on('click', function(e) {
+        var questionTemplate = $("#templates > .card").clone().get(0).outerHTML;
+        var questionNumber = $("#test-editor-form .question-block").length + 1;
+        questionTemplate = questionTemplate.replace(/XXX/g, questionNumber);
+        $("#test-editor-form .question-block:last").after($(questionTemplate));
+    });
+</script>

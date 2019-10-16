@@ -14,6 +14,7 @@ services:
     - App\Model\Manager\SchoolManager
     - App\Model\Manager\ConversationManager
     - App\Model\Manager\FictiveUserManager
+    - App\Model\Manager\TestManager
 
     - App\Mail\MailManager
 
@@ -41,5 +42,7 @@ services:
     - App\FrontModule\Components\IClassification
     - App\FrontModule\Components\INoticeboard
     - App\FrontModule\Components\ISearchForm
+    - App\FrontModule\Components\Test\ITestsList
+    - App\FrontModule\Components\Test\IEditor
 
     - App\PublicModule\Components\IContactForm

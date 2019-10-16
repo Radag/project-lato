@@ -34,6 +34,8 @@ class RouterFactory
         $frontRouter[] = new Route('auth/uloziste', 'Homepage:storage');
         $frontRouter[] = new Route('auth/klasifikace', 'Homepage:classification');
         $frontRouter[] = new Route('auth/nastaveni', 'Profile:settings');
+        $frontRouter[] = new Route('auth/testy', 'Tests:list');
+        $frontRouter[] = new Route('auth/testy/novy', 'Tests:new');
 	$frontRouter[] = new Route('auth/<presenter>/<action>[/<id>]', 'Homepage:default');
         
         $router[] = $publicRouter = new RouteList('Public');
