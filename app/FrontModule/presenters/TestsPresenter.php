@@ -18,9 +18,14 @@ class TestsPresenter extends BasePresenter
         $this['topPanel']->setTitle('Testy');
     }
     
-    public function actionEditor()
+    public function actionEditor($id)
     {
-        $this['topPanel']->setTitle('Nový');
+        if(!empty($id)) {
+            $this['topPanel']->setTitle('Úprava testu');
+            $this['editor']->setId($id);
+        } else {
+            $this['topPanel']->setTitle('Nový test');
+        }
     }
        
     protected function createComponentList()

@@ -30,111 +30,28 @@
             </div>
         </div>
         <div class="row">
+            {foreach $tests as $test}
             <div class="col l3 m6 s12">
                 <div class="card card-test-preview">
                     <div class="card-content">
-                        <div class="test-range">12</div>
-                        <h4>Barvy a barevné modely</h4>
-                        <div class="info">12 otázek | GRW</div>
-                        <div class="date">Vytvořeno 22. 9.</div>
+                        <div class="test-range">{$test->questionsCount}</div>
+                        <h4>{$test->name}</h4>
+                        <div class="info">{$test->questionsCount} otázek | GRW</div>
+                        <div class="date">Vytvořeno {$test->created->format("j. n.")}</div>
                         <div class="options">
                             <a href="#" class="btn gray no-shadow">Použít zadání</a>
-                            <a class="btn-flat btn-icon outline dropdown-trigger waves-effect waves-dark" data-target="more-choices-1">
+                            <a class="btn-flat btn-icon outline dropdown-trigger waves-effect waves-dark" data-target="more-choices-{$test->id}">
                                 <i class="material-icons">more_horiz</i>
                             </a>
-                            <ul id='more-choices-1' class="dropdown-content">
-                                <li><a href="#" class="waves-effect waves-dark modal-trigger">Option 1</a></li>
-                                <li><a href="#" class="waves-effect waves-dark modal-trigger">Option 2</a></li>
+                            <ul id='more-choices-{$test->id}' class="dropdown-content">
+                                <li><a href="{plink Tests:editor id=>$test->id}" class="waves-effect waves-dark modal-trigger">Upravit</a></li>
+                                <li><a href="#" class="waves-effect waves-dark modal-trigger">Smazat</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
-
-
-            <div class="col l3 m6 s12">
-                <div class="card card-test-preview">
-                    <div class="card-content">
-                        <div class="test-range">12</div>
-                        <h4>Barvy a barevné modely</h4>
-                        <div class="info">12 otázek | GRW</div>
-                        <div class="date">Vytvořeno 22. 9.</div>
-                        <div class="options">
-                            <a href="#" class="btn gray no-shadow">Použít zadání</a>
-                            <a class="btn-flat btn-icon outline dropdown-trigger waves-effect waves-dark" data-target="more-choices-1">
-                                <i class="material-icons">more_horiz</i>
-                            </a>
-                            <ul id='more-choices-1' class="dropdown-content">
-                                <li><a href="#" class="waves-effect waves-dark modal-trigger">Option 1</a></li>
-                                <li><a href="#" class="waves-effect waves-dark modal-trigger">Option 2</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col l3 m6 s12">
-                <div class="card card-test-preview">
-                    <div class="card-content">
-                        <div class="test-range">12</div>
-                        <h4>Barvy a barevné modely</h4>
-                        <div class="info">12 otázek | GRW</div>
-                        <div class="date">Vytvořeno 22. 9.</div>
-                        <div class="options">
-                            <a href="#" class="btn gray no-shadow">Použít zadání</a>
-                            <a class="btn-flat btn-icon outline dropdown-trigger waves-effect waves-dark" data-target="more-choices-1">
-                                <i class="material-icons">more_horiz</i>
-                            </a>
-                            <ul id='more-choices-1' class="dropdown-content">
-                                <li><a href="#" class="waves-effect waves-dark modal-trigger">Option 1</a></li>
-                                <li><a href="#" class="waves-effect waves-dark modal-trigger">Option 2</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col l3 m6 s12">
-                <div class="card card-test-preview">
-                    <div class="card-content">
-                        <div class="test-range">12</div>
-                        <h4>Barvy a barevné modely</h4>
-                        <div class="info">12 otázek | GRW</div>
-                        <div class="date">Vytvořeno 22. 9.</div>
-                        <div class="options">
-                            <a href="#" class="btn gray no-shadow">Použít zadání</a>
-                            <a class="btn-flat btn-icon outline dropdown-trigger waves-effect waves-dark" data-target="more-choices-1">
-                                <i class="material-icons">more_horiz</i>
-                            </a>
-                            <ul id='more-choices-1' class="dropdown-content">
-                                <li><a href="#" class="waves-effect waves-dark modal-trigger">Option 1</a></li>
-                                <li><a href="#" class="waves-effect waves-dark modal-trigger">Option 2</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col l3 m6 s12">
-                <div class="card card-test-preview">
-                    <div class="card-content">
-                        <div class="test-range">12</div>
-                        <h4>Barvy a barevné modely</h4>
-                        <div class="info">12 otázek | GRW</div>
-                        <div class="date">Vytvořeno 22. 9.</div>
-                        <div class="options">
-                            <a href="#" class="btn gray no-shadow">Použít zadání</a>
-                            <a class="btn-flat btn-icon outline dropdown-trigger waves-effect waves-dark" data-target="more-choices-1">
-                                <i class="material-icons">more_horiz</i>
-                            </a>
-                            <ul id='more-choices-1' class="dropdown-content">
-                                <li><a href="#" class="waves-effect waves-dark modal-trigger">Option 1</a></li>
-                                <li><a href="#" class="waves-effect waves-dark modal-trigger">Option 2</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {/foreach}
         </div>
     </div>
 </section>
