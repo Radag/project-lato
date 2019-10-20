@@ -63,8 +63,8 @@ class TaskHeader extends \App\Components\BaseComponent
             $this->setTemplateName('TaskHeaderStream');
         } else {
             $this->setTemplateName('TaskHeaderSingle');
-        }        
-        $this->template->render();
+        }
+        parent::render();
     }
     
     public function handleSetTaskCommit($idTask)
