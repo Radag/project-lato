@@ -1,5 +1,5 @@
 <section class="main settings" id="test-creation">
-    {form form class=>'ajax', id=>'test-editor-form'}
+    {form form id=>'test-editor-form'}
     <div class="container offset-1">
         <div class="form-row input-field">
             {input name}
@@ -27,8 +27,8 @@
                         <div class="card-content">
                             <div class="flex-spacer"></div>
                             <div class="form-control">
-                                <button class="btn white waves-effect waves-dark">Uložit</button>
-                                <button class="btn waves-effect waves-light btn-confirm" id="account-submit-button" type="submit" name="send">Uložit a odejít</button>
+                                {input save class=>"btn white waves-effect waves-dark"}
+                                {input save_leave class=>"btn waves-effect waves-light btn-confirm"}
                             </div>
                             <div class="flex-spacer"></div>
                         </div>
@@ -40,22 +40,26 @@
     {/form}
 </section>
  
-{define questionTemplate $number, $options}
+{define questionTemplate $number, $question}
 <div class="card question-block" data-number="{$number}">
     <div class="card-content">
         <div class="question-title input-field">
-            <textarea name="question[{$number}][name]" id="question-{$number}" class="materialize-textarea" placeholder="Položit otázku ..."></textarea>
+            <textarea name="questions[{$number}][name]" id="question-{$number}" class="materialize-textarea" placeholder="Položit otázku ...">{if $question}{$question->question}{/if}</textarea>
             <label for="question-{$number}">Otázka {$number}</label>
         </div>
         <div class="checkbox-form-block">
-            {if is_array($options)}          
+            {if $question && is_array($question->options)}
+                {var $optionNumber = 0}
                 {foreach $question->options as $option}
                     {include optionTemplate $number, $option->number, $option}
+                    {var $optionNumber = $option->number}
                 {/foreach}
+                {include optionTemplate $number, $optionNumber + 1}
             {else}
-                {include optionTemplate $number, 'XXX'}
+                {include optionTemplate $number, 1}
             {/if}
         </div>
+        <input type="hidden" class="question-id" name="questions[{$number}][id]" {if $question}value="{$question->id}"{/if}>
     </div>
     <div class="drag-card"><i class="material-icons">drag_indicator</i></div>
 </div>
@@ -63,14 +67,14 @@
 {define optionTemplate $questionNumber, $optionNumber, $option}
     <div class="question-form-row {if $option}filled{/if}">
         <label>
-            <input name="question[{$questionNumber}][correct][{$optionNumber}]" type="checkbox" class="filled-in" disabled="disabled">
+            <input name="questions[{$questionNumber}][options][{$optionNumber}][correct]" type="checkbox" class="filled-in" {if $option}{if $option->isCorrect}checked{/if}{else}disabled{/if} >
             <span></span>
         </label>
         <div class="question-option input-field">
-            <textarea name="question[{$questionNumber}][answer][{$optionNumber}]" class="materialize-textarea question-answer" placeholder="Přidat možnost odpovědi ..."></textarea>
+            <textarea name="questions[{$questionNumber}][options][{$optionNumber}][text]" class="materialize-textarea question-answer" placeholder="Přidat možnost odpovědi ...">{if $option}{$option->name}{/if}</textarea>
         </div>
-        <div class="remove {if !$option}hide{/if}"><i class="material-icons">clear</i></div>
-        <input type="hidden" name="question[{$questionNumber}][id][{$optionNumber}]" value="">
+        <div class="remove remove-option {if !$option}hide{/if}"><i class="material-icons">clear</i></div>
+        <input type="hidden" class="option-id" name="questions[{$questionNumber}][options][{$optionNumber}][id]" {if $option}value="{$option->id}"{/if}>
     </div>
 {/define}
 
@@ -83,18 +87,34 @@
     $("#test-editor-form").on("keyup", function(e) {
         if($(e.target).hasClass("question-answer")) {
             var row = $(e.target).parents(".question-form-row");
+            var form = $(e.target).parents(".checkbox-form-block");
+            var questionNumber = $(e.target).parents(".question-block").data("number");
             if(!row.hasClass("filled") && $(e.target).val().length > 0) {
                 row.addClass("filled");
                 row.find("input[type='checkbox']").prop('disabled', false);
                 row.find(".remove").removeClass("hide");
             }
-            if($(e.target).parents(".checkbox-form-block").find(".question-form-row:not(.filled)").length === 0) {
+            if($(e.target).val().length === 0) {
+                row.remove();
+            }
+            if(form.find(".question-form-row:not(.filled)").length === 0) {
                 var optionTemplate = $("#templates > .question-form-row").clone().get(0).outerHTML;
-                var optionNumber = $(e.target).parents(".checkbox-form-block").find(".question-form-row").length + 1;
-                optionTemplate = optionTemplate.replace(/XXX/g, $(e.target).parents(".question-block").data("number"));
+                var optionNumber = form.find(".question-form-row").length + 1;
+                optionTemplate = optionTemplate.replace(/XXX/g, questionNumber);
                 optionTemplate = optionTemplate.replace(/YYY/g, optionNumber);
-                $(e.target).parents(".checkbox-form-block").append(optionTemplate);
-            } 
+                form.append(optionTemplate);
+            }
+                      
+        }
+    });
+    
+    $("#test-editor-form").on("click", function(e) {
+        if($(e.target).hasClass("remove-option")|| $(e.target).parent().hasClass("remove-option") ) {
+            var row = $(e.target).parents(".question-form-row");
+            if(row.find(".option-id").val() !== "") {
+                $("#test-editor-form").append('<input type="hidden" value="' + row.find(".option-id").val() + '" name="optionsToDelete[]" >');
+            }
+            row.remove();
         }
     });
     
