@@ -1,0 +1,52 @@
+<section class="main settings" id="test-content">
+   {form form}
+    <div class="container offset-1">
+        <div class="row">
+            <div class="col s12">
+                {foreach $test->questions as $question}
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Otázka {$question->number}</h3>
+                    </div>
+                    <div class="card-content">
+                        <p class="question">{$question->question}</p>
+                        <div class="checkbox-form-block">
+                            {foreach $question->options as $option}
+                            <div class="form-row">
+                                <div class="submit-control checkbox-vertical-align">
+                                    <label>
+                                        {var $iid => 'opt_' . $question->id . '_' . $option->id}
+                                        {input $iid: class=>'filled-in'}
+                                        <span>{$option->name}</span>
+                                    </label>
+                                </div>
+                            </div>
+                            {/foreach}
+                        </div>
+                    </div>
+                </div>
+                {/foreach}
+            </div>
+        </div>
+    </div>
+    <div class="submit-page">
+        <div class="container offset-1">
+            <div class="row">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="flex-spacer"></div>
+                            <div id="timer" class="btn-flat outline">2:29</div>
+                            <div class="form-control">
+                                {input save class=>"btn white"}
+                                {input save_leave class=>"btn waves-effect waves-light btn-confirm"}
+                            </div>
+                            <div class="flex-spacer"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {/form}
+</section>

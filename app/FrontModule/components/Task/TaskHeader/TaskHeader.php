@@ -60,9 +60,9 @@ class TaskHeader extends \App\Components\BaseComponent
     {
         $this->template->task = $this->task;
         if($this->mode === 'stream') {
-            $this->template->setFile($this->getTemplateFilePath('TaskHeaderStream'));
+            $this->setTemplateName('TaskHeaderStream');
         } else {
-            $this->template->setFile($this->getTemplateFilePath('TaskHeaderSingle'));
+            $this->setTemplateName('TaskHeaderSingle');
         }        
         $this->template->render();
     }

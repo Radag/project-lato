@@ -3,6 +3,8 @@ namespace App\FrontModule\Presenters;
 
 use App\FrontModule\Components\Test\ITestsList;
 use App\FrontModule\Components\Test\IEditor;
+use App\FrontModule\Components\Test\ITestFilling;
+use App\FrontModule\Components\Test\ITestStart;
 
 class TestsPresenter extends BasePresenter
 {
@@ -12,6 +14,12 @@ class TestsPresenter extends BasePresenter
     
     /** @var IEditor @inject */
     public $editor; 
+    
+    /** @var ITestFilling @inject */
+    public $testFilling;
+    
+    /** @var ITestStart @inject */
+    public $testStart;
 
     public function actionList()
     {
@@ -27,6 +35,18 @@ class TestsPresenter extends BasePresenter
             $this['topPanel']->setTitle('Nový test');
         }
     }
+    
+    public function actionFilling($id)
+    {
+        $this['testFilling']->setId($id);
+        $this['topPanel']->setTitle('Test');
+    }
+    
+    public function actionStart($id)
+    {
+        $this['testStart']->setId($id);
+        $this['topPanel']->setTitle('Test');
+    }
        
     protected function createComponentList()
     {
@@ -36,5 +56,15 @@ class TestsPresenter extends BasePresenter
     protected function createComponentEditor()
     {
         return $this->editor->create();
+    }
+    
+    protected function createComponentTestFilling()
+    {
+        return $this->testFilling->create();
+    }
+    
+    protected function createComponentTestStart()
+    {
+        return $this->testStart->create();
     }
 }

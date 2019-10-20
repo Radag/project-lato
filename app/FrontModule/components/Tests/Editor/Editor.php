@@ -52,7 +52,8 @@ class Editor extends \App\Components\BaseComponent
         parent::render();      
     }
 
-    public function setId($id) {
+    public function setId($id) 
+    {
         $this->test = $this->testManager->getTest($id, $this->presenter->activeUser->id);
         $this['form']->setDefaults([
             'name' => $this->test->name,
@@ -83,7 +84,8 @@ class Editor extends \App\Components\BaseComponent
         }        
     }
     
-    private function saveTest($values) {
+    private function saveTest($values) 
+    {
         $test = null;
         if($values->id) {
             $test = $this->testManager->getTest($values->id, $this->presenter->activeUser->id);
@@ -100,7 +102,8 @@ class Editor extends \App\Components\BaseComponent
         return $test;
     }
     
-    private function saveQuestions(int $testId, array $questions) {
+    private function saveQuestions(int $testId, array $questions) 
+    {
         foreach($questions as $questionNumber => $question) {
             $questionObject = new Question();
             $questionObject->question = $question['name'];
@@ -120,8 +123,8 @@ class Editor extends \App\Components\BaseComponent
         }
     }
     
-    private function saveOptions(int $questionId, int $testId, array $options) {
-        
+    private function saveOptions(int $questionId, int $testId, array $options) 
+    {  
         foreach($options as $optionNumber => $option) {
             if(!empty($option['text'])) {
                 $optionObject = new Option();
@@ -139,5 +142,4 @@ class Editor extends \App\Components\BaseComponent
             }
         }
     }
-    
 }

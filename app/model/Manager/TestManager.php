@@ -5,6 +5,8 @@ namespace App\Model\Manager;
 use App\Model\Entities\Test\Test;
 use App\Model\Entities\Test\Question;
 use App\Model\Entities\Test\Option;
+use App\Model\Entities\Test\Filling;
+use App\Model\Entities\Test\Answer;
 use App\Model\Entities;
 
 class TestManager extends BaseManager 
@@ -77,7 +79,7 @@ class TestManager extends BaseManager
         return $return;
     }
     
-    public function getTest($id, $userId) : Test {
+    public function getTest($id, $userId) : ?Test {
         $testData = $this->db->fetch("SELECT * FROM test WHERE id=? AND user_id=?", $id, $userId);
         if(empty($testData)) {
             return null;
@@ -109,5 +111,39 @@ class TestManager extends BaseManager
             }
         }
         return $test;
+    }
+    
+    public function createFilling(Test $test, Entities\User $user) : int
+    {
+        $this->db->query("INSERT INTO test_filling", [        
+            'test_id' => $test->id,
+            'user_id' => $user->id
+        ]);
+        return $this->db->getInsertId();
+    }
+    
+    public function getFilling(int $fillingId) : Filling {
+        $fillingData =  $this->db->fetch("SELECT * FROM test_filling WHERE id=?", $fillingId);
+        $filling = new Filling($fillingData);
+        $filling->isFinished = $fillingData->is_finished === 1;
+        return $filling;
+    }
+    
+    public function updateFilling(Filling $filling) {
+        $this->db->query("UPDATE test_filling SET ", [
+            'is_finished' => $filling->isFinished
+        ], "WHERE id=?", $filling->id);
+    }
+    
+    public function saveAnswer(Answer $answer) : int
+    {
+        $this->db->query("INSERT INTO test_filling_answer", [        
+            'test_filling_id' => $answer->fillingId,
+            'question_id' => $answer->questionId,
+            'option_id' => $answer->optionId,
+            'answer_binary' => $answer->answerBinary ? 1 : 0,
+            'is_correct' => $answer->isCorrect ? 1 : 0
+        ]);
+        return $this->db->getInsertId();
     }
 }

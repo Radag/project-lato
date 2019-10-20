@@ -8,6 +8,31 @@ use App\Helpers\HelpersList;
 class BaseComponent extends Control
 {
     
+    private $templateName = null;
+    
+    
+
+    public function render()
+    {
+        $this->template->addFilter('timeDifferceText', function($timeLeft) {
+            return HelpersList::timeDifferceText($timeLeft);
+        });
+        $this->template->addFilter('attachTypeIco', function($type) {
+            return HelpersList::attachTypeIco($type);
+        });
+        if($this->templateName === null) {
+            $this->template->setFile($this->getTemplateFilePath());
+        } else {
+            $this->template->setFile($this->getTemplateFilePath($this->templateName));
+        }       
+        $this->template->render();
+    }
+    
+    public function setTemplateName($name)
+    {
+        $this->templateName = $name;
+    }
+    
     protected function getForm($flashError = true)
     {
         $form = new \Nette\Application\UI\Form;
@@ -38,17 +63,5 @@ class BaseComponent extends Control
         } else {
             return $dir . \DIRECTORY_SEPARATOR . $filename;
         }       
-    }
-
-    public function render()
-    {
-        $this->template->addFilter('timeDifferceText', function($timeLeft) {
-            return HelpersList::timeDifferceText($timeLeft);
-        });
-        $this->template->addFilter('attachTypeIco', function($type) {
-            return HelpersList::attachTypeIco($type);
-        });
-        $this->template->setFile($this->getTemplateFilePath());
-        $this->template->render();
     }
 }
