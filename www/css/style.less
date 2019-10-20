@@ -49,7 +49,7 @@ body {
 
 .cyan {
     background-color: #00bcd4 !important;
-    color: rgba(0, 0, 0, .75) !important;
+    color: rgba(255, 255, 255, 1) !important;
 }
 
 .pink {
@@ -210,6 +210,7 @@ p {
 
     &.message-text {
         color: @primary-text-color !important;
+        padding-right: 5%;
     }
 
     &.icon-content {
@@ -560,12 +561,37 @@ strong {
   background-color: rgba(0, 0, 0, .1);
 }
 
+input[type=range]::-webkit-slider-runnable-track {
+    background-color: rgba(255,193,7,.38);
+}
+
+input[type=range]::-webkit-slider-thumb {
+    background-color: @accent-color;
+}
+
+label {
+    height: 21px;
+
+    [type="checkbox"]+span:not(.lever) {
+        padding-left: 44px;
+        font-size: 13px;
+        height: 21px;
+        line-height: 21px;
+    }
+}
+
 .switch-row {
     display: flex;
+    align-items: center;
 
     p {
         flex-grow: 1;
         margin: 0 !important;
+    }
+
+    span {
+        color: @secondary-text-color;
+        margin-right: 2rem;
     }
 
     .switch label .lever {
@@ -1168,6 +1194,7 @@ input[type=search]:not(.browser-default) {
     }
 
     p {
+        margin: 2rem 0 1rem 0;
         color: @secondary-text-color;
     }
 
@@ -1274,7 +1301,11 @@ input[type=search]:not(.browser-default) {
                 display: none;
                 cursor: default;
             }
-        }
+
+            &:empty {
+                display: none;
+            }
+        }   
     }
 
     .modal-footer {
@@ -1838,7 +1869,7 @@ input[type=search]:not(.browser-default) {
 
     .card-content {
         p {
-            font-size: 15px;
+            font-size: 0.875rem;
         }
     }
 }
@@ -3583,43 +3614,20 @@ nav .nav-title {
     color: inherit !important;
 }
 
-
-.card-header.card-assignment-header {
-    align-items: flex-start;
-
-    .name {
-        flex-grow: 1;
-
-        .message-title {
-            margin: 8px 0;
-            font-size: 17px;
-            font-weight: 500;
-
-        }
-
-        .user-name {
-            font-size: 13px;
-            color: @secondary-text-color;
-            margin: 0;
-        }
-    }
-}
-
-
 @media only screen and (max-width: 600px) {
     .card-header h3.name {
         font-size: .875rem !important;
     }
 }
 
-.card-header .card-date {
+.card-date {
     font-size:13px;
     line-height:40px;
     color:@secondary-text-color;
     display:block;
 }
 
-.card-header .card-options {
+.card-options {
     margin-left: 12px;
     color: @secondary-text-color;
     line-height: 40px;
@@ -4461,6 +4469,10 @@ nav .nav-title {
         margin-top: 24px;
         width: 100%;
 
+        &.no-label {
+            margin-top: .5rem;
+        }
+
         label {
             color: rgba(0, 0, 0, .5);
 
@@ -4523,7 +4535,7 @@ nav .nav-title {
 .checkbox-form-block {
 
     .form-row {
-        margin-top: 20px;
+        margin: 1rem 0;
 
         label {
             height: 21px;
@@ -5036,7 +5048,7 @@ nav .nav-title {
     padding-right: 56px;
 }
 
-.assignment-header {
+.card-action-header {
     background-color: @background-highlighted;
     padding: 24px;
     margin: 0;
@@ -5049,7 +5061,7 @@ nav .nav-title {
         margin-right: 12px;
     }
 
-    .message-type {
+    /*.message-type {
         margin-right: 12px;
 
         .avatar {
@@ -5060,11 +5072,23 @@ nav .nav-title {
 
         i {
         }
-    }
-
+    }*/
 
     h3 {
         font-size: 16px;
+    }
+
+    .message-type {
+        font-size: 0.8125rem;
+        font-weight: 500;
+        color: @primary-text-color;
+        text-transform: uppercase;
+
+        &:after {
+            content: "|";
+            color: @secondary-text-color;
+            margin: 0 .25rem;
+        }
     }
 
     .time-left {
@@ -5077,6 +5101,43 @@ nav .nav-title {
         i {
             color: @secondary-text-color;
         }
+    }
+}
+
+.card-action-content {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+
+    .avatar {
+
+        .material-icons {
+            font-size: 1.25rem;
+        }
+
+    }
+
+    .name {
+        flex-grow: 1;
+
+        .message-title {
+            margin: 0;
+            font-size: 17px;
+            font-weight: 500;
+            line-height: 1.5em;
+
+        }
+
+        .user-name {
+            font-size: 13px;
+            color: @secondary-text-color;
+            margin: 0;
+        }
+    }
+
+    .card-date,
+    .card-options {
+        align-self: flex-start;
     }
 }
 
