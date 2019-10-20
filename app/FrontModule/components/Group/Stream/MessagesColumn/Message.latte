@@ -1,6 +1,6 @@
 <div class="card flex-column {if $message->deleted == 1}card-flat{/if}" id="message-box-num_{$message->id}"> 
     {if $message->type === 'task' && $message->task}
-    <div class="assignment-header">
+    <div class="card-action-header">
         <div class="message-type">
             <div class="avatar colored">
                 G
@@ -40,6 +40,7 @@
     </button>
     <ul id='message_dropdown_{$message->id}' class='dropdown-content'>
         {if $message->deleted == 0}
+            <li><a href="#">Vytvořit kopii příspěvku</a></li>
             <li><a href="#" data-link="{plink //Group:message 'id'=>$activeGroup->slug, 'idMessage'=>$message->id}" class="copy-message-link">Kopírovat odkaz</a></li>
             {if $activeGroup->relation === 'owner'}
                 {if !$message->top}
