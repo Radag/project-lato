@@ -10,11 +10,13 @@ class Question extends AbstractEntity {
     public $testId = null;
     public $question = null;
     public $number = null;
+    public $type = null;
     public $options = [];
     
      protected $mapFields = [
         'id' => 'id',
         'number' => 'number',
-        'question' => 'question'
+        'question' => 'question',
+        'type' => 'type'
     ];
 }

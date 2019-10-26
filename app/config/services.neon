@@ -46,5 +46,6 @@ services:
     - App\FrontModule\Components\Test\IEditor
     - App\FrontModule\Components\Test\ITestFilling
     - App\FrontModule\Components\Test\ITestStart
+    - App\FrontModule\Components\Test\ITestSetup
 
     - App\PublicModule\Components\IContactForm

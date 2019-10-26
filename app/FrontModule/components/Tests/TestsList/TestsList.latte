@@ -21,8 +21,8 @@
                                 <i class="material-icons">filter_list</i>
                             </a>
                             <ul id='filter-tests' class="dropdown-content">
-                                <li><a href="#" class="waves-effect waves-dark modal-trigger">Option 1</a></li>
-                                <li><a href="#" class="waves-effect waves-dark modal-trigger">Option 2</a></li>
+                                <li><a href="#" class="waves-effect waves-dark">Option 1</a></li>
+                                <li><a href="#" class="waves-effect waves-dark">Option 2</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -39,14 +39,14 @@
                         <div class="info">{$test->questionsCount} otázek | GRW</div>
                         <div class="date">Vytvořeno {$test->created->format("j. n.")}</div>
                         <div class="options">
-                            <a href="#test-setup" class="btn gray no-shadow modal-trigger truncate">Použít zadání</a>							
+                            <a href="{link setupTest! 'testId'=>$test->id}" data-show-popup-after="#test-setup" class="ajax btn gray no-shadow truncate">Použít zadání</a>							
                             <a class="btn-flat btn-icon outline dropdown-trigger waves-effect waves-dark" data-target="more-choices-{$test->id}">
                                 <i class="material-icons">more_horiz</i>
                             </a>
                             <ul id='more-choices-{$test->id}' class="dropdown-content">
-                                <li><a href="{plink Tests:editor id=>$test->id}" class="waves-effect waves-dark modal-trigger">Upravit</a></li>
-                                <li><a href="{plink Tests:start id=>$test->id}" class="waves-effect waves-dark modal-trigger">Spustit</a></li>
-                                <li><a href="#" class="waves-effect waves-dark modal-trigger">Smazat</a></li>
+                                <li><a href="{plink Tests:editor id=>$test->id}" class="waves-effect waves-dark">Upravit</a></li>
+                                <li><a href="{plink Tests:start id=>$test->id}" class="waves-effect waves-dark">Spustit</a></li>
+                                <li><a href="#" class="waves-effect waves-dark">Smazat</a></li>
                             </ul>
                         </div>
                     </div>
@@ -57,63 +57,6 @@
     </div>
     {/if}
 </section>
-
 <div id="test-setup" class="modal modal-small">
-    <div class="modal-bar">
-        <button type="button" class="back-button">
-            <i class="material-icons">arrow_back</i>
-            <div class="avatar blue">V</div>
-            <div class="label">Grafika a webdesign (V3Graf)</div>
-        </button>
-    </div>
-    <div class="modal-content">
-        <h3>Nastavit zadání</h3>
-        <div class="switch-row">
-            <span>Automaticky vyhodnotit</span>
-            <div class="switch">
-                <label>
-                    <input type="checkbox" checked="checked">
-                    <span class="lever"></span>
-                </label>
-            </div>
-        </div>
-        <div class="checkbox-form-block">
-            <div class="form-row">
-                <label>
-                    <input data-link="" type="radio" value="notice"  id="opt2" name="stream-filter" checked="checked">
-                    <span for="opt2">Hranice úspěčnosti</span>
-                </label>
-            </div>
-            <div class="form-row">
-                <label>
-                    <input data-link="" type="radio" value="notice"  id="opt2" name="stream-filter">
-                    <span for="opt2">Klasifikační stupnice</span>
-                </label>
-            </div>
-            <p class="range-field">
-                <input type="range" id="test5" min="0" max="100" />
-            </p>
-        </div>
-
-        <div class="switch-row">
-            <span>Uzavřít zadání</span>
-            <div class="switch">
-                <label>
-                    <input type="checkbox" checked="checked">
-                    <span class="lever"></span>
-                </label>
-            </div>
-        </div>
-        <div class="form-row no-label input-field">
-            <input placeholder="Datum" id="first_name" type="text" class="validate" value="11. 10.">
-            <input placeholder="Čas" id="first_name" type="text" class="validate" value="12:35">
-        </div>
-    </div>
-    <div class="modal-footer">
-        <div class="flex-spacer"></div>
-        <div class="form-control">
-            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form">Zveřejnit</button>
-        </div>
-    </div>
+    {control testSetup}
 </div>

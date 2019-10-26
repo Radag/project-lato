@@ -131,6 +131,7 @@ class Editor extends \App\Components\BaseComponent
                 $optionObject->questionId = $questionId;
                 $optionObject->name = $option['text'];
                 $optionObject->number = $optionNumber;
+                $optionObject->isCorrect = isset($option['correct']) ? true : false;
                 if(empty($option['id'])) {
                     $optionObject->id = $this->testManager->insertOption($optionObject);
                 } else {

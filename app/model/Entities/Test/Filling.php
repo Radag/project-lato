@@ -10,6 +10,7 @@ class Filling extends AbstractEntity {
     public $testId = null;
     public $isFinished = null;
     public $created = null;
+    public $answers = [];
     
     protected $mapFields = [
         'id' => 'id',

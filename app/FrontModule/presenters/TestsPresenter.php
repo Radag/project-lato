@@ -42,9 +42,9 @@ class TestsPresenter extends BasePresenter
         $this['topPanel']->setTitle('Test');
     }
     
-    public function actionStart($id)
+    public function actionStart($id, $groupId = null)
     {
-        $this['testStart']->setId($id);
+        $this['testStart']->setId($id, $groupId);
         $this['topPanel']->setTitle('Test');
     }
        

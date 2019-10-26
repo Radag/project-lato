@@ -1,0 +1,93 @@
+<div n:snippet="modal" >
+    {if empty($selectedGroup)}
+        <div class="modal-content" n:ifset="$testId">
+            <h3>Vyberte skupinu</h3>
+            {if count($adminGroups) > 0}
+            <div class="custom-collection-header">
+                Skupina
+            </div>
+            <ul class="custom-collection group-list">
+                {foreach $adminGroups as $group}
+                <li>
+                    <a href="{link selectGroup! id=>$group->id, testId=>$testId}" class="item ajax">
+                        <div class="avatar {$group->colorScheme|noescape}" >{$group->shortcut|substr:0,1}</div>
+                        <div class="label">{$group->name}</div>
+                        <div class="flex-spacer"></div>
+                        <div class="count"><strong>4</strong> / 20</div>
+                    </a>
+                </li>
+                {/foreach}
+            </ul>
+            {else}
+                Nemáte žádné skupiny.
+            {/if}
+        </div>
+    {else}
+        <div class="modal-bar">
+            <button type="button" class="back-button">
+                <a href="{link selectGroup!}" class="clear ajax">
+                    <i class="material-icons">arrow_back</i>
+                </a>                
+                <div class="avatar {$selectedGroup->colorScheme}">{$selectedGroup->shortcut|substr:0,1}</div>
+                <div class="label">{$selectedGroup->name} ({$selectedGroup->shortcut})</div>
+            </button>
+        </div>
+        {form form id=>"import-form"}
+            <div class="modal-content">
+                <h3>Nastavit zadání</h3>
+                <div class="switch-row">
+                    <span>Automaticky vyhodnotit</span>
+                    <div class="switch">
+                        <label>
+                            <input type="checkbox" checked="checked">
+                            <span class="lever"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="checkbox-form-block">
+                    <div class="form-row">
+                        <label>
+                            <input data-link="" type="radio" value="notice"  id="opt2" name="stream-filter" checked="checked">
+                            <span for="opt2">Hranice úspěčnosti</span>
+                        </label>
+                    </div>
+                    <div class="form-row">
+                        <label>
+                            <input data-link="" type="radio" value="notice"  id="opt2" name="stream-filter">
+                            <span for="opt2">Klasifikační stupnice</span>
+                        </label>
+                    </div>
+                    <p class="range-field">
+                        <input type="range" id="test5" min="0" max="100" />
+                    </p>
+                </div>
+
+                <div class="switch-row">
+                    <span>Uzavřít zadání</span>
+                    <div class="switch">
+                        <label>
+                            <input type="checkbox" checked="checked">
+                            <span class="lever"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-row no-label input-field">
+                    <input placeholder="Datum" id="first_name" type="text" class="validate" value="11. 10.">
+                    <input placeholder="Čas" id="first_name" type="text" class="validate" value="12:35">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="flex-spacer"></div>
+                <div class="form-control">
+                    <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                    <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form">Zveřejnit</button>
+                </div>
+            </div>
+        {/form}
+    {/if}
+    <script>
+         $(function () {                         
+
+        });
+    </script> 
+</div>

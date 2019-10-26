@@ -20,6 +20,27 @@ class TestManager extends BaseManager
         return $this->db->getInsertId();
     }
     
+    public function createGroupTest($testId, $groupId) : int {
+        $this->db->query("INSERT INTO group_test", [
+            'test_id' => $testId,            
+            'group_id' => $groupId,
+            'time_limit' => 60 * 3
+        ]);
+        return $this->db->getInsertId();
+    }
+    
+    public function getGroupTests($groupId) {
+        $testsData = $this->db->fetchAll("SELECT T1.*, T2.time_limit, CONCAT(T3.name, ' ', T3.surname) as author 
+            FROM test T1 JOIN group_test T2 ON T1.id=T2.test_id
+            JOIN user T3 ON T1.user_id=T3.id
+            WHERE T2.group_id=?", $groupId);
+        $tests = [];
+        foreach($testsData as $testData) {
+            $tests[] = new Test($testData);
+        }
+        return $tests;
+    }
+    
     public function updateTest(Test $test) {
         $this->db->query("UPDATE test SET", [
             'name' => $test->name
@@ -50,7 +71,8 @@ class TestManager extends BaseManager
         $this->db->query("INSERT INTO test_question_option", [        
             'question_id' => $option->questionId,
             'name' => $option->name,                      
-            'number' => $option->number  
+            'number' => $option->number,
+            'is_correct' => $option->isCorrect ? 1 : 0
         ]);
         return $this->db->getInsertId();
     }
@@ -60,7 +82,8 @@ class TestManager extends BaseManager
           JOIN test_question T2 ON T1.question_id = T2.id
           SET ", [
             'T1.name' => $option->name,                      
-            'T1.number' => $option->number  
+            'T1.number' => $option->number,              
+            'T1.is_correct' => $option->isCorrect ? 1 : 0
         ], "WHERE T1.id=? AND T2.test_id=?", $option->id, $testId);
     }
     
@@ -89,6 +112,7 @@ class TestManager extends BaseManager
                     T1.id,
                     T1.question,
                     T1.number,
+                    T1.type,
                     T2.id AS option_id,
                     T2.name AS option_name,
                     T2.is_correct AS option_is_correct,
@@ -113,11 +137,12 @@ class TestManager extends BaseManager
         return $test;
     }
     
-    public function createFilling(Test $test, Entities\User $user) : int
+    public function createFilling(Test $test, Entities\User $user, ?int $groupId) : int
     {
         $this->db->query("INSERT INTO test_filling", [        
             'test_id' => $test->id,
-            'user_id' => $user->id
+            'user_id' => $user->id,            
+            'group_id' => $groupId
         ]);
         return $this->db->getInsertId();
     }
@@ -126,7 +151,18 @@ class TestManager extends BaseManager
         $fillingData =  $this->db->fetch("SELECT * FROM test_filling WHERE id=?", $fillingId);
         $filling = new Filling($fillingData);
         $filling->isFinished = $fillingData->is_finished === 1;
+        $filling->answers = $this->getAnswers($fillingId);
         return $filling;
+    }
+    
+    public function getAnswers(int $fillingId) : array {
+        $answersData =  $this->db->fetchAll("SELECT * FROM test_filling_answer WHERE test_filling_id=?", $fillingId);
+        $answers = [];
+        foreach($answersData as $answer)
+        {
+            $answers[] = new Answer($answer);
+        }  
+        return $answers;
     }
     
     public function updateFilling(Filling $filling) {
@@ -140,10 +176,14 @@ class TestManager extends BaseManager
         $this->db->query("INSERT INTO test_filling_answer", [        
             'test_filling_id' => $answer->fillingId,
             'question_id' => $answer->questionId,
-            'option_id' => $answer->optionId,
-            'answer_binary' => $answer->answerBinary ? 1 : 0,
+            'answer' => json_encode($answer->answer),
             'is_correct' => $answer->isCorrect ? 1 : 0
         ]);
         return $this->db->getInsertId();
+    }
+    
+    public function clearTestAnswers(int $fillingId)
+    {
+        $this->db->query("DELETE FROM test_filling_answer WHERE test_filling_id=?", $fillingId);
     }
 }

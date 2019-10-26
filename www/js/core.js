@@ -114,18 +114,17 @@ $(function() {
                     }
                 });
             }
-            /*
+            
             if(settings.nette !== undefined && $(settings.nette.ui).data('show-popup-after')) {
-                showLoader();
+                //showLoader();
                 $popup = $($(settings.nette.ui).data('show-popup-after'));
                 jqXHR.done(function( data, textStatus, jqXHR ) {
-                    hideLoader()
+                    //hideLoader()
                     if(data.invalidForm === undefined || !data.invalidForm) {
-                        $popup.trigger('show');
+                        $popup.modal('open');
                     }
                 });
             }
-            */
         }
     });
  

@@ -13,6 +13,7 @@ use App\Model\Manager\TaskManager;
 use App\FrontModule\Components\Stream\ICommentForm;
 use App\FrontModule\Components\TaskHeader\ITaskHeader;
 use App\FrontModule\Components\Stream\ICommitTaskForm;
+use App\Model\Manager\TestManager;
 
 class MessagesColumn extends \App\Components\BaseComponent
 {
@@ -22,6 +23,9 @@ class MessagesColumn extends \App\Components\BaseComponent
     
     /** @var  GroupManager @inject */
     protected $groupManager;    
+    
+    /** @var  TestManager @inject */
+    protected $testManager;    
     
     /** @var  ITaskHeader @inject */
     protected $taskHeaderFactory;
@@ -49,7 +53,8 @@ class MessagesColumn extends \App\Components\BaseComponent
         ICommentForm $commentForm,
         ITaskHeader $taskHeaderFactory,
         TaskManager $taskManager,            
-        ICommitTaskForm $commitTaskForm
+        ICommitTaskForm $commitTaskForm,            
+        TestManager $testManager
     )
     {
         $this->messageManager = $messageManager;
@@ -58,11 +63,13 @@ class MessagesColumn extends \App\Components\BaseComponent
         $this->taskHeaderFactory = $taskHeaderFactory;
         $this->taskManager = $taskManager;
         $this->commitTaskForm = $commitTaskForm;
+        $this->testManager = $testManager;
     }    
         
     public function render() 
     {
         if($this->singleMode === false) {
+            $this->template->tests = $this->testManager->getGroupTests($this->presenter->activeGroup->id);
             $this->template->singleMode = false;
             $data = $this->messageManager->getMessages($this->presenter->activeGroup, $this->presenter->activeUser, $this->filter);
             $this->messages = $data['messages'];

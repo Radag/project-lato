@@ -11,6 +11,9 @@ class TestStart extends \App\Components\BaseComponent
     /** @var Test **/
     private $test = null;
     
+    /** @var int **/
+    private $groupId = null;
+    
     public function __construct(TestManager $testManager)
     {
         $this->testManager = $testManager;
@@ -24,14 +27,15 @@ class TestStart extends \App\Components\BaseComponent
     }
     
     
-    public function setId($id) 
+    public function setId($id, $groupId) 
     {
+        $this->groupId = $groupId;
         $this->test = $this->testManager->getTest($id, $this->presenter->activeUser->id);    
     }
 
     public function handleStartTest()
     {
-        $fillingId = $this->testManager->createFilling($this->test, $this->presenter->activeUser);
+        $fillingId = $this->testManager->createFilling($this->test, $this->presenter->activeUser, $this->groupId);
         $this->presenter->redirect("Tests:filling", ['id' => $fillingId]);
     }
 }

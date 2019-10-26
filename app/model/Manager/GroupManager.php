@@ -147,7 +147,7 @@ class GroupManager extends BaseManager {
         return $return;
     }  
 
-    public function getUserGroup($groupSlug, Entities\User $user, $isId = false)
+    public function getUserGroup($groupSlug, Entities\User $user, $isId = false) : Entities\Group
     {
         $group = $this->db->fetch("SELECT 
                T1.id,

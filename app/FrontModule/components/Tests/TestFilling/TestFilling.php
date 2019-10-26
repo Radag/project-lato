@@ -41,7 +41,7 @@ class TestFilling extends \App\Components\BaseComponent
                 $form->addCheckbox('opt_' . $question->id . '_' . $option->id);
             }
         }
-        
+     
         $form->addSubmit('save', 'Průběžně uložit');
         $form->addSubmit('save_leave', 'Odevzdat');
         $form->onSuccess[] = [$this, 'processForm'];
@@ -53,25 +53,71 @@ class TestFilling extends \App\Components\BaseComponent
     {
         $this->filling = $this->testManager->getFilling($id);
         $this->test = $this->testManager->getTest($this->filling->testId, $this->presenter->activeUser->id);
+        foreach($this->filling->answers as $answer) {
+            $correctAnswers = json_decode($answer->answer);
+            foreach($correctAnswers as $options) {
+                foreach($options as $optionId) {
+                    $this['form']->setDefaults([
+                        'opt_' . $answer->questionId . '_' . $optionId => true
+                    ]);    
+                }  
+            }
+        }
     }
     
     public function processForm(\Nette\Application\UI\Form $form, $values) 
     {   
+        $this->testManager->clearTestAnswers($this->filling->id);
+        $questions = $this->testManager->getTest($this->filling->testId, $this->presenter->activeUser->id);
+        
+        $answers = [];
         foreach($values as $key => $val) {
             $name = explode('_', $key);
             if($name[0] === 'opt') {
-                $answer = new Answer();
-                $answer->fillingId = $this->filling->id;
-                $answer->questionId = $name[1];
-                $answer->optionId = $name[2];
-                $answer->answerBinary = $val;
-                $this->testManager->saveAnswer($answer);
+                if(!isset($answers[$name[1]])) {
+                    $answer = new Answer();
+                    $answer->fillingId = $this->filling->id;
+                    $answer->questionId = $name[1];
+                    $answer->question = $questions->questions[$name[1]];
+                    if($answer->question->type === 'options') {
+                        $answer->answer = (object)['options' => []];
+                    }
+                    $answers[$name[1]] = $answer;
+                }
+                if($answers[$name[1]]->question->type === 'options' && $val) {
+                    $answer->answer->options[] = (int)$name[2];
+                }
             }
         }
+        
+        foreach($answers as $answer) {
+            $answer->isCorrect = $this->isCorrect($answer);
+            $this->testManager->saveAnswer($answer);
+        }
+        
+        
         if(isset($form->getHttpData()['save_leave'])) {
             $this->filling->isFinished = true;
             $this->testManager->updateFilling($this->filling);
         }
         $this->presenter->redirect('this');
+    }
+    
+    private function isCorrect(Answer $answer)
+    {
+        if($answer->question->type === 'options') {
+            $correct = [];
+            foreach($answer->question->options as $option) {
+                if($option->isCorrect) {
+                    $correct[] = $option->id;
+                }                
+            }
+            sort($correct);
+            sort($answer->answer->options);
+            if($correct == $answer->answer->options) {
+                return true;
+            }
+        }
+        return false;        
     }
 }
