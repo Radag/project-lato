@@ -137,12 +137,13 @@ class TestManager extends BaseManager
         return $test;
     }
     
-    public function createFilling(Test $test, Entities\User $user, ?int $groupId) : int
+    public function createFilling(Filling $filling) : int
     {
         $this->db->query("INSERT INTO test_filling", [        
-            'test_id' => $test->id,
-            'user_id' => $user->id,            
-            'group_id' => $groupId
+            'test_id' => $filling->testId,
+            'user_id' => $filling->userId,            
+            'group_id' => $filling->groupId,
+            'questions_count' => $filling->questionCount
         ]);
         return $this->db->getInsertId();
     }
@@ -167,7 +168,9 @@ class TestManager extends BaseManager
     
     public function updateFilling(Filling $filling) {
         $this->db->query("UPDATE test_filling SET ", [
-            'is_finished' => $filling->isFinished
+            'is_finished' => $filling->isFinished,
+            'correct_count' => $filling->correctCount,
+            'percent' => $filling->percent
         ], "WHERE id=?", $filling->id);
     }
     

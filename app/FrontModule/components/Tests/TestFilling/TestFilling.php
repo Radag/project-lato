@@ -25,6 +25,7 @@ class TestFilling extends \App\Components\BaseComponent
     public function render() 
     {
         $this->template->test = $this->test;
+        $this->template->filling = $this->filling;
         if($this->filling->isFinished) {
             $this->setTemplateName('TestResults');
         } else {
@@ -90,14 +91,19 @@ class TestFilling extends \App\Components\BaseComponent
             }
         }
         
+        $correctCount = 0;
         foreach($answers as $answer) {
             $answer->isCorrect = $this->isCorrect($answer);
+            if($answer->isCorrect) {
+                $correctCount++;
+            }
             $this->testManager->saveAnswer($answer);
-        }
-        
+        }       
         
         if(isset($form->getHttpData()['save_leave'])) {
             $this->filling->isFinished = true;
+            $this->filling->correctCount = $correctCount;
+            $this->filling->percent = round(100/$this->test->questionsCount * $correctCount);
             $this->testManager->updateFilling($this->filling);
         }
         $this->presenter->redirect('this');

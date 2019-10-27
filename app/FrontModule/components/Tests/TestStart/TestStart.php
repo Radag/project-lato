@@ -2,6 +2,8 @@
 namespace App\FrontModule\Components\Test;
 
 use App\Model\Manager\TestManager;
+use App\Model\Entities\Test\Filling;
+use App\Model\Entities\Test\Test;
 
 class TestStart extends \App\Components\BaseComponent
 {
@@ -35,7 +37,12 @@ class TestStart extends \App\Components\BaseComponent
 
     public function handleStartTest()
     {
-        $fillingId = $this->testManager->createFilling($this->test, $this->presenter->activeUser, $this->groupId);
+        $filling = new Filling();
+        $filling->testId = $this->test->id;
+        $filling->userId = $this->presenter->activeUser->id;
+        $filling->groupId = $this->groupId;
+        $filling->questionCount = $this->test->questionsCount;
+        $fillingId = $this->testManager->createFilling($filling);
         $this->presenter->redirect("Tests:filling", ['id' => $fillingId]);
     }
 }

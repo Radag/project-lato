@@ -85,7 +85,7 @@
 </div>
 <script>
     $("#test-editor-form").on("keyup", function(e) {
-        if($(e.target).hasClass("question-answer")) {
+        if($(e.target).hasClass("question-answer") && e.keyCode !== 9) {
             var row = $(e.target).parents(".question-form-row");
             var form = $(e.target).parents(".checkbox-form-block");
             var questionNumber = $(e.target).parents(".question-block").data("number");
@@ -122,6 +122,6 @@
         var questionTemplate = $("#templates > .card").clone().get(0).outerHTML;
         var questionNumber = $("#test-editor-form .question-block").length + 1;
         questionTemplate = questionTemplate.replace(/XXX/g, questionNumber);
-        $("#test-editor-form .question-block:last").after($(questionTemplate));
+        $("#test-editor-form #add-question").before($(questionTemplate));
     });
 </script>
