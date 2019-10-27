@@ -104,9 +104,12 @@ Více už toho není
             </div>
         </div>
         <span class="card-date">22. 10.</span>
-        <button type="button" class="btn-flat btn-icon dropdown-trigger card-options waves-effect waves-dark">
+        <button type="button" class="btn-flat btn-icon dropdown-trigger card-options waves-effect waves-dark" data-target="test_dropdown_{$test->id}">
             <i class="material-icons">more_horiz</i>
         </button>
+        <ul id="test_dropdown_{$test->id}" class='dropdown-content'>
+            <li><a href="#">Vytvořit kopii příspěvku</a></li>
+        </ul>
     </div>
 </div>
 {/define}
