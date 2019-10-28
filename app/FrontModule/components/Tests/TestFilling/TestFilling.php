@@ -5,6 +5,7 @@ use App\Model\Manager\TestManager;
 use App\Model\Entities\Test\Test;
 use App\Model\Entities\Test\Filling;
 use App\Model\Entities\Test\Answer;
+use App\Model\Entities\Test\TestSetup;
 
 class TestFilling extends \App\Components\BaseComponent
 {
@@ -17,6 +18,9 @@ class TestFilling extends \App\Components\BaseComponent
     /** @var Filling **/
     private $filling = null;
     
+    /** @var TestSetup **/
+    private $testSetup = null;
+    
     public function __construct(TestManager $testManager)
     {
         $this->testManager = $testManager;
@@ -26,6 +30,7 @@ class TestFilling extends \App\Components\BaseComponent
     {
         $this->template->test = $this->test;
         $this->template->filling = $this->filling;
+        $this->template->timeLeft = $this->getTimeLeft();
         if($this->filling->isFinished) {
             $this->setTemplateName('TestResults');
         } else {
@@ -34,12 +39,15 @@ class TestFilling extends \App\Components\BaseComponent
         parent::render();
     }
     
+
     protected function createComponentForm()
     {
         $form = $this->getForm(true);
         foreach($this->test->questions as $question) {
-            foreach($question->options as $option) {
-                $form->addCheckbox('opt_' . $question->id . '_' . $option->id);
+            if(in_array($question->id, $this->filling->questions)) {
+                foreach($question->options as $option) {
+                    $form->addCheckbox('opt_' . $question->id . '_' . $option->id);
+                }
             }
         }
      
@@ -53,7 +61,15 @@ class TestFilling extends \App\Components\BaseComponent
     public function setId($id) 
     {
         $this->filling = $this->testManager->getFilling($id);
-        $this->test = $this->testManager->getTest($this->filling->testId, $this->presenter->activeUser->id);
+        $this->test = $this->testManager->getTest($this->filling->testId, $this->presenter->activeUser->id, $this->filling->questions);
+        $this->testSetup = $this->testManager->getTestSetup($this->test->id, $this->filling->groupId);
+        
+        $timeLeft = $this->getTimeLeft();
+        if($timeLeft && $timeLeft->invert === 1) {
+            $this->filling->isFinished = 1;
+            $this->testManager->updateFilling($this->filling);
+        }
+        
         foreach($this->filling->answers as $answer) {
             $correctAnswers = json_decode($answer->answer);
             foreach($correctAnswers as $options) {
@@ -98,7 +114,7 @@ class TestFilling extends \App\Components\BaseComponent
                 $correctCount++;
             }
             $this->testManager->saveAnswer($answer);
-        }       
+        }
         
         if(isset($form->getHttpData()['save_leave'])) {
             $this->filling->isFinished = true;
@@ -126,4 +142,23 @@ class TestFilling extends \App\Components\BaseComponent
         }
         return false;        
     }
+    
+    private function getTimeLeft() : ?\DateInterval
+    {
+        if($this->testSetup->timeLimit !== 0) {
+             $interval = $this->secondsToTime($this->testSetup->timeLimit);
+            $endDate = $this->filling->created->add($interval);
+            return (new \DateTime())->diff($endDate);
+        } else {
+           return null;
+        }       
+    }
+
+    private function secondsToTime($seconds) 
+    {
+        $dtF = new \DateTime("@0");
+        $dtT = new \DateTime("@$seconds");
+        return $dtF->diff($dtT);
+    }
+    
 }

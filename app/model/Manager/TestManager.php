@@ -102,7 +102,7 @@ class TestManager extends BaseManager
         return $return;
     }
     
-    public function getTest($id, $userId) : ?Test {
+    public function getTest($id, $userId, $questions = null) : ?Test {
         $testData = $this->db->fetch("SELECT * FROM test WHERE id=? AND user_id=?", $id, $userId);
         if(empty($testData)) {
             return null;
@@ -120,7 +120,14 @@ class TestManager extends BaseManager
                 FROM test_question T1 
                 LEFT JOIN test_question_option T2 ON T1.id=T2.question_id
                 WHERE T1.test_id=?";
-        $questionsData = $this->db->fetchAll($sql, $id);
+        
+        if($questions === null) {
+            $questionsData = $this->db->fetchAll($sql, $id);
+        } else {
+            $sql .= " AND T1.id IN (?)";
+            $questionsData = $this->db->fetchAll($sql, $id, $questions);
+        }
+        
         foreach($questionsData as $question) {
             if(empty($test->questions[$question->id])) {
                 $test->questions[$question->id] = new Question($question);
@@ -143,7 +150,8 @@ class TestManager extends BaseManager
             'test_id' => $filling->testId,
             'user_id' => $filling->userId,            
             'group_id' => $filling->groupId,
-            'questions_count' => $filling->questionCount
+            'questions' => json_encode($filling->questions),
+            'questions_count' => $filling->questionsCount
         ]);
         return $this->db->getInsertId();
     }
@@ -153,6 +161,7 @@ class TestManager extends BaseManager
         $filling = new Filling($fillingData);
         $filling->isFinished = $fillingData->is_finished === 1;
         $filling->answers = $this->getAnswers($fillingId);
+        $filling->questions = json_decode($fillingData->questions);
         return $filling;
     }
     
@@ -189,4 +198,12 @@ class TestManager extends BaseManager
     {
         $this->db->query("DELETE FROM test_filling_answer WHERE test_filling_id=?", $fillingId);
     }
+    
+    public function getTestSetup(int $testId, int $groupId)
+    {
+        $setup = $this->db->fetch("SELECT * FROM group_test WHERE group_id=? AND test_id=?", $groupId, $testId);
+        $testSetup = new Entities\Test\TestSetup($setup);
+        return $testSetup;
+    }
+    
 }

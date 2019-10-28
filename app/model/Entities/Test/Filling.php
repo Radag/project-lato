@@ -13,14 +13,17 @@ class Filling extends AbstractEntity {
     public $questionsCount = null;
     public $percent = null;
     public $isFinished = null;
+    
+    /** @var \Datetime **/
     public $created = null;
+    public $questions = [];
     public $answers = [];
     
     protected $mapFields = [
         'id' => 'id',
         'user_id' => 'userId',
         'test_id' => 'testId',
-        'groupId' => 'groupId',
+        'group_id' => 'groupId',
         'correct_count' => 'correctCount',
         'questions_count' => 'questionsCount',
         'percent' => 'percent',

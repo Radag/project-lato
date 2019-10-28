@@ -1,5 +1,5 @@
 <section class="main settings" id="test-content">
-   {form form}
+   {form form id=>"test-form"}
     <div class="container offset-1">
         <div class="row">
             <div class="col s12">
@@ -36,7 +36,9 @@
                     <div class="card">
                         <div class="card-content">
                             <div class="flex-spacer"></div>
-                            <div id="timer" class="btn-flat outline">2:29</div>
+                            {if $timeLeft}
+                                <div id="timer" class="btn-flat outline" data-hours="{$timeLeft->format('%h')}" data-minutes="{$timeLeft->format('%i')}" data-seconds="{$timeLeft->format('%s')}"></div>
+                            {/if}
                             <div class="form-control">
                                 {input save class=>"btn white"}
                                 {input save_leave class=>"btn waves-effect waves-light btn-confirm"}
@@ -50,3 +52,35 @@
     </div>
     {/form}
 </section>
+<script>
+    $(function () {
+        var hoursLeft = $("#timer").data("hours");
+        var minutesLeft = $("#timer").data("minutes");
+        var secondsLeft = $("#timer").data("seconds");        
+        var countdown = setInterval(function(){ 
+            if(secondsLeft === 0) {
+                if(minutesLeft === 0) {
+                    if(hoursLeft === 0) {
+                        $("#test-form").submit();
+                        clearInterval(countdown);
+                    } else {
+                        hoursLeft--;
+                        minutesLeft = 60;
+                    }
+                } else {
+                    minutesLeft--;
+                    secondsLeft = 60;
+                }
+            } else {
+                secondsLeft--;
+            }
+            var minutes = minutesLeft < 10 ? "0" + minutesLeft : minutesLeft;
+            var seconds = secondsLeft < 10 ? "0" + secondsLeft : secondsLeft;
+            var text = minutes + ":" + seconds;
+            if(hoursLeft > 0) {
+                text = hoursLeft + ":" + text;
+            }            
+            $("#timer").text(text);
+        }, 1000);
+    });
+</script>
