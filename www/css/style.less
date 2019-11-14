@@ -8,6 +8,7 @@
 @card-flat: rgba(0, 0, 0, .05);
 @icon-background: rgba(0, 0, 0, .03);
 @secondary-color: #26a69a;
+@primary-color: #2196f3;
 @accent-color: #ffc107;
 @accent-color-text: rgba(0, 0, 0, .87);
 @line-color: rgba(0, 0, 0, .1);
@@ -84,6 +85,14 @@ body {
 
 // Layout
 
+
+.row {
+    .col {
+        padding: 0;
+    }
+}
+
+
 .container {
     position: relative;
     width:100%;
@@ -119,7 +128,7 @@ body {
 
     .row {
 
-        margin: 0 -16px;
+        margin: 0 -1rem;
 
         @media only screen and (max-width: 992px) {
             & {
@@ -131,23 +140,6 @@ body {
             & {
                 margin: 0;
             }
-        }
-
-        .col {
-            padding: 0 16px;
-
-            @media only screen and (max-width: 992px) {
-                & {
-                    padding: 0 8px;
-                }
-            }
-
-            @media only screen and (max-width: 600px) {
-
-                & {
-                    padding: 0;
-                }
-            }   
         }
 
         &.equal-cols {
@@ -432,6 +424,23 @@ strong {
     }
 }
 
+i.btn {
+    padding: 0;
+
+    input {
+        height: 40px;
+        line-height: 40px;
+        font-weight: 500;
+        padding: 0 1rem;
+
+        &:focus,
+        &:active {
+            outline: none;
+            border: none;
+        }
+    }
+}
+
 .btn-flat {
     font-size: .875rem;
     font-weight: 500;
@@ -490,6 +499,22 @@ strong {
     box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
     width: 240px !important;
 
+    &::-webkit-scrollbar {
+        -webkit-appearance: none;
+    }
+
+    &::-webkit-scrollbar:vertical {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar:horizontal {
+        height: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, .15);
+    }
+
     li {
         min-height: inherit;
 
@@ -519,6 +544,80 @@ strong {
 
 
 // Forms 
+
+
+
+
+.progress {
+    background-color: rgba(219, 219, 219, .5);
+    
+    .indeterminate,
+    .determinate {
+        background-color: @accent-color;
+    }
+}
+
+[type="checkbox"].filled-in:checked+span:not(.lever):after {
+    border-color: @accent-color;
+    background-color: @accent-color;
+}
+
+[type="checkbox"].filled-in:checked+span:not(.lever):before {
+    border-right-color: @accent-color-text;
+    border-bottom-color: @accent-color-text;
+}
+
+[type="radio"]:checked+span:after {
+    background-color: @accent-color;
+    border-color: @accent-color;
+}
+
+.switch label input[type=checkbox]:checked+.lever {
+    background-color: fade(@accent-color, 38%);
+}
+
+.switch label input[type=checkbox]:checked+.lever:after {
+    background-color: @accent-color;
+}
+
+.btn {
+    background-color: @accent-color;
+    color: @accent-color-text;
+}
+
+input:not([type]):focus:not([readonly]), 
+input[type=text]:focus:not([readonly]), 
+input[type=password]:focus:not([readonly]), 
+input[type=email]:focus:not([readonly]), 
+input[type=url]:focus:not([readonly]), 
+input[type=time]:focus:not([readonly]), 
+input[type=date]:focus:not([readonly]), 
+input[type=datetime]:focus:not([readonly]), 
+input[type=datetime-local]:focus:not([readonly]), 
+input[type=tel]:focus:not([readonly]), 
+input[type=number]:focus:not([readonly]), 
+input[type=search]:focus:not([readonly]), 
+textarea.materialize-textarea:focus:not([readonly]) {
+    border-bottom-color: @accent-color;
+    box-shadow: 0 1px 0 0 @accent-color;
+}
+
+.avatar {
+    &.colored {
+        background-color: @primary-color;
+        /* background-color: @accent-color; */
+        color: @primary-text-color;
+    }
+}
+
+.create-post .alternate li .material-icons {
+    color: @accent-color;
+}
+
+.chips .chip.selected {
+    background-color: @accent-color;
+    color: @accent-color-text;
+}
 
 
 [type="checkbox"]+span:not(.lever) {
@@ -571,6 +670,7 @@ input[type=range]::-webkit-slider-thumb {
 
 label {
     height: 21px;
+    color: @secondary-text-color;
 
     [type="checkbox"]+span:not(.lever) {
         padding-left: 44px;
@@ -596,10 +696,6 @@ label {
 
     .switch label .lever {
         margin: 0;
-    }
-
-    .switch label input[type=checkbox]:checked+.lever:after {
-        background-color: #009688;
     }
 }
 
@@ -1194,7 +1290,7 @@ input[type=search]:not(.browser-default) {
     }
 
     p {
-        margin: 2rem 0 1rem 0;
+        margin: 1rem 0;
         color: @secondary-text-color;
     }
 
@@ -1223,6 +1319,7 @@ input[type=search]:not(.browser-default) {
                 text-align: center;
                 font-size: 24px;
                 border-radius: 50%;
+                color: @secondary-text-color;
             }
 
             .label {
@@ -1305,7 +1402,20 @@ input[type=search]:not(.browser-default) {
             &:empty {
                 display: none;
             }
-        }   
+        } 
+
+        .select-wrapper {
+            width: 100%;
+
+            .dropdown-content {
+                max-height: 128px;
+                overflow-y: auto !important;
+                backface-visibility: hidden !important;
+            } 
+
+        }
+
+         
     }
 
     .modal-footer {
@@ -1650,7 +1760,7 @@ input[type=search]:not(.browser-default) {
 
     .info {
         .row {
-            margin-bottom: 16px;
+            margin-bottom: 1rem;
 
             &:last-child {
                 margin-bottom: 0;
@@ -2450,6 +2560,7 @@ nav .nav-title {
 
 .section-header  {   
     padding: 20px 24px;
+    margin: 0 1rem;
     height: 76px;
     display: flex;
     align-items: center;
@@ -3486,11 +3597,9 @@ nav .nav-title {
 
 .card {
     position:relative;
-    width: 100%;
     background: #fff;
     box-shadow: 0 1px 3px rgba(0, 0, 0, .2); 
-    margin-bottom: 32px;
-    margin-top: 0;
+    margin: 0 1rem 2rem 1rem;
     border-radius: 0;
 
     &.card-flat {
@@ -4369,6 +4478,11 @@ nav .nav-title {
                 font-size: .875rem;
             }
 
+            .label {
+                font-weight: 500;
+                color: @primary-text-color;
+            }
+
             .title {
                 font-weight: 500;
                 color: rgba(0, 0, 0, .87);
@@ -4461,6 +4575,10 @@ nav .nav-title {
     align-items: center;
     margin-top: 24px;
 
+    &.flex-column {
+        align-items: flex-start;
+    }
+
     &:first-child {
         margin-top: 0;
     }
@@ -4471,6 +4589,10 @@ nav .nav-title {
 
         &.no-label {
             margin-top: .5rem;
+        }
+
+        &.no-margin {
+            margin-top: 0;
         }
 
         label {
@@ -4484,10 +4606,18 @@ nav .nav-title {
 }
 
 .input-field {
-    margin-bottom: 0;
+    margin-bottom: .0;
+
+    &.col {
+
+         label {
+            left: 0;
+         }
+    }
 
     label {
         font-size: .875rem;
+        color: @secondary-text-color;
     }
 }
 
@@ -4727,7 +4857,7 @@ nav .nav-title {
     z-index: 500;
 
     .card {
-        margin: 0;
+        margin: 0 1rem;
         background-color: #f9f9f9;
 
         .card-content {
@@ -5696,14 +5826,6 @@ nav .nav-title {
 
         & > li {
 
-            .item {
-
-                .label {
-                    font-weight: 500;
-                    color: rgba(0, 0, 0, .87);
-                }
-            }
-
             &.divider {
                 margin-bottom: 24px;
             }
@@ -5886,6 +6008,18 @@ nav .nav-title {
 
 /* ----- TESTS ----- */
 
+.question {
+
+    .card-content {
+
+        h3 {
+            font-size: .935rem;
+            font-weight: 500;
+            margin: 0;
+        }
+    }
+}
+
 #create-test-btn {
     margin: 48px auto;
     padding: 32px 24px;
@@ -5958,19 +6092,30 @@ nav .nav-title {
 
 #test-content {
 
-    .card-header {
+    #display-test-header {
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
 
         h3 {
-            font-size: .8125rem;
-            color: @secondary-text-color;
-            font-weight: 400;
+            font-size: 1rem;
+            color: @primary-text-color;
         }
+
+        p {
+            margin: .75rem 0;
+        }
+    }
+
+    .card-header {
+        font-size: .8125rem;
+        color: @secondary-text-color;
     }
 
     .card-content {
         padding-top: 16px;
 
-        .question {
+        .question-block {
             font-size: .935rem;
             color: @primary-text-color;
             font-weight: 500;
@@ -5981,6 +6126,74 @@ nav .nav-title {
 
             [type="checkbox"]:checked+span:not(.lever) {
                 color: @primary-text-color;
+            }
+
+            .form-row {
+                margin: 1.25rem 0;
+            }
+        }
+
+        .answer-block {
+            margin: 1.5rem 0 .5rem 0;
+
+            .answer-row {
+                display: flex;
+                align-items: center;
+                margin: 1.25rem 0;
+
+                .status {
+                    width: 24px;
+                    height: 24px;
+                    border-radius: 3px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-right: 12px;
+                    background-color: @background-highlighted;
+
+                    i {
+                        font-size: 1rem;
+                        color: #fff;
+                    }
+                }
+
+                p {
+                    margin: 0;
+                    color: @secondary-text-color;
+                }
+
+                &.wrong {
+
+                    .status {
+                        background-color: #ff2b3c;
+                    }
+                }
+
+                &.correction {
+
+                    .status {
+                        background-color: #ffc107;
+                    }
+
+                    p {
+                        font-weight: 500;
+                        color: @primary-text-color;
+                    }
+                }
+
+                &.correct {
+
+                    .status {
+                        background-color: #39b54a;
+                    }
+
+                    p {
+                        font-weight: 500;
+                        color: @primary-text-color;
+                    }
+                }
+
+               
             }
         }
     }
