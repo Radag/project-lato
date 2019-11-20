@@ -23,7 +23,7 @@
             {/if}
         </div>
     {else}
-        <div class="modal-bar">
+        <div class="modal-bar" n:if="!isset($groupTestId)">
             <button type="button" class="back-button">
                 <a href="{link selectGroup!}" class="clear ajax">
                     <i class="material-icons">arrow_back</i>
@@ -80,14 +80,9 @@
                 <div class="flex-spacer"></div>
                 <div class="form-control">
                     <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-                    <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form">Zveřejnit</button>
+                    <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form">{ifset $groupTestId}Uložit{else}Zveřejnit{/ifset}</button>
                 </div>
             </div>
         {/form}
     {/if}
-    <script>
-         $(function () {                         
-
-        });
-    </script> 
 </div>

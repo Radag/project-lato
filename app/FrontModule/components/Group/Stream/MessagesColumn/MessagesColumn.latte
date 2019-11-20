@@ -4,12 +4,13 @@
             {var $message = $singleMessage}
             {includeblock 'SingleMessage.latte'}            
         {/ifset}       
-    {else}
-        {foreach $tests as $test}
-            {include testMessage $test}
-        {/foreach}       
-        {foreach $messages as $message}  
-            {includeblock 'Message.latte'}
+    {else}      
+        {foreach $messages as $message}
+            {if $message instanceof App\Model\Entities\Test\Test}
+                {include testMessage $message}
+            {else}
+                {includeblock 'Message.latte'}
+            {/if}            
         {/foreach}
     {/if}
     <script>
@@ -38,7 +39,7 @@
             $.nette.ajax({
                 url: $('#message-delete-confirm-modal').data('delete-link')
             });
-        }   
+        }
     </script>
 
     {* UVÍTACÍ KARTA PRO STUDENTY *}
@@ -83,13 +84,19 @@ Více už toho není
         {control commitTaskForm}
     {/snippet}
 </div>
+
+<div id="test-setup-modal" class="modal modal-small">
+    {snippet testSetupForm}
+        {control testSetupForm}
+    {/snippet}
+</div>
     
 {define testMessage $test}
 <div class="card flex-column">
     <div class="card-action-header">
         <div class="message-type">Test</div>
         <div class="time-left">Otevřeno do <strong>23. 10. 10:30</strong></div>
-        <a href="{plink Tests:start id=>$test->id, groupId=>$activeGroup->id}" class="btn gray no-shadow">Otevřít</a>
+        <a href="{plink Tests:start groupTestId=>$test->groupTestId}" class="btn gray no-shadow">Otevřít</a>
     </div>
     <div class="card-action-content">
         <div class="avatar small colored">
@@ -103,12 +110,16 @@ Více už toho není
                 {$test->author}
             </div>
         </div>
-        <span class="card-date">22. 10.</span>
+        <span class="card-date">{$test->created->format("j. n.")}</span>
         <button type="button" class="btn-flat btn-icon dropdown-trigger card-options waves-effect waves-dark" data-target="test_dropdown_{$test->id}">
             <i class="material-icons">more_horiz</i>
         </button>
         <ul id="test_dropdown_{$test->id}" class='dropdown-content'>
             <li><a href="#">Vytvořit kopii příspěvku</a></li>
+            {if $activeGroup->relation === 'owner'}
+                <li><a href="#" data-link="{link deleteTest! groupTestId=>$test->groupTestId}" class="delete-message-button refresh-wall-messages">Smazat</a></li>
+                <li><a href="{link editTest! groupTestId=>$test->groupTestId}" data-show-popup-after="#test-setup-modal" class="edit-test-button ajax">Upravit test</a></li>
+            {/if}
         </ul>
     </div>
 </div>
