@@ -6,13 +6,15 @@ use App\Model\Entities\AbstractEntity;
 
 class Filling extends AbstractEntity {
     public $id = null;
+    public $setupId = null;
     public $userId = null;
-    public $testId = null;
-    public $groupId = null;
     public $correctCount = null;
     public $questionsCount = null;
     public $percent = null;
     public $isFinished = null;
+    
+    /** @var TestSetup **/
+    public $setup = null;
     
     /** @var \Datetime **/
     public $created = null;
@@ -21,8 +23,7 @@ class Filling extends AbstractEntity {
     
     protected $mapFields = [
         'id' => 'id',
-        'user_id' => 'userId',
-        'test_id' => 'testId',
+        'setup_id' => 'setupId',
         'group_id' => 'groupId',
         'correct_count' => 'correctCount',
         'questions_count' => 'questionsCount',

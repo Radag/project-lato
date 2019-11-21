@@ -18,6 +18,8 @@ services:
 
     - App\Mail\MailManager
 
+    - App\Service\TestService
+
     - App\FrontModule\Components\Stream\IStream
     - App\FrontModule\Components\Group\About\IGroupSettingsForm
     - App\FrontModule\Components\Group\About\IAboutGroup
@@ -47,5 +49,8 @@ services:
     - App\FrontModule\Components\Test\ITestFilling
     - App\FrontModule\Components\Test\ITestStart
     - App\FrontModule\Components\Test\ITestSetup
+    - App\FrontModule\Components\Test\ITestDisplay
 
     - App\PublicModule\Components\IContactForm
+
+    - App\Model\LatoSettings

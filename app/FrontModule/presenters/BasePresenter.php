@@ -8,6 +8,7 @@ use App\Helpers\HelpersList;
 use App\Model\Manager\GroupManager;
 use App\Model\Manager\NotificationManager;
 use \App\Model\Manager\UserManager;
+use App\Model\LatoSettings;
 
 class BasePresenter extends \Nette\Application\UI\Presenter
 {    
@@ -26,11 +27,14 @@ class BasePresenter extends \Nette\Application\UI\Presenter
     /** @var ITopPanel @inject */
     public $topPanel;
     
-    /** @var \App\Model\Entities\User */
-    public $activeUser;
-           
+    /** @var LatoSettings @inject */
+    public $lattoSettings;
+    
     public $days = ['Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota', 'Neděle'];
      
+    /** @var \App\Model\Entities\User */
+    public $activeUser;           
+    
     protected function startup()
     {
         parent::startup();
@@ -48,7 +52,8 @@ class BasePresenter extends \Nette\Application\UI\Presenter
     
     protected function setActiveUser()
     {
-        $this->activeUser = $this->userManager->get($this->user->id);
+        $this->lattoSettings->setUser($this->userManager->get($this->user->id));
+        $this->activeUser = $this->lattoSettings->getUser();
         if($this->activeUser === null) {
             $this->user->logout();
             $this->redirect(':Public:Homepage:default');

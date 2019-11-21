@@ -41,7 +41,7 @@
 </section>
  
 {define questionTemplate $number, $question}
-<div class="card question-block" data-number="{$number}">
+<div class="card question" data-number="{$number}">
     <div class="card-content">
         <div class="question-title input-field">
             <textarea name="questions[{$number}][name]" id="question-{$number}" class="materialize-textarea" placeholder="Položit otázku ...">{if $question}{$question->question}{/if}</textarea>

@@ -20,7 +20,10 @@ class Message extends AbstractEntity {
     public $id = null;
     public $text = null;
     public $user = null;
+    
+    /** @var \DateTime */
     public $created = null;
+    
     public $idGroup = null;
     public $attachments = null;
     public $followed = null;

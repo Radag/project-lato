@@ -20,23 +20,29 @@ class TestManager extends BaseManager
         return $this->db->getInsertId();
     }
     
-    public function createGroupTest($testId, $groupId) : int {
-        $this->db->query("INSERT INTO group_test", [
-            'test_id' => $testId,            
-            'group_id' => $groupId,
-            'time_limit' => 60 * 3
+    public function createTestSetup(Entities\Test\TestSetup $testSetup) : int {
+        $this->db->query("INSERT INTO test_setup", [
+            'test_id' => $testSetup->testId,            
+            'group_id' => $testSetup->groupId,          
+            'time_limit' => $testSetup->timeLimit,          
+            'questions_count' => $testSetup->questionsCount,          
+            'number_of_repetitions' => $testSetup->numberOfRepetitions,
+            'publication_time' => $testSetup->publicationTime
         ]);
         return $this->db->getInsertId();
     }
     
     public function getGroupTests($groupId) {
-        $testsData = $this->db->fetchAll("SELECT T1.*, T2.time_limit, CONCAT(T3.name, ' ', T3.surname) as author 
-            FROM test T1 JOIN group_test T2 ON T1.id=T2.test_id
+        $testsData = $this->db->fetchAll("SELECT 
+                T1.*, T2.time_limit, CONCAT(T3.name, ' ', T3.surname) as author, T2.created_at, T2.publication_time, T2.id AS setup_id
+            FROM test T1 JOIN test_setup T2 ON T1.id=T2.test_id
             JOIN user T3 ON T1.user_id=T3.id
             WHERE T2.group_id=?", $groupId);
         $tests = [];
         foreach($testsData as $testData) {
-            $tests[] = new Test($testData);
+            $test = new Test($testData);
+            $test->created = $testData->created_at;
+            $tests[] = $test;
         }
         return $tests;
     }
@@ -147,9 +153,8 @@ class TestManager extends BaseManager
     public function createFilling(Filling $filling) : int
     {
         $this->db->query("INSERT INTO test_filling", [        
-            'test_id' => $filling->testId,
-            'user_id' => $filling->userId,            
-            'group_id' => $filling->groupId,
+            'setup_id' => $filling->setupId,
+            'user_id' => $filling->userId,   
             'questions' => json_encode($filling->questions),
             'questions_count' => $filling->questionsCount
         ]);
@@ -162,6 +167,7 @@ class TestManager extends BaseManager
         $filling->isFinished = $fillingData->is_finished === 1;
         $filling->answers = $this->getAnswers($fillingId);
         $filling->questions = json_decode($fillingData->questions);
+        $filling->setup = $this->getTestSetup($filling->setupId);
         return $filling;
     }
     
@@ -199,11 +205,16 @@ class TestManager extends BaseManager
         $this->db->query("DELETE FROM test_filling_answer WHERE test_filling_id=?", $fillingId);
     }
     
-    public function getTestSetup(int $testId, int $groupId)
+    public function getTestSetup(int $id)
     {
-        $setup = $this->db->fetch("SELECT * FROM group_test WHERE group_id=? AND test_id=?", $groupId, $testId);
+        $setup = $this->db->fetch("SELECT * FROM test_setup WHERE id=?", $id);
         $testSetup = new Entities\Test\TestSetup($setup);
         return $testSetup;
+    }
+    
+    public function deleteGroupTest(int $setupId)
+    {
+        $this->db->query("DELETE FROM test_setup WHERE id=?", $setupId);
     }
     
 }

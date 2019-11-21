@@ -4,10 +4,6 @@ namespace App\Model\Manager;
 
 use Nette;
 
-
-/**
- * Users management.
- */
 class BaseManager 
 {
     use Nette\SmartObject;
@@ -29,7 +25,5 @@ class BaseManager
         $this->db = $db;
         $this->ftpSender = $ftpSender;
     }
-
-  
 }
 

@@ -5,6 +5,7 @@ use App\FrontModule\Components\Test\ITestsList;
 use App\FrontModule\Components\Test\IEditor;
 use App\FrontModule\Components\Test\ITestFilling;
 use App\FrontModule\Components\Test\ITestStart;
+use App\FrontModule\Components\Test\ITestDisplay;
 
 class TestsPresenter extends BasePresenter
 {
@@ -20,6 +21,9 @@ class TestsPresenter extends BasePresenter
     
     /** @var ITestStart @inject */
     public $testStart;
+    
+    /** @var ITestDisplay @inject */
+    public $testDisplay;
 
     public function actionList()
     {
@@ -42,9 +46,15 @@ class TestsPresenter extends BasePresenter
         $this['topPanel']->setTitle('Test');
     }
     
-    public function actionStart($id, $groupId = null)
+    public function actionStart($setupId)
     {
-        $this['testStart']->setId($id, $groupId);
+        $this['testStart']->setId($setupId);
+        $this['topPanel']->setTitle('Test');
+    }
+    
+    public function actionDisplay($setupId)
+    {
+        $this['testDisplay']->setId($setupId);
         $this['topPanel']->setTitle('Test');
     }
        
@@ -66,5 +76,10 @@ class TestsPresenter extends BasePresenter
     protected function createComponentTestStart()
     {
         return $this->testStart->create();
+    }
+    
+    protected function createComponentTestDisplay()
+    {
+        return $this->testDisplay->create();
     }
 }

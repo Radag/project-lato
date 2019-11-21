@@ -96,11 +96,11 @@ Více už toho není
     <div class="card-action-header">
         <div class="message-type">Test</div>
         <div class="time-left">Otevřeno do <strong>23. 10. 10:30</strong></div>
-        <a href="{plink Tests:start groupTestId=>$test->groupTestId}" class="btn gray no-shadow">Otevřít</a>
+        <a href="{plink Tests:start setupId=>$test->setupId}" class="btn gray no-shadow">Otevřít</a>
     </div>
     <div class="card-action-content">
         <div class="avatar small colored">
-            <i class="material-icons">check_circle</i>
+            <i class="material-icons">playlist_add_check</i>
         </div>
         <div class="name">
             <h3 class="message-title">
@@ -117,8 +117,8 @@ Více už toho není
         <ul id="test_dropdown_{$test->id}" class='dropdown-content'>
             <li><a href="#">Vytvořit kopii příspěvku</a></li>
             {if $activeGroup->relation === 'owner'}
-                <li><a href="#" data-link="{link deleteTest! groupTestId=>$test->groupTestId}" class="delete-message-button refresh-wall-messages">Smazat</a></li>
-                <li><a href="{link editTest! groupTestId=>$test->groupTestId}" data-show-popup-after="#test-setup-modal" class="edit-test-button ajax">Upravit test</a></li>
+                <li><a href="#" data-link="{link deleteTest! setupId=>$test->setupId}" class="delete-message-button refresh-wall-messages">Smazat</a></li>
+                <li><a href="{link editTest! setupId=>$test->setupId}" data-show-popup-after="#test-setup-modal" class="edit-test-button ajax">Upravit test</a></li>
             {/if}
         </ul>
     </div>

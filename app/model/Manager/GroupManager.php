@@ -147,7 +147,7 @@ class GroupManager extends BaseManager {
         return $return;
     }  
 
-    public function getUserGroup($groupSlug, Entities\User $user, $isId = false) : Entities\Group
+    public function getUserGroup($groupSlug, Entities\User $user, $isId = false) : ?Entities\Group
     {
         $group = $this->db->fetch("SELECT 
                T1.id,
@@ -185,7 +185,7 @@ class GroupManager extends BaseManager {
             LEFT JOIN group_sharing T6 ON T6.group_id=T1.id
             LEFT JOIN public_actions T7 ON (T7.id = T6.action_id AND T7.active=1)
             LEFT JOIN group_period T8 ON (T8.group_id = T1.id AND T8.active=1)
-            WHERE " . ($isId ? "T1.id=?" : "T1.slug=?") . "AND T2.active=1 AND T1.archived=0", $user->id, $groupSlug);
+            WHERE " . ($isId ? "T1.id=?" : "T1.slug=?") . " AND T2.active=1 AND T1.archived=0", $user->id, $groupSlug);
         
         if($group) {
             $owner = new Entities\User();

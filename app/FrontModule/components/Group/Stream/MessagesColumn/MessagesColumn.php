@@ -14,6 +14,7 @@ use App\FrontModule\Components\Stream\ICommentForm;
 use App\FrontModule\Components\TaskHeader\ITaskHeader;
 use App\FrontModule\Components\Stream\ICommitTaskForm;
 use App\Model\Manager\TestManager;
+use App\FrontModule\Components\Test\ITestSetup;
 
 class MessagesColumn extends \App\Components\BaseComponent
 {
@@ -36,6 +37,9 @@ class MessagesColumn extends \App\Components\BaseComponent
     /** @var  TaskManager @inject */
     protected $taskManager;
     
+    /** @var  ITestSetup @inject */
+    protected $testSetup;
+    
     /** @var ICommitTaskForm */
     protected $commitTaskForm;  
       
@@ -54,7 +58,8 @@ class MessagesColumn extends \App\Components\BaseComponent
         ITaskHeader $taskHeaderFactory,
         TaskManager $taskManager,            
         ICommitTaskForm $commitTaskForm,            
-        TestManager $testManager
+        TestManager $testManager,
+        ITestSetup $testSetup
     )
     {
         $this->messageManager = $messageManager;
@@ -64,24 +69,30 @@ class MessagesColumn extends \App\Components\BaseComponent
         $this->taskManager = $taskManager;
         $this->commitTaskForm = $commitTaskForm;
         $this->testManager = $testManager;
+        $this->testSetup = $testSetup;
     }    
         
     public function render() 
     {
         if($this->singleMode === false) {
-            $this->template->tests = $this->testManager->getGroupTests($this->presenter->activeGroup->id);
-            $this->template->singleMode = false;
+            $tests = $this->testManager->getGroupTests($this->presenter->activeGroup->id);
             $data = $this->messageManager->getMessages($this->presenter->activeGroup, $this->presenter->activeUser, $this->filter);
-            $this->messages = $data['messages'];
+            $this->messages = [];
+            foreach($data['messages'] as $message) {
+                $this->messages[$message->created->getTimestamp()] = $message;
+            }
+            foreach($tests as $test) {
+                $this->messages[$test->created->getTimestamp()] = $test;
+            }
+            krsort($this->messages);
             $this->comments = $data['comments'];
         } else {
-            $this->template->singleMode = true;
             $message = $this->messageManager->getMessage($this->singleMode, $this->presenter->activeUser, $this->presenter->activeGroup);
             if($message) {
                 $this->comments[$this->singleMode] = $this->messageManager->getMessageComments($this->singleMode);
                 $this->messages = [$message->id => $message];
                 $this->template->singleMessage = $message;
-            }    
+            }
         }
         $this->template->singleMode = $this->singleMode;
         $this->template->messages = $this->messages;
@@ -132,6 +143,11 @@ class MessagesColumn extends \App\Components\BaseComponent
         return $this->commitTaskForm->create();    
     }
     
+    protected function createComponentTestSetupForm()
+    {
+        return $this->testSetup->create();
+    }
+    
     public function redrawTasks()
     {
         $this->redrawControl('messages');
@@ -146,23 +162,6 @@ class MessagesColumn extends \App\Components\BaseComponent
         }        
     }
 
-    /* MAYBE TO DELETE
-    public function handleSetTaskClassification($idTask)
-    {
-        $task = $this->taskManager->getTask($idTask);
-        if(empty($task->idClassificationGroup)) {
-            $groupClassification = new ClassificationGroup();
-            $groupClassification->name = $task->title;
-            $groupClassification->group = $this->activeGroup;
-            $groupClassification->task = $task;
-            $idGroupClassification = $this->classificationManager->createGroupClassification($groupClassification);
-        } else {
-            $idGroupClassification = $task->idClassificationGroup;
-        }
-        $this->presenter->redirect(':Front:Group:users', ['do'=> 'usersList-classification' , 'usersList-idGroupClassification' => $idGroupClassification]); 
-    }
-     * 
-     */
     public function handleDeleteMessage($idMessage) 
     {   
         if($this->messageManager->canUserEditMessage($idMessage, $this->presenter->activeUser, $this->presenter->activeGroup)) {
@@ -211,5 +210,22 @@ class MessagesColumn extends \App\Components\BaseComponent
     public function setSingleMode($idMessage)
     {
         $this->singleMode = $idMessage;
+    }
+    
+    
+    public function handleEditTest($setupId)
+    {
+        $this['testSetupForm']->setDefault($setupId);
+        $this->redrawControl('testSetupForm');       
+    }
+
+    public function handleDeleteTest($setupId) 
+    {   
+        $this->testManager->deleteGroupTest($setupId);
+//        if($this->messageManager->canUserEditMessage($idMessage, $this->presenter->activeUser, $this->presenter->activeGroup)) {
+//            $this->messageManager->deleteMessage($idMessage, true);
+//            $this->presenter->flashMessage('Zpráva byla smazána.');
+//        }
+        $this->redrawControl();
     }
 }

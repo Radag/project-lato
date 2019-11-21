@@ -1,29 +1,33 @@
 <div n:snippet="modal" >
     {if empty($selectedGroup)}
         <div class="modal-content" n:ifset="$testId">
-            <h3>Vyberte skupinu</h3>
+            <h3>Skupina</h3>
             {if count($adminGroups) > 0}
-            <div class="custom-collection-header">
-                Skupina
-            </div>
+            <p>Vyberte skupinu, kde chcete zveřejnit toto zadání.</p>
             <ul class="custom-collection group-list">
                 {foreach $adminGroups as $group}
                 <li>
                     <a href="{link selectGroup! id=>$group->id, testId=>$testId}" class="item ajax">
-                        <div class="avatar {$group->colorScheme|noescape}" >{$group->shortcut|substr:0,1}</div>
+                        <div class="avatar tiny {$group->colorScheme|noescape}" >{$group->shortcut|substr:0,1}</div>
                         <div class="label">{$group->name}</div>
-                        <div class="flex-spacer"></div>
-                        <div class="count"><strong>4</strong> / 20</div>
                     </a>
                 </li>
                 {/foreach}
             </ul>
             {else}
-                Nemáte žádné skupiny.
+                <p>Nemáte žádné skupiny.</p>
             {/if}
         </div>
+        <div class="modal-footer">
+            <div class="flex-spacer"></div>
+            <div class="form-control">
+                <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" disabled>Zveřejnit</button>
+
+            </div>
+        </div>
     {else}
-        <div class="modal-bar" n:if="!isset($groupTestId)">
+        <div class="modal-bar" n:if="!isset($setupId)">
             <button type="button" class="back-button">
                 <a href="{link selectGroup!}" class="clear ajax">
                     <i class="material-icons">arrow_back</i>
@@ -35,6 +39,23 @@
         {form form id=>"import-form"}
             <div class="modal-content">
                 <h3>Nastavit zadání</h3>
+
+                <div class="row">
+                    <div class="col s12">
+                        <div class="switch-row">
+                            <span>Známkovaný test</span>
+                            <div class="switch">
+                                <label>
+                                    <input type="checkbox" checked="checked">
+                                    <span class="lever"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                {* NEPOUZITA NASTAVENI
+
                 <div class="switch-row">
                     <span>Automaticky vyhodnotit</span>
                     <div class="switch">
@@ -52,35 +73,89 @@
                         </label>
                     </div>
                     <div class="form-row">
+                        <div class="switch">
                         <label>
                             <input data-link="" type="radio" value="notice"  id="opt2" name="stream-filter">
                             <span for="opt2">Klasifikační stupnice</span>
                         </label>
+                        </div>
                     </div>
                     <p class="range-field">
                         <input type="range" id="test5" min="0" max="100" />
                     </p>
                 </div>
 
-                <div class="switch-row">
-                    <span>Uzavřít zadání</span>
-                    <div class="switch">
-                        <label>
-                            <input type="checkbox" checked="checked">
-                            <span class="lever"></span>
-                        </label>
+                *}
+
+
+                
+                
+                <div class="row">
+                    <div class="input-field col s6">
+                        {label time_limit class=>'active'}{/label}
+                        {input time_limit}
+                    </div>
+
+                    {* V budoucnu pro přidání vlastního času na zadání
+                    <div class="input-field col s6 no-margin">
+                        <input placeholder="Placeholder" id="first_name" type="text" class="validate">
+                    </div>
+                    *}
+
+                </div>
+
+                {* V budoucnu na udělení možnosti neomezenýho vypracování
+                <div class="row">
+                    <div class="col s12">
+                        <div class="switch-row">
+                            <span>Uzavřít zadání</span>
+                            <div class="switch">
+                                <label>
+                                    <input type="checkbox" checked="checked">
+                                    <span class="lever"></span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="form-row no-label input-field">
-                    <input placeholder="Datum" id="first_name" type="text" class="validate" value="11. 10.">
-                    <input placeholder="Čas" id="first_name" type="text" class="validate" value="12:35">
+                *}
+
+                <div class="row">
+                    <div class="input-field col s6">
+                        <label>Termín odevzdání</label>
+                        {input publication_date placeholder=>'Datum', id=>'first_name', class=>'validate'}
+                    </div>
+                    <div class="input-field col s6">
+                        {input publication_time placeholder=>'Čas', id=>'first_name', class=>'validate'}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s6">
+                        {label questions_count class=>'active'}{/label}
+                        {input questions_count}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12">
+                        <div class="switch-row">
+                            <span>Náhodné pořadí otázek</span>
+                            <div class="switch">
+                                <label>
+                                    <input type="checkbox" checked="checked">
+                                    <span class="lever"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <div class="flex-spacer"></div>
                 <div class="form-control">
                     <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-                    <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form">{ifset $groupTestId}Uložit{else}Zveřejnit{/ifset}</button>
+                    <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form">{ifset $setupId}Uložit{else}Zveřejnit{/ifset}</button>
                 </div>
             </div>
         {/form}

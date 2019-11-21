@@ -10,6 +10,7 @@ class Test extends AbstractEntity {
     public $author = null;
     public $questions = [];
     public $questionsCount = null;
+    public $setupId = null;
     public $timeLimit = null;
     public $created = null;
     
@@ -18,7 +19,8 @@ class Test extends AbstractEntity {
         'name' => 'name',
         'questions_count' => 'questionsCount',
         'created_at' => 'created',
-        'time_limit' => 'timeLimit',        
+        'time_limit' => 'timeLimit',   
+        'setup_id' => 'setupId',        
         'author' => 'author'
     ];
 }

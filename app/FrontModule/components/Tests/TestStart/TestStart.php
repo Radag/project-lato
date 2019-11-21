@@ -15,7 +15,7 @@ class TestStart extends \App\Components\BaseComponent
     private $test = null;
     
     /** @var int **/
-    private $groupId = null;
+    private $setupId = null;
     
     /** @var TestSetup **/
     private $testSetup = null;
@@ -34,26 +34,26 @@ class TestStart extends \App\Components\BaseComponent
     }
     
     
-    public function setId($id, $groupId) 
+    public function setId(int $setupId) 
     {
-        $this->groupId = $groupId;
-        $this->test = $this->testManager->getTest($id, $this->presenter->activeUser->id);    
-        if($this->groupId) {
-            $this->testSetup = $this->testManager->getTestSetup($id, $this->groupId);
-        } else {
-            $this->testSetup = new TestSetup();
-            $this->testSetup->numberOfRepetitions = 0;
-            $this->testSetup->timeLimit = 0;
-            $this->testSetup->questionsCount = null;
-        }
+        $this->setupId = $setupId;
+        $this->testSetup = $this->testManager->getTestSetup($setupId);
+        $this->test = $this->testManager->getTest($this->testSetup->testId, $this->presenter->activeUser->id);    
+//        if($this->groupTestId) {
+//            
+//        } else {
+//            $this->testSetup = new TestSetup();
+//            $this->testSetup->numberOfRepetitions = 0;
+//            $this->testSetup->timeLimit = 0;
+//            $this->testSetup->questionsCount = null;
+//        }
     }
 
     public function handleStartTest()
     {
         $filling = new Filling();
-        $filling->testId = $this->test->id;
         $filling->userId = $this->presenter->activeUser->id;
-        $filling->groupId = $this->groupId;
+        $filling->setupId = $this->testSetup->id;
         $selectedQuestions = [];
         if($this->testSetup->questionsCount === null) {
             $this->testSetup->questionsCount = $this->test->questionsCount;

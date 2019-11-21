@@ -6,6 +6,7 @@ use App\Model\Entities\Test\Test;
 use App\Model\Entities\Test\Filling;
 use App\Model\Entities\Test\Answer;
 use App\Model\Entities\Test\TestSetup;
+use App\Service\TestService;
 
 class TestFilling extends \App\Components\BaseComponent
 {
@@ -21,9 +22,16 @@ class TestFilling extends \App\Components\BaseComponent
     /** @var TestSetup **/
     private $testSetup = null;
     
-    public function __construct(TestManager $testManager)
+    /** @var TestService **/
+    private $testService = null;
+    
+    public function __construct(
+        TestManager $testManager,
+        TestService $testService
+    )
     {
         $this->testManager = $testManager;
+        $this->testService = $testService;        
     }
     
     public function render() 
@@ -43,14 +51,9 @@ class TestFilling extends \App\Components\BaseComponent
     protected function createComponentForm()
     {
         $form = $this->getForm(true);
-        foreach($this->test->questions as $question) {
-            if(in_array($question->id, $this->filling->questions)) {
-                foreach($question->options as $option) {
-                    $form->addCheckbox('opt_' . $question->id . '_' . $option->id);
-                }
-            }
-        }
-     
+        
+        $this->testService->getTestForm($form, $this->test, $this->filling);
+
         $form->addSubmit('save', 'Průběžně uložit');
         $form->addSubmit('save_leave', 'Odevzdat');
         $form->onSuccess[] = [$this, 'processForm'];
@@ -61,8 +64,8 @@ class TestFilling extends \App\Components\BaseComponent
     public function setId($id) 
     {
         $this->filling = $this->testManager->getFilling($id);
-        $this->test = $this->testManager->getTest($this->filling->testId, $this->presenter->activeUser->id, $this->filling->questions);
-        $this->testSetup = $this->testManager->getTestSetup($this->test->id, $this->filling->groupId);
+        $this->test = $this->testManager->getTest($this->filling->setup->testId, $this->presenter->activeUser->id, $this->filling->questions);
+        $this->testSetup = $this->filling->setup;
         
         $timeLeft = $this->getTimeLeft();
         if($timeLeft && $timeLeft->invert === 1) {
@@ -84,69 +87,15 @@ class TestFilling extends \App\Components\BaseComponent
     
     public function processForm(\Nette\Application\UI\Form $form, $values) 
     {   
-        $this->testManager->clearTestAnswers($this->filling->id);
-        $questions = $this->testManager->getTest($this->filling->testId, $this->presenter->activeUser->id);
-        
-        $answers = [];
-        foreach($values as $key => $val) {
-            $name = explode('_', $key);
-            if($name[0] === 'opt') {
-                if(!isset($answers[$name[1]])) {
-                    $answer = new Answer();
-                    $answer->fillingId = $this->filling->id;
-                    $answer->questionId = $name[1];
-                    $answer->question = $questions->questions[$name[1]];
-                    if($answer->question->type === 'options') {
-                        $answer->answer = (object)['options' => []];
-                    }
-                    $answers[$name[1]] = $answer;
-                }
-                if($answers[$name[1]]->question->type === 'options' && $val) {
-                    $answer->answer->options[] = (int)$name[2];
-                }
-            }
-        }
-        
-        $correctCount = 0;
-        foreach($answers as $answer) {
-            $answer->isCorrect = $this->isCorrect($answer);
-            if($answer->isCorrect) {
-                $correctCount++;
-            }
-            $this->testManager->saveAnswer($answer);
-        }
-        
-        if(isset($form->getHttpData()['save_leave'])) {
-            $this->filling->isFinished = true;
-            $this->filling->correctCount = $correctCount;
-            $this->filling->percent = round(100/$this->test->questionsCount * $correctCount);
-            $this->testManager->updateFilling($this->filling);
-        }
+        $finish = isset($form->getHttpData()['save_leave']);
+        $this->testService->saveTestForm($values, $this->filling, $this->test, $finish);   
         $this->presenter->redirect('this');
     }
-    
-    private function isCorrect(Answer $answer)
-    {
-        if($answer->question->type === 'options') {
-            $correct = [];
-            foreach($answer->question->options as $option) {
-                if($option->isCorrect) {
-                    $correct[] = $option->id;
-                }                
-            }
-            sort($correct);
-            sort($answer->answer->options);
-            if($correct == $answer->answer->options) {
-                return true;
-            }
-        }
-        return false;        
-    }
-    
+
     private function getTimeLeft() : ?\DateInterval
     {
         if($this->testSetup->timeLimit !== 0) {
-             $interval = $this->secondsToTime($this->testSetup->timeLimit);
+            $interval = $this->secondsToTime($this->testSetup->timeLimit);
             $endDate = $this->filling->created->add($interval);
             return (new \DateTime())->diff($endDate);
         } else {
