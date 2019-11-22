@@ -52,10 +52,9 @@ class TestsPresenter extends BasePresenter
         $this['topPanel']->setTitle('Test');
     }
     
-    public function actionDisplay($setupId)
+    public function actionDisplay($fillingId)
     {
-        $this['testDisplay']->setId($setupId);
-        $this['topPanel']->setTitle('Test');
+        $this['testDisplay']->setId($fillingId);
     }
        
     protected function createComponentList()

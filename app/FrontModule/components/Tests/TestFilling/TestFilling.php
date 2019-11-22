@@ -74,8 +74,7 @@ class TestFilling extends \App\Components\BaseComponent
         }
         
         foreach($this->filling->answers as $answer) {
-            $correctAnswers = json_decode($answer->answer);
-            foreach($correctAnswers as $options) {
+            foreach($answer->answer as $options) {
                 foreach($options as $optionId) {
                     $this['form']->setDefaults([
                         'opt_' . $answer->questionId . '_' . $optionId => true

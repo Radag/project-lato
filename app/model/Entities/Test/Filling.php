@@ -25,6 +25,7 @@ class Filling extends AbstractEntity {
         'id' => 'id',
         'setup_id' => 'setupId',
         'group_id' => 'groupId',
+        'user_id' => 'userId',
         'correct_count' => 'correctCount',
         'questions_count' => 'questionsCount',
         'percent' => 'percent',

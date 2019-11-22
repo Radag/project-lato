@@ -143,7 +143,7 @@ class TestManager extends BaseManager
                 $optionObject->id = $question->option_id;
                 $optionObject->name = $question->option_name;
                 $optionObject->number = $question->option_number;
-                $optionObject->isCorrect = $question->option_is_correct == 1 ? true : false;
+                $optionObject->isCorrect = $question->option_is_correct == 1;
                 $test->questions[$question->id]->options[] = $optionObject;
             }
         }
@@ -176,7 +176,10 @@ class TestManager extends BaseManager
         $answers = [];
         foreach($answersData as $answer)
         {
-            $answers[] = new Answer($answer);
+            $answerObject = new Answer($answer);
+            $answerObject->isCorrect = $answer->is_correct == 1;
+            $answerObject->answer = json_decode($answer->answer);
+            $answers[$answerObject->questionId] = $answerObject;
         }  
         return $answers;
     }
@@ -215,6 +218,11 @@ class TestManager extends BaseManager
     public function deleteGroupTest(int $setupId)
     {
         $this->db->query("DELETE FROM test_setup WHERE id=?", $setupId);
+    }
+    
+    public function deleteTest(int $testId)
+    {
+        $this->db->query("DELETE FROM test WHERE id=?", $testId);
     }
     
 }

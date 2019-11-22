@@ -31,6 +31,12 @@ class TestsList extends \App\Components\BaseComponent
         $this['testSetup']->setTestId($testId);
     }
     
+    public function handleDeleteTest($testId)
+    {
+        $this->testManager->deleteTest($testId);
+        $this->presenter->redirect('this');
+    }
+    
     public function createComponentTestSetup()
     {
         return $this->testSetup->create();
