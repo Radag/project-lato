@@ -2,6 +2,7 @@
 namespace App\FrontModule\Components\Test;
 
 use App\Model\Manager\TestManager;
+use App\Model\Manager\GroupManager;
 use App\Model\Entities\Test\Filling;
 use App\Model\Entities\Test\Test;
 use App\Model\Entities\Test\TestSetup;
@@ -10,6 +11,9 @@ class TestStart extends \App\Components\BaseComponent
 {
     /** @var TestManager **/
     private $testManager;
+    
+    /** @var GroupManager **/
+    private $groupManager;
     
     /** @var Test **/
     private $test = null;
@@ -20,9 +24,13 @@ class TestStart extends \App\Components\BaseComponent
     /** @var TestSetup **/
     private $testSetup = null;
     
-    public function __construct(TestManager $testManager)
+    public function __construct(
+        TestManager $testManager,
+        GroupManager $groupManager
+    )
     {
         $this->testManager = $testManager;
+        $this->groupManager = $groupManager;
     }
     
     public function render() 
@@ -38,7 +46,13 @@ class TestStart extends \App\Components\BaseComponent
     {
         $this->setupId = $setupId;
         $this->testSetup = $this->testManager->getTestSetup($setupId);
-        $this->test = $this->testManager->getTest($this->testSetup->testId, $this->presenter->activeUser->id);    
+        if(!$this->groupManager->isUserInGroup($this->presenter->activeUser->id, $this->testSetup->groupId)) {
+            $this->presenter->flashMessage("Tento test neexistuje!");
+            $this->presenter->redirect(':Front:Homepage:noticeboard');
+        }
+        
+        $this->test = $this->testManager->getTestForUser($this->testSetup->testId);
+        
 //        if($this->groupTestId) {
 //            
 //        } else {

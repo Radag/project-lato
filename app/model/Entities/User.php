@@ -68,9 +68,9 @@ class User extends AbstractEntity {
             $profileImage = $path;
         } else {
             if(empty($sex) || $sex == 'M') {
-                $profileImage = '/images/default-avatar_man.png';
+                $profileImage = '/images/default_avatars/male_1.png';
             } else {
-                $profileImage = '/images/default-avatar_woman.png';
+                $profileImage = '/images/default_avatars/female_2.png';
             }
         }
         return $profileImage;

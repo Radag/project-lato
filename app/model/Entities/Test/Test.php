@@ -12,6 +12,11 @@ class Test extends AbstractEntity {
     public $questionsCount = null;
     public $setupId = null;
     public $timeLimit = null;
+    
+    public $summary = null;
+    
+    /** @var TestSetup **/
+    public $setup = null;
     public $created = null;
     
     protected $mapFields = [

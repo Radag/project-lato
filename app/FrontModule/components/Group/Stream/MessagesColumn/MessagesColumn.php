@@ -74,7 +74,7 @@ class MessagesColumn extends \App\Components\BaseComponent
         
     public function render() 
     {
-        if($this->singleMode === false) {
+        if(!$this->singleMode) {
             $tests = $this->testManager->getGroupTests($this->presenter->activeGroup->id);
             $data = $this->messageManager->getMessages($this->presenter->activeGroup, $this->presenter->activeUser, $this->filter);
             $this->messages = [];

@@ -3,26 +3,33 @@ namespace App\FrontModule\Components\Test;
 
 use App\Model\Manager\TestManager;
 use App\Model\Manager\GroupManager;
+use App\Model\Manager\ClassificationManager;
 use App\Model\Entities\Group;
+use App\Model\Entities\ClassificationGroup;
 
 class TestSetup extends \App\Components\BaseComponent
 {
-   /** @var TestManager **/
+    /** @var TestManager **/
     private $testManager;
     
     /** @var GroupManager **/
     private $groupManager;
+    
+    /** @var ClassificationManager **/
+    private $classificationManager;
     
     /** @var Group **/
     protected $selectedGroup = null;
           
     public function __construct(
         TestManager $testManager,            
-        GroupManager $groupManager
+        GroupManager $groupManager,        
+        ClassificationManager $classificationManager
     )
     {
         $this->testManager = $testManager;
         $this->groupManager = $groupManager;
+        $this->classificationManager = $classificationManager;
     }
     
     public function render() 
@@ -46,9 +53,14 @@ class TestSetup extends \App\Components\BaseComponent
             '20' => "20 minut",
             '30' => "30 minut",
         ]);
+        
+        $form->addCheckbox('use_publication_date', "Datum publikace");
         $form->addText('publication_date')->setType('date');
         $form->addText('publication_time')->setType('time');
         
+        $form->addCheckbox('use_deadline', "Datum odevzdání");
+        $form->addText('deadline_date')->setType('date');
+        $form->addText('deadline_time')->setType('time');
         
         $form->addSelect('questions_count', "Počet otázek", [
             '0' => "Použít všechny",
@@ -57,14 +69,41 @@ class TestSetup extends \App\Components\BaseComponent
             '15' => "15 náhodných"
         ]);
         
+        $form->addCheckbox('classification', 'Vytvořit známkování');
+        $form->addCheckbox('random_sort', 'Náhodné pořadí otázek');
+        
+        $form->addSelect('number_of_repetitions', "Kolikrát se dá vyplnit", [
+            '0' => "Neomezeně",
+            '1' => "1x",
+            '5' => "5x",
+            '10' => "10x",            
+            '20' => "20x"
+        ]);
+        
         $form->onSuccess[] = function($form, $values) {
+            $group = $this->groupManager->getUserGroup($values->group_id, $this->presenter->activeUser, true);
+            $test = $this->testManager->getTestForOwner($values->test_id, $this->presenter->activeUser->id, false);
+            if(!$group || !$test) {
+                $this->presenter->flashMessage("Skupina neexistuje.");
+                $this->redirect('this');
+            } 
             $testSetup = new \App\Model\Entities\Test\TestSetup;
             $testSetup->testId = $values->test_id;
             $testSetup->groupId = $values->group_id;
-            $testSetup->numberOfRepetitions = 0;
+            $testSetup->numberOfRepetitions = $values->number_of_repetitions;
             $testSetup->timeLimit = $values->time_limit * 60;
             $testSetup->questionsCount = $values->questions_count == 0 ? null : $values->questions_count;
-            
+            $testSetup->randomSort = $values->random_sort ? true : false;
+            if($values->classification) {
+                $groupClassification = new ClassificationGroup();
+                $groupClassification->group = new Group();
+                $groupClassification->group->id = $testSetup->groupId;
+                $groupClassification->type = ClassificationGroup::TYPE_TEST;
+                $groupClassification->idPeriod = 1;
+                $groupClassification->forAll = true;
+                $groupClassification->name = $test->name;
+                $testSetup->classificationGroupId = $this->classificationManager->createGroupClassification($groupClassification);
+            }             
             if($values->publication_date && $values->publication_time) {
                $testSetup->publicationTime = new \DateTime();
                 $date = explode('-', $values->publication_date);
@@ -73,12 +112,22 @@ class TestSetup extends \App\Components\BaseComponent
                 $testSetup->publicationTime->setTime($time[0], $time[1]); 
             } else {
                $testSetup->publicationTime = null; 
-            }            
+            }
+            
+            if($values->deadline_date && $values->deadline_time) {
+               $testSetup->deadline = new \DateTime();
+                $date = explode('-', $values->deadline_date);
+                $time = explode(':', $values->deadline_time);
+                $testSetup->deadline->setDate($date[0], $date[1], $date[2]);
+                $testSetup->deadline->setTime($time[0], $time[1]); 
+            } else {
+               $testSetup->deadline = null; 
+            }
             if($values->id) {
                 
             } else {
                 $this->testManager->createTestSetup($testSetup);
-            }           
+            }
             
             $this->presenter->flashMessage("Test byl zadán do skupiny.");
             $this->redirect('this');

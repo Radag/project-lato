@@ -64,7 +64,7 @@ class TestFilling extends \App\Components\BaseComponent
     public function setId($id) 
     {
         $this->filling = $this->testManager->getFilling($id);
-        $this->test = $this->testManager->getTest($this->filling->setup->testId, $this->presenter->activeUser->id, $this->filling->questions);
+        $this->test = $this->testManager->getTestForUser($this->filling->setup->testId, $this->filling->questions);
         $this->testSetup = $this->filling->setup;
         
         $timeLeft = $this->getTimeLeft();

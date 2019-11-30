@@ -7,6 +7,7 @@ use App\Model\Entities\Test\Test;
 use App\Model\Entities\Test\Filling;
 use App\Model\Entities\Test\Answer;
 use App\Model\Entities\User;
+use App\Model\Entities\Test\TestSetup;
 use App\Model\LatoSettings;
 
 class TestService
@@ -40,7 +41,7 @@ class TestService
     public function saveTestForm($values, Filling $filling, Test $test, bool $finish)
     {
         $this->testManager->clearTestAnswers($filling->id);
-        $questions = $this->testManager->getTest($filling->setup->testId, $this->activeUser->id);
+        $questions = $this->testManager->getTestForUser($filling->setup->testId);
         
         $answers = [];
         foreach($values as $key => $val) {

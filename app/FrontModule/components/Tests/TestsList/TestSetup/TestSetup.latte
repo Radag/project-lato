@@ -39,16 +39,15 @@
         {form form id=>"import-form"}
             <div class="modal-content">
                 <h3>Nastavit zadání</h3>
-
                 <div class="row">
                     <div class="col s12">
                         <div class="switch-row">
                             <span>Známkovaný test</span>
                             <div class="switch">
-                                <label>
-                                    <input type="checkbox" checked="checked">
+                                {label classification:}
+                                    {input classification:}
                                     <span class="lever"></span>
-                                </label>
+                                {/label}
                             </div>
                         </div>
                     </div>
@@ -89,21 +88,21 @@
 
 
                 
-                
                 <div class="row">
+                    <div class="input-field col s6">
+                        {label number_of_repetitions class=>'active'}{/label}
+                        {input number_of_repetitions}
+                    </div> 
                     <div class="input-field col s6">
                         {label time_limit class=>'active'}{/label}
                         {input time_limit}
                     </div>
-
                     {* V budoucnu pro přidání vlastního času na zadání
                     <div class="input-field col s6 no-margin">
                         <input placeholder="Placeholder" id="first_name" type="text" class="validate">
                     </div>
                     *}
-
                 </div>
-
                 {* V budoucnu na udělení možnosti neomezenýho vypracování
                 <div class="row">
                     <div class="col s12">
@@ -119,33 +118,63 @@
                     </div>
                 </div>
                 *}
-
                 <div class="row">
-                    <div class="input-field col s6">
-                        <label>Termín odevzdání</label>
+                    <div class="col s12">
+                        <div class="switch-row">
+                            <label>Datum publikace</label>
+                            <div class="switch">
+                                {label use_publication_date:}
+                                    {input use_publication_date:}
+                                    <span class="lever"></span>
+                                {/label}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row hide" id="publication-date-row">
+                    <div class="input-field col s6">                        
                         {input publication_date placeholder=>'Datum', id=>'first_name', class=>'validate'}
                     </div>
                     <div class="input-field col s6">
                         {input publication_time placeholder=>'Čas', id=>'first_name', class=>'validate'}
                     </div>
+                </div>               
+                <div class="row">
+                    <div class="col s12">
+                        <div class="switch-row">
+                            <label>Termín odevzdání</label>
+                            <div class="switch">
+                                {label use_deadline:}
+                                    {input use_deadline:}
+                                    <span class="lever"></span>
+                                {/label}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
+                <div class="row hide" id="deadline_date-row">
+                    <div class="input-field col s6">                        
+                        {input deadline_date placeholder=>'Datum', id=>'first_name', class=>'validate'}
+                    </div>
+                    <div class="input-field col s6">
+                        {input deadline_time placeholder=>'Čas', id=>'first_name', class=>'validate'}
+                    </div>
+                </div>
                 <div class="row">
                     <div class="input-field col s6">
                         {label questions_count class=>'active'}{/label}
                         {input questions_count}
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col s12">
                         <div class="switch-row">
                             <span>Náhodné pořadí otázek</span>
                             <div class="switch">
-                                <label>
-                                    <input type="checkbox" checked="checked">
+                                {label random_sort:}
+                                    {input random_sort:}
                                     <span class="lever"></span>
-                                </label>
+                                {/label}
                             </div>
                         </div>
                     </div>
@@ -158,6 +187,22 @@
                     <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form">{ifset $setupId}Uložit{else}Zveřejnit{/ifset}</button>
                 </div>
             </div>
+            <script>
+                $("input[name='use_publication_date']").on("change", function(e){
+                    if($(this).prop('checked')) {
+                        $("#publication-date-row").removeClass('hide');
+                    } else {
+                        $("#publication-date-row").addClass('hide');
+                    }
+                });
+                $("input[name='use_deadline']").on("change", function(e){
+                    if($(this).prop('checked')) {
+                        $("#deadline_date-row").removeClass('hide');
+                    } else {
+                        $("#deadline_date-row").addClass('hide');
+                    }
+                });
+            </script>
         {/form}
     {/if}
 </div>

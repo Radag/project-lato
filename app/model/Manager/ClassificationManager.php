@@ -189,7 +189,8 @@ class ClassificationManager extends BaseManager
             'classification_date' => $groupClassification->classificationDate,
             'task_id' => isset($groupClassification->task) ? $groupClassification->task->id : null,
             'period_id' => $groupClassification->idPeriod,
-            'for_all' => $groupClassification->forAll
+            'for_all' => $groupClassification->forAll,            
+            'type' => $groupClassification->type
         ]);
         $groupClassificationId = $this->db->getInsertId();
         

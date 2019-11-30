@@ -49,7 +49,7 @@ class TestDisplay extends \App\Components\BaseComponent
     {
         $this->filling = $this->testManager->getFilling($fillingId);
         $this->testSetup = $this->filling->setup;
-        $this->test = $this->testManager->getTest($this->testSetup->testId, $this->presenter->activeUser->id, $this->filling->questions);
+        $this->test = $this->testManager->getTestForUser($this->testSetup->testId, $this->filling->questions);
         $this->presenter['topPanel']->setTitle($this->test->name . " - procházení");
         foreach($this->test->questions as $question) {
             foreach($question->options as $option) {

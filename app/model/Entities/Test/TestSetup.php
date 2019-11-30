@@ -12,10 +12,19 @@ class TestSetup extends AbstractEntity {
     public $timeLimit = null;
     public $questionsCount = null;
     public $numberOfRepetitions = null;
-    public $sortRandom = false;
+    public $isCreator = false;
+    public $timeLeft = null;
+    public $classificationGroupId = null;
+    public $randomSort = null;
+    
+    /** @var \App\Model\Entities\Group **/
+    public $group = null;
     
     /** @var \Datetime **/
-    public $publicationTime = false;
+    public $publicationTime = null;
+    
+    /** @var \Datetime **/
+    public $deadline = null;
     
     protected $mapFields = [
         'id' => 'id',
@@ -24,6 +33,9 @@ class TestSetup extends AbstractEntity {
         'time_limit' => 'timeLimit',
         'questions_count' => 'questionsCount',        
         'number_of_repetitions' => 'numberOfRepetitions',
-        'publication_time' => 'publicationTime'
+        'deadline' => 'deadline',
+        'publication_time' => 'publicationTime',        
+        'random_sort' => 'randomSort',
+        'classification_group_id' => 'classificationGroupId',
     ];
 }

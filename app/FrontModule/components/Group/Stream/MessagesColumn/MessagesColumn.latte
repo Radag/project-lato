@@ -95,8 +95,46 @@ Více už toho není
 <div class="card flex-column">
     <div class="card-action-header">
         <div class="message-type">Test</div>
-        <div class="time-left">Otevřeno do <strong>23. 10. 10:30</strong></div>
-        <a href="{plink Tests:start setupId=>$test->setupId}" class="btn gray no-shadow">Otevřít</a>
+        {if $test->setup->isCreator}
+            {if $test->setup->timeLeft }
+                {if $test->setup->timeLeft->invert === 0 }
+                <div class="time-left">
+                    Otevřeno do <strong>{$test->setup->deadline->format("j. n. G:i")}</strong>
+                </div>
+                {else}
+                <div class="time-left">
+                    Uzavřeno v <strong>{$test->setup->deadline->format("j. n. G:i")}</strong>
+                </div>
+                {/if}
+            {/if}
+            <div>
+                vyplnilo {$test->summary->studentsCount} studentů | průměr {$test->summary->studentsPercent}%
+            </div>
+            {if $test->setup->classificationGroupId}
+            <a href="{plink Group:usersClassification classificationGroupId=>$test->setup->classificationGroupId, id=>$test->setup->group->slug}" class="btn gray no-shadow">
+                <span class="hide-on-small-only">Oznámkovat</span>
+                <i class="material-icons hide-on-med-and-up">folder_open</i>
+            </a>
+            {/if}
+        {else}
+            {if $test->summary->grade}
+                <div class="time-left">
+                    Známka: <strong>{$test->summary->grade}</strong>
+                </div>
+            {/if}
+            {if $test->summary->filledCount > 0}
+                <div class="time-left">
+                    <strong>Vyplněno {$test->summary->filledCount}x</strong> | Průměr: <strong>{$test->summary->percent}%</strong>
+                </div>
+            {/if}
+            {if ($test->setup->timeLeft == null || $test->setup->timeLeft->invert === 0)
+                && ($test->setup->numberOfRepetitions === 0 || $test->setup->numberOfRepetitions > $test->summary->filledCount)}  
+                <div class="time-left">
+                    {if $test->setup->deadline}Otevřeno do <strong>{$test->setup->deadline->format("j. n. G:i")}</strong>{/if}
+                    <a href="{plink Tests:start setupId=>$test->setupId}" class="btn gray no-shadow">Otevřít</a>
+                </div>
+            {/if}
+        {/if}       
     </div>
     <div class="card-action-content">
         <div class="avatar small colored">
