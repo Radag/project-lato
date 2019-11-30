@@ -3,11 +3,12 @@ namespace App\PublicModule\Presenters;
 
 use Nette;
 use App\Model\Manager\UserManager;
+use App\Model\Manager\PublicActionManager;
+use App\Service\ReCaptchaService;
 use App\PublicModule\Components\Authetication\SignInForm\SignInForm;
 use App\PublicModule\Components\Authetication\RegisterForm;
 use App\PublicModule\Components\Authetication\LostPasswordForm;
 use App\Mail\MailManager;
-use App\Model\Manager\PublicActionManager;
 
 class BasePresenter extends Nette\Application\UI\Presenter
 {
@@ -20,6 +21,9 @@ class BasePresenter extends Nette\Application\UI\Presenter
     
     /** @var PublicActionManager @inject */
     public $publicActionManager;
+    
+    /** @var ReCaptchaService @inject */
+    public $reCaptchaService;
     
     public $menuItems = [
         '#page-header' => 'Domů',
@@ -49,7 +53,7 @@ class BasePresenter extends Nette\Application\UI\Presenter
     
     public function createComponentRegisterForm()
     {
-        return new RegisterForm($this->userManager, $this->mailManager);
+        return new RegisterForm($this->userManager, $this->mailManager, $this->reCaptchaService);
     }
     
     protected function createComponentLostPasswordForm()

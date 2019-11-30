@@ -271,9 +271,10 @@
             <i class="material-icons">event</i>Rozvrh
         </a>
     </li>*}
-    <li><a n:class="$presenter->isLinkCurrent('Task:default') ? active, waves-effect, waves-dark" href="{plink Task:default}" >
+    {*<li><a n:class="$presenter->isLinkCurrent('Task:default') ? active, waves-effect, waves-dark" href="{plink Task:default}" >
             <i class="material-icons">check_box</i>Testy
-        </a></li>
+        </a>
+    </li>*}
     <li>
         <a n:class="$presenter->isLinkCurrent('Homepage:classification') ? active, waves-effect, waves-dark" href="{plink :Front:Homepage:classification}" >
             <i class="material-icons">assessment</i>Klasifikace
@@ -284,9 +285,9 @@
             <i class="material-icons">storage</i>Uložiště
         </a>
     </li> *}
-    <li><a n:class="$presenter->isLinkCurrent('Task:default') ? active, waves-effect, waves-dark" href="{plink Task:default}" >
+    {*<li><a n:class="$presenter->isLinkCurrent('Task:default') ? active, waves-effect, waves-dark" href="{plink Task:default}" >
             <i class="material-icons">folder</i>Archiv
-        </a></li>
+        </a></li>*}
     <li class="divider"></li>
     <h4 style="margin-bottom: 8px">Správa účtu</h4>
     <li><a href="{plink Account:default}" n:class="$presenter->isLinkCurrent('Account:*') ? active, waves-effect, waves-dark">

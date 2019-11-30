@@ -1,6 +1,7 @@
 {snippet sign-in-form}
     {form form class=>'ajax'}
-    <div class="modal-content">
+    <div class="modal-content">        
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
         <h2>Registrovat</h2>
         <div class="form-row input-field">
             {input email}
@@ -36,15 +37,10 @@
                
             </p>
         </div>
+        <div class="g-recaptcha" data-sitekey="6LcDhq0UAAAAAEVUrw7fZRtr62DlQ0X_y3uFtCZN"></div> 
         <div class="flex-row form-controls">
-            {*<p class="remember-me">
-                Souhlasim
-            </p>*}
             <button class="btn waves-effect waves-light" type="submit" >Registrovat</button>
         </div>
-        {*<div class="col s12 bottom-link">
-            <a href="{plink :Public:Homepage:lostPassword}">Podmínky používání</a>
-        </div>*}
     </div>
     {/form}
 {/snippet}

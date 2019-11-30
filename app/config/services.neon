@@ -15,6 +15,8 @@ services:
     - App\Model\Manager\ConversationManager
     - App\Model\Manager\FictiveUserManager
 
+    - App\Service\ReCaptchaService
+
     - App\Mail\MailManager
 
     - App\FrontModule\Components\Stream\IStream
