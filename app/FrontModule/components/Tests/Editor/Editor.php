@@ -54,7 +54,7 @@ class Editor extends \App\Components\BaseComponent
 
     public function setId($id) 
     {
-        $this->test = $this->testManager->getTest($id, $this->presenter->activeUser->id);
+        $this->test = $this->testManager->getTestForOwner($id, $this->presenter->activeUser->id);
         $this['form']->setDefaults([
             'name' => $this->test->name,
             'id' => $id
@@ -88,7 +88,7 @@ class Editor extends \App\Components\BaseComponent
     {
         $test = null;
         if($values->id) {
-            $test = $this->testManager->getTest($values->id, $this->presenter->activeUser->id);
+            $test = $this->testManager->getTestForOwner($values->id, $this->presenter->activeUser->id);
         }
         if($test === null) {
             $test = new Test;
