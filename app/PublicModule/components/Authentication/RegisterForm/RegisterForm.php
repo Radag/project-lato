@@ -9,6 +9,7 @@ namespace App\PublicModule\Components\Authetication;
 
 use \Nette\Application\UI\Form;
 use App\Model\Manager\UserManager;
+use App\Service\ReCaptchaService;
 use App\Mail\MailManager;
 
 
@@ -16,18 +17,23 @@ class RegisterForm extends \App\Components\BaseComponent
 {
     
     /** @var UserManager */
-    private $userManager;
+    public $userManager;
     
     /** @var MailManager */
-    private $mailManager;
+    public $mailManager;
+    
+    /** @var ReCaptchaService */
+    public $reCaptchaService;
     
     public function __construct(
         UserManager $userManager,
-        MailManager $mailManager
+        MailManager $mailManager,
+        ReCaptchaService $reCaptchaService
     )
     {
         $this->userManager = $userManager;
         $this->mailManager = $mailManager;
+        $this->reCaptchaService = $reCaptchaService;
     }
     
     protected function createComponentForm()
@@ -66,20 +72,26 @@ class RegisterForm extends \App\Components\BaseComponent
     
     public function processForm(Form $form, $values) 
     {
+        $code = $this->presenter->getRequest()->getPost('g-recaptcha-response');
+        if ($this->reCaptchaService->checkCode($code)) {
+            $this->presenter->flashMessage('Špatná captcha');
+            $this->presenter->redirect('this');
+        }
+        
         try {
-            $pass = $values->password1;
             $idUser = $this->userManager->add($values);
-            
             $this->mailManager->sendRegistrationMail($values, $idUser, $this->presenter);
-            
             $this->presenter->flashMessage('Byl jste zaregistrován. Vítejte !', 'success');
             
         } catch (\Exception $ex) {
             $this->presenter->flashMessage($ex->getMessage(), 'error');
             return false;
         }
-        //$this->presenter->user->login($values->email, $pass);
         $this->presenter->redirect(':Public:Homepage:confirm'); 
+        
+        
+        //$this->presenter->user->login($values->email, $pass);
+        
 //        if($this->presenter->session->hasSection('redirect')) {    
 //            $redirect = $this->presenter->session->getSection('redirect');
 //            $link = ':' . $redirect->link . ':' . $redirect->action;

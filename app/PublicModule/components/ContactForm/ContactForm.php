@@ -4,15 +4,23 @@ namespace App\PublicModule\Components;
 
 use App\Mail\MailManager;
 use \Nette\Application\UI\Form;
+use App\Service\ReCaptchaService;
 
 class ContactForm extends \App\Components\BaseComponent
 {
     /** @var MailManager */
     public $mailManager;
     
-    public function __construct(MailManager $mailManager)
+    /** @var ReCaptchaService */
+    public $reCaptchaService;
+    
+    public function __construct(
+        MailManager $mailManager,            
+        ReCaptchaService $reCaptchaService
+    )
     {
         $this->mailManager = $mailManager;
+        $this->reCaptchaService = $reCaptchaService;
     }
     
     protected function createComponentForm()
@@ -34,24 +42,12 @@ class ContactForm extends \App\Components\BaseComponent
     
     public function processForm(Form $form, $values) 
     {
-        $url = 'https://www.google.com/recaptcha/api/siteverify';
-        $data = [
-            'secret' => '6LcDhq0UAAAAALennnki0ipOeWTlaXACcu8rEHKn',
-            'response' => $this->presenter->getRequest()->getPost('g-recaptcha-response')
-        ];
-        $context  = stream_context_create([
-            'http' => [
-                'method' => 'POST',
-                'content' => http_build_query($data)
-            ]
-        ]);
-        $verify = file_get_contents($url, false, $context);
-        $captcha_success = json_decode($verify);
-        if ($captcha_success->success == false) {
-            $this->presenter->flashMessage('Špatná captcha.');
+        $code = $this->presenter->getRequest()->getPost('g-recaptcha-response');
+        if ($this->reCaptchaService->checkCode($code)) {
+            $this->presenter->flashMessage('Špatná captcha');
         } else {
             $this->mailManager->sendContactMail($values);
-            $this->presenter->flashMessage('Děkujeme ze zprávu.');
+            $this->presenter->flashMessage('Děkujeme ze zprávu');
             $form->setValues([], true);
         }
         $this->redrawControl();

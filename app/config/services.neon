@@ -16,9 +16,10 @@ services:
     - App\Model\Manager\FictiveUserManager
     - App\Model\Manager\TestManager
 
-    - App\Mail\MailManager
-
+    - App\Service\ReCaptchaService
     - App\Service\TestService
+
+    - App\Mail\MailManager
 
     - App\FrontModule\Components\Stream\IStream
     - App\FrontModule\Components\Group\About\IGroupSettingsForm
