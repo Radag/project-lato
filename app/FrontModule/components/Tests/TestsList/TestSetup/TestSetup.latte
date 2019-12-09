@@ -131,7 +131,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row hide" id="publication-date-row">
+                <div class="row {if !$form['use_publication_date']->value}hide{/if}" id="publication-date-row">
                     <div class="input-field col s6">                        
                         {input publication_date placeholder=>'Datum', id=>'first_name', class=>'validate'}
                     </div>
@@ -152,7 +152,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row hide" id="deadline_date-row">
+                <div class="row {if !$form['use_deadline']->value}hide{/if}" id="deadline_date-row">
                     <div class="input-field col s6">                        
                         {input deadline_date placeholder=>'Datum', id=>'first_name', class=>'validate'}
                     </div>

@@ -35,6 +35,18 @@ class TestManager extends BaseManager
         return $this->db->getInsertId();
     }
     
+    public function updateTestSetup(Entities\Test\TestSetup $testSetup) {
+        $this->db->query("UPDATE test_setup SET ", [   
+            'time_limit' => $testSetup->timeLimit,          
+            'questions_count' => $testSetup->questionsCount,          
+            'number_of_repetitions' => $testSetup->numberOfRepetitions,
+            'publication_time' => $testSetup->publicationTime,
+            'classification_group_id' => $testSetup->classificationGroupId,
+            'random_sort' => $testSetup->randomSort,
+            'deadline' => $testSetup->deadline
+        ], "WHERE id=?", $testSetup->id);
+    }
+    
     public function getGroupTests($groupId) {
         $userId = $this->settings->getUser()->id;
         

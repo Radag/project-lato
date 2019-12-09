@@ -103,8 +103,8 @@ class TestSetup extends \App\Components\BaseComponent
                 $groupClassification->forAll = true;
                 $groupClassification->name = $test->name;
                 $testSetup->classificationGroupId = $this->classificationManager->createGroupClassification($groupClassification);
-            }             
-            if($values->publication_date && $values->publication_time) {
+            }
+            if($values->use_publication_date && $values->publication_date && $values->publication_time) {
                $testSetup->publicationTime = new \DateTime();
                 $date = explode('-', $values->publication_date);
                 $time = explode(':', $values->publication_time);
@@ -114,7 +114,7 @@ class TestSetup extends \App\Components\BaseComponent
                $testSetup->publicationTime = null; 
             }
             
-            if($values->deadline_date && $values->deadline_time) {
+            if($values->use_deadline && $values->deadline_date && $values->deadline_time) {
                $testSetup->deadline = new \DateTime();
                 $date = explode('-', $values->deadline_date);
                 $time = explode(':', $values->deadline_time);
@@ -124,12 +124,13 @@ class TestSetup extends \App\Components\BaseComponent
                $testSetup->deadline = null; 
             }
             if($values->id) {
-                
+                $testSetup->id = $values->id;
+                $this->testManager->updateTestSetup($testSetup);
+                $this->presenter->flashMessage("Zadání testu bylo upraveno.");
             } else {
                 $this->testManager->createTestSetup($testSetup);
+                $this->presenter->flashMessage("Test byl zadán do skupiny.");
             }
-            
-            $this->presenter->flashMessage("Test byl zadán do skupiny.");
             $this->redirect('this');
         };
         return $form;
@@ -146,10 +147,29 @@ class TestSetup extends \App\Components\BaseComponent
         $testSetup = $this->testManager->getTestSetup($setupId);
         $this->selectedGroup = $this->groupManager->getUserGroup($testSetup->groupId, $this->presenter->activeUser, true);
         $this['form']->setDefaults([
+            'time_limit' => $testSetup->timeLimit ? ($testSetup->timeLimit/60) : null,
+            'questions_count' => $testSetup->questionsCount,
+            'classification' => !empty($testSetup->classificationGroupId),
+            'random_sort' => $testSetup->randomSort,
+            'number_of_repetitions' => $testSetup->numberOfRepetitions,
             'group_id' => $testSetup->groupId,
             'test_id' => $testSetup->testId,
             'id' => $testSetup->id
         ]);
+        if($testSetup->deadline) {
+            $this['form']->setDefaults([
+                'use_deadline' => true,
+                'deadline_date' => $testSetup->deadline->format("Y-m-d"),
+                'deadline_time' => $testSetup->deadline->format("H:i")
+            ]);
+        }
+        if($testSetup->publicationTime) {
+            $this['form']->setDefaults([
+                'use_publication_date' => true,
+                'publication_date' => $testSetup->publicationTime->format("Y-m-d"),
+                'publication_time' => $testSetup->publicationTime->format("H:i")
+            ]);
+        }
         $this->template->setupId = $setupId;
     }
     
