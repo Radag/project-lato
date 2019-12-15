@@ -40,6 +40,8 @@ class TestFilling extends \App\Components\BaseComponent
         $this->template->filling = $this->filling;
         $this->template->timeLeft = $this->getTimeLeft();
         if($this->filling->isFinished) {
+            $this->template->testSetup = $this->testSetup;
+            $this->template->summary = $this->testManager->getStudentTestSummary($this->testSetup->id, $this->presenter->activeUser->id);
             $this->setTemplateName('TestResults');
         } else {
             $this->setTemplateName('TestBody');
@@ -64,8 +66,12 @@ class TestFilling extends \App\Components\BaseComponent
     public function setId($id) 
     {
         $this->filling = $this->testManager->getFilling($id);
-        $this->test = $this->testManager->getTestForUser($this->filling->setup->testId, $this->filling->questions);
-        $this->testSetup = $this->filling->setup;
+        if(!$this->filling || $this->filling->userId != $this->presenter->activeUser->id) {
+            $this->presenter->flashMessage("Tento test neexistuje!");
+            $this->presenter->redirect(':Front:Homepage:noticeboard');
+        }               
+        $this->testSetup = $this->filling->setup;     
+        $this->test = $this->testManager->getTestForUser($this->testSetup->testId, $this->filling->questions);
         
         $timeLeft = $this->getTimeLeft();
         if($timeLeft && $timeLeft->invert === 1) {

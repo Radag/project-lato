@@ -2,6 +2,7 @@
 namespace App\FrontModule\Components\Test;
 
 use App\Model\Manager\TestManager;
+use App\Model\Manager\TestSetupManager;
 use App\Model\Manager\GroupManager;
 use App\Model\Manager\ClassificationManager;
 use App\Model\Entities\Group;
@@ -11,6 +12,9 @@ class TestSetup extends \App\Components\BaseComponent
 {
     /** @var TestManager **/
     private $testManager;
+    
+    /** @var TestSetupManager **/
+    private $testSetupManager;
     
     /** @var GroupManager **/
     private $groupManager;
@@ -24,12 +28,14 @@ class TestSetup extends \App\Components\BaseComponent
     public function __construct(
         TestManager $testManager,            
         GroupManager $groupManager,        
-        ClassificationManager $classificationManager
+        ClassificationManager $classificationManager,
+        TestSetupManager $testSetupManager
     )
     {
         $this->testManager = $testManager;
         $this->groupManager = $groupManager;
         $this->classificationManager = $classificationManager;
+        $this->testSetupManager = $testSetupManager;
     }
     
     public function render() 
@@ -80,6 +86,9 @@ class TestSetup extends \App\Components\BaseComponent
             '20' => "20x"
         ]);
         
+        $form->addCheckbox('can_look_at_results', "Mohou se podívat na výsledky")
+             ->setDefaultValue(true);
+        
         $form->onSuccess[] = function($form, $values) {
             $group = $this->groupManager->getUserGroup($values->group_id, $this->presenter->activeUser, true);
             $test = $this->testManager->getTestForOwner($values->test_id, $this->presenter->activeUser->id, false);
@@ -90,10 +99,11 @@ class TestSetup extends \App\Components\BaseComponent
             $testSetup = new \App\Model\Entities\Test\TestSetup;
             $testSetup->testId = $values->test_id;
             $testSetup->groupId = $values->group_id;
-            $testSetup->numberOfRepetitions = $values->number_of_repetitions;
+            $testSetup->numberOfRepetitions = $values->number_of_repetitions === 0 ? null : $values->number_of_repetitions; 
             $testSetup->timeLimit = $values->time_limit * 60;
             $testSetup->questionsCount = $values->questions_count == 0 ? null : $values->questions_count;
             $testSetup->randomSort = $values->random_sort ? true : false;
+            $testSetup->canLookAtResults = $values->can_look_at_results ? true : false;
             if($values->classification) {
                 $groupClassification = new ClassificationGroup();
                 $groupClassification->group = new Group();
@@ -144,7 +154,7 @@ class TestSetup extends \App\Components\BaseComponent
     
     public function setDefault(int $setupId)
     {
-        $testSetup = $this->testManager->getTestSetup($setupId);
+        $testSetup = $this->testSetupManager->getTestSetup($setupId);
         $this->selectedGroup = $this->groupManager->getUserGroup($testSetup->groupId, $this->presenter->activeUser, true);
         $this['form']->setDefaults([
             'time_limit' => $testSetup->timeLimit ? ($testSetup->timeLimit/60) : null,

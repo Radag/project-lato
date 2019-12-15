@@ -28,12 +28,18 @@ class TestsList extends \App\Components\BaseComponent
     
     public function handleSetupTest($testId)
     {
-        $this['testSetup']->setTestId($testId);
+        $test = $this->testManager->getTestForOwner($testId, $this->presenter->activeUser->id);
+        if($test) {
+            $this['testSetup']->setTestId($test->id);
+        }
     }
     
     public function handleDeleteTest($testId)
     {
-        $this->testManager->deleteTest($testId);
+        $test = $this->testManager->getTestForOwner($testId, $this->presenter->activeUser->id);
+        if($test) {
+            $this->testManager->deleteTest($test->id);
+        }
         $this->presenter->redirect('this');
     }
     

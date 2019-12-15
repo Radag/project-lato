@@ -8,11 +8,28 @@ use App\Model\Entities\Test\Option;
 use App\Model\Entities\Test\Filling;
 use App\Model\Entities\Test\Answer;
 use App\Model\Entities;
+use App\Model\Manager\TestSetupManager;
 
 class TestManager extends BaseManager 
 {     
     
-    public function createTest(Test $test, Entities\User $user) : int {
+    /** @var TestSetupManager @inject **/
+    public $testSetupManager;
+    
+    public function __construct(
+        \Nette\Security\User $user,
+        \Dibi\Connection $db,
+        \App\Di\FtpSender $ftpSender,            
+        \App\Model\LatoSettings $settings,
+        TestSetupManager $testSetupManager
+    )
+    {
+        parent::__construct($user, $db, $ftpSender, $settings);
+        $this->testSetupManager = $testSetupManager;
+    }
+    
+    public function createTest(Test $test, Entities\User $user) : int 
+    {
         $this->db->query("INSERT INTO test", [
             'user_id' => $user->id,            
             'name' => $test->name
@@ -20,7 +37,8 @@ class TestManager extends BaseManager
         return $this->db->getInsertId();
     }
     
-    public function createTestSetup(Entities\Test\TestSetup $testSetup) : int {
+    public function createTestSetup(Entities\Test\TestSetup $testSetup) : int 
+    {
         $this->db->query("INSERT INTO test_setup", [
             'test_id' => $testSetup->testId,            
             'group_id' => $testSetup->groupId,          
@@ -29,13 +47,15 @@ class TestManager extends BaseManager
             'number_of_repetitions' => $testSetup->numberOfRepetitions,
             'publication_time' => $testSetup->publicationTime,
             'classification_group_id' => $testSetup->classificationGroupId,
-            'random_sort' => $testSetup->randomSort,
+            'random_sort' => $testSetup->randomSort,            
+            'can_look_at_results' => $testSetup->canLookAtResults,
             'deadline' => $testSetup->deadline
         ]);
         return $this->db->getInsertId();
     }
     
-    public function updateTestSetup(Entities\Test\TestSetup $testSetup) {
+    public function updateTestSetup(Entities\Test\TestSetup $testSetup)
+    {
         $this->db->query("UPDATE test_setup SET ", [   
             'time_limit' => $testSetup->timeLimit,          
             'questions_count' => $testSetup->questionsCount,          
@@ -43,11 +63,13 @@ class TestManager extends BaseManager
             'publication_time' => $testSetup->publicationTime,
             'classification_group_id' => $testSetup->classificationGroupId,
             'random_sort' => $testSetup->randomSort,
-            'deadline' => $testSetup->deadline
+            'deadline' => $testSetup->deadline,
+            'can_look_at_results' => $testSetup->canLookAtResults
         ], "WHERE id=?", $testSetup->id);
     }
     
-    public function getGroupTests($groupId) {
+    public function getGroupTests($groupId) 
+    {
         $userId = $this->settings->getUser()->id;
         
         $testsData = $this->db->fetchAll("SELECT 
@@ -120,13 +142,23 @@ class TestManager extends BaseManager
         return $tests;
     }
     
-    public function updateTest(Test $test) {
+    public function getStudentTestSummary($setupId, $userId) : Entities\Test\TestSummary
+    {
+        $summary = $this->db->fetch("SELECT COUNT(*) AS filledCount FROM test_filling WHERE setup_id=? AND user_id=?", $setupId, $userId);
+        $summaryObject = new Entities\Test\TestSummary($summary);
+        $summaryObject->filledCount = $summary->filledCount;
+        return $summaryObject;
+    }
+    
+    public function updateTest(Test $test) 
+    {
         $this->db->query("UPDATE test SET", [
             'name' => $test->name
         ], "WHERE id=?", $test->id);
     }
     
-    public function insertQuestion(Question $question) : int {
+    public function insertQuestion(Question $question) : int 
+    {
         $this->db->query("INSERT INTO test_question", [        
             'test_id' => $question->testId,
             'question' => $question->question,            
@@ -135,7 +167,8 @@ class TestManager extends BaseManager
         return $this->db->getInsertId();
     }
     
-    public function updateQuestion(Question $question, int $testId) {
+    public function updateQuestion(Question $question, int $testId) 
+    {
         $this->db->query("UPDATE test_question SET ", [
             'question' => $question->question,            
             'number' => $question->number  
@@ -146,7 +179,8 @@ class TestManager extends BaseManager
         $this->db->query("DELETE FROM test_question WHERE id=? AND test_id=?", $questionId, $testId);
     }
     
-    public function insertOption(Option $option) : int {
+    public function insertOption(Option $option) : int 
+    {
         $this->db->query("INSERT INTO test_question_option", [        
             'question_id' => $option->questionId,
             'name' => $option->name,                      
@@ -156,7 +190,8 @@ class TestManager extends BaseManager
         return $this->db->getInsertId();
     }
     
-    public function updateOption(Option $option, $testId) {
+    public function updateOption(Option $option, $testId) 
+    {
         $this->db->query("UPDATE test_question_option T1
           JOIN test_question T2 ON T1.question_id = T2.id
           SET ", [
@@ -166,13 +201,15 @@ class TestManager extends BaseManager
         ], "WHERE T1.id=? AND T2.test_id=?", $option->id, $testId);
     }
     
-    public function deleteOption(int $optionId, int $testId) {
+    public function deleteOption(int $optionId, int $testId) 
+    {
         $this->db->query("DELETE T1 FROM test_question_option T1
             JOIN test_question T2 ON T1.question_id = T2.id
             WHERE T1.id=? AND T2.test_id=?", $optionId, $testId);
     }
     
-    public function getTests(Entities\User $user): array {
+    public function getTests(Entities\User $user): array 
+    {
         $tests = $this->db->fetchAll("SELECT * FROM test WHERE user_id=? ORDER BY created_at DESC", $user->id);
         $return = [];
         foreach($tests as $test) {
@@ -181,23 +218,26 @@ class TestManager extends BaseManager
         return $return;
     }
     
-    public function getTestForOwner($id, $userId, $questions = null) : ?Test {
+    public function getTestForOwner($id, $userId, $questions = null) : ?Test 
+    {
         $testData = $this->db->fetch("SELECT * FROM test WHERE id=? AND user_id=?", $id, $userId);
         if(empty($testData)) {
             return null;
         }
-        return $this->getTest(new Test($testData));
+        return $this->getTest(new Test($testData), $questions);
     }
     
-    public function getTestForUser($id, $questions = null) : ?Test {
+    public function getTestForUser($id, $questions = null) : ?Test 
+    {
         $testData = $this->db->fetch("SELECT * FROM test WHERE id=?", $id);
         if(empty($testData)) {
             return null;
         }
-        return $this->getTest(new Test($testData));
+        return $this->getTest(new Test($testData), $questions);
     }
     
-    private function getTest($test, $questions = null) : ?Test {
+    private function getTest($test, $questions = null) : ?Test 
+    {
         if($questions === false) {
             return $test;
         }
@@ -235,6 +275,14 @@ class TestManager extends BaseManager
                 $test->questions[$question->id]->options[] = $optionObject;
             }
         }
+        if($questions) {
+            $newSort = [];
+            foreach($questions as $questionId) {
+                $newSort[] = $test->questions[$questionId];
+            }
+            $test->questions = $newSort;
+        }
+        
         return $test;
     }
     
@@ -249,17 +297,22 @@ class TestManager extends BaseManager
         return $this->db->getInsertId();
     }
     
-    public function getFilling(int $fillingId) : Filling {
-        $fillingData =  $this->db->fetch("SELECT * FROM test_filling WHERE id=?", $fillingId);
+    public function getFilling(int $fillingId) : ?Filling 
+    {
+        $fillingData = $this->db->fetch("SELECT * FROM test_filling WHERE id=?", $fillingId);
+        if(!$fillingData) {
+            return null;
+        }
         $filling = new Filling($fillingData);
         $filling->isFinished = $fillingData->is_finished === 1;
         $filling->answers = $this->getAnswers($fillingId);
         $filling->questions = json_decode($fillingData->questions);
-        $filling->setup = $this->getTestSetup($filling->setupId);
+        $filling->setup = $this->testSetupManager->getTestSetup($filling->setupId);
         return $filling;
     }
     
-    public function getAnswers(int $fillingId) : array {
+    public function getAnswers(int $fillingId) : array 
+    {
         $answersData =  $this->db->fetchAll("SELECT * FROM test_filling_answer WHERE test_filling_id=?", $fillingId);
         $answers = [];
         foreach($answersData as $answer)
@@ -272,7 +325,8 @@ class TestManager extends BaseManager
         return $answers;
     }
     
-    public function updateFilling(Filling $filling) {
+    public function updateFilling(Filling $filling) 
+    {
         $this->db->query("UPDATE test_filling SET ", [
             'is_finished' => $filling->isFinished,
             'correct_count' => $filling->correctCount,
@@ -294,13 +348,6 @@ class TestManager extends BaseManager
     public function clearTestAnswers(int $fillingId)
     {
         $this->db->query("DELETE FROM test_filling_answer WHERE test_filling_id=?", $fillingId);
-    }
-    
-    public function getTestSetup(int $id)
-    {
-        $setup = $this->db->fetch("SELECT * FROM test_setup WHERE id=?", $id);
-        $testSetup = new Entities\Test\TestSetup($setup);
-        return $testSetup;
     }
     
     public function deleteGroupTest(int $setupId)

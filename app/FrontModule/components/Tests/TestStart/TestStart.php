@@ -3,6 +3,7 @@ namespace App\FrontModule\Components\Test;
 
 use App\Model\Manager\TestManager;
 use App\Model\Manager\GroupManager;
+use App\Model\Manager\TestSetupManager;
 use App\Model\Entities\Test\Filling;
 use App\Model\Entities\Test\Test;
 use App\Model\Entities\Test\TestSetup;
@@ -11,6 +12,9 @@ class TestStart extends \App\Components\BaseComponent
 {
     /** @var TestManager **/
     private $testManager;
+    
+    /** @var TestSetupManager **/
+    private $testSetupManager;
     
     /** @var GroupManager **/
     private $groupManager;
@@ -26,11 +30,13 @@ class TestStart extends \App\Components\BaseComponent
     
     public function __construct(
         TestManager $testManager,
-        GroupManager $groupManager
+        GroupManager $groupManager,            
+        TestSetupManager $testSetupManager
     )
     {
         $this->testManager = $testManager;
         $this->groupManager = $groupManager;
+        $this->testSetupManager = $testSetupManager;
     }
     
     public function render() 
@@ -45,12 +51,16 @@ class TestStart extends \App\Components\BaseComponent
     public function setId(int $setupId) 
     {
         $this->setupId = $setupId;
-        $this->testSetup = $this->testManager->getTestSetup($setupId);
-        if(!$this->groupManager->isUserInGroup($this->presenter->activeUser->id, $this->testSetup->groupId)) {
+        $this->testSetup = $this->testSetupManager->getTestSetup($setupId);
+        if(!$this->testSetup || !$this->groupManager->isUserInGroup($this->presenter->activeUser->id, $this->testSetup->groupId)) {
             $this->presenter->flashMessage("Tento test neexistuje!");
             $this->presenter->redirect(':Front:Homepage:noticeboard');
         }
-        
+        $summary = $this->testManager->getStudentTestSummary($this->testSetup->id, $this->presenter->activeUser->id);
+        if($this->testSetup->numberOfRepetitions !== null && $summary->filledCount >= $this->testSetup->numberOfRepetitions) {
+            $this->presenter->flashMessage("Tento test již nemůžete vyplnit.");
+            $this->presenter->redirect(':Front:Homepage:noticeboard');
+        }        
         $this->test = $this->testManager->getTestForUser($this->testSetup->testId);
         
 //        if($this->groupTestId) {
@@ -73,7 +83,7 @@ class TestStart extends \App\Components\BaseComponent
             $this->testSetup->questionsCount = $this->test->questionsCount;
             foreach($this->test->questions as $question) {
                 $selectedQuestions[] = $question->id;
-            }            
+            }
         } else {
             if($this->test->questionsCount < $this->testSetup->questionsCount) {
                 $this->testSetup->questionsCount = $this->test->questionsCount;
@@ -94,6 +104,10 @@ class TestStart extends \App\Components\BaseComponent
                 $i++;
             } 
         }
+        if($this->testSetup->randomSort) {
+            shuffle($selectedQuestions);
+        }
+        
         $filling->questionsCount = $this->testSetup->questionsCount;
         $filling->questions = $selectedQuestions;
         

@@ -97,11 +97,6 @@
                         {label time_limit class=>'active'}{/label}
                         {input time_limit}
                     </div>
-                    {* V budoucnu pro přidání vlastního času na zadání
-                    <div class="input-field col s6 no-margin">
-                        <input placeholder="Placeholder" id="first_name" type="text" class="validate">
-                    </div>
-                    *}
                 </div>
                 {* V budoucnu na udělení možnosti neomezenýho vypracování
                 <div class="row">
@@ -173,6 +168,19 @@
                             <div class="switch">
                                 {label random_sort:}
                                     {input random_sort:}
+                                    <span class="lever"></span>
+                                {/label}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <div class="switch-row">
+                            <span>Mohou se podívat na výsledky</span>
+                            <div class="switch">
+                                {label can_look_at_results:}
+                                    {input can_look_at_results:}
                                     <span class="lever"></span>
                                 {/label}
                             </div>

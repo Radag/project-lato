@@ -48,6 +48,18 @@ class TestDisplay extends \App\Components\BaseComponent
     public function setId(int $fillingId) 
     {
         $this->filling = $this->testManager->getFilling($fillingId);
+        if(!$this->filling || $this->filling->userId != $this->presenter->activeUser->id) {
+            $this->presenter->flashMessage("Tento test neexistuje!");
+            $this->presenter->redirect(':Front:Homepage:noticeboard');
+        }
+        if(!$this->filling->isFinished) {
+            $this->presenter->flashMessage("Tento test jste ještě nedokončili.");
+            $this->presenter->redirect(':Front:Homepage:noticeboard');
+        }
+        if(!$this->filling->setup->canLookAtResults) {
+            $this->presenter->flashMessage("Nemůžete se dívat na výsledky toho testu.");
+            $this->presenter->redirect(':Front:Homepage:noticeboard');
+        }
         $this->testSetup = $this->filling->setup;
         $this->test = $this->testManager->getTestForUser($this->testSetup->testId, $this->filling->questions);
         $this->presenter['topPanel']->setTitle($this->test->name . " - procházení");
@@ -65,6 +77,4 @@ class TestDisplay extends \App\Components\BaseComponent
             }                
         }
     }
-
-  
 }

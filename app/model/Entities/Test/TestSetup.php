@@ -16,6 +16,7 @@ class TestSetup extends AbstractEntity {
     public $timeLeft = null;
     public $classificationGroupId = null;
     public $randomSort = null;
+    public $canLookAtResults = null;
     
     /** @var \App\Model\Entities\Group **/
     public $group = null;
@@ -37,5 +38,6 @@ class TestSetup extends AbstractEntity {
         'publication_time' => 'publicationTime',        
         'random_sort' => 'randomSort',
         'classification_group_id' => 'classificationGroupId',
+        'can_look_at_results' => 'canLookAtResults',
     ];
 }

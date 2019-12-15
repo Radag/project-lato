@@ -91,7 +91,7 @@ class Editor extends \App\Components\BaseComponent
             $test = $this->testManager->getTestForOwner($values->id, $this->presenter->activeUser->id);
         }
         if($test === null) {
-            $test = new Test;
+            $test = new Test();
         }
         $test->name = $values->name;
         if($test->id === null) {

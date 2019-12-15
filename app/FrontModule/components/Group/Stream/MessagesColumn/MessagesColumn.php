@@ -10,6 +10,7 @@ namespace App\FrontModule\Components\Stream;
 use App\Model\Manager\MessageManager;
 use App\Model\Manager\GroupManager;
 use App\Model\Manager\TaskManager;
+use App\Model\Manager\TestSetupManager;
 use App\FrontModule\Components\Stream\ICommentForm;
 use App\FrontModule\Components\TaskHeader\ITaskHeader;
 use App\FrontModule\Components\Stream\ICommitTaskForm;
@@ -35,7 +36,10 @@ class MessagesColumn extends \App\Components\BaseComponent
     protected $commentForm;
     
     /** @var  TaskManager @inject */
-    protected $taskManager;
+    protected $taskManager;   
+    
+    /** @var  TestSetupManager @inject */
+    protected $testSetupManager;
     
     /** @var  ITestSetup @inject */
     protected $testSetup;
@@ -59,7 +63,8 @@ class MessagesColumn extends \App\Components\BaseComponent
         TaskManager $taskManager,            
         ICommitTaskForm $commitTaskForm,            
         TestManager $testManager,
-        ITestSetup $testSetup
+        ITestSetup $testSetup,            
+        TestSetupManager $testSetupManager
     )
     {
         $this->messageManager = $messageManager;
@@ -70,6 +75,7 @@ class MessagesColumn extends \App\Components\BaseComponent
         $this->commitTaskForm = $commitTaskForm;
         $this->testManager = $testManager;
         $this->testSetup = $testSetup;
+        $this->testSetupManager = $testSetupManager;
     }    
         
     public function render() 
@@ -215,17 +221,18 @@ class MessagesColumn extends \App\Components\BaseComponent
     
     public function handleEditTest($setupId)
     {
-        $this['testSetupForm']->setDefault($setupId);
-        $this->redrawControl('testSetupForm');       
+        if($this->testSetupManager->checkOwner($setupId)) {
+            $this['testSetupForm']->setDefault($setupId);
+            $this->redrawControl('testSetupForm');    
+        }    
     }
 
     public function handleDeleteTest($setupId) 
     {   
-        $this->testManager->deleteGroupTest($setupId);
-//        if($this->messageManager->canUserEditMessage($idMessage, $this->presenter->activeUser, $this->presenter->activeGroup)) {
-//            $this->messageManager->deleteMessage($idMessage, true);
-//            $this->presenter->flashMessage('Zpráva byla smazána.');
-//        }
+        if($this->testSetupManager->checkOwner($setupId)) {
+            $this->testManager->deleteGroupTest($setupId);
+            $this->presenter->flashMessage('Test byl smazán.');
+        }
         $this->redrawControl();
     }
 }

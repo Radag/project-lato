@@ -15,7 +15,7 @@
                 <header class="section-header">
                     <h3 class="left">Zadání</h3>
                     <div class="flex-spacer"></div>
-                    <ul class="right options">
+                    {*<ul class="right options">
                         <li>
                             <a class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" data-target="filter-tests" >
                                 <i class="material-icons">filter_list</i>
@@ -25,7 +25,7 @@
                                 <li><a href="#" class="waves-effect waves-dark">Option 2</a></li>
                             </ul>
                         </li>
-                    </ul>
+                    </ul>*}
                 </header>
             </div>
         </div>
@@ -36,7 +36,7 @@
                     <div class="card-content">
                         <div class="test-range">{$test->questionsCount}</div>
                         <h4 class="truncate">{$test->name}</h4>
-                        <div class="info">{$test->questionsCount} otázek | GRW</div>
+                        <div class="info">{$test->questionsCount} otázek{* | GRW*}</div>
                         <div class="date">Vytvořeno {$test->created->format("j. n.")}</div>
                         <div class="options">
                             <a href="{link setupTest! testId=>$test->id}" data-show-popup-after="#test-setup" class="ajax btn gray no-shadow truncate">Použít zadání</a>							
@@ -45,7 +45,7 @@
                             </a>
                             <ul id='more-choices-{$test->id}' class="dropdown-content">
                                 <li><a href="{plink Tests:editor id=>$test->id}" class="waves-effect waves-dark">Upravit</a></li>
-                                <li><a href="{plink Tests:start id=>$test->id}" class="waves-effect waves-dark">Spustit</a></li>
+                                {*<li><a href="{plink Tests:start id=>$test->id}" class="waves-effect waves-dark">Spustit</a></li>*}
                                 <li><a href="#" data-url="{link deleteTest! testId=>$test->id}" data-text="Opravdu si přejete smazat tenhle test ?" data-title="{$test->name}" class="waves-effect waves-dark delete-confirm">Smazat</a></li>
                             </ul>
                         </div>

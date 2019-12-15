@@ -128,7 +128,7 @@ Více už toho není
                 </div>
             {/if}
             {if ($test->setup->timeLeft == null || $test->setup->timeLeft->invert === 0)
-                && ($test->setup->numberOfRepetitions === 0 || $test->setup->numberOfRepetitions > $test->summary->filledCount)}  
+                && ($test->setup->numberOfRepetitions === null || $test->setup->numberOfRepetitions > $test->summary->filledCount)}  
                 <div class="time-left">
                     {if $test->setup->deadline}Otevřeno do <strong>{$test->setup->deadline->format("j. n. G:i")}</strong>{/if}
                     <a href="{plink Tests:start setupId=>$test->setupId}" class="btn gray no-shadow">Otevřít</a>

@@ -15,6 +15,7 @@ services:
     - App\Model\Manager\ConversationManager
     - App\Model\Manager\FictiveUserManager
     - App\Model\Manager\TestManager
+    - App\Model\Manager\TestSetupManager
 
     - App\Service\ReCaptchaService
     - App\Service\TestService
