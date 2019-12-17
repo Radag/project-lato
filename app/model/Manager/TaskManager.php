@@ -314,7 +314,8 @@ class TaskManager extends BaseManager
             $taskCommit->idCommit = $this->db->getInsertId();
         } else {
             $this->db->query("UPDATE task_commit SET", [
-                'comment' => $taskCommit->comment
+                'comment' => $taskCommit->comment,
+                'updated_when' => new \DateTime()
             ], "WHERE id=?", $taskCommit->idCommit);
         }
         

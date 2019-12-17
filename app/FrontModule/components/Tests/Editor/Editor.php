@@ -24,8 +24,7 @@ class Editor extends \App\Components\BaseComponent
     protected function createComponentForm()
     {
         $form = $this->getForm(true);
-        $form->addText('name', 'Název testu')
-             ->setRequired('Vložte název testu.'); 
+        $form->addText('name', 'Název testu'); 
         $form->addSubmit('save', 'Uložit');
         $form->addSubmit('save_leave', 'Uložit a odejít');
         $form->addHidden('id');
@@ -74,6 +73,12 @@ class Editor extends \App\Components\BaseComponent
                 $this->testManager->deleteOption($optionId, $test->id);
             }
         }
+        
+        if(isset($form->getHttpData()['questionsToDelete']) && is_array($form->getHttpData()['questionsToDelete'])) {
+            foreach($form->getHttpData()['questionsToDelete'] as $questionId) {
+                $this->testManager->deleteQuestion($questionId, $test->id);
+            }
+        }
                 
         $this->presenter->payload->invalidForm = true;
         $this->presenter->flashMessage('Uoženo', 'success');
@@ -104,11 +109,12 @@ class Editor extends \App\Components\BaseComponent
     
     private function saveQuestions(int $testId, array $questions) 
     {
-        foreach($questions as $questionNumber => $question) {
+        $number = 1;
+        foreach($questions as $question) {
             $questionObject = new Question();
             $questionObject->question = $question['name'];
             $questionObject->testId = $testId;
-            $questionObject->number = $questionNumber;
+            $questionObject->number = $number;
             
             if(empty($question['id'])) {
                 $questionObject->id = $this->testManager->insertQuestion($questionObject);
@@ -120,6 +126,7 @@ class Editor extends \App\Components\BaseComponent
             if(isset($question['options']) && is_array($question['options'])) {
                 $this->saveOptions($questionObject->id, $testId, $question['options']);
             }
+            $number++;
         }
     }
     

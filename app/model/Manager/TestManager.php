@@ -175,7 +175,8 @@ class TestManager extends BaseManager
         ], "WHERE id=? AND test_id=?", $question->id, $testId);
     }
     
-    public function deleteQuestion(int $questionId, int $testId) {
+    public function deleteQuestion(int $questionId, int $testId)
+    {
         $this->db->query("DELETE FROM test_question WHERE id=? AND test_id=?", $questionId, $testId);
     }
     
