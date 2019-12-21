@@ -3,9 +3,9 @@
     <div class="container">
         <div class="row equal-cols">
             <div class="col m12 l4">
-                <div class="card" id="account-images" {if $userAccount->backgroundImage}style="background-image: url('{$userAccount->backgroundImage|noescape}');"{/if}>
+                <div class="card" id="account-images" {if $userAccount->backgroundImage}style="background-image: url('{$userAccount->backgroundImage}');"{/if}>
                     <div class="flex-spacer"></div>
-                    <img id="user-profile-image" src="{$userAccount->profileImage|noescape}">
+                    <img id="user-profile-image" src="{$userAccount->profileImage}">
                     <div class="flex-spacer"></div>
                     <button id="profile-image-button" type="button" class="waves-effect waves-light btn">Změnit profilový obrázek</button>
                     <button id="background-image-button" type="button" class="waves-effect waves-light btn">Změnit pozadí</button>
@@ -188,47 +188,6 @@
                     </div>
                 </div>
             </div>
-            <script>
-                $('#group-delete-confirm-modal').modal();
-                $('#group-leave-confirm-modal').modal();
-                var removeGroup = [];
-                $(".delete-group-button").on('click', function(event) {
-                    event.preventDefault();
-                    if($(this).closest('li.group-list').data('action') === 'delete') {
-                        $('#group-delete-confirm-modal').data('group-id', $(this).closest('li.group-list').data('group-id'));
-                        $('#group-delete-confirm-modal h3').text($(this).data('name'));
-                        $('#group-delete-confirm-modal').modal('open');
-                    } else {
-                        $('#group-leave-confirm-modal').data('group-id', $(this).closest('li.group-list').data('group-id'));
-                        $('#group-leave-confirm-modal h3').text($(this).data('name'));
-                        $('#group-leave-confirm-modal').modal('open');
-                    }
-                });
-                
-                $("#profile-image-button").on('click', function(event) {
-                    event.preventDefault();
-                    $('#change-user-avatar-modal').modal('open');
-                });
-                function confirmDelete(modal) {
-                    var id = $('#' + modal).data('group-id');
-                    $('li.group-list[data-group-id="' + id + '"]').hide();
-                    $('li.group-list[data-group-id="' + id + '"]').next('li.remove-group').show();
-                    var index = removeGroup.indexOf(id);
-                    if(index === -1) {
-                        removeGroup.push(id);
-                    }
-                    $("input[name='deleteGroups']").val(JSON.stringify(removeGroup));
-                }
-                
-                $(".cancel-delete-btn").on('click', function(event) {
-                    event.preventDefault();
-                    $(this).closest('li.remove-group').hide();
-                    var index = removeGroup.indexOf($(this).closest('li.remove-group').data('group-id'));
-                    removeGroup.splice(index, 1);
-                    $('li.group-list[data-group-id="' + $(this).closest('li.remove-group').data('group-id') + '"]').show();
-                    $("input[name='deleteGroups']").val(JSON.stringify(removeGroup));
-                });               
-            </script>
         </div>
     </div>
     <div class="submit-settings">
@@ -250,7 +209,7 @@
         </div>
     </div>
 {/form}
-<div id="change-user-avatar-modal" class="modal modal-small dropzone-modal" >
+<div id="change-user-avatar-modal" class="modal modal-small" >
     {form avatarForm}
         <div class="modal-content">
             <h3>Změnit avatar</h3>
@@ -274,9 +233,10 @@
                 });
                 $(".upload-avatar").on('click', function(e) {
                     e.preventDefault();
-                    $("#change-user-avatar-dropzone").click();
+                    $("#avatar-file-upload").click();
                 });
             </script>
+            <div id="change-user-avatar-modal-error" style="" ></div>
         </div>
         <div class="modal-footer">
             <div class="flex-spacer"></div>
@@ -286,47 +246,100 @@
             </div>
         </div>
     {/form}
-    <div id="change-user-avatar-dropzone" class="dropzone-area" ></div>
+    <input id="avatar-file-upload" type="file" name="file" style="display: none;">
+    <div id="change-user-avatar-dropzone" class="dropzone-area" >Přesuňte obrázek zde</div>
 </div>
+<div id="change-user-background-modal" class="modal modal-small" >
+    {form backgroundForm}
+        <div class="modal-content">
+            <h3>Změnit pozadí</h3>
+            <p>Vyberte si jedno z nabízenách pozadí</p>
+            <ul class="choose-background">
+                {foreach $form['avatar']->items as $key=>$item}
+                    <li class="avatar large">
+                        <label n:name="avatar:$key">
+                            <input n:name="avatar:$key" />
+                            <img src="{$item|noescape}" >
+                        </label>
+                    </li>
+                {/foreach}
+            </ul>
+        </div>
+        <div class="modal-footer">
+            <div class="flex-spacer"></div>
+            <div class="form-control">
+                <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
+                <button type="submit" class="waves-effect waves-light btn modal-close btn-confirm" >Potvrdit</button>
+            </div>
+        </div>
+    {/form}
+</div>  
 </section>
 <script>
     $(function () {
         $('#change-user-avatar-modal').modal();
+        $('#change-user-background-modal').modal();        
+        $('#group-delete-confirm-modal').modal();
+        $('#group-leave-confirm-modal').modal();
+        
+        $("#profile-image-button").on('click', function(event) {
+            event.preventDefault();
+            $('#change-user-avatar-modal').modal('open');
+        });
+        $("#background-image-button").on('click', function(event) {
+            event.preventDefault();
+            $('#change-user-background-modal').modal('open');
+        });
+        
+        setUploadForm("#avatar-file-upload", {
+            links: {
+                upload: {link uploadProfileImage!}
+            },
+            dropZone: "#change-user-avatar-dropzone",
+            after: function(data) {
+                if(data.error) {
+                    $("#change-user-avatar-modal-error").html(data.error);
+                } else {
+                    $("#user-profile-image").attr('src', data.image.fullPath);
+                    $('#change-user-avatar-modal').modal('close');
+                }
+            }
+        });
+
+        var removeGroup = [];
+        $(".delete-group-button").on('click', function(event) {
+            event.preventDefault();
+            if($(this).closest('li.group-list').data('action') === 'delete') {
+                $('#group-delete-confirm-modal').data('group-id', $(this).closest('li.group-list').data('group-id'));
+                $('#group-delete-confirm-modal h3').text($(this).data('name'));
+                $('#group-delete-confirm-modal').modal('open');
+            } else {
+                $('#group-leave-confirm-modal').data('group-id', $(this).closest('li.group-list').data('group-id'));
+                $('#group-leave-confirm-modal h3').text($(this).data('name'));
+                $('#group-leave-confirm-modal').modal('open');
+            }
+        });
+        
+        function confirmDelete(modal) {
+            var id = $('#' + modal).data('group-id');
+            $('li.group-list[data-group-id="' + id + '"]').hide();
+            $('li.group-list[data-group-id="' + id + '"]').next('li.remove-group').show();
+            var index = removeGroup.indexOf(id);
+            if(index === -1) {
+                removeGroup.push(id);
+            }
+            $("input[name='deleteGroups']").val(JSON.stringify(removeGroup));
+        }
+
+        $(".cancel-delete-btn").on('click', function(event) {
+            event.preventDefault();
+            $(this).closest('li.remove-group').hide();
+            var index = removeGroup.indexOf($(this).closest('li.remove-group').data('group-id'));
+            removeGroup.splice(index, 1);
+            $('li.group-list[data-group-id="' + $(this).closest('li.remove-group').data('group-id') + '"]').show();
+            $("input[name='deleteGroups']").val(JSON.stringify(removeGroup));
+        });  
+        
         datepicker();        
-        var timeout = true;
-        $('body, .dropzone-area').on('dragover', function (event) {
-            clearTimeout(timeout);
-            $(".dropzone-modal").addClass('active');
-            timeout = setTimeout(function () {
-                $(".dropzone-modal").removeClass('active');
-            }, 1000);
-        });
-        var profileImage = new Dropzone("#change-user-avatar-dropzone", {
-            url: {link uploadProfileImage!},
-            previewTemplate: '<div id="preview-template" style="display: none;"></div>'
-        });
-        profileImage.on("complete", function (file) {
-            var image = JSON.parse(file.xhr.response);
-            if(image.image) {
-                $("#user-profile-image").attr('src', image.image);
-            }
-            if(image.snippets) {
-                $("#snippet--flashMessages").html(image.snippets['snippet--flashMessages']);
-            }
-            $('#change-user-avatar-modal').modal('close');
-        });
-        var backgroundImage = new Dropzone("#background-image-button", {
-            url: {link uploadBackgroundImage!},
-            previewTemplate: '<div id="preview-template" style="display: none;"></div>'
-        });
-        backgroundImage.on("complete", function (file) {
-            var image = JSON.parse(file.xhr.response);
-            if(image.image) {
-                $("#account-images").css('background-image',  'url(' + image.image + ')' );
-            }
-            if(image.snippets) {
-                $("#snippet--flashMessages").html(image.snippets['snippet--flashMessages']);
-            }
-        });
     });
 </script>

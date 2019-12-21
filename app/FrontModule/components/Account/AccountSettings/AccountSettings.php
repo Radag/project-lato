@@ -8,6 +8,7 @@ use App\Model\Manager\UserManager;
 use App\Model\Manager\SchoolManager;
 use App\Model\Manager\GroupManager;
 use App\Model\Manager\FileManager;
+use App\Service\FileService;
 use Nette\Utils\Image;
 
 class AccountSettings extends \App\Components\BaseComponent
@@ -27,6 +28,9 @@ class AccountSettings extends \App\Components\BaseComponent
     /** @var FileManager $fileManager */
     public $fileManager;
     
+    /** @var FileService $fileService */
+    public $fileService;
+    
     /**
      * @var NotificationManager $notificationManager
      */
@@ -40,7 +44,8 @@ class AccountSettings extends \App\Components\BaseComponent
         UserManager $userManager,
         SchoolManager $schoolManager,
         GroupManager $groupManager,
-        FileManager $fileManager    
+        FileManager $fileManager,
+        FileService $fileService
     )
     {
         $this->userManager = $userManager;
@@ -48,6 +53,7 @@ class AccountSettings extends \App\Components\BaseComponent
         $this->schoolManager = $schoolManager;
         $this->groupManager = $groupManager;
         $this->fileManager = $fileManager;
+        $this->fileService = $fileService;
     }
     
     public function render() {
@@ -150,41 +156,20 @@ class AccountSettings extends \App\Components\BaseComponent
     
     public function handleUploadProfileImage()
     {
-        $files = $this->presenter->getRequest()->getFiles();
-        $image = Image::fromFile($files['file']);
-        if($image->width < 176 ||  $image->height < 176) {
-            $this->presenter->flashMessage('Velikost obrázku musí být alespoň 176 × 176 pixelů', 'error');
-        } else {
-            $path = 'users/' . $this->presenter->activeUser->slug . '/profile';
-            $file = $this->fileManager->saveFile($files['file'], $path, ['width' => 200, 'height' => 200, 'type' => ['image/png', 'image/jpeg']]);
-            if($file) {
-                $this->userManager->assignProfileImage($this->presenter->activeUser, $file);
+        $file = $this->presenter->request->getFiles();
+        try {
+            if(empty($file['file'])) { 
+                throw new \Lato\FileUploadException("Soubor se nepodařilo nahrát.");
             }
-            $this->presenter->payload->image = $this->userManager->get($this->presenter->activeUser->id)->profileImage;
-            $this->presenter->sendPayload();
-        }   
-    }
-    
-    public function handleUploadBackgroundImage()
-    {
-        $files = $this->presenter->getRequest()->getFiles();
-        if(!$files['file']) {
-            $this->presenter->flashMessage('Chyba při nahrávání souboru.', 'error');
-            $this->presenter->sendPayload();
-            return;
+            $restrictions = ['image' => true, 'min-width' => 176, 'min-height' => 176, 'mime' => ['image/png', 'image/jpeg']];
+            $settings = ['preview-width' => 200, 'preview-height' => 200];
+            $image = $this->fileService->uploadFile($file['file'], FileService::FILE_PURPOSE_AVATAR, $restrictions, $settings);;
+            $this->presenter->payload->image = $image;
+            $this->userManager->assignProfileImage($this->presenter->activeUser, $image);
+        } catch (\Lato\FileUploadException $ex) {
+            $this->presenter->payload->error = $ex->getMessage();
         }
-        $image = Image::fromFile($files['file']);
-        if($image->width < 1156 ||  $image->height < 420) {
-            $this->presenter->flashMessage('Velikost obrázku musí být alespoň 1156 × 420 pixelů', 'error');
-        } else {
-            $path = 'users/' . $this->presenter->activeUser->slug . '/profile';
-            $file = $this->fileManager->saveFile($files['file'], $path, ['width' => 1156, 'height' => 420, 'type' => ['image/png', 'image/jpeg']]);
-            if($file) {
-                $this->userManager->assignBackgroundImage($this->presenter->activeUser, $file);
-            }
-            $this->presenter->payload->image = $this->userManager->get($this->presenter->activeUser->id)->backgroundImage;
-            $this->presenter->sendPayload();
-        }
+        $this->presenter->sendPayload();
     }
     
     protected function createComponentAvatarForm()
@@ -196,8 +181,24 @@ class AccountSettings extends \App\Components\BaseComponent
         
         $form->addSubmit('submit', 'Odeslat');
         $form->onSuccess[] = function($form, $values) {
-            $file = ['fullPath' => "https://www.lato.cz" . AccountActivated::$avatarList[$values->avatar]];
+            $file = new \App\Model\Entities\File();
+            $file->fullPath = "https://www.lato.cz" . AccountActivated::$avatarList[$values->avatar];
             $this->userManager->assignProfileImage($this->presenter->activeUser, $file);
+            $this->presenter->redirect('this');
+        };
+        return $form;        
+    }
+    
+    protected function createComponentBackgroundForm()
+    {
+        $form = $this->getForm();
+        
+        $form->addRadioList('avatar', 'avatar', AccountActivated::$avatarList)
+             ->setRequired();
+        
+        $form->addSubmit('submit', 'Odeslat');
+        $form->onSuccess[] = function($form, $values) {
+            
             $this->presenter->redirect('this');
         };
         return $form;        

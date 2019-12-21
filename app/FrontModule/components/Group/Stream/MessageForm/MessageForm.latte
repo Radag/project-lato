@@ -65,7 +65,11 @@
                     <div class="attached-file">
                         <a href="{$attach->fullPath|noescape}" target="_blank" class="file-name">{$attach->name}<span>{$attach->mime}</span></a>
                         <div class="flex-spacer"></div>
-                        <a href="{link deleteAttachment!, idFile=>$attach->fileId}" class="ajax remove-attachment"><i class="material-icons">delete</i></a>
+                        {if $defaultMessage}
+                            <a href="#" data-id="{$attach->id}" class="remove-attachment-after remove-attachment"><i class="material-icons">delete</i></a>
+                        {else}
+                            <a href="{link deleteAttachment!, idFile=>$attach->id}" class="ajax remove-attachment"><i class="material-icons">delete</i></a>
+                        {/if}
                     </div>
                 </li>
                 {/foreach}
@@ -169,49 +173,17 @@
                     }
                 });
             }
+            
+            $(".remove-attachment-after").on('click', function(e) {
+                e.preventDefault();
+                $("input[name='delete_attachments']").val($("input[name='delete_attachments']").val() + "_" + $(this).data('id'));
+                $(this).parents('li').remove();
+            });
         });
     </script>
-    {include uploadBlock}
     {/form}
+    {include "UploadBlock.latte"}
 {/snippet}
-
-{define uploadBlock}
-{*<div id="messageContentDropzone" style="display: none; text-align: center; padding-top: 15%; font-size: 18px; border: 0 !important; position: absolute; background-color: white; opacity: 0.94; width: 100%; height: 100%; top:0px; left:0px; z-index:999; ">
-    Přesuňte soubor prosím zde
-</div>*}
-<div id="messageContentDropzone" style="display: none;"></div>
-<script>
-    $(".materialize-textarea").on('keydown', function(event) {
-        if($(this).val() != "") {
-            $(".modal-action").removeClass('disabled');
-        }
-    });
-    
-    function addNewAttachment() 
-    {
-        $("#messageContentDropzone").trigger('click');
-    }
-    
-    function addLinkAttachment()
-    {
-        $('#add-link-modal').modal();
-        $('#message-link-input').val('');
-        $('#add-link-modal').modal('open');
-    }
-    
-    $(function() {
-        setUploadForm("#messageContentDropzone", {
-            links: {
-                upload: {link uploadAttachment!},
-                delete: {link deleteAttachment!, idFile=>'XXXX'}
-            },
-            uploadBlock: "#message-upload-block",
-            submitButton: "#message-submit-button",
-            inputWithIds: "#attachmentsIds"
-        });
-    });
-</script>
-{/define}
 <div id="add-link-modal" class="modal modal-small">
     <form action="{link addLink!}" method="post" class="ajax">
         <div class="modal-content">            

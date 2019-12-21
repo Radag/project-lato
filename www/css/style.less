@@ -5988,12 +5988,14 @@ nav .nav-title {
     }
 }
 
-.dropzone-modal {
+.modal {
     .dropzone-area {
         display: none;
-    }    
-    &.active .dropzone-area {
-        display: block;
+    }
+    .dropzone-area.active {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         position: absolute;
         height: 100%;
         width: 100%;
@@ -6003,6 +6005,7 @@ nav .nav-title {
         z-index: 9;
         border: 3px solid grey;
         border-style: dashed;
+        font-size: 23px;
     } 
 }
 

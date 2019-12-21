@@ -13,32 +13,41 @@ use App\Model\Manager\FileManager;
 use App\Model\Manager\TaskManager;
 use App\Model\Entities\Task;
 use \Nette\Application\UI\Form;
+use App\Service\FileService;
 
 
 class CommitTaskForm extends \App\Components\BaseComponent
 {
      /** @var MessageManager */
-    protected $messageManager;
+    private $messageManager;
     
     /** @var UserManager */
-    protected $userManager;
+    private $userManager;
     
     /** @var FileManager */
-    protected $fileManager;
+    private $fileManager;
     
     /** @var TaskManager */
-    protected $taskManager;
+    private $taskManager;
+    
+    /** @var FileService */
+    private $fileService;
+        
+    /** @var Task */
+    private $task;
       
     public function __construct(UserManager $userManager,
             MessageManager $messageManager, 
             FileManager $fileManager,
-            TaskManager $taskManager
+            TaskManager $taskManager,            
+            FileService $fileService
             )
     {
         $this->userManager = $userManager;
         $this->messageManager = $messageManager;
         $this->fileManager = $fileManager;
         $this->taskManager = $taskManager;
+        $this->fileService = $fileService;
     }
     
     protected function createComponentForm()
@@ -56,9 +65,15 @@ class CommitTaskForm extends \App\Components\BaseComponent
         return $form;
     }
     
+    public function render()
+    {
+        $this->template->task = $this->task;
+        parent::render();
+    }
+    
     public function setDefault(Task $task)
     {
-        $commit = $this->taskManager->getCommitByUser($task->id, $this->presenter->activeUser->id);  
+        $commit = $this->taskManager->getCommitByUser($task->id, $this->presenter->activeUser->id); 
         if($commit) {
             $this['form']->setDefaults(array(
                 'comment' => $commit->comment,
@@ -73,6 +88,7 @@ class CommitTaskForm extends \App\Components\BaseComponent
              
     public function setTask(Task $task)
     {
+        $this->task = $task;
         $this['form']->setValues([
             'idTask' => $task->id
         ]);
@@ -103,30 +119,23 @@ class CommitTaskForm extends \App\Components\BaseComponent
     
     public function handleUploadAttachment()
     {
-        $file = $this->getPresenter()->request->getFiles();
-        $path = 'users/' . $this->presenter->activeUser->slug . '/files';
-        
-        if(isset($file['file'])) {
-            $uploadedFile = $this->fileManager->uploadFile($file['file'], $path); 
-            if($uploadedFile['success']) {
-                $this->getPresenter()->payload->file = $uploadedFile;
-            } else {
-                $this->getPresenter()->payload->error = true;
-                $this->getPresenter()->payload->message = $uploadedFile['message'];
-            }
-        } else {
-            $this->getPresenter()->payload->error = true;
-            $this->getPresenter()->payload->message = "Došlo k chybě při ukládání souboru.";
+        $file = $this->presenter->request->getFiles();
+        try {
+            if(empty($file['file'])) { 
+                throw new \Lato\FileUploadException("Soubor se nepodařilo nahrát.");
+            }            
+            $this->presenter->payload->file = $this->fileService->uploadFile($file['file'], FileService::FILE_PURPOSE_COMMIT);
+        } catch (\Lato\FileUploadException $ex) {
+            $this->presenter->payload->error = $ex->getMessage();
         }
-        
-        $this->getPresenter()->sendPayload();
+        $this->presenter->sendPayload();
     }
     
     public function handleDeleteAttachment($idFile)
     {
         if($this->fileManager->isFileOwner($idFile, $this->presenter->activeUser->id)) {
             $this->taskManager->removeAttachment($idFile);
-            $this->fileManager->removeFile($idFile);
+            $this->fileService->removeFile($idFile);
             $this->getPresenter()->payload->idFile = $idFile;
             $this->getPresenter()->payload->deleted = true;
             $this->getPresenter()->sendPayload();

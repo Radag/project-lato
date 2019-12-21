@@ -123,9 +123,9 @@ class UserManager implements Nette\Security\IAuthenticator
         return $return;
     }
 
-    public function assignProfileImage(User $user, $file)
+    public function assignProfileImage(User $user, \App\Model\Entities\File $file)
     {
-        $this->db->query("UPDATE user_real SET", ['profile_image' => $file['fullPath']], "WHERE id=?", $user->id);
+        $this->db->query("UPDATE user_real SET", ['profile_image' => $file->fullPath], "WHERE id=?", $user->id);
     }
     
     public function assignBackgroundImage(User $user, $file)

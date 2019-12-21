@@ -11,6 +11,7 @@ use App\Model\Manager\TaskManager;
 use App\Model\Manager\ClassificationManager;
 use App\Model\Manager\GroupManager;
 use Dusterio\LinkPreview\Client;
+use App\Service\FileService;
 
 class MessageForm extends \App\Components\BaseComponent
 { 
@@ -32,6 +33,9 @@ class MessageForm extends \App\Components\BaseComponent
      /** @var GroupManager **/
     protected $groupManager;
     
+    /** @var FileService **/
+    protected $fileService;
+    
     /** @var Message */
     protected $defaultMessage = null;   
     
@@ -40,7 +44,8 @@ class MessageForm extends \App\Components\BaseComponent
         FileManager $fileManager,
         TaskManager $taskManager,
         ClassificationManager $classificationManager,
-        GroupManager $groupManager
+        GroupManager $groupManager,
+        FileService $fileService
     )
     {
         $this->userManager = $userManager;
@@ -49,6 +54,7 @@ class MessageForm extends \App\Components\BaseComponent
         $this->taskManager = $taskManager;
         $this->classificationManager = $classificationManager;
         $this->groupManager = $groupManager;
+        $this->fileService = $fileService;
     }
   
     public function createComponentForm()
@@ -80,6 +86,7 @@ class MessageForm extends \App\Components\BaseComponent
         $form->addCheckbox('student_list', "Vytvořit prezenční listinu");
         $form->addCheckbox('create_classification', "Povinnost bude známkována");
         $form->addHidden('attachments');
+        $form->addHidden('delete_attachments');
         $form->addSubmit('send', 'Publikovat');
         if($this->defaultMessage !== null) {
             $form->setDefaults(array(
@@ -142,6 +149,15 @@ class MessageForm extends \App\Components\BaseComponent
         
         $attachments = explode('_', $values->attachments);
 
+        $deleteAttachments = explode('_', $values->delete_attachments);
+        if($deleteAttachments) {
+            foreach($deleteAttachments as $idFile) {
+                if($idFile && $this->fileManager->isFileOwner($idFile, $this->presenter->activeUser->id)) {
+                    $this->fileService->removeFile($idFile);
+                }
+            }
+        }
+        
         $message->id = $this->messageManager->createMessage($message, $attachments, $this->presenter->activeGroup);
         
         if($values->messageType === Message::TYPE_TASK) {
@@ -196,11 +212,20 @@ class MessageForm extends \App\Components\BaseComponent
     }
     
     public function handleResetForm($type = Message::TYPE_NOTICE) {
+        
+        $this->template->attachments = $this->fileManager->getUnusedUserFiles(FileService::FILE_PURPOSE_STREAM);
+        $ids = [];
+        if(is_array($this->template->attachments)) {
+            foreach($this->template->attachments as $att) {
+                $ids[] = $att->id;
+            }
+        }
         $this['form']->setValues([
             'messageType' => $type,
             'time' => date("H:i"),
-            'date' => date("Y-m-d")
-         ], true);
+            'date' => date("Y-m-d"),
+            'attachments' => implode('_', $ids)
+        ], true);
     }
     
     
@@ -317,31 +342,26 @@ class MessageForm extends \App\Components\BaseComponent
     
     public function handleUploadAttachment()
     {
-        $file = $this->getPresenter()->request->getFiles();
-        if($this->fileManager->isStorageOfLimit($this->presenter->activeUser->id)) {
-            $this->getPresenter()->payload->message = 'Již jste překročili limit úložiště.';
-            $this->getPresenter()->payload->error = true;            
-        } elseif(isset($file['file'])) {            
-            $path = 'users/' . $this->presenter->activeUser->slug . '/files';       
-            $uploadedFile = $this->fileManager->uploadFile($file['file'], $path);
-            if($uploadedFile['success']) {
-                $this->getPresenter()->payload->file = $uploadedFile;
-            } else {
-                $this->getPresenter()->payload->error = true;
-                $this->getPresenter()->payload->message = $uploadedFile['message'];
+        $file = $this->presenter->request->getFiles();
+        try {
+            if(empty($file['file'])) { 
+                throw new \Lato\FileUploadException("Soubor se nepodařilo nahrát.");
             }
-        } else {
-            $this->getPresenter()->payload->error = true;
-            $this->getPresenter()->payload->message = "Soubor se nepodařilo nahrát.";
+            $this->presenter->payload->file = $this->fileService->uploadFile($file['file'], FileService::FILE_PURPOSE_STREAM);
+        } catch (\Lato\FileUploadException $ex) {
+            $this->presenter->payload->error = $ex->getMessage();
         }
-               
-        $this->getPresenter()->sendPayload();
+        $this->presenter->sendPayload();
     }
     
     public function handleDeleteAttachment($idFile)
     {
-        $this->fileManager->removeFile($idFile);
-        $this->getPresenter()->payload->deleted = true;
+        if($this->fileManager->isFileOwner($idFile, $this->presenter->activeUser->id)) {
+            $this->fileService->removeFile($idFile);
+            $this->getPresenter()->payload->deleted = true;
+        } else {
+            $this->getPresenter()->payload->deleted = false;
+        }        
         $this->getPresenter()->sendPayload();
     }
 }

@@ -18,6 +18,7 @@ services:
     - App\Model\Manager\TestSetupManager
 
     - App\Service\ReCaptchaService
+    - App\Service\FileService
     - App\Service\TestService
 
     - App\Mail\MailManager
