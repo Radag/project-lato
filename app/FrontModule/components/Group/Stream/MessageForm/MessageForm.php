@@ -358,6 +358,7 @@ class MessageForm extends \App\Components\BaseComponent
     {
         if($this->fileManager->isFileOwner($idFile, $this->presenter->activeUser->id)) {
             $this->fileService->removeFile($idFile);
+            $this->getPresenter()->payload->id = $idFile;
             $this->getPresenter()->payload->deleted = true;
         } else {
             $this->getPresenter()->payload->deleted = false;

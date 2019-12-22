@@ -27,6 +27,22 @@ function setUploadForm(inputId, config)
         }, 100);
     });
 
+    if($(config.uploadBlock)) {
+        $(config.uploadBlock).find(".remove-attachment").on('click', function(event) {
+            var block = $(this).parents('li');
+            event.preventDefault();
+            $.get( $(this).attr("href"), function(data) {
+                if(data.deleted) {
+                    var values = $(config.inputWithIds).val();
+                    $(config.inputWithIds).val(values.replace("_" + data.id, ""));
+                    console.log(values);
+                    block.remove();
+                }
+            });
+        });
+    }
+   
+
     var uploadsFiles = {};
     var options = {
         dataType: 'json',
