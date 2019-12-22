@@ -46,15 +46,15 @@ class Chat extends \App\Components\BaseComponent
             $this->attenders = $this->userManager->getMultiple(explode(',', $users), true);
         } elseif(!empty($id)) {
             $conversation = $this->conversationManager->getConversation($id, $this->presenter->activeUser);
-            if(empty($conversation->users)) {
-                $this->redirect('Conversation:list');
+            if(!$conversation || empty($conversation->users)) {
+                $this->presenter->redirect('Conversation:list');
             }
             $this->conversationManager->setConversationRead($this->presenter->activeUser, $conversation);
             $this->conversationId = $id;
             $this->messages = $conversation->messages;
             $this->attenders = $conversation->users;
         } else {
-            $this->redirect('Conversation:list');
+            $this->presenter->redirect('Conversation:list');
         }
         
         $attName = [];

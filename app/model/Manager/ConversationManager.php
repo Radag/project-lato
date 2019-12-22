@@ -53,6 +53,9 @@ class ConversationManager extends BaseManager
         foreach($attenders as $att) {
             $return->users[$att->id] = new User($att);
         }
+        if(!in_array($user->id, array_keys($return->users))) {
+            return null;
+        }        
         $messages = $this->db->fetchAll("SELECT * FROM conversation_message WHERE conversation_id=?", $idConversation);
         foreach($messages as $message) {
             $mes = new PrivateMessage($message);

@@ -106,10 +106,6 @@ class BasePresenter extends \Nette\Application\UI\Presenter
         return $flash;
     }
     
-    public function redrawTasks()    {
-        
-    }
-    
     public function handleLogout()
     {
         $this->user->logout(true);
