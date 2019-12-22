@@ -2,7 +2,8 @@
 
 namespace App\Model\Entities;
 
-class Classification extends AbstractEntity {
+class Classification extends AbstractEntity 
+{
     public $id = null;
     public $idClassificationGroup = null;
     public $idUser = null;

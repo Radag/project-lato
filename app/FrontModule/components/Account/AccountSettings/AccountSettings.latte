@@ -91,14 +91,13 @@
                 <div class="card flex-column">
                     <div class="card-header">
                         <h2>Učitel</h2>
-                    </div>
-                    
+                    </div>                    
                     {if $teacherGroups}
                     <div class="card-content">
                         <p class="secondary-par">Tyto skupiny využívám pro svoji výuku.</p>
                         <ul class="groups bottom-margin">
                             {foreach $teacherGroups as $group}
-                            <li class="group-list" data-action="delete" data-group-id="{$group->id}">
+                            <li class="group-list" data-group-id="{$group->id}">
                                 <div class="group-shortcut-circle {$group->colorScheme}"or >{$group->shortcut|substr:0,1}
                                     <div class="admin-mark {$group->colorScheme}" ></div>
                                 </div>
@@ -107,7 +106,8 @@
                                     <i class="material-icons">more_horiz</i>
                                 </button>
                                 <ul id='group{$group->id}-options' class="dropdown-content">
-                                    <li><a href="" class="delete-group-button waves-effect waves-dark" data-name="{$group->name}">Smazat skupinu</a></li>
+                                    <li><a href="#" class="group-button-action archive-group waves-effect waves-dark" data-name="{$group->name}">Archivovat skupinu</a></li>
+                                    <li><a href="#" class="group-button-action delete-group waves-effect waves-dark" data-name="{$group->name}">Smazat skupinu</a></li>
                                 </ul>
                             </li>
                             <li class="remove-group" style="display: none" data-group-id="{$group->id}">
@@ -134,14 +134,14 @@
                         <p class="secondary-par">V těchto skupinách jsem zapsán jako student.</p>
                         <ul class="groups">
                             {foreach $studentGroups as $group}
-                            <li class="group-list" data-action="leave" data-group-id="{$group->id}">
+                            <li class="group-list" data-group-id="{$group->id}">
                                 <div class="group-shortcut-circle {$group->colorScheme}" >{$group->shortcut|substr:0,1}</div>
                                 <div class="label">{$group->name} <span>(prog1)</span></div>
                                 <button type="button" class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" data-target="group{$group->id}-options" >
                                     <i class="material-icons">more_horiz</i>
                                 </button>
                                 <ul id='group{$group->id}-options' class="dropdown-content">
-                                    <li><a href="" class="delete-group-button waves-effect waves-dark" data-name="{$group->name}">Opustit skupinu</a></li>
+                                    <li><a href="#" class="group-button-action leave-group waves-effect waves-dark" data-name="{$group->name}">Opustit skupinu</a></li>
                                 </ul>
                             </li>
                             <li class="remove-group" style="display: none" data-group-id="{$group->id}">
@@ -160,18 +160,31 @@
                     {/if}
                 </div>
             </div>
+            <div id="group-archive-confirm-modal" class="modal modal-small">
+                <div class="modal-content">
+                    <h3></h3>
+                    <p>Tímto znemožníte přístup studentům do skupiny i jakékoli její úpravy.</p>
+                    <p>Opravdu si přejete archivovat tuto skupinu?</p>
+                </div>
+                <div class="modal-footer">
+                    <div class="flex-spacer"></div>
+                    <div class="form-control">
+                        <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">zrušit</button>
+                        <button type="button" onClick="confirmAction('group-archive-confirm-modal', 'archive')" class="waves-effect modal-close waves-light btn btn-confirm" >potvrdit</button>
+                    </div>
+                </div>
+            </div>
             <div id="group-delete-confirm-modal" class="modal modal-small">
                 <div class="modal-content">
                     <h3></h3>
                     <p>Všechny záznamy, příspěvky, přílohy a komentáře budou odstraněny. Všichni studenti ve skupině obdrží oznámení o provedené akci.</p>
-
                     <p>Opravdu si přejete smazat tuto skupinu?</p>
                 </div>
                 <div class="modal-footer">
                     <div class="flex-spacer"></div>
                     <div class="form-control">
                         <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">zrušit</button>
-                        <button type="button" onClick="confirmDelete('group-delete-confirm-modal')" class="waves-effect modal-close waves-light btn btn-confirm" >potvrdit</button>
+                        <button type="button" onClick="confirmAction('group-delete-confirm-modal', 'delete')" class="waves-effect modal-close waves-light btn btn-confirm" >potvrdit</button>
                     </div>
                 </div>
             </div>
@@ -184,7 +197,7 @@
                     <div class="flex-spacer"></div>
                     <div class="form-control">
                         <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-                        <button type="button" onClick="confirmDelete('group-leave-confirm-modal')" class="waves-effect waves-light btn modal-close btn-confirm" >Potvrdit</button>
+                        <button type="button" onClick="confirmAction('group-leave-confirm-modal', 'leave')" class="waves-effect waves-light btn modal-close btn-confirm" >Potvrdit</button>
                     </div>
                 </div>
             </div>
@@ -276,70 +289,104 @@
 </div>  
 </section>
 <script>
-    $(function () {
-        $('#change-user-avatar-modal').modal();
-        $('#change-user-background-modal').modal();        
-        $('#group-delete-confirm-modal').modal();
-        $('#group-leave-confirm-modal').modal();
-        
-        $("#profile-image-button").on('click', function(event) {
-            event.preventDefault();
-            $('#change-user-avatar-modal').modal('open');
-        });
-        $("#background-image-button").on('click', function(event) {
-            event.preventDefault();
-            $('#change-user-background-modal').modal('open');
-        });
-        
-        setUploadForm("#avatar-file-upload", {
-            links: {
-                upload: {link uploadProfileImage!}
-            },
-            dropZone: "#change-user-avatar-dropzone",
-            after: function(data) {
-                if(data.error) {
-                    $("#change-user-avatar-modal-error").html(data.error);
-                } else {
-                    $("#user-profile-image").attr('src', data.image.fullPath);
-                    $('#change-user-avatar-modal').modal('close');
-                }
-            }
-        });
+    $('#change-user-avatar-modal').modal();
+    $('#change-user-background-modal').modal();        
+    $('#group-delete-confirm-modal').modal();
+    $('#group-leave-confirm-modal').modal();
 
-        var removeGroup = [];
-        $(".delete-group-button").on('click', function(event) {
-            event.preventDefault();
-            if($(this).closest('li.group-list').data('action') === 'delete') {
-                $('#group-delete-confirm-modal').data('group-id', $(this).closest('li.group-list').data('group-id'));
-                $('#group-delete-confirm-modal h3').text($(this).data('name'));
-                $('#group-delete-confirm-modal').modal('open');
+    $("#profile-image-button").on('click', function(event) {
+        event.preventDefault();
+        $('#change-user-avatar-modal').modal('open');
+    });
+    $("#background-image-button").on('click', function(event) {
+        event.preventDefault();
+        $('#change-user-background-modal').modal('open');
+    });
+
+    setUploadForm("#avatar-file-upload", {
+        links: {
+            upload: {link uploadProfileImage!}
+        },
+        dropZone: "#change-user-avatar-dropzone",
+        after: function(data) {
+            if(data.error) {
+                $("#change-user-avatar-modal-error").html(data.error);
             } else {
-                $('#group-leave-confirm-modal').data('group-id', $(this).closest('li.group-list').data('group-id'));
-                $('#group-leave-confirm-modal h3').text($(this).data('name'));
-                $('#group-leave-confirm-modal').modal('open');
+                $("#user-profile-image").attr('src', data.image.fullPath);
+                $('#change-user-avatar-modal').modal('close');
             }
-        });
-        
-        function confirmDelete(modal) {
-            var id = $('#' + modal).data('group-id');
-            $('li.group-list[data-group-id="' + id + '"]').hide();
-            $('li.group-list[data-group-id="' + id + '"]').next('li.remove-group').show();
-            var index = removeGroup.indexOf(id);
-            if(index === -1) {
-                removeGroup.push(id);
-            }
-            $("input[name='deleteGroups']").val(JSON.stringify(removeGroup));
         }
+    });
 
-        $(".cancel-delete-btn").on('click', function(event) {
-            event.preventDefault();
-            $(this).closest('li.remove-group').hide();
-            var index = removeGroup.indexOf($(this).closest('li.remove-group').data('group-id'));
-            removeGroup.splice(index, 1);
-            $('li.group-list[data-group-id="' + $(this).closest('li.remove-group').data('group-id') + '"]').show();
-            $("input[name='deleteGroups']").val(JSON.stringify(removeGroup));
-        });  
+    var archiveGroups = [];
+    var deleteGroups = [];
+    var leaveGroups = [];
+    $(".group-button-action").on('click', function(event) {
+        event.preventDefault();
+        if($(this).hasClass('delete-group')) {
+            $('#group-delete-confirm-modal').data('group-id', $(this).closest('li.group-list').data('group-id'));
+            $('#group-delete-confirm-modal h3').text($(this).data('name'));
+            $('#group-delete-confirm-modal').modal('open');
+        } else if($(this).hasClass('archive-group')) {
+            $('#group-archive-confirm-modal').data('group-id', $(this).closest('li.group-list').data('group-id'));
+            $('#group-archive-confirm-modal h3').text($(this).data('name'));
+            $('#group-archive-confirm-modal').modal('open');
+        } else if($(this).hasClass('leave-group')) {
+            $('#group-leave-confirm-modal').data('group-id', $(this).closest('li.group-list').data('group-id'));
+            $('#group-leave-confirm-modal h3').text($(this).data('name'));
+            $('#group-leave-confirm-modal').modal('open');
+        }
+    });
+
+    function confirmAction(modal, action) {
+        var id = $('#' + modal).data('group-id');
+        var icon;
+        if(action === 'archive') {
+            icon = 'folder';
+            var index = archiveGroups.indexOf(id);
+            if(index === -1) {
+                archiveGroups.push(id);
+            }
+            $("input[name='archiveGroups']").val(JSON.stringify(archiveGroups));
+        } else if(action === 'delete') {           
+            icon = 'delete';
+            var index = deleteGroups.indexOf(id);
+            if(index === -1) {
+                deleteGroups.push(id);
+            }
+            $("input[name='deleteGroups']").val(JSON.stringify(deleteGroups));
+        } else if(action === 'leave') {            
+            icon = 'eject';
+            var index = leaveGroups.indexOf(id);
+            if(index === -1) {
+                leaveGroups.push(id);
+            }
+            $("input[name='leaveGroups']").val(JSON.stringify(leaveGroups));
+        }
+        $('li.group-list[data-group-id="' + id + '"]').data('action', action).hide();
+        $('li.group-list[data-group-id="' + id + '"]').next('li.remove-group').show().find('i').html(icon);
         
-        datepicker();        
+    }
+
+    $(".cancel-delete-btn").on('click', function(event) {
+        event.preventDefault();
+        var groupId = $(this).closest('li.remove-group').data('group-id');
+        var action = $('li.group-list[data-group-id="' + groupId + '"]').data('action');
+        if(action === 'archive') {
+            var index = archiveGroups.indexOf(groupId);
+            archiveGroups.splice(index, 1);
+            $("input[name='archiveGroups']").val(JSON.stringify(archiveGroups));
+        } else if(action === 'delete') {
+            var index = deleteGroups.indexOf(groupId);
+            deleteGroups.splice(index, 1);
+            $("input[name='deleteGroups']").val(JSON.stringify(deleteGroups));
+        } else if(action === 'leave') {            
+            var index = leaveGroups.indexOf(groupId);
+            leaveGroups.splice(index, 1);
+            $("input[name='leaveGroups']").val(JSON.stringify(leaveGroups));
+        }        
+        $(this).closest('li.remove-group').hide();        
+        $('li.group-list[data-group-id="' + groupId + '"]').show();
+        
     });
 </script>

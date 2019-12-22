@@ -11,7 +11,7 @@
         </div>
         <div n:if="$activeGroup->relation === 'owner'" class="row">
             <div class="col s12 edit-btn">
-                <a href="{plink Group:settings}" class="btn no-shadow waves-effect waves-light" >Upravit informace</a>  
+                <a href="{plink Group:settings}" class="btn no-shadow waves-effect waves-light" >Upravit informace</a>
             </div>
         </div>
         <div n:if="$activeGroup->relation !== 'owner'" class="row">
@@ -185,6 +185,18 @@
                             </li>
                         </ul>
                     </div>
+                </div>
+            </div>
+            <div n:if="$activeGroup->relation === 'owner'" class="row">
+                <div class="col s12 edit-btn">
+                    {if $activeGroup->archived}
+                        <a href="{link unarchiveGroup!}" class="btn no-shadow waves-effect waves-light" >Obnovit skupinu</a>
+                    {else}
+                        <a href="#" data-url="{link archiveGroup!}" data-text="Opravdu si přejete archivovat tunhle skupinu ?" data-title="{$activeGroup->name}" class="btn no-shadow waves-effect waves-light delete-confirm" >Archivovat skupinu</a>
+                    {/if}
+                    &nbsp;
+                    
+                    <a href="#" data-url="{link deleteGroup!}" data-text="Všechny záznamy, příspěvky, přílohy a komentáře budou odstraněny. Všichni studenti ve skupině obdrží oznámení o provedené akci.<br>Opravdu si přejete smazat tunhle skupinu ?" data-title="{$activeGroup->name}" class="btn no-shadow waves-effect waves-light delete-confirm" >Smazat skupinu</a>
                 </div>
             </div>
         </div>

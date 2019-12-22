@@ -54,11 +54,16 @@ class GroupPresenter extends BasePresenter
         $id = $this->getParameter('id');
         if(isset($id)) {
             $this->activeGroup = $this->groupManager->getUserGroup($id, $this->activeUser);
-        }        
-        if(empty($id) || empty($this->activeGroup)){
+        }
+        if(empty($id) || empty($this->activeGroup)) {
             $this->presenter->flashMessage('Skupina neexistuje nebo do ní nemáte přístup.');
             $this->redirect(':Front:Homepage:noticeboard');
         }
+        if($this->activeGroup->archived && $this->activeGroup->relation !== GroupManager::RELATION_OWNER) {
+            $this->presenter->flashMessage('Skupina je archivovaná a nemáte do ní přístup.');
+            $this->redirect(':Front:Homepage:noticeboard');
+        }
+        
         $this['topPanel']->setActiveGroup($this->activeGroup);
         $this['topPanel']->addToMenu((object)['name' => 'stream', 'link' => $this->link('default'), 'active' => $this->isLinkCurrent('default')]);
         if($this->activeGroup->relation === 'owner') {

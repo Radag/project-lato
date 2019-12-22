@@ -119,9 +119,9 @@ class GroupManager extends BaseManager {
             FROM `group` T1
             JOIN group_user T2 ON (T1.id=T2.group_id AND T2.user_id=? AND T2.active=1 " . (!isset($filter->relation) ? "" : "AND T2.relation_type='" . $filter->relation . "'") . ")
             JOIN group_user T4 ON (T1.id=T4.group_id AND T4.active=1 AND T4.relation_type='owner')
-            JOIN group_scheme T3 ON (T1.group_scheme_id=T3.id) WHERE T1.archived=0 " .
+            JOIN group_scheme T3 ON (T1.group_scheme_id=T3.id) WHERE T1.archived=? " .
             (isset($filter->skip_ids) ? " AND T1.id NOT IN (" . $filter->skip_ids . ")" : "")
-            . "ORDER BY T1.name ASC", $user->id);   
+            . "ORDER BY T1.name ASC", $user->id, isset($filter->only_archived) ? 1 : 0);   
   
         if(!empty($userGroups)) {
             foreach($userGroups as $s) {
@@ -175,7 +175,8 @@ class GroupManager extends BaseManager {
                T8.id AS period_id,
                T8.name AS period_name,
                T1.pr_user_msg_create,
-               T1.pr_share_msg
+               T1.pr_share_msg,
+               T1.archived
             FROM `group` T1
             JOIN group_user T2 ON (T1.id = T2.group_id AND T2.user_id=?)
             JOIN group_scheme T3 ON (T1.group_scheme_id = T3.id)
@@ -185,7 +186,7 @@ class GroupManager extends BaseManager {
             LEFT JOIN group_sharing T6 ON T6.group_id=T1.id
             LEFT JOIN public_actions T7 ON (T7.id = T6.action_id AND T7.active=1)
             LEFT JOIN group_period T8 ON (T8.group_id = T1.id AND T8.active=1)
-            WHERE " . ($isId ? "T1.id=?" : "T1.slug=?") . " AND T2.active=1 AND T1.archived=0", $user->id, $groupSlug);
+            WHERE " . ($isId ? "T1.id=?" : "T1.slug=?") . " AND T2.active=1", $user->id, $groupSlug);
         
         if($group) {
             $owner = new Entities\User();
@@ -219,6 +220,7 @@ class GroupManager extends BaseManager {
             if($groupModel->relation == 'owner') {
                 $groupModel->showDeleted = $group->show_deleted;
             }
+            $groupModel->archived = $group->archived === 1? true : false;
             
             return $groupModel;   
         } else {
@@ -235,6 +237,16 @@ class GroupManager extends BaseManager {
     public function archiveGroup($idGroup)
     {
         $this->db->query("UPDATE `group` SET archived=1 WHERE id=?", $idGroup);
+    }
+    
+    public function unarchiveGroup($idGroup)
+    {
+        $this->db->query("UPDATE `group` SET archived=0 WHERE id=?", $idGroup);
+    }
+    
+    public function deleteGroup($idGroup)
+    {
+        $this->db->query("DELETE FROM `group` WHERE id=?", $idGroup);
     }
     
     public function setDeleted(Entities\Group $group, $deleted)

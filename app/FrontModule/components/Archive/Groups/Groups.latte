@@ -1,0 +1,28 @@
+<section class="main" >
+    <div class="container offset-2">
+        {if $groups}
+            <div class="row" id="group-cards">
+                {foreach $groups->groups as $group}
+                    <div class="col l4 m12 s12">
+                        <a href="{plink Group:default, 'id'=>$group->slug}" class="card">
+                            <div class="avatar {$group->colorScheme}">{$group->shortcut|substr:0,1}
+                                {if $groups->differentRelations && $group->relation === 'owner'}<div class="admin-mark {$group->colorScheme}"></div>{/if}
+                            </div>
+                            <div class="title truncate">
+                                {$group->name}
+                                {if $group->subgroup}<span>({$group->subgroup})</span>{/if}
+                            </div>
+                        </a>
+                    </div>
+                {/foreach}
+            </div>
+        {else}
+            <div class="card flex-column">
+                <div class="card-content">
+                    <p class="secondary-par"><em>Nemáte žádné archivované skupiny.</em></p>
+                </div>
+                <div class="card-footer card-bottom"></div>
+            </div>
+        {/if}
+    </div>
+</section>

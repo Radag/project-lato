@@ -57,6 +57,7 @@ services:
     - App\FrontModule\Components\Conversation\IChatList
     - App\FrontModule\Components\Conversation\IChat
     - App\FrontModule\Components\Conversation\INewChat
+    - App\FrontModule\Components\Archive\IGroups
 
     - App\PublicModule\Components\IContactForm
 

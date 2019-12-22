@@ -105,6 +105,8 @@ class AccountSettings extends \App\Components\BaseComponent
             $form['class']->setDefaultValue($userSchool->class);
         }
         $form->addHidden('deleteGroups');
+        $form->addHidden('archiveGroups');
+        $form->addHidden('leaveGroups');
         
         $form->addCheckbox('emailNotification')
              ->setDefaultValue($this->presenter->activeUser->emailNotification);
@@ -137,16 +139,24 @@ class AccountSettings extends \App\Components\BaseComponent
             }
             
             $delete = json_decode($values['deleteGroups']);
+            $archive = json_decode($values['archiveGroups']);
+            $leave = json_decode($values['leaveGroups']);
             $groups = $this->groupManager->getUserGroups($this->presenter->activeUser)->groups;
-            if($groups && $delete) {
-                foreach($delete as $idGroup) {
-                    if(isset($groups[$idGroup]) && $groups[$idGroup]->relation === 'owner') {
-                        $this->groupManager->archiveGroup($idGroup);
-                    } elseif(isset($groups[$idGroup])) {
-                        $this->groupManager->removeUserFromGroup($groups[$idGroup], $this->presenter->activeUser);
-                        $this->notificationManager->addLeftGroup($this->presenter->activeUser, $groups[$idGroup]);
-                    }
-                }  
+            if($groups) {
+                foreach($groups as $group) {
+                    if($group->relation === GroupManager::RELATION_OWNER) {
+                        if(is_array($archive) && in_array($group->id, $archive)) {
+                            $this->groupManager->archiveGroup($group->id);
+                        } elseif(is_array($delete) &&  in_array($group->id, $delete)) {
+                            $this->groupManager->deleteGroup($group->id);
+                        }
+                    } else {
+                        if(is_array($leave) && in_array($group->id, $leave)) {
+                            $this->groupManager->removeUserFromGroup($group, $this->presenter->activeUser);
+                            $this->notificationManager->addLeftGroup($this->presenter->activeUser, $group);
+                        }                        
+                    }                    
+                }
             }
             $this->presenter->flashMessage('Nastavení uloženo', 'success');
             $this->redirect('this');
