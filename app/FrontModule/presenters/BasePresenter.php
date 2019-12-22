@@ -9,9 +9,13 @@ use App\Model\Manager\GroupManager;
 use App\Model\Manager\NotificationManager;
 use \App\Model\Manager\UserManager;
 use App\Model\LatoSettings;
+use App\Service\ConversationService;
 
 class BasePresenter extends \Nette\Application\UI\Presenter
-{    
+{
+    /** @var LatoSettings @inject */
+    public $lattoSettings;
+    
     /** @var UserManager @inject */
     public $userManager;
        
@@ -20,15 +24,15 @@ class BasePresenter extends \Nette\Application\UI\Presenter
     
     /** @var NotificationManager @inject */
     public $notificationManager;
+    
+    /** @var ConversationService @inject */
+    public $conversationService;
 
     /** @var INewChat @inject */
     public $newChat;
         
     /** @var ITopPanel @inject */
     public $topPanel;
-    
-    /** @var LatoSettings @inject */
-    public $lattoSettings;
     
     public $days = ['Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota', 'Neděle'];
      
@@ -69,15 +73,17 @@ class BasePresenter extends \Nette\Application\UI\Presenter
         return $this->topPanel->create();
     }
     
-    protected function createComponentPrivateMessageForm()
+    protected function createComponentNewChatForm()
     {
         return $this->newChat->create();
     }
        
-    public function handleShowPrivateMessageForm($idUserTo)
+    public function handleNewMessage($idUserTo)
     {
-        $this['newChat']->setIdUserTo($idUserTo);
-        $this->redrawControl('privateMessageForm');
+        $user = $this->userManager->get($idUserTo);
+        if($user) {
+            $this->redirect(':Front:Conversation:default', $this->conversationService->getConversationParams([$user]));
+        }
     }
     
     public function handleGetUserList()

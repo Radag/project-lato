@@ -3,22 +3,22 @@ namespace App\FrontModule\Components\Conversation;
 
 use \Nette\Application\UI\Form;
 use App\Model\Manager\UserManager;
-use App\Model\Manager\ConversationManager;
-
+use App\Service\ConversationService;
 
 class NewChat extends \App\Components\BaseComponent
 {
-    /** @var ConversationManager */
-    public $conversationManager;
     
     /** @var UserManager */
     public $userManager;
 
+    /** @var ConversationService */
+    public $conversationService;
+    
     public function __construct(
-        ConversationManager $conversationManager,
+        ConversationService $conversationService,
         UserManager $userManager)
     {
-        $this->conversationManager = $conversationManager;
+        $this->conversationService = $conversationService;
         $this->userManager = $userManager;
     }
 
@@ -32,23 +32,12 @@ class NewChat extends \App\Components\BaseComponent
 
         $form->onSuccess[] = function(Form $form, $values) {
             $attenders = $this->userManager->getMultiple(explode(',', $values->users), false);
-            $slugIds = $ids =[];
-            foreach($attenders as $att) {
-                $ids[] = $att->id;
-                $slugIds[] = $att->slug;
-            }
-            $ids[] = $this->presenter->activeUser->id;
-            sort($ids);
-            $exist = $this->conversationManager->conversationExist($ids);
-            if($exist) {
-                $this->presenter->redirect(':Front:Conversation:default', ['id' => $exist->id]);
-            } else {
-                $this->presenter->redirect(':Front:Conversation:default', ['users' => implode(',', $slugIds)]);
-            }
+            $params = $this->conversationService->getConversationParams($attenders);
+            $this->presenter->redirect(':Front:Conversation:default', $params);            
         };
         return $form;
     }
-    
+        
     public function handleSearchUsers()
     {
         $term = $this->presenter->getParameter('term');

@@ -1,0 +1,171 @@
+<section class="main" id="profile">
+    <div class="container profile-header">
+        <div class="row">
+            <div class="col s12">
+                <div class="card" {if $profileUser->backgroundImage}style="background-image: url('{$profileUser->backgroundImage|noescape}')"{/if}>
+                    <div class="profile-cover">                       
+                    </div>
+                    <div class="profile-navbar">
+                        <div class="avatar">
+                            <img src="{$profileUser->profileImage}" >
+                        </div>
+                        <div class="profile-title">
+                            {$profileUser->name} {$profileUser->surname}
+                        </div>
+
+                        {* DOČASNĚ SKRYTÉ FUNKCE // IGNOROVÁNÍ UŽIVATELE A PŘIDÁNÍ DO PŘÁTEL
+                        {snippet profileMenu}
+                        <ul class="controls">
+                            
+                            {if !$isMe}
+                                {if $isFriend}
+                                <li><a href="{link removeFriend!, 'idUser'=>$activeUser->id}" class="tooltipped waves-effect waves-light ajax" data-position="bottom" data-delay="50" data-tooltip="Odebrat z přátel"><i class="material-icons">person_remove</i></a></li>
+                                {else}
+                                <li><a href="{link addFriend!, 'idUser'=>$activeUser->id}" class="tooltipped waves-effect waves-light ajax" data-position="bottom" data-delay="50" data-tooltip="Přidat mezi přátele"><i class="material-icons">person_add</i></a></li>                               
+                                {/if}
+                            <li><a href="{link showPrivateMessageForm! 'idUserTo'=>$activeUser->id}" class="ajax show-new-private-message waves-effect waves-light"><i class="material-icons">chat</i></a></li>
+                            {/if}
+                            
+                            <li>
+                                <button type="button" class="btn-flat btn-icon dropdown-trigger waves-effect waves-light" data-target="profile-options" >
+                                    <i class="material-icons">more_vert</i>
+                                </button>
+                                <ul id='profile-options' class="dropdown-content">
+                                    <li><a href="" class="waves-effect waves-dark">Ignorovat tohoto uživatele</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        {/snippet}
+                        *}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col l6 m12 s12">
+                {if !$isMe}
+                <a href="{plink newMessage! 'idUserTo'=>$profileUser->id}" class="ajax card new-message show-new-private-message">
+                    <div class="avatar">
+                        <img src="{$profileUser->profileImage}">
+                    </div>
+                    <div class="new-message-label">
+                        Poslat soukromou zprávu
+                    </div>
+                </a>
+                {/if}                
+                <div class="card flex-column">
+                    <div class="card-header">
+                        <h2>Osobní a kontaktní informace</h2>
+                    </div>
+                    <div class="card-content info clearfix">                        
+                        {if $schools}
+                            {foreach $schools as $school}
+                            <div class="row">
+                                <div class="col s3 label">
+                                    Škola
+                                </div>
+                                <div class="col s9 text">
+                                    {$school->school}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s3  label">
+                                    Třída
+                                </div>
+                                <div class="col s9  text">
+                                    {$school->className} {$school->classGrade}
+                                </div>
+                            </div>
+                            {/foreach}
+                        {else}                            
+                            {if $isMe}
+                                <p class="secondary-par italic">V tuto chvíli nemáte zveřejněny žádné osobní informace</p> 
+                            {else}
+                                <p class="secondary-par italic">Uživatel si nepřeje zveřejňovat žádné osobní informace</p>
+                            {/if}                            
+                        {/if}
+                        {* TOHLE BY ASI NEMĚLO BÝT VEŘEJNÝ*}
+                        {*if !empty($activeUser->birthday)}
+                        <div class="row">
+                            <div class="col s3 label">
+                                Datum narození
+                            </div>
+                            <div class="col s9 text">
+                                {$activeUser->birthday->format('d. m. Y')}
+                            </div>
+                        </div>
+                        {/if}
+                        <div class="row">
+                            <div class="col s3 label">
+                                E-mail
+                            </div>
+                            <div class="col s9 text">
+                                <a href="mailto:{$activeUser->email}">{$activeUser->email}</a>
+                            </div>
+                        </div>*}
+                    </div>
+                    <div class="card-footer">
+                        {if $isMe}
+                            {* TOTO SE BUDE ZOBRAZOVAT POUZE POKUD JE UŽIVATEL NA VLASTNÍM PROFILU A NAVÍC NEMÁ VYPLNĚNÉ ŽÁDNÉ INFORMACE *}
+                            <a href="{plink Account:default}" class="btn waves-effect waves-light">
+                                Upravit
+                            </a>
+                        {/if}
+                    </div>
+                </div>
+            </div>
+            <div class="col l6 m12 s12">
+                <div class="card flex-column">
+                    <div class="card-header">
+                        <h2>Skupiny</h2>
+                    </div>
+                    <div class="card-content">
+                        {if $groups}
+                            {if $isMe}
+                                <p class="secondary-par">V těchto skupinách jsem zapsán jako učitel nebo student</p>
+                            {else}
+                                <p class="secondary-par">S uživatelem máte společné tyto skupiny</p>
+                            {/if}
+                            <ul class="groups">
+                                {foreach $groups as $group}
+                                <li {if !$group->isMy}class="disabled"{/if}>
+                                    {if !$group->isMy}
+                                        <div class="group-shortcut-circle" style="background: {$group->mainColor|noescape};">{$group->shortcut|substr:0,1}
+                                        </div>
+                                        {$group->name}
+                                    {else}
+                                        <a href="{plink Group:default, 'id'=>$group->slug}">
+                                            <div class="group-shortcut-circle" style="background: {$group->mainColor|noescape};">{$group->shortcut|substr:0,1}
+                                            </div>
+                                            {$group->name}
+                                        </a>
+                                    {/if}
+                                </li>
+                                {/foreach}
+                            </ul>
+                        {else}
+                            <p class="secondary-par">S uživatelem nemáte žádné společné skupiny</p>
+                        {/if}                        
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+                
+            </div>
+        </div>
+
+    </div>
+</section>
+<script>
+    $(document).ready(function () {
+        $('.tooltipped').tooltip();
+        setTimeout(function() {
+            window.scrollTo(0, 130);
+        }, 100);
+    });
+</script>
+
+
+

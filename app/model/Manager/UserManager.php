@@ -83,7 +83,7 @@ class UserManager implements Nette\Security\IAuthenticator
         $this->db->query("UPDATE user_real SET ", ['password' => $passwords->hash($password)], "WHERE id=?", $user->id);
     }
 
-    public function get($idUser, $slug = false, $includeFictive = false)
+    public function get($idUser, $slug = false, $includeFictive = false) : ?User
     { 
         if($slug) {
             $userData = $this->db->fetch("SELECT * FROM user JOIN user_real USING(id) WHERE slug=?", $idUser);  
