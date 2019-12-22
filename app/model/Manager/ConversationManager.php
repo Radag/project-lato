@@ -104,7 +104,7 @@ class ConversationManager extends BaseManager
         $attendantsString = implode(',', $attendants);
         $exist = $this->db->fetch("SELECT T1.id, GROUP_CONCAT(T2.user_id ORDER BY T2.user_id ASC SEPARATOR ',') as attendants
                 FROM conversation T1 join converastion_attendant T2 on (T1.id=T2.conversation_id) 
-                GROUP BY T1.id HAVING attendants=? ORDER BY T2.user_id DESC", $attendantsString);
+                GROUP BY T1.id HAVING attendants=?", $attendantsString);
         return $exist;
     }
     

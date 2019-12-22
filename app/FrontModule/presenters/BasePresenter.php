@@ -3,7 +3,7 @@
 namespace App\FrontModule\Presenters;
 
 use App\FrontModule\Components\TopPanel\ITopPanel;
-use App\FrontModule\Components\PrivateMessageForm\IPrivateMessageForm;
+use App\FrontModule\Components\Conversation\INewChat;
 use App\Helpers\HelpersList;
 use App\Model\Manager\GroupManager;
 use App\Model\Manager\NotificationManager;
@@ -21,8 +21,8 @@ class BasePresenter extends \Nette\Application\UI\Presenter
     /** @var NotificationManager @inject */
     public $notificationManager;
 
-    /** @var IPrivateMessageForm @inject */
-    public $privateMessageForm;
+    /** @var INewChat @inject */
+    public $newChat;
         
     /** @var ITopPanel @inject */
     public $topPanel;
@@ -71,12 +71,12 @@ class BasePresenter extends \Nette\Application\UI\Presenter
     
     protected function createComponentPrivateMessageForm()
     {
-        return $this->privateMessageForm->create();
+        return $this->newChat->create();
     }
        
     public function handleShowPrivateMessageForm($idUserTo)
     {
-        $this['privateMessageForm']->setIdUserTo($idUserTo);
+        $this['newChat']->setIdUserTo($idUserTo);
         $this->redrawControl('privateMessageForm');
     }
     

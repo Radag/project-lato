@@ -1,12 +1,12 @@
 <?php
-namespace App\FrontModule\Components\PrivateMessageForm;
+namespace App\FrontModule\Components\Conversation;
 
 use \Nette\Application\UI\Form;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\ConversationManager;
 
 
-class PrivateMessageForm extends \App\Components\BaseComponent
+class NewChat extends \App\Components\BaseComponent
 {
     /** @var ConversationManager */
     public $conversationManager;

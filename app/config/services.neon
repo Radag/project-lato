@@ -33,7 +33,6 @@ services:
     - App\FrontModule\Components\Group\IClassification
     - App\FrontModule\Components\Stream\IMessagesColumn
     - App\FrontModule\Components\Stream\IRightColumn
-    - App\FrontModule\Components\PrivateMessageForm\IPrivateMessageForm
     - App\FrontModule\Components\TopPanel\ITopPanel
     - App\FrontModule\Components\Stream\MessageForm\IMessageForm
     - App\FrontModule\Components\Stream\ICommentForm
@@ -53,6 +52,9 @@ services:
     - App\FrontModule\Components\Test\ITestStart
     - App\FrontModule\Components\Test\ITestSetup
     - App\FrontModule\Components\Test\ITestDisplay
+    - App\FrontModule\Components\Conversation\IChatList
+    - App\FrontModule\Components\Conversation\IChat
+    - App\FrontModule\Components\Conversation\INewChat
 
     - App\PublicModule\Components\IContactForm
 
