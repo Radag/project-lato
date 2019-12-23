@@ -1,21 +1,45 @@
 <div class="card flex-column {if $message->deleted == 1}card-flat{/if}" id="message-box-num_{$message->id}"> 
     {if $message->type === 'task' && $message->task}
     <div class="card-action-header">
-        <div class="message-type">
-            <div class="avatar colored">
-                G
-            </div>
+        <div class="avatar small">
+            <img src="">
         </div>
-        {var $tt=>$message->task}
-        {control taskHeader-$tt->id}
+        <div class="user-name">
+            {$message->user->name} {$message->user->surname}
+        </div>
+        <div class="flex-spacer"></div>
+        <span class="card-date">{$message->created|date:"j. n."}</span>
+        {include messageMenu}
+    </div>
+
+    <div class="card-action-content">
+        <div class="info-header">
+            <div class="avatar-spacer">
+                <div class="avatar tiny colored">
+                    <i class="material-icons">assignment</i>
+                </div>
+            </div>
+            <h3 class="message-title">{$message->task->title}</h3>
+            <div class="flex-spacer"></div>
+            <a href="" class="btn gray no-shadow">Otevřít</a>
+        </div>
+        <p>Termín odevzdání <strong>22. 10.</strong></p>
+        <ul class="atributes">
+            <li>
+                {* {var $tt=>$message->task} {control taskHeader-$tt->id} *}
+                
+            </li>
+        </ul>
     </div>
     {/if} 
+    
+
     <div class="card-header {if $message->type === 'task' && $message->task}card-assignment-header{/if}">
         {if $message->priority == 1}<div class="topped"></div>{/if}
         {if $message->deleted == 1}<div class="deleted"></div>{/if}
         {if $message->type === 'task' && $message->task}
             <div class="name truncate">
-                <div class="message-title">{$message->task->title}</div>
+                <div class="message-title"></div>
                 <div class="user-name">{$message->user->name} {$message->user->surname}</div>
             </div>
         {else}
@@ -27,8 +51,7 @@
             </h3>
         {/if}
         
-        <span class="card-date">{$message->created|date:"j. n."}</span>
-        {include messageMenu}
+        
     </div>
     {include messageAttachments}
     {control commentForm-$message->id}

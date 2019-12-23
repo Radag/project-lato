@@ -93,60 +93,13 @@ Více už toho není
 {define testMessage $test}
 <div class="card flex-column">
     <div class="card-action-header">
-        <div class="message-type">Test</div>
-        {if $test->setup->isCreator}
-            {if $test->setup->timeLeft }
-                {if $test->setup->timeLeft->invert === 0 }
-                <div class="time-left">
-                    Otevřeno do <strong>{$test->setup->deadline->format("j. n. G:i")}</strong>
-                </div>
-                {else}
-                <div class="time-left">
-                    Uzavřeno v <strong>{$test->setup->deadline->format("j. n. G:i")}</strong>
-                </div>
-                {/if}
-            {/if}
-            <div>
-                vyplnilo {$test->summary->studentsCount} studentů | průměr {$test->summary->studentsPercent}%
-            </div>
-            {if $test->setup->classificationGroupId}
-            <a href="{plink Group:usersClassification classificationGroupId=>$test->setup->classificationGroupId, id=>$test->setup->group->slug}" class="btn gray no-shadow">
-                <span class="hide-on-small-only">Oznámkovat</span>
-                <i class="material-icons hide-on-med-and-up">folder_open</i>
-            </a>
-            {/if}
-        {else}
-            {if $test->summary->grade}
-                <div class="time-left">
-                    Známka: <strong>{$test->summary->grade}</strong>
-                </div>
-            {/if}
-            {if $test->summary->filledCount > 0}
-                <div class="time-left">
-                    <strong>Vyplněno {$test->summary->filledCount}x</strong> | Průměr: <strong>{$test->summary->percent}%</strong>
-                </div>
-            {/if}
-            {if ($test->setup->timeLeft == null || $test->setup->timeLeft->invert === 0)
-                && ($test->setup->numberOfRepetitions === null || $test->setup->numberOfRepetitions > $test->summary->filledCount)}  
-                <div class="time-left">
-                    {if $test->setup->deadline}Otevřeno do <strong>{$test->setup->deadline->format("j. n. G:i")}</strong>{/if}
-                    <a href="{plink Tests:start setupId=>$test->setupId}" class="btn gray no-shadow">Otevřít</a>
-                </div>
-            {/if}
-        {/if}       
-    </div>
-    <div class="card-action-content">
-        <div class="avatar small colored">
-            <i class="material-icons">playlist_add_check</i>
+        <div class="avatar small">
+            <img src="">
         </div>
-        <div class="name">
-            <h3 class="message-title">
-                {$test->name}
-            </h3>
-            <div class="user-name">
-                {$test->author}
-            </div>
+        <div class="user-name">
+            {$test->author}
         </div>
+        <div class="flex-spacer"></div>
         <span class="card-date">{$test->created->format("j. n.")}</span>
         <button type="button" class="btn-flat btn-icon dropdown-trigger card-options waves-effect waves-dark" data-target="test_dropdown_{$test->id}">
             <i class="material-icons">more_horiz</i>
@@ -154,8 +107,79 @@ Více už toho není
         <ul id="test_dropdown_{$test->id}" class='dropdown-content'>
             <li><a href="#">Vytvořit kopii příspěvku</a></li>
             {if $activeGroup->relation === 'owner'}
-                <li><a href="#" data-link="{link deleteTest! setupId=>$test->setupId}" class="delete-message-button refresh-wall-messages">Smazat</a></li>
-                <li><a href="{link editTest! setupId=>$test->setupId}" data-show-popup-after="#test-setup-modal" class="edit-test-button ajax">Upravit test</a></li>
+            <li><a href="#" data-link="{link deleteTest! setupId=>$test->setupId}" class="delete-message-button refresh-wall-messages">Smazat</a></li>
+            <li><a href="{link editTest! setupId=>$test->setupId}" data-show-popup-after="#test-setup-modal" class="edit-test-button ajax">Upravit test</a></li>
+            {/if}
+        </ul>  
+    </div>
+    <div class="card-action-content">
+        
+        <div class="info-header">
+            <div class="avatar-spacer">
+                <div class="avatar tiny colored">
+                    <i class="material-icons">playlist_add_check</i>
+                </div>
+            </div>
+            <h3 class="message-title">{$test->name}</h3>
+            <div class="flex-spacer"></div>
+            {if $test->setup->isCreator}
+                {if $test->setup->classificationGroupId}
+                <a href="{plink Group:usersClassification classificationGroupId=>$test->setup->classificationGroupId, id=>$test->setup->group->slug}" class="btn gray no-shadow">
+                    <span class="hide-on-small-only">Oznámkovat</span>
+                    <i class="material-icons hide-on-med-and-up">folder_open</i>
+                </a>
+                {/if}
+            {else}
+                {if ($test->setup->timeLeft == null || $test->setup->timeLeft->invert === 0)
+                    && ($test->setup->numberOfRepetitions === null || $test->setup->numberOfRepetitions > $test->summary->filledCount)}  
+                    <a href="{plink Tests:start setupId=>$test->setupId}" class="btn gray no-shadow">Otevřít</a>
+                {else}
+                    <button class="btn gray" disabled="disabled">Uzavřeno</button>
+                {/if}
+            {/if}     
+        </div> 
+        <p>
+            {if $test->setup->timeLeft }
+                {if $test->setup->timeLeft->invert === 0 }
+                    Otevřeno do <strong>{$test->setup->deadline->format("j. n. G:i")}</strong>
+                {else}
+                    Uzavřeno v <strong>{$test->setup->deadline->format("j. n. G:i")}</strong>
+                {/if}
+            {else}
+                Otevřeno na <strong>neomezenou dobu</strong>
+            {/if}
+        </p>
+        <ul class="atributes">          
+            {if $test->setup->isCreator}
+                <li>
+                    Počet odevzdání <strong>{$test->summary->studentsCount} / 10</strong>
+                </li>
+                <li>
+                    Průměrný výsledek <strong>{$test->summary->studentsPercent} %</strong>
+                </li>
+            {else}                
+                {if $test->summary->grade}
+                    <li>
+                        Známka: <strong>{$test->summary->grade}</strong>
+                    </li>
+                {/if}
+
+                <li>
+                {if $test->summary->filledCount > 0}  
+                    Průměrný výsledek <strong>{$test->summary->percent} % </strong>
+                    | Vyplněno <strong>{$test->summary->filledCount}-krát</strong>
+                {else}
+                    Zatím nebyl proveden <strong>žádný</strong> pokus o vyplnění  
+                {/if}
+                </li>
+
+                {if ($test->setup->timeLeft == null || $test->setup->timeLeft->invert === 0)
+                    && ($test->setup->numberOfRepetitions === null || $test->setup->numberOfRepetitions > $test->summary->filledCount)}
+                    <li>
+                        {if $test->setup->deadline}Otevřeno do <strong>{$test->setup->deadline->format("j. n. G:i")}</strong>{/if}    
+                    </li>
+                {/if} 
+                <li>10 otázek | 10 minut</li> 
             {/if}
         </ul>
     </div>
