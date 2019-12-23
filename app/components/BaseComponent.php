@@ -20,6 +20,9 @@ class BaseComponent extends Control
         $this->template->addFilter('attachTypeIco', function($type) {
             return HelpersList::attachTypeIco($type);
         });
+        $this->template->addFilter('inputErrors', function($input) {
+            return \App\Helpers\HelpersList::inputErrors($input);
+        });
         if($this->templateName === null) {
             $this->template->setFile($this->getTemplateFilePath());
         } else {

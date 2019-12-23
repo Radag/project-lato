@@ -1,5 +1,5 @@
 {snippet sign-in-form}
-    {form form class=>'ajax'}
+    {form form class=>'ajax'}    
     <div class="modal-content">        
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
         <h2>Registrovat</h2>
@@ -7,25 +7,27 @@
             {input email}
             {label email}E-mail{/label}
         </div>
+        {$form['email']|inputErrors|noescape}
         <div class="form-row input-field">
             {input name}
             {label name}Jméno{/label}
         </div>
+        {$form['name']|inputErrors|noescape}
         <div class="form-row input-field">
             {input surname}
             {label surname}Příjmení{/label}
         </div>
+        {$form['surname']|inputErrors|noescape}
         <div class="form-row input-field">
             {input password1}
             {label password1}Heslo{/label}
         </div>
+        {$form['password1']|inputErrors|noescape}
         <div class="form-row input-field">
             {input password2}
             {label password2}Heslo znovu{/label}
         </div>
-        <div class="errors" n:if="$form->hasErrors()">
-            <div class="error" n:foreach="$form->getErrors() as $error">{$error}</div>
-        </div>
+        {$form['password2']|inputErrors|noescape} 
         <div class="form-row">
             <p class="terms-of-use">
                 {label terms:}
@@ -37,7 +39,9 @@
                
             </p>
         </div>
-        <div class="g-recaptcha" data-sitekey="6LcDhq0UAAAAAEVUrw7fZRtr62DlQ0X_y3uFtCZN"></div> 
+        {$form['terms']|inputErrors|noescape}
+        <div class="g-recaptcha" data-sitekey="6LcDhq0UAAAAAEVUrw7fZRtr62DlQ0X_y3uFtCZN"></div>
+        {$form|inputErrors|noescape}
         <div class="flex-row form-controls">
             <button class="btn waves-effect waves-light" type="submit" >Registrovat</button>
         </div>
