@@ -45,7 +45,9 @@
                     <script>
                          $(function () {                           
                             $('.collapsible-header').on('click', function (e) {
-                                if($(e.target).parents(".dropdown-trigger").length) {
+                                if($(e.target).parents(".dropdown-trigger").length || $(e.target).hasClass("dropdown-trigger")
+                                  || $(e.target).parents("label").length || $(e.target).is("label")
+                                  ) {
                                     e.stopPropagation();
                                 }
                             });
@@ -167,8 +169,7 @@
                                     </a>
                                     <ul id="user-action-dropdown-{$member->id}" class="dropdown-content">
                                         <li><a href="{plink Profile:default 'id'=>$member->slug}">Zobrazit profil</a></li>
-                                        {*  DOČASNĚ SKRYTO DOKUD NEBUDE HOTOVÝ CHAT
-                                        <li><a href="{plink Conversation:default 'users'=>$member->slug}">Poslat soukromou zpravu</a></li> *}
+                                        <li><a href="{plink newMessage! 'idUserTo'=>$member->id}" class="ajax">Poslat soukromou zpravu</a></li>
                                     </ul>
                                     
                                     {* {if !empty($member->getClassification()->lastDate)}{$member->getClassification()->lastDate->format("j. n. Y")}{else}--{/if} *}
