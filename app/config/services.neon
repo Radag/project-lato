@@ -24,18 +24,21 @@ services:
 
     - App\Mail\MailManager
 
-    - App\FrontModule\Components\Stream\IStream
+    - App\FrontModule\Components\TopPanel\ITopPanel
     - App\FrontModule\Components\Group\About\IGroupSettingsForm
     - App\FrontModule\Components\Group\About\IAboutGroup
-    - App\FrontModule\Components\Stream\ICommitTaskForm
     - App\FrontModule\Components\TaskHeader\ITaskHeader
     - App\FrontModule\Components\Group\IStudentsList
     - App\FrontModule\Components\Group\IClassification
+    - App\FrontModule\Components\Stream\IStream
+    - App\FrontModule\Components\Stream\ICommitTaskForm
     - App\FrontModule\Components\Stream\IMessagesColumn
     - App\FrontModule\Components\Stream\IRightColumn
-    - App\FrontModule\Components\TopPanel\ITopPanel
     - App\FrontModule\Components\Stream\MessageForm\IMessageForm
     - App\FrontModule\Components\Stream\ICommentForm
+    - App\FrontModule\Components\Stream\Messages\ITest
+    - App\FrontModule\Components\Stream\Messages\INormal
+    - App\FrontModule\Components\Stream\Messages\ITask
     - App\FrontModule\Components\Group\IClassmates
     - App\FrontModule\Components\Group\IAddUserForm
     - App\FrontModule\Components\Group\AddUserForm\IInviteForm

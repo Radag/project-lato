@@ -73,4 +73,21 @@ class HelpersList
                     </div>';
         return $return;
     }
+    
+    public static function inputErrors($input) : String
+    {
+        if($input->getName() === "form") {
+            $errors = $input->getOwnErrors();
+        } else {
+            $errors = $input->getErrors();
+        }
+        if(!empty($errors)) {
+            $errorsHtml = "";
+            foreach($errors as $error) {
+                $errorsHtml .= '<div class="error" >' . $error . '</div>';
+            }
+            return "<div class='errors'>" . $errorsHtml . "</div>";
+        }
+        return "";
+    }
 }

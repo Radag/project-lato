@@ -1,9 +1,4 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 namespace App\FrontModule\Components\Stream;
 
@@ -16,6 +11,10 @@ use App\FrontModule\Components\TaskHeader\ITaskHeader;
 use App\FrontModule\Components\Stream\ICommitTaskForm;
 use App\Model\Manager\TestManager;
 use App\FrontModule\Components\Test\ITestSetup;
+use App\FrontModule\Components\Stream\Messages\ITest;
+use App\FrontModule\Components\Stream\Messages\INormal;
+use App\FrontModule\Components\Stream\Messages\ITask;
+use Nette\Application\UI\Multiplier;
 
 class MessagesColumn extends \App\Components\BaseComponent
 {
@@ -41,6 +40,15 @@ class MessagesColumn extends \App\Components\BaseComponent
     /** @var  TestSetupManager @inject */
     protected $testSetupManager;
     
+    /** @var  ITest @inject */
+    protected $testMessage;
+    
+    /** @var  INormal @inject */
+    protected $normalMessage;
+    
+    /** @var  ITask @inject */
+    protected $taskMessage;
+    
     /** @var  ITestSetup @inject */
     protected $testSetup;
     
@@ -51,7 +59,8 @@ class MessagesColumn extends \App\Components\BaseComponent
     
     protected $singleMode = false;
     
-    protected $messages = [];
+    protected $messages = [];    
+    protected $tests = [];
     
     protected $comments = [];
     
@@ -64,6 +73,9 @@ class MessagesColumn extends \App\Components\BaseComponent
         ICommitTaskForm $commitTaskForm,            
         TestManager $testManager,
         ITestSetup $testSetup,            
+        ITest $testMessage,
+        INormal $normalMessage,
+        ITask $taskMessage,
         TestSetupManager $testSetupManager
     )
     {
@@ -76,21 +88,31 @@ class MessagesColumn extends \App\Components\BaseComponent
         $this->testManager = $testManager;
         $this->testSetup = $testSetup;
         $this->testSetupManager = $testSetupManager;
+        $this->testMessage = $testMessage;
+        $this->normalMessage = $normalMessage;
+        $this->taskMessage = $taskMessage;
     }    
         
     public function render() 
     {
-        if(!$this->singleMode) {
-            $tests = $this->testManager->getGroupTests($this->presenter->activeGroup->id);
+        $streamMessages = [];
+        if(!$this->singleMode) {            
+            $this->tests = $this->testManager->getGroupTests($this->presenter->activeGroup->id);
             $data = $this->messageManager->getMessages($this->presenter->activeGroup, $this->presenter->activeUser, $this->filter);
-            $this->messages = [];
+            $this->messages = $data['messages'];
             foreach($data['messages'] as $message) {
-                $this->messages[$message->created->getTimestamp()] = $message;
+                $streamMessages[$message->created->getTimestamp()] = (object)[
+                    'id' => $message->id,
+                    'type' => $message->type === 'task' ? 'task' : 'normal'
+                ];
             }
-            foreach($tests as $test) {
-                $this->messages[$test->created->getTimestamp()] = $test;
+            foreach($this->tests  as $test) {
+                $streamMessages[$test->created->getTimestamp()] = (object)[
+                    'id' => $test->id,
+                    'type' => 'test'
+                ];
             }
-            krsort($this->messages);
+            krsort($streamMessages);
             $this->comments = $data['comments'];
         } else {
             $message = $this->messageManager->getMessage($this->singleMode, $this->presenter->activeUser, $this->presenter->activeGroup);
@@ -101,112 +123,17 @@ class MessagesColumn extends \App\Components\BaseComponent
             }
         }
         $this->template->singleMode = $this->singleMode;
-        $this->template->messages = $this->messages;
+        $this->template->messages = $streamMessages;
         $this->template->activeGroup = $this->presenter->activeGroup;
         $this->template->isOwner = $this->presenter->activeGroup->relation === 'owner' ? true : false;
         parent::render();
     } 
-    
-    public function createComponentTaskHeader()
-    {
-        return new \Nette\Application\UI\Multiplier(function ($idTask) {
-            $taskHeader = $this->taskHeaderFactory->create();
-            if(!empty($this->messages)) {
-                foreach($this->messages as $message) {
-                    if(isset($message->task) && $message->task->id == $idTask) {
-                        $task = $message->task;
-                        $task->message = $message;
-                    }
-                }
-            } else {
-                $task = $this->taskManager->getTask($idTask, $this->presenter->activeUser);
-            }
-            
-            $taskHeader->setTask($task, $this->singleMode);
-            $taskHeader->setCommitTaskForm($this['commitTaskForm']);
-            return $taskHeader;
-        });
-    }
-
-    public function createComponentCommentForm()
-    {
-        return new \Nette\Application\UI\Multiplier(function ($idMessage) {
-            $commentForm = $this->commentForm->create();
-            if(isset($this->messages[$idMessage])) {
-                $commentForm->setMessage($this->messages[$idMessage]);
-            } else {
-                $commentForm->setMessage($this->messageManager->getMessage($idMessage, $this->presenter->activeUser, $this->presenter->activeGroup));
-            }
-            if(isset($this->comments[$idMessage])) {
-                $commentForm->setComments($this->comments[$idMessage]);
-            }
-            return $commentForm;
-        });
-    }
-    
-    protected function createComponentCommitTaskForm()
-    {
-        return $this->commitTaskForm->create();    
-    }
-    
-    protected function createComponentTestSetupForm()
-    {
-        return $this->testSetup->create();
-    }
-    
+        
     public function redrawTasks()
     {
         $this->redrawControl('messages');
     }
-    
-    public function handleEditMessage($idMessage)
-    {
-        if($this->messageManager->canUserEditMessage($idMessage, $this->presenter->activeUser, $this->presenter->activeGroup)) {
-            $message = $this->messageManager->getMessage($idMessage, $this->presenter->activeUser, $this->presenter->activeGroup);
-            $this->parent['messageForm']->setDefaults($message);
-            $this->parent->redrawControl('messageForm');
-        }        
-    }
 
-    public function handleDeleteMessage($idMessage) 
-    {   
-        if($this->messageManager->canUserEditMessage($idMessage, $this->presenter->activeUser, $this->presenter->activeGroup)) {
-            $this->messageManager->deleteMessage($idMessage, true);
-            $this->presenter->flashMessage('Zpráva byla smazána.');
-        }
-        $this->redrawControl();
-    }
-
-    public function handleRenewMessage($idMessage) 
-    {   
-        if($this->messageManager->canUserEditMessage($idMessage, $this->presenter->activeUser, $this->presenter->activeGroup)) {
-            $this->messageManager->deleteMessage($idMessage, false);
-            $this->presenter->flashMessage('Zpráva byla obnovena.');
-        }
-        $this->redrawControl();
-    }
-    
-    public function handleTopMessage($idMessage, $enable = true) 
-    {
-        if($this->presenter->activeGroup->relation === 'owner') {
-            $this->messageManager->topMessage($idMessage, $enable);
-            if($enable) {
-                $this->presenter->flashMessage('Zpráva byla posunuta nahoru.');
-            } else {
-                $this->presenter->flashMessage('Zrušeno topování zprávy.'); 
-            }
-        }
-        
-        $this->redrawControl();
-    }
-    
-    public function handleEditTaskCommit($idCommit)
-    {
-        $commit = $this->taskManager->getCommit($idCommit);
-        $this['commitTaskForm']->setDefault($commit);
-        $this->redrawControl('commitTaskForm');
-    }
-    
     public function setFilter($filter)
     {
         $this->filter = $filter;
@@ -218,21 +145,43 @@ class MessagesColumn extends \App\Components\BaseComponent
         $this->singleMode = $idMessage;
     }
     
-    
-    public function handleEditTest($setupId)
+    public function createComponentCommitTaskForm()
     {
-        if($this->testSetupManager->checkOwner($setupId)) {
-            $this['testSetupForm']->setDefault($setupId);
-            $this->redrawControl('testSetupForm');    
-        }    
+        return $this->commitTaskForm->create();    
     }
-
-    public function handleDeleteTest($setupId) 
-    {   
-        if($this->testSetupManager->checkOwner($setupId)) {
-            $this->testManager->deleteGroupTest($setupId);
-            $this->presenter->flashMessage('Test byl smazán.');
-        }
-        $this->redrawControl();
+    
+    public function createComponentTestSetupForm()
+    {
+        return $this->testSetup->create();
+    }
+    
+    public function createComponentMessage()
+    {
+        return new Multiplier(function($id) 
+        {
+            $normal = $this->normalMessage->create();            
+            $normal->setMessage($id, isset($this->message[$id]) ? $this->message[$id] : null);
+            return $normal;
+        });
+    }
+    
+    public function createComponentTask()
+    {
+        return new Multiplier(function($id) 
+        {
+            $task = $this->taskMessage->create();
+            $task->setMessage($id, isset($this->message[$id]) ? $this->message[$id] : null);
+            return $task;
+        });
+    }
+    
+    public function createComponentTest()
+    {
+        return new Multiplier(function($id) 
+        {
+            $test = $this->testMessage->create();
+            $test->setTest($id, isset($this->tests[$id]) ? $this->tests[$id] : null);
+            return $test;
+        });
     }
 }

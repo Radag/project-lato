@@ -5,7 +5,6 @@ namespace App\FrontModule\Components\Stream;
 use App\FrontModule\Components\Stream\IMessagesColumn;
 use App\FrontModule\Components\Stream\IRightColumn;
 use App\FrontModule\Components\Stream\MessageForm\IMessageForm;
-use App\FrontModule\Components\Stream\ICommitTaskForm;
 
 class Stream extends \App\Components\BaseComponent
 {
@@ -18,22 +17,17 @@ class Stream extends \App\Components\BaseComponent
     /** @var  IMessageForm @inject */
     public $messageForm;
     
-    /** @var  ICommitTaskForm @inject */
-    public $commitTaskForm;
-    
     public $singleMode = false;
     
     public function __construct(
         IMessagesColumn $messageColumn, 
         IRightColumn $rightColumn,
-        IMessageForm $messageForm,
-        ICommitTaskForm $commitTaskForm
+        IMessageForm $messageForm
     )
     {
         $this->messageColumn = $messageColumn;
         $this->rightColumn = $rightColumn;
         $this->messageForm = $messageForm;
-        $this->commitTaskForm = $commitTaskForm;
     }
         
     public function render()
@@ -59,11 +53,6 @@ class Stream extends \App\Components\BaseComponent
     {
         $component = $this->messageForm->create();  
         return $component;
-    }
-    
-    public function createComponentCommitTaskForm()
-    {
-        return $this->commitTaskForm->create();
     }
     
     public function setSingleMode($idMessage)

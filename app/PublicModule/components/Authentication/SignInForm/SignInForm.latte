@@ -6,13 +6,13 @@
             {input email}
             {label email}E-mail{/label}
         </div>
+        {$form['email']|inputErrors|noescape}
         <div class="form-row input-field">
             {input password}
             {label password}Heslo{/label}
         </div>
-        <div class="errors" n:if="$form->hasErrors()">
-            <div class="error" n:foreach="$form->getErrors() as $error">{$error}</div>
-        </div>
+        {$form['password']|inputErrors|noescape}
+        {$form|inputErrors|noescape}
         <div class="form-controls">
             <p class="remember-me truncate">      
                 {label remember:}

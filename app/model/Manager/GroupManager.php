@@ -121,7 +121,7 @@ class GroupManager extends BaseManager {
             JOIN group_user T4 ON (T1.id=T4.group_id AND T4.active=1 AND T4.relation_type='owner')
             JOIN group_scheme T3 ON (T1.group_scheme_id=T3.id) WHERE T1.archived=? " .
             (isset($filter->skip_ids) ? " AND T1.id NOT IN (" . $filter->skip_ids . ")" : "")
-            . "ORDER BY T1.name ASC", $user->id, isset($filter->only_archived) ? 1 : 0);   
+            . "ORDER BY T1.shortcut, T1.name, T1.subgroup ASC", $user->id, isset($filter->only_archived) ? 1 : 0);   
   
         if(!empty($userGroups)) {
             foreach($userGroups as $s) {

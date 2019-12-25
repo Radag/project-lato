@@ -1,111 +1,66 @@
 <div class="container {if $singleMode}offset-2{/if} main two-level-nav" id="group">
     <div class="row">
-            <div class="col s12 {if !$singleMode}l8{/if}" id="stream" >
-                {if ($isOwner || $activeGroup->pr_user_msg_create == 1) && !$singleMode}
-                    <div class="card create-post">
-                        <div id="show-create-post-modal" class="create-announcement">
-                            <div class="avatar small">
-                                <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
-                            </div>
-                            <div class="label">
-                                Chcete ostatním něco sdělit?
-                            </div>
+        <div class="col s12 {if !$singleMode}l8{/if}" id="stream" >
+            {if ($isOwner || $activeGroup->pr_user_msg_create == 1) && !$singleMode}
+                <div class="card create-post">
+                    <div id="show-create-post-modal" class="create-announcement">
+                        <div class="avatar small">
+                            <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
                         </div>
-                        {if $isOwner}
-                        <ul class="alternate">
-                            <li id="show-create-post-modal-material" class="hide-on-small-only">
-                                <i class="material-icons" data-position="bottom" data-delay="50" data-tooltip="Vložit studijní materiál">school</i>
-                                <div class="label">Studijní materiál</div>
-                            </li>
-                            <li id="show-create-post-modal-task" class="hide-on-small-only">
-                                <i class="material-icons" data-position="bottom" data-delay="50" data-tooltip="Vytvořit povinnost">assignment</i>
-                                <div class="label">Povinnost</div>
-                            </li>
-                            <li id="show-create-post-modal-options" class="hide-on-med-and-up">
-                                <i class="material-icons">more_horiz</i>
-                                <div class="label">Zobrazit možnosti</div>
-                            </li>
-                        </ul>
-                        {/if}
+                        <div class="label">
+                            Chcete ostatním něco sdělit?
+                        </div>
                     </div>
-                {elseif !$singleMode}
-                    <div class="card card-flat create-post-disabled">
-                        <div class="card-content">Studentům není umožněno vytvářet příspěvky</div>
-                     </div>
-                {/if}
-                {snippet streamSection}
-                    {control messagesColumn}
+                    {if $isOwner}
+                    <ul class="alternate">
+                        <li id="show-create-post-modal-material" class="hide-on-small-only">
+                            <i class="material-icons" data-position="bottom" data-delay="50" data-tooltip="Vložit studijní materiál">school</i>
+                            <div class="label">Studijní materiál</div>
+                        </li>
+                        <li id="show-create-post-modal-task" class="hide-on-small-only">
+                            <i class="material-icons" data-position="bottom" data-delay="50" data-tooltip="Vytvořit povinnost">assignment</i>
+                            <div class="label">Povinnost</div>
+                        </li>
+                        <li id="show-create-post-modal-options" class="hide-on-med-and-up">
+                            <i class="material-icons">more_horiz</i>
+                            <div class="label">Zobrazit možnosti</div>
+                        </li>
+                    </ul>
+                    {/if}
+                </div>
+            {elseif !$singleMode}
+                <div class="card card-flat create-post-disabled">
+                    <div class="card-content">Studentům není umožněno vytvářet příspěvky</div>
+                 </div>
+            {/if}
+            {snippet streamSection}
+                {control messagesColumn}
+            {/snippet}            
+            <div id="create-post-modal" class="modal">
+                {snippet messageForm}
+                    {control messageForm}
                 {/snippet}
-
-                <div id="message-delete-confirm-modal" class="modal modal-small">
-                    <div class="modal-content">
-                        <h3>Opravdu chcete zprávu smazat ?</h3>
-                    </div>
-                    <div class="modal-footer">
-                        <div class="flex-spacer"></div>
-                        <div class="form-control">
-                            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">ne</button>
-                            <button type="button" onClick="confirmDelete()" class="waves-effect modal-close waves-light btn btn-confirm" >Ano</button>
-                        </div>
-                    </div>
-                </div>
-                <div id="create-post-modal" class="modal">
-                    {snippet messageForm}
-                        {control messageForm}
-                    {/snippet}
-                </div>
-
             </div>
+        </div>
         {if !$singleMode}
             {control rightColumn}
         {/if}
     </div>
-</div>
-    
+    <div id="message-delete-confirm-modal" class="modal modal-small">
+        <div class="modal-content">
+            <h3>Opravdu chcete zprávu smazat ?</h3>
+        </div>
+        <div class="modal-footer">
+            <div class="flex-spacer"></div>
+            <div class="form-control">
+                <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">ne</button>
+                <button type="button" onClick="confirmDelete()" class="waves-effect modal-close waves-light btn btn-confirm" >Ano</button>
+            </div>
+        </div>
+    </div>
+</div>    
 <script>  
     $(document).ready(function() {
-        /*
-        $('.modal-trigger-create-message').modal({
-            ready: function() { 
-                var notHide = false;
-                var onWrapper = false;
-                $('.lean-overlay').on('dragenter', function(){
-                    onWrapper = true;
-                    $("#messageContentDropzone").css('border', '3px dashed grey');
-                    $("#messageContentDropzone").text("Přesuňte soubor prosím zde");
-                    $("#messageContentDropzone").show();
-                });
-                $('.lean-overlay').on('dragleave', function() {
-                    if(!notHide) {
-                        $("#messageContentDropzone").hide();  
-                    }
-                    onWrapper = false;
-                });
-                $(".modal-footer").on('dragenter', function(){
-                    $("#messageContentDropzone").show();
-                });
-
-                $('#messageContentDropzone').on('dragenter', function(){
-                    notHide = true;
-                    $("#messageContentDropzone").css('border', '3px dashed red');
-                    $("#messageContentDropzone").text("Upuštěním soubor přiložíte do zprávy");
-                });
-                $('#messageContentDropzone').on('dragleave', function(){
-                    notHide = false;
-                    $("#messageContentDropzone").css('border', '3px dashed grey');
-                    $("#messageContentDropzone").text("Přesuňte soubor prosím zde");
-                    if(!onWrapper) {
-                        $("#messageContentDropzone").hide(); 
-                    }
-                });
-                $('#messageContentDropzone').on('drop', function(){
-                    notHide = false;
-                    onWrapper = false;
-                    $("#messageContentDropzone").hide(); 
-                });
-            }
-        });
-        */
         $("#show-create-post-modal").on('click', function(e) {
             startModalLoading('#create-post-modal');
             $.nette.ajax({
@@ -134,33 +89,5 @@
                 }
             });        
         });
-           
-        /*
-        if(!$.nette.ext('messageAjax')) {
-            $.nette.ext('messageAjax', {
-                start: function (jqXHR, settings) {
-                    if(settings.nette !== undefined && $(settings.nette.ui).hasClass('scroll-to-message')) { 
-                        jqXHR.done(function( data, textStatus, jqXHR ) {
-                            if(data.invalidForm === undefined || !data.invalidForm) {    
-                                latoReloadMessageWall();
-                                /*$('html, body').animate({
-                                    scrollTop: $('#message-box-num_' + data.idMessage).offset().top
-                                }, 700);
-                            }
-                        });
-                    }
-                    if(settings.nette !== undefined && $(settings.nette.ui).hasClass('edit-message-button')) { 
-                        jqXHR.done(function( data, textStatus, jqXHR ) {
-                            if(data.invalidForm === undefined || !data.invalidForm) {    
-                                if(data.invalidForm === undefined || !data.invalidForm) {
-                                    $('#create-post-modal').modal('open');
-                                }
-                            }
-                        });
-                    }
-                }
-            });
-        }
-        */
     }); 
 </script>
