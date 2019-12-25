@@ -1,0 +1,26 @@
+<button type="button" class="btn-flat btn-icon dropdown-trigger card-options waves-effect waves-dark" data-target="message_dropdown_{$message->id}" >
+    <i class="material-icons">more_horiz</i>
+</button>
+<ul id='message_dropdown_{$message->id}' class='dropdown-content'>
+    {if $message->deleted == 0}
+        <li><a href="#">Vytvořit kopii příspěvku</a></li>
+        <li><a href="#" data-link="{plink //Group:message 'id'=>$activeGroup->slug, 'idMessage'=>$message->id}" class="copy-message-link">Kopírovat odkaz</a></li>
+        {if $activeGroup->relation === 'owner'}
+            {if !$message->top}
+                <li><a href="{link topMessage! idMessage=>$message->id}" class="ajax">Přesunout nahoru</a></li>
+            {else}
+                <li><a href="{link topMessage! idMessage=>$message->id, enable=>false}" class="ajax">Zrušit přesunutí</a></li>
+            {/if}
+        {/if}
+        {if $message->isCreator || $activeGroup->relation === 'owner'}
+            <li class="divider"></li>
+            <li><a href="#" data-link="{link deleteMessage! idMessage=>$message->id}" class="delete-message-button refresh-wall-messages">Smazat</a></li>
+        {/if}
+    {elseif $message->isCreator || $activeGroup->relation === 'owner'}        
+        <li><a href="{link renewMessage! idMessage=>$message->id}" class="ajax refresh-wall-messages">Obnovit</a></li>
+    {/if}
+    {*<li><a href="#share-post_{$message->id}" class="modal-trigger">Znovu použít příspěvek</a></li>*}
+    {if $message->isCreator || $activeGroup->relation === 'owner'}
+        <li><a href="{link editMessage! idMessage=>$message->id}" class="edit-message-button ajax">Upravit zprávu</a></li>
+    {/if}
+</ul>

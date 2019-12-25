@@ -137,7 +137,7 @@ class TestManager extends BaseManager
                 }
                 $test->summary->grade = $testData->grade;
             }
-            $tests[] = $test;
+            $tests[$test->id] = $test;
         }
         return $tests;
     }

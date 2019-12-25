@@ -1,0 +1,48 @@
+<div class="card-content">
+    <p class="message-text">{$message->text|breaklines}</p>
+    {if isset($message->attachments['files']) && !empty($message->attachments['files']) }
+    <ul class="attachments">
+        {foreach $message->attachments['files'] as $file}
+        <li>
+            <a href="{$file->fullPath|noescape}" target="_blank" class="attached-file">
+                {$file->type|attachTypeIco|noescape}
+                <div class="file-name truncate">{$file->name}<span>({$file->type} {$file->extension})</span></div>   
+            </a>
+        </li>
+        {/foreach}
+    </ul>
+    {/if}
+</div>
+{if !empty($message->links)}
+<div class="media-container">
+    {foreach $message->links as $link}
+    <div class="message-link">
+        {ifset $link->youtube}
+        <iframe class="img-full-size" src="https://www.youtube.com/embed/{$link->youtube}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        {/ifset}
+        {ifset $link->web}
+        <a href="{$link->web}" target="_blank">
+            <img width="50" src="{$link->image}">
+            <strong>{$link->title}</strong>
+            <span class="description">{$link->description}</span>
+        </a>
+        {/ifset}
+    </div>
+    {/foreach}
+</div>
+{/if}
+{if isset($message->attachments['media']) && !empty($message->attachments['media']) }
+<div class="media-container">
+    {foreach $message->attachments['media'] as $media}
+        {if $iterator->first}
+        <a class="img-full-size" href="{$media->fullPath}" data-lightbox="message-gallery-{$message->id}" style="background-image: url('{if $media->preview->fullPath}{$media->preview->fullPath}{else}{$media->fullPath}{/if}');">
+            {if count($message->attachments['media']) > 1}
+                <div class="media-count">+{count($message->attachments['media'])-1}</div>
+            {/if}
+        </a>
+        {else}
+            <a href="{$media->fullPath}" data-lightbox="message-gallery-{$message->id}" class="hide"></a>
+        {/if}
+    {/foreach}
+</div>
+{/if}
