@@ -1,22 +1,14 @@
 {if $isDetail}{include taskDetailHeader $message->task}{/if}
 <div class="card flex-column {if $message->deleted == 1}card-flat{/if}" id="message-box-num_{$message->id}"> 
-
-    {if $message->type === 'task' && $message->task}
     <div class="card-action-header">
         <div class="avatar small">
             <img src="">
         </div>
-        <div class="user-name">
-            Petr Šavelka
-        </div>
+        <div class="user-name">{$message->user->name} {$message->user->surname}</div>
         <div class="flex-spacer"></div>
-        <span class="card-date">22. 10. 2019</span>
-        <button type="button" class="btn-flat btn-icon dropdown-trigger card-options waves-effect waves-dark" >
-            <i class="material-icons">more_horiz</i>
-        </button>
-        {* {include messageMenu} *}
+        <span class="card-date">{$message->created|date:"j. n."}</span>
+        {include '../normal/menu.latte'}
     </div>
-
     <div class="card-action-content">
         <div class="info-header">
             <div class="avatar-spacer">
@@ -24,54 +16,38 @@
                     <i class="material-icons">assignment</i>
                 </div>
             </div>
-            <h3 class="message-title">Název úkolu</h3>
+            <h3 class="message-title">{$message->task->title}</h3>
             <div class="flex-spacer"></div>
-            <a href="" class="btn gray no-shadow">Otevřít</a>
+            {if $task->isCreator && $task->createClassification == 1}
+                <a href="{plink Group:usersClassification classificationGroupId=>$task->idClassificationGroup, id=>$task->group->slug}" class="btn gray no-shadow">Otevřít</a>
+            {elseif !$task->isCreator}
+                {if $task->commit}
+                    <a href="{plink Group:message 'idMessage'=>$task->message->id, 'id'=>$task->group->slug}" class="btn gray no-shadow">Otevřít</a>
+                {else}
+                    <button type="button" data-link="{link editTaskCommit}" class="btn gray no-shadow submit-class-button">Odevzdat</button>
+                {/if} 
+            {/if}
         </div>
-        <p>Termín odevzdání do <strong>22. 10.</strong></p>
+        {if $task->timeLeft->invert === 0}
+            <p>Termín odevzdání do <strong>{$task->deadline->format("j. n. G:i")}</strong></p>
+        {else}
+            <p>Uzavřeno v <strong>{$task->deadline->format("j. n. G:i")}</strong></p>
+        {/if}        
         <ul class="atributes">
-            <li>
-                ...
-                
-            </li>
+            {if !$task->isCreator && $task->online}
+                {if $task->commit}
+                    <li>Odevzdáno</li>
+                {else}
+                    <li>Neodevzdáno</li>
+                {/if}
+                {if !empty($task->commit->grade) && $task->commit->grade !== '—'}}
+                    <li>Známka: <strong>{$task->commit->grade}</strong></li>
+                {/if}
+            {/if}
         </ul>
     </div>
-    {/if} 
-
-
-
-    {*
-    <div class="card-action-header">
-        <div class="message-type">
-            <div class="avatar colored">G</div>
-        </div>
-        {if !$isDetail}{include taskHeader $message->task}{/if}
-    </div>
-    <div class="card-header card-assignment-header">
-        <div n:if="$message->priority == 1" class="topped"></div>
-        <div n:if="$message->priority == 1" class="deleted"></div>
-        <div class="name truncate">
-            <div class="message-title">{$message->task->title}</div>
-            <div class="user-name">{$message->user->name} {$message->user->surname}</div>
-        </div>
-        <span class="card-date">{$message->created|date:"j. n."}</span>
-        {include '../normal/menu.latte'}
-    </div>
-    {include '../normal/attachments.latte'}
-    {control commentForm-$message->id}
-    <script>
-        $(".submit-class-button").off().on('click', function(e) {
-            startModalLoading('#commit-task-modal');
-            $.nette.ajax({
-                url: $(this).data('link'),
-                method: 'GET'
-            }).done(function (msg) {
-                showModalLoading('#commit-task-modal');
-            });
-        });
-    </script>
 </div>
-{define taskHeader $task}
+{*define taskHeader $task}
     {if $task->isCreator}
         {if $task->timeLeft->invert === 0 }
         <div class="time-left">
@@ -124,7 +100,7 @@
             {/if}
         {/if}
     {/if}
-{/define}
+{/define*}
 {define taskDetailHeader $task}
     {if $task->isCreator}
     {if $task->createClassification == 1}
@@ -217,7 +193,3 @@
     </div>
 {/if}
 {/define}
-
-*}
-
-</div>
