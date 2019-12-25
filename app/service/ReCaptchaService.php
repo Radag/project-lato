@@ -24,6 +24,6 @@ class ReCaptchaService
         ]);
         $verify = file_get_contents($url, false, $context);
         $captcha_success = json_decode($verify);
-        return $captcha_success->success == false;
+        return $captcha_success->success == true;
     }
 }

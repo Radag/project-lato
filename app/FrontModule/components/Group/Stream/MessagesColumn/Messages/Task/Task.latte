@@ -1,5 +1,46 @@
 {if $isDetail}{include taskDetailHeader $message->task}{/if}
 <div class="card flex-column {if $message->deleted == 1}card-flat{/if}" id="message-box-num_{$message->id}"> 
+
+    {if $message->type === 'task' && $message->task}
+    <div class="card-action-header">
+        <div class="avatar small">
+            <img src="">
+        </div>
+        <div class="user-name">
+            Petr Šavelka
+        </div>
+        <div class="flex-spacer"></div>
+        <span class="card-date">22. 10. 2019</span>
+        <button type="button" class="btn-flat btn-icon dropdown-trigger card-options waves-effect waves-dark" >
+            <i class="material-icons">more_horiz</i>
+        </button>
+        {* {include messageMenu} *}
+    </div>
+
+    <div class="card-action-content">
+        <div class="info-header">
+            <div class="avatar-spacer">
+                <div class="avatar tiny colored">
+                    <i class="material-icons">assignment</i>
+                </div>
+            </div>
+            <h3 class="message-title">Název úkolu</h3>
+            <div class="flex-spacer"></div>
+            <a href="" class="btn gray no-shadow">Otevřít</a>
+        </div>
+        <p>Termín odevzdání do <strong>22. 10.</strong></p>
+        <ul class="atributes">
+            <li>
+                ...
+                
+            </li>
+        </ul>
+    </div>
+    {/if} 
+
+
+
+    {*
     <div class="card-action-header">
         <div class="message-type">
             <div class="avatar colored">G</div>
@@ -54,8 +95,7 @@
             {else}
                 {if $task->commit}
                     <div class="time-left">
-                        <strong>Odevzdáno</strong> | Termín odevzdání: <strong>{$task->deadline->format("j. n. G:i")}</strong> {*{$task->commit->created->format("j. n. G:i")}
-                        {if !empty($task->commit->updated)}(upraven {$task->commit->updated->format("j. n. G:i")}){/if}*}
+                        <strong>Odevzdáno</strong> | Termín odevzdání: <strong>{$task->deadline->format("j. n. G:i")}</strong> 
                     </div>
                 {elseif $task->timeLeft->invert === 0}  
                     <div class="time-left">
@@ -177,3 +217,7 @@
     </div>
 {/if}
 {/define}
+
+*}
+
+</div>
