@@ -1,20 +1,13 @@
- {snippet messages}
-    {if  $singleMode}
-        {ifset $singleMessage}
-            {var $message = $singleMessage}
-            {includeblock 'SingleMessage.latte'}            
-        {/ifset}       
-    {else}      
-        {foreach $messages as $message}
-            {if $message->type === 'normal'}                
-                {control message-$message->id}
-            {elseif $message->type === 'task'}              
-                {control task-$message->id}
-            {elseif $message->type === 'test'}                
-                {control test-$message->id}
-            {/if}
-        {/foreach}
-    {/if}
+ {snippet messages}     
+    {foreach $messages as $message}
+        {if $message->type === 'normal'}                
+            {control message-$message->id}
+        {elseif $message->type === 'task'}              
+            {control task-$message->id}
+        {elseif $message->type === 'test'}                
+            {control test-$message->id}
+        {/if}
+    {/foreach}
     <script>
         $(document).ready(function() {
             $(".comments-footer").on('click', function(e) {
@@ -76,11 +69,8 @@
     </div>
     {/if}
 {/snippet}
-<div n:if="(count($messages) > 0 && $singleMode === false)" id="no-more-posts">
-Více už toho není
-</div>
+<div n:if="(count($messages) > 0)" id="no-more-posts">Více už toho není</div>
 <input type="text" style="display: none;" id="link-cache-input">
-
 <div id="commit-task-modal" class="modal modal-small">
     {snippet commitTaskForm}
         {control commitTaskForm}

@@ -1,9 +1,10 @@
+{if $isDetail}{include taskDetailHeader $message->task}{/if}
 <div class="card flex-column {if $message->deleted == 1}card-flat{/if}" id="message-box-num_{$message->id}"> 
     <div class="card-action-header">
         <div class="message-type">
             <div class="avatar colored">G</div>
         </div>
-        {include taskHeader $message->task}
+        {if !$isDetail}{include taskHeader $message->task}{/if}
     </div>
     <div class="card-header card-assignment-header">
         <div n:if="$message->priority == 1" class="topped"></div>
@@ -17,6 +18,17 @@
     </div>
     {include '../normal/attachments.latte'}
     {control commentForm-$message->id}
+    <script>
+        $(".submit-class-button").off().on('click', function(e) {
+            startModalLoading('#commit-task-modal');
+            $.nette.ajax({
+                url: $(this).data('link'),
+                method: 'GET'
+            }).done(function (msg) {
+                showModalLoading('#commit-task-modal');
+            });
+        });
+    </script>
 </div>
 {define taskHeader $task}
     {if $task->isCreator}
@@ -72,15 +84,96 @@
             {/if}
         {/if}
     {/if}
-    <script>
-        $(".submit-class-button").off().on('click', function(e) {
-            startModalLoading('#commit-task-modal');
-            $.nette.ajax({
-                url: $(this).data('link'),
-                method: 'GET'
-            }).done(function (msg) {
-                showModalLoading('#commit-task-modal');
-            });
-        });
-    </script>
+{/define}
+{define taskDetailHeader $task}
+    {if $task->isCreator}
+    {if $task->createClassification == 1}
+        <div class="card card-flat assignment-info">
+            <div class="card-content">                
+                <div class="time-left">
+                    Termín odevzdání: <strong>{$task->deadline->format("j. n., G:i")}</strong>
+                </div>
+            </div>
+        </div>
+        <div class="card card-flat assignment-info">
+            <div class="card-content">
+                {if $task->timeLeft->invert === 0 }
+                <div class="time-left">
+                    Termín odevzdání: <strong>{$task->deadline->format("j. n., G:i")}</strong>
+                </div>
+                {else}
+                
+                <div class="time-left">
+                    Uzavřeno: {$task->deadline->format("j. n. G:i")}
+                </div>
+                {/if}
+                <div class="flex-spacer"></div>
+                <a href="{plink Group:usersClassification classificationGroupId=>$task->idClassificationGroup, id=>$task->group->slug}" 
+                   class="btn gray no-shadow">Otevřít</a>
+            </div>
+        </div>
+    {/if}
+{elseif $task->online == 1}
+    {if $task->commit }
+        <div class="card card-flat assignment-info">
+            <div class="card-content">
+                <div class="time-left">
+                    Termín odevzdání: <strong>{$task->deadline->format("j. n., G:i")}</strong>
+                </div>
+            </div>
+        </div>
+        <div class="card card-flat assignment-info">
+            <div class="card-content">
+                <div class="assignment-status">
+                    <strong>{if !empty($task->commit->updated)}Upraveno {$task->commit->updated->format("j. n., G:i")}{else}Odevzdáno: {$task->commit->created->format("j. n., G:i")}{/if}</strong> 
+                </div>
+                <div class="flex-spacer"></div>
+                {if $task->commit && !empty($task->commit->grade) && $task->commit->grade !== '—'}
+                    Známka: <strong>{$task->commit->grade}</strong>
+                {else}
+                    <button type="button" data-link="{link editTaskCommit}" class="btn gray no-shadow submit-class-button">Upravit</button>
+                {/if}
+            </div>
+            <div class="card-content assignment-detail">
+                <div n:if="$task->commit->comment" class="assignment-comment">{$task->commit->comment}</div>
+                {if !empty($task->commit->files)}
+                    <ul class="attachments_uploads" >
+                    {foreach array_merge($task->commit->files['files'], $task->commit->files['media']) as $attach}
+                    <li>
+                        <a href="{$attach->fullPath|noescape}" target="_blank" class="attached-file">
+                            <div class="file-name">{$attach->name}<span>({$attach->extension}, {$attach->created->format("j. n., G:i")})</span></div>
+                        </a>
+                    </li>
+                    {/foreach}
+                    </ul>
+                {/if}
+            </div>
+        </div>
+    {elseif $task->timeLeft->invert === 0}
+        <div class="card card-flat assignment-info">
+            <div class="card-content">
+                <div class="time-left">
+                    Termín odevzdání: <strong>{$task->deadline->format("j. n., G:i")}</strong>
+                </div>
+            </div>
+        </div>
+        <div class="card card-flat assignment-info">
+            <div class="card-content">
+                <div class="assignment-status">
+                    <strong>Čeká na odevzdání</strong>
+                </div>
+                <div class="flex-spacer"></div>
+                <button type="button" data-link="{link editTaskCommit}" class="btn gray no-shadow submit-class-button">Odevzdat</button>
+            </div>
+        </div>
+    {else}
+        <div class="time-left">
+            Uzavřeno: {$task->deadline->format("j. n. G:i")}
+        </div>
+    {/if}
+{else}
+    <div class="time-left">
+        Termín odevzdání: <strong>{$task->deadline->format("j. n., G:i")}</strong>
+    </div>
+{/if}
 {/define}

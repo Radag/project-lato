@@ -18,6 +18,8 @@ abstract class Base extends \App\Components\BaseComponent
     
     protected $id = null;
     
+    protected $isDetail = false;
+    
     protected $comments = [];
       
     public function __construct(
@@ -33,6 +35,7 @@ abstract class Base extends \App\Components\BaseComponent
     {
         $this->template->message = $this->getMessage();
         $this->template->activeGroup = $this->presenter->activeGroup;
+        $this->template->isDetail = $this->isDetail;
         parent::render();
     }
     
@@ -100,9 +103,10 @@ abstract class Base extends \App\Components\BaseComponent
         return $this->message;
     }
     
-    public function setMessage($id, $message = null)
+    public function setMessage($id, $message = null, $isDetail = false)
     {
         $this->id = $id;
+        $this->isDetail = $isDetail;
         if($message) {
             $this->message = $message;
         }

@@ -36,6 +36,7 @@ services:
     - App\FrontModule\Components\Stream\IRightColumn
     - App\FrontModule\Components\Stream\MessageForm\IMessageForm
     - App\FrontModule\Components\Stream\ICommentForm
+    - App\FrontModule\Components\Stream\ISingleMessage
     - App\FrontModule\Components\Stream\Messages\ITest
     - App\FrontModule\Components\Stream\Messages\INormal
     - App\FrontModule\Components\Stream\Messages\ITask

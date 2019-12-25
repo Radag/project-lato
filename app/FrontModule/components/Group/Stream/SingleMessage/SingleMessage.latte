@@ -1,0 +1,32 @@
+<div class="container offset-2 main two-level-nav" id="group">
+    <div class="row">
+        <div class="col s12" id="stream" >
+            {snippet message}
+                {if $type === 'normal'}
+                    {control message}
+                {elseif $type === 'task'}
+                    {control task}
+                {elseif $type === 'test'}
+                    {control test}
+                {/if}
+            {/snippet}
+        </div>
+    </div>    
+</div>
+<div id="message-delete-confirm-modal" class="modal modal-small">
+    <div class="modal-content">
+        <h3>Opravdu chcete zprávu smazat ?</h3>
+    </div>
+    <div class="modal-footer">
+        <div class="flex-spacer"></div>
+        <div class="form-control">
+            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">ne</button>
+            <button type="button" onClick="confirmDelete()" class="waves-effect modal-close waves-light btn btn-confirm" >Ano</button>
+        </div>
+    </div>
+</div>
+<div id="commit-task-modal" class="modal modal-small">
+    {snippet commitTaskForm}
+        {control commitTaskForm}
+    {/snippet}
+</div>

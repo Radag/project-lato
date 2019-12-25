@@ -6,6 +6,7 @@ use App\Model\Manager\UserManager;
 use App\Model\Manager\GroupManager;
 use App\Model\Entities\Group;
 use App\FrontModule\Components\Stream\IStream;
+use App\FrontModule\Components\Stream\ISingleMessage;
 use App\FrontModule\Components\Group\About\IGroupSettingsForm;
 use App\FrontModule\Components\Group\About\IAboutGroup;
 use App\FrontModule\Components\Stream\ICommitTaskForm;
@@ -41,6 +42,9 @@ class GroupPresenter extends BasePresenter
     
     /** @var IAboutGroup @inject */
     public $aboutGroup;
+    
+    /** @var ISingleMessage @inject */
+    public $singleMessage;
     
     /** @var Group */
     public $activeGroup = null;
@@ -79,8 +83,8 @@ class GroupPresenter extends BasePresenter
     
     public function actionMessage($idMessage)
     {       
-        $this['stream']->setSingleMode($idMessage);
-        $this['topPanel']->activateBackArrow($this->link('Group:default', array('id'=>$this->id)));
+        $this['singleMessage']->setId($idMessage);
+        $this['topPanel']->activateBackArrow($this->link('Group:default', ['id'=>$this->id]));
     }
     
     public function actionSettings()
@@ -107,6 +111,11 @@ class GroupPresenter extends BasePresenter
             $this->redirect('Homepage:noticeboard');
         }
         $this['topPanel']->setTitle('uživatelé');
+    }
+    
+    public function createComponentSingleMessage()
+    {
+        return $this->singleMessage->create();
     }
     
     public function createComponentAboutGroup()
