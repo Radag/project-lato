@@ -41,23 +41,23 @@ class RegisterForm extends \App\Components\BaseComponent
         $form = $this->getForm(false);
         $form->addText('email', 'Váš email:')
              ->addRule(Form::EMAIL, 'Email nemá správný formát.')
-             ->setRequired('Prosím vyplňte váš email.');
+             ->setRequired('Vložte e-mail');
 
         $form->addText('name', 'Jméno:')
-            ->setRequired('Prosím vyplňte své jméno.');
+            ->setRequired('Vložte jméno');
         
         $form->addText('surname', 'Příjmení:')
-            ->setRequired('Prosím vyplňte své příjmení.');
+            ->setRequired('Vložte příjmení');
         
         $form->addPassword('password1', 'Heslo:')
-            ->setRequired('Prosím vyplňte své heslo.');
+            ->setRequired('Vložte heslo');
         
         $form->addPassword('password2', 'Heslo znovu:')
-            ->setRequired('Prosím napište heslo znovu pro kontrolu.')
+            ->setRequired('Zopakujte heslo')
             ->addRule(Form::EQUAL, 'Hesla se neshodují', $form['password1']);
 
         $form->addCheckbox('terms')
-             ->setRequired('Musíte souhlasit s podmínkami.');
+             ->setRequired('Potvrďte svůj souhlas s podmínkami užívání');
 
         $form->addSubmit('send', 'Registrovat');
         $form->onValidate[] = function(Form $form, $values) {

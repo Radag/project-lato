@@ -1,7 +1,7 @@
 <section class="main settings" id="test-creation">
     {form form id=>'test-editor-form'}
     <div class="container offset-1">
-        <div class="form-row input-field">
+        <div id="test-name" class="form-row input-field">
             {input name}
             {label name}{/label}
         </div>
@@ -44,7 +44,9 @@
 <div class="card question" data-number="{$number}">    
     <div class="card-content">
         <div class="question-title input-field">
-            <button type="button" class="delete-question-button">smazat</button>
+            <button type="button" class="delete-question-button">
+                <i class="material-icons">delete</i>
+            </button>
             <textarea name="questions[{$number}][name]" id="question-{$number}" class="materialize-textarea" placeholder="Položit otázku ...">{if $question}{$question->question}{/if}</textarea>
             <label for="question-{$number}">Otázka {$number}</label>
         </div>

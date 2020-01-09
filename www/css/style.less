@@ -594,21 +594,22 @@ i.btn {
     color: @accent-color-text;
 }
 
-input:not([type]):focus:not([readonly]), 
-input[type=text]:focus:not([readonly]), 
-input[type=password]:focus:not([readonly]), 
-input[type=email]:focus:not([readonly]), 
-input[type=url]:focus:not([readonly]), 
-input[type=time]:focus:not([readonly]), 
-input[type=date]:focus:not([readonly]), 
-input[type=datetime]:focus:not([readonly]), 
-input[type=datetime-local]:focus:not([readonly]), 
-input[type=tel]:focus:not([readonly]), 
-input[type=number]:focus:not([readonly]), 
-input[type=search]:focus:not([readonly]), 
+input:not([type]):focus:not([readonly]),
+input[type=text]:not(.browser-default):focus:not([readonly]),
+input[type=password]:not(.browser-default):focus:not([readonly]),
+input[type=email]:not(.browser-default):focus:not([readonly]),
+input[type=url]:not(.browser-default):focus:not([readonly]),
+input[type=time]:not(.browser-default):focus:not([readonly]),
+input[type=date]:not(.browser-default):focus:not([readonly]),
+input[type=datetime]:not(.browser-default):focus:not([readonly]),
+input[type=datetime-local]:not(.browser-default):focus:not([readonly]),
+input[type=tel]:not(.browser-default):focus:not([readonly]),
+input[type=number]:not(.browser-default):focus:not([readonly]),
+input[type=search]:not(.browser-default):focus:not([readonly]),
 textarea.materialize-textarea:focus:not([readonly]) {
     border-bottom-color: @accent-color;
-    box-shadow: 0 1px 0 0 @accent-color;
+    -webkit-box-shadow: 0 1px 0 0 @accent-color;
+            box-shadow: 0 1px 0 0 @accent-color;
 }
 
 .avatar {
@@ -6290,6 +6291,17 @@ nav .nav-title {
 
 #test-creation {
 
+    #test-name {
+
+        input {
+            font-size: 1.5rem;  
+        }
+
+        label {
+            font-size: 1.25rem;
+        }
+    }
+
     .card {
         .drag-card {
             position: absolute;
@@ -6305,6 +6317,29 @@ nav .nav-title {
                 font-size: 1.25rem;
                 transform: rotate(90deg);
                 color: rgba(0, 0, 0, .25);
+            }
+        }
+
+        .delete-question-button {
+            position: absolute;
+            right: 0;
+            background: transparent;
+            border: none;
+            margin: .75rem 0;
+            padding: 0;
+            cursor: pointer;
+
+            i {
+                color: @secondary-text-color; 
+                -webkit-transition:  300ms ease-in-out;
+                -moz-transition:  300ms ease-in-out;
+                -o-transition:  300ms ease-in-out;
+                transition:  300ms ease-in-out;   
+            }
+
+            &:hover i {
+                color: @primary-text-color;
+
             }
         }
     }
