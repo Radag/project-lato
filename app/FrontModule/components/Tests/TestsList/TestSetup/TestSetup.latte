@@ -3,7 +3,7 @@
         <div class="modal-content" n:ifset="$testId">
             <h3>Skupina</h3>
             {if count($adminGroups) > 0}
-            <p>Vyberte skupinu, kde chcete zveřejnit toto zadání.</p>
+            <p>Vyberte skupinu, ve které chcete zveřejnit toto zadání.</p>
             <ul class="custom-collection group-list">
                 {foreach $adminGroups as $group}
                 <li>
@@ -16,6 +16,7 @@
             </ul>
             {else}
                 <p>Nemáte žádné skupiny.</p>
+                <p>Před zveřejněním zadání nejprve vytvořte skupinu, ve které se má zobrazit.</p>
             {/if}
         </div>
         <div class="modal-footer">
@@ -23,7 +24,6 @@
             <div class="form-control">
                 <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
                 <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form" disabled>Zveřejnit</button>
-
             </div>
         </div>
     {else}
@@ -116,7 +116,7 @@
                 <div class="row">
                     <div class="col s12">
                         <div class="switch-row">
-                            <label>Datum publikace</label>
+                            <span>Odložené vystavení</span>
                             <div class="switch">
                                 {label use_publication_date:}
                                     {input use_publication_date:}
@@ -125,19 +125,21 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row {if !$form['use_publication_date']->value}hide{/if}" id="publication-date-row">
-                    <div class="input-field col s6">                        
-                        {input publication_date placeholder=>'Datum', id=>'first_name', class=>'validate'}
-                    </div>
-                    <div class="input-field col s6">
-                        {input publication_time placeholder=>'Čas', id=>'first_name', class=>'validate'}
-                    </div>
-                </div>               
+                    <div class="{if !$form['use_publication_date']->value}hide{/if}" id="publication-date-row">
+                        <div class="input-field col s6">                        
+                            {input publication_date, id=>'first_name', class=>'validate'}
+                            <label for="">Datum</label>
+                        </div>
+                        <div class="input-field col s6">
+                            {input publication_time, id=>'first_name', class=>'validate'}
+                            <label for="">Čas</label>
+                        </div>
+                    </div>   
+                </div>            
                 <div class="row">
                     <div class="col s12">
                         <div class="switch-row">
-                            <label>Termín odevzdání</label>
+                            <span>Termín odevzdání</span>
                             <div class="switch">
                                 {label use_deadline:}
                                     {input use_deadline:}
@@ -146,15 +148,18 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row {if !$form['use_deadline']->value}hide{/if}" id="deadline_date-row">
-                    <div class="input-field col s6">                        
-                        {input deadline_date placeholder=>'Datum', id=>'first_name', class=>'validate'}
+                    <div class="{if !$form['use_deadline']->value}hide{/if}" id="deadline_date-row">
+                        <div class="input-field col s6">                        
+                            {input deadline_date, id=>'first_name', class=>'validate'}
+                            <label for="">Datum</label>
+                        </div>
+                        <div class="input-field col s6">
+                            {input deadline_time, id=>'first_name', class=>'validate'}
+                            <label for="">Čas</label>
+                        </div>
                     </div>
-                    <div class="input-field col s6">
-                        {input deadline_time placeholder=>'Čas', id=>'first_name', class=>'validate'}
-                    </div>
                 </div>
+                
                 <div class="row">
                     <div class="input-field col s6">
                         {label questions_count class=>'active'}{/label}
