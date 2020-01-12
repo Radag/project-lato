@@ -16,9 +16,7 @@ class Stream extends \App\Components\BaseComponent
 
     /** @var  IMessageForm @inject */
     public $messageForm;
-    
-    public $singleMode = false;
-    
+        
     public function __construct(
         IMessagesColumn $messageColumn, 
         IRightColumn $rightColumn,
@@ -32,7 +30,6 @@ class Stream extends \App\Components\BaseComponent
         
     public function render()
     {
-        $this->template->singleMode = $this->singleMode;
         $this->template->activeUser = $this->presenter->activeUser;
         $this->template->activeGroup = $this->presenter->activeGroup;
         $this->template->isOwner = ($this->presenter->activeGroup->relation === 'owner');
@@ -54,13 +51,7 @@ class Stream extends \App\Components\BaseComponent
         $component = $this->messageForm->create();  
         return $component;
     }
-    
-    public function setSingleMode($idMessage)
-    {
-        $this->singleMode = $idMessage;
-        $this['messagesColumn']->setSingleMode($idMessage);
-    }
-    
+        
     public function handleResetForm($type)
     {
         $this['messageForm']->handleResetForm($type);

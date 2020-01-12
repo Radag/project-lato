@@ -2,7 +2,7 @@
 <div class="card flex-column {if $message->deleted == 1}card-flat{/if}" id="message-box-num_{$message->id}"> 
     <div class="card-action-header">
         <div class="avatar small">
-            <img src="">
+            <img src="{$message->user->profileImage}">
         </div>
         <div class="user-name">{$message->user->name} {$message->user->surname}</div>
         <div class="flex-spacer"></div>

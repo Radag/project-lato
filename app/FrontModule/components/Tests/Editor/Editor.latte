@@ -1,5 +1,5 @@
 <section class="main settings" id="test-creation">
-    {form form id=>'test-editor-form'}
+    {form form id=>'test-editor-form', class=>'ajax'}
     <div class="container offset-1">
         <div id="test-name" class="form-row input-field">
             {input name}
@@ -113,13 +113,13 @@
     });
     
     $("#test-editor-form").on("click", function(e) {
-        if($(e.target).hasClass("remove-option")|| $(e.target).parent().hasClass("remove-option") ) {
+        if($(e.target).hasClass("remove-option") || $(e.target).parent().hasClass("remove-option") ) {
             var row = $(e.target).parents(".question-form-row");
             if(row.find(".option-id").val() !== "") {
                 $("#test-editor-form").append('<input type="hidden" value="' + row.find(".option-id").val() + '" name="optionsToDelete[]" >');
             }
             row.remove();
-        } else if($(e.target).hasClass("delete-question-button")) {
+        } else if($(e.target).hasClass("delete-question-button") || $(e.target).parent().hasClass("delete-question-button")) {
             $(e.target).parents(".question").remove();
             var quetionId = $(e.target).parents(".question").find(".question-id").val();
             if(quetionId) {

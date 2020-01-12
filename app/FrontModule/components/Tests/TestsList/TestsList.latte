@@ -36,7 +36,15 @@
                     <div class="card-content">
                         <div class="test-range">{$test->questionsCount}</div>
                         <h4 class="truncate">{$test->name}</h4>
-                        <div class="info">{$test->questionsCount} otázek{* | GRW*}</div>
+                        <div class="info">{$test->questionsCount} 
+                            {if $test->questionsCount == 1}
+                                otázka
+                            {elseif $test->questionsCount < 5}
+                                otázky
+                            {else}
+                                otázek
+                            {/if}
+                        </div>
                         <div class="date">Vytvořeno {$test->created->format("j. n.")}</div>
                         <div class="options">
                             <a href="{link setupTest! testId=>$test->id}" data-show-popup-after="#test-setup" class="ajax btn gray no-shadow truncate">Použít zadání</a>							

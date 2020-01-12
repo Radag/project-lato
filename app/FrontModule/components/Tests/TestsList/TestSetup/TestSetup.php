@@ -109,7 +109,7 @@ class TestSetup extends \App\Components\BaseComponent
                 $groupClassification->group = new Group();
                 $groupClassification->group->id = $testSetup->groupId;
                 $groupClassification->type = ClassificationGroup::TYPE_TEST;
-                $groupClassification->idPeriod = 1;
+                $groupClassification->idPeriod = $group->activePeriodId;
                 $groupClassification->forAll = true;
                 $groupClassification->name = $test->name;
                 $testSetup->classificationGroupId = $this->classificationManager->createGroupClassification($groupClassification);

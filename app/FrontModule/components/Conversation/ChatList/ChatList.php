@@ -39,7 +39,7 @@ class ChatList extends \App\Components\BaseComponent
                 $return['yesterday']->messages[] = $message;
             } else {
                 if(!isset($return[$message->created->format("n")])) {
-                    $return[$message->created->format("n")] = (object)['messages' => [], 'name' => $months[$message->created->format("n") - 1]]; 
+                    $return[$message->created->format("n")] = (object)['messages' => [], 'name' => $this->months[$message->created->format("n") - 1]]; 
                 }
                 $return[$message->created->format("n")]->messages[] = $message;
             }

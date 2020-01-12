@@ -7,6 +7,8 @@ use App\Model\Entities\AbstractEntity;
 class Test extends AbstractEntity {
     public $id = null;
     public $name = null;
+    
+    /** @var \App\Model\Entities\User */
     public $author = null;
     public $questions = [];
     public $questionsCount = null;
@@ -25,7 +27,6 @@ class Test extends AbstractEntity {
         'questions_count' => 'questionsCount',
         'created_at' => 'created',
         'time_limit' => 'timeLimit',   
-        'setup_id' => 'setupId',        
-        'author' => 'author'
+        'setup_id' => 'setupId'
     ];
 }

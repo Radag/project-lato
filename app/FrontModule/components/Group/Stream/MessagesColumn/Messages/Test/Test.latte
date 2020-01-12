@@ -1,20 +1,18 @@
 <div class="card flex-column"> 
     <div class="card-action-header">
         <div class="avatar small">
-            <img src="">
+            <img src="{$test->author->profileImage}">
         </div>
         <div class="user-name">
-            Petr Šavelka
+            {$test->author->name} {$test->author->surname}
         </div>
         <div class="flex-spacer"></div>
-        <span class="card-date">22. 10. 2019</span>
-        <button type="button" class="btn-flat btn-icon dropdown-trigger card-options waves-effect waves-dark" >
+        <span class="card-date">{$test->created|date:"j. n."}</span>
+        <button type="button" class="btn-flat btn-icon dropdown-trigger card-options waves-effect waves-dark" data-target="test_dropdown_{$test->id}">
             <i class="material-icons">more_horiz</i>
         </button>
-        {* {include messageMenu} *}
+        {include testMenu $test, $activeGroup}
     </div>
-
-
     <div class="card-action-content">
         <div class="info-header">
             <div class="avatar-spacer">
@@ -22,22 +20,37 @@
                     <i class="material-icons">playlist_add_check</i>
                 </div>
             </div>
-            <h3 class="message-title">Název testu</h3>
+            <h3 class="message-title">{$test->name}</h3>
             <div class="flex-spacer"></div>
-            <a href="" class="btn gray no-shadow">Otevřít</a>
+            {if !$test->setup->isCreator && ($test->setup->timeLeft == null || $test->setup->timeLeft->invert === 0)
+                && ($test->setup->numberOfRepetitions === null || $test->setup->numberOfRepetitions > $test->summary->filledCount)}  
+                <a href="{plink Tests:start setupId=>$test->setupId}" class="btn gray no-shadow">Otevřít</a>
+            {/if}
+            {if $test->setup->isCreator && $test->setup->classificationGroupId}
+                <a href="{plink Group:usersClassification classificationGroupId=>$test->setup->classificationGroupId, id=>$test->setup->group->slug}" class="btn gray no-shadow">Oznámkovat</a>
+            {/if}
         </div>
-        <p>Termín odevzdání do <strong>22. 10.</strong></p>
+        <p n:if="$test->setup->deadline">Termín odevzdání do <strong>{$test->setup->deadline|date:"j. n."}</strong></p>
         <ul class="atributes">
-            <li>
-                Vyplňěno 1-krát | Průměrný výsledek 30 %
-            </li>
-            <li>
-                5 otázek | 10 minut
-            </li>
+            {if $test->setup->isCreator}
+                <li>Vyplněno {$test->summary->studentsCount}-krát | Průměrný výsledek {$test->summary->studentsPercent} %</li>                
+            {else}
+                <li n:if="$test->summary->grade">Známka: <strong>{$test->summary->grade}</strong></li>
+                <li n:if="$test->summary->filledCount > 0">Vyplněno <strong>{$test->summary->filledCount}x</strong> | Průměr: <strong>{$test->summary->percent}%</strong></li>  
+            {/if}
+            <li>{$test->setup->questionsCount} otázek | {$test->setup->timeLimit/60} minut</li>
         </ul>
     </div>
 </div>
-
+{define testMenu $test, $activeGroup}
+<ul id="test_dropdown_{$test->id}" class='dropdown-content'>
+    <li><a href="#">Vytvořit kopii příspěvku</a></li>
+    {if $activeGroup->relation === 'owner'}
+        <li><a href="#" data-link="{link deleteTest! setupId=>$test->setupId}" class="delete-message-button refresh-wall-messages">Smazat</a></li>
+        <li><a href="{link editTest! setupId=>$test->setupId}" data-show-popup-after="#test-setup-modal" class="edit-test-button ajax">Upravit test</a></li>
+    {/if}
+</ul>
+{/define}
 {*
 <div class="card flex-column">
     <div class="card-action-header">

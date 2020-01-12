@@ -24,7 +24,8 @@ class Editor extends \App\Components\BaseComponent
     protected function createComponentForm()
     {
         $form = $this->getForm(true);
-        $form->addText('name', 'Název testu'); 
+        $form->addText('name', 'Název testu')
+             ->setRequired("Musíte zadat název testu."); 
         $form->addSubmit('save', 'Uložit');
         $form->addSubmit('save_leave', 'Uložit a odejít');
         $form->addHidden('id');

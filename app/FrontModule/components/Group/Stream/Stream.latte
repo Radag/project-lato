@@ -1,7 +1,7 @@
-<div class="container {if $singleMode}offset-2{/if} main two-level-nav" id="group">
+<div class="container main two-level-nav" id="group">
     <div class="row">
-        <div class="col s12 {if !$singleMode}l8{/if}" id="stream" >
-            {if ($isOwner || $activeGroup->pr_user_msg_create == 1) && !$singleMode}
+        <div class="col s12 l8" id="stream" >
+            {if ($isOwner || $activeGroup->pr_user_msg_create == 1)}
                 <div class="card create-post">
                     <div id="show-create-post-modal" class="create-announcement">
                         <div class="avatar small">
@@ -28,10 +28,6 @@
                     </ul>
                     {/if}
                 </div>
-            {elseif !$singleMode}
-                <div class="card card-flat create-post-disabled">
-                    <div class="card-content">Studentům není umožněno vytvářet příspěvky</div>
-                 </div>
             {/if}
             {snippet streamSection}
                 {control messagesColumn}
@@ -42,9 +38,7 @@
                 {/snippet}
             </div>
         </div>
-        {if !$singleMode}
-            {control rightColumn}
-        {/if}
+        {control rightColumn}
     </div>
     <div id="message-delete-confirm-modal" class="modal modal-small">
         <div class="modal-content">

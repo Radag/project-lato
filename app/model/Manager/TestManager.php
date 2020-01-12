@@ -75,13 +75,20 @@ class TestManager extends BaseManager
         $testsData = $this->db->fetchAll("SELECT 
                 T1.*, 
                 T2.time_limit,
-                CONCAT(T3.name, ' ', T3.surname) as author, 
+                T3.name AS author_name,
+                T3.surname AS author_surname, 
+                T6.profile_image AS author_profile_image,
+                T3.sex AS author_sex,
+                T3.slug AS author_slug,
+                T3.id AS author_id,
                 T2.created_at, 
                 T2.publication_time, 
                 T2.id AS setup_id,
                 T2.deadline,
                 T2.classification_group_id,
                 T2.number_of_repetitions,
+                T2.questions_count,
+                T2.time_limit,
                 T2.filled_per_students,
                 T2.filled_totaly,
                 T2.average_percent,
@@ -93,6 +100,7 @@ class TestManager extends BaseManager
             JOIN `user` T3 ON T1.user_id=T3.id
             JOIN `group` T4 ON T2.group_id=T4.id 
             LEFT JOIN classification T5 ON (T5.classification_group_id=T2.classification_group_id AND T5.user_id=?)
+            JOIN user_real T6 ON T6.id=T3.id
             WHERE T2.group_id=? AND (T2.publication_time IS NULL OR T2.publication_time < NOW())", $userId, $groupId);
         
         $stats = $this->db->fetchAll("SELECT 
@@ -112,10 +120,18 @@ class TestManager extends BaseManager
         $tests = [];
         foreach($testsData as $testData) {
             $test = new Test($testData);
+            $test->author = new Entities\User();
+            $test->author->surname = $testData->author_surname;
+            $test->author->name = $testData->author_name;
+            $test->author->id = $testData->author_id;
+            $test->author->slug = $testData->author_slug;
+            $test->author->profileImage = Entities\User::createProfilePath($testData->author_profile_image, $testData->author_sex);
             $test->created = $testData->created_at;
             $test->setup = new Entities\Test\TestSetup();
             $test->setup->id = $testData->setup_id;
             $test->setup->deadline = $testData->deadline;
+            $test->setup->questionsCount = $testData->questions_count;
+            $test->setup->timeLimit = $testData->time_limit;
             $test->setup->classificationGroupId = $testData->classification_group_id;
             $test->setup->numberOfRepetitions = $testData->number_of_repetitions;
             $test->setup->isCreator = $testData->user_id == $this->settings->getUser()->id;
