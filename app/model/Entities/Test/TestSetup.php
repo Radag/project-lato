@@ -25,7 +25,9 @@ class TestSetup extends AbstractEntity {
     public $publicationTime = null;
     
     /** @var \Datetime **/
-    public $deadline = null;
+    public $deadline = null;    
+    
+    public $isVisible = null;
     
     protected $mapFields = [
         'id' => 'id',
