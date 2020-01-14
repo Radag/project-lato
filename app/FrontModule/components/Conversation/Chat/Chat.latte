@@ -50,16 +50,15 @@
                 {form form class=>'ajax', id=>"message-sent-form"}
 
                 
-
-                    <div class="card message-editor">
-                        <div class="card-content">
-                            <div class="textarea-wrapper">
+                <div class="message-editor">
+                    <div class="card">
+                        <div class="textarea-wrapper">
                                 {input text class=>'materialize-textarea no-border', id=>'new-message-area'}
-                            </div>
-                            <div class="flex-spacer"></div>
-                            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form">Odeslat</button>
                         </div>
                     </div>
+
+                    <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form">Odeslat</button>
+                </div>
                     {/form}
                     <script>
                         $(document).ready(function () {
