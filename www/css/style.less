@@ -3340,73 +3340,79 @@ nav .nav-title {
         }
     }
 
-    .bottom-fixed {
-        position: fixed;
-        bottom: 0;
+    .message-editor {
+        display: flex;
+        align-items: stretch;
+        margin: 1rem 0 0 0;
+        margin-bottom: 2rem;
 
-        .message-editor {
-            flex-direction: column;
-            margin: 1rem 0 0 0;
+        .card {
+            flex-grow: 1;
+            margin: 0;
 
-            .card-content {
+
+
+            .textarea-wrapper {
+                width: calc(~'100% - 128px');
                 display: flex;
                 align-items: center;
-                padding-bottom: 20px;
+                padding: 1rem 1.5rem;
 
-                .textarea-wrapper {
-                    width: calc(~'100% - 128px');
-
-                    .materialize-textarea {
+                .materialize-textarea {
                         padding: 0 !important;
                         height: 21px;
                         min-height: 21px !important;
-                    }
-                }
+                }            
+            }        
+        }
 
-                .btn {
-                    align-self: flex-end;
+    
+
+        .btn {
+            height: 3.5rem;
+            line-height: 3.5rem;
+            align-self: flex-end;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            padding-top: 0;
+
+            .editor-options {
+                display: flex;
+                align-items: center;
+                margin: 0;
+
+                li {
+                    margin-right: 12px !important;
+
+                    &.divider {
+                        margin: 0;
+                        height: 24px;
+                        width: 1px;
+                    }
+
+                    a {
+                        color: @secondary-text-color;
+
+                        i {
+                            font-size: 20px !important;
+                            line-height: 36px;
+                        }
+                    }
                 }
             }
 
-            .card-footer {
-                display: flex;
-                align-items: center;
-                padding-top: 0;
-
-                .editor-options {
-                    display: flex;
-                    align-items: center;
-                    margin: 0;
-
-                    li {
-                        margin-right: 12px !important;
-
-                        &.divider {
-                            margin: 0;
-                            height: 24px;
-                            width: 1px;
-                        }
-
-                        a {
-                            color: @secondary-text-color;
-
-                            i {
-                                font-size: 20px !important;
-                                line-height: 36px;
-                            }
-                        }
-                    }
-                }
-
-                button[type="submit"] {
-                    margin-left: 24px;
-                }
+            button[type="submit"] {
+                margin-left: 24px;
             }
         }
     }
+}
 
     
-}
+
 
 
 
@@ -3616,7 +3622,7 @@ nav .nav-title {
     background: #fff;
     box-shadow: 0 1px 3px rgba(0, 0, 0, .2); 
     margin: 0 1rem 2rem 1rem;
-    border-radius: 0;
+    border-radius: 2px;
 
     &.card-flat {
         background-color: @card-flat;
