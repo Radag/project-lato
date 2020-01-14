@@ -68,9 +68,13 @@ class TestManager extends BaseManager
         ], "WHERE id=?", $testSetup->id);
     }
     
-    public function getGroupTests($groupId) 
+    public function getGroupTests(Entities\Group $group) 
     {
         $userId = $this->settings->getUser()->id;
+        $publicationTime = "";
+        if($group->relation !== GroupManager::RELATION_OWNER) {
+            $publicationTime = "AND (T2.publication_time IS NULL OR T2.publication_time < NOW())";
+        }
         
         $testsData = $this->db->fetchAll("SELECT 
                 T1.*, 
@@ -87,21 +91,23 @@ class TestManager extends BaseManager
                 T2.deadline,
                 T2.classification_group_id,
                 T2.number_of_repetitions,
-                T2.questions_count,
+                T2.publication_time,
+                IFNULL(T2.questions_count, T1.questions_count) AS questions_count,
                 T2.time_limit,
                 T2.filled_per_students,
                 T2.filled_totaly,
                 T2.average_percent,
                 T4.id AS group_id,
                 T4.slug AS group_slug,
-                T5.grade
+                T5.grade,
+                IF(T2.publication_time IS NULL OR T2.publication_time < NOW(), 1, 0) AS is_visible
             FROM test T1 
             JOIN test_setup T2 ON T1.id=T2.test_id
             JOIN `user` T3 ON T1.user_id=T3.id
             JOIN `group` T4 ON T2.group_id=T4.id 
             LEFT JOIN classification T5 ON (T5.classification_group_id=T2.classification_group_id AND T5.user_id=?)
             JOIN user_real T6 ON T6.id=T3.id
-            WHERE T2.group_id=? AND (T2.publication_time IS NULL OR T2.publication_time < NOW())", $userId, $groupId);
+            WHERE T2.group_id=? " . $publicationTime, $userId, $group->id);
         
         $stats = $this->db->fetchAll("SELECT 
                         T1.setup_id,
@@ -110,7 +116,7 @@ class TestManager extends BaseManager
                 FROM test_filling T1
                 JOIN test_setup T2 ON T2.id=T1.setup_id
                 WHERE T1.user_id=? AND T2.group_id=?
-                GROUP BY T1.setup_id", $userId, $groupId);
+                GROUP BY T1.setup_id", $userId, $group->id);
         
         $myStats = [];
         foreach($stats as $stat) {
@@ -133,11 +139,13 @@ class TestManager extends BaseManager
             $test->setup->questionsCount = $testData->questions_count;
             $test->setup->timeLimit = $testData->time_limit;
             $test->setup->classificationGroupId = $testData->classification_group_id;
+            $test->setup->publicationTime = $testData->publication_time;
             $test->setup->numberOfRepetitions = $testData->number_of_repetitions;
             $test->setup->isCreator = $testData->user_id == $this->settings->getUser()->id;
             $test->setup->group = new Entities\Group;
             $test->setup->group->id = $testData->group_id;
             $test->setup->group->slug = $testData->group_slug;
+            $test->setup->isVisible = $testData->is_visible == 1 ? true : false;
             if($test->setup->deadline) {
                 $test->setup->timeLeft = (new \DateTime())->diff($test->setup->deadline);
             }

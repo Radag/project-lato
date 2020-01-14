@@ -63,7 +63,7 @@ class MessagesColumn extends \App\Components\BaseComponent
     public function render() 
     {
         $streamMessages = [];
-        $this->tests = $this->testManager->getGroupTests($this->presenter->activeGroup->id);
+        $this->tests = $this->testManager->getGroupTests($this->presenter->activeGroup);
         $data = $this->messageManager->getMessages($this->presenter->activeGroup, $this->presenter->activeUser, $this->filter);
         $this->messages = $data['messages'];
         foreach($data['messages'] as $message) {
