@@ -27,6 +27,7 @@ class File extends AbstractEntity
         'type' => 'type',
         'path' => 'path',
         'mime' => 'mime',
+        'extension' => 'extension',
         'size' => 'size',
         'full_path' => 'fullPath',
         'filename' => 'fileName',

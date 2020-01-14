@@ -9,7 +9,7 @@ class FileManager extends BaseManager
     
     public function isFileOwner($idFile, $idUser) : bool
     {
-        $file = $this->db->fetch("SELECT id FROM file_list WHERE created_by=? AND id=?", $idUser, $idFile);
+        $file = $this->db->fetchSingle("SELECT id FROM file_list WHERE created_by=? AND id=?", $idUser, $idFile);
         return !empty($file);
     }
     

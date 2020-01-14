@@ -35,13 +35,12 @@
         <ul class="hide mes-online-row custom-collection">
             <li>
                 <div class="item">
-                    {input online: class => 'filled-in black'}<span></span>{label online:}{/label}
+                    {label online:}{input online: class => 'filled-in black'}<span></span>{$form['online']->getCaption()}{/label}
                 </div>
-            </li>
-            
+            </li>            
             <li>
                 <div class="item">
-                    {input create_classification: class => 'filled-in black'}<span></span>{label create_classification:}{/label}
+                    {label create_classification:}{input create_classification: class => 'filled-in black'}<span></span>{$form['create_classification']->getCaption()}{/label}
                 </div>
             </li>
 

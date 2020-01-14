@@ -28,14 +28,16 @@ function setUploadForm(inputId, config)
     });
 
     if($(config.uploadBlock)) {
-        $(config.uploadBlock).find(".remove-attachment").on('click', function(event) {
+        $(config.uploadBlock).find(".remove-attachment.saved").on('click', function(event) {
             var block = $(this).parents('li');
             event.preventDefault();
-            $.get( $(this).attr("href"), function(data) {
+            $.nette.ajax({
+                url: $(this).attr("href"),
+                method: 'GET'
+            }).done(function (data) {
                 if(data.deleted) {
                     var values = $(config.inputWithIds).val();
                     $(config.inputWithIds).val(values.replace("_" + data.id, ""));
-                    console.log(values);
                     block.remove();
                 }
             });
@@ -56,12 +58,15 @@ function setUploadForm(inputId, config)
                 attachTemplate.find(".file-name").text(data.files[0].name);
                 $(config.uploadBlock).append(attachTemplate).removeClass('hide');
                 $(config.submitButton).prop('disabled', true);
-                attachTemplate.find('.remove-attachment').on('click', function(event) {
+                attachTemplate.find('.remove-attachment:not(.saved)').on('click', function(event) {
                     event.preventDefault();
                     var id = $(this).parents('.attached-file').data('id');
                     if(id !== undefined) {
                         var link = config.links.delete.replace('XXXX', id);
-                        $.get( link, function( data ) {
+                        $.nette.ajax({
+                            url: link,
+                            method: 'GET'
+                        }).done(function (data) {
                             if(data.deleted) {
                                 var values = $(config.inputWithIds).val();
                                 $(config.inputWithIds).val(values.replace("_" + id, ""));

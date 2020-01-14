@@ -210,9 +210,10 @@ class MessageManager extends BaseManager {
         $commitsAttach = [];
         if($message->commit_id) {
             $commitsAttachData = $this->db->fetchAll("SELECT 
-                    T1.commit_id, T2.id, T2.extension, T2.mime, T2.type, T2.full_path, T2.filename, T2.created_when, IFNULL(T2.name, T2.filename) AS name
+                    T1.commit_id, T2.id, T2.extension, T2.mime, T2.type, T2.full_path, T2.filename, T3.preview_full_path, T2.created_when, IFNULL(T2.name, T2.filename) AS name
                 FROM task_commit_attachment T1
                 JOIN file_list T2 ON T1.file_id=T2.id
+                LEFT JOIN file_list_preview T3 ON T2.id=T3.file_id
                 WHERE T1.commit_id=?", $message->commit_id);
             $commitsAttach = $this->getAttachments($commitsAttachData, 'commit_id');
         }

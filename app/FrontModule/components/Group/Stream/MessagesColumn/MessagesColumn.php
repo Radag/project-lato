@@ -3,7 +3,6 @@
 namespace App\FrontModule\Components\Stream;
 
 use App\Model\Manager\MessageManager;
-use App\FrontModule\Components\Stream\ICommitTaskForm;
 use App\Model\Manager\TestManager;
 use App\FrontModule\Components\Test\ITestSetup;
 use App\FrontModule\Components\Stream\Messages\ITest;
@@ -31,10 +30,7 @@ class MessagesColumn extends \App\Components\BaseComponent
     
     /** @var  ITestSetup @inject */
     protected $testSetup;
-    
-    /** @var ICommitTaskForm */
-    protected $commitTaskForm;  
-      
+     
     protected $filter = 'all';
         
     protected $messages = [];    
@@ -42,8 +38,7 @@ class MessagesColumn extends \App\Components\BaseComponent
     protected $comments = [];
     
     public function __construct(
-        MessageManager $messageManager,
-        ICommitTaskForm $commitTaskForm,            
+        MessageManager $messageManager,           
         TestManager $testManager,
         ITestSetup $testSetup,            
         ITest $testMessage,
@@ -52,7 +47,6 @@ class MessagesColumn extends \App\Components\BaseComponent
     )
     {
         $this->messageManager = $messageManager;
-        $this->commitTaskForm = $commitTaskForm;
         $this->testManager = $testManager;
         $this->testSetup = $testSetup;
         $this->testMessage = $testMessage;
@@ -91,11 +85,6 @@ class MessagesColumn extends \App\Components\BaseComponent
     {
         $this->filter = $filter;
         $this->redrawControl();
-    }
-    
-    public function createComponentCommitTaskForm()
-    {
-        return $this->commitTaskForm->create();    
     }
     
     public function createComponentTestSetupForm()

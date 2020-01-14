@@ -26,7 +26,6 @@ class SingleMessage extends \App\Components\BaseComponent
     /** @var ICommitTaskForm */
     protected $commitTaskForm;  
           
-    protected $id = null;
     protected $message = null;
     
     public function __construct(
@@ -60,6 +59,12 @@ class SingleMessage extends \App\Components\BaseComponent
         } else {
             $this->presenter->redirect('Group:default', ['id'=>$this->presenter->activeGroup->id]);
         }
+    }
+    
+    public function redrawTasks()
+    {
+        $this->setId($this->message->id);
+        $this->redrawControl("message");
     }
     
     public function createComponentCommitTaskForm()

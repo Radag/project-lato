@@ -6,7 +6,7 @@
         <li>
             <a href="{$file->fullPath|noescape}" target="_blank" class="attached-file">
                 {$file->type|attachTypeIco|noescape}
-                <div class="file-name truncate">{$file->name}<span>({$file->type} {$file->extension})</span></div>   
+                <div class="file-name truncate">{$file->name}<span>({$file->mime})</span></div>   
             </a>
         </li>
         {/foreach}

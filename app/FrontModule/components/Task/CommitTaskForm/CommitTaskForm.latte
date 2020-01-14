@@ -18,7 +18,7 @@
                         <div class="attached-file">
                             <a href="{$attach->path}" target="_blank" class="file-name truncate">{$attach->name}<span></span></a>
                             <div class="flex-spacer"></div>
-                            <a href="{link deleteAttachment!, idFile=>$attach->idFile}" class="ajax remove-attachment"><i class="material-icons">delete</i></a>
+                            <a href="{link deleteAttachment!, idFile=>$attach->idFile}" class="remove-attachment saved"><i class="material-icons">delete</i></a>
                         </div>
                     </li>
                     {/foreach}
