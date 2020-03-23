@@ -3899,27 +3899,23 @@ nav .nav-title {
 
         .message-score {
             display: flex;
-            align-items: stretch;
-            height: 36px;
-            border: 1px solid @line-color;
-            border-radius: 3px;
-            overflow: hidden;
-
-            .divider-vert {
-                width: 1px;
-                background: @line-color;
-
-            }
+            align-items: center;
 
             .rate-btn {
+                height: 36px;
+                border: 1px solid @line-color;
+                border-radius: 3px;
                 cursor: pointer;
                 display: flex;
                 align-items: center;
-                padding: 0 .75rem;
+                padding: 0 .5rem;
+                justify-content: center;
+                margin-right: .25rem;
+                width: 4rem;
 
                 i.material-icons {
                     font-size: 1.25rem;
-                    margin-right: .75rem;
+                    margin-right: .5rem;
                 }
 
                 .thumb-up {
@@ -3931,18 +3927,12 @@ nav .nav-title {
                 }
 
                 .count {
-                    flex-grow: 1;
-                    text-align: right;
                     color: @secondary-text-color;
                 }
 
                 &.rated {
+                    border: none;
                     background-color: @background-highlighted;
-
-                    .count {
-                        font-weight: 500;
-                        color: @primary-text-color;
-                    }
                 }
             }
         }
