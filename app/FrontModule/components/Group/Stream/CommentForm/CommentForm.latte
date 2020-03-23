@@ -1,6 +1,84 @@
 {snippet comments}
-<div class="card-comments {if count($comments) == 0}card-comments-empty{/if}"> 
-        {if count($comments) > 0}  
+<div class="card-comments {if count($comments) == 0}{/if}"> 
+    <div class="comments-block">
+        <div class="comments-header">
+            <div class="show-comments">
+                3 komentáře <i class="material-icons">expand_more</i>
+            </div>
+            
+        </div>
+        <div class="comments-row">
+            <a href="#" class="avatar tiny">
+                <img src="#" alt="#" style="background: #ddd;">
+            </a>
+            <div class="comment-content">
+                <a href="#" class="comment-user">
+                    Petr Šavelka
+                </a>
+                <p>Dobrý den, mohl bych poprosit o zaslání dosavadní verze hry? Nemám to na desktopu u otce a notebook jsem si nevzal, teď se tam nedostanu.</p>
+                <ul class="comment-footer">
+                    <li><a href="#">Reagovat</a></li>
+                    <li>2 dny</li>
+                </ul>
+                <div class="comment-thread">
+                    <div class="comments-row">
+                        <a href="#" class="avatar tiny">
+                            <img src="#" alt="#" style="background: #ddd;">
+                        </a>
+                        <div class="comment-content">
+                            <a href="#" class="comment-user">
+                                Petr Šavelka
+                            </a>
+                            <p>Dobrý den, mohl bych poprosit o zaslání dosavadní verze hry? Nemám to na desktopu u otce a notebook jsem si nevzal, teď se tam nedostanu.</p>
+                            <ul class="comment-footer">
+                                <li><a href="#">Reagovat</a></li>
+                                <li>2 dny</li>
+                            </ul>
+                            <div class="form-row">
+                                <textarea placeholder="Napište komentář..." class="materialize-textarea"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comments-row">
+                        <a href="#" class="avatar tiny">
+                            <img src="#" alt="#" style="background: #ddd;">
+                        </a>
+                        <div class="comment-content">
+                            <a href="#" class="comment-user">
+                                Petr Šavelka
+                            </a>
+                            <p>Dobrý den, mohl bych poprosit o zaslání dosavadní verze hry? Nemám to na desktopu u otce a notebook jsem si nevzal, teď se tam nedostanu.</p>
+                            <ul class="comment-footer">
+                                <li><a href="#">Reagovat</a></li>
+                                <li>2 dny</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="comments-row">
+            <a href="#" class="avatar tiny">
+                <img src="#" alt="#" style="background: #ddd;">
+            </a>
+            <div class="comment-content">
+                <a href="#" class="comment-user">
+                    Petr Šavelka
+                </a>
+                <p>Dobrý den, mohl bych poprosit o zaslání dosavadní verze hry? Nemám to na desktopu u otce a notebook jsem si nevzal, teď se tam nedostanu.</p>
+                <ul class="comment-footer">
+                    <li><a href="#">Reagovat</a></li>
+                    <li>2 dny</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+        {if count($comments) > 0}
         <div class="comments-header">
             <div onclick="latoShowAllComments(this);" data-opened="false" class="comments-count">
                 {if count($comments) === 1}
@@ -12,7 +90,7 @@
                 {/if}
             </div>     
         </div>
-        <div class="comments-content">
+        <div class="comments-block">
            {foreach $comments as $comm}
                 <div class="comment-row" {if !$iterator->isLast()}style="display: none;"{/if}>
                     <a href="{plink Profile:default 'id'=>$comm->user->slug}" class="avatar tiny">

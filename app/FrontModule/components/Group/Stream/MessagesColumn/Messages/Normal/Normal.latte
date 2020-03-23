@@ -1,4 +1,4 @@
-<div class="card flex-column {if $message->deleted == 1}card-flat{/if}" id="message-box-num_{$message->id}"> 
+<div class="card message flex-column {if $message->deleted == 1}card-flat{/if}" id="message-box-num_{$message->id}"> 
     <div class="card-header">
         <div n:if="$message->priority == 1" class="topped"></div>
         <div n:if="$message->priority == 1" class="deleted"></div>
@@ -12,5 +12,25 @@
         {include 'menu.latte'}
     </div>
     {include 'attachments.latte'}
+    <div class="message-info">
+        <div class="message-score">
+            <div class="rate-btn waves-effect waves-dark">
+                <i class="material-icons thumb-up">thumb_up</i>
+                <span class="count">13</span>
+            </div>
+            <div class="divider-vert"></div>
+            <div class="rate-btn waves-effect waves-dark rated">
+                <i class="material-icons thumb-down">thumb_down</i>
+                <span class="count">2</span>
+            </div>
+        </div>
+        <div class="flex-spacer">
+        </div>
+        <ul class="seen tooltipped" data-position="top" data-tooltip="Vidělo to 27 žáků">
+            <li class="avatar"><img src="" style="background: #ddd"></li>
+            <li class="avatar"><img src="" style="background: #ddd"></li>
+            <li class="avatar"><img src="" style="background: #ddd"></li>
+        </ul>
+    </div>
     {control commentForm-$message->id}
 </div>
