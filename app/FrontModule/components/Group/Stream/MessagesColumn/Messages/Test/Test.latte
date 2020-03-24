@@ -1,4 +1,4 @@
-<div class="card flex-column {if !$test->setup->isVisible}postponed{/if}"> 
+<div class="card flex-column {if !$test->setup->isVisible}postponed{/if} {if $test->setup->displayed}displayed{/if}" data-message-id="{$test->setup->messageId}"> 
     <div class="card-action-header">
         <div class="avatar small">
             <img src="{$test->author->profileImage}">
@@ -42,6 +42,8 @@
             <li>{$test->setup->questionsCount} {if $test->setup->questionsCount == 1}otázka{elseif $test->setup->questionsCount < 5}otázky{else}otázek{/if} | {$test->setup->timeLimit/60} minut</li>
         </ul>
     </div>
+    {include '../normal/info.latte' 'message' => $test->setup}
+    {control commentForm-$messageId}
 </div>
 {define testMenu $test, $activeGroup}
 <ul id="test_dropdown_{$test->id}" class='dropdown-content'>

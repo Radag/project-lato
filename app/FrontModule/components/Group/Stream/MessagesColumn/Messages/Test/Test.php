@@ -4,6 +4,8 @@ namespace App\FrontModule\Components\Stream\Messages;
 
 use App\Model\Manager\TestManager;
 use App\Model\Manager\TestSetupManager;
+use App\FrontModule\Components\Stream\ICommentForm;
+use App\Model\Manager\MessageManager;
 
 class Test extends \App\Components\BaseComponent
 {
@@ -13,19 +15,33 @@ class Test extends \App\Components\BaseComponent
     /** @var TestSetupManager **/
     protected $testSetupManager;
      
+	/** @var ICommentForm **/
+    protected $commentForm;
+	
+	/** @var MessageManager */
+    protected $messageManager;
+	
     protected $test = null;
    
     protected $id = null;
       
-    public function __construct(TestManager $testManager, TestSetupManager $testSetupManager)
+    public function __construct(
+		TestManager $testManager, 
+		TestSetupManager $testSetupManager,
+		ICommentForm $commentForm,
+		MessageManager $messageManager
+	)
     {
         $this->testManager = $testManager;
         $this->testSetupManager = $testSetupManager;
+        $this->commentForm = $commentForm;
+        $this->messageManager = $messageManager;
     }
     
     public function render()
     {
         $this->template->test = $this->getTest();
+        $this->template->messageId = $this->getTest()->setup->messageId;
         $this->template->activeGroup = $this->presenter->activeGroup;
         parent::render();
     }
@@ -55,11 +71,27 @@ class Test extends \App\Components\BaseComponent
         return $this->test;
     }
     
-    public function setTest($id, $test)
+    public function setTest($id, $test, $group)
     {
         $this->id = $id;
         if($test) {
             $this->test = $test;
-        }
+        } else {
+			$this->test = $this->testManager->getGroupTests($group, [$id])[$id];
+		}
+    }
+	
+	public function createComponentCommentForm()
+    {
+        return new \Nette\Application\UI\Multiplier(function ($idMessage) {
+            $commentForm = $this->commentForm->create();
+			$message = new \App\Model\Entities\Message();
+			$message->id = $idMessage;
+            $commentForm->setMessage($message);
+            if(isset($this->parent->parent->comments[$idMessage])) {
+                $commentForm->setComments($this->parent->parent->comments[$idMessage]);
+            }
+            return $commentForm;
+        });
     }
 }

@@ -1,0 +1,19 @@
+<div class="message-info">
+    <div class="message-score">
+        <div class="rate-btn waves-effect waves-dark">
+            <i class="material-icons thumb-up">thumb_up</i>
+            <span class="count">13</span>
+        </div>
+        <div class="rate-btn waves-effect waves-dark rated">
+            <i class="material-icons thumb-down">thumb_down</i>
+            <span class="count">2</span>
+        </div>
+    </div>
+    <div class="flex-spacer">
+    </div>
+    <ul class="seen tooltipped" data-position="top" data-tooltip="{count($message->displayedBy)|counting:['Viděl', 'Viděli'], false} to {count($message->displayedBy)|counting:['žák', 'žáci', 'žáků']}">
+        {foreach $message->displayedBy as $avatar}
+            <li class="avatar"><img src="{$avatar}" style="background: #ddd"></li>
+        {/foreach}
+    </ul>
+</div>

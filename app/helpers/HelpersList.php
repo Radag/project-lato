@@ -40,6 +40,23 @@ class HelpersList
         return $return;
     }
     
+	public static function getWordCounting($number, $words, $withNumber = true) 
+	{
+		$word = "";
+		if($number == 1) {
+			$word = $words[0];
+		} elseif($number < 5) {
+			$word = $words[1];
+		} else {
+			$word = isset($words[2]) ? $words[2] : $words[1];
+		}
+		if($withNumber) {
+			return $number . " " . $word;
+		} else {
+			return $word;
+		}
+	}	
+	
     public static function attachTypeIco($type)
     {
         if($type === 'image') {

@@ -28,6 +28,8 @@ class Message extends AbstractEntity
     public $create_classification = null;
     public $isCreator = false;
     public $links;
+    public $displayed = false;
+    public $displayedBy = [];
     
     public function getType()
     {

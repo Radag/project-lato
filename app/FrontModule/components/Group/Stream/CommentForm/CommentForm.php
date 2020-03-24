@@ -58,6 +58,7 @@ class CommentForm extends \App\Components\BaseComponent
         $this->messageManager->createComment($comment);
         
         $this['form']['text']->setValue('');
+        $this['replyForm']['text']->setValue('');
         $this->comments = $this->messageManager->getMessageComments($this->message->id);
         $this->redrawControl('comments');
     }

@@ -108,7 +108,8 @@ class MessageManager extends BaseManager {
                         T8.title,
                         T5.create_classification,
                         T9.id AS id_classification_group,
-                        T11.grade
+                        T11.grade,
+                        T12.created AS displayed
                 FROM message T1 
                 LEFT JOIN user T2 ON T1.user_id=T2.id 
                 JOIN user_real T10 ON T10.id=T2.id
@@ -117,9 +118,10 @@ class MessageManager extends BaseManager {
                 LEFT JOIN (SELECT COUNT(id) AS commit_count, task_id FROM task_commit GROUP BY task_id) T7 ON T7.task_id=T5.id
                 LEFT JOIN message_material T8 ON T1.id=T8.message_id
                 LEFT JOIN classification_group T9 ON T9.task_id = T5.id
-                LEFT JOIN classification T11 ON T11.classification_group_id = T9.id AND T11.user_id=?                       
+                LEFT JOIN classification T11 ON T11.classification_group_id = T9.id AND T11.user_id=? 
+				LEFT JOIN message_displayed T12 ON T12.user_id=? AND T12.message_id=T1.id                                     
                 WHERE T1.group_id=? AND T1.deleted IN (?) AND T1.type IN (?) 
-                ORDER BY IFNULL(T1.top, T1.created_when) DESC", $user->id, $user->id, $group->id, $delete, $filters);
+                ORDER BY IFNULL(T1.top, T1.created_when) DESC", $user->id, $user->id, $user->id, $group->id, $delete, $filters);
         
         $attachmentsData = $this->db->fetchAll("SELECT 
                     T1.id AS message_id, T3.id, T3.extension, T3.mime, T3.type, T3.full_path, T3.filename, T3.created_when, IFNULL(T3.name, T3.filename) AS name, T4.preview_full_path
@@ -139,12 +141,22 @@ class MessageManager extends BaseManager {
             $linksArray[$link->message_id][] = $link;
         }
         
+		$displayedData = $this->db->fetchPairs("SELECT T1.id AS group_id, GROUP_CONCAT(T3.profile_image) AS images FROM
+						message T1
+						JOIN message_displayed T2 ON T1.id=T2.message_id
+						JOIN user_real T3 ON T2.user_id=T3.id
+						WHERE T1.group_id = ?
+						GROUP BY T1.id", $group->id);
+		
         foreach($messages as $message) {
             $links = [];
             if(isset($linksArray[$message->id])) {
                 $links = $linksArray[$message->id];
             }
             $mess = $this->convertMesssage($message, $attachments, $user, [], $group, $links);
+			if(isset($displayedData[$message->id])) {
+				$mess->displayedBy = explode(',', $displayedData[$message->id]);
+			}
             $return[$mess->id] = $mess;
         }
         
@@ -241,6 +253,7 @@ class MessageManager extends BaseManager {
         $mess->deleted = $message->deleted;
         $mess->type = $message->type;
         $mess->isCreator = $user->id == $userObject->id;
+        $mess->displayed = $message->displayed ? true : false;
         if(isset($attachments[$mess->id])) {
             $mess->attachments = $attachments[$mess->id];
         } else {
@@ -522,4 +535,14 @@ class MessageManager extends BaseManager {
             'description' => $data->description
         ]);
     }
+	
+	public function setMessageDisplayed($messageId, $userId)
+	{
+		try {
+			$this->db->query("INSERT INTO message_displayed", [
+				'message_id' => $messageId,
+				'user_id' => $userId
+			]);
+		} catch (\Dibi\UniqueConstraintViolationException $ex) {}		
+	}
 }

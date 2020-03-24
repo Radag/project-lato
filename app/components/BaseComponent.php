@@ -23,6 +23,12 @@ class BaseComponent extends Control
         $this->template->addFilter('inputErrors', function($input) {
             return \App\Helpers\HelpersList::inputErrors($input);
         });
+		$this->template->addFilter('inputErrors', function($input) {
+            return \App\Helpers\HelpersList::inputErrors($input);
+        });
+		$this->template->addFilter('counting', function($number, $words, $withNumber = true) {
+            return \App\Helpers\HelpersList::getWordCounting($number, $words, $withNumber);
+        });
         if($this->templateName === null) {
             $this->template->setFile($this->getTemplateFilePath());
         } else {

@@ -9,6 +9,8 @@ class TestSetup extends AbstractEntity {
     public $id = null;
     public $testId = null;
     public $groupId = null;
+    public $messageId = null;
+    public $displayed = false;
     public $timeLimit = null;
     public $questionsCount = null;
     public $numberOfRepetitions = null;
@@ -17,6 +19,7 @@ class TestSetup extends AbstractEntity {
     public $classificationGroupId = null;
     public $randomSort = null;
     public $canLookAtResults = null;
+	public $displayedBy = [];
     
     /** @var \App\Model\Entities\Group **/
     public $group = null;
@@ -32,6 +35,7 @@ class TestSetup extends AbstractEntity {
     protected $mapFields = [
         'id' => 'id',
         'group_id' => 'groupId',
+        'group_message' => 'messageId',
         'test_id' => 'testId',
         'time_limit' => 'timeLimit',
         'questions_count' => 'questionsCount',        

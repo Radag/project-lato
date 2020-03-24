@@ -3,13 +3,7 @@
     <div class="comments-block">
         <div class="comments-header">
             <div class="show-comments">
-                {if count($comments) === 1}
-                    {count($comments)} komenář
-                {elseif count($comments) <= 4}
-                    {count($comments)} komenáře
-                {else}
-                    {count($comments)} komenářů
-                {/if}
+                {count($comments)|counting:['komenář', 'komenáře', 'komenářů']}
                 <i class="material-icons">expand_more</i>
             </div>            
         </div>

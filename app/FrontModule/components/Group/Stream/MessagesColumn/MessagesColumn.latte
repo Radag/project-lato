@@ -76,3 +76,37 @@
         {control testSetupForm}
     {/snippet}
 </div>
+<script>
+    getAllVisisbleElements();    
+    $(window).scroll(function() {
+        clearTimeout($.data(this, 'scrollTimer'));
+        $.data(this, 'scrollTimer', setTimeout(function() {
+            getAllVisisbleElements();
+        }, 250));
+    });
+    function getAllVisisbleElements() 
+    {
+       $(".card:not(.displayed) .card-header,.card:not(.displayed) .card-action-header").each(function(index, header) {
+            if(getElementVisible(header)) {
+                var id = $(header).closest(".card").data("message-id");
+                if(id) {
+                    $.nette.ajax({
+                        url: {link messageDisplayed!},
+                        data: {
+                            postId: id
+                        }
+                    });
+                }
+            }
+        }); 
+    }
+    
+    function getElementVisible(element) 
+    {
+        var elementTop = $(element).offset().top;
+        var elementBottom = elementTop + $(element).outerHeight();
+        var viewportTop = $(window).scrollTop();
+        var viewportBottom = viewportTop + $(window).height();
+        return elementBottom > viewportTop && elementTop < viewportBottom;
+    }
+</script>

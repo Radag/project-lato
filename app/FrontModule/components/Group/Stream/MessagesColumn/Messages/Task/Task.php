@@ -39,7 +39,7 @@ class Task extends Base
         $this->template->task = $task;
         parent::render();
     }
-
+	
     public function handleEditTaskCommit()
     {
         $this->parent['commitTaskForm']->setTask($this->getMessage()->task);

@@ -1,5 +1,5 @@
 {if $isDetail}{include taskDetailHeader $message->task}{/if}
-<div class="card flex-column {if $message->deleted == 1}card-flat{/if}" id="message-box-num_{$message->id}"> 
+<div class="card flex-column {if $message->deleted == 1}card-flat{/if} {if $message->displayed}displayed{/if}"  id="message-box-num_{$message->id}" data-message-id="{$message->id}"> 
     <div class="card-action-header">
         <div class="avatar small">
             <img src="{$message->user->profileImage}">
@@ -43,7 +43,9 @@
                 {/if}
             {/if}
         </ul>
-    </div>
+    </div>        
+    {include '../normal/info.latte'}
+    {control commentForm-$message->id}
 </div>
 
 {define taskDetailHeader $task}

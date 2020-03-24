@@ -68,7 +68,7 @@ class MessagesColumn extends \App\Components\BaseComponent
         }
         foreach($this->tests  as $test) {
             $streamMessages[$test->created->getTimestamp()] = (object)[
-                'id' => $test->id,
+                'id' => $test->setup->id,
                 'type' => 'test'
             ];
         }
@@ -86,6 +86,11 @@ class MessagesColumn extends \App\Components\BaseComponent
         $this->filter = $filter;
         $this->redrawControl();
     }
+	
+	public function handleMessageDisplayed()
+	{
+		$this->messageManager->setMessageDisplayed($this->presenter->getParameter('postId'), $this->presenter->activeUser->id);		
+	}
     
     public function createComponentTestSetupForm()
     {
@@ -117,7 +122,7 @@ class MessagesColumn extends \App\Components\BaseComponent
         return new Multiplier(function($id) 
         {
             $test = $this->testMessage->create();
-            $test->setTest($id, isset($this->tests[$id]) ? $this->tests[$id] : null);
+            $test->setTest($id, isset($this->tests[$id]) ? $this->tests[$id] : null, $this->presenter->activeGroup);
             return $test;
         });
     }
