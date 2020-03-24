@@ -1,86 +1,8 @@
 {snippet comments}
-<div class="card-comments {if count($comments) == 0}{/if}"> 
+<div class="card-comments {if count($comments) == 0}{/if}" data-message-id="{$id}"> 
     <div class="comments-block">
         <div class="comments-header">
             <div class="show-comments">
-                3 komentáře <i class="material-icons">expand_more</i>
-            </div>
-            
-        </div>
-        <div class="comments-row">
-            <a href="#" class="avatar tiny">
-                <img src="#" alt="#" style="background: #ddd;">
-            </a>
-            <div class="comment-content">
-                <a href="#" class="comment-user">
-                    Petr Šavelka
-                </a>
-                <p>Dobrý den, mohl bych poprosit o zaslání dosavadní verze hry? Nemám to na desktopu u otce a notebook jsem si nevzal, teď se tam nedostanu.</p>
-                <ul class="comment-footer">
-                    <li><a href="#">Reagovat</a></li>
-                    <li>2 dny</li>
-                </ul>
-                <div class="comment-thread">
-                    <div class="comments-row">
-                        <a href="#" class="avatar tiny">
-                            <img src="#" alt="#" style="background: #ddd;">
-                        </a>
-                        <div class="comment-content">
-                            <a href="#" class="comment-user">
-                                Petr Šavelka
-                            </a>
-                            <p>Dobrý den, mohl bych poprosit o zaslání dosavadní verze hry? Nemám to na desktopu u otce a notebook jsem si nevzal, teď se tam nedostanu.</p>
-                            <ul class="comment-footer">
-                                <li><a href="#">Reagovat</a></li>
-                                <li>2 dny</li>
-                            </ul>
-                            <div class="form-row">
-                                <textarea placeholder="Napište komentář..." class="materialize-textarea"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="comments-row">
-                        <a href="#" class="avatar tiny">
-                            <img src="#" alt="#" style="background: #ddd;">
-                        </a>
-                        <div class="comment-content">
-                            <a href="#" class="comment-user">
-                                Petr Šavelka
-                            </a>
-                            <p>Dobrý den, mohl bych poprosit o zaslání dosavadní verze hry? Nemám to na desktopu u otce a notebook jsem si nevzal, teď se tam nedostanu.</p>
-                            <ul class="comment-footer">
-                                <li><a href="#">Reagovat</a></li>
-                                <li>2 dny</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="comments-row">
-            <a href="#" class="avatar tiny">
-                <img src="#" alt="#" style="background: #ddd;">
-            </a>
-            <div class="comment-content">
-                <a href="#" class="comment-user">
-                    Petr Šavelka
-                </a>
-                <p>Dobrý den, mohl bych poprosit o zaslání dosavadní verze hry? Nemám to na desktopu u otce a notebook jsem si nevzal, teď se tam nedostanu.</p>
-                <ul class="comment-footer">
-                    <li><a href="#">Reagovat</a></li>
-                    <li>2 dny</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-        {if count($comments) > 0}
-        <div class="comments-header">
-            <div onclick="latoShowAllComments(this);" data-opened="false" class="comments-count">
                 {if count($comments) === 1}
                     {count($comments)} komenář
                 {elseif count($comments) <= 4}
@@ -88,63 +10,104 @@
                 {else}
                     {count($comments)} komenářů
                 {/if}
-            </div>     
+                <i class="material-icons">expand_more</i>
+            </div>            
         </div>
-        <div class="comments-block">
-           {foreach $comments as $comm}
-                <div class="comment-row" {if !$iterator->isLast()}style="display: none;"{/if}>
-                    <a href="{plink Profile:default 'id'=>$comm->user->slug}" class="avatar tiny">
-                        <img src="{$comm->user->profileImage}" alt="{$comm->user->name}">
+        {foreach $comments as $comm}
+            <div class="comments-row">
+                <a href="{plink Profile:default 'id'=>$comm->user->slug}" class="avatar tiny">
+                    <img src="{$comm->user->profileImage}" alt="{$comm->user->name}" style="background: #ddd;">
+                </a>
+                <div class="comment-content main-thread">
+                    <a href="#" class="comment-user">
+                        {$comm->user->name} {$comm->user->surname}
                     </a>
-                    <div class="comment-content">
-                        <div class="comment-header">
-                            <a href="{plink Profile:default 'id'=>$comm->user->slug}">{$comm->user->name} {$comm->user->surname}</a>
-                            <div class="flex-spacer"></div>
-                            <span>
-                            {if $comm->sinceStart->d >= 1}
-                                {$comm->created|date:"j. n."}
-                            {else}
-                                {$comm->created|date:"h:i"}
-                            {/if}
-                            </span>
+                    <p>{$comm->text|breaklines}</p>
+                    <ul class="comment-footer">
+                        <li><a href="#" class="reply-button" data-reply-id="{$comm->id}" >Reagovat</a></li>
+                        <li>{$comm->dateText}</li>
+                    </ul>
+                    {if is_array($comm->replies)}
+                    <div class="comment-thread">                   
+                        {foreach $comm->replies as $reply}
+                        <div class="comments-row">
+                            <a href="{plink Profile:default 'id'=>$reply->user->slug}" class="avatar tiny">
+                                <img src="{$reply->user->profileImage}" alt="{$reply->user->name}" style="background: #ddd;">
+                            </a>
+                            <div class="comment-content">
+                                <a href="#" class="comment-user">
+                                    {$reply->user->name} {$reply->user->surname}
+                                </a>
+                                <p>{$reply->text|breaklines}</p>
+                                <ul class="comment-footer">
+                                    <li><a href="#" class="reply-button" data-reply-id="{$comm->id}" data-reply-name="{$reply->user->name}" >Reagovat</a></li>
+                                    <li>{$reply->dateText}</li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="comment-text {if $iterator->isLast()}truncate{/if}">{$comm->text|breaklines}</div>
+                        {/foreach}
                     </div>
+                    {/if}
                 </div>
-           {/foreach}
-        </div>
-        {/if}
+            </div>
+        {/foreach}
+    </div>
     <div class="comments-footer clearfix">
         {if $showForm}
             {form form}
-            <div class="avatar tiny">
-                <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
-            </div>
-            <div class="textarea-wrapper">
-                {input text class => 'materialize-textarea no-border'}
-            </div>
-            <button style="display: none;" class="btn waves-effect waves-dark refresh-wall-messages" type="submit" name="action">
-                přidat
-            </button>
+                <div class="avatar tiny">
+                    <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
+                </div>
+                <div class="textarea-wrapper">
+                    {input text class => 'materialize-textarea no-border'}
+                </div>
+                <button style="display: none;" class="btn waves-effect waves-dark" type="submit" name="action">
+                    přidat
+                </button>
             {/form}
-            <script>
-                $(document).ready(function(){
-                    $(".card-comments .textarea-wrapper textarea").off('keyup').on('keyup', function(){
-                        if($(this).val().length > 0) {
-                            $(this).parents(".comments-footer").find("button").show();
-                        } else {
-                            $(this).parents(".comments-footer").find("button").hide();
-                        }
-                    });
-                });
-            </script>    
-        {else}
-            <div class="comments-locked">
-                <i class="material-icons">lock</i>
-                <p>Smazané příspěvky není možné komentovat.</p>
-            </div>
+            <div class="form-row" style="display:none;" id="message-comment-reply-form-{$id}">
+                {form replyForm}
+                    <div class="avatar tiny">
+                        <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
+                    </div>
+                    <div class="textarea-wrapper">
+                        {input text class => 'materialize-textarea no-border'}
+                    </div>
+                    <button style="display: none;" class="btn waves-effect waves-dark" type="submit" name="action">
+                        přidat
+                    </button>
+                {/form}
+            </div>            
         {/if}
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+        $(".card-comments").off("keyup").on('keyup', function(e){
+            if($(e.target).is("textarea")) {
+                if($(e.target).val().length > 0) {
+                    $(e.target).closest("form").find("button").show();
+                } else {
+                    $(e.target).closest("form").find("button").hide();
+                }
+            }            
+        });
+        
+        $(".reply-button").off("click").on("click", function(e) {
+            e.preventDefault();
+            var messageId = $(this).closest('.card-comments').data("message-id");
+            var thread = $(this).closest(".comment-content.main-thread").find(".comment-thread");
+            if(thread.length === 0) {
+                $(this).closest(".comment-content.main-thread").append('<div class="comment-thread"></div>');
+                thread = $(this).closest(".comment-content.main-thread").find(".comment-thread");
+            }
+            var form = $("#message-comment-reply-form-" + messageId);
+            form.find("input[name='idReply']").val($(this).data("reply-id"));         
+     
+            thread.append(form);
+            form.show();
+        });
+    });
+</script> 
 {/snippet}
 

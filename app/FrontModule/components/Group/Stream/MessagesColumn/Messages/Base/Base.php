@@ -83,13 +83,13 @@ abstract class Base extends \App\Components\BaseComponent
     {
         return new \Nette\Application\UI\Multiplier(function ($idMessage) {
             $commentForm = $this->commentForm->create();
-            if(isset($this->messages[$idMessage])) {
-                $commentForm->setMessage($this->messages[$idMessage]);
+            if(isset($this->parent->parent->messages[$idMessage])) {
+                $commentForm->setMessage($this->parent->parent->messages[$idMessage]);
             } else {
                 $commentForm->setMessage($this->messageManager->getMessage($idMessage, $this->presenter->activeUser, $this->presenter->activeGroup));
             }
-            if(isset($this->comments[$idMessage])) {
-                $commentForm->setComments($this->comments[$idMessage]);
+            if(isset($this->parent->parent->comments[$idMessage])) {
+                $commentForm->setComments($this->parent->parent->comments[$idMessage]);
             }
             return $commentForm;
         });

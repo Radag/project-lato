@@ -33,9 +33,9 @@ class MessagesColumn extends \App\Components\BaseComponent
      
     protected $filter = 'all';
         
-    protected $messages = [];    
-    protected $tests = [];
-    protected $comments = [];
+    public $messages = [];    
+    public $tests = [];
+    public $comments = [];
     
     public function __construct(
         MessageManager $messageManager,           
@@ -96,8 +96,8 @@ class MessagesColumn extends \App\Components\BaseComponent
     {
         return new Multiplier(function($id) 
         {
-            $normal = $this->normalMessage->create();            
-            $normal->setMessage($id, isset($this->message[$id]) ? $this->message[$id] : null);
+            $normal = $this->normalMessage->create();
+            $normal->setMessage($id, isset($this->messages[$id]) ? $this->messages[$id] : null);
             return $normal;
         });
     }
@@ -107,7 +107,7 @@ class MessagesColumn extends \App\Components\BaseComponent
         return new Multiplier(function($id) 
         {
             $task = $this->taskMessage->create();
-            $task->setMessage($id, isset($this->message[$id]) ? $this->message[$id] : null);
+            $task->setMessage($id, isset($this->messages[$id]) ? $this->messages[$id] : null);
             return $task;
         });
     }

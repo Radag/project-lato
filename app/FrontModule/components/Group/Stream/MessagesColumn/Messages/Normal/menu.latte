@@ -14,10 +14,10 @@
         {/if}
         {if $message->isCreator || $activeGroup->relation === 'owner'}
             <li class="divider"></li>
-            <li><a href="#" data-link="{link deleteMessage! idMessage=>$message->id}" class="delete-message-button refresh-wall-messages">Smazat</a></li>
+            <li><a href="#" data-link="{link deleteMessage! idMessage=>$message->id}" class="delete-message-button">Smazat</a></li>
         {/if}
     {elseif $message->isCreator || $activeGroup->relation === 'owner'}        
-        <li><a href="{link renewMessage! idMessage=>$message->id}" class="ajax refresh-wall-messages">Obnovit</a></li>
+        <li><a href="{link renewMessage! idMessage=>$message->id}" class="ajax">Obnovit</a></li>
     {/if}
     {*<li><a href="#share-post_{$message->id}" class="modal-trigger">Znovu použít příspěvek</a></li>*}
     {if $message->isCreator || $activeGroup->relation === 'owner'}

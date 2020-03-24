@@ -33,24 +33,32 @@ class CommentForm extends \App\Components\BaseComponent
              ->setMaxLength(300)
              ->setRequired('Napište zprávu')
              ->addRule(\Nette\Forms\Form::FILLED, 'Zpráva musí obsahovat text');
-        $form->addHidden('idMessage', $this->message->id);
         $form->addSubmit('send', 'Publikovat');
-        //$link = $this->presenter->link('this', array('id'=>$this->getParent()->getParent()->getActiveGroup()->id));
         $form->onSuccess[] = [$this, 'processForm'];
+        return $form;
+    }
+	
+	protected function createComponentReplyForm()
+    {
+        $form = $this->createComponentForm();		
+        $form->addHidden('idReply');
         return $form;
     }
     
     public function processForm(Form $form, $values) 
-    {
+    {		
         $comment = new \App\Model\Entities\Comment();
         $comment->text = trim($values->text);
         $comment->user = $this->presenter->activeUser;
-        $comment->idMessage = $values->idMessage;
+        $comment->idMessage = $this->message->id;
+		if(isset($values->idReply)) {
+			$comment->replyCommentId = $values->idReply;
+		}
         
         $this->messageManager->createComment($comment);
         
         $this['form']['text']->setValue('');
-        $this->comments = $this->messageManager->getMessageComments($values->idMessage);
+        $this->comments = $this->messageManager->getMessageComments($this->message->id);
         $this->redrawControl('comments');
     }
     
