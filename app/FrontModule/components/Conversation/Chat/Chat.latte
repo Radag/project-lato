@@ -1,9 +1,9 @@
 <section class="main" id="message-detail">
     <script src="/js/ckeditor/ckeditor.js"></script>
+    <div class="flex-spacer"></div> 
     <div class="container offset-1">
-        <div class="flex-spacer"></div>
         <div class="row">
-            <div class="col s12" n:snippet="conversation-list">
+            <div class="col s12 no-cards" n:snippet="conversation-list">
                 <div class="conversation" n:snippet="conversation-list-messages">
                     {var $last = null}
                     {var $lastDate = new \Datetime()}                    
@@ -47,51 +47,7 @@
                         {var $lastDate = $message->created}
                     {/foreach}
                 </div>
-                {form form class=>'ajax', id=>"message-sent-form"}
-
                 
-                <div class="message-editor">
-                    <div class="card">
-                        <div class="textarea-wrapper">
-                                {input text class=>'materialize-textarea no-border', id=>'new-message-area'}
-                        </div>
-                    </div>
-
-                    <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form">Odeslat</button>
-                </div>
-                    {/form}
-                    <script>
-                        $(document).ready(function () {
-                            var lastHeight = $("#new-message-area").height() + 1;
-                            var defaultWight = $(".conversation").css('padding-bottom').match(/\d+/g).map(Number)[0];
-                            $('html,body').animate({ scrollTop: document.body.scrollHeight },"fast");
-                            $("#new-message-area").on('keypress', function(e) {
-                                if (e.keyCode==13 && !e.shiftKey) {
-                                    e.preventDefault();
-                                    $("#message-sent-form button").click();
-                                } else {
-                                    setTimeout(function(){
-                                        if(lastHeight != $("#new-message-area").height()) {
-                                            $(".conversation").css('padding-bottom', defaultWight + $("#new-message-area").height());
-                                            $('html,body').animate({ scrollTop: document.body.scrollHeight },0);
-                                        }   
-                                    }, 100);  
-                                }         
-                            });
-                            setInterval(function(){
-                                $.nette.ajax({
-                                    url: {link reloadMessages!}
-                                }); 
-                            }, 5000); 
-                        });
-                    </script>
-                    <style>
-                        #cke_new-message-area {
-                            border: 0px;
-                        }
-                        
-                    </style>
-                </div>
             </div>
         </div>
 
@@ -118,41 +74,41 @@
                 <h3>Upravit konverzaci</h3>
                 <p>Tito uživatelé jsou součástí konverzace</p>
                 <ul class="custom-collection">
-                        <li>
-                            <div class="item">
-                                <div class="avatar small">
-                                    <img src="https://cdn.lato.cz/users/3_petr-savelka/profile/1519691465_413.JPG">
-                                </div>
-                                <a href="profil-uzivatele" class="label">
-                                    <span class="title truncate">Petr Šavelka</span>
-                                </a>
-                                <div class="flex-spacer"></div>
-                                <button class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" id="user-action-button" data-target="remove1">
-                                    <i class="material-icons">more_horiz</i>
-                                </button>
-                                <ul id='remove1' class='dropdown-content'>
-                                    <li><a href="" id="add-user-classification-button" >Odebrat z konverzace</a></li>                                            
-                                </ul>
+                    <li>
+                        <div class="item">
+                            <div class="avatar small">
+                                <img src="https://cdn.lato.cz/users/3_petr-savelka/profile/1519691465_413.JPG">
                             </div>
-                        </li>
+                            <a href="profil-uzivatele" class="label">
+                                <span class="title truncate">Petr Šavelka</span>
+                            </a>
+                            <div class="flex-spacer"></div>
+                            <button class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" id="user-action-button" data-target="remove1">
+                                <i class="material-icons">more_horiz</i>
+                            </button>
+                            <ul id='remove1' class='dropdown-content'>
+                                <li><a href="" id="add-user-classification-button" >Odebrat z konverzace</a></li>                                            
+                            </ul>
+                        </div>
+                    </li>
 
-                        <li>
-                            <div class="item">
-                                <div class="avatar small">
-                                    <img src="/images/default-avatar_man.png">
-                                </div>
-                                <a href="profil_uzivatele" class="label">
-                                    <span class="title truncate">Petr Pokusný</span>
-                                </a>
-                                <div class="flex-spacer"></div>
-                                <button class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" id="user-action-button" data-target="remove2">
-                                    <i class="material-icons">more_horiz</i>
-                                </button>
-                                <ul id='remove2' class='dropdown-content'>
-                                    <li><a href="" id="add-user-classification-button" >Odebrat z konverzace</a></li>                                            
-                                </ul>
+                    <li>
+                        <div class="item">
+                            <div class="avatar small">
+                                <img src="/images/default-avatar_man.png">
                             </div>
-                        </li>
+                            <a href="profil_uzivatele" class="label">
+                                <span class="title truncate">Petr Pokusný</span>
+                            </a>
+                            <div class="flex-spacer"></div>
+                            <button class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" id="user-action-button" data-target="remove2">
+                                <i class="material-icons">more_horiz</i>
+                            </button>
+                            <ul id='remove2' class='dropdown-content'>
+                                <li><a href="" id="add-user-classification-button" >Odebrat z konverzace</a></li>                                            
+                            </ul>
+                        </div>
+                    </li>
                 </ul>
             </div>
             <div class="modal-footer">
@@ -162,4 +118,50 @@
                 </div>
             </div>
         </div>
+    </div>
+
+        {form form class=>'ajax', id=>"message-sent-form", class => "message-editor"}
+        <div class="container offset-1">
+            <div class="card">
+                <div class="textarea-wrapper">
+                    {input text class=>'materialize-textarea no-border', id=>'new-message-area'}
+                </div>
+
+            </div>
+            <button type="submit" class="waves-effect waves-light btn btn-confirm submit-message-form">Odeslat</button>
+        </div>
+        {/form}
+        <script>
+
+                        
+                        $(document).ready(function () {
+                            var lastHeight = $("#new-message-area").height() + 1;
+                            var defaultWight = $(".conversation").css('padding-bottom').match(/\d+/g).map(Number)[0];
+                            $('html,body').animate({ scrollTop: document.body.scrollHeight },"fast");
+                            $("#new-message-area").on('keypress', function(e) {
+                                if (e.keyCode==13 && !e.shiftKey) {
+                                    e.preventDefault();
+                                    $("#message-sent-form button").click();
+                                } else {
+                                    setTimeout(function(){
+                                        if(lastHeight != $("#new-message-area").height()) {
+                                            $(".conversation").css('padding-bottom', defaultWight + $("#new-message-area").height());
+                                            $('html,body').animate({ scrollTop: document.body.scrollHeight },0);
+                                        }   
+                                    }, 100);  
+                                }         
+                            });
+                            setInterval(function(){
+                                $.nette.ajax({
+                                    url: {link reloadMessages!}
+                                }); 
+                            }, 5000); 
+                        }); 
+                    </script>
+                    <style>
+                        #cke_new-message-area {
+                            border: 0px;
+                        }
+                        
+                    </style>
     </section>

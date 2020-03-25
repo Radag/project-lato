@@ -1,7 +1,6 @@
 /* CSS */
 
 /* VARIABLES */
-
 @primary-text-color: rgba(0, 0, 0, .87);
 @secondary-text-color: rgba(0, 0, 0, .5);
 @secondary-text-color-light: rgba(0, 0, 0, .35);
@@ -90,6 +89,10 @@ body {
 .row {
     .col {
         padding: 0;
+
+        &.no-cards {
+            padding: 0 1rem;
+        }
     }
 }
 
@@ -3209,16 +3212,25 @@ nav .nav-title {
 }
 
 #message-detail {
-    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: calc(~'100vh - 70px');
 
     .container {
         display: flex;
         flex-direction: column;
-        min-height: calc(~'100vh - 102px');
+    }
+
+    & > .container {
+        padding-bottom: 6rem;
+        box-sizing: border-box;
     }
 
     .conversation {
-        padding-bottom: 96px;
+        padding-bottom: 1rem;
 
         .time-bubble-row {
             display: flex;
@@ -3278,6 +3290,10 @@ nav .nav-title {
                 .card-content {
                     padding-top: 16px;
                     padding-bottom: 16px;
+
+                    p {
+                        margin: 0;
+                    }
                 }
             }
 
@@ -3289,14 +3305,18 @@ nav .nav-title {
                     border-top-left-radius: 12px;
                     border-bottom-right-radius: 12px;
                     border-bottom-left-radius: 12px;
-                    background-color: #f2f2f2;
+                    background-color: @primary-color;
                     box-shadow: 0 1px 3px rgba(0, 0, 0, .25);
+
+                    p {
+                        color: #fff;
+                    }
 
                     &:before {
                         right: -8px;
                         -webkit-transform: skew( -45deg );
                         box-shadow: 2px -1px 2px rgba(0, 0, 0, .06);
-                        background-color: #f2f2f2;
+                        background-color: @primary-color;
                     }
 
                     &.simple-bubble {
@@ -3342,19 +3362,24 @@ nav .nav-title {
     }
 
     .message-editor {
-        display: flex;
-        align-items: stretch;
-        margin: 1rem 0 0 0;
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+        left: 0;
         margin-bottom: 2rem;
+
+        .container {
+            flex-direction: row;
+        }
 
         .card {
             flex-grow: 1;
+            flex-shrink: 1;
             margin: 0;
 
 
 
             .textarea-wrapper {
-                width: calc(~'100% - 128px');
                 display: flex;
                 align-items: center;
                 padding: 1rem 1.5rem;
@@ -3373,6 +3398,7 @@ nav .nav-title {
             height: 3.5rem;
             line-height: 3.5rem;
             align-self: flex-end;
+            flex-shrink: 1;
         }
 
         .card-footer {
