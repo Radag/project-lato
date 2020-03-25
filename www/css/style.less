@@ -4,6 +4,7 @@
 
 @primary-text-color: rgba(0, 0, 0, .87);
 @secondary-text-color: rgba(0, 0, 0, .5);
+@secondary-text-color-light: rgba(0, 0, 0, .35);
 @background-highlighted: rgba(0, 0, 0, .05);
 @card-flat: rgba(0, 0, 0, .05);
 @icon-background: rgba(0, 0, 0, .03);
@@ -3897,42 +3898,48 @@ nav .nav-title {
         align-items: center;
         padding: 1.5rem;
 
-        .message-score {
+        .message-settings {
             display: flex;
             align-items: center;
 
-            .rate-btn {
+            .settings-btn {
                 height: 36px;
                 border: 1px solid @line-color;
                 border-radius: 3px;
                 cursor: pointer;
                 display: flex;
                 align-items: center;
-                padding: 0 .5rem;
+                padding: 0 .75rem;
                 justify-content: center;
                 margin-right: .25rem;
-                width: 4rem;
 
                 i.material-icons {
                     font-size: 1.25rem;
-                    margin-right: .5rem;
-                }
-
-                .thumb-up {
-                    color: #59C24B;
-                }
-
-                .thumb-down {
-                    color:  #999;
+                    color: @secondary-text-color-light;
                 }
 
                 .count {
                     color: @secondary-text-color;
+                    margin-left: .25rem;
                 }
 
-                &.rated {
-                    border: none;
-                    background-color: @background-highlighted;
+                &.active.thumb-up {
+                    
+                    i.material-icons {
+                        color: #59C24B;
+                    }
+
+                    span {
+                        color: #59C24B;
+                        font-weight: 500;
+                    }
+                }
+
+                &.active.visibility {
+
+                    i.material-icons {
+                        color: @hyperlink-color;
+                    }
                 }
             }
         }
@@ -4020,13 +4027,30 @@ nav .nav-title {
                         color: @secondary-text-color;
 
                         &:not(:last-child):after {
-                            content: "·";
+                            content: "\2219";
                             margin: 0 .25rem;
                         }
 
                         a {
                             color: @secondary-text-color;
                         }
+                    }
+                }
+
+                .show-replies {
+                    display: flex;
+                    align-items: center;
+                    padding-top: .75rem;
+
+                    i.material-icons {
+                        color: @secondary-text-color-light;
+                        margin-right: .5rem;
+                    }
+
+                    span {
+                        color: @hyperlink-color;
+                        cursor: pointer;
+                        font-size: .8125rem;
                     }
                 }
 
@@ -4043,8 +4067,32 @@ nav .nav-title {
                     }
                 }
 
-                .form-row {
-                    margin-top: 1rem;
+                .form-row.reply {
+                    align-items: flex-start;
+                    padding: .75rem 0;
+
+                    .avatar {
+                        margin-top: 4px;
+                        margin-bottom: 4px;
+                    }
+
+                    .textarea-wrapper {
+                        flex-grow: 1;
+                        display: flex;
+                        align-items: center;
+                        min-height: 40px;
+
+                        textarea.materialize-textarea {
+                            padding: 9px 0 !important;
+                            width: 100%;
+                            min-height:40px !important;
+                        }
+                    }
+
+                    button {
+                        margin-left: .75rem;
+                        align-self: flex-end;
+                    }
                 }
             }
         }

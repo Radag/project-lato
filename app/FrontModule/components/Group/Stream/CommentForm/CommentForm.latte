@@ -21,8 +21,14 @@
                         <li><a href="#" class="reply-button" data-reply-id="{$comm->id}" >Reagovat</a></li>
                         <li>{$comm->dateText}</li>
                     </ul>
+
+                    <div class="show-replies">
+                        <i class="material-icons">reply</i>
+                        <span>3 komentáře</span>
+                    </div> 
+
                     {if is_array($comm->replies)}
-                    <div class="comment-thread">                   
+                    <div class="comment-thread">                    
                         {foreach $comm->replies as $reply}
                         <div class="comments-row">
                             <a href="{plink Profile:default 'id'=>$reply->user->slug}" class="avatar tiny">
@@ -59,13 +65,13 @@
                     přidat
                 </button>
             {/form}
-            <div class="form-row" style="display:none;" id="message-comment-reply-form-{$id}">
-                {form replyForm}
+            <div style="display:none;" id="message-comment-reply-form-{$id}">
+                {form replyForm class => 'form-row reply'}
                     <div class="avatar tiny">
                         <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
                     </div>
                     <div class="textarea-wrapper">
-                        {input text class => 'materialize-textarea no-border'}
+                        {input text class => 'materialize-textarea'}
                     </div>
                     <button style="display: none;" class="btn waves-effect waves-dark" type="submit" name="action">
                         přidat
