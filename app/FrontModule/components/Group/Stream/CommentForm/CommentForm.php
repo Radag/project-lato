@@ -3,13 +3,13 @@
 namespace App\FrontModule\Components\Stream;
 
 use \Nette\Application\UI\Form;
-use App\Model\Manager\MessageManager;
 use App\Model\Manager\UserManager;
+use App\Model\Manager\CommentsManager;
 
 class CommentForm extends \App\Components\BaseComponent
 {
-    /** @var MessageManager */
-    protected $messageManager;
+	/** @var CommentsManager */
+    protected $commentsManager;
     
     /** @var UserManager */
     protected $userManager;
@@ -18,16 +18,19 @@ class CommentForm extends \App\Components\BaseComponent
     
     protected $comments = [];
       
-    public function __construct(MessageManager $messageManager, UserManager $userManager)
+    public function __construct(
+		UserManager $userManager,
+		CommentsManager $commentsManager
+	)
     {
-        $this->messageManager = $messageManager;
         $this->userManager = $userManager; 
+        $this->commentsManager = $commentsManager; 
     }
     
     protected function createComponentForm()
     {
         $form = $this->getForm();
-        $form->getElementPrototype()->class('ajax');
+        $form->getElementPrototype();
         $form->addTextArea('text', 'Zpráva')
              ->setAttribute('placeholder', 'Napište komentář ...')
              ->setMaxLength(300)
@@ -55,18 +58,23 @@ class CommentForm extends \App\Components\BaseComponent
 			$comment->replyCommentId = $values->idReply;
 		}
         
-        $this->messageManager->createComment($comment);
+        $this->commentsManager->createComment($comment);
         
         $this['form']['text']->setValue('');
         $this['replyForm']['text']->setValue('');
-        $this->comments = $this->messageManager->getMessageComments($this->message->id);
+        $this->comments = $this->commentsManager->getMessageComments($this->message->id);
         $this->redrawControl('comments');
     }
     
     public function render()
     {
-        $this->template->comments = $this->comments;
-        $this->template->discutionMembers = $this->getDicscutionMembers();
+		if($this->comments) {
+			$this->template->comments = $this->comments->comments;
+			$this->template->commentsCount = $this->comments->count;
+		} else {
+			$this->template->comments = [];
+			$this->template->commentsCount = 0;
+		}        
         $this->template->activeUser = $this->presenter->activeUser;
         $this->template->id = $this->message->id;
         $this->template->showForm = $this->message->deleted == 0;
@@ -82,17 +90,4 @@ class CommentForm extends \App\Components\BaseComponent
     {
         $this->comments = $comments;
     }
-    
-    public function getDicscutionMembers() 
-    {
-        $membr = [];   ; 
-        foreach($this->comments as $c) {
-            $id = (int)$c->user->id;
-            if(!array_key_exists($id, $membr)) {
-                $membr[$id] = $c->user;
-            }
-        }
-        return $membr;
-    }
-
 }

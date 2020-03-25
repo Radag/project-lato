@@ -1,6 +1,7 @@
 services:
-    - App\Model\Manager\UserManager  
-    - App\Model\Manager\MessageManager 
+    - App\Model\Manager\UserManager
+    - App\Model\Manager\MessageManager
+    - App\Model\Manager\CommentsManager
     - App\Model\Manager\GroupManager 
     - App\Model\Manager\NotificationManager
     - App\Model\Manager\FileManager

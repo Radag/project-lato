@@ -5,7 +5,6 @@ namespace App\FrontModule\Components\Stream\Messages;
 use App\Model\Manager\TestManager;
 use App\Model\Manager\TestSetupManager;
 use App\FrontModule\Components\Stream\ICommentForm;
-use App\Model\Manager\MessageManager;
 
 class Test extends \App\Components\BaseComponent
 {
@@ -16,10 +15,7 @@ class Test extends \App\Components\BaseComponent
     protected $testSetupManager;
      
 	/** @var ICommentForm **/
-    protected $commentForm;
-	
-	/** @var MessageManager */
-    protected $messageManager;
+    protected $commentForm;	
 	
     protected $test = null;
    
@@ -28,14 +24,12 @@ class Test extends \App\Components\BaseComponent
     public function __construct(
 		TestManager $testManager, 
 		TestSetupManager $testSetupManager,
-		ICommentForm $commentForm,
-		MessageManager $messageManager
+		ICommentForm $commentForm
 	)
     {
         $this->testManager = $testManager;
         $this->testSetupManager = $testSetupManager;
         $this->commentForm = $commentForm;
-        $this->messageManager = $messageManager;
     }
     
     public function render()

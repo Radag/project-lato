@@ -43,7 +43,9 @@ class HelpersList
 	public static function getWordCounting($number, $words, $withNumber = true) 
 	{
 		$word = "";
-		if($number == 1) {
+		if($number == 0) {
+			$word = isset($words[2]) ? $words[2] : $words[1];
+		} elseif($number == 1) {
 			$word = $words[0];
 		} elseif($number < 5) {
 			$word = $words[1];

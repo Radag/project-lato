@@ -1,14 +1,15 @@
+
+<div class="card-comments {if count($comments) == 0}{/if}" data-message-id="{$id}">
 {snippet comments}
-<div class="card-comments {if count($comments) == 0}{/if}" data-message-id="{$id}"> 
     <div class="comments-block">
         <div class="comments-header">
             <div class="show-comments">
-                {count($comments)|counting:['komenář', 'komenáře', 'komenářů']}
+                {$commentsCount|counting:['komenář', 'komenáře', 'komenářů']}
                 <i class="material-icons">expand_more</i>
             </div>            
         </div>
         {foreach $comments as $comm}
-            <div class="comments-row">
+            <div class="comments-row" {if !$iterator->isLast()}style="display: none;"{/if} data-comment-id="{$comm->id}">
                 <a href="{plink Profile:default 'id'=>$comm->user->slug}" class="avatar tiny">
                     <img src="{$comm->user->profileImage}" alt="{$comm->user->name}" style="background: #ddd;">
                 </a>
@@ -20,33 +21,31 @@
                     <ul class="comment-footer">
                         <li><a href="#" class="reply-button" data-reply-id="{$comm->id}" >Reagovat</a></li>
                         <li>{$comm->dateText}</li>
-                    </ul>
-
-                    <div class="show-replies">
-                        <i class="material-icons">reply</i>
-                        <span>3 komentáře</span>
-                    </div> 
-
-                    {if is_array($comm->replies)}
-                    <div class="comment-thread">                    
-                        {foreach $comm->replies as $reply}
-                        <div class="comments-row">
-                            <a href="{plink Profile:default 'id'=>$reply->user->slug}" class="avatar tiny">
-                                <img src="{$reply->user->profileImage}" alt="{$reply->user->name}" style="background: #ddd;">
-                            </a>
-                            <div class="comment-content">
-                                <a href="#" class="comment-user">
-                                    {$reply->user->name} {$reply->user->surname}
+                    </ul>                  
+                    {if is_array($comm->replies) && count($comm->replies) > 0}
+                        <div class="show-replies">
+                            <i class="material-icons">reply</i>
+                            <span>{count($comm->replies)|counting:['komenář', 'komenáře', 'komenářů']}</span>
+                        </div> 
+                        <div class="comment-thread" style="display: none;">                    
+                            {foreach $comm->replies as $reply}
+                            <div class="comments-row">
+                                <a href="{plink Profile:default 'id'=>$reply->user->slug}" class="avatar tiny">
+                                    <img src="{$reply->user->profileImage}" alt="{$reply->user->name}" style="background: #ddd;">
                                 </a>
-                                <p>{$reply->text|breaklines}</p>
-                                <ul class="comment-footer">
-                                    <li><a href="#" class="reply-button" data-reply-id="{$comm->id}" data-reply-name="{$reply->user->name}" >Reagovat</a></li>
-                                    <li>{$reply->dateText}</li>
-                                </ul>
+                                <div class="comment-content">
+                                    <a href="#" class="comment-user">
+                                        {$reply->user->name} {$reply->user->surname}
+                                    </a>
+                                    <p>{$reply->text|breaklines}</p>
+                                    <ul class="comment-footer">
+                                        <li><a href="#" class="reply-button" data-reply-id="{$comm->id}" data-reply-name="{$reply->user->name}" >Reagovat</a></li>
+                                        <li>{$reply->dateText}</li>
+                                    </ul>
+                                </div>
                             </div>
+                            {/foreach}
                         </div>
-                        {/foreach}
-                    </div>
                     {/if}
                 </div>
             </div>
@@ -54,32 +53,33 @@
     </div>
     <div class="comments-footer clearfix">
         {if $showForm}
-            {form form}
+            {form form class=>"ajax"}
                 <div class="avatar tiny">
                     <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
                 </div>
                 <div class="textarea-wrapper">
                     {input text class => 'materialize-textarea no-border'}
                 </div>
-                <button style="display: none;" class="btn waves-effect waves-dark" type="submit" name="action">
+                <button style="display: none;" class="btn waves-effect waves-dark comment-submit-form" type="submit" name="action">
                     přidat
                 </button>
             {/form}
             <div style="display:none;" id="message-comment-reply-form-{$id}">
-                {form replyForm class => 'form-row reply'}
+                {form replyForm class=>'form-row reply ajax'}
                     <div class="avatar tiny">
                         <img src="{$activeUser->profileImage}" alt="{$activeUser->name}">
                     </div>
                     <div class="textarea-wrapper">
                         {input text class => 'materialize-textarea'}
                     </div>
-                    <button style="display: none;" class="btn waves-effect waves-dark" type="submit" name="action">
+                    <button style="display: none;" class="btn waves-effect waves-dark comment-submit-form" type="submit" name="action">
                         přidat
                     </button>
                 {/form}
             </div>            
         {/if}
-    </div>
+    </div>    
+{/snippet}
 </div>
 <script>
     $(document).ready(function(){
@@ -93,21 +93,88 @@
             }            
         });
         
-        $(".reply-button").off("click").on("click", function(e) {
+        $(".card-comments").off("click").on('click', function(e){
             e.preventDefault();
-            var messageId = $(this).closest('.card-comments').data("message-id");
-            var thread = $(this).closest(".comment-content.main-thread").find(".comment-thread");
-            if(thread.length === 0) {
-                $(this).closest(".comment-content.main-thread").append('<div class="comment-thread"></div>');
-                thread = $(this).closest(".comment-content.main-thread").find(".comment-thread");
+            if($(e.target).hasClass("show-replies") || $(e.target).closest(".show-replies").length) {
+                var showReplies = $(e.target).hasClass("show-replies") ? $(e.target) : $(e.target).closest(".show-replies");
+                showReplies.slideUp();
+                showReplies.next('.comment-thread').slideDown();
+                showReplies.data("opened", "true");
+            } else if($(e.target).hasClass("show-comments") || $(e.target).closest(".show-comments").length) {                
+                var showCommentButton = $(e.target).hasClass("show-comments") ? $(e.target) : $(e.target).closest(".show-comments");
+                var block = $(showCommentButton).closest(".comments-block");
+                if(block.data("opened") === "true") {
+                    block.data("opened", "false");
+                    block.find(".comments-row").slideUp();
+                    showCommentButton.find(".material-icons").text("expand_more");
+                } else {
+                    block.data("opened", "true");                  
+                    block.find(".comments-row").slideDown();
+                    showCommentButton.find(".material-icons").text("expand_less");  
+                }                
+            } else if($(e.target).hasClass("reply-button") || $(e.target).closest(".reply-button").length) {   
+                var replyButton = $(e.target).hasClass("reply-button") ? $(e.target) : $(e.target).closest(".reply-button");
+                
+                var messageId = replyButton.closest('.card-comments').data("message-id");
+                var thread = replyButton.closest(".comment-content.main-thread").find(".comment-thread");
+                if(thread.length === 0) {
+                    replyButton.closest(".comment-content.main-thread").append('<div class="comment-thread"></div>');
+                    thread = replyButton.closest(".comment-content.main-thread").find(".comment-thread");
+                }
+                var form = $("#message-comment-reply-form-" + messageId);
+                form.find("input[name='idReply']").val(replyButton.data("reply-id"));         
+
+                thread.append(form);
+                form.show();
             }
-            var form = $("#message-comment-reply-form-" + messageId);
-            form.find("input[name='idReply']").val($(this).data("reply-id"));         
-     
-            thread.append(form);
-            form.show();
         });
+        
+        if(!$.nette.ext('commentFormAjaxSubmit')) {
+            $.nette.ext('commentFormAjaxSubmit', {
+                start: function (jqXHR, settings) { 
+                    if(settings.nette !== undefined && $(settings.nette.ui).hasClass('comment-submit-form')) {                        
+                        var block = $(settings.nette.ui).closest(".card-comments");
+                        var isOpened = block.find(".comments-block").data("opened");
+                        var replyOpened = [];
+                        block.find(".show-replies").each(function(i, ele) {
+                            if($(ele).data("opened") === "true") {
+                                replyOpened.push($(ele).closest(".comments-row").data("comment-id"));
+                            }
+                        });
+                        var replyInput = $(settings.nette.ui).closest("form").find("input[name='idReply']");
+                        if(replyInput && replyInput.val()) {
+                            replyOpened.push(parseInt(replyInput.val()));
+                        }                        
+                        jqXHR.done(function( data, textStatus, jqXHR ) {
+                            if(isOpened) {
+                                block.find(".comments-row").show();
+                                block.find(".show-comments .material-icons").text("expand_less");
+                                block.find(".comments-block").data("opened", "show");
+                            } else {
+                                if(!block.data("skipRows")) {
+                                    block.data("skipRows", "3")
+                                }
+                                var skip = parseInt(block.data("skipRows"));
+                                var commentsRow = block.find(".comments-row");
+                                commentsRow.each(function(i, ele) {
+                                    if(i > commentsRow.length - skip) {
+                                        $(ele).show();
+                                    }
+                                });
+                                block.data("skipRows", ++skip)
+                            }
+                            block.find(".comments-row").each(function(i, ele) {
+                                if(replyOpened.indexOf($(ele).data("comment-id")) !== -1) {
+                                    $(ele).find(".comment-thread").show();
+                                    $(ele).find(".show-replies").hide();
+                                    $(ele).find(".show-replies").data("opened", "true");
+                                }
+                            });
+                        });
+                    }
+                }
+            });
+        }       
     });
 </script> 
-{/snippet}
 
