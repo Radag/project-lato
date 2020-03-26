@@ -222,6 +222,7 @@ class GroupManager extends BaseManager {
             }
             $groupModel->archived = $group->archived === 1? true : false;
             
+			$groupModel->studentsCount = $this->db->fetchSingle("SELECT COUNT(*) FROM group_user WHERE relation_type=? AND group_id = ?", GroupManager::RELATION_STUDENT, $group->id);	
             return $groupModel;   
         } else {
             return null;

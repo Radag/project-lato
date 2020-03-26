@@ -34,7 +34,9 @@
         <ul class="atributes">
             {if $test->setup->isCreator}
                 <li n:if="$test->setup->publicationTime">Datum publikace {$test->setup->publicationTime|date:"j. n."}</li>
-                <li>Vyplněno {$test->summary->studentsCount}-krát | Průměrný výsledek {round($test->summary->studentsPercent)} %</li>              
+                <li>{$test->summary->studentsCount|counting:['Vyplnil', 'Vyplnilo'], false} {$test->summary->studentsCount|counting:['student', 'studenti', 'studentů']} z {$activeGroup->studentsCount}
+                    | Průměrný výsledek {round($test->summary->studentsPercent)} %</li>              
+                <li>Celkově test vyplnili {$test->summary->studentsCountTotal}-krát</li>              
             {else}
                 <li n:if="$test->summary->grade">Známka: <strong>{$test->summary->grade}</strong></li>
                 <li n:if="$test->summary->filledCount > 0">Vyplněno {$test->summary->filledCount}-krát | Průměrný výsledek {round($test->summary->percent)}%</li>  

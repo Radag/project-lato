@@ -23,8 +23,9 @@ class Group extends AbstractEntity
     
     public $description = null;
     public $room = null;
-    public $subgroup = null;
-    
+    public $subgroup = null;    
+    public $studentsCount = 0;
+	
     public $interCode = null;
     public $publicCode = null;
     public $shareByLink = null;
