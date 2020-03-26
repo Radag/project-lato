@@ -4,6 +4,7 @@ namespace App\FrontModule\Components\Group\AddUserForm;
 
 use App\Model\Manager\GroupManager;
 use App\Model\Manager\FictiveUserManager;
+use App\Model\Manager\NotificationManager;
 
 class ImportForm extends \App\Components\BaseComponent
 {
@@ -14,15 +15,20 @@ class ImportForm extends \App\Components\BaseComponent
     /** @var FictiveUserManager */
     protected $fictiveUserManager;
         
-    protected $selectedGroup = null;
+    /** @var NotificationManager */
+    public $notificationManager;
+	
+	protected $selectedGroup = null;
     
     public function __construct(
         GroupManager $groupManager,
-        FictiveUserManager $fictiveUserManager
+        FictiveUserManager $fictiveUserManager,
+		NotificationManager $notificationManager
     )
     {
         $this->groupManager = $groupManager;
         $this->fictiveUserManager = $fictiveUserManager;
+		$this->notificationManager = $notificationManager;
     }
    
     
@@ -44,11 +50,13 @@ class ImportForm extends \App\Components\BaseComponent
             if(!empty($group)) {
                 $studentsIds = json_decode($values->users);
                 $students = $this->groupManager->getGroupUsers($values->group_id, 'student', $studentsIds);
-                foreach($students as $student) {
-                    $userId = $this->fictiveUserManager->createFictiveUser($student, $this->presenter->activeGroup);
-                    $this->groupManager->addUserToGroup($this->presenter->activeGroup, $userId, GroupManager::RELATION_FIC_STUDENT);
+                foreach($students as $student) {					
+					$added = $this->groupManager->addUserToGroup($this->presenter->activeGroup, $student->id, GroupManager::RELATION_STUDENT);
+					if($added) {
+						$this->notificationManager->addNotificationInviteGroupMember($this->presenter->activeGroup, $student);
+					}		
                 }
-                $this->presenter->flashMessage('Studenti naimportováni.');      
+                $this->presenter->flashMessage('Studenti naimportováni.');
             } else {
                 $this->presenter->flashMessage('Nemáte přístup do dané skupiny.');      
             }

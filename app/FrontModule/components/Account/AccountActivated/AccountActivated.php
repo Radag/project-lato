@@ -12,11 +12,11 @@ class AccountActivated extends \App\Components\BaseComponent
 
     public static $avatarList = [
         "/images/default_avatars/male_1.png",
-	"/images/default_avatars/female_2.png",
-	"/images/default_avatars/male_3.png",
-	"/images/default_avatars/female_4.png",
-	"/images/default_avatars/male_5.png",
-	"/images/default_avatars/female_6.png"
+		"/images/default_avatars/female_2.png",
+		"/images/default_avatars/male_3.png",
+		"/images/default_avatars/female_4.png",
+		"/images/default_avatars/male_5.png",
+		"/images/default_avatars/female_6.png"
     ];
     
     public function __construct(
@@ -40,7 +40,8 @@ class AccountActivated extends \App\Components\BaseComponent
         
         $form->addSubmit('submit', 'Odeslat');
         $form->onSuccess[] = function($form, $values) {
-            $file = ['fullPath' => "https://www.lato.cz" . self::$avatarList[$values->avatar]];
+			$file = new \App\Model\Entities\File();
+            $file->fullPath = "https://www.lato.cz" . self::$avatarList[$values->avatar];
             $this->userManager->assignProfileImage($this->presenter->activeUser, $file);
             $this->presenter->redirect(':Front:Homepage:noticeboard');
         };
