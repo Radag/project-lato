@@ -4,11 +4,11 @@ namespace App\Model\Manager;
 
 use Nette;
 use App\Model\Entities\Message;
-use App\Model\Entities\Comment;
 use App\Model\Entities\User;
 use App\Model\Manager\NotificationManager;
 use App\Model\Manager\GroupManager;
 use App\Model\Manager\CommentsManager;
+use App\Model\LatoSettings;
 
 class MessageManager extends BaseManager {
      
@@ -26,22 +26,23 @@ class MessageManager extends BaseManager {
         NotificationManager $notificationManager,
         CommentsManager $commentsManager,
         GroupManager $groupManager,
-        \Dibi\Connection $db
+        \Dibi\Connection $db,			           
+        LatoSettings $settings
     )
     {
         $this->user = $user;
         $this->notificationManager = $notificationManager;
         $this->commentsManager = $commentsManager;
         $this->groupManager = $groupManager;
-        $this->db = $db;
+        $this->db = $db;           
+        $this->settings = $settings;
     }
     
     public function cloneMessage(Message $message, \App\Model\Entities\Group $toGroup) 
     {
         $message->idGroup = $toGroup->id;
         $this->createMessage($message, array());
-    }
-    
+    }   
     
     public function createMessage(Message $message, $attachments, $group)
     {
@@ -102,7 +103,9 @@ class MessageManager extends BaseManager {
                         T5.create_classification,
                         T9.id AS id_classification_group,
                         T11.grade,
-                        T12.created AS displayed
+                        T12.displayed,						
+                        T12.watched,						
+                        T12.liked
                 FROM message T1 
                 LEFT JOIN user T2 ON T1.user_id=T2.id 
                 JOIN user_real T10 ON T10.id=T2.id
@@ -112,7 +115,7 @@ class MessageManager extends BaseManager {
                 LEFT JOIN message_material T8 ON T1.id=T8.message_id
                 LEFT JOIN classification_group T9 ON T9.task_id = T5.id
                 LEFT JOIN classification T11 ON T11.classification_group_id = T9.id AND T11.user_id=? 
-				LEFT JOIN message_displayed T12 ON T12.user_id=? AND T12.message_id=T1.id                                     
+				LEFT JOIN message_user_info T12 ON T12.user_id=? AND T12.message_id=T1.id                                     
                 WHERE T1.group_id=? AND T1.deleted IN (?) AND T1.type IN (?) 
                 ORDER BY IFNULL(T1.top, T1.created_when) DESC", $user->id, $user->id, $user->id, $group->id, $delete, $filters);
         
@@ -134,12 +137,12 @@ class MessageManager extends BaseManager {
             $linksArray[$link->message_id][] = $link;
         }
         
-		$displayedData = $this->db->fetchPairs("SELECT T1.id AS group_id, GROUP_CONCAT(T3.profile_image) AS images FROM
+		$displayedData = $this->db->query("SELECT T1.id AS message_id, GROUP_CONCAT(T3.profile_image) AS displayedBy, COUNT(T2.liked) as likes FROM
 						message T1
-						JOIN message_displayed T2 ON T1.id=T2.message_id
+						JOIN message_user_info T2 ON T1.id=T2.message_id
 						JOIN user_real T3 ON T2.user_id=T3.id
 						WHERE T1.group_id = ?
-						GROUP BY T1.id", $group->id);
+						GROUP BY T1.id", $group->id)->fetchAssoc('message_id');
 		
         foreach($messages as $message) {
             $links = [];
@@ -148,7 +151,8 @@ class MessageManager extends BaseManager {
             }
             $mess = $this->convertMesssage($message, $attachments, $user, [], $group, $links);
 			if(isset($displayedData[$message->id])) {
-				$mess->displayedBy = explode(',', $displayedData[$message->id]);
+				$mess->displayedBy = explode(',', $displayedData[$message->id]->displayedBy);
+				$mess->likesCount = $displayedData[$message->id]->likes;
 			}
             $return[$mess->id] = $mess;
         }
@@ -187,7 +191,9 @@ class MessageManager extends BaseManager {
                         T5.create_classification,
                         T9.id AS id_classification_group,
                         T11.grade,
-                        T12.created AS displayed
+                        T12.displayed,						
+                        T12.watched,						
+                        T12.liked
                 FROM message T1 
                 LEFT JOIN user T2 ON T1.user_id=T2.id 
                 JOIN user_real T9 ON T9.id=T2.id
@@ -197,7 +203,7 @@ class MessageManager extends BaseManager {
                 LEFT JOIN message_material T8 ON T1.id=T8.message_id
                 LEFT JOIN classification_group T10 ON T10.task_id = T5.id
                 LEFT JOIN classification T11 ON T11.classification_group_id = T10.id AND T11.user_id=? 
-				LEFT JOIN message_displayed T12 ON T12.user_id=? AND T12.message_id=T1.id         
+				LEFT JOIN message_user_info T12 ON T12.user_id=? AND T12.message_id=T1.id         
                 WHERE T1.id=? AND T1.group_id=?", $user->id, $user->id, $user->id, $idMessage, $group->id);
         if(!$message) {
             return false;
@@ -226,7 +232,18 @@ class MessageManager extends BaseManager {
             $commitsAttach = $this->getAttachments($commitsAttachData, 'commit_id');
         }
         
-        return $this->convertMesssage($message, $attachments, $user, $commitsAttach, $group, $linksData);
+		$message = $this->convertMesssage($message, $attachments, $user, $commitsAttach, $group, $linksData);
+		$displayedData = $this->db->fetch("SELECT T1.id AS message_id, GROUP_CONCAT(T3.profile_image) AS displayedBy, COUNT(T2.liked) as likes FROM
+						message T1
+						JOIN message_user_info T2 ON T1.id=T2.message_id
+						JOIN user_real T3 ON T2.user_id=T3.id
+						WHERE T1.id = ?", $message->id);
+		if(isset($displayedData)) {
+			$message->displayedBy = explode(',', $displayedData->displayedBy);
+			$message->likesCount = $displayedData->likes;
+		}
+		
+        return $message;
     }
     
     protected function convertMesssage($message, $attachments, $user, $commitsAttach, $group, $links = [])
@@ -249,6 +266,8 @@ class MessageManager extends BaseManager {
         $mess->type = $message->type;
         $mess->isCreator = $user->id == $userObject->id;
         $mess->displayed = $message->displayed ? true : false;
+        $mess->watched = $message->watched ? true : false;
+        $mess->liked = $message->liked == 1 ? true : false;
         if(isset($attachments[$mess->id])) {
             $mess->attachments = $attachments[$mess->id];
         } else {
@@ -319,7 +338,24 @@ class MessageManager extends BaseManager {
         $state ? $deleted = 1 : $deleted = 0;
         $this->db->query("UPDATE message SET deleted=? WHERE id=?", $deleted, $idMessage);
     }
+	
+	public function setLike($idMessage, $enable = true)
+    {
+		$this->setMessageDisplayed($idMessage, $this->settings->getUser()->id);
+        $this->db->query("UPDATE message_user_info SET liked=?, like_created=NOW() WHERE message_id=? AND user_id=?", $enable ? 1 : null, $idMessage, $this->settings->getUser()->id);
+    }
+	
+	public function setWatching($idMessage, $enable = true)
+    {
+		$this->setMessageDisplayed($idMessage, $this->settings->getUser()->id);
+        $this->db->query("UPDATE message_user_info SET watched=? WHERE message_id=? AND user_id=?", $enable ? date("Y-m-d H:i:s") : null, $idMessage, $this->settings->getUser()->id);
+    }
     
+	public function isMessageInGroup($messageId, $groupId)
+	{
+		return !empty($this->db->fetchSingle("SELECT id FROM message WHERE id=? AND group_id=?", $messageId, $groupId));
+	}
+	
     public function topMessage($idMessage, $enable = true)
     {
         if($enable) {
@@ -400,9 +436,10 @@ class MessageManager extends BaseManager {
 	public function setMessageDisplayed($messageId, $userId)
 	{
 		try {
-			$this->db->query("INSERT INTO message_displayed", [
+			$this->db->query("INSERT INTO message_user_info", [
 				'message_id' => $messageId,
-				'user_id' => $userId
+				'user_id' => $userId,
+				'displayed' => date("Y-m-d H:i:s")
 			]);
 		} catch (\Dibi\UniqueConstraintViolationException $ex) {}		
 	}

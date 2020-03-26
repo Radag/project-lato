@@ -6,28 +6,23 @@ use App\Model\Manager\TestManager;
 use App\Model\Manager\TestSetupManager;
 use App\FrontModule\Components\Stream\ICommentForm;
 
-class Test extends \App\Components\BaseComponent
+class Test extends Base
 {
     /** @var TestManager **/
     protected $testManager;
     
     /** @var TestSetupManager **/
     protected $testSetupManager;
-     
-	/** @var ICommentForm **/
-    protected $commentForm;	
 	
     protected $test = null;
    
     protected $id = null;
       
     public function __construct(
-		TestManager $testManager, 
 		TestSetupManager $testSetupManager,
 		ICommentForm $commentForm
 	)
     {
-        $this->testManager = $testManager;
         $this->testSetupManager = $testSetupManager;
         $this->commentForm = $commentForm;
     }
@@ -35,7 +30,7 @@ class Test extends \App\Components\BaseComponent
     public function render()
     {
         $this->template->test = $this->getTest();
-        $this->template->messageId = $this->getTest()->setup->messageId;
+        $this->template->message = $this->getTest()->message;
         $this->template->activeGroup = $this->presenter->activeGroup;
         parent::render();
     }

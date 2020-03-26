@@ -1,4 +1,4 @@
-<div class="card flex-column {if !$test->setup->isVisible}postponed{/if} {if $test->setup->displayed}displayed{/if}" data-message-id="{$test->setup->messageId}"> 
+<div class="card flex-column {if !$test->setup->isVisible}postponed{/if} {if $test->message->displayed}displayed{/if}" data-message-id="{$test->message->id}"> 
     <div class="card-action-header">
         <div class="avatar small">
             <img src="{$test->author->profileImage}">
@@ -8,7 +8,7 @@
         </div>
         <div class="flex-spacer"></div>
         <span class="card-date">{$test->created|date:"j. n."}</span>
-        <button type="button" class="btn-flat btn-icon dropdown-trigger card-options waves-effect waves-dark" data-target="test_dropdown_{$test->id}">
+        <button type="button" class="btn-flat btn-icon dropdown-trigger card-options waves-effect waves-dark" data-target="test_dropdown_{$message->id}">
             <i class="material-icons">more_horiz</i>
         </button>
         {include testMenu $test, $activeGroup}
@@ -44,11 +44,11 @@
             <li>{$test->setup->questionsCount} {if $test->setup->questionsCount == 1}otázka{elseif $test->setup->questionsCount < 5}otázky{else}otázek{/if} | {$test->setup->timeLimit/60} minut</li>
         </ul>
     </div>
-    {include '../normal/info.latte' 'message' => $test->setup}
-    {control commentForm-$messageId}
+    {snippet message-info}{include '../normal/info.latte' 'message' => $message}{/snippet}
+    {control commentForm-$message->id}
 </div>
 {define testMenu $test, $activeGroup}
-<ul id="test_dropdown_{$test->id}" class='dropdown-content'>
+<ul id="test_dropdown_{$message->id}" class='dropdown-content'>
     <li><a href="#">Vytvořit kopii příspěvku</a></li>
     {if $activeGroup->relation === 'owner'}
         <li><a href="#" data-link="{link deleteTest! setupId=>$test->setupId}" class="delete-message-button refresh-wall-messages">Smazat</a></li>

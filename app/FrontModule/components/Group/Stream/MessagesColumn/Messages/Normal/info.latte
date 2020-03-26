@@ -1,18 +1,24 @@
-<div class="message-info">
-    <div class="message-options">
-        <div class="options-btn thumb-up waves-effect waves-dark tooltipped active" data-position="top" data-tooltip="To se mi líbí">
+<div class="message-info">    
+    <div class="message-options" >
+        <a class="options-btn thumb-up waves-effect waves-dark tooltipped {if $message->liked}active{/if} ajax" 
+           href="{link setLike! messageId=>$message->id, enable => $message->liked ? false : true}" data-position="top" 
+           data-tooltip="{if $message->liked}Už se mi to nelíbí{else}To se mi líbí{/if}">
             <i class="material-icons">thumb_up</i>
-            <span>13</span>
-        </div>
-        <div class="options-btn follow waves-effect waves-dark rated tooltipped active" data-position="top" data-tooltip="Zapnout sledování">
+            <span>{$message->likesCount}</span>
+        </a>
+        <a class="options-btn follow waves-effect waves-dark rated tooltipped {if $message->watched}active{/if} ajax" 
+           href="{link setWatching! messageId=>$message->id, enable => $message->watched ? false : true}" data-position="top" 
+           data-tooltip="{if $message->watched}Vypnout sledování{else}Zapnout sledování{/if}">
             <i class="material-icons">visibility</i>
-        </div>
+        </a>
     </div>
     <div class="flex-spacer">
     </div>
     <ul class="seen tooltipped" data-position="top" data-tooltip="{count($message->displayedBy)|counting:['Viděl', 'Viděli'], false} to {count($message->displayedBy)|counting:['žák', 'žáci', 'žáků']}">
         {foreach $message->displayedBy as $avatar}
-            <li class="avatar"><img src="{$avatar}" style="background: #ddd"></li>
+            {if $iterator->counter < 4}
+                <li class="avatar"><img src="{$avatar}" style="background: #ddd"></li>
+            {/if}
         {/foreach}
     </ul>
 </div>

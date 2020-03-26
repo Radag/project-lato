@@ -110,14 +110,16 @@ class TestManager extends BaseManager
                 T5.grade,
                 IF(T2.publication_time IS NULL OR T2.publication_time < NOW(), 1, 0) AS is_visible,
 				T2.message_id,
-				T7.created AS displayed
+				T7.displayed,						
+				T7.watched,						
+				T7.liked
             FROM test T1 
             JOIN test_setup T2 ON T1.id=T2.test_id
             JOIN `user` T3 ON T1.user_id=T3.id
             JOIN `group` T4 ON T2.group_id=T4.id 
             LEFT JOIN classification T5 ON (T5.classification_group_id=T2.classification_group_id AND T5.user_id=?)
             JOIN user_real T6 ON T6.id=T3.id
-			LEFT JOIN message_displayed T7 ON T7.message_id=T2.message_id AND T7.user_id=? WHERE ";
+			LEFT JOIN message_user_info T7 ON T7.message_id=T2.message_id AND T7.user_id=? WHERE ";
 	
 		if ($testSetupIds) {
 			$dataSql .= "T2.id IN (?) " . $publicationTime;
@@ -141,16 +143,26 @@ class TestManager extends BaseManager
             $myStats[$stat->setup_id] = $stat;
         }
         
-		$displayedData = $this->db->fetchPairs("SELECT T1.id AS group_id, GROUP_CONCAT(T3.profile_image) AS images FROM
-				message T1
-				JOIN message_displayed T2 ON T1.id=T2.message_id
-				JOIN user_real T3 ON T2.user_id=T3.id
-				WHERE T1.group_id = ?
-				GROUP BY T1.id", $group->id);
+		$displayedData = $this->db->query("SELECT T1.id AS message_id, GROUP_CONCAT(T3.profile_image) AS displayedBy, COUNT(T2.liked) as likes FROM
+			message T1
+			JOIN message_user_info T2 ON T1.id=T2.message_id
+			JOIN user_real T3 ON T2.user_id=T3.id
+			WHERE T1.group_id = ?
+			GROUP BY T1.id", $group->id)->fetchAssoc('message_id');
 		
         $tests = [];
         foreach($testsData as $testData) {
             $test = new Test($testData);
+			$test->message = new Entities\Message();
+            $test->message->id = $testData->message_id;
+            $test->message->displayed = $testData->displayed ? true : false;
+			$test->message->watched = $testData->watched ? true : false;
+			$test->message->liked = $testData->liked == 1 ? true : false;
+			if(isset($displayedData[$testData->message_id])) {
+				$test->message->displayedBy = explode(',', $displayedData[$testData->message_id]->displayedBy);
+				$test->message->likesCount = $displayedData[$testData->message_id]->likes;
+			}
+			
             $test->author = new Entities\User();
             $test->author->surname = $testData->author_surname;
             $test->author->name = $testData->author_name;
@@ -160,8 +172,6 @@ class TestManager extends BaseManager
             $test->created = $testData->created_at;
             $test->setup = new Entities\Test\TestSetup();
             $test->setup->id = $testData->setup_id;
-            $test->setup->messageId = $testData->message_id;
-            $test->setup->displayed = $testData->displayed;
             $test->setup->deadline = $testData->deadline;
             $test->setup->questionsCount = $testData->questions_count;
             $test->setup->timeLimit = $testData->time_limit;
@@ -172,7 +182,6 @@ class TestManager extends BaseManager
             $test->setup->group = new Entities\Group;
             $test->setup->group->id = $testData->group_id;
             $test->setup->group->slug = $testData->group_slug;
-			$test->setup->displayedBy = isset($displayedData[$testData->message_id]) ? explode(',', $displayedData[$testData->message_id]) : [];
             $test->setup->isVisible = $testData->is_visible == 1 ? true : false;
             if($test->setup->deadline) {
                 $test->setup->timeLeft = (new \DateTime())->diff($test->setup->deadline);

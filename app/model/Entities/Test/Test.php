@@ -19,6 +19,10 @@ class Test extends AbstractEntity {
     
     /** @var TestSetup **/
     public $setup = null;
+	
+	/** @var \App\Model\Entities\Message **/
+    public $message = null;
+	
     public $created = null;
     
     protected $mapFields = [

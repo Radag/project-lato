@@ -89,7 +89,11 @@ class MessagesColumn extends \App\Components\BaseComponent
 	
 	public function handleMessageDisplayed()
 	{
-		$this->messageManager->setMessageDisplayed($this->presenter->getParameter('postId'), $this->presenter->activeUser->id);		
+		$messageId = $this->presenter->getParameter('postId');
+		if($this->messageManager->isMessageInGroup($messageId, $this->presenter->activeGroup->id)) {
+			$this->messageManager->setMessageDisplayed($messageId, $this->presenter->activeUser->id);		
+		}
+		
 	}
     
     public function createComponentTestSetupForm()

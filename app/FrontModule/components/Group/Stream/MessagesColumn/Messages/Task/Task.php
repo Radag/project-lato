@@ -6,7 +6,7 @@ use App\Model\Manager\MessageManager;
 use App\Model\Manager\TaskManager;
 use App\FrontModule\Components\Stream\ICommentForm;
 
-class Task extends Base
+class Task extends Normal
 {
     /** @var MessageManager */
     protected $messageManager;

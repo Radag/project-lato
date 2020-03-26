@@ -29,7 +29,10 @@ class Message extends AbstractEntity
     public $isCreator = false;
     public $links;
     public $displayed = false;
-    public $displayedBy = [];
+    public $displayedBy = [];	
+    public $watched = false;
+    public $liked = false;
+    public $likesCount = 0;
     
     public function getType()
     {

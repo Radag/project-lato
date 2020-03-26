@@ -11,7 +11,7 @@
         <span class="card-date">{$message->created|date:"j. n."}</span>
         {include 'menu.latte'}
     </div>
-    {include 'attachments.latte'}
-    {include 'info.latte'}
+    {include 'attachments.latte'}    
+    {snippet message-info}{include 'info.latte'}{/snippet}
     {control commentForm-$message->id}
 </div>
