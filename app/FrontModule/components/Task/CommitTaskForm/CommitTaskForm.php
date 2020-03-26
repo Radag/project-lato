@@ -61,6 +61,8 @@ class CommitTaskForm extends \App\Components\BaseComponent
         $form->addHidden('idCommit');
         $form->addSubmit('send', 'Odevzdat');
         
+		
+        $form->onValidate[] = [$this, 'validateForm'];  
         $form->onSuccess[] = [$this, 'processForm'];  
         return $form;
     }
@@ -98,6 +100,13 @@ class CommitTaskForm extends \App\Components\BaseComponent
         $this->redrawControl('commitTaskForm');
     }
     
+	public function validateForm(Form $form, $values) 
+    {
+		if(empty($values->comment) && empty($values->attachments)) {
+			$form->addError('Musíte zadat buď komentář nebo vložit soubor');
+		}		
+	}
+	
     public function processForm(Form $form, $values) 
     {
         if(!empty($values['idCommit']) && !$this->taskManager->isUserCommit($values['idCommit'], $this->presenter->activeUser)) {
