@@ -172,7 +172,7 @@ class TestManager extends BaseManager
             $test->setup->group = new Entities\Group;
             $test->setup->group->id = $testData->group_id;
             $test->setup->group->slug = $testData->group_slug;
-			$test->setup->displayedBy = explode(',', $displayedData[$testData->message_id]);
+			$test->setup->displayedBy = isset($displayedData[$testData->message_id]) ? explode(',', $displayedData[$testData->message_id]) : [];
             $test->setup->isVisible = $testData->is_visible == 1 ? true : false;
             if($test->setup->deadline) {
                 $test->setup->timeLeft = (new \DateTime())->diff($test->setup->deadline);

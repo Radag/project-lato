@@ -13,6 +13,9 @@ use App\FrontModule\Components\Stream\ICommitTaskForm;
 use App\FrontModule\Components\Group\IClassification;
 use App\FrontModule\Components\Group\IStudentsList;
 use App\FrontModule\Components\Group\IClassmates;
+use App\FrontModule\Components\Test\ITestFilling;
+use App\FrontModule\Components\Test\ITestStart;
+use App\FrontModule\Components\Test\ITestDisplay;
 
 class GroupPresenter extends BasePresenter
 {    
@@ -49,6 +52,15 @@ class GroupPresenter extends BasePresenter
     /** @var Group */
     public $activeGroup = null;
     
+	/** @var ITestFilling @inject */
+    public $testFilling;
+    
+    /** @var ITestStart @inject */
+    public $testStart;
+    
+    /** @var ITestDisplay @inject */
+    public $testDisplay;
+	
     /** @persistent */
     public $id;
     
@@ -112,6 +124,23 @@ class GroupPresenter extends BasePresenter
         }
         $this['topPanel']->setTitle('uživatelé');
     }
+	
+	public function actionTestFilling($fillingId)
+    {
+        $this['testFilling']->setId($fillingId);
+        $this['topPanel']->setTitle('Test');
+    }
+    
+    public function actionTestStart($setupId)
+    {
+        $this['testStart']->setId($setupId);
+        $this['topPanel']->setTitle('Test');
+    }
+    
+    public function actionTestDisplay($fillingId)
+    {
+        $this['testDisplay']->setId($fillingId);
+    }
     
     public function createComponentSingleMessage()
     {
@@ -147,4 +176,19 @@ class GroupPresenter extends BasePresenter
     {
         return $this->studentsClassification->create();
     }
+	
+	protected function createComponentTestFilling()
+    {
+        return $this->testFilling->create();
+    }
+    
+    protected function createComponentTestStart()
+    {
+        return $this->testStart->create();
+    }
+    
+    protected function createComponentTestDisplay()
+    {
+        return $this->testDisplay->create();
+    }	
 }

@@ -11,12 +11,12 @@
                         <p>Správně bylo zodpovězeno <strong>{$filling->correctCount} z {$filling->questionsCount}</strong> otázek.</p>
                         <p>Minimální hranice pro splnění testu je <strong>50 %</strong>.</p>
                         {if $testSetup->canLookAtResults}
-                            <a href="{plink :Front:Tests:display fillingId=>$filling->id}" class="btn">Prohlédnout</a>
+                            <a href="{plink testDisplay fillingId=>$filling->id}" class="btn">Prohlédnout</a>
                         {else}
                             <br>
                         {/if}
                         {if $testSetup->numberOfRepetitions === null || $summary->filledCount < $testSetup->numberOfRepetitions}
-                            <a href="{plink :Front:Tests:start setupId=>$filling->setupId}">Spustit znovu</a>
+                            <a href="{plink testStart setupId=>$filling->setupId}">Spustit znovu</a>
                         {/if}
                     </div>
                 </div>

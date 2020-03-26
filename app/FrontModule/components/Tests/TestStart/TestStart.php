@@ -112,7 +112,7 @@ class TestStart extends \App\Components\BaseComponent
         $filling->questions = $selectedQuestions;
         
         $fillingId = $this->testManager->createFilling($filling);
-        $this->presenter->redirect("Tests:filling", ['id' => $fillingId]);
+        $this->presenter->redirect("Group:testFilling", ['id' => $this->presenter->activeGroup->slug, 'fillingId' => $fillingId]);
     }
     
     private function getTimeLimitText()

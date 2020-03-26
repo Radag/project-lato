@@ -111,4 +111,14 @@ class BasePresenter extends \Nette\Application\UI\Presenter
         $this->user->logout(true);
         $this->redirect(':Public:Homepage:default');
     }
+	
+	public function isLinkCurrentFrom($destination, $actions = [])
+	{
+		foreach($actions as $action) {
+			if($this->isLinkCurrent($destination, ['action' => $action])) {
+				return true;
+			}		
+		}
+		return false;
+	}
 }

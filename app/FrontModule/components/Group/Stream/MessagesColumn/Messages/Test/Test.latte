@@ -24,7 +24,7 @@
             <div class="flex-spacer"></div>
             {if !$test->setup->isCreator && ($test->setup->timeLeft == null || $test->setup->timeLeft->invert === 0)
                 && ($test->setup->numberOfRepetitions === null || $test->setup->numberOfRepetitions > $test->summary->filledCount)}  
-                <a href="{plink Tests:start setupId=>$test->setupId}" class="btn gray no-shadow">Otevřít</a>
+                <a href="{plink Group:testStart setupId=>$test->setupId}" class="btn gray no-shadow">Otevřít</a>
             {/if}
             {if $test->setup->isCreator && $test->setup->classificationGroupId}
                 <a href="{plink Group:usersClassification classificationGroupId=>$test->setup->classificationGroupId, id=>$test->setup->group->slug}" class="btn gray no-shadow">Oznámkovat</a>
@@ -34,10 +34,10 @@
         <ul class="atributes">
             {if $test->setup->isCreator}
                 <li n:if="$test->setup->publicationTime">Datum publikace {$test->setup->publicationTime|date:"j. n."}</li>
-                <li>Vyplněno {$test->summary->studentsCount}-krát | Průměrný výsledek {$test->summary->studentsPercent} %</li>              
+                <li>Vyplněno {$test->summary->studentsCount}-krát | Průměrný výsledek {round($test->summary->studentsPercent)} %</li>              
             {else}
                 <li n:if="$test->summary->grade">Známka: <strong>{$test->summary->grade}</strong></li>
-                <li n:if="$test->summary->filledCount > 0">Vyplněno {$test->summary->filledCount}-krát | Průměrný výsledek {$test->summary->percent}%</li>  
+                <li n:if="$test->summary->filledCount > 0">Vyplněno {$test->summary->filledCount}-krát | Průměrný výsledek {round($test->summary->percent)}%</li>  
             {/if}
             <li>{$test->setup->questionsCount} {if $test->setup->questionsCount == 1}otázka{elseif $test->setup->questionsCount < 5}otázky{else}otázek{/if} | {$test->setup->timeLimit/60} minut</li>
         </ul>

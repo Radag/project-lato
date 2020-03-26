@@ -90,6 +90,7 @@
             if(getElementVisible(header)) {
                 var id = $(header).closest(".card").data("message-id");
                 if(id) {
+                    $(header).closest(".card").addClass("displayed");
                     $.nette.ajax({
                         url: {link messageDisplayed!},
                         data: {
