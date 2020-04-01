@@ -1,4 +1,4 @@
-<div class="card flex-column {if !$test->setup->isVisible}postponed{/if} {if $test->message->displayed}displayed{/if}" data-message-id="{$test->message->id}"> 
+<div class="card message flex-column {if !$test->setup->isVisible}postponed{/if} {if $test->message->displayed}displayed{/if}" data-message-id="{$test->message->id}"> 
     <div class="card-action-header">
         <div class="avatar small">
             <img src="{$test->author->profileImage}">
@@ -20,7 +20,7 @@
                     <i class="material-icons">playlist_add_check</i>
                 </div>
             </div>
-            <h3 class="message-title">{$test->name}</h3>
+            <p n:if="$test->setup->deadline">Otevřeno do <strong>{$test->setup->deadline|date:"j. n. G:i"}</strong></p>
             <div class="flex-spacer"></div>
             {if !$test->setup->isCreator && ($test->setup->timeLeft == null || $test->setup->timeLeft->invert === 0)
                 && ($test->setup->numberOfRepetitions === null || $test->setup->numberOfRepetitions > $test->summary->filledCount)}  
@@ -30,7 +30,8 @@
                 <a href="{plink Group:usersClassification classificationGroupId=>$test->setup->classificationGroupId, id=>$test->setup->group->slug}" class="btn gray no-shadow">Oznámkovat</a>
             {/if}
         </div>
-        <p n:if="$test->setup->deadline">Termín odevzdání do <strong>{$test->setup->deadline|date:"j. n."}</strong></p>
+        <h3 class="message-title">{$test->name}</h3>
+        
         <ul class="atributes">
             {if $test->setup->isCreator}
                 <li n:if="$test->setup->publicationTime">Datum publikace {$test->setup->publicationTime|date:"j. n."}</li>

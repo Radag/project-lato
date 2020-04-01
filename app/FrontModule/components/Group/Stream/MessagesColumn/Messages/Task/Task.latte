@@ -46,7 +46,7 @@
             {/if}
         </div>
         <h3 class="message-title">{$message->task->title}</h3>
-        <p class="message-text">Toto je pokusný příspěvek pro komentáře, do kterého zatím nejde vložit příloha.</p>
+        <p class="message-text">{$message->text|breaklines}</p>
         
     </div>
     {snippet message-info}{include '../normal/info.latte'}{/snippet}

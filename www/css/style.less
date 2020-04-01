@@ -2106,7 +2106,6 @@ input[type=search]:not(.browser-default) {
             display: flex;
             align-items: center;
             width: 100%;
-            padding: 20px 16px;
             background-color: @background-highlighted;
 
             @media only screen and (max-width: 600px) {
@@ -2119,22 +2118,13 @@ input[type=search]:not(.browser-default) {
 
 
         .file-icon {
-            display: none;
-            width: 36px;
-            height: 36px;
+            width: 88px;
+            height: 72px;
             margin-right: 12px;
-            border-radius: 2px;
             display: flex;
             justify-content: center;
             align-items: center;
             background-color: rgba(0, 0, 0, .1);
-
-            @media only screen and (max-width: 600px) {
-                & {
-                    height: 36px;
-                    width: 36px;
-                }
-            }
 
             &.unknown {
                 background-color: #26798b;
@@ -2157,8 +2147,14 @@ input[type=search]:not(.browser-default) {
             }
 
             i {
+                width: 3rem;
+                height: 3rem;
                 color: #fff;
-                font-size: 20px !important;
+                background-color: rgba(255, 255, 255, .1);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
         }
 
@@ -5458,8 +5454,7 @@ nav .nav-title {
     }  
 
     .atributes {
-        padding-left: 3.25rem;
-        margin: 1rem 0 1rem 0;
+        margin: .5rem 0 1rem;
 
         li {
             color: @secondary-text-color;
