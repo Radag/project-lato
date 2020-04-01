@@ -1,5 +1,5 @@
 {if $isDetail}{include taskDetailHeader $message->task}{/if}
-<div class="card flex-column {if $message->deleted == 1}card-flat{/if} {if $message->displayed}displayed{/if}"  id="message-box-num_{$message->id}" data-message-id="{$message->id}"> 
+<div class="card message flex-column {if $message->deleted == 1}card-flat{/if} {if $message->displayed}displayed{/if}"  id="message-box-num_{$message->id}" data-message-id="{$message->id}"> 
     <div class="card-action-header">
         <div class="avatar small">
             <img src="{$message->user->profileImage}">
@@ -16,8 +16,27 @@
                     <i class="material-icons">assignment</i>
                 </div>
             </div>
-            <h3 class="message-title">{$message->task->title}</h3>
+            
+            {if $task->timeLeft->invert === 0}
+                <p>Termín odevzdání do <strong>{$task->deadline->format("j. n. G:i")}</strong></p>
+            {else}
+                <p>Uzavřeno v <strong>{$task->deadline->format("j. n. G:i")}</strong></p>
+            {/if} 
+            
             <div class="flex-spacer"></div>
+            <div class="task-status">
+                {if !$task->isCreator && $task->online}
+                    {if $task->commit}
+                        {if !empty($task->commit->grade) && $task->commit->grade !== '—'}}
+                            Známka: <strong>{$task->commit->grade}</strong>
+                        {else}
+                            <i class="material-icons">done</i><strong>Odevzdáno</strong>
+                        {/if} 
+                    {else}
+                        <i class="material-icons">query_builder</i>Neodevzdáno
+                    {/if}     
+                {/if}
+            </div>
             {if !$isDetail}
                 {if $task->isCreator && $task->createClassification == 1}
                     <a href="{plink Group:usersClassification classificationGroupId=>$task->idClassificationGroup, id=>$task->group->slug}" class="btn gray no-shadow">Otevřít</a>
@@ -26,23 +45,9 @@
                 {/if}
             {/if}
         </div>
-        {if $task->timeLeft->invert === 0}
-            <p>Termín odevzdání do <strong>{$task->deadline->format("j. n. G:i")}</strong></p>
-        {else}
-            <p>Uzavřeno v <strong>{$task->deadline->format("j. n. G:i")}</strong></p>
-        {/if}        
-        <ul class="atributes">
-            {if !$task->isCreator && $task->online}
-                {if $task->commit}
-                    <li>Odevzdáno</li>
-                {else}
-                    <li>Neodevzdáno</li>
-                {/if}
-                {if !empty($task->commit->grade) && $task->commit->grade !== '—'}}
-                    <li>Známka: <strong>{$task->commit->grade}</strong></li>
-                {/if}
-            {/if}
-        </ul>
+        <h3 class="message-title">{$message->task->title}</h3>
+        <p class="message-text">Toto je pokusný příspěvek pro komentáře, do kterého zatím nejde vložit příloha.</p>
+        
     </div>
     {snippet message-info}{include '../normal/info.latte'}{/snippet}
     {control commentForm-$message->id}
@@ -61,14 +66,13 @@
             <div class="card card-flat assignment-info">
                 <div class="card-content">
                     {if $task->timeLeft->invert === 0 }
-                    <div class="time-left">
-                        Termín odevzdání: <strong>{$task->deadline->format("j. n., G:i")}</strong>
-                    </div>
+                        <div class="time-left">
+                            Termín odevzdání: <strong>{$task->deadline->format("j. n., G:i")}</strong>
+                        </div>
                     {else}
-
-                    <div class="time-left">
-                        Uzavřeno: {$task->deadline->format("j. n. G:i")}
-                    </div>
+                        <div class="time-left">
+                            Uzavřeno: {$task->deadline->format("j. n. G:i")}
+                        </div>
                     {/if}
                     <div class="flex-spacer"></div>
                     <a href="{plink Group:usersClassification classificationGroupId=>$task->idClassificationGroup, id=>$task->group->slug}" 
@@ -81,7 +85,7 @@
             <div class="card card-flat assignment-info">
                 <div class="card-content">
                     <div class="time-left">
-                        Termín odevzdání: <strong>{$task->deadline->format("j. n., G:i")}</strong>
+                        Uzavřeno: <strong>{$task->deadline->format("j. n., G:i")}</strong>
                     </div>
                 </div>
             </div>
@@ -130,9 +134,22 @@
                 </div>
             </div>
         {else}
-            <div class="time-left">
-                Uzavřeno: {$task->deadline->format("j. n. G:i")}
+        <div class="card card-flat assignment-info">
+            <div class="card-content">
+                <div class="time-left">
+                    Uzavřeno: <strong>{$task->deadline->format("j. n., G:i")}</strong>
+                </div>
             </div>
+        </div>
+        <div class="card card-flat assignment-info">
+            <div class="card-content">
+                <div class="time-left">
+                    <strong>Neodevzdáno</strong>
+                </div>
+                <div class="flex-spacer"></div>
+                <button type="button" data-link="{link editTaskCommit}" class="btn gray no-shadow submit-class-button">odevzdat</button>
+            </div>
+        </div>
         {/if}
     {else}
         <div class="time-left">

@@ -3931,7 +3931,7 @@ nav .nav-title {
             .options-btn {
                 height: 36px;
                 border: 1px solid @line-color;
-                border-radius: 3px;
+                border-radius: 2px;
                 cursor: pointer;
                 display: flex;
                 align-items: center;
@@ -4047,7 +4047,7 @@ nav .nav-title {
                     display: flex;
                     font-size: .8125rem;
                     margin: 0;
-                    margin-top: .25rem;
+                    margin-top: .5rem;
 
                     li {
                         color: @secondary-text-color;
@@ -4112,6 +4112,7 @@ nav .nav-title {
                             padding: 9px 0 !important;
                             width: 100%;
                             min-height:40px !important;
+                            height: auto;
                         }
                     }
 
@@ -5407,8 +5408,10 @@ nav .nav-title {
 
 
         .avatar-spacer {
-        padding: 4px;
-        margin-right: .75rem;
+            padding: 4px;
+            margin-right: .75rem;
+            background: @background-highlighted;
+            border-radius: 5px;
 
             .avatar {
                 margin: 0;
@@ -5420,18 +5423,39 @@ nav .nav-title {
             }
         }
 
-        .message-title {
+        p {
             margin: 0;
-            font-size: 17px;
-            font-weight: 500;
-            line-height: 1.5em;
-            color: @primary-text-color;
-        }     
+        }   
+
+        .task-status {
+            display: flex;
+            align-items: center;
+            height: 40px;
+            color: @secondary-text-color;
+            border: 1px solid @line-color;
+            border-radius: 2px;
+            padding: 0 1rem;
+            margin-right: .25rem;
+            font-size: .8125rem;
+
+            .material-icons {
+                font-size: 1.25rem;
+                margin-right: .5rem;
+            }
+
+            strong {
+                font-style: normal;
+            }
+        }
     }
 
-    p {
-        margin-left: 3.25rem;
-    }
+    .message-title {
+        margin: 2rem 0 0 0;
+        font-size: 17px;
+        font-weight: 500;
+        line-height: 1.5em;
+        color: @primary-text-color;
+    }  
 
     .atributes {
         padding-left: 3.25rem;
@@ -5443,6 +5467,13 @@ nav .nav-title {
             font-size: .8125rem;
         }
     }   
+}
+
+#snippet-singleMessage-message {
+
+    .task-status {
+        display: none;
+    }
 }
 
 .assignment-info {
@@ -6173,7 +6204,7 @@ nav .nav-title {
         position: absolute;
         height: 100%;
         width: 100%;
-        background-color: white;
+        background-color: #fff;
         top: 0px;
         left: 0;
         z-index: 9;
