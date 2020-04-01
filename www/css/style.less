@@ -624,6 +624,12 @@ textarea.materialize-textarea:focus:not([readonly]) {
     }
 }
 
+.colored {
+    background-color: @primary-color;
+    color: #fff;
+
+}
+
 .create-post .alternate li .material-icons {
     color: @accent-color;
 }
@@ -5788,6 +5794,48 @@ nav .nav-title {
 #noticeboard {
 
     #assignments {
+
+        .assignment-preview {
+            display: flex;
+            align-items: center;
+
+            .assignment-icon {
+                width: 88px;
+                height: 88px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .avatar {
+                    width: 48px;
+                    height: 48px;
+                    background-color: @background-highlighted;
+                    margin: 0;
+                }
+            }
+
+            .assignment-content {
+                flex-grow: 1;
+                display: flex;
+                align-items: center;
+                padding: 0 1.5rem 0 1rem;
+
+                .assignment-info {
+
+                    h3 {
+                        margin: 0;
+                        font-size: .9375rem;
+                        font-weight: 500;
+                    }
+
+                    span {
+                        display: block;
+                        font-size: .8125rem;
+                        color: @secondary-text-color;
+                    }
+                }
+            }
+        }
 
         .assignment {
             background-color: @background-highlighted;
