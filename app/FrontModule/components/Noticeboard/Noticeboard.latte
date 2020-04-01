@@ -61,21 +61,6 @@
     </div>
 
     <div class="row" id="assignments">
-        <div class="col l6 m12 s12">
-            <div class="card assignment-preview">
-                <div class="assignment-icon colored">
-                    <span class="avatar">M</span>
-                </div>
-                <div class="assignment-content">
-                    <div class="assignment-info">
-                        <h3>Retušování fotografie</h3>
-                        <span><strong>Povinnost</strong> | Termín odevzdání: <strong>22. 4. 2020</strong></span>
-                    </div>
-                    <div class="flex-spacer"></div>
-                    <div class="btn gray no-shadow">Otevřít</div>
-                </div>
-            </div>
-        </div>
         {snippet actualTasks}
             {if empty($actualTasks)}
             <div class=" col s12">
@@ -87,21 +72,13 @@
             {else}
                 {foreach $actualTasks as $task}
                 {if $iterator->counter <= 2}
-                <div class="col l6 m12 s12">
-                    <div class="card flex-column assignment-preview">
-                        <div class="assignment-header">
-                            {control taskHeader-$task->id}
-                        </div>
-                            {control taskCard $task}
-                    </div>
-                </div>
+                    {control taskCard-$task->id}
                 {/if}
                 {/foreach}
                 <div n:if="count($actualTasks) > 2" class=" col s12 show-more">
                     <a href="{plink :Front:Homepage:tasks}" class="btn white no-shadow">{count($actualTasks) - 2} další</a>
                 </div>
-            {/if}
-            
+            {/if}            
         {/snippet}
     </div>
 

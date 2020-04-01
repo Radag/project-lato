@@ -5,9 +5,8 @@ namespace App\FrontModule\Presenters;
 use App\Model\Manager\GroupManager;
 use App\Model\Manager\TaskManager;
 use App\Model\Manager\SearchManager;
-use App\FrontModule\Components\TaskHeader\ITaskHeader;
 use App\FrontModule\Components\Stream\ICommitTaskForm;
-use App\FrontModule\Components\Task\TaskCard;
+use App\FrontModule\Components\Noticeboard\ITask;
 
 class TaskPresenter extends BasePresenter
 {
@@ -20,8 +19,8 @@ class TaskPresenter extends BasePresenter
     /** @var TaskManager @inject */
     public $taskManager;
         
-    /** @var ITaskHeader @inject */
-    public $taskHeaderFactory;
+    /** @var ITask @inject */
+    public $taskCard;
     
     /** @var ICommitTaskForm @inject */
     public $commitTaskForm; 
@@ -114,18 +113,17 @@ class TaskPresenter extends BasePresenter
         $this->template->activeUser = $this->activeUser; 
     }
     
-    public function createComponentTaskHeader()
+    public function createComponentTaskCard()
     {
         return new \Nette\Application\UI\Multiplier(function ($idTask) {
-            $taskHeader = $this->taskHeaderFactory->create();
+            $task = $this->taskCard->create();
             if(isset($this->tasks[$idTask])) {
-                $task = $this->tasks[$idTask];
+                $taskData = $this->tasks[$idTask];
+				$task->setTask($taskData);
+				return $task;
             } else {
-                $task = $this->taskManager->getTask($idTask, $this->presenter->activeUser);
-            }
-            $taskHeader->setTask($task);
-            $taskHeader->setCommitTaskForm($this['commitTaskForm']);
-            return $taskHeader;
+				return null;
+			}          
         });
     }
     
@@ -133,11 +131,6 @@ class TaskPresenter extends BasePresenter
     {
         return $this->commitTaskForm->create();
     }
-    
-    protected function createComponentTaskCard()
-    {
-        return new TaskCard();
-    }  
     
     public function redrawTasks() {
         $groups = $this->groupManager->getUserGroups($this->activeUser);

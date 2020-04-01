@@ -28,7 +28,6 @@ services:
     - App\FrontModule\Components\TopPanel\ITopPanel
     - App\FrontModule\Components\Group\About\IGroupSettingsForm
     - App\FrontModule\Components\Group\About\IAboutGroup
-    - App\FrontModule\Components\TaskHeader\ITaskHeader
     - App\FrontModule\Components\Group\IStudentsList
     - App\FrontModule\Components\Group\IClassification
     - App\FrontModule\Components\Stream\IStream
@@ -52,6 +51,7 @@ services:
     - App\FrontModule\Components\IStorage
     - App\FrontModule\Components\IClassification
     - App\FrontModule\Components\INoticeboard
+    - App\FrontModule\Components\Noticeboard\ITask
     - App\FrontModule\Components\ISearchForm
     - App\FrontModule\Components\Test\ITestsList
     - App\FrontModule\Components\Test\IEditor
