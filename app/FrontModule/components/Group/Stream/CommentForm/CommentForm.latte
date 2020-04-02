@@ -2,7 +2,7 @@
 <div class="card-comments {if count($comments) == 0}{/if}" data-message-id="{$id}">
 {snippet comments}
     <div class="comments-block">
-        <div class="comments-header">
+        <div class="comments-header" n:if="$commentsCount > 0">
             <div class="show-comments">
                 {$commentsCount|counting:['komenář', 'komenáře', 'komenářů']}
                 <i class="material-icons">expand_more</i>
