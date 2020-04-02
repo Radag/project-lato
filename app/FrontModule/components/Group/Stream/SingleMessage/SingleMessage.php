@@ -3,6 +3,7 @@
 namespace App\FrontModule\Components\Stream;
 
 use App\Model\Manager\MessageManager;
+use App\Model\Manager\CommentsManager;
 use App\FrontModule\Components\Stream\ICommitTaskForm;
 use App\FrontModule\Components\Stream\Messages\ITest;
 use App\FrontModule\Components\Stream\Messages\INormal;
@@ -12,7 +13,10 @@ class SingleMessage extends \App\Components\BaseComponent
 {
     
     /** @var  MessageManager @inject */
-    protected $messageManager;  
+    protected $messageManager;
+	
+	/** @var  CommentsManager @inject */
+    protected $commentsManager;  
             
     /** @var  ITest @inject */
     protected $testMessage;
@@ -27,9 +31,12 @@ class SingleMessage extends \App\Components\BaseComponent
     protected $commitTaskForm;  
           
     protected $message = null;
+          
+    protected $comments = null;
     
     public function __construct(
         MessageManager $messageManager,
+        CommentsManager $commentsManager,
         ICommitTaskForm $commitTaskForm,          
         ITest $testMessage,
         INormal $normalMessage,            
@@ -37,6 +44,7 @@ class SingleMessage extends \App\Components\BaseComponent
     )
     {
         $this->messageManager = $messageManager;
+        $this->commentsManager = $commentsManager;
         $this->commitTaskForm = $commitTaskForm;
         $this->testMessage = $testMessage;
         $this->normalMessage = $normalMessage;
@@ -55,7 +63,7 @@ class SingleMessage extends \App\Components\BaseComponent
     {
         $this->message = $this->messageManager->getMessage($id, $this->presenter->activeUser, $this->presenter->activeGroup);
         if($this->message) {
-            //$this->comments = $this->messageManager->getMessageComments($id);
+            $this->comments = $this->commentsManager->getMessageComments($id);
         } else {
             $this->presenter->redirect('Group:default', ['id'=>$this->presenter->activeGroup->id]);
         }
@@ -74,15 +82,15 @@ class SingleMessage extends \App\Components\BaseComponent
     
     public function createComponentMessage()
     {
-        $normal = $this->normalMessage->create();            
-        $normal->setMessage($this->message->id, $this->message, true);
+        $normal = $this->normalMessage->create();
+        $normal->setMessage($this->message->id, $this->message, $this->comments, true);
         return $normal;
     }
     
     public function createComponentTask()
     {
         $task = $this->taskMessage->create();
-        $task->setMessage($this->message->id, $this->message, true);
+        $task->setMessage($this->message->id, $this->message, $this->comments, true);
         return $task;
     }
     

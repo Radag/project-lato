@@ -232,18 +232,19 @@ class MessageManager extends BaseManager {
             $commitsAttach = $this->getAttachments($commitsAttachData, 'commit_id');
         }
         
-		$message = $this->convertMesssage($message, $attachments, $user, $commitsAttach, $group, $linksData);
+		$messageObject = $this->convertMesssage($message, $attachments, $user, $commitsAttach, $group, $linksData);
 		$displayedData = $this->db->fetch("SELECT T1.id AS message_id, GROUP_CONCAT(T3.profile_image) AS displayedBy, COUNT(T2.liked) as likes FROM
 						message T1
 						JOIN message_user_info T2 ON T1.id=T2.message_id
 						JOIN user_real T3 ON T2.user_id=T3.id
 						WHERE T1.id = ?", $message->id);
+		
 		if(isset($displayedData)) {
-			$message->displayedBy = explode(',', $displayedData->displayedBy);
-			$message->likesCount = $displayedData->likes;
+			$messageObject->displayedBy = explode(',', $displayedData->displayedBy);
+			$messageObject->likesCount = $displayedData->likes;
 		}
 		
-        return $message;
+        return $messageObject;
     }
     
     protected function convertMesssage($message, $attachments, $user, $commitsAttach, $group, $links = [])

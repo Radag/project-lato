@@ -106,7 +106,9 @@ class MessagesColumn extends \App\Components\BaseComponent
         return new Multiplier(function($id) 
         {
             $normal = $this->normalMessage->create();
-            $normal->setMessage($id, isset($this->messages[$id]) ? $this->messages[$id] : null);
+			$message = isset($this->messages[$id]) ? $this->messages[$id] : null;
+			$comments = isset($this->comments[$id]) ? $this->comments[$id] : null;
+            $normal->setMessage($id, $message, $comments);
             return $normal;
         });
     }
@@ -116,7 +118,9 @@ class MessagesColumn extends \App\Components\BaseComponent
         return new Multiplier(function($id) 
         {
             $task = $this->taskMessage->create();
-            $task->setMessage($id, isset($this->messages[$id]) ? $this->messages[$id] : null);
+			$message = isset($this->messages[$id]) ? $this->messages[$id] : null;
+			$comments = isset($this->comments[$id]) ? $this->comments[$id] : null;
+            $task->setMessage($id, $message, $comments);
             return $task;
         });
     }
@@ -126,7 +130,12 @@ class MessagesColumn extends \App\Components\BaseComponent
         return new Multiplier(function($id) 
         {
             $test = $this->testMessage->create();
-            $test->setTest($id, isset($this->tests[$id]) ? $this->tests[$id] : null, $this->presenter->activeGroup);
+			$testData = isset($this->tests[$id]) ? $this->tests[$id] : null;
+			$comments = [];
+			if($testData) {
+				$comments = isset($this->comments[$testData->message->id]) ? $this->comments[$testData->message->id] : [];
+			}
+            $test->setTest($id, $testData, $this->presenter->activeGroup, $comments);
             return $test;
         });
     }

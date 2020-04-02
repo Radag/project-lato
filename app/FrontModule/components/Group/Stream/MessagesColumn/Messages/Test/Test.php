@@ -4,6 +4,7 @@ namespace App\FrontModule\Components\Stream\Messages;
 
 use App\Model\Manager\TestManager;
 use App\Model\Manager\TestSetupManager;
+use App\Model\Manager\MessageManager;
 use App\FrontModule\Components\Stream\ICommentForm;
 
 class Test extends Base
@@ -11,19 +12,27 @@ class Test extends Base
     /** @var TestManager **/
     protected $testManager;
     
+	//is neede in base
+	/** @var MessageManager **/
+    protected $messageManager;
+   
     /** @var TestSetupManager **/
     protected $testSetupManager;
 	
     protected $test = null;
    
-    protected $id = null;
+    protected $id = null;	
+	
+    protected $comments = [];
       
     public function __construct(
+		MessageManager $messageManager,
 		TestManager $testManager,
 		TestSetupManager $testSetupManager,
 		ICommentForm $commentForm
 	)
     {
+        $this->messageManager = $messageManager;
         $this->testManager = $testManager;
         $this->testSetupManager = $testSetupManager;
         $this->commentForm = $commentForm;
@@ -56,13 +65,13 @@ class Test extends Base
     
     protected function getTest()
     {
-        if($this->test === null) {
-            $this->test = $this->testManager->getTestForUser($this->id);
+        if($this->test === null || $this->isControlInvalid()) {
+            $this->test = current($this->testManager->getGroupTests($this->presenter->activeGroup, [$this->id]));
         }
         return $this->test;
     }
     
-    public function setTest($id, $test, $group)
+    public function setTest($id, $test, $group, $comments)
     {
         $this->id = $id;
         if($test) {
@@ -70,6 +79,7 @@ class Test extends Base
         } else {
 			$this->test = $this->testManager->getGroupTests($group, [$id])[$id];
 		}
+		$this->comments = $comments;
     }
 	
 	public function createComponentCommentForm()
@@ -79,9 +89,7 @@ class Test extends Base
 			$message = new \App\Model\Entities\Message();
 			$message->id = $idMessage;
             $commentForm->setMessage($message);
-            if(isset($this->parent->parent->comments[$idMessage])) {
-                $commentForm->setComments($this->parent->parent->comments[$idMessage]);
-            }
+            $commentForm->setComments($this->comments);
             return $commentForm;
         });
     }

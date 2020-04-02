@@ -68,30 +68,25 @@ class Normal extends Base
     {
         return new \Nette\Application\UI\Multiplier(function ($idMessage) {
             $commentForm = $this->commentForm->create();
-            if(isset($this->parent->parent->messages[$idMessage])) {
-                $commentForm->setMessage($this->parent->parent->messages[$idMessage]);
-            } else {
-                $commentForm->setMessage($this->messageManager->getMessage($idMessage, $this->presenter->activeUser, $this->presenter->activeGroup));
-            }
-            if(isset($this->parent->parent->comments[$idMessage])) {
-                $commentForm->setComments($this->parent->parent->comments[$idMessage]);
-            }
+			$commentForm->setComments($this->comments);
+			$commentForm->setMessage($this->getMessage());
             return $commentForm;
         });
     }
     
     protected function getMessage()
-    {
-        if($this->message === null) {
+    {		
+        if($this->message === null || $this->isControlInvalid()) {
             $this->message = $this->messageManager->getMessage($this->id, $this->presenter->activeUser, $this->presenter->activeGroup);
         }
         return $this->message;
     }
     
-    public function setMessage($id, $message = null, $isDetail = false)
+    public function setMessage($id, $message = null, $comments = [], $isDetail = false)
     {
         $this->id = $id;
         $this->isDetail = $isDetail;
+		$this->comments = $comments;
         if($message) {
             $this->message = $message;
         }
