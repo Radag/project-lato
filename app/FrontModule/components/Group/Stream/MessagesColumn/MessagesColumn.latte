@@ -1,4 +1,4 @@
- {snippet messages}     
+<div class="messages-column" n:snippet="messages"> 
     {foreach $messages as $message}
         {if $message->type === 'normal'}                
             {control message-$message->id}
@@ -68,7 +68,7 @@
         </div>
     </div>
     {/if}
-{/snippet}
+</div>
 <div n:if="(count($messages) > 0)" id="no-more-posts">Více už toho není</div>
 <input type="text" style="display: none;" id="link-cache-input">
 <div id="test-setup-modal" class="modal modal-small">
@@ -77,6 +77,16 @@
     {/snippet}
 </div>
 <script>
+    $(".messages-column").on('click', function(e) {
+        if($(e.target).hasClass("limited-text")) {
+            $(e.target).removeClass("limited-text");
+            $(e.target).addClass("limited-text-r");
+        } else if($(e.target).hasClass("limited-text-r")) {
+            $(e.target).removeClass("limited-text-r");
+            $(e.target).addClass("limited-text");
+        }
+    });
+    
     getAllVisisbleElements();    
     $(window).scroll(function() {
         clearTimeout($.data(this, 'scrollTimer'));

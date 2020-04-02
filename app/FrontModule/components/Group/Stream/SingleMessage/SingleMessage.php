@@ -75,7 +75,7 @@ class SingleMessage extends \App\Components\BaseComponent
     public function createComponentMessage()
     {
         $normal = $this->normalMessage->create();            
-        $normal->setMessage($this->message->id, $this->message);
+        $normal->setMessage($this->message->id, $this->message, true);
         return $normal;
     }
     

@@ -1,5 +1,5 @@
-<div class="card-content">
-    <p class="message-text">{$message->text|breaklines}</p>
+<div class="card-content">    
+    <p class="message-text {if !$isDetail}limited-text{/if}">{$message->text|breaklines}</p>
     {if isset($message->attachments['files']) && !empty($message->attachments['files']) }
     <ul class="attachments">
         {foreach $message->attachments['files'] as $file}
