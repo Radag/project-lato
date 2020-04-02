@@ -1,6 +1,11 @@
 {if $isDetail}{include taskDetailHeader $message->task}{/if}
 <div class="card message flex-column {if $message->deleted == 1}card-flat{/if} {if $message->displayed}displayed{/if}"  id="message-box-num_{$message->id}" data-message-id="{$message->id}"> 
     <div class="card-action-header">
+        <div class="notification-type colored">
+            <div class="avatar small">
+                <i class="material-icons">assignment</i>
+            </div>
+        </div>
         <div class="avatar small">
             <img src="{$message->user->profileImage}">
         </div>
@@ -10,13 +15,7 @@
         {include '../normal/menu.latte'}
     </div>
     <div class="card-action-content">
-        <div class="info-header">
-            <div class="avatar-spacer">
-                <div class="avatar tiny colored">
-                    <i class="material-icons">assignment</i>
-                </div>
-            </div>
-            
+        <div class="info-header">            
             {if $task->timeLeft->invert === 0}
                 <p>Termín odevzdání do <strong>{$task->deadline->format("j. n. G:i")}</strong></p>
             {else}

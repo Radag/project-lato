@@ -32,7 +32,10 @@ body {
 
 .amber {
     background-color: #ffc107 !important; 
-    color: rgba(0, 0, 0, .75) !important;
+    
+    .avatar {
+        color: rgba(0, 0, 0, .75) !important;
+    }
 }
 
 .blue-gray {
@@ -614,20 +617,6 @@ textarea.materialize-textarea:focus:not([readonly]) {
     border-bottom-color: @accent-color;
     -webkit-box-shadow: 0 1px 0 0 @accent-color;
             box-shadow: 0 1px 0 0 @accent-color;
-}
-
-.avatar {
-    &.colored {
-        background-color: @primary-color;
-        /* background-color: @accent-color; */
-        color: @primary-text-color;
-    }
-}
-
-.colored {
-    background-color: @primary-color;
-    color: #fff;
-
 }
 
 .create-post .alternate li .material-icons {
@@ -1998,6 +1987,7 @@ input[type=search]:not(.browser-default) {
     }
 
     .card-content {
+
         p {
             font-size: 0.875rem;
         }
@@ -2093,7 +2083,7 @@ input[type=search]:not(.browser-default) {
     display: flex;
     flex-direction: column;
     margin: 0;
-    padding: 40px 0 0 0;
+    padding: 1.5rem 0 0 0;
 
     @media only screen and (max-width: 600px) {
         & {
@@ -2779,6 +2769,7 @@ nav .nav-title {
     }
 
     .side-nav-header {
+        display: flex;
         padding: 0;
 
         @media only screen and (max-width: 600px) {
@@ -2907,6 +2898,7 @@ nav .nav-title {
             padding: 0 20px;
             height: 56px;
             line-height: 56px;
+            font-weight: 700;
 
             &.active,
             &.active i { 
@@ -3461,6 +3453,7 @@ nav .nav-title {
         .header-wrapper {
             display: flex;
             padding: 16px 20px;
+            width: 100%;
 
             & > .title {
                 color: rgba(0, 0, 0, .87);
@@ -3924,7 +3917,7 @@ nav .nav-title {
     .message-info {
         display: flex;
         align-items: center;
-        padding: 1.5rem;
+        padding: .75rem 1.5rem 1.5rem 1.5rem;
 
         .message-options {
             display: flex;
@@ -3974,6 +3967,7 @@ nav .nav-title {
 
         .seen {
             display: flex;
+            margin: 0;
 
             .avatar {
                 width: 20px;
@@ -5370,11 +5364,25 @@ nav .nav-title {
 
 .card-action-header {
     background-color: @background-highlighted;
-    padding: 24px;
+    padding: 0 24px;
     margin: 0;
     display: flex;
     align-items: center;
     color: @secondary-text-color;
+
+    .notification-type {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 1.5rem 0 -24px;
+        height: 80px;
+        width: 88px;
+
+        .avatar {
+            margin: 0;
+            background-color: @background-highlighted;
+        }
+    }
 
     .user-name {
         flex-grow: 1;
@@ -5791,82 +5799,80 @@ nav .nav-title {
 
 /* ----- Noticeboard ----- */
 
-#noticeboard {
 
-    #assignments {
 
-        .assignment-preview {
-            display: flex;
-            align-items: center;
+.assignment-preview {
+    display: flex;
+    align-items: center;
 
-            .assignment-icon {
-                width: 88px;
-                height: 88px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+    .assignment-icon {
+        width: 88px;
+        height: 88px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-                .avatar {
-                    width: 48px;
-                    height: 48px;
-                    background-color: @background-highlighted;
-                    margin: 0;
-                }
-            }
-
-            .assignment-content {
-                flex-grow: 1;
-                display: flex;
-                align-items: center;
-                padding: 0 1.5rem 0 1rem;
-
-                .assignment-info {
-
-                    h3 {
-                        margin: 0;
-                        font-size: .9375rem;
-                        font-weight: 500;
-                    }
-
-                    span {
-                        display: block;
-                        font-size: .8125rem;
-                        color: @secondary-text-color;
-                    }
-                }
-            }
-        }
-
-        .assignment {
+        .avatar {
+            width: 48px;
+            height: 48px;
             background-color: @background-highlighted;
-            border-bottom: none;
+            margin: 0;
         }
+    }
 
-        .empty {
-            display: flex;
-            align-items: center;
-            padding: 20px 24px;
-            color: @secondary-text-color;
-            font-style: italic;
+    .assignment-content {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        padding: 0 1.5rem 0 1rem;
 
-            @media only screen and (max-width: 600px) {
-                & {
-                    padding: 16px 12px;
-                }
+        .assignment-info {
+
+            h3 {
+                margin: 0;
+                font-size: .875rem;
+                font-weight: 500;
             }
 
-            .avatar {
-                background-color: #39b54a;
+            span {
+                display: block;
+                font-size: .8125rem;
+                color: @secondary-text-color;
             }
-        }
-
-        .show-more {
-            display: flex;
-            justify-content: center;
-            margin: 16px 0 48px 0;
         }
     }
 }
+
+.assignment {
+    background-color: @background-highlighted;
+    border-bottom: none;
+}
+
+.empty {
+    display: flex;
+    align-items: center;
+    padding: 20px 24px;
+    color: @secondary-text-color;
+    font-style: italic;
+
+    @media only screen and (max-width: 600px) {
+        & {
+            padding: 16px 12px;
+        }
+    }
+
+    .avatar {
+        background-color: #39b54a;
+    }
+}
+
+.show-more {
+    display: flex;
+    justify-content: center;
+    margin: 16px 0 48px 0;
+}
+
+
 
 
     

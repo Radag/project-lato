@@ -1,5 +1,10 @@
 <div class="card message flex-column {if !$test->setup->isVisible}postponed{/if} {if $test->message->displayed}displayed{/if}" data-message-id="{$test->message->id}"> 
     <div class="card-action-header">
+        <div class="notification-type colored">
+            <div class="avatar small">
+                <i class="material-icons">assignment</i>
+            </div>
+        </div>
         <div class="avatar small">
             <img src="{$test->author->profileImage}">
         </div>
@@ -15,11 +20,6 @@
     </div>
     <div class="card-action-content">
         <div class="info-header">
-            <div class="avatar-spacer">
-                <div class="avatar tiny colored">
-                    <i class="material-icons">playlist_add_check</i>
-                </div>
-            </div>
             <p n:if="$test->setup->deadline">Otevřeno do <strong>{$test->setup->deadline|date:"j. n. G:i"}</strong></p>
             <div class="flex-spacer"></div>
             {if !$test->setup->isCreator && ($test->setup->timeLeft == null || $test->setup->timeLeft->invert === 0)

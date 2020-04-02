@@ -6,7 +6,7 @@
         <div class="assignment-content">
             <div class="assignment-info">
                 <h3>{$task->title}</h3>
-                <span><strong>Povinnost</strong> | Termín odevzdání: <strong>{$task->deadline->format("j. n. Y")}</strong></span>
+                <span>{*<strong>Povinnost</strong> | *}Termín odevzdání: <strong>{$task->deadline->format("j. n. Y")}</strong></span>
             </div>
             <div class="flex-spacer"></div>
             <a class="btn gray no-shadow" href="{plink Group:message 'idMessage'=>$task->message->id, 'id'=>$task->group->slug}" >Otevřít</a>
