@@ -19,10 +19,12 @@ class Test extends Base
     protected $id = null;
       
     public function __construct(
+		TestManager $testManager,
 		TestSetupManager $testSetupManager,
 		ICommentForm $commentForm
 	)
     {
+        $this->testManager = $testManager;
         $this->testSetupManager = $testSetupManager;
         $this->commentForm = $commentForm;
     }

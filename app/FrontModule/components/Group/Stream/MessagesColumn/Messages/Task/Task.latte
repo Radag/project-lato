@@ -23,8 +23,8 @@
             {/if} 
             
             <div class="flex-spacer"></div>
-            <div class="task-status">
-                {if !$task->isCreator && $task->online}
+            <div class="task-status" n:if="!$task->isCreator">
+                {if $task->online}
                     {if $task->commit}
                         {if !empty($task->commit->grade) && $task->commit->grade !== '—'}}
                             Známka: <strong>{$task->commit->grade}</strong>
@@ -38,7 +38,7 @@
             </div>
             {if !$isDetail}
                 {if $task->isCreator && $task->createClassification == 1}
-                    <a href="{plink Group:usersClassification classificationGroupId=>$task->idClassificationGroup, id=>$task->group->slug}" class="btn gray no-shadow">Otevřít</a>
+                    <a href="{plink Group:usersClassification classificationGroupId=>$task->idClassificationGroup, id=>$task->group->slug}" class="btn gray no-shadow">Oznámkovat</a>
                 {elseif !$task->isCreator}
                     <a href="{plink Group:message 'idMessage'=>$task->message->id, 'id'=>$task->group->slug}" class="btn gray no-shadow">Otevřít</a>
                 {/if}

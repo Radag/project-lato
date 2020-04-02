@@ -116,19 +116,19 @@ class TopPanel extends \App\Components\BaseComponent
           $this->presenter->redirect($redirect->link, $redirect->args);
     }
     
-    public function handleNotificationsRead($global = true, $idNotification = null)
+    public function handleNotificationsRead($global, $idNotification = null)
     {
-        if($global) {
-            $this->notificationManager->setAllNotificationRead($this->presenter->activeUser->id, $global);
+		if($idNotification) {
+			$this->notificationManager->setNotificationRead($this->presenter->activeUser->id, $idNotification);
+		} else {
+			$this->notificationManager->setAllNotificationRead($this->presenter->activeUser->id, $global);
             $this->presenter->activeUser->unreadNotifications = 0;
-        } else {
-            $this->notificationManager->setNotificationRead($this->presenter->activeUser->id, $idNotification);
-        }
+		}
         
-        
-        if($global) {
+        if($global && !$idNotification) {
             $this->redrawControl('notificationCount');
         } else {
+			$this->redrawControl('left-pannels');
             $this->redrawControl('right-notification-list');
         }
     }
@@ -140,6 +140,7 @@ class TopPanel extends \App\Components\BaseComponent
         if($global) {
             $this->redrawControl('unreadPrivateMessages');   
         } else {
+			$this->redrawControl('left-pannels');
             $this->redrawControl('right-conversation-list');
         }
         

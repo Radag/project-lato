@@ -24,7 +24,7 @@
             <div class="right-nav-flex">
                 <ul class="navbar-nav">
                     <li>
-                        <a id="button-notification-slide" class="button-collapse show-on-large sidenav-trigger" href="{link notificationsRead!}" data-target="slide-out-notification" >
+                        <a id="button-notification-slide" class="button-collapse show-on-large sidenav-trigger" href="{link notificationsRead! 'global' => true}" data-target="slide-out-notification" >
                             <i class="material-icons ">notifications</i>
                             {snippet notificationCount}{if $activeUser->unreadNotifications > 0}<span class="nav-badge">{$activeUser->unreadNotifications}</span>{/if}{/snippet}
                         </a>
@@ -41,9 +41,11 @@
         </div>
         <div class="progress loading-data" id="main-progress-loader"><div class="indeterminate"></div></div>
     </nav>     
-    {include 'menu.latte'}
-    {include 'conversations.latte'}
-    {include 'notifications.latte'}
+    {include 'menu.latte'}       
+    {snippetArea left-pannels}
+        {include 'conversations.latte'} 
+        {include 'notifications.latte'}
+    {/snippetArea}
 </header>
 <script>
     $(document).ready(function () {

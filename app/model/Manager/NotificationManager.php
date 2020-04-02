@@ -2,6 +2,7 @@
 namespace App\Model\Manager;
 
 use App\Model\Entities;
+use App\Model\LatoSettings;
 
 class NotificationManager extends BaseManager
 {   
@@ -36,11 +37,13 @@ class NotificationManager extends BaseManager
     public function __construct(
         \Nette\Security\User $user,
         GroupManager $groupManager,
-        \Dibi\Connection $db
+        \Dibi\Connection $db,
+		LatoSettings $settings
     )
     {
         $this->user = $user;
         $this->db = $db;
+        $this->settings = $settings;
     }
     
     
@@ -87,8 +90,13 @@ class NotificationManager extends BaseManager
         $notification->data = json_encode([
             'commentId' => $comment->id
         ]);
-        $notification->idUser = $this->db->fetchSingle("SELECT user_id FROM message WHERE id=?", $comment->idMessage);
-        $this->addNotification($notification);    
+		$toUsers = $this->db->fetchAll("SELECT user_id FROM message_user_info WHERE message_id=? AND watched IS NOT NULL AND user_id <> ?", $comment->idMessage, $this->settings->getUser()->id);
+		if(is_array($toUsers)) {
+			foreach($toUsers as $user) {
+				$notification->idUser = $user->user_id;
+				$this->addNotification($notification);    
+			}
+		}		    
     }
     
     /* student se sám přidal do skupiny */
@@ -176,7 +184,7 @@ class NotificationManager extends BaseManager
                 FROM notification T1 
                 JOIN vw_all_users T2 ON T1.trigger_user_id=T2.id
                 WHERE T1.user_id=?
-                ORDER BY IF(T1.is_read IS NULL,NULL,T1.created_when), T1.created_when DESC LIMIT 15", $user->id);
+                ORDER BY T1.is_read IS NULL DESC, T1.created_when DESC LIMIT 15", $user->id);
 
         foreach($notifications as $notif) {
             $notification = new Entities\Notification($notif);
