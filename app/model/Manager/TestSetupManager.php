@@ -22,7 +22,8 @@ class TestSetupManager extends BaseManager
      
     public function getTestSetup(int $id)
     {
-        $setup = $this->db->fetch("SELECT * FROM test_setup WHERE id=?", $id);
+		$sql = "SELECT T1.*, T2.publication_time FROM test_setup T1 JOIN message T2 ON T1.message_id=T2.id WHERE T1.id=?";
+        $setup = $this->db->fetch($sql, $id);
         if(!$setup) {
             return null;
         }

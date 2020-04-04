@@ -9,6 +9,7 @@ class TestSetup extends AbstractEntity {
     public $id = null;
     public $testId = null;
     public $groupId = null;
+    public $messageId = null;
     public $timeLimit = null;
     public $questionsCount = null;
     public $numberOfRepetitions = null;

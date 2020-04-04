@@ -43,7 +43,8 @@ class TestManager extends BaseManager
             'group_id' => $testSetup->groupId,        
             'type' => 'test',     
             'user_id' => $this->settings->getUser()->id,
-            'created_by' => $this->user->id
+            'created_by' => $this->user->id,
+            'publication_time' => $testSetup->publicationTime
         ]);
 		$messageId = $this->db->getInsertId();		
         $this->db->query("INSERT INTO test_setup", [
@@ -53,7 +54,6 @@ class TestManager extends BaseManager
             'time_limit' => $testSetup->timeLimit,          
             'questions_count' => $testSetup->questionsCount,          
             'number_of_repetitions' => $testSetup->numberOfRepetitions,
-            'publication_time' => $testSetup->publicationTime,
             'classification_group_id' => $testSetup->classificationGroupId,
             'random_sort' => $testSetup->randomSort,            
             'can_look_at_results' => $testSetup->canLookAtResults,
@@ -68,12 +68,16 @@ class TestManager extends BaseManager
             'time_limit' => $testSetup->timeLimit,          
             'questions_count' => $testSetup->questionsCount,          
             'number_of_repetitions' => $testSetup->numberOfRepetitions,
-            'publication_time' => $testSetup->publicationTime,
             'classification_group_id' => $testSetup->classificationGroupId,
             'random_sort' => $testSetup->randomSort,
             'deadline' => $testSetup->deadline,
             'can_look_at_results' => $testSetup->canLookAtResults
         ], "WHERE id=?", $testSetup->id);
+		
+		$messageId = $this->db->fetchSingle("SELECT message_id FROM test_setup WHERE id=?", $testSetup->id);		
+		$this->db->query("UPDATE message SET ", [            
+            'publication_time' => $testSetup->publicationTime,
+        ], "WHERE id=?", $messageId );
     }
     
     public function getGroupTests(Entities\Group $group, $testSetupIds = []) 
@@ -81,7 +85,7 @@ class TestManager extends BaseManager
         $userId = $this->settings->getUser()->id;
         $publicationTime = "";
         if($group->relation !== GroupManager::RELATION_OWNER) {
-            $publicationTime = "AND (T2.publication_time IS NULL OR T2.publication_time < NOW())";
+            $publicationTime = "AND (T8.publication_time IS NULL OR T8.publication_time < NOW())";
         }
         
 		$dataSql = "SELECT 
@@ -94,12 +98,11 @@ class TestManager extends BaseManager
                 T3.slug AS author_slug,
                 T3.id AS author_id,
                 T2.created_at, 
-                T2.publication_time, 
+                T8.publication_time, 
                 T2.id AS setup_id,
                 T2.deadline,
                 T2.classification_group_id,
                 T2.number_of_repetitions,
-                T2.publication_time,
                 IFNULL(T2.questions_count, T1.questions_count) AS questions_count,
                 T2.time_limit,
                 T2.filled_per_students,
@@ -108,7 +111,7 @@ class TestManager extends BaseManager
                 T4.id AS group_id,
                 T4.slug AS group_slug,
                 T5.grade,
-                IF(T2.publication_time IS NULL OR T2.publication_time < NOW(), 1, 0) AS is_visible,
+                IF(T8.publication_time IS NULL OR T8.publication_time < NOW(), 1, 0) AS is_visible,
 				T2.message_id,
 				T7.displayed,						
 				T7.watched,						
@@ -119,6 +122,7 @@ class TestManager extends BaseManager
             JOIN `group` T4 ON T2.group_id=T4.id 
             LEFT JOIN classification T5 ON (T5.classification_group_id=T2.classification_group_id AND T5.user_id=?)
             JOIN user_real T6 ON T6.id=T3.id
+			JOIN message T8 ON T2.message_id=T8.id
 			LEFT JOIN message_user_info T7 ON T7.message_id=T2.message_id AND T7.user_id=? WHERE ";
 	
 		if ($testSetupIds) {

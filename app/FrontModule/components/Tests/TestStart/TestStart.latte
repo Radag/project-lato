@@ -14,8 +14,8 @@
                     <div class="card-header">
                         <h3 class="name">{$test->name}</h3>
                     </div>
-                    <div class="card-content">
-                        <p class="info">{$testSetup->questionsCount} otázek{if $testLimitText} | {$testLimitText}{/if}</p>
+                    <div class="card-content">                        
+                        <p class="info">{$testSetup->questionsCount == null ? $test->questionsCount : $testSetup->questionsCount} otázek{if $testLimitText} | {$testLimitText}{/if}</p>
                         <p>Ke každé otázce existuje alespoň jedna správná odpověď. (může být i více)</p>
                         <p>Za špatnou odpověď se nestrhávají body.</p>
                     </div>
