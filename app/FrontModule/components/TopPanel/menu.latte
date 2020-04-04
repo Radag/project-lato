@@ -32,8 +32,10 @@
                         {foreach $groups->groups as $group}
                             <li>
                                 <a n:class="$presenter->isLinkCurrent('Group:default', array('id'=>$group->slug)) ? active" href="{plink Group:default 'id'=>$group->slug}">
-                                    <div class="group-shortcut-circle {$group->colorScheme}" >{$group->shortcut|substr:0,1}
+                                    <div class="group-shortcut-circle {$group->colorScheme}">{$group->shortcut|substr:0,1}
+                                        {*
                                         {if $groups->differentRelations && $group->relation === 'owner'}<div class="admin-mark {$group->colorScheme}" ></div>{/if}
+                                        *}
                                     </div>
                                     <div class="group-name truncate">{$group->name} {if $group->subgroup}<span>({$group->subgroup})</span>{/if}</div>
                                 </a>

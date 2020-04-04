@@ -1,5 +1,5 @@
 <div class="card assignment-preview">
-    <a class="assignment-icon colored {$task->group->colorScheme}" href="{plink Group:default, 'id'=>$task->group->slug}">
+    <a class="assignment-icon {$task->group->colorScheme}" href="{plink Group:default, 'id'=>$task->group->slug}">
         <span class="avatar">{$task->group->shortcut|substr:0,1}</span>
     </a>
     <div class="assignment-content">

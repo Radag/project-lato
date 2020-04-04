@@ -19,6 +19,12 @@
         </div>
         {$form['surname']|inputErrors|noescape}
         <div class="form-row input-field">
+            <select>
+                <option value="1">Student</option>
+                <option value="2">Učitel</option>
+            </select>
+        </div>
+        <div class="form-row input-field">
             {input password1}
             {label password1}Heslo{/label}
         </div>
@@ -50,3 +56,9 @@
     </div>
     {/form}
 {/snippet}
+
+<script>
+    $(document).ready(function(){
+        $('select').formSelect();
+    });
+</script>

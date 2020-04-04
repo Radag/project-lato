@@ -27,7 +27,7 @@
                 {if $task->online}
                     {if $task->commit}
                         {if !empty($task->commit->grade) && $task->commit->grade !== '—'}
-                            Známka:&nbsp;<strong>{$task->commit->grade}</strong>
+                            Známka&nbsp;<strong>{$task->commit->grade}</strong>
                         {else}
                             <i class="material-icons">done</i><strong>Odevzdáno</strong>
                         {/if} 

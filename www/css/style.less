@@ -32,18 +32,17 @@ body {
 
 .amber {
     background-color: #ffc107 !important; 
-    
-    .avatar {
-        color: rgba(0, 0, 0, .75) !important;
-    }
+    color: rgba(0, 0, 0, .75) !important;
 }
 
 .blue-gray {
     background-color: #455A64 !important;
+    color: #fff;
 }
 
 .blue {
     background-color: #2196f3 !important;
+    color: #fff;
 }
 
 .lime {
@@ -275,7 +274,6 @@ strong {
     margin-right: 12px;
     font-size: .875rem;
     font-weight: 500;
-    color: #fff;
 
     &.fictive-user {
         background-color: rgba(0, 0, 0, .1);
@@ -368,14 +366,12 @@ strong {
     position: relative;
     width: 36px;
     height: 36px;
-    border: 3px solid #fff;
+    border: 3px solid transparent;
     border-radius: 50%;
-    background-color: @secondary-text-color;
     text-align: center;
     margin: 0 32px 0 0;
     line-height: 30px;
-    color: #fff;
-    font-weight: 700;
+    font-weight: 500;
 }
 
 
@@ -502,6 +498,10 @@ i.btn {
     width: 40px;
     color: @secondary-text-color;
 
+    &:hover {
+        background-color: @background-highlighted;
+    }
+
     @media only screen and (max-width: 600px) {
         & {
             height: 32px;
@@ -538,10 +538,14 @@ i.btn {
     }
 
     li {
+        -webkit-transition: 300ms ease-in-out;
+        -moz-transition: 300ms ease-in-out;
+        -o-transition: 300ms ease-in-out;
+        transition: 300ms ease-in-out;
         min-height: inherit;
 
         a {
-
+    
             @media only screen and (max-width: 600px) {
                 & {
                     padding: 10px 16px !important;
@@ -1281,6 +1285,7 @@ input[type=search]:not(.browser-default) {
     max-width: calc(~'100% - 24px');
     background-color: #fff;
     max-height: 80%;
+    border-radius: 4px;
 
     @media only screen and (max-width: 600px) {
         & {
@@ -3018,14 +3023,10 @@ nav .nav-title {
                 flex-shrink: 0;
                 margin-left: -2px;
                 margin-right: 30px;                
-
-                i {
-                    color: @secondary-text-color !important;
-                }
             }
 
             .group-name {
-
+    
                 span {
                    font-size: 12px;
                    font-style: italic;
@@ -3650,7 +3651,8 @@ nav .nav-title {
     background: #fff;
     box-shadow: 0 1px 3px rgba(0, 0, 0, .2); 
     margin: 0 1rem 2rem 1rem;
-    border-radius: 2px;
+    border-radius: 4px;
+    overflow: hidden;
 
     &.card-flat,
     &.postponed {
@@ -4458,19 +4460,22 @@ nav .nav-title {
 
 .admin-mark {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 4px;
+    left: 4px;
     height: 8px;
     width: 8px;
     border-radius: 50%;
-    box-shadow: 0 0 0 2px #fff;
+    background-color: #fff !important;
+
+    .amber, .lime {
+        background-color: rgba(0, 0, 0, .75) !important;
+    }
 }
 
 #group-cards {
     padding-bottom: 32px;
 
     .card {
-        padding: 20px 24px;
         display: flex;
         align-items: center;
 
@@ -4486,9 +4491,22 @@ nav .nav-title {
             }
         }
 
-        .avatar {
-            position: relative;
+        .group-icon {
+            width: 88px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .avatar {
+                position: relative;
+                width: 48px;
+                height: 48px;
+                background-color: @background-highlighted;
+                margin: 0;
+            }
         }
+
 
         @media only screen and (max-width: 600px) {
             & {
@@ -4507,15 +4525,15 @@ nav .nav-title {
         }
 
         .title {
-            font-size:14px;
-            line-height:21px;
+            padding: 0 1.5rem 0 1rem;
+            font-size: .875rem;
             font-weight:500;
             color: rgba(0, 0, 0, .87);
 
             span {
                 color: @secondary-text-color;
                 font-style: italic;
-                font-size: 12px;
+                font-size: .75rem;
             }
         }
     }

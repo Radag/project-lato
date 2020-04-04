@@ -308,6 +308,70 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
                 }
             }
         }  
+
+        .select-wrapper {
+            width: 100%;
+
+            input.select-dropdown {
+                padding: 0 !important;
+                margin: 0;
+                height: 45px;
+                line-height: 16px;
+                border-color: @line-color;
+            }
+            
+
+
+            .dropdown-content {
+                max-height: 128px;
+                overflow-y: auto !important;
+                backface-visibility: hidden !important;
+                text-transform: none;
+                padding: 10px 0 !important;
+                box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+
+                &::-webkit-scrollbar {
+                    -webkit-appearance: none;
+                }
+
+                &::-webkit-scrollbar:vertical {
+                    width: 10px;
+                }
+
+                &::-webkit-scrollbar:horizontal {
+                    height: 10px;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    background-color: rgba(0, 0, 0, .15);
+                }
+
+                li {
+                    -webkit-transition: 300ms ease-in-out;
+                    -moz-transition: 300ms ease-in-out;
+                    -o-transition: 300ms ease-in-out;
+                    transition: 300ms ease-in-out;
+                    min-height: inherit;
+
+                    a {
+                
+                        @media only screen and (max-width: 600px) {
+                            & {
+                                padding: 10px 16px !important;
+                            }
+                        }
+                    }
+
+                    & > a, 
+                    & > span {
+                        font-size: .9375rem;
+                        color: rgba(0, 0, 0, .87) !important;
+                        padding: 1rem 1.5rem;
+                        font-weight: 400;
+                    }         
+                }
+            } 
+        }
     }
 
     &.captcha-row {
