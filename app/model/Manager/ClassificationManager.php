@@ -230,17 +230,18 @@ class ClassificationManager extends BaseManager
                         T1.id,
                         T1.grade,
                         T1.notice,
-                        T1.classification_date,
-                        T1.name AS grade_name,
+                        IFNULL(T1.last_change, T1.created_when) AS classification_date,
+                        T5.name AS grade_name,
                         T2.id AS group_id,
                         T2.name AS group_name,
                         T4.main_color,
                         T2.shortcut,
                         T4.code AS group_color_code
-                FROM vw_classification T1
-                LEFT JOIN `group` T2 ON T1.group_id=T2.id
+                FROM classification T1
+                JOIN classification_group T5 ON T1.classification_group_id=T5.id
+                LEFT JOIN `group` T2 ON T5.group_id=T2.id
                 LEFT JOIN group_scheme T4 ON T2.group_scheme_id = T4.id
-                LEFT JOIN group_period T3 ON T1.period_id=T3.id
+                LEFT JOIN group_period T3 ON T5.period_id=T3.id
                 WHERE T3.active=1 AND T1.user_id=?";
         $classifications = $this->db->fetchAll($query, $user->id);
         $return = [];
