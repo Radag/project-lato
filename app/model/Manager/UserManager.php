@@ -94,8 +94,10 @@ class UserManager implements Nette\Security\IAuthenticator
                 $userData = $this->db->fetch("SELECT * FROM user JOIN user_real USING(id) WHERE id=?", $idUser); 
             }            
         }
-        if($userData) {       
-            return new User($userData);
+        if($userData) {
+			$user = new User($userData);
+			$user->roles[] = $userData->role;
+            return $user;
         } else {
             return null;
         }

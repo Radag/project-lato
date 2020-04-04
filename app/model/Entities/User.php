@@ -5,6 +5,9 @@ namespace App\Model\Entities;
 class User extends AbstractEntity
 {
 
+	const ROLE_STUDENT = "student";
+	const ROLE_TEACHER = "teacher";
+	
     public $id = null;
     public $name = null;
     public $surname = null;
@@ -21,6 +24,7 @@ class User extends AbstractEntity
     public $avatar = null;
     public $unreadNotifications = 0;
     public $emailVerification = 0;
+    public $roles = [];
     
     protected $mapFields = [
         'id' => 'id',
@@ -83,4 +87,9 @@ class User extends AbstractEntity
             $this->profileImage = self::createProfilePath('', $sex);
         }
     }
+	
+	public function hasRole($role)
+	{
+		return in_array($role, $this->roles);
+	}
 }

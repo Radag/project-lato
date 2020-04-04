@@ -62,10 +62,12 @@
             <i class="material-icons">event</i>Rozvrh
         </a>
     </li>*}
-    <li><a n:class="$presenter->isLinkCurrent('Tests:*') ? active, waves-effect, waves-dark" href="{plink Tests:list}" >
+    <li n:if="$activeUser->hasRole('teacher')" >
+        <a n:class="$presenter->isLinkCurrent('Tests:*') ? active, waves-effect, waves-dark" href="{plink Tests:list}" >
             <i class="material-icons">playlist_add_check</i>Testy
-        </a></li>
-    <li>
+        </a>
+    </li>
+    <li n:if="$activeUser->hasRole('student')">
         <a n:class="$presenter->isLinkCurrent('Homepage:classification') ? active, waves-effect, waves-dark" href="{plink :Front:Homepage:classification}" >
             <i class="material-icons">assessment</i>Klasifikace
         </a>
@@ -75,9 +77,11 @@
             <i class="material-icons">storage</i>Uložiště
         </a>
     </li> *}
-    <li><a n:class="$presenter->isLinkCurrent('Archive:default') ? active, waves-effect, waves-dark" href="{plink Archive:default}" >
+    <li n:if="$activeUser->hasRole('teacher')">
+        <a n:class="$presenter->isLinkCurrent('Archive:default') ? active, waves-effect, waves-dark" href="{plink Archive:default}" >
             <i class="material-icons">folder</i>Archiv
-        </a></li>
+        </a>
+    </li>
     <li class="divider"></li>
     <h4 style="margin-bottom: 8px">Správa účtu</h4>
     <li><a href="{plink Account:default}" n:class="$presenter->isLinkCurrent('Account:*') ? active, waves-effect, waves-dark">
