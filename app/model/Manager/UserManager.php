@@ -65,7 +65,8 @@ class UserManager implements Nette\Security\IAuthenticator
                 'email' => $values->email,
                 'password' => $passwords->hash($values->password1),
                 'register_ip' => $_SERVER['REMOTE_ADDR'],
-                'id' => $idUser
+                'id' => $idUser,
+                'role' => $values->role
             ]);
  
             $slug = $idUser . '_' . Nette\Utils\Strings::webalize($values->name . '_' . $values->surname);

@@ -19,10 +19,7 @@
         </div>
         {$form['surname']|inputErrors|noescape}
         <div class="form-row input-field">
-            <select>
-                <option value="1">Student</option>
-                <option value="2">Učitel</option>
-            </select>
+            {input role}
         </div>
         <div class="form-row input-field">
             {input password1}

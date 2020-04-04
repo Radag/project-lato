@@ -59,6 +59,8 @@ class RegisterForm extends \App\Components\BaseComponent
         $form->addCheckbox('terms')
              ->setRequired('Potvrďte svůj souhlas s podmínkami užívání');
 
+		$form->addSelect('role', 'Role', ['student' => 'Student', 'teacher' => 'Učitel']);
+		
         $form->addSubmit('send', 'Registrovat');
         $form->onValidate[] = function(Form $form, $values) {
             $exist = $this->userManager->getUserByMail($values->email);
