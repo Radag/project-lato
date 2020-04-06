@@ -1,13 +1,12 @@
-<div class="card assignment-preview">
-    <a class="assignment-icon {$task->group->colorScheme}" href="{plink Group:default, 'id'=>$task->group->slug}">
+<a class="card assignment-preview" href="{plink Group:message 'idMessage'=>$task->message->id, 'id'=>$task->group->slug}">
+    <div class="assignment-icon {$task->group->colorScheme}">
         <span class="avatar">{$task->group->shortcut|substr:0,1}</span>
-    </a>
+    </div>
     <div class="assignment-content">
         <div class="assignment-info">
             <h3>{$task->title}</h3>
             <span>{*<strong>Povinnost</strong> | *}Termín odevzdání: <strong>{$task->deadline->format("j. n. Y")}</strong></span>
         </div>
         <div class="flex-spacer"></div>
-        <a class="btn gray no-shadow" href="{plink Group:message 'idMessage'=>$task->message->id, 'id'=>$task->group->slug}" >Otevřít</a>
     </div>
-</div>
+</a>

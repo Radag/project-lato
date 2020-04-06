@@ -2,9 +2,10 @@
 
 /* VARIABLES */
 @primary-text-color: rgba(0, 0, 0, .87);
-@secondary-text-color: rgba(0, 0, 0, .5);
+@secondary-text-color: rgba(0, 0, 0, .54);
 @secondary-text-color-light: rgba(0, 0, 0, .35);
 @background-highlighted: rgba(0, 0, 0, .05);
+@avatar-highlighted: rgba(0, 0, 0, .1);
 @card-flat: rgba(0, 0, 0, .05);
 @icon-background: rgba(0, 0, 0, .03);
 @secondary-color: #26a69a;
@@ -558,7 +559,7 @@ i.btn {
 
         & > a, 
         & > span {
-            font-size: .9375rem;
+            font-size: .875rem;
             color: rgba(0, 0, 0, .87) !important;
             padding: 12px 24px;
             font-weight: 400;
@@ -1564,7 +1565,7 @@ input[type=search]:not(.browser-default) {
                     width: 100%;
                     display: block;
                     text-align: center;
-                    font-size: .9375rem;
+                    font-size: .875rem;
 
                     @media only screen and (max-width: 992px) { 
                         & {
@@ -1927,12 +1928,6 @@ input[type=search]:not(.browser-default) {
                 margin-right: 24px;
                 cursor: pointer;
 
-                @media only screen and (max-width: 600px) {
-                    & {
-                        font-size: .875rem;
-                    }
-                }
-
                 .material-icons {
                     display: block;
                     width: 32px;
@@ -1952,7 +1947,7 @@ input[type=search]:not(.browser-default) {
                 .label {
                     font-weight: 500;
                     color: rgba(0, 0, 0, .87);
-                    font-size: .9375rem;
+                    font-size: .875rem;
                 }
             }
         }
@@ -2989,7 +2984,7 @@ nav .nav-title {
 
     a,
     .collapsible-header {
-        font-size: .9375rem;
+        font-size: .875rem;
         padding: 0 20px;
         height: 56px;
         line-height: 56px;
@@ -3954,6 +3949,7 @@ nav .nav-title {
                 span {
                     color: @secondary-text-color;
                     margin-left: .25rem;
+                    font-size: .8125rem;
                 }
 
                 &.active.thumb-up {
@@ -4506,7 +4502,7 @@ nav .nav-title {
                 position: relative;
                 width: 48px;
                 height: 48px;
-                background-color: @background-highlighted;
+                background-color: @avatar-highlighted;
                 margin: 0;
             }
         }
@@ -5350,7 +5346,9 @@ nav .nav-title {
 
 
 .assignment-preview {
+    display: flex;
     margin-bottom: 32px;
+    color: @primary-text-color;
 
     .assignment-header {
         border-bottom: none;
@@ -5865,7 +5863,7 @@ nav .nav-title {
 
             span {
                 display: block;
-                font-size: .875rem;
+                font-size: .8125rem;
                 color: @secondary-text-color;
             }
         }
