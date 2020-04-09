@@ -75,7 +75,7 @@ class RegisterForm extends \App\Components\BaseComponent
     public function processForm(Form $form, $values) 
     {
         $code = $this->presenter->getRequest()->getPost('g-recaptcha-response');
-        if ($this->reCaptchaService->checkCode($code)) {
+        if (!$this->reCaptchaService->checkCode($code)) {
             $this->presenter->flashMessage('Špatná captcha');
             $this->presenter->redirect('this');
         }
