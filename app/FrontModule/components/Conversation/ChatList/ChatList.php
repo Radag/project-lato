@@ -28,22 +28,29 @@ class ChatList extends \App\Components\BaseComponent
             $diffDays = (integer)$diff->format( "%R%a" );
             $message->diffDays = $diffDays;
             if($diffDays === 0) {
-                if(!isset($return['today'])) {
-                    $return['today'] = (object)['messages' => [], 'name' => 'Dnes']; 
+				$index = $message->created->format("Ymd");
+                if(!isset($return[$index])) {
+                    $return[$index] = (object)['messages' => [], 'name' => 'Dnes']; 
                 }
-                $return['today']->messages[] = $message;
+                $return[$index]->messages[$message->created->format("Ymdhm")] = $message;
             } elseif($diffDays === -1) {
-                if(!isset($return['yesterday'])) {
-                    $return['yesterday'] = (object)['messages' => [], 'name' => 'Včera']; 
+				$index = $message->created->format("Ymd");
+                if(!isset($return[$index])) {
+                    $return[$index] = (object)['messages' => [], 'name' => 'Včera']; 
                 }
-                $return['yesterday']->messages[] = $message;
+                $return[$index]->messages[$message->created->format("Ymdhm")] = $message;
             } else {
-                if(!isset($return[$message->created->format("n")])) {
-                    $return[$message->created->format("n")] = (object)['messages' => [], 'name' => $this->months[$message->created->format("n") - 1]]; 
+				$index = $message->created->format("Ym01");
+                if(!isset($return[$index])) {
+                    $return[$index] = (object)['messages' => [], 'name' => $this->months[$message->created->format("n") - 1]]; 
                 }
-                $return[$message->created->format("n")]->messages[] = $message;
+                $return[$index]->messages[$message->created->format("Ymdhm")] = $message;
             }
-        }
+        }		
+		krsort($return);
+		foreach($return as $group) {
+			krsort($group->messages);
+		}
         $this->template->filter = $this->messagesFilter;
         $this->template->messages = $return;
         parent::render();

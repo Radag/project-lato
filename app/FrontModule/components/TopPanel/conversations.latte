@@ -32,7 +32,7 @@
         </a>
     </li>
     {foreach $privateMessages as $message}
-        <li>
+        <li {if !$message->read}unread{/if}>
             <a href="{plink :Front:Conversation:default, 'id'=>$message->id}" class="chat-person {if empty($message->read)}unread-mark{/if}">
                 <div class="avatar">
                     <img src="{$message->user->profileImage|noescape}" alt="">
