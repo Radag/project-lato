@@ -12,7 +12,7 @@
         <div class="user-name">{$message->user->name} {$message->user->surname}</div>
         <div class="flex-spacer"></div>
         <span class="card-date">{$message->created|date:"j. n."}</span>
-        {include '../normal/menu.latte'}
+        {include '../Normal/menu.latte'}
     </div>
     <div class="card-action-content">
         <div class="info-header">            
@@ -48,7 +48,7 @@
         <p class="message-text">{$message->text|breaklines}</p>
         
     </div>
-    {snippet message-info}{include '../normal/info.latte'}{/snippet}
+    {snippet message-info}{include '../Normal/info.latte'}{/snippet}
     {control commentForm-$message->id}
 </div>
 

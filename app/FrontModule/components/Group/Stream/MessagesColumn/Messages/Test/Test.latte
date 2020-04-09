@@ -45,7 +45,7 @@
             <li>{$test->setup->questionsCount} {if $test->setup->questionsCount == 1}otázka{elseif $test->setup->questionsCount < 5}otázky{else}otázek{/if} | {$test->setup->timeLimit/60} minut</li>
         </ul>
     </div>
-    {snippet message-info}{include '../normal/info.latte' 'message' => $message}{/snippet}
+    {snippet message-info}{include '../Normal/info.latte' 'message' => $message}{/snippet}
     {control commentForm-$message->id}
 </div>
 {define testMenu $test, $activeGroup}
