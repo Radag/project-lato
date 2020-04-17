@@ -45,9 +45,9 @@
             {/if}
         </div>
         <h3 class="message-title">{$message->task->title}</h3>
-        <p class="message-text">{$message->text|breaklines}</p>
-        
-    </div>
+        <p class="message-text">{$message->text|breaklines}</p>        
+    </div>        
+    {include '../Normal/attachments.latte'}  
     {snippet message-info}{include '../Normal/info.latte'}{/snippet}
     {control commentForm-$message->id}
 </div>

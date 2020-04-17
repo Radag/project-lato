@@ -11,6 +11,9 @@
         <span class="card-date">{$message->created|date:"j. n."}</span>
         {include 'menu.latte'}
     </div>
+    <div class="card-content">  
+        <p class="message-text {if !$isDetail}limited-text{/if}">{$message->text|breaklines}</p>
+    </div>
     {include 'attachments.latte'}    
     {snippet message-info}{include 'info.latte'}{/snippet}
     {control commentForm-$message->id}
