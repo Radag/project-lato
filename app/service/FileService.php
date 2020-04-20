@@ -126,12 +126,10 @@ class FileService
         $uploadedFile->fullPath = self::FILE_ADDRESS . $uploadedFile->path . '/' . $uploadedFile->fileName;
         $uploadedFile->purpose = $purpose;
         
-        if(!\Tracy\Debugger::isEnabled()) {
-            $file->move(self::FILES_DIRECTORY . $path . '/' . $uploadedFile->fileName);
-            if($file->isImage()) {
-                $this->createImagePreview($file->toImage(), $uploadedFile, $settings);
-            } 
-        }
+		$file->move(self::FILES_DIRECTORY . $path . '/' . $uploadedFile->fileName);
+		if($file->isImage()) {
+			$this->createImagePreview($file->toImage(), $uploadedFile, $settings);
+		} 
         
         $uploadedFile->id = $this->fileManager->saveNewFile($uploadedFile);
         return $uploadedFile;
