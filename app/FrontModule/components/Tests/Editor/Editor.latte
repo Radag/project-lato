@@ -99,7 +99,7 @@
                 row.find(".remove").removeClass("hide");
             }
             if($(e.target).val().length === 0) {
-                row.remove();
+                removeRow(row);
             }
             if(form.find(".question-form-row:not(.filled)").length === 0) {
                 var optionTemplate = $("#templates > .question-form-row").clone().get(0).outerHTML;
@@ -114,11 +114,7 @@
     
     $("#test-editor-form").on("click", function(e) {
         if($(e.target).hasClass("remove-option") || $(e.target).parent().hasClass("remove-option") ) {
-            var row = $(e.target).parents(".question-form-row");
-            if(row.find(".option-id").val() !== "") {
-                $("#test-editor-form").append('<input type="hidden" value="' + row.find(".option-id").val() + '" name="optionsToDelete[]" >');
-            }
-            row.remove();
+            removeRow($(e.target).parents(".question-form-row"));
         } else if($(e.target).hasClass("delete-question-button") || $(e.target).parent().hasClass("delete-question-button")) {
             $(e.target).parents(".question").remove();
             var quetionId = $(e.target).parents(".question").find(".question-id").val();
@@ -134,4 +130,11 @@
         $("#test-editor-form #add-question").before($(questionTemplate));
         maxNumber++;
     });
+    
+    function removeRow(row) {
+        if(row.find(".option-id").val() !== "") {
+            $("#test-editor-form").append('<input type="hidden" value="' + row.find(".option-id").val() + '" name="optionsToDelete[]" >');
+        }
+        row.remove();
+    }
 </script>
