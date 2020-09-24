@@ -15,7 +15,10 @@ class FileManager extends BaseManager
     
     public function isStorageOfLimit($idUser) : bool
     {
-        $sum = $this->db->fetchSingle("SELECT SUM(size) FROM file_list WHERE created_by=?", $idUser);
+		if ($this->settings->getUser()->hasRole("teacher")) {
+			return false;
+		}
+		$sum = $this->db->fetchSingle("SELECT SUM(size) FROM file_list WHERE created_by=?", $idUser);
         return ($sum > FileService::STORAGE_LIMIT);
     }
 
@@ -57,10 +60,15 @@ class FileManager extends BaseManager
             $file->format_size = FileService::formatBytes($file->size);
             $totalSize += $file->size;
         }
+        if ($this->settings->getUser()->hasRole("teacher")) {
+			$limit = "unlimited";
+		} else {
+			$limit = FileService::formatBytes(FileService::STORAGE_LIMIT);
+		}
         $total = (object)[
             'current' => FileService::formatBytes($totalSize),
-            'limit' => FileService::formatBytes(FilesService::STORAGE_LIMIT),
-            'percent' => round(100/FilesService::STORAGE_LIMIT * $totalSize) 
+            'limit' => $limit,
+            'percent' => round(100/FileService::STORAGE_LIMIT * $totalSize)
         ];
         
         return (object)['files' => $files, 'total' => $total];

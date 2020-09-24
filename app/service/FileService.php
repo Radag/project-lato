@@ -9,7 +9,6 @@ use App\Model\Entities\File;
 use App\Model\Entities\ImagePreview;
 use App\Model\LatoSettings;
 use Lato\FileUploadException;
-
 class FileService 
 {
     /** @var User **/
@@ -148,7 +147,7 @@ class FileService
         return true;
     }    
     
-    public static function formatBytes($size) : float
+    public static function formatBytes($size) : string
     { 
         $base = log($size) / log(1024);
         $suffix = ["", "KB", "MB", "GB", "TB"];

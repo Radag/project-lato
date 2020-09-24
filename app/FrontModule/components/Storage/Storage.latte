@@ -9,7 +9,7 @@
     {if $files}
         {foreach $files as $file}
         <div class="card">
-            {$file->filename}
+            <a href="{$file->full_path}">{$file->name}</a>
             vytvořeno : {$file->created_when->format('Y.m.d')}<br>       
             velikost: {$file->format_size}
             <a href="{link delete! idFile=>$file->id}">Smazat</a>
