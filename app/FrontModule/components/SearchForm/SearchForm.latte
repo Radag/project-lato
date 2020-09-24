@@ -35,7 +35,7 @@
                         </div>
                         <div class="title">
                             {$foundUser->name} {$foundUser->surname}
-                            <span>Student</span>
+                            <span>{if $foundUser->hasRole("teacher")}učitel{else}student{/if}</span>
                         </div>
                         <div class="flex-spacer"></div>
                         {*<button type="button" data-link="{plink newMessage! 'idUserTo'=>$foundUser->id}" class="show-new-private-message btn-flat waves-effect waves-light send-message"><i class="material-icons">email</i></button>*}

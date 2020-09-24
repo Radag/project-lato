@@ -26,11 +26,11 @@ from (((`user` `T1` left join `school_class_user` `T4` on((`T4`.`ID_USER` = `T1`
 
 CREATE OR REPLACE VIEW vw_all_users AS
 SELECT
-id, sex, name, surname, profile_image, slug, 0 AS is_fictive
+id, sex, name, surname, profile_image, slug, 0 AS is_fictive, role
 FROM user JOIN user_real using(id)
 UNION
 SELECT
-id, sex, name, surname, null, slug, 1 AS is_fictive
+id, sex, name, surname, null, slug, 1 AS is_fictive, 'student' AS role
 FROM user JOIN user_fictive using(id);
 
 CREATE OR REPLACE VIEW vw_classification AS

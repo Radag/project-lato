@@ -2,6 +2,8 @@
 
 namespace App\Model\Entities;
 
+use Tracy\Debugger;
+
 class User extends AbstractEntity
 {
 
@@ -86,6 +88,9 @@ class User extends AbstractEntity
             }
             $this->profileImage = self::createProfilePath('', $sex);
         }
+		if ($data && isset($data->role)) {
+			$this->roles[] = $data->role;
+		}
     }
 	
 	public function hasRole($role)

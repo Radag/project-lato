@@ -21,7 +21,7 @@
                                     <img src="{$userItem->profileImage|noescape}">
                                 </div>
                                 <div class="label">
-                                    <span class="title truncate">{$userItem->name} {$userItem->surname}</span>
+                                    <span class="title truncate">{$userItem->name} {$userItem->surname} ({if $userItem->hasRole("teacher")}učitel{else}student{/if})</span>
                                 </div>
                             </a>
                         </li>
