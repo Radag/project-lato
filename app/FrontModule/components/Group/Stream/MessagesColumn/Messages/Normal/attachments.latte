@@ -46,9 +46,9 @@
             <div class="img-contain" style="background-image: url('{if $media->preview->fullPath}{$media->preview->fullPath}{else}{$media->fullPath}{/if}');">
             </div>
             <a class="click-area" href="{$media->fullPath}" data-lightbox="message-gallery-{$message->id}" >
-                {* {if count($message->attachments['media']) > 1} *}
-                    <div class="media-count">+3</div>
-               {* {/if} +{count($message->attachments['media'])-1} *}
+                {if count($message->attachments['media']) > 1}
+                    <div class="media-count">+{count($message->attachments['media'])-1}</div>
+                {/if} 
             </a>
 
         </div>
