@@ -1,11 +1,11 @@
 {if $isDetail}{include taskDetailHeader $message->task}{/if}
 <div class="card message flex-column {if $message->deleted == 1}card-flat{/if} {if $message->displayed}displayed{/if}"  id="message-box-num_{$message->id}" data-message-id="{$message->id}"> 
     <div class="card-action-header">
-        <div class="notification-type colored">
+        {*<div class="notification-type colored">
             <div class="avatar small">
                 <i class="material-icons">assignment</i>
             </div>
-        </div>
+        </div>*}
         <div class="avatar small">
             <img src="{$message->user->profileImage}">
         </div>
@@ -15,14 +15,18 @@
         {include '../Normal/menu.latte'}
     </div>
     <div class="card-action-content">
-        <div class="info-header">            
-            {if $task->timeLeft->invert === 0}
-                <p>Termín odevzdání do <strong>{$task->deadline->format("j. n. G:i")}</strong></p>
-            {else}
-                <p>Uzavřeno v <strong>{$task->deadline->format("j. n. G:i")}</strong></p>
-            {/if} 
-            
+        <div class="info-header"> 
+            <div class="task-info"> 
+                <h3 class="message-title">{$message->task->title}</h3>          
+                {if $task->timeLeft->invert === 0}
+                    <p>Termín odevzdání do <strong>{$task->deadline->format("j. n. G:i")}</strong></p>
+                {else}
+                    <p>Uzavřeno v <strong>{$task->deadline->format("j. n. G:i")}</strong></p>
+                {/if} 
+            </div>
             <div class="flex-spacer"></div>
+            
+            {* Prozatím skryto 
             <div class="task-status" n:if="!$task->isCreator">
                 {if $task->online}
                     {if $task->commit}
@@ -36,6 +40,8 @@
                     {/if}     
                 {/if}
             </div>
+            *}
+
             {if !$isDetail}
                 {if $task->isCreator && $task->createClassification == 1}
                     <a href="{plink Group:usersClassification classificationGroupId=>$task->idClassificationGroup, id=>$task->group->slug}" class="btn gray no-shadow">Oznámkovat</a>
@@ -44,7 +50,7 @@
                 {/if}
             {/if}
         </div>
-        <h3 class="message-title">{$message->task->title}</h3>
+        
         <p class="message-text">{$message->text|breaklines}</p>        
     </div>        
     {include '../Normal/attachments.latte'}  

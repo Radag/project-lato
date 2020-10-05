@@ -1,6 +1,6 @@
 <div class="container main two-level-nav" id="group">
     <div class="row">
-        <div class="col s12 l8" id="stream" >
+        <div class="col s12 l8" id="stream">
             {if ($isOwner || $activeGroup->pr_user_msg_create == 1)}
                 <div class="card create-post">
                     <div id="show-create-post-modal" class="create-announcement">
@@ -13,13 +13,15 @@
                     </div>
                     {if $isOwner}
                     <ul class="alternate">
-                        <li id="show-create-post-modal-material" class="hide-on-small-only">
-                            <i class="material-icons" data-position="bottom" data-delay="50" data-tooltip="Vložit studijní materiál">school</i>
-                            <div class="label">Studijní materiál</div>
+                        <li id="show-create-post-modal-announcement" class="hide-on-small-only active">
+                            <div class="label">Oznámení</div>
                         </li>
+                        
                         <li id="show-create-post-modal-task" class="hide-on-small-only">
-                            <i class="material-icons" data-position="bottom" data-delay="50" data-tooltip="Vytvořit povinnost">assignment</i>
                             <div class="label">Povinnost</div>
+                        </li>
+                        <li id="show-create-post-modal-material" class="hide-on-small-only">
+                            <div class="label">Připomenutí</div>
                         </li>
                         <li id="show-create-post-modal-options" class="hide-on-med-and-up">
                             <i class="material-icons">more_horiz</i>

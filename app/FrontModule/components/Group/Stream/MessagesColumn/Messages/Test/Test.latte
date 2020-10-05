@@ -1,10 +1,10 @@
 <div class="card message flex-column {if !$test->setup->isVisible}postponed{/if} {if $test->message->displayed}displayed{/if}" data-message-id="{$test->message->id}"> 
     <div class="card-action-header">
-        <div class="notification-type colored">
+        {*<div class="notification-type colored">
             <div class="avatar small">
                 <i class="material-icons">assignment</i>
             </div>
-        </div>
+        </div>*}
         <div class="avatar small">
             <img src="{$test->author->profileImage}">
         </div>
@@ -20,7 +20,14 @@
     </div>
     <div class="card-action-content">
         <div class="info-header">
-            <p n:if="$test->setup->deadline">Otevřeno do <strong>{$test->setup->deadline|date:"j. n. G:i"}</strong></p>
+            <div class="test-info">
+                <h3 class="message-title">{$test->name}</h3>
+                {if $test->setup->deadline}
+                <p>Otevřeno do <strong>{$test->setup->deadline|date:"j. n. G:i"}</strong></p>
+                {else}
+                <p>Otevřeno neomezeně</p>
+                {/if}
+            </div>
             <div class="flex-spacer"></div>
             {if !$test->setup->isCreator && ($test->setup->timeLeft == null || $test->setup->timeLeft->invert === 0)
                 && ($test->setup->numberOfRepetitions === null || $test->setup->numberOfRepetitions > $test->summary->filledCount)}  
@@ -30,7 +37,7 @@
                 <a href="{plink Group:usersClassification classificationGroupId=>$test->setup->classificationGroupId, id=>$test->setup->group->slug}" class="btn gray no-shadow">Oznámkovat</a>
             {/if}
         </div>
-        <h3 class="message-title">{$test->name}</h3>
+        
         
         <ul class="atributes">
             {if $test->setup->isCreator}

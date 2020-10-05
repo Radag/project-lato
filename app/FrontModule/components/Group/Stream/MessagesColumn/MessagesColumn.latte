@@ -77,6 +77,13 @@
     {/snippet}
 </div>
 <script>
+
+    
+    $(".message-text").on('click', function(e) {
+        $(e.target).removeClass("limited-text");
+    });
+
+    /*
     $(".messages-column").on('click', function(e) {
         if($(e.target).hasClass("limited-text")) {
             $(e.target).removeClass("limited-text");
@@ -85,7 +92,7 @@
             $(e.target).removeClass("limited-text-r");
             $(e.target).addClass("limited-text");
         }
-    });
+    }); */
     
     getAllVisisbleElements();    
     $(window).scroll(function() {

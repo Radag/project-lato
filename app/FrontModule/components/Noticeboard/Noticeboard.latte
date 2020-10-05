@@ -111,12 +111,13 @@
             {foreach $groups->groups as $group}
             <div class="col l4 m6 s12">
                 <a href="{plink Group:default, 'id'=>$group->slug}" class="card">
-                    <div class="group-icon {$group->colorScheme}">
-                        <div class="avatar">{$group->shortcut|substr:0,1}
+                    <div class="group-icon">
+                        <div class="avatar {$group->colorScheme}">{$group->shortcut|substr:0,1}
                             {*
                                 {if $groups->differentRelations && $group->relation === 'owner'}<div class="admin-mark {$group->colorScheme}"></div>{/if}
                             *}
                         </div>
+                        <div class="left-border {$group->colorScheme}"></div>
                     </div>
                     <div class="title truncate">
                         {$group->name}

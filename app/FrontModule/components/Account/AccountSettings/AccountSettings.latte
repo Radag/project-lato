@@ -269,7 +269,7 @@
             <p>Vyberte si jedno z nabízenách pozadí</p>
             <ul class="choose-background">
                 {foreach $form['avatar']->items as $key=>$item}
-                    <li class="avatar large">
+                    <li>
                         <label n:name="avatar:$key">
                             <input n:name="avatar:$key" />
                             <img src="{$item|noescape}" >
