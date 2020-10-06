@@ -43,7 +43,7 @@
             </div>
             <div class="img-fade">
             </div>
-            <div class="img-contain" style="background-image: url('{if $media->preview->fullPath}{$media->preview->fullPath}{else}{$media->fullPath}{/if}');">
+            <div class="img-contain" style="background-image: url('{if $media->preview->fullPath}{$media->preview->fullPath}{else}{$media->fullPath}{/if}'); {if count($message->attachments['media']) > 1}width: calc(100% - 168px);{/if}">
             </div>
             <a class="click-area" href="{$media->fullPath}" data-lightbox="message-gallery-{$message->id}" >
                 {if count($message->attachments['media']) > 1}
