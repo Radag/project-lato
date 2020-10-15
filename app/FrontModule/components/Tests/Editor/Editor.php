@@ -64,11 +64,12 @@ class Editor extends \App\Components\BaseComponent
     public function processForm(Form $form, $values) 
     {
         $test = $this->saveTest($values);        
-        
+
+        $this->testManager->saveHistory($test->id ,$form->getHttpData()['questions'], $values->name);
         if(isset($form->getHttpData()['questions']) && is_array($form->getHttpData()['questions'])) {
             $this->saveQuestions($test->id, $form->getHttpData()['questions']);            
-        }        
-        
+        }
+
         if(isset($form->getHttpData()['optionsToDelete']) && is_array($form->getHttpData()['optionsToDelete'])) {
             foreach($form->getHttpData()['optionsToDelete'] as $optionId) {
                 $this->testManager->deleteOption($optionId, $test->id);

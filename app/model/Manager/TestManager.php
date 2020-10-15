@@ -425,5 +425,14 @@ class TestManager extends BaseManager
     {
         $this->db->query("DELETE FROM test WHERE id=?", $testId);
     }
+
+	public function saveHistory(int $testId, $data, $name)
+	{
+		$this->db->query("INSERT INTO test_history", [
+			'test_id' => $testId,
+			'data' => json_encode($data),
+			'name' => $name
+		]);
+	}
     
 }
