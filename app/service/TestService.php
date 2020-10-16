@@ -71,11 +71,11 @@ class TestService
             }
             $this->testManager->saveAnswer($answer);
         }
-        
+
         if($finish) {
             $filling->isFinished = true;
             $filling->correctCount = $correctCount;
-            $filling->percent = round(100/$test->questionsCount * $correctCount);
+            $filling->percent = round(100/count($test->questions) * $correctCount);
             $this->testManager->updateFilling($filling);
         }
     }

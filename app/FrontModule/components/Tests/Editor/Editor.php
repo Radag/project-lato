@@ -63,11 +63,11 @@ class Editor extends \App\Components\BaseComponent
     
     public function processForm(Form $form, $values) 
     {
-        $test = $this->saveTest($values);        
+        $test = $this->saveTest($values);
 
         $this->testManager->saveHistory($test->id ,$form->getHttpData()['questions'], $values->name);
         if(isset($form->getHttpData()['questions']) && is_array($form->getHttpData()['questions'])) {
-            $this->saveQuestions($test->id, $form->getHttpData()['questions']);            
+            $this->saveQuestions($test->id, $form->getHttpData()['questions']);
         }
 
         if(isset($form->getHttpData()['optionsToDelete']) && is_array($form->getHttpData()['optionsToDelete'])) {
@@ -75,13 +75,13 @@ class Editor extends \App\Components\BaseComponent
                 $this->testManager->deleteOption($optionId, $test->id);
             }
         }
-        
+
         if(isset($form->getHttpData()['questionsToDelete']) && is_array($form->getHttpData()['questionsToDelete'])) {
             foreach($form->getHttpData()['questionsToDelete'] as $questionId) {
                 $this->testManager->deleteQuestion($questionId, $test->id);
             }
         }
-                
+
         $this->presenter->payload->invalidForm = true;
         $this->presenter->flashMessage('Uoženo', 'success');
         if(isset($form->getHttpData()['save_leave'])) {
@@ -113,34 +113,39 @@ class Editor extends \App\Components\BaseComponent
     {
         $number = 1;
         foreach($questions as $question) {
-            $questionObject = new Question();
-            $questionObject->question = $question['name'];
-            $questionObject->testId = $testId;
-            $questionObject->number = $number;
-            
-            if(empty($question['id'])) {
-                $questionObject->id = $this->testManager->insertQuestion($questionObject);
-            } else {
-                $questionObject->id = $question['id'];
-                $this->testManager->updateQuestion($questionObject, $testId);
-            }
-            
-            if(isset($question['options']) && is_array($question['options'])) {
-                $this->saveOptions($questionObject->id, $testId, $question['options']);
-            }
-            $number++;
+        	if($question['name']) {
+				$questionObject = new Question();
+				$questionObject->question = $question['name'];
+				$questionObject->testId = $testId;
+				$questionObject->number = $number;
+
+				if(empty($question['id'])) {
+					$questionObject->id = $this->testManager->insertQuestion($questionObject);
+				} else {
+					$questionObject->id = $question['id'];
+					$this->testManager->updateQuestion($questionObject, $testId);
+				}
+
+				if(isset($question['options']) && is_array($question['options'])) {
+					$this->saveOptions($questionObject->id, $testId, $question['options']);
+				}
+				$number++;
+			}
         }
     }
     
     private function saveOptions(int $questionId, int $testId, array $options) 
-    {  
-        foreach($options as $optionNumber => $option) {
+    {
+    	$optionNumber = 0;
+        foreach($options as $i => $option) {
             if(!empty($option['text'])) {
+				$optionNumber++;
                 $optionObject = new Option();
                 $optionObject->questionId = $questionId;
                 $optionObject->name = $option['text'];
                 $optionObject->number = $optionNumber;
                 $optionObject->isCorrect = isset($option['correct']) ? true : false;
+
                 if(empty($option['id'])) {
                     $optionObject->id = $this->testManager->insertOption($optionObject);
                 } else {

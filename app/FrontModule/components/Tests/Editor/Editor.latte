@@ -68,7 +68,7 @@
 </div>
 {/define}
 {define optionTemplate $questionNumber, $optionNumber, $option}
-    <div class="question-form-row {if $option}filled{/if}">
+    <div class="question-form-row {if $option}filled{/if}" data-number="{$optionNumber}">
         <label>
             <input name="questions[{$questionNumber}][options][{$optionNumber}][correct]" type="checkbox" class="filled-in" {if $option}{if $option->isCorrect}checked{/if}{else}disabled{/if} >
             <span></span>
@@ -103,7 +103,12 @@
             }
             if(form.find(".question-form-row:not(.filled)").length === 0) {
                 var optionTemplate = $("#templates > .question-form-row").clone().get(0).outerHTML;
-                var optionNumber = form.find(".question-form-row").length + 1;
+                var optionNumber = 1;
+                form.find(".question-form-row").each(function() {
+                    var value = $(this).data("number");
+                    optionNumber = (value > optionNumber) ? value : optionNumber;
+                });
+                optionNumber++;
                 optionTemplate = optionTemplate.replace(/XXX/g, questionNumber);
                 optionTemplate = optionTemplate.replace(/YYY/g, optionNumber);
                 form.append(optionTemplate);
