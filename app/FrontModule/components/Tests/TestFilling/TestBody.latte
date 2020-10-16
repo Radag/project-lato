@@ -3,10 +3,10 @@
     <div class="container offset-1">
         <div class="row">
             <div class="col s12">
-                {foreach $test->questions as $question}
+                {foreach $test->questions as $i => $question}
                 <div class="card question">
                     <div class="card-header">
-                        Otázka {$question->number}
+                        Otázka {$i + 1}
                     </div>
                     <div class="card-content">
                         <h3>{$question->question}</h3>
