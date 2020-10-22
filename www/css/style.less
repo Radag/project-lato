@@ -4593,26 +4593,6 @@ nav .nav-title {
                 z-index: 100;
             }
 
-            .left-border {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 5px;
-                height: 72px;
-                z-index: 1;
-                -webkit-transition: 200ms ease-in-out;
-                -moz-transition: 200ms ease-in-out;
-                -o-transition: 200ms ease-in-out;
-                transition: 200ms ease-in-out;
-            }
-        }
-
-        &:hover .group-icon {
-            margin-right: 1rem;
-
-            .left-border {
-                width: 100%;
-            }
         }
 
         @media only screen and (max-width: 600px) {
@@ -5497,28 +5477,64 @@ nav .nav-title {
     padding-right: 56px;
 }
 
+.card-test-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 2rem 0 3rem 0;
+    background-color: rgba(0, 0, 0, .15);
+
+    .message-title {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 500;
+        line-height: 1.5em;
+        color: @primary-text-color;
+    } 
+
+    .availability {
+        color: @secondary-text-color;
+        margin-top: .5rem;
+    }
+
+    .test-range {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        width: 96px;
+        height: 96px;
+        background-color: #ffc107;
+        margin: 2rem 0;
+
+        i.material-icons {
+            font-size: 2rem;
+            color: @primary-text-color;
+        }
+    }
+
+    .attributes {
+        margin: 0 0 1.5rem;
+
+        li {
+            color: @secondary-text-color;
+            line-height: 1.5rem;
+            font-size: .935rem;
+            text-align: center;
+        }
+    }
+
+}
+
+
 .card-action-header {
-    // background-color: @background-highlighted;
     border-bottom: 1px solid @line-color;
     padding: 1.25rem 1.5rem;
     margin: 0;
     display: flex;
     align-items: center;
     color: @secondary-text-color;
-
-    .notification-type {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 1rem 0 -24px;
-        height: 80px;
-        width: 88px;
-
-        .avatar {
-            margin: 0;
-            background-color: @background-highlighted;
-        }
-    }
 
     .user-name {
         flex-grow: 1;
@@ -5597,7 +5613,7 @@ nav .nav-title {
         color: @primary-text-color;
     }  
 
-    .atributes {
+    .attributes {
         margin: .5rem 0 1rem;
 
         li {
