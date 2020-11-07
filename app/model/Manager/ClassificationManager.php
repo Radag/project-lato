@@ -162,6 +162,7 @@ class ClassificationManager extends BaseManager
         $classificationGroup->name = $classificationArray->name;
         $classificationGroup->classificationDate = $classificationArray->classification_date;
         $classificationGroup->forAll = $classificationArray->for_all;
+		$classificationGroup->type = $classificationArray->type;
         if(!empty($classificationArray->task_id)) {
             $classificationGroup->task = new \App\Model\Entities\Task();
             $classificationGroup->task->id = $classificationArray->task_id;

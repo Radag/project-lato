@@ -8,6 +8,7 @@ use App\Model\Manager\GroupManager;
 use App\Model\Manager\TaskManager;
 use App\Model\Manager\NotificationManager;
 use App\Model\Entities\ClassificationGroup;
+use Tracy\Debugger;
 
 class Classification extends \App\Components\BaseComponent
 {    
@@ -83,11 +84,16 @@ class Classification extends \App\Components\BaseComponent
             krsort($newArray);
             $members = $newArray;
         }
-                     
-        $this->template->activeUser = $this->presenter->activeUser;
-        $this->template->classificationGroup = $this->classificationGroup;        
-        $this->template->members = $members;
-        parent::render();
+
+		$this->template->activeUser = $this->presenter->activeUser;
+		$this->template->classificationGroup = $this->classificationGroup;
+		$this->template->members = $members;
+        if ($this->classificationGroup->type === 'test') {
+        	$this->setTemplateName('ClassificationTest');
+			parent::render();
+		} else {
+			parent::render();
+		}
     }
     
     public function getMembers()
