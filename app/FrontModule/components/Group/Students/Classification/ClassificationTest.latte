@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col s12">
                     <header class="section-header">
-                        <h3>Přidat známku</h3>
+                        <h3>Zadání testu</h3>
                         <div class="flex-spacer"></div>
                     </header>  
                 </div>
@@ -34,7 +34,7 @@
             <div class="row">
                 <div class="col s12">
                     <div class="section-header table-header">   
-                        <div class="title">Hodnocení studentů</div>
+                        <div class="title">Výsledky studentů</div>
                         <div class="flex-spacer"></div>
                         {if $classificationGroup->task}
                             <button type="button" class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" data-target="sort_students" >
@@ -72,6 +72,9 @@
                                         {/if}
                                     {/ifset}
                                 {/if}
+                                <div class="test-result">
+                                    70 %
+                                </div>
                                 <div class="grade-dropdown table-field">
                                     {input grade$member->id class=>'no-border'}
                                 </div>
@@ -95,21 +98,50 @@
                                             <div class="comment empty">
                                                 <p>Student nepřiložil k úkolu žádný komentář.</p>
                                             </div>
-                                        {/if}                                        
-                                        <ul class="attachments">
-                                            {foreach $classificationGroup->task->commitArray[$member->id]->files as $attach}
-                                            <li data-file-id="{$attach->idFile}">
-                                                <a href="{$attach->path|noescape}" target="_blank" class="attached-file">
-                                                    {$attach->type|attachTypeIco|noescape}
-                                                    <div class="file-name truncate">
-                                                        {$attach->name}
-                                                        <span>({$attach->mime}, .{$attach->extension}) – Nahráno {$attach->created->format("j. n. G:i")}</span>
-                                                    </div>   
-                                                </a>
-                                            </li>
-                                            {/foreach}
-                                        </ul>
+                                        {/if}                                      
                                     {/if}
+                                    <ul class="attachments">
+                                        <li>
+                                            <a href="#" target="_blank" class="attached-file">
+                                                <div class="file-icon test-number">
+                                                    3
+                                                </div>
+                                                <div class="file-name truncate">
+                                                    22. 11. 20:55
+                                                </div>   
+                                                <div class="test-percentage">
+                                                    45 %
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="best-result">
+                                            <a href="#" target="_blank" class="attached-file">
+                                                <div class="file-icon test-number">
+                                                    2
+                                                </div>
+
+                                                <div class="file-name truncate">
+                                                    22. 11. 20:40
+                                                </div>   
+                                                <div class="test-percentage">
+                                                    70 %
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" target="_blank" class="attached-file">
+                                                <div class="file-icon test-number">
+                                                    1
+                                                </div>
+                                                <div class="file-name truncate">
+                                                    22. 11. 20:30
+                                                </div>   
+                                                <div class="test-percentage">
+                                                    55 %
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </li>
