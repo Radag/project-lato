@@ -116,16 +116,16 @@
 
                             {if $activeGroup->shareByCode == 1 && $activeGroup->shareByLink == 1}
                                 <p class="secondary-par"> 
-                                    Studenti se mohou zapisovat pomocí kódu <strong>{$activeGroup->interCode}</strong> nebo zadáním následujícího odkazu</p>
+                                    Studenti se mohou zapisovat do skupiny pomocí kódu <strong>{$activeGroup->interCode}</strong> nebo prostřednictvím následujícího odkazu.</p>
                                 <div class="group-link">{plink //:Public:Action:default, id => $activeGroup->publicCode}</div>
                             {else}
                                 {if $activeGroup->shareByCode == 1}
                                     <p class="secondary-par"> 
-                                        Studenti se mohou zapisovat pomocí kódu <strong>{$activeGroup->interCode}</strong>.
+                                        Studenti se mohou zapisovat do skupiny pomocí kódu <strong>{$activeGroup->interCode}</strong>.
                                     {/if}
                                     {if $activeGroup->shareByLink == 1}
                                     <p class="secondary-par"> 
-                                        Studenti se mohou zapisovat zadáním následujícího odkazu</p>
+                                        Studenti se mohou zapisovat prostřednictvím následujícího odkazu.</p>
                                     <div class="group-link">{plink //:Public:Action:default, id => $activeGroup->publicCode}</div>
                                 {/if}
                             {/if}
