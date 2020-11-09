@@ -52,8 +52,8 @@
                     && ($test->setup->numberOfRepetitions === null || $test->setup->numberOfRepetitions > $test->summary->filledCount)}  
                     <a href="{plink Group:testStart setupId=>$test->setupId}" class="btn gray no-shadow">Otevřít</a>
                 {/if}
-                {if $test->setup->isCreator && $test->setup->classificationGroupId}
-                    <a href="{plink Group:usersClassification classificationGroupId=>$test->setup->classificationGroupId, id=>$test->setup->group->slug}" class="btn gray no-shadow">Prohlédnout</a>
+                {if $test->setup->isCreator}
+                    <a href="{plink Group:usersClassification testSetupId=>$test->setup->id, id=>$test->setup->group->slug}" class="btn gray no-shadow">Prohlédnout</a>
                 {/if}
         
         

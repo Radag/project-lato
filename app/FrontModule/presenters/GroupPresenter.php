@@ -16,7 +16,6 @@ use App\FrontModule\Components\Group\IClassmates;
 use App\FrontModule\Components\Test\ITestFilling;
 use App\FrontModule\Components\Test\ITestStart;
 use App\FrontModule\Components\Test\ITestDisplay;
-
 class GroupPresenter extends BasePresenter
 {    
     /** @var UserManager @inject */
@@ -63,6 +62,9 @@ class GroupPresenter extends BasePresenter
 	
     /** @persistent */
     public $id;
+
+	/** @persistent */
+	public $testSetupId;
     
     protected function startup()
     {
@@ -79,6 +81,10 @@ class GroupPresenter extends BasePresenter
             $this->presenter->flashMessage('Skupina je archivovaná a nemáte do ní přístup.');
             $this->redirect(':Front:Homepage:noticeboard');
         }
+
+        if($this->getAction() !== 'usersList') {
+        	$this->testSetupId = null;
+		}
         
         $this['topPanel']->setActiveGroup($this->activeGroup);
         $this['topPanel']->addToMenu((object)['name' => 'stream', 'link' => $this->link('default'), 'active' => $this->isLinkCurrent('default')]);
@@ -107,13 +113,20 @@ class GroupPresenter extends BasePresenter
         $this['topPanel']->setTitle('nastavení');
     }
     
-    public function actionUsersClassification($classificationGroupId)
+    public function actionUsersClassification()
     {
-        if($this->activeGroup->relation !== 'owner' || empty($classificationGroupId)) {
-            $this->redirect('Group:default');
+		$classificationGroupId = $this->getParameter('classificationGroupId');
+		$testSetupId = $this->getParameter('testSetupId');
+        if($this->activeGroup->relation !== 'owner' || (empty($classificationGroupId) && empty($testSetupId))) {
+        	$this->redirect('Group:default');
         }
         $this['topPanel']->setTitle('uživatelé');
-        $this['studentsClassification']->setGroupClassification($classificationGroupId);
+        if(!empty($classificationGroupId)) {
+			$this['studentsClassification']->setGroupClassification($classificationGroupId);
+		} else {
+        	$this->testSetupId = $testSetupId;
+			$this['studentsClassification']->setTest($testSetupId);
+		}
     }
     
     public function actionUsersList()

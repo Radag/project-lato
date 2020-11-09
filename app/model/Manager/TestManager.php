@@ -434,5 +434,25 @@ class TestManager extends BaseManager
 			'name' => $name
 		]);
 	}
+
+	public function getUsersResults(Entities\Test\TestSetup $testSetup)
+	{
+		$return = [];
+		$results = $this->db->fetchAll("SELECT * FROM test_filling WHERE setup_id=? ORDER BY user_id, created_at DESC", $testSetup->id);
+		if($results) {
+			foreach ($results as $result) {
+				if(!isset($return[$result->user_id])) {
+					$return[$result->user_id]['attemps'] = [];
+					$return[$result->user_id]['sum'] = (object)['bestPercent' => 0];
+				}
+				$filling = new Filling($result);
+				if($filling->percent > $return[$result->user_id]['sum']->bestPercent) {
+					$return[$result->user_id]['sum']->bestPercent = $filling->percent;
+				}
+				$return[$result->user_id]['attemps'][] = $filling;
+			}
+		}
+		return $return;
+	}
     
 }

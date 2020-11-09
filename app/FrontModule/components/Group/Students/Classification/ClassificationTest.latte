@@ -1,7 +1,7 @@
 {snippet class-form}
 {form form id=>'classification-form'}
 <section class="main two-level-nav settings">
-    {if $members}    
+    {if $members}
         <div class="container offset-1">
             <div class="row">
                 <div class="col s12">
@@ -15,13 +15,13 @@
         <div class="container offset-1">
             <div class="row" n:snippet="classification-header">
                 <div class="col s12">
-                    <div class="card card-flat classification-properties modal-trigger" href="#edit-classification-modal">
+                    <div class="card card-flat classification-properties modal-trigger" href="#test-setup-modal">
                         <p class="minified-label">
-                            <span class="classification-name">{$classificationGroup->name}</span>
-                            <span class="more-info {if !$classificationGroup->classificationDate}hide{/if}"><i class="material-icons">event</i> 
+                            <span class="classification-name">{$test->name}</span>
+                            <span class="more-info {if !$testSetup->publicationTime}hide{/if}"><i class="material-icons">event</i>
                                 <span class="classification-date">
-                                    {if $classificationGroup->classificationDate}
-                                        {$classificationGroup->classificationDate->format('j. n. Y')}
+                                    {if $testSetup->publicationTime}
+                                        {$testSetup->publicationTime->format('j. n. Y')}
                                     {/if}
                                 </span>
                             </span>
@@ -36,7 +36,7 @@
                     <div class="section-header table-header">   
                         <div class="title">Výsledky studentů</div>
                         <div class="flex-spacer"></div>
-                        {if $classificationGroup->task}
+                        {if $classificationGroup && $classificationGroup->task}
                             <button type="button" class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" data-target="sort_students" >
                                 <i class="material-icons">sort</i>
                             </button>
@@ -72,16 +72,20 @@
                                         {/if}
                                     {/ifset}
                                 {/if}
+                                {ifset $testResults[$member->id]['sum']}
                                 <div class="test-result">
-                                    70 %
+                                    {$testResults[$member->id]['sum']->bestPercent} %
                                 </div>
-                                <div class="grade-dropdown table-field">
+                                {/ifset}
+                                <div class="grade-dropdown table-field" n:if="$classificationGroup">
                                     {input grade$member->id class=>'no-border'}
                                 </div>
                             </div>
                             <div class="collapsible-body">
                                 <div class="table-row flex-column">
-                                    {input notice$member->id class=>'materialize-textarea'}                                    
+                                    {if $classificationGroup}
+                                        {input notice$member->id class=>'materialize-textarea'}
+                                    {/if}
                                     {if !empty($classificationGroup->task) && isset($classificationGroup->task->commitArray[$member->id])}
                                         <div class="comment">
                                             Uloženo {$classificationGroup->task->commitArray[$member->id]->created->format("j. n. G:i")}
@@ -100,48 +104,19 @@
                                             </div>
                                         {/if}                                      
                                     {/if}
+                                    {ifset $testResults[$member->id]}
                                     <ul class="attachments">
-                                        <li>
-                                            <a href="#" target="_blank" class="attached-file">
-                                                <div class="file-icon test-number">
-                                                    3
-                                                </div>
-                                                <div class="file-name truncate">
-                                                    22. 11. 20:55
-                                                </div>   
-                                                <div class="test-percentage">
-                                                    45 %
-                                                </div>
+                                        {foreach $testResults[$member->id]['attemps'] as $result}
+                                        <li {if $testResults[$member->id]['sum']->bestPercent == $result->percent}class="best-result"{/if}>
+                                            <a href="{plink Group:testDisplay fillingId=>$result->id}" target="_blank" class="attached-file">
+                                                <div class="file-icon test-number">{$result->percent}</div>
+                                                <div class="file-name truncate">{$result->created->format("j. n. G:i")}</div>
+                                                <div class="test-percentage">{if $result->isFinished}{$result->percent} %{else}—{/if}</div>
                                             </a>
                                         </li>
-                                        <li class="best-result">
-                                            <a href="#" target="_blank" class="attached-file">
-                                                <div class="file-icon test-number">
-                                                    2
-                                                </div>
-
-                                                <div class="file-name truncate">
-                                                    22. 11. 20:40
-                                                </div>   
-                                                <div class="test-percentage">
-                                                    70 %
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" class="attached-file">
-                                                <div class="file-icon test-number">
-                                                    1
-                                                </div>
-                                                <div class="file-name truncate">
-                                                    22. 11. 20:30
-                                                </div>   
-                                                <div class="test-percentage">
-                                                    55 %
-                                                </div>
-                                            </a>
-                                        </li>
+                                        {/foreach}
                                     </ul>
+                                    {/ifset}
                                 </div>
                             </div>
                         </li>
@@ -150,7 +125,7 @@
                 </div>
             </div>
         </div>
-        <div class="submit-settings">
+        <div class="submit-settings" n:if="$classificationGroup">
             <div class="container offset-1">
                 <div class="row">
                     <div class="col s12">
@@ -183,49 +158,18 @@
 </script>
 {/form}
 {/snippet}
-{snippet classification-form}
-<div id="edit-classification-modal" class="modal modal-small">
-    {form editClassGroupForm class=>'ajax'}
-        <div class="modal-content">
-            <h3>Upravit známku</h3>
-            <div class="form-row input-field">
-                {input name}
-                {label name}{/label}
-            </div>
-            <div class="form-row input-field">
-                {input date class=>'datepicker'}
-                {label date}{/label}
-            </div>
-        </div>
-        <div class="modal-footer clearfix">
-            <div class="flex-spacer"></div>
-            <div class="form-control">
-                <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">Zrušit</button>
-                <button type="{if empty($form[id]->getValue())}button{else}submit{/if}" class="waves-effect waves-light btn btn-confirm submit-classification-name" >Potvrdit</button>
-            </div>
-        </div>
-    {/form}
+<div id="test-setup-modal" class="modal modal-small">
+    {snippet testSetupForm}
+        {control testSetupForm}
+    {/snippet}
 </div>
+{snippet classification-form}
 <script>
     $(document).ready(function() {
         datepicker();
         $(".add-notice-button").on('click', function(e) {
             e.preventDefault();
             $(this).parents('.table-row').find('.notice-row').removeClass('hide');
-        });
-        $("button[type='button'].submit-classification-name").on('click', function(e) {
-            $("span.classification-name").text($("#edit-classification-modal input[name='name']").val());
-            $("#classification-form input[name='name']").val($("#edit-classification-modal input[name='name']").val());
-            var date = $("#edit-classification-modal input[name='date']").val();
-            if(date) {
-                $("span.classification-date").text(date);
-                $("#classification-form input[name='date']").val(date);
-                $(".classification-properties .more-info").removeClass('hide');
-            } else {
-                $("#classification-form input[name='date']").val('');
-                $(".classification-properties .more-info").addClass('hide');
-            }       
-            $("#edit-classification-modal").modal('close');
         });
     });
 </script>

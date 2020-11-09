@@ -3,12 +3,14 @@
 namespace App\FrontModule\Components\Group;
 
 use App\Model\Manager\ClassificationManager;
+use App\Model\Manager\TestManager;
+use App\Model\Manager\TestSetupManager;
 use App\Model\Manager\UserManager;
 use App\Model\Manager\GroupManager;
 use App\Model\Manager\TaskManager;
 use App\Model\Manager\NotificationManager;
 use App\Model\Entities\ClassificationGroup;
-use Tracy\Debugger;
+use App\FrontModule\Components\Test\ITestSetup;
 
 class Classification extends \App\Components\BaseComponent
 {    
@@ -29,7 +31,16 @@ class Classification extends \App\Components\BaseComponent
     
     /** @var ClassificationGroup */
     public $classificationGroup;
-        
+
+	/** @var TestSetupManager */
+	public $testSetupManager;
+
+	/** @var TestManager */
+	public $testManager;
+
+	/** @var  ITestSetup */
+	protected $testSetupForm;
+
     public $members = null;
     
     public $grades = ['1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '—' => '—', 'N' => 'N'];
@@ -42,7 +53,10 @@ class Classification extends \App\Components\BaseComponent
         UserManager $userManager,
         GroupManager $groupManager,
         NotificationManager $notificationManager,
-        TaskManager $taskManager
+        TaskManager $taskManager,
+		TestSetupManager $testSetupManager,
+		TestManager $testManager,
+        ITestSetup $testSetupForm
     )
     {
         $this->notificationManager = $notificationManager;
@@ -50,13 +64,16 @@ class Classification extends \App\Components\BaseComponent
         $this->userManager = $userManager;
         $this->groupManager = $groupManager;
         $this->taskManager = $taskManager;
+		$this->testSetupManager = $testSetupManager;
+		$this->testManager = $testManager;
+		$this->testSetupForm = $testSetupForm;
     } 
         
     public function render()
     {
         $members = $this->getMembers();
         //pokud je to task, tak se načtou všechny odevzdané úkoly
-        if($this->classificationGroup->task) {
+        if($this->classificationGroup && $this->classificationGroup->task) {
             foreach($members as $member) {
                 $commit = $this->taskManager->getCommitByUser($this->classificationGroup->task->id, $member->id);
                 if($commit) {
@@ -88,7 +105,7 @@ class Classification extends \App\Components\BaseComponent
 		$this->template->activeUser = $this->presenter->activeUser;
 		$this->template->classificationGroup = $this->classificationGroup;
 		$this->template->members = $members;
-        if ($this->classificationGroup->type === 'test') {
+        if (!$this->classificationGroup || $this->classificationGroup->type === 'test') {
         	$this->setTemplateName('ClassificationTest');
 			parent::render();
 		} else {
@@ -99,7 +116,7 @@ class Classification extends \App\Components\BaseComponent
     public function getMembers()
     {
         if($this->members === null) {
-            if($this->classificationGroup->forAll === 1) {
+            if(!$this->classificationGroup || $this->classificationGroup->forAll === 1) {
                 //pokud je to hodnocení v rámci tasku, tak se berou všichni studenti ze skupiny
                 $students = null;
             } else {
@@ -111,7 +128,7 @@ class Classification extends \App\Components\BaseComponent
             }
             
             $this->members = $this->groupManager->getGroupUsers($this->presenter->activeGroup->id, [GroupManager::RELATION_STUDENT, GroupManager::RELATION_FIC_STUDENT], $students);        
-        }        
+        }
         return $this->members;
     }
     
@@ -123,6 +140,22 @@ class Classification extends \App\Components\BaseComponent
             $this->presenter->redirect('Group:default');
         }
     }
+
+	public function setTest($testSetupId)
+	{
+		$testSetup = $this->testSetupManager->checkOwner($testSetupId);
+		if($testSetup) {
+			if($testSetup->classificationGroupId) {
+				$this->classificationGroup = $this->classificationManager->getGroupClassification($testSetup->classificationGroupId);
+			}
+			$this['testSetupForm']->setDefault($testSetupId);
+			$this->template->test = $this->testManager->getTestForUser($testSetup->testId);
+			$this->template->testSetup = $testSetup;
+			$this->template->testResults = $this->testManager->getUsersResults($testSetup);
+		} else {
+			$this->presenter->redirect('Group:default');
+		}
+	}
     
     public function handleChangeSort($sort)
     {
@@ -140,9 +173,12 @@ class Classification extends \App\Components\BaseComponent
         $form->addHidden('date');
         $form->addHidden('name');
         $form->addHidden('members');
-        $form->addSubmit('send', 'Uložit');        
-        $form->addHidden('id')
-             ->setValue($this->classificationGroup->id);
+        $form->addSubmit('send', 'Uložit');
+        if($this->classificationGroup) {
+			$form->addHidden('id')
+				->setValue($this->classificationGroup->id);
+		}
+
          
         //vtyvoření známkování pro všechny členy hodnocení
         foreach($this->getMembers() as $member) {
@@ -153,12 +189,14 @@ class Classification extends \App\Components\BaseComponent
         }        
         
         //vložení už zadaných známek
-        foreach($this->classificationGroup->classifications as $classification) {
-            $form->setValues([
-                'notice' . $classification->user->id => empty($classification->notice) ? null : $classification->notice,
-                'grade' . $classification->user->id => empty($classification->grade) ? '—' : $classification->grade
-            ]);
-        }        
+		if($this->classificationGroup) {
+			foreach ($this->classificationGroup->classifications as $classification) {
+				$form->setValues([
+					'notice' . $classification->user->id => empty($classification->notice) ? null : $classification->notice,
+					'grade' . $classification->user->id => empty($classification->grade) ? '—' : $classification->grade
+				]);
+			}
+		}
         
         $form->onSuccess[] = function(\Nette\Application\UI\Form $form, $values) {
             if(!$this->classificationManager->canEditClassificationGroup($values->id, $this->presenter->activeUser)) {
@@ -212,11 +250,13 @@ class Classification extends \App\Components\BaseComponent
         $form->addHidden('id');
         $form->addSubmit('send', 'Potvrdit');
 
-        $form->setDefaults([
-            'name' => $this->classificationGroup->name,
-            'date' => $this->classificationGroup->classificationDate ? $this->classificationGroup->classificationDate->format('d. m. Y') : null,
-            'id' => $this->classificationGroup->id
-        ]);
+        if($this->classificationGroup) {
+			$form->setDefaults([
+				'name' => $this->classificationGroup->name,
+				'date' => $this->classificationGroup->classificationDate ? $this->classificationGroup->classificationDate->format('d. m. Y') : null,
+				'id' => $this->classificationGroup->id
+			]);
+		}
         
         $form->onSuccess[] = function($form, $values) {
             if(!$this->classificationManager->canEditClassificationGroup($values->id, $this->presenter->activeUser)) {
@@ -236,4 +276,9 @@ class Classification extends \App\Components\BaseComponent
         };
         return $form;
     }
+
+	public function createComponentTestSetupForm()
+	{
+		return $this->testSetupForm->create();
+	}
 }

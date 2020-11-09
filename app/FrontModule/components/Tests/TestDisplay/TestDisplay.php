@@ -5,12 +5,16 @@ use App\Model\Manager\TestManager;
 use App\Model\Entities\Test\Filling;
 use App\Model\Entities\Test\Test;
 use App\Model\Entities\Test\TestSetup;
+use App\Model\Manager\TestSetupManager;
 use App\Model\Manager\UserManager;
 
 class TestDisplay extends \App\Components\BaseComponent
 {
     /** @var TestManager **/
     private $testManager;
+
+	/** @var TestSetupManager **/
+	private $testSetupManager;
     
     /** @var UserManager **/
     private $userManager = null;
@@ -24,15 +28,16 @@ class TestDisplay extends \App\Components\BaseComponent
     /** @var TestSetup **/
     private $testSetup = null;
     
-    
-    
+
     public function __construct(
         TestManager $testManager,
-        UserManager $userManager
+        UserManager $userManager,
+		TestSetupManager $testSetupManager
     )
     {
         $this->testManager = $testManager;
         $this->userManager = $userManager;
+		$this->testSetupManager = $testSetupManager;
     }
     
     public function render() 
@@ -48,18 +53,21 @@ class TestDisplay extends \App\Components\BaseComponent
     public function setId(int $fillingId) 
     {
         $this->filling = $this->testManager->getFilling($fillingId);
-        if(!$this->filling || $this->filling->userId != $this->presenter->activeUser->id) {
-            $this->presenter->flashMessage("Tento test neexistuje!");
-            $this->presenter->redirect(':Front:Homepage:noticeboard');
-        }
-        if(!$this->filling->isFinished) {
-            $this->presenter->flashMessage("Tento test jste ještě nedokončili.");
-            $this->presenter->redirect(':Front:Homepage:noticeboard');
-        }
-        if(!$this->filling->setup->canLookAtResults) {
-            $this->presenter->flashMessage("Nemůžete se dívat na výsledky toho testu.");
-            $this->presenter->redirect(':Front:Homepage:noticeboard');
-        }
+        if(!$this->filling || $this->testSetupManager->checkOwner($this->filling->setup->id) == null) {
+			if(!$this->filling || $this->filling->userId != $this->presenter->activeUser->id) {
+				$this->presenter->flashMessage("Tento test neexistuje!");
+				$this->presenter->redirect(':Front:Homepage:noticeboard');
+			}
+			if(!$this->filling->isFinished) {
+				$this->presenter->flashMessage("Tento test jste ještě nedokončili.");
+				$this->presenter->redirect(':Front:Homepage:noticeboard');
+			}
+			if(!$this->filling->setup->canLookAtResults) {
+				$this->presenter->flashMessage("Nemůžete se dívat na výsledky toho testu.");
+				$this->presenter->redirect(':Front:Homepage:noticeboard');
+			}
+		}
+
         $this->testSetup = $this->filling->setup;
         $this->test = $this->testManager->getTestForUser($this->testSetup->testId, $this->filling->questions);
         $this->presenter['topPanel']->setTitle($this->test->name . " - procházení");
