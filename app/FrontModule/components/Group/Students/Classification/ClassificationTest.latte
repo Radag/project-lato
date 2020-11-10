@@ -109,7 +109,7 @@
                                         {foreach $testResults[$member->id]['attemps'] as $result}
                                         <li {if $testResults[$member->id]['sum']->bestPercent == $result->percent}class="best-result"{/if}>
                                             <a href="{plink Group:testDisplay fillingId=>$result->id}" target="_blank" class="attached-file">
-                                                <div class="file-icon test-number">{$result->percent}</div>
+                                                <div class="file-icon test-number">{$iterator->count() - $iterator->counter + 1}</div>
                                                 <div class="file-name truncate">{$result->created->format("j. n. G:i")}</div>
                                                 <div class="test-percentage">{if $result->isFinished}{$result->percent} %{else}—{/if}</div>
                                             </a>
