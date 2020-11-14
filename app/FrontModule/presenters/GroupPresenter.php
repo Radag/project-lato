@@ -65,6 +65,9 @@ class GroupPresenter extends BasePresenter
 
 	/** @persistent */
 	public $testSetupId;
+
+	/** @persistent */
+	public $classificationGroupId;
     
     protected function startup()
     {
@@ -84,6 +87,7 @@ class GroupPresenter extends BasePresenter
 
         if($this->getAction() !== 'usersList') {
         	$this->testSetupId = null;
+			$this->classificationGroupId = null;
 		}
         
         $this['topPanel']->setActiveGroup($this->activeGroup);
@@ -122,6 +126,7 @@ class GroupPresenter extends BasePresenter
         }
         $this['topPanel']->setTitle('uživatelé');
         if(!empty($classificationGroupId)) {
+        	$this->classificationGroupId = $classificationGroupId;
 			$this['studentsClassification']->setGroupClassification($classificationGroupId);
 		} else {
         	$this->testSetupId = $testSetupId;
