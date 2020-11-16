@@ -98,9 +98,7 @@
                         <ul class="groups bottom-margin">
                             {foreach $teacherGroups as $group}
                             <li class="group-list" data-group-id="{$group->id}">
-                                <div class="group-shortcut-circle {$group->colorScheme}"or >{$group->shortcut|substr:0,1}
-                                    <div class="admin-mark {$group->colorScheme}" ></div>
-                                </div>
+                                <div class="group-shortcut-circle {$group->colorScheme}"or >{$group->shortcut|substr:0,1}</div>
                                 <div class="label">{$group->name} {if $group->subgroup}<span>({$group->subgroup})</span>{/if}</div>
                                 <button type="button" class="btn-flat btn-icon dropdown-trigger waves-effect waves-dark" data-target="group{$group->id}-options" >
                                     <i class="material-icons">more_horiz</i>
@@ -272,7 +270,8 @@
                     <li>
                         <label n:name="avatar:$key">
                             <input n:name="avatar:$key" />
-                            <img src="{$item|noescape}" >
+                            {*<img src="{$item|noescape}" >*}
+                            <img src="../images/account-headers/prevs/h01_landscape_prev.jpg">
                         </label>
                     </li>
                 {/foreach}
