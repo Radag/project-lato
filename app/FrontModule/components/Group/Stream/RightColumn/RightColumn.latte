@@ -108,12 +108,12 @@
         </div>
         <div class="card-footer"></div>
     </div>
-    <div class="card flex-column">
+    <div n:if="$activeGroup->shareByCode == 1" class="card flex-column">
         <div class="card-header">
             <h3>Kód skupiny</h3>
         </div>
         <div class="card-content">
-            <p class="secondary-par">Studenti se mohou zapisovat do skupiny pomocí kódu <strong>00000000</strong>.</p> 
+            <p class="secondary-par">Studenti se mohou zapisovat do skupiny pomocí kódu <strong>{$activeGroup->interCode}</strong>.</p>
         </div> 
         <div class="card-footer"></div>
     </div>

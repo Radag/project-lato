@@ -202,13 +202,17 @@ class AccountSettings extends \App\Components\BaseComponent
     protected function createComponentBackgroundForm()
     {
         $form = $this->getForm();
-        
-        $form->addRadioList('avatar', 'avatar', AccountActivated::$avatarList)
+        $form->addRadioList('avatar', 'avatar', AccountActivated::$backroudsList)
              ->setRequired();
         
         $form->addSubmit('submit', 'Odeslat');
         $form->onSuccess[] = function($form, $values) {
-            
+            if(isset(AccountActivated::$backroudsList[$values->avatar])) {
+            	$image = [
+					'fullPath' => '/images/account-headers/' . AccountActivated::$backroudsList[$values->avatar]
+				];
+				$this->userManager->assignBackgroundImage($this->presenter->activeUser, $image);
+			}
             $this->presenter->redirect('this');
         };
         return $form;        

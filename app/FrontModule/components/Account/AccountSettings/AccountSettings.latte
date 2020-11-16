@@ -270,12 +270,19 @@
                     <li>
                         <label n:name="avatar:$key">
                             <input n:name="avatar:$key" />
-                            {*<img src="{$item|noescape}" >*}
-                            <img src="../images/account-headers/prevs/h01_landscape_prev.jpg">
+                            <img src="/images/account-headers/prevs/{$item}">
                         </label>
                     </li>
                 {/foreach}
             </ul>
+            <script type="text/javascript">
+                $(".choose-background input:checked").closest("label").find('img').addClass('selected');
+                $(".choose-background input").on('change', function() {
+                    $(".choose-background img").removeClass('selected');
+                    $(this).closest("label").find('img').addClass('selected');
+                    $('form button').prop('disabled', false);
+                });
+            </script>
         </div>
         <div class="modal-footer">
             <div class="flex-spacer"></div>

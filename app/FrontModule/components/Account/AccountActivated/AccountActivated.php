@@ -18,6 +18,15 @@ class AccountActivated extends \App\Components\BaseComponent
 		"/images/default_avatars/male_5.png",
 		"/images/default_avatars/female_6.png"
     ];
+
+	public static  $backroudsList = [
+		"h01_landscape.jpg",
+		"h02_road.jpg",
+		"h03_golf.jpg",
+		"h04_campfire.jpg",
+		"h05_bubbles.jpg",
+		"h06_spacerocket.jpg"
+	];
     
     public function __construct(
         UserManager $userManager
