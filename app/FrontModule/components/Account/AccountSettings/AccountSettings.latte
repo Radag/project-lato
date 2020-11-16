@@ -1,5 +1,5 @@
 <section class="main" id="account-settings">
-{form form class=>'leave-warning'}
+    {form form class=>'leave-warning'}
     <div class="container">
         <div class="row equal-cols">
             <div class="col m12 l4">
@@ -30,15 +30,9 @@
                             {input email}
                             {label email}E-mailová adresa{/label}
                         </div>
-                        {* DOČASNĚ SKRYTO DOKUD NEPOLADIME KALENDAR
-                        <div class="form-row input-field">
-                            {input birthday class=>"datepicker"}
-                            {label birthday}Datum narození{/label}
                     </div>
-                        *}
                 </div>
             </div>
-        </div>
         </div>
         <div class="row">
             <div class="col s12 l6">
@@ -61,7 +55,7 @@
                 {*<div class="card flex-column">
                     <div class="card-header">
                         <h2>Oznámení</h2>
-            </div>
+                    </div>
                     <div class="card-content">
                         <div class="form-row">
                             <p class="secondary-par">Vybraná oznámení chci zasílat také e-mailem</p>
@@ -219,21 +213,21 @@
             </div>
         </div>
     </div>
-{/form}
-<div id="change-user-avatar-modal" class="modal modal-small" >
-    {form avatarForm}
+    {/form}
+    <div id="change-user-avatar-modal" class="modal modal-small" >
+        {form avatarForm}
         <div class="modal-content">
             <h3>Změnit avatar</h3>
             <p>Vyberte si nový avatar nebo <a class="upload-avatar" href="javascript:void();">nahrajte vlastní fotografii</a>.</p>
             <ul class="choose-avatar">
-                    {foreach $form['avatar']->items as $key=>$item}
-                        <li class="avatar large">
-                            <label n:name="avatar:$key">
-                                <input n:name="avatar:$key" />
-                                <img src="{$item|noescape}" >
-                            </label>
-                        </li>
-                    {/foreach}
+                {foreach $form['avatar']->items as $key=>$item}
+                <li class="avatar large">
+                    <label n:name="avatar:$key">
+                        <input n:name="avatar:$key" />
+                        <img src="{$item|noescape}" >
+                    </label>
+                </li>
+                {/foreach}
             </ul>
             <script type="text/javascript">
                 $(".choose-avatar input:checked").closest("label").find('img').addClass('selected');
@@ -256,23 +250,23 @@
                 <button type="submit" class="waves-effect waves-light btn modal-close btn-confirm" >Potvrdit</button>
             </div>
         </div>
-    {/form}
-    <input id="avatar-file-upload" type="file" name="file" style="display: none;">
-    <div id="change-user-avatar-dropzone" class="dropzone-area" >Přesuňte obrázek zde</div>
-</div>
-<div id="change-user-background-modal" class="modal modal-small" >
-    {form backgroundForm}
+        {/form}
+        <input id="avatar-file-upload" type="file" name="file" style="display: none;">
+        <div id="change-user-avatar-dropzone" class="dropzone-area" >Přesuňte obrázek zde</div>
+    </div>
+    <div id="change-user-background-modal" class="modal modal-small" >
+        {form backgroundForm}
         <div class="modal-content">
             <h3>Změnit pozadí</h3>
             <p>Vyberte si jedno z nabízenách pozadí</p>
             <ul class="choose-background">
                 {foreach $form['avatar']->items as $key=>$item}
-                    <li>
-                        <label n:name="avatar:$key">
-                            <input n:name="avatar:$key" />
-                            <img src="/images/account-headers/prevs/{$item}">
-                        </label>
-                    </li>
+                <li>
+                    <label n:name="avatar:$key">
+                        <input n:name="avatar:$key" />
+                        <img src="/images/account-headers/prevs/{$item}">
+                    </label>
+                </li>
                 {/foreach}
             </ul>
             <script type="text/javascript">
@@ -291,8 +285,8 @@
                 <button type="submit" class="waves-effect waves-light btn modal-close btn-confirm" >Potvrdit</button>
             </div>
         </div>
-    {/form}
-</div>  
+        {/form}
+    </div>  
 </section>
 <script>
     $('#change-user-avatar-modal').modal();
