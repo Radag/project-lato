@@ -139,7 +139,7 @@ class TestManager extends BaseManager
                         COUNT(T1.id) AS filled_count
                 FROM test_filling T1
                 JOIN test_setup T2 ON T2.id=T1.setup_id
-                WHERE T1.user_id=? AND T2.group_id=?
+                WHERE T1.user_id=? AND T2.group_id=? AND T1.deleted=0
                 GROUP BY T1.setup_id", $userId, $group->id);
         
         $myStats = [];
@@ -209,7 +209,7 @@ class TestManager extends BaseManager
     
     public function getStudentTestSummary($setupId, $userId) : Entities\Test\TestSummary
     {
-        $summary = $this->db->fetch("SELECT COUNT(*) AS filledCount FROM test_filling WHERE setup_id=? AND user_id=?", $setupId, $userId);
+        $summary = $this->db->fetch("SELECT COUNT(*) AS filledCount FROM test_filling WHERE setup_id=? AND deleted=0 AND user_id=?", $setupId, $userId);
         $summaryObject = new Entities\Test\TestSummary($summary);
         $summaryObject->filledCount = $summary->filledCount;
         return $summaryObject;
@@ -365,7 +365,7 @@ class TestManager extends BaseManager
     
     public function getFilling(int $fillingId) : ?Filling 
     {
-        $fillingData = $this->db->fetch("SELECT * FROM test_filling WHERE id=?", $fillingId);
+        $fillingData = $this->db->fetch("SELECT * FROM test_filling WHERE id=? AND deleted=0", $fillingId);
         if(!$fillingData) {
             return null;
         }
@@ -399,6 +399,13 @@ class TestManager extends BaseManager
             'percent' => $filling->percent
         ], "WHERE id=?", $filling->id);
     }
+
+    public function deleteFilling(int $id)
+	{
+		$this->db->query("UPDATE test_filling SET ", [
+			'deleted' => 1,
+		], "WHERE id=?", $id);
+	}
     
     public function saveAnswer(Answer $answer) : int
     {
@@ -438,7 +445,7 @@ class TestManager extends BaseManager
 	public function getUsersResults(Entities\Test\TestSetup $testSetup)
 	{
 		$return = [];
-		$results = $this->db->fetchAll("SELECT * FROM test_filling WHERE setup_id=? ORDER BY user_id, created_at DESC", $testSetup->id);
+		$results = $this->db->fetchAll("SELECT * FROM test_filling WHERE setup_id=? AND deleted=0 ORDER BY user_id, created_at DESC", $testSetup->id);
 		if($results) {
 			foreach ($results as $result) {
 				if(!isset($return[$result->user_id])) {

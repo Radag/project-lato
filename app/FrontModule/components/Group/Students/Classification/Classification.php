@@ -281,4 +281,10 @@ class Classification extends \App\Components\BaseComponent
 	{
 		return $this->testSetupForm->create();
 	}
+
+	public function handleDeleteTestFilling($id)
+	{
+		$this->testManager->deleteFilling($id);
+		$this->presenter->redirect('this');
+	}
 }

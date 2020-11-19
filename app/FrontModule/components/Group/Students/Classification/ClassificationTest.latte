@@ -103,9 +103,10 @@
                                                 <div class="file-name truncate">{$result->created->format("j. n. G:i")}</div>
                                                 <div class="test-percentage">{if $result->isFinished}{$result->percent} %{else}—{/if}</div>
                                             </a>
-                                            <div class="delete-instance modal-trigger" href="#delete-instance-modal">
+                                            <a class="delete-instance delete-confirm" data-url="{link deleteTestFilling! id=>$result->id}"
+                                                data-title="Smazat test" data-text="Opravdu si přejete smazat tento test?">
                                                 <i class="material-icons">clear</i>
-                                            </div>
+                                            </a>
                                         </li>
                                         {/foreach}
                                     </ul>
@@ -144,21 +145,6 @@
 </section>
 
 <!-- Modals -->
-<div id="delete-instance-modal" class="modal modal-small">
-    <div class="modal-content">
-        <h3>Smazat test</h3>
-        <p>Opravdu si přejete smazat tento test?</p>
-    </div>
-    <div class="modal-footer">
-        <div class="flex-spacer"></div>
-        <div class="form-control">
-            <button type="button" class="modal-action modal-close waves-effect waves-light btn-flat">zrušit</button>
-            <button type="button" onClick="confirmAction('group-delete-confirm-modal', 'delete')" class="waves-effect modal-close waves-light btn btn-confirm" >potvrdit</button>
-        </div>
-    </div>
-</div>
-
-
 <script>
     $(function () {                           
         $('.collapsible-header').on('click', function (e) {

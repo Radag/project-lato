@@ -125,12 +125,12 @@ class GroupPresenter extends BasePresenter
         	$this->redirect('Group:default');
         }
         $this['topPanel']->setTitle('uživatelé');
-        if(!empty($classificationGroupId)) {
+		if(!empty($testSetupId)) {
+			$this->testSetupId = $testSetupId;
+			$this['studentsClassification']->setTest($testSetupId);
+		} else {
         	$this->classificationGroupId = $classificationGroupId;
 			$this['studentsClassification']->setGroupClassification($classificationGroupId);
-		} else {
-        	$this->testSetupId = $testSetupId;
-			$this['studentsClassification']->setTest($testSetupId);
 		}
     }
     
