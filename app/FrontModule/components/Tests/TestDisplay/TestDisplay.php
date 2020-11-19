@@ -73,7 +73,7 @@ class TestDisplay extends \App\Components\BaseComponent
         $this->presenter['topPanel']->setTitle($this->test->name . " - procházení");
         foreach($this->test->questions as $question) {
             foreach($question->options as $option) {
-                if(in_array($option->id, $this->filling->answers[$question->id]->answer->options)) {
+                if(isset($this->filling->answers[$question->id]) && in_array($option->id, $this->filling->answers[$question->id]->answer->options)) {
                     if($option->isCorrect) {
                         $option->answerCorrection = "correct";
                     } else {

@@ -164,7 +164,8 @@ class TestSetup extends \App\Components\BaseComponent
             'number_of_repetitions' => $testSetup->numberOfRepetitions,
             'group_id' => $testSetup->groupId,
             'test_id' => $testSetup->testId,
-            'id' => $testSetup->id
+            'id' => $testSetup->id,
+			'can_look_at_results' => $testSetup->canLookAtResults
         ]);
         if($testSetup->deadline) {
             $this['form']->setDefaults([

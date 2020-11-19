@@ -61,6 +61,7 @@
             if(secondsLeft === 0) {
                 if(minutesLeft === 0) {
                     if(hoursLeft === 0) {
+                        $("#test-form").append('<input type="hidden" name="save_leave">');
                         $("#test-form").submit();
                         clearInterval(countdown);
                     } else {
